@@ -86,26 +86,20 @@ public:
 		}
 	};
 
-	virtual
-	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const override {
 
-		// kludge, copied:
-		ostr << "  " << getDescription() << '\n';
+	// Note: this is unlike meant - not parameters in order but options for the single parameter.
+	virtual
+	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
 
 		AccMethodBank & bank = getAccMethodBank();
 		for (const auto & entry: bank.getMap()){
 			const AccumulationMethod & method = entry.second->getSource();
-			ostr << '\t' << entry.first << " – " << method.getDescription();
+			ostr << indent << entry.first << " – " << method.getDescription();
 			if (method.hasParameters()){
 				ostr << " – parameters: ";
 				method.getParameters().getKeys(ostr);
 			}
 			ostr << '\n';
-		}
-
-		// kludge, copied:
-		if (DETAILED){
-			getRelatedCommands(ostr);
 		}
 
 	}

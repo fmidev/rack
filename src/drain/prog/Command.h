@@ -195,7 +195,7 @@ public:
 
 
 	virtual
-	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const;
+	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const final;
 
 	virtual
 	void getRelatedCommands(std::ostream & ostr = std::cout) const;
@@ -221,6 +221,15 @@ public:
 	void linkRelated(const std::string & cmdKey) const {
 		relatedCommands.insert(cmdKey);
 	};
+
+	/// By default, the "true", technical parameters.
+	/**
+	 *   Some commands have just one technical parameter, which is a string,
+	 *   but is split by an underlying parameter solver, like rack::DataSelector.
+	 *
+	 */
+	virtual
+	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const;
 
 
 protected:

@@ -119,7 +119,7 @@ protected:
 		// TODO: "list out" the sub-parameter help. See --help select
 	};
 
-	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::SimpleCommand<>(cmd){
+	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::SimpleCommand<std::string>(cmd){
 	};
 
 
@@ -194,22 +194,32 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		//drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
 		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+
+		// mout.warn("Select 0...");
 		mySelector.reset();
+
+		// mout.attention("Select...");
 		// consider "reset" as a special argument.
 		try {
 			mySelector.setParameters(value); // will alert early
 			// mout.special<LOG_NOTICE>("ctx.selector: ", ctx.superSelector.getQuantity());
 			// ctx.superSelector.getQuantitySelector();
-		} catch (const std::exception & e) {
+		}
+		catch (const std::exception & e) {
 			mout.error("syntax error in selection string: ", value);
 		}
 		mout.special<LOG_DEBUG>("ctx.selector: ", mySelector);
 		// mout.special<LOG_INFO>("ctx.selector, quantity: ", ctx.superSelector.getQuantitySelector());
 		// mout.special<LOG_INFO>("ctx.selector, quality: ",  ctx.superSelector.getQualitySelector());
 		ctx.select = value;
+		// mout.attention("Select END...");
 		//mout.warn("ctx.select=", ctx.select, "...");
 	}
 
+	// TODO: redesign command::Help to provide extra doc etc, not layout raw help.
+	/** Like:
+	 *   getHelpParameters() // those declared publicly
+	 */
 	/*
 	virtual
 	void help(std::ostream & ostr, bool DETAILED) const override {
@@ -232,9 +242,21 @@ public:
 	*/
 
 	virtual
+	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
+
+		for (const auto & entry: mySelector.getParameters()){
+			ostr << indent << entry.first << ' ' << entry.second << '\n';
+		}
+
+	}
+
+
+	/* This fails, because the keys are used as truth
+	virtual
 	drain::ReferenceMap & getParameters() const override{
 		return mySelector.getParameters();
 	}
+	*/
 
 };
 

@@ -1357,14 +1357,18 @@ public:
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this); // dangerous fwd, but "std::string params" will be the only member referenced!
 	}
 
+
+	// "Missusing" the method...
 	virtual inline
-	void help(std::ostream & ostr = std::cout, bool DETAILED=false) const {
+	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
+	// void help(std::ostream & ostr = std::cout, bool DETAILED=false) const {
 		ostr << "Deprecating, use instead:" << ' ';
 		for (const auto & cmd: this->relatedCommands){
 			ostr << cmd << ',';
 		}
 		// todo: add param explic here in top level
 	}
+
 
 	mutable
 	C origCmd;

@@ -290,6 +290,9 @@ bool CommandBank::scriptify(const std::string & arg, const std::string & argNext
 		return false;
 	}
 
+	// KEEP this, useful in debugging Castable.cpp:assignString null (void)
+	// mout.attention(arg, " next:", argNext);
+
 	if (arg.at(0) == '-'){
 
 		if (arg.length()==1){
@@ -783,11 +786,14 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 	Logger mout(__FILE__, __FUNCTION__); // warning, not initialized
 
 	if (key.empty()){
+		// Basic, short help screen.
+		// Show command name and further advice.
 		ostr << title << '\n' << std::endl;
 		help(ostr);
 		return;
 	}
 	else if (key == "all"){
+		// Special key: show all the commands.
 		help(FlagResolver::ALL, ostr);
 	}
 	else if (key == "hidden"){
@@ -810,10 +816,8 @@ void CommandBank::help(const std::string & key, std::ostream & ostr){
 		}
 		else {
 
-			// Or is it a section, or several?
+			// Check if is it a section / sections?
 			FlagResolver::ivalue_t filter = FlagResolver::getIntValue(sections, key); // Accepts also numeric strings.
-
-			//mout.deprecating("Flagger: " , sections , " -> " , filter );
 			if (filter > 0){
 				help(filter, ostr);
 				return;
@@ -850,7 +854,6 @@ void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr
 
 	ostr << title << '\n' << std::endl;
 
-	const bool TEST = false; //true;
 
 	// if (sectionFilter > 0){
 	// Flagger::value_t filter = FlagResolver::getValue(sections, key);
@@ -863,10 +866,9 @@ void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr
 		FlagResolver::ivalue_t sec = entry.second->getSource().section;
 		if ((sec == sectionFilter) || (sec & sectionFilter) > 0){ // 1st test for HIDDEN
 			try {
-				if (!TEST){
-					info(entry.first, entry.second->getSource(), ostr, false);
-				}
-				else {
+				info(entry.first, entry.second->getSource(), ostr, false);
+				/* DEBUGGING
+				{
 					ostr << entry.first << '\n';
 					std::stringstream sstr, sstr2;
 					Command & cmdOrig = entry.second->getSource();
@@ -889,7 +891,7 @@ void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr
 					}
 					//cmdCopy.setParameters(cmdOrig.getParameters());
 				}
-
+				*/
 			}
 			catch (const std::exception &e) {
 				ostr << "error: " << e.what() << '\n';
@@ -900,18 +902,9 @@ void CommandBank::help(FlagResolver::ivalue_t sectionFilter, std::ostream & ostr
 
 	ostr << '\n';
 
+	// General help.
 	help(ostr);
-	// else { ?
 
-	/* ostr << "Bonus:\n";
-	ostr << drain::sprinter(sections);
-	ostr << "Done.\n";
-	*/
-
-
-	//ostr << "  --help {" << sections << "}\n";
-
-	//std::flush(ostr);
 }
 
 void CommandBank::linkRelatedCommandList(const std::set<std::string> & cmdList){
@@ -964,8 +957,12 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 	if (alias)
 		ostr << ", -" << alias;
 
+	// if detailed...
+	cmd.parametersToStream(ostr);
 	const ReferenceMap & params = cmd.getParameters();
 	const std::map<std::string,std::string> & units = params.getUnitMap();
+	/*
+		const std::map<std::string,std::string> & units = params.getUnitMap();
 	const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
 
 	ostr << ' ' << ' ';
@@ -990,19 +987,27 @@ void CommandBank::info(const std::string & key, const value_t & cmd, std::ostrea
 			ostr << '<' << key << '>'; // Like a pseudo parameter, '<value>'
 		}
 	}
+	*/
+
+	//char separator = 0;
 
 	if (detailed){
 		ostr << "  (";
 		ostr << "section: " << FlagResolver::getKeys(sections,cmd.section, ',');
-		if ((separator) && (separator!=',')){
-			ostr << ", separator: '" << separator << "'";
+		if ((params.separator) && (params.separator!=',')){
+			ostr << ", separator: '" << params.separator << "'";
 		}
 		ostr << ')';
 	}
 
 	ostr << '\n';
 
+	ostr << cmd.getDescription();
 	cmd.help(ostr, detailed); // TODO: embed following detailed part in help?
+	if (detailed){
+		cmd.getRelatedCommands(ostr);
+	}
+
 
 	/// Iterate variable keys
 	if (detailed){

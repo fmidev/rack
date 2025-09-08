@@ -90,11 +90,46 @@ void Command::setParameters(const std::string & args){ //, char assignmentSymbol
 }
 
 void Command::help(std::ostream & ostr, bool DETAILED) const {
+	Logger mout(__FUNCTION__, getName());
+	mout.deprecating("help for: ", getName());
+	/*
 	ostr << "  " << getDescription() << '\n';
 	if (DETAILED){
 		getRelatedCommands(ostr);
 	}
+	*/
 };
+
+void Command::parametersToStream(std::ostream & ostr, const std::string & indent) const {
+
+	const ReferenceMap & params = getParameters();
+	const std::map<std::string,std::string> & units = params.getUnitMap();
+	const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
+
+	ostr << indent; // ' ' << ' ';
+	char separator = 0;
+	//for (std::list<std::string>::const_iterator kit = keys.begin(); kit != keys.end(); ++kit){
+
+	for (const std::string & key: keys){
+
+		if (separator)
+			ostr << separator;
+		else
+			separator = params.separator; //',';
+
+		if (key.empty()){
+			ostr << '<' << params.getKeys() << '>';
+			if (params.size() != 1){
+				std::cerr << "the first key empty, but not unique\n";
+				//mout.warn("the first key empty, but not unique");
+				//mout.warn("the first key empty, but not unique" );
+			}
+		}
+		else {
+			ostr << '<' << key << '>'; // Like a pseudo parameter, '<value>'
+		}
+	}
+}
 
 
 void Command::getRelatedCommands(std::ostream & ostr) const {

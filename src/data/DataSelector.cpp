@@ -86,7 +86,9 @@ DataSelector::DataSelector(
 	this->count = count;
 	this->elangle = elangle;
 	//this->order.str = "";
+	std::cerr << "DataSelector: setting... " << std::endl;
 	this->order.set(DataOrder::DATA, DataOrder::MIN);
+	std::cerr << "DataSelector: done " << std::endl;
 	//this->dualPRF = dualPRF;
 	// this->prfSelector.set(Prf::ANY);
 	this->prfSelector.set(prf);
@@ -136,6 +138,8 @@ std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector){
 ///
 void DataSelector::init() {
 
+	// std::cerr << "DataSelector: init... " << std::endl;
+
 	reset();
 	pathMatcher.separator.acceptTrailing = true;
 	parameters.link("path", path, "[/]dataset<i>[/data<j>|/quality<j>]");
@@ -143,10 +147,13 @@ void DataSelector::init() {
 	parameters.link("elangle", elangle.tuple(), "min[:max]").fillArray = false;
 	parameters.link("count", count);
 	//parameters.link("order", order.str, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
+	// std::cerr << "DataSelector: init order... " << std::flush;
 	parameters.link("order", order.str,
 				drain::sprinter(drain::EnumDict<DataOrder::Crit>::dict.getKeys()).str() + ':' +
 				drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
 				);
+	// std::cerr << "... order END " << std::endl;
+
 	//parameters.link("order", order.str, drain::sprinter(order.getParameters().getKeyList()).str());
 	parameters.link("prf", prf, drain::sprinter(drain::EnumDict<DataSelector::Prf>::dict.getKeys()).str());
 	parameters.link("timespan", timespan.tuple(), "range from nominal time [seconds]").fillArray = false;
@@ -156,6 +163,8 @@ void DataSelector::init() {
 
 
 void DataSelector::reset() {
+
+	// std::cerr << "DataSelector: resetting... " << std::flush;
 
 	path = "";
 	pathMatcher.clear();
@@ -168,8 +177,8 @@ void DataSelector::reset() {
 	//count = 1000;
 	count = 0xfff;
 
-	static const drain::Range<double> e =  {-90.0,+90.0};
-	elangle = e; // {-90.0,+90.0}; // unflexible
+	// static const drain::Range<double> e =  {-90.0,+90.0};
+	elangle.set(-90.0,+90.0); //  = e; // {-90.0,+90.0}; // unflexible
 
 	//dualPRF = 0;
 	prfSelector.set(Prf::ANY);
@@ -177,7 +186,10 @@ void DataSelector::reset() {
 
 	order.set(DataOrder::DATA, DataOrder::MIN);
 
-	timespan.tuple() = {0,0};
+	//timespan.tuple() = {0,0};
+	timespan.set(0,0);
+
+	// std::cerr << "... reset END " << std::endl;
 
 }
 
