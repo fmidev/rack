@@ -138,7 +138,7 @@ void DopplerAvgExpOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst>
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug("Src: " , srcData );
+	mout.accept("Src: " , srcData );
 
 	// Dst
 	const double vMax = srcData.odim.getNyquist();

@@ -244,6 +244,11 @@ public:
 	/// Copy data from a node. (Does not copy subtree.)
 	inline
 	NodeSVG & operator=(const NodeSVG & node){
+		if (!typeIsSet()){
+			setType(node.getType());
+			handleType();
+			//handleType(node.getNativeType());
+		}
 		XML::xmlAssignNode(*this, node);
 		return *this;
 	}
@@ -402,15 +407,12 @@ public:
 	virtual
 	void specificAttributesToStream(std::ostream & ostr) const override;
 
+
 protected:
 
-
-	///
-	/**
-	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
-	 */
 	virtual
-	void handleType(const svg::tag_t & t) override final;
+	void handleType() override final;
+
 
 	virtual
 	void updateAlign() override;
@@ -422,7 +424,7 @@ protected:
 	// bool y_PERCENTAGE = false;
 	// svg:
 
-	int radius = 0;
+	// int radius = 0;
 
 };
 
@@ -434,6 +436,7 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 }
 */
 
+
 }  // image::
 
 inline
@@ -441,6 +444,66 @@ std::ostream & operator<<(std::ostream &ostr, const image::NodeSVG & node){
 	return node.nodeToStream(ostr);
 }
 
+/*
+template <>
+template <>
+class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
+public:
+
+	inline
+	Elem(image::NodeSVG & node) : x(node.box.x), y(node.box.y), width(node.box.width), height(node.box.height){
+	};
+
+	float & x;
+	float & y;
+	double & width;
+	double & height;
+};
+*/
+
+template <>
+template <>
+class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
+public:
+
+	inline
+	Elem(image::NodeSVG & node) : x(node["x"]), y(node["y"]), width(node["width"]), height(node["height"]){
+		node.setType(image::svg::tag_t::RECT);
+	};
+
+	FlexibleVariable & x;
+	FlexibleVariable & y;
+	FlexibleVariable & width;
+	FlexibleVariable & height;
+};
+
+
+
+template <>
+template <>
+class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::CIRCLE>{
+public:
+
+	inline
+	Elem(image::NodeSVG & node) : x(node["x"]), y(node["y"]), radius(node["radius"]){
+		node.setType(image::svg::tag_t::CIRCLE);
+	};
+
+	FlexibleVariable & x;
+	FlexibleVariable & y;
+	FlexibleVariable & radius;
+
+	/*
+	inline
+	Elem(image::NodeSVG & node) : x(node.box.x), y(node.box.y), radius(node.radius){
+	};
+
+	float & x;
+	float & y;
+	int & radius;
+	// double radius; // FAILS! Upon exiting scope, link becomes invalidated
+	*/
+};
 
 }  // drain::
 

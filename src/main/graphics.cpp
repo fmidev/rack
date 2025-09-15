@@ -577,14 +577,15 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & timeHeader = object[PanelConfSVG::ElemClass::TIME](svg::TEXT);
 	timeHeader->addClass(LayoutSVG::FLOAT);
-	//timeHeader->addClass(RackSVG::TITLE, RackSVG::TIME);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
 	timeHeader->setAlignAnchor(anchor);
 	timeHeader["date"](svg::TSPAN);
 	timeHeader["date"]->addClass("date");
+	// timeHeader["date"]->addClass(PanelConfSVG::ElemClass::TIME);
 	timeHeader["time"](svg::TSPAN);
 	timeHeader["time"]->addClass("time");
-	// timeHeader["date"]->setText("date..."); //CTXX
+	// timeHeader["time"]->addClass(PanelConfSVG::ElemClass::TIME);
+		// timeHeader["date"]->setText("date..."); //CTXX
 	// timeHeader["time"]->setText("time"); //CTXX
 
 	// Layout principle: there should be always time... so start/continue from left.
@@ -973,11 +974,12 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			elemClass = PanelConfSVG::ElemClass::LOCATION;
 		}
 
-		TreeSVG & text  = group[elemClass]; // (svg::TEXT);
+		TreeSVG & text  = group[elemClass];
 		if (text->isUndefined()){
 			text->setType(svg::COMMENT); // only test...
 			text->setText("skipped elem");
 		}
+
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
 		tspan->addClass(attr.first); // allows user-specified style
 
@@ -985,6 +987,9 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			if (format.empty()){
 				format = RackSVG::guessFormat(key);
 				text->set("format", format);
+			}
+			else {
+				text->set("format", format); // DEBUG
 			}
 			// mout.accept<LOG_DEBUG>("TIME text format", format);
 		}
@@ -1019,7 +1024,8 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			formatter.formatVariable(key, attr.second, format, sstr);
 			// tspan->ctext += sstr.str();
 			// tspan->setText(sstr.str(), "&#160;"); // non-b.sp
-			tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
+			// tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
+			tspan->setText(sstr.str(), " ");
 		}
 
 	}

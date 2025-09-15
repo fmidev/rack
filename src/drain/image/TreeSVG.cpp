@@ -161,30 +161,21 @@ std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
 std::string NodeSVG::svg("http://www.w3.org/2000/svg");
 
 
-
-NodeSVG::NodeSVG(svg::tag_t t){
-	if (t != svg::UNDEFINED){
-		/*
-		Logger mout(__FILE__, __FUNCTION__);
-		mout.attention("starting");
-		type = static_cast<intval_t>(t);
-		mout.warn("arg", (int)t, " -> type: ", type);
-		*/
-		// setType(t);
-		//mout.warn("arg", (int)t, " -> type: ", type);
-	}
+// Explicit default constructor of base class  xml_node_t
+NodeSVG::NodeSVG(svg::tag_t t) : xml_node_t() {
 	setType(t);
 }
 
-//NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
-NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0), radius(0) {
+// Explicit default constructor of base class  xml_node_t
+NodeSVG::NodeSVG(const NodeSVG & node) : xml_node_t(), box(0,0,0,0) { // , radius(0)
 	// RISKY references! copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK); // <-- risky! may link Variable contents?
-	XML::xmlAssignNode(*this, node);
+	XML::xmlAssignNode(*this, node); // this should be good.
 }
 
-void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
+//void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
+void NodeSVG::handleType() { // setType(const elem_t & t) {
 
-	switch (t) {
+	switch (getNativeType()) {
 	case image::svg::UNDEFINED:
 		break;
 	case image::svg::COMMENT:
@@ -213,7 +204,8 @@ void NodeSVG::handleType(const svg::tag_t & t) { // setType(const elem_t & t) {
 	case image::svg::CIRCLE:
 		link("cx", box.x = 0);
 		link("cy", box.y = 0);
-		link("r", radius = 0);
+		set("radius", static_cast<svg::coord_t>(0));
+		// link("r", radius = 0);
 		break;
 	case image::svg::IMAGE:
 		link("x", box.x = 0);
@@ -337,7 +329,10 @@ bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
 template <> // for T - Tree class
 template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
-		return XML::xmlSetType(*this, type);
+	return XML::xmlSetType(*this, type);
+	//this->datasetType(type);
+	//this->data->handleType();
+	//return *this;
 }
 
 /// Automatic conversion of element type (enum value) to a string.

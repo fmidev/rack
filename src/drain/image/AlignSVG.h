@@ -75,7 +75,7 @@ public:
 	Axis flip(Axis axis){
 		switch (axis){
 		case HORZ:
-			return AlignBase::VERT;
+			return VERT;
 		case VERT:
 			return HORZ;
 		default:
@@ -156,15 +156,6 @@ struct Alignment {
 	inline virtual
 	~Alignment(){};
 
-	/*
-	template <typename T>
-	bool isSet2();
-
-	virtual inline
-	bool isSet() const {
-		return (axis != AlignBase::Axis::UNDEFINED_AXIS) && (pos != AlignBase::Pos::UNDEFINED_POS);
-	}
-	*/
 
 	inline
 	const AlignBase::Axis & get(const AlignBase::Axis & defaultValue) const {
@@ -204,54 +195,6 @@ struct Alignment {
 
 };
 
-/*
-template <typename AX, AlignBase::Axis A, typename POS>
-template <>
-bool Alignment<AX,A,POS>::isSet2<AlignBase::Axis>(){
-	return axis != AlignBase::Axis::UNDEFINED_AXIS;
-};
-
-template <typename AX, AlignBase::Axis A, typename POS>
-//template <>
-bool Alignment<AX,A,POS>::isSet2<AlignBase::Pos>(){
-	return axis != AlignBase::Pos::UNDEFINED_POS;
-};
-*/
-
-/*
-template <typename AX, AlignBase::Axis A, typename POS>
-template <>
-const  AlignBase::Axis & Alignment<AX,A,POS>::get(const AlignBase::Axis & defaultValue){
-	if (isSet<AlignBase::Axis>()){
-		return axis;
-	}
-	else {
-		return defaultValue;
-	}
-};
-
-template <typename AX, AlignBase::Axis A, typename POS>
-template <>
-const  AlignBase::Pos & Alignment<AX,A,POS>::get(const AlignBase::Pos & defaultValue){
-	if (isSet<AlignBase::Pos>()){
-		return pos;
-	}
-	else {
-		return defaultValue;
-	}
-};
-
-template <typename AX, AlignBase::Axis A, typename POS>
-template <>
-const  AlignBase::Axis & Alignment<AX,A,POS>::get(const AlignBase::Axis & defaultValue) const {
-	if (axis != AlignBase::Axis::UNDEFINED_AXIS){
-		return axis;
-	}
-	else {
-		return defaultValue;
-	}
-};
-*/
 
 
 template <typename AX, AlignBase::Axis V>

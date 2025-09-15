@@ -49,6 +49,13 @@ namespace drain
  *
  *  \tparam T  - storage type
  *
+	\copydoc drain::FuzzyStep
+	\copydoc drain::FuzzyStepsoid
+	\copydoc drain::FuzzyBell
+	\copydoc drain::FuzzyBell2
+	\copydoc drain::FuzzyTriangle
+	\copydoc drain::FuzzyTwinPeaks
+ *
  */
 template <class T> //,class T2>
 class Fuzzifier : public UnaryFunctor
@@ -74,22 +81,26 @@ public:
 	}
 	*/
 
-	mutable
-	bool INVERSE;
+	inline
+	bool isInversed(){
+		return INVERSE;
+	}
 
 protected:
 
-	inline
-	virtual
+	mutable
+	bool INVERSE;
+
+	inline	virtual
 	void updateScale() const {
 
 		if (!INVERSE){
-			this->scaleFinal = scale;
+			this->scaleFinal = ::abs(scale);
 			this->biasFinal  = bias;
 		}
 		else {
-			this->scaleFinal = -scale;
-			this->biasFinal  =  bias + scale;
+			this->scaleFinal = - ::abs(scale);
+			this->biasFinal  =  bias + ::abs(scale);
 		}
 	}
 
@@ -131,8 +142,9 @@ public:
 
 };
 
-/// A basic, linear transition from 0 to scale between \c (start) and \c (end) .
-/*!
+///  A simple linear transition from 0 to 1 .
+/**
+ *
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
  *
@@ -182,8 +194,7 @@ public:
 
 	inline
 	void set(double rangeMin, double rangeMax, double scale=1.0, double bias=0.0){
-		this->range.min = rangeMin;
-		this->range.max = rangeMax;
+		this->range.set(rangeMin, rangeMax);
 		this->setScale(scale, bias);
 		this->updateBean();
 	}
@@ -197,8 +208,7 @@ public:
 
 
 
-	virtual
-	inline
+	virtual inline
 	void updateBean() const override {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
@@ -231,31 +241,30 @@ public:
 			return this->biasFinal;
 		else if (x >= rangeFinal.max)
 			return this->biasFinal + this->scaleFinal;
-		else
-			return this->biasFinal + this->scaleFinal*(x-rangeFinal.min) / span;  // div by undetectValue not possible, unless start==end
+		else {
+			// TODO: integrate span in scaleFinal?
+			return this->biasFinal + this->scaleFinal*(x-rangeFinal.min) / span;  // div by span not possible
+		}
 
 	}
 
-	//std::pair<double,double> range;
 	drain::Range<double> range;
 
 protected:
 
 	mutable double span;
 
-	//
 	mutable
 	drain::Range<double> rangeFinal;
-	//std::pair<double,double> rangeFinal;
-
 
 };
 
 /// A basic triangular peak function with linear around the peak.
 /*!
- *  \tparam T  - input storage type
- *  \tparam T2 - output storage type
  *
+   \tparam T  - input storage type
+   \tparam T2 - output storage type
+
 	\code
 	drainage image-gray.png        --iFuzzyTriangle 64:192,128     -o fuzzyTriangle.png
 	drainage image-gray.png -R 0:1 --iFuzzyTriangle 0.25:0.75,0.5  -o fuzzyTriangle-phys.png
@@ -380,25 +389,25 @@ protected:
 
 
 /// A smooth symmetric peak function that resembles the Gaussian bell curve.
-/**
- *
- * \tparam T  - input type  (typically double)
- * \tparam T2 - output type (typically double)
- *
- * \param location - center of the peak
- * \param width    - half-width of the peak; if negative, the peak will be upside down
- * \param scale - multiplication in scaling (scale*x + bias); default=1.0
- * \param bias  - offset in scaling (scale*x + bias); default=0.0
- *
- *  The approximation applies
-	\code
+/*!
+
+  \tparam T  - input type  (typically double)
+  \tparam T2 - output type (typically double)
+
+  \param location - center of the peak
+  \param width    - half-width of the peak; if negative, the peak will be upside down
+  \param scale - multiplication in scaling (scale*x + bias); default=1.0
+  \param bias  - offset in scaling (scale*x + bias); default=0.0
+
+  The approximation applies
+  \code
 	drainage image-gray.png        --iFuzzyBell 128,16   -o fuzzyBell.png
 	drainage image-gray.png -R 0:1 --iFuzzyBell 0.5,0.2  -o fuzzyBell-phys.png
 	drainage image-gray.png -T S   --iFuzzyBell 128,16   -o fuzzyBell-16bit.png
-	\endcode
+  \endcode
 
-	\image html  Fuzzy-FuzzyBell_-2:+2_0:1.png "Fuzzy Bell."
-	\image latex Fuzzy-FuzzyBell_-2:+2_0:1.png "Fuzzy Bell." width=0.9\textwidth
+  \image html  Fuzzy-FuzzyBell_-2:+2_0:1.png "Fuzzy Bell."
+  \image latex Fuzzy-FuzzyBell_-2:+2_0:1.png "Fuzzy Bell." width=0.9\textwidth
 
  */
 template <class T>
@@ -447,8 +456,7 @@ public:
 		this->updateScale();
 	}
 
-	inline
-	virtual
+	virtual inline
 	double operator()(double x) const {
 
 		x = widthInv * (x - this->location);
@@ -470,15 +478,18 @@ protected:
 
 /// A smooth symmetric peak function that resembles the Gaussian bell curve. Diminishes quicker than FuzzyPeak.
 /*!
+ *
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
  *
+ 	\code
     drainage image-gray.png        --iFuzzyBell2 128,16   -o fuzzyBell2.png
 	drainage image-gray.png -R 0:1 --iFuzzyBell2 0.5,0.2  -o fuzzyBell2-phys.png
 	drainage image-gray.png -T S   --iFuzzyBell2 128,16   -o fuzzyBell2-16bit.png
+	\endcode
 
-	\image html  Fuzzy-FuzzyBell2_-2:+2_0:1.png "Fuzzy Bell2."
-	\image latex Fuzzy-FuzzyBell2_-2:+2_0:1.png "Fuzzy Bell2." width=0.9\textwidth
+	\image html  Fuzzy-FuzzyBell2_-2:+2_0:1.png "Fuzzy bell(2)."
+	\image latex Fuzzy-FuzzyBell2_-2:+2_0:1.png "Fuzzy bell(2)." width=0.9\textwidth
  */
 template <class T>
 class FuzzyBell2 : public Fuzzifier<T> {
@@ -548,8 +559,13 @@ protected:
 
 /// A smooth step function, by default from -1.0 to +1.0.
 /*!
+*
 *  \tparam T  - input storage type
 *  \tparam T2 - output storage type
+*
+   \image html  Fuzzy-Sigmoid_-2:+2_0:1.png "Fuzzy sigmoid."
+   \image latex Fuzzy-Sigmoid_-2:+2_0:1.png "Fuzzy sigmoid." width=0.9\textwidth
+*
 */
 template <class T> //,class T2>
 class FuzzySigmoid  : public Fuzzifier<T> {
@@ -629,6 +645,10 @@ protected:
 /*!
 *  \tparam T  - input storage type
 *  \tparam T2 - output storage type
+*
+   \image html  Fuzzy-Stepsoid_-2:+2_0:1.png "Fuzzy 'stepsoid'."
+   \image latex Fuzzy-Stepsoid_-2:+2_0:1.png "Fuzzy 'stepsoid'." width=0.9\textwidth
+*
 */
 template <class T>
 class FuzzyStepsoid  : public Fuzzifier<T> {
@@ -712,6 +732,9 @@ protected:
 /*!
  *  \tparam T  - input storage type
  *  \tparam T2 - output storage type
+ *
+   \image html  Fuzzy-TwinPeaks_-2:+2_0:1.png "Fuzzy 'twin peaks'."
+   \image latex Fuzzy-TwinPeaks_-2:+2_0:1.png "Fuzzy 'twin peaks'." width=0.9\textwidth
  */
 template <class T>
 class FuzzyTwinPeaks : public Fuzzifier<T> {

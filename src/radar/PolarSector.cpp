@@ -34,6 +34,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack
 {
 
+PolarSector::PolarSector() : drain::BeanLike(__FUNCTION__) {
+	// consider fillArray?
+	parameters.link("azm",   azmRange.tuple(),   "deg");
+	parameters.link("range", distanceRange.tuple(), "km");
+	parameters.link("ray",   rayRange.tuple(),   "index");
+	parameters.link("bin",   binRange.tuple(),   "index");
+}
+
+PolarSector::PolarSector(const PolarSector & sector) : drain::BeanLike(sector) {
+	parameters.copyStruct(sector.getParameters(), sector, *this);
+}
+
 void PolarSector::reset(){
 
 	// natural coords

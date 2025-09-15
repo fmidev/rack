@@ -76,6 +76,50 @@ public:
 
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
+protected:
+
+	virtual
+	void handleType() = 0;
+
+public:
+
+	inline
+	XML(){};
+
+	inline
+	XML(const XML &){
+
+	};
+
+	template <class T> // "final"
+	void setType(const T &t){ // DANGER, without cast?
+		const intval_t t2 = static_cast<intval_t>(t);
+		if (type != t2){
+			reset();
+			type = t2; // also UNDEFINED ok here
+			handleType(); // NOTE: problems, if copy constructor etc. calls setType on a base class – trying to link future members
+		}
+		// handleType(static_cast<T>(t)); REMOVED 2025/09
+		// in derived classes, eg. drain::image::BaseGDAL
+		// warning: case value ‘...’ not in enumerated type
+	}
+
+	// Consider this later, for user-defined (not enumerated) tag types.
+	// virtual
+	// void setType(const std::string & type);
+
+
+	inline
+	const intval_t & getType() const {
+		return type;
+	};
+
+	/// Return true, if type is any of the arguments.
+	inline
+	bool typeIsSet() const {
+		return type != UNDEFINED;
+	};
+
 	/// Return true, if type is any of the arguments.
 	/**
 	 *
@@ -151,24 +195,24 @@ public:
 	virtual
 	bool isExplicit() const;
 
-	/// Clear style, class and string data but keep the element type.
+	/// Keep the element type but clear style, class and string data.
 	/**
 	 *  Clears style, classList, cdata.
 	 *
+	 virtual
+	 void clear();
 	 */
-	virtual
-	void clear();
 
-	/// Clear style, class and string data as well as the element type.
+	/// Clear type, style, class and string data.
+	void reset();
 	/**
-	 *  Clears style, classList, cdata.
 	 *
-	 */
 	inline
 	void reset(){
-		clear();
 		type = UNDEFINED;
+		clear();
 	}
+	 */
 
 	/// Makes ID a visible attribute.
 	/**
@@ -418,20 +462,6 @@ public:
 		drain::SmartMapTools::setValues(style, args);
 	}
 
-	/*
-	void setStyle(	const std::initializer_list<std::pair<const char *,const char *> > & args){
-		drain::SmartMapTools::setValues(style, args);
-	}
-	*/
-
-	/*
-	template <class S>
-	inline
-	void setStyle(const S &value){
-		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.error("unsupported type ", drain::TypeName<S>::str(), " for value: ", typeid(value));
-	}
-	*/
 
 
 protected:
@@ -513,22 +543,26 @@ public:
 	/**
 	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
 	 */
-	template <typename TX>
+	template <typename T>
 	static inline
-	TX & xmlAssign(TX & dst, const TX & src){
+	T & xmlAssign(T & dst, const T & src){
 
 		if (&src != &dst){
-			dst.clear();
+			dst.clear(); // clears children...
+			// ... but not copying src? (TreeUtils?)
 			// also dst->clear();
+			xmlAssignNode(dst.data, src);
+			/*
 			dst->setType(src->getType());
 			dst->setText(src->ctext); //CTXX
 			dst->getAttributes() = src->getAttributes();
+			*/
 		}
 
 		return dst;
 	}
 
-	/// Assign another tree structure to another
+	/// Copy node data to tree
 	/**
 	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
 	 */
@@ -548,20 +582,26 @@ public:
 		return dst;
 	}
 
-	/// Assign another tree structure to another
+	/// Assign tree node (data) to another
 	/**
-	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
+	 *  \tparam N - xml node (e.g. NodeXML, NodeSVG, NodeHTML)
 	 *
 	 *  \see clear()
 	 */
-	template <typename X>
+	template <typename N>
 	static inline
-	X & xmlAssignNode(X & dst, const X & src){
+	N & xmlAssignNode(N & dst, const N & src){
 
 		if (&src != &dst){
 			//dst.clear(); // clear attributes,
-			dst.reset(); // clear attributes, style, cstring and type.
-			dst.setType(src.getType()); // important: creates links!
+			//if (!dst.typeIs(src.getNativeType())){
+			if (dst.getType() != src.getType()){
+				dst.reset(); // clear attributes, style, cstring and type.
+				// Warning! Dangerous situation. does not create links
+				dst.setType(src.getType());
+			}
+			// dst.setType(src.getType()); // important: creates links!
+			// dst.handleType(src.getNativeType()); // NEW
 			dst.getAttributes().importMap(src.getAttributes());
 			dst.setStyle(src.getStyle());
 			// dst.setText(src.ctext); // wrong! set type to CTEXT
@@ -571,13 +611,13 @@ public:
 		return dst;
 	}
 
-	/// Assign another tree structure to another
+	/// Assign property to a XML tree node
 	/**
 	 *  \tparam T - XML tree
 	 */
-	template <typename TX, typename V>
+	template <typename T, typename V>
 	static inline
-	TX & xmlAssign(TX & tree, const V & arg){
+	T & xmlAssign(T & tree, const V & arg){
 		tree->set(arg);
 		return tree;
 	}
@@ -586,15 +626,16 @@ public:
 	/**
 	 *  \tparam TX - xml tree
 	 */
-	template <typename TX>
+	template <typename T>
 	static
 	//T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const char *> > l){
-	TX & xmlAssign(TX & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
+	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
 
-		switch (static_cast<intval_t>(tree->getType())){
+		//switch (static_cast<intval_t>(tree->getType())){
+		switch (tree->getType()){
 		case STYLE:
 			for (const auto & entry: l){
-				TX & elem = tree[entry.first];
+				T & elem = tree[entry.first];
 				elem->setType(STYLE_SELECT);
 				drain::SmartMapTools::setValues(elem->getAttributes(), entry.second, ';', ':', std::string(" \t\n"));
 			}
@@ -626,30 +667,6 @@ public:
 		}
 		tree->ctext = s;
 		return tree;
-		/*
-		if (tree->isCText()){
-			tree->setText(s);
-			return tree;
-		}
-		else if (tree->isUndefined()){
-			tree->setType(CTEXT);
-			tree->setText(s);
-			return tree;
-		}
-		else {
-			for (auto & entry: tree){
-				if (entry.second->isCText()){
-					entry.second->setText(s);
-					return entry.second;
-				}
-			}
-			// drain::Logger(__FILE__, __FUNCTION__).error("Assign string...");
-			TX & child = tree.addChild();
-			child->setType(CTEXT);
-			child->setText(s);
-			return child;
-		}
-		*/
 	}
 
 	template <typename TX>

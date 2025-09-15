@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef __RACK_API__
 #define __RACK_API__
 #define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "13.9"
+#define __RACK_VERSION__ "13.92"
 
 /**
  *  Version 13
@@ -57,6 +57,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Minor changes (UniCloner -> LocalCloner)
  *  Release 13.9
  *  - Bug fixes, also help revisited
+ *  Release 13.91
+ *  - Bug fixes: palette comment, palette key stored
+ *  Release 13.92
+ *  - Revised XML::handleType(), XML Elem specialization (SVG)
  *
  *  Version 12
  *  - Revised QuantityMap, allowing retrieve("DBZXP")

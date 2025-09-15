@@ -507,7 +507,7 @@ public:
 	static
 	void apply(RackContext & ctx){
 
-		drain::Logger mout(ctx.log, __FUNCTION__, "Palette"); // = resources.mout;
+		drain::Logger mout(ctx.log, __FUNCTION__, "PaletteBase"); // = resources.mout;
 
 		//drain::image::Palette & palette = ctx.palette; // FAKE old (fallback)
 		drain::image::Palette & palette = ctx.getPalette(); // NEW
@@ -857,6 +857,10 @@ public:
 		else {
 			const Palette & p = ctx.getPalette(value);
 			mout.info("using specific palette: ", p.comment, " size=", p.size());
+			if (!p.empty()){
+				mout.note("stored latest palette key: ", value);
+				ctx.paletteKey = value;
+			}
 			// ctx.palette.load(value, true);
 		}
 

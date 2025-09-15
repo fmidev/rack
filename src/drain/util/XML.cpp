@@ -70,7 +70,9 @@ const XML::intval_t XML::STYLE_SELECT;
 const XML::intval_t XML::SCRIPT;
 
 // reset() clears also the type
-void XML::clear(){
+//void XML::clear(){
+void XML::reset(){
+	type = UNDEFINED;
 	map_t::clear();
 	style.clear();
 	ctext.clear();
@@ -83,15 +85,8 @@ bool XML::isSingular() const {
 
 /// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 bool XML::isExplicit() const {
-
 	// Recommended implementation: with typeIs()
 	return typeIs(SCRIPT, STYLE);
-
-	/*
-	static
-	const std::set<intval_t> l = {SCRIPT, STYLE}; // todo, append, and/or generalize...
-	return (l.find(type) != l.end()); // not in the set
-	*/
 }
 
 void XML::setText(const std::string & s) {

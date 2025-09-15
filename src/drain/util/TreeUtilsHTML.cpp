@@ -46,19 +46,19 @@ TreeHTML & TreeUtilsHTML::initHtml(drain::TreeHTML & html, const std::string & h
 
 	drain::TreeHTML & head  = html[drain::NodeHTML::HEAD](drain::NodeHTML::HEAD);
 
-	drain::TreeHTML & encoding = head["encoding"](drain::html::META);
+	drain::TreeHTML & encoding = head["encoding"](drain::Html::META);
 	encoding->set("charset", "utf-8");
 
 	// drain::TreeHTML & style =
-	head[drain::html::STYLE](drain::html::STYLE);
+	head[drain::Html::STYLE](drain::Html::STYLE);
 
-	drain::TreeHTML & title = head[drain::html::TITLE](drain::html::TITLE);
+	drain::TreeHTML & title = head[drain::Html::TITLE](drain::Html::TITLE);
 	title = heading;
 
-	drain::TreeHTML & body = html[drain::html::BODY](drain::html::BODY);
+	drain::TreeHTML & body = html[drain::Html::BODY](drain::Html::BODY);
 
 	if (!heading.empty()){
-		drain::TreeHTML & h1 = body["title"](drain::html::H1);
+		drain::TreeHTML & h1 = body["title"](drain::Html::H1);
 		h1 = heading;
 	}
 

@@ -63,7 +63,7 @@ typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
 
 // typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
 
-struct html {
+struct Html {
 
 	enum tag_t {
 		UNDEFINED=NodeXML<>::UNDEFINED,
@@ -83,13 +83,13 @@ struct html {
 };
 
 template <>
-const drain::EnumDict<html::tag_t>::dict_t drain::EnumDict<html::tag_t>::dict;
+const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict;
 
 /**
  *  \tparam T - index type; may be enum.
  */
 //class NodeHTML : public HTML, public NodeXML<html::tag_t> {
-class NodeHTML : public html, public NodeXML<html::tag_t> {
+class NodeHTML : public Html, public NodeXML<Html::tag_t> {
 // class NodeHTML : public NodeXML<html::tag_t> {
 
 
@@ -98,7 +98,7 @@ public:
 	// typedef int tag_t;
 
 	/// Default constructor
-	NodeHTML(const html::tag_t & t = html::tag_t(0));
+	NodeHTML(const Html::tag_t & t = Html::tag_t(0));
 
 	/// Copy constructor
 	NodeHTML(const NodeHTML & node);
@@ -146,10 +146,12 @@ public:
 	static
 	const FileInfo fileInfo;
 
+	// virtual	void handleType(const Html::tag_t &t) override final;
+
 protected:
 
 	virtual
-	void handleType(const html::tag_t &t) override final;
+	void handleType() override final;
 
 };
 
@@ -160,18 +162,18 @@ protected:
 // This is the way!
 template <> // for T (Tree class)
 inline
-std::ostream & NodeXML<html::tag_t>::docTypeToStream(std::ostream &ostr){
+std::ostream & NodeXML<Html::tag_t>::docTypeToStream(std::ostream &ostr){
 		ostr << "<!DOCTYPE html>\n";
 		return ostr;
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-TreeHTML & TreeHTML::operator[](const html::tag_t & type);
+TreeHTML & TreeHTML::operator[](const Html::tag_t & type);
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-const TreeHTML & TreeHTML::operator[](const html::tag_t & type) const;
+const TreeHTML & TreeHTML::operator[](const Html::tag_t & type) const;
 
 
 template <>
@@ -236,13 +238,13 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 
 
 DRAIN_TYPENAME(NodeHTML);
-DRAIN_TYPENAME(html);
-DRAIN_TYPENAME(html::tag_t);
+DRAIN_TYPENAME(Html);
+DRAIN_TYPENAME(Html::tag_t);
 
 
 // Important TAG type initialisations for elements.
 template <>
-const NodeXML<html::tag_t>::xml_default_elem_map_t NodeXML<html::tag_t>::xml_default_elems;
+const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_default_elems;
 
 // Preferred template specification
 template <>
@@ -256,7 +258,7 @@ TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
 template <>
 template <>
 inline
-TreeHTML & TreeHTML::operator()(const html::tag_t & type){
+TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
 	return XML::xmlSetType(*this, type);
 }
 

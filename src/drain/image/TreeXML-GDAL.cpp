@@ -92,27 +92,33 @@ NodeGDAL::NodeGDAL(const NodeGDAL & node) : xml_node_t(){ // , sample(-1)
 
 */
 
-NodeGDAL::NodeGDAL(const tag_t & t){
+NodeGDAL::NodeGDAL(const tag_t & t) : xml_node_t() {
 	setType(t);
 }
 
 
-NodeGDAL::NodeGDAL(const NodeGDAL & node){ // , sample(-1)
-	/*
-	type = GDAL::UNDEFINED;
-	//copyStruct(node, node, *this);
-	setType(node.getType());
-	*/
-	XML::xmlAssignNode(*this, node);
+NodeGDAL::NodeGDAL(const NodeGDAL & node) : xml_node_t() { // , sample(-1)
+	XML::xmlAssignNode(*this, node); // good here
 }
 
 
-//void NodeGDAL::setType(const tag_t & t){
-void NodeGDAL::handleType(const tag_t & t){
+void NodeGDAL::handleType(){ // const tag_t & t
 
 	clear();
 	link("name", name);
 
+	switch (getNativeType()){
+	case ROOT:
+		break;
+	case ITEM:
+		link("role",   role = "");
+		link("name",   name); // don't change!  = ""
+		break;
+	default:
+		return;
+	}
+
+	/*
 	if (t == ROOT){
 	}
 	else if (t == ITEM){
@@ -123,6 +129,7 @@ void NodeGDAL::handleType(const tag_t & t){
 	else { // USER
 		// clear(); // clearLinks could be better?
 	}
+	*/
 
 	// Logger mout(__FILE__, __FUNCTION__);
 	// mout.warn("setType: ", getTag(), " name:", name);

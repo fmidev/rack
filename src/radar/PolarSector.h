@@ -48,12 +48,10 @@ class PolarSector : public drain::BeanLike {
 
 public:
 
-	PolarSector() : drain::BeanLike(__FUNCTION__) {
-		parameters.link("azm",   azmRange.tuple(),   "deg");
-		parameters.link("range", distanceRange.tuple(), "km");
-		parameters.link("ray",   rayRange.tuple(),   "index");
-		parameters.link("bin",   binRange.tuple(),   "index");
-	}
+	PolarSector();
+
+	PolarSector(const PolarSector & sector);
+
 
 	/// Azimuthal sector [deg]
 	drain::Range<double> azmRange;
@@ -74,13 +72,9 @@ public:
 	void setRange(int range, int range2 = 0){
 		if (range2 < range){
 			this->distanceRange.set(range2, range);
-			// this->range1 = range2;
-			// this->range2 = range;
 		}
 		else {
 			this->distanceRange.set(range, range2);
-			// this->range1 = range;
-			// this->range2 = range2;
 		}
 	};
 

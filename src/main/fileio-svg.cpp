@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeUtilsSVG.h>
 
 //#include "data/SourceODIM.h" // for NOD
+#include "radar/PolarSector.h"
 
 #include "fileio-svg.h"
 #include "graphics.h"
@@ -810,6 +811,7 @@ public:
 			date->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 			formatter.formatDate(sstr, "date", status.get("what:date", ""), "%Y/%m/%d");
 			date->setText(sstr.str());
+			// mout.attention("DATE:", sstr.str());
 
 			drain::image::TreeSVG & time = group["time"](svg::TEXT); // addTextElem(group, "time");
 			time->setAlignAnchorHorz(HEADER_RECT);
@@ -1007,6 +1009,179 @@ public:
 };
 
 
+/*
+class CmdSector : public drain::BeanCommand<PolarSector> {
+
+public:
+
+	CmdSector() : drain::BeanCommand<PolarSector>(){ // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	};
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		std::cout << this->getParameters() << std::endl;
+	};
+
+};
+*/
+
+class CmdSector : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdSector() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	};
+
+	/*  // consider more general function (with layout)
+	virtual
+	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
+
+		const drain::ReferenceMap & params = mySelector.getParameters();
+		const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
+
+		const std::map<std::string,std::string> & units = params.getUnitMap();
+
+		for (const std::string & key: keys){
+			ostr << indent << key << " (" << params.get(key, "") << ")";
+
+			std::map<std::string,std::string>::const_iterator uit = units.find(key);
+			if (uit != units.end()){
+				if (!uit->second.empty()){
+					ostr << ' ' << '[' << uit->second << ']';
+				}
+			}
+			ostr << '\n';
+		}
+	}
+	*/
+
+	virtual inline
+	void parameterKeysToStream(std::ostream & ostr) const override {
+		Command::parameterKeysToStream(ostr, polarSector.getParameters().getKeyList(), ',');
+	};
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		polarSector.reset();
+
+		polarSector.setParameters(value);
+
+		const Hi5Tree & srcPolar = ctx.getHi5(RackContext::POLAR|RackContext::CURRENT); // , RackContext::CURRENT
+		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT);
+
+		if (srcPolar.empty()){
+			mout.warn("No polar data read, cannot focus on a specific radar");
+			return;
+		}
+
+		// prepare ("interpret") arguments
+		if (polarSector.binRange.max < 0){
+
+		}
+
+		std::cout << polarSector.getParameters() << std::endl;
+
+		RadarProj radarProj(srcPolar[ODIMPathElem::WHERE].data.attributes["lon"], srcPolar[ODIMPathElem::WHERE].data.attributes["lat"]);
+		// proj.setSiteLocationDeg();
+
+		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
+		if ((object == "SCAN") || (object == "PVOL")){
+			mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
+		}
+		else {
+			mout.note("Cartesian");
+
+			const drain::VariableMap & where = srcCurr[ODIMPathElem::WHERE].data.attributes;
+
+			// const drain::Rectangle<double> bboxComposite(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			// mout.special("Composite BBOX:", bboxComposite);
+
+			drain::image::GeoFrame geoFrame;
+			int epsg = where.get("epsg", 0); // non-standard
+			if (epsg){
+				mout.attention("EPSG found: ", epsg);
+				geoFrame.setProjectionEPSG(epsg);
+			}
+			else {
+				geoFrame.setProjection(where["projdef"]);
+			}
+			geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			geoFrame.setGeometry(where["xsize"], where["ysize"]);
+
+			mout.special("GeoFrame BBOX: ", geoFrame);
+			mout.special("GeoFrame BBOX: ", geoFrame.getBoundingBoxNat());
+
+			radarProj.setProjectionDst(where.get("projdef", ""));
+			double range = 250000.0;
+			drain::Rectangle<double> bbox;
+			radarProj.determineBoundingBoxM(range, bbox); // M = "native"
+			// drain::Rectangle<double> bbox;
+			mout.special("BBOX (250km) of the last input:", bbox);
+
+			//
+			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
+			//RackSVG::get
+
+			// TODO: default group?
+			drain::image::TreeSVG & geoGroup = group["geoGroup"](drain::image::svg::GROUP);
+
+			// geoGroup.data.getAttributes();
+			{
+				using namespace drain::image;
+				NodeSVG::Elem<svg::CIRCLE> test(geoGroup["ZIRK"]);
+				NodeSVG::Elem<svg::RECT> test2(geoGroup["REKT"]);
+
+			}
+			// drain::image::NodeSVG::Elem<drain::image::svg::CIRCLE> test(geoGroup["ZIRK"].data);
+
+			// Circle as a polygon (to master projection)
+			// <polygon points="100,100 150,25 150,75 200,0" fill="none" stroke="black" />
+			drain::image::TreeSVG & circle = geoGroup["radarCircle"](drain::image::svg::POLYGON);
+			circle -> setStyle("fill",   "blue");
+			circle -> setStyle("stroke", "red");
+			circle -> setStyle("stroke-width", 5.1);
+			circle -> setStyle("opacity", 0.5);
+
+			// Note: polygon path has (here) integer coordinates; assuming integer frame.
+
+			drain::Point2D<double> geoPoint;
+			drain::Point2D<int> imgPoint;
+			// consider generalize?
+			std::list<drain::Point2D<int> > path;
+			double azimuth;
+			// const double range;
+			for (int i=0; i<360; i+=12){
+				azimuth = static_cast<double>(i) * drain::DEG2RAD;
+				radarProj.projectFwd(range*::sin(azimuth), range*::cos(azimuth), geoPoint.x, geoPoint.y);
+				// radarProj.projectFwd(125000.0, static_cast<double>(i), geoPoint.x, geoPoint.y);
+				geoFrame.m2pix(geoPoint, imgPoint);
+				//if (imgPoint)
+				path.push_back(imgPoint);
+			}
+
+			// mout.accept<LOG_NOTICE>(path);
+			std::string polygonPathStr = drain::sprinter(path, {" "}).str();
+			mout.accept<LOG_NOTICE>(polygonPathStr);
+			circle -> set("points", polygonPathStr);
+
+		}
+
+	};
+
+	mutable
+	PolarSector polarSector;
+
+};
+
+
 GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	// const drain::Flagger::ivalue_t section = drain::Static::get<GraphicsSection>().index;
@@ -1024,16 +1199,22 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
 	install<CmdAlign>();
 	install<CmdFontSizes>();
-	install<CmdGroupTitle>();
+	//install<CmdGroupTitle>();
+	DRAIN_CMD_INSTALL(Cmd, GroupTitle)();
+	DRAIN_CMD_INSTALL(Cmd, Title)();
+	DRAIN_CMD_INSTALL(Cmd, TitleHeights)();
+	// install<CmdTitleHeights>();
+	linkRelatedCommands(Title, GroupTitle, TitleHeights);
+
 	install<CmdInclude>();
-	install<CmdTitle>();
 	// install<CmdGroupTitle>().section = HIDDEN; // under construction
 	install<CmdPanel>();
 	install<CmdPanelFoo>().section = HIDDEN; // addSection(i);
 	install<CmdPanelTest>().section = HIDDEN;  // addSection(i);
 	// install<CmdImageTitle>(); consider
 	install<CmdStyle>();
-	install<CmdTitleHeights>();
+
+	install<CmdSector>();
 
 };
 

@@ -62,7 +62,7 @@ public:
 
 
 	static inline
-	drain::TreeHTML & getFirstElem(drain::TreeHTML & elem, drain::html::tag_t tagType){
+	drain::TreeHTML & getFirstElem(drain::TreeHTML & elem, drain::Html::tag_t tagType){
 		if (elem.hasChildren()){
 			return elem.getChildren().begin()->second; // last
 		}
@@ -80,11 +80,11 @@ public:
 	 *
 	 */
 	// static  // compare with TreeHTML::addChild( - is needed?
-	//drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::html::tag_t tagType, const std::string & key);
+	//drain::TreeHTML & addChild(drain::TreeHTML & elem, drain::Html::tag_t tagType, const std::string & key);
 
 	template <class T>
 	static inline
-	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::html::tag_t tagType, const T & arg){
+	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::Html::tag_t tagType, const T & arg){
 		drain::TreeHTML & child = elem.addChild()(tagType); //  addChild(elem,tagType);
 		child = arg;
 		return child;
@@ -93,7 +93,7 @@ public:
 
 	template <class T, class ...TT>
 	static inline
-	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::html::tag_t tagType, const T & arg, const TT & ...args) {
+	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::Html::tag_t tagType, const T & arg, const TT & ...args) {
 		appendElem(elem, tagType, arg);
 		return appendElem(elem, tagType, args...);
 	}
@@ -139,7 +139,7 @@ public:
 
 	static
 	drain::TreeHTML & addTableRow(drain::TreeHTML & table, const std::string value = ""){
-		drain::TreeHTML & tr = table.addChild()(html::TR); // addChild(table, HTML::TR);
+		drain::TreeHTML & tr = table.addChild()(Html::TR); // addChild(table, HTML::TR);
 		return fillTableRow(table, tr, value);
 	}
 
@@ -149,7 +149,7 @@ protected:
 	// Dummy end... TODO: redesign logic, perhaps addChild();
 	template <class T>
 	static inline
-	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::html::tag_t tagType){
+	drain::TreeHTML & appendElem(drain::TreeHTML & elem, drain::Html::tag_t tagType){
 		if (elem.hasChildren()){
 			return elem.getChildren().rbegin()->second; // last
 		}

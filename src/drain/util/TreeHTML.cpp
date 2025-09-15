@@ -42,8 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 DRAIN_TYPENAME_DEF(NodeHTML);
-DRAIN_TYPENAME_DEF(html);
-DRAIN_TYPENAME_DEF(html::tag_t);
+DRAIN_TYPENAME_DEF(Html);
+DRAIN_TYPENAME_DEF(Html::tag_t);
 
 
 template <>
@@ -56,15 +56,15 @@ NodeHTML::xmldoc_attrib_map_t NodeHTML::xml_node_t::xmldoc_attribs = {
 
 // Applied by XML::xmlAddChild()
 template <>
-const NodeXML<html::tag_t>::xml_default_elem_map_t NodeXML<html::tag_t>::xml_default_elems = {
-		{html::STYLE,  html::CTEXT},
-		{html::SCRIPT, html::CTEXT},
-		{html::BODY, html::P}, // not sure about this
-		{html::UL, html::LI},
-		{html::OL, html::LI},
-		{html::PRE, html::CTEXT},
-		{html::TABLE, html::TR},
-		{html::TR, html::TD},
+const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_default_elems = {
+		{Html::STYLE,  Html::CTEXT},
+		{Html::SCRIPT, Html::CTEXT},
+		{Html::BODY, Html::P}, // not sure about this
+		{Html::UL, Html::LI},
+		{Html::OL, Html::LI},
+		{Html::PRE, Html::CTEXT},
+		{Html::TABLE, Html::TR},
+		{Html::TR, Html::TD},
 };
 
 // #define DRAIN_ENUM_ENTRY2(nspace, key) {std::tolower( ( #key ) ), nspace::key}
@@ -83,52 +83,52 @@ const drain::EnumDict<Basehtml::tag_t>::dict_t & drain::EnumDict<Basehtml::tag_t
 
 
 template <>
-const drain::EnumDict<html::tag_t>::dict_t drain::EnumDict<html::tag_t>::dict = { // drain::EnumDict<Basehtml::tag_t>::getDict(); // maybe dangerous.
+const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict = { // drain::EnumDict<Basehtml::tag_t>::getDict(); // maybe dangerous.
 
-		{"undefined", drain::html::UNDEFINED},
-		{"#comment", drain::html::COMMENT},
-		{"#ctext", drain::html::CTEXT},
-		{"script", drain::html::SCRIPT},
-		{"style", drain::html::STYLE},
-		{"style_select", drain::html::STYLE_SELECT},
-		{"html", drain::html::HTML},
-		{"head", drain::html::HEAD},
-		{"body", drain::html::BODY},
-		{"a", drain::html::A},
-		{"base", drain::html::BASE},
-		{"br", drain::html::BR},
-		{"caption", drain::html::CAPTION},
-		{"div", drain::html::DIV},
-		{"h1", drain::html::H1},
-		{"h2", drain::html::H2},
-		{"h3", drain::html::H3},
-		{"hr", drain::html::HR},
-		{"img", drain::html::IMG},
-		{"li", drain::html::LI},
-		{"link", drain::html::LINK},
-		{"meta", drain::html::META},
-		{"ol", drain::html::OL},
-		{"p", drain::html::P},
-		{"pre", drain::html::PRE},
-		{"span", drain::html::SPAN},
-		{"table", drain::html::TABLE},
-		{"title", drain::html::TITLE},
-		{"tr", drain::html::TR},
-		{"th", drain::html::TH},
-		{"td", drain::html::TD},
-		{"ul", drain::html::UL},
+		{"undefined", drain::Html::UNDEFINED},
+		{"#comment", drain::Html::COMMENT},
+		{"#ctext", drain::Html::CTEXT},
+		{"script", drain::Html::SCRIPT},
+		{"style", drain::Html::STYLE},
+		{"style_select", drain::Html::STYLE_SELECT},
+		{"html", drain::Html::HTML},
+		{"head", drain::Html::HEAD},
+		{"body", drain::Html::BODY},
+		{"a", drain::Html::A},
+		{"base", drain::Html::BASE},
+		{"br", drain::Html::BR},
+		{"caption", drain::Html::CAPTION},
+		{"div", drain::Html::DIV},
+		{"h1", drain::Html::H1},
+		{"h2", drain::Html::H2},
+		{"h3", drain::Html::H3},
+		{"hr", drain::Html::HR},
+		{"img", drain::Html::IMG},
+		{"li", drain::Html::LI},
+		{"link", drain::Html::LINK},
+		{"meta", drain::Html::META},
+		{"ol", drain::Html::OL},
+		{"p", drain::Html::P},
+		{"pre", drain::Html::PRE},
+		{"span", drain::Html::SPAN},
+		{"table", drain::Html::TABLE},
+		{"title", drain::Html::TITLE},
+		{"tr", drain::Html::TR},
+		{"th", drain::Html::TH},
+		{"td", drain::Html::TD},
+		{"ul", drain::Html::UL},
 };
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-TreeHTML & TreeHTML::operator[](const html::tag_t & type){
-	return (*this)[EnumDict<html::tag_t>::dict.getKey(type, false)];
+TreeHTML & TreeHTML::operator[](const Html::tag_t & type){
+	return (*this)[EnumDict<Html::tag_t>::dict.getKey(type, false)];
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-const TreeHTML & TreeHTML::operator[](const html::tag_t & type) const {
-	return (*this)[EnumDict<html::tag_t>::dict.getKey(type, false)];
+const TreeHTML & TreeHTML::operator[](const Html::tag_t & type) const {
+	return (*this)[EnumDict<Html::tag_t>::dict.getKey(type, false)];
 }
 
 
@@ -136,19 +136,21 @@ const TreeHTML & TreeHTML::operator[](const html::tag_t & type) const {
 // TODO: mark some non-self-closing like <script/>
 
 NodeHTML::NodeHTML(const tag_t & t) : xml_node_t() {
-	// this->type = BaseHTML::UNDEFINED;
 	setType(t);
 };
 
 NodeHTML::NodeHTML(const NodeHTML & node) : xml_node_t() { // NOTE: super class default constr -> does not call copyStruct
+	XML::xmlAssignNode(*this, node);
+	/*
 	copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK);
 	setType(node.getType());
 	ctext = node.ctext;
+	*/
 }
 
-void NodeHTML::handleType(const tag_t &t){
+void NodeHTML::handleType(){ // const tag_t &t
 
-	switch (t) {
+	switch (getNativeType()) {
 	case A:
 		link("href", url = "");
 		break;
@@ -165,9 +167,9 @@ void NodeHTML::handleType(const tag_t &t){
 bool NodeHTML::isSingular() const {
 
 	return typeIs(
-			html::BR,
-			html::HR,
-			html::META
+			Html::BR,
+			Html::HR,
+			Html::META
 	);
 
 	/*

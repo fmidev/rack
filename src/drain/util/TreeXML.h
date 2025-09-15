@@ -49,6 +49,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/*
+template <class T>
+class SuperGlue { // :public  drain::NodeXML<Luokko> {
+
+};
+*/
+template <typename N>
+class HiddenGlue  {
+};
 
 /**
  *  \tparam T - index type; may be enum.
@@ -63,46 +72,100 @@ public:
 	typedef drain::Path<std::string,'/'> path_t; // basically, also path_elem_t could be a template.
 	typedef UnorderedMultiTree<xml_node_t,false, path_t> xml_tree_t;
 
+	/// A "handle" for specialized element classes, i.e. with members like \c width , \c height or \c radius .
+	/**
+	 *   The members should be implemented as drain::FlexibleVariable &, instantiated like \c height(node["height"] = 0) .
+	 *
+	 *   Example:
+	 *   \code
+	 *		template <>
+			template <>
+			class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::CIRCLE>{
+
+				public:
+
+				inline
+				Elem(image::NodeSVG & node) : x(node["x"]), y(node["y"]), radius(node["radius"]){
+					node.setType(image::svg::tag_t::CIRCLE);
+				};
+
+				FlexibleVariable & x;
+				FlexibleVariable & y;
+				FlexibleVariable & radius;
+
+			};
+	 *   \endcode
+	 *
+	 *   \see drain::image::NodeSVG
+	 */
+	template <T ELEM>
+	class Elem; // {} ?
+
+	/// Provides access to ReferenceMap2 of XML elements, to link FlexibleVariables.
+	template <T ELEM>
+	friend class Elem;
+
+
+	/// Default constructor
+	/**
+	 *  In derived classes, handleType(static_cast<T>(t)) should be always called
+	 *  by constructor.
+	 */
+	/*
 	inline
 	NodeXML(const intval_t & t = intval_t(0)){
-		setType(t);
 		drain::StringTools::import(++nextID, id);
+		setType(t);
+	};
+	 */
+	inline
+	NodeXML(){
+		drain::StringTools::import(++nextID, id);
+		// setType(t);
 	};
 
-	// Note: use default constructor in derived classes.
+	//
+	/// Copy constructor
+	/**
+	 *  In derived classes, handleType(static_cast<T>(t)) should be always called
+	 *  by constructor.
+	 *
+	 *  Use always default constructor in derived classes? Assign node can violate/invalidate link() pointers?
+	 */
 	inline
 	NodeXML(const NodeXML & node){
-		XML::xmlAssignNode(*this, node);
 		drain::StringTools::import(++nextID, id);
+		// XML::xmlAssignNode(*this, node); // RISKY!? Should be called by the copy constructors of derived classes.
 	}
 
 	inline
 	~NodeXML(){};
 
 
+	/*
 	template <class T2> // "final"
 	void setType(const T2 &t){ // DANGER, without cast?
 		type = static_cast<intval_t>(t); // (elem_t)
-		handleType(static_cast<T>(t));
+		// handleType(static_cast<T>(t)); REMOVED 2025/09
 		// in derived classes, eg. drain::image::BaseGDAL
 		// warning: case value ‘...’ not in enumerated type
 	}
 
-	/* Consider this later, for user-defined (not enumerated) tag types.
-	virtual
-	void setType(const std::string & type);
-	*/
+	// Consider this later, for user-defined (not enumerated) tag types.
+	// virtual
+	// void setType(const std::string & type);
+
 
 	inline
 	const intval_t & getType() const {
 		return type;
 	};
+	*/
 
 	inline
 	T getNativeType() const {
 		return static_cast<T>(type); // may fail! consider two-way conversion assert
 	};
-
 
 public:
 
@@ -290,8 +353,7 @@ public:
 	 *  \see XML::toStream()
 	 */
 	virtual
-	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const;
-
+	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const override;
 
 
 	template <class V>
@@ -329,19 +391,7 @@ public:
 		return ostr;
 	}
 
-	// drain::NodeHTML::HTML
-	// typedef std::pair<key_t,xml_node_t> node_pair_t;
-	// TODO: where is this needed?
-	/*
-	template <int E>
-	static inline
-	const std::pair<key_t,NodeXML<intval_t> > & entry(){
-		static const intval_t elem = (intval_t)E;
-		static const std::pair<key_t,NodeXML<intval_t> > nodeEntry(getTag(E), elem); // note: converts tag (string) to key_t if needed.
-		return nodeEntry;
-	}
-	*/
-
+	/// Helps creating child elements. Like children of HTML element UL should be LI.
 	typedef std::map<xml_tag_t,xml_tag_t> xml_default_elem_map_t;
 	static const xml_default_elem_map_t xml_default_elems;
 
@@ -349,10 +399,20 @@ protected:
 
 	/// Internal function called after setType()
 	/**
-	 *
+	 *  Originally called after setType(), but involves as forward-init problem, a class should not poke members through its constructor.
 	 */
+	//virtual
+	//void handleType(const T & type) = 0;
+	//void handleType() = 0;
+
+
+
+	/*
 	virtual inline
 	void handleType(const T & type){
+		std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? type=" << type << std::endl;
+
+
 		if ((int)type != 0){
 			drain::Logger(__FILE__, __FUNCTION__).reject("handleType( ",  (int)type, " ) - this is available only as specialized, by inherited classed like SVG, HTML?");
 		}
@@ -360,6 +420,7 @@ protected:
 		// std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? " << type << '=' << std::endl;
 		// std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::EnumDict<T>::dict) << std::endl;
 	}
+	*/
 
 
 	/// NOTE: these could/should be templated, in TreeXML<...> right?
@@ -563,6 +624,8 @@ std::ostream & operator<<(std::ostream &ostr, const TreeXML & t){
 	return ostr;
 }
 */
+
+
 
 
 }  // drain::

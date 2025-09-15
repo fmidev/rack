@@ -77,8 +77,6 @@ public:
 		return *this;
 	}
 
-	virtual
-	void handleType(const tag_t & t) override final;
 
 
 	// Multi-purpose key
@@ -90,6 +88,15 @@ public:
 	/// Standard GDAL attribute
 	std::string role;
 
+protected:
+
+	virtual
+	void handleType() override final;
+
+	/*
+	virtual
+	void handleType(const tag_t & t) override final;
+	*/
 };
 
 //typedef NodeGDAL::xml_tree_t TreeGDAL;

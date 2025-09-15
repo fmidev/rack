@@ -33,13 +33,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include "Functor.h"
-#include "Cloner.h"
+//#include "Cloner.h"
 #include "Bank.h"
 
 namespace drain
 {
 
 // Note: there is probably need for Bank<BinaryFunctor>, too.
+
+/// Prepared set of fuzzy functors
 typedef BankSuper<UnaryFunctor> FunctorBank;
 
 

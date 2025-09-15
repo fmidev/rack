@@ -92,42 +92,33 @@ const drain::FileInfo NodeSLD::fileInfo("sld");
 // std::string NodeSLD::sld("http://www.w3.org/2000/SLD");
 
 
-NodeSLD::NodeSLD(SLD::tag_t t){
-	if (t != SLD::UNDEFINED){
-	}
+NodeSLD::NodeSLD(SLD::tag_t t) : xml_node_t(){
 	setType(t);
 }
 
 //NodeSLD::NodeSLD(const NodeSLD & node) : xml_node_t(), x(0), y(0), width(0), height(0), radius(0) {
 NodeSLD::NodeSLD(const NodeSLD & node) : xml_node_t(){
 	// RISKY references! copyStruct(node, node, *this, ReferenceMap2::extLinkPolicy::LINK); // <-- risky! may link Variable contents?
-	XML::xmlAssignNode(*this, node);
-	// Logger mout(__FILE__, __FUNCTION__);
-	 //setType(node.getType());
-	// mout.warn("node type: ", node.getType(), " -> type: ", type);
+	XML::xmlAssignNode(*this, node); // good
 }
 
 /// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 
 bool NodeSLD::isSingular() const  {
-	// static const std::set<SLD::tag_t> singular = {SLD::ColorMapEntry};
 	// Consider "complement" approach, non-singular
-	// return singular.find(static_cast<SLD::tag_t>(type)) != singular.end();
-	return typeIs(// Note: variadic template
-			SLD::ColorMapEntry
-	);
+	return typeIs(SLD::ColorMapEntry); // Note: variadic template
 }
 
-void NodeSLD::handleType(const SLD::tag_t & t) { // setType(const elem_t & t) {
+void NodeSLD::handleType() { // const SLD::tag_t & t
 
 	// drain::Logger mout(drain::TypeName<NodeSLD>::str().c_str(), __FUNCTION__);
 	// mout.attention(__FUNCTION__, ": current type=", type, " arg=", t);
 
-	switch (t) {
+	switch (getNativeType()) {
 	case image::SLD::UNDEFINED:
-		break;
+	//	break;
 	case image::SLD::COMMENT:
-		break;
+	//	break;
 	case image::SLD::CTEXT:
 		break;
 	case SLD::StyledLayerDescriptor:

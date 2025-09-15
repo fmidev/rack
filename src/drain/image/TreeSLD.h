@@ -171,15 +171,19 @@ public:
 	void specificAttributesToStream(std::ostream & ostr) const override;
 	 */
 
-protected:
 
 
 	///
 	/**
 	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
 	 */
+	// virtual
+	// void handleType(const SLD::tag_t & t) override final;
+
+protected:
+
 	virtual
-	void handleType(const SLD::tag_t & t) override final;
+	void handleType() override final;
 
 };
 

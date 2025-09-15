@@ -47,13 +47,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
-/// Prepared set of fuzzy functors
-/**
-\copydoc drain::FuzzyStep
-\copydoc drain::FuzzyBell
-\copydoc drain::FuzzyBell2
 
-*/
 FunctorBank & getFunctorBank() { // who uses this (limited) set?
 
 	/// Shared functor bank

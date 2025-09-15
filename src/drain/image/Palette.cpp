@@ -63,6 +63,9 @@ Palette::Palette(std::initializer_list<std::pair<Variable, PaletteEntry> > inits
 			if (entry.first.toStr() == "title"){
 				title = entry.second.label;
 			}
+			else if (entry.first.toStr() == "comment"){
+				comment = entry.second.label;
+			}
 			else {
 				specialCodes[entry.first] = entry.second;
 			}
@@ -476,6 +479,7 @@ void Palette::loadTXT(std::istream & ifstr){
 	*/
 
 	reset();
+	comment.clear();
 
 	// Threshold; original scientific quantity.
 	double threshold;
@@ -490,17 +494,18 @@ void Palette::loadTXT(std::istream & ifstr){
 
 	// Range<size_t> colourDimension(100,1);
 
+	bool HEADER = true;
 
 	while (std::getline(ifstr, line)){
 
-		//flex.clear();
-
-		//mout.note() << "'" << line <<  "'" << std::endl;
+		// mout.note() << "'" << line <<  "'" << std::endl;
 		size_t i = line.find_first_not_of(" \t");
 
 		// Skip empty lines
-		if (i == std::string::npos)
+		if (i == std::string::npos){
+			HEADER = false;
 			continue;
+		}
 
 
 		char c = line.at(i);
@@ -523,8 +528,19 @@ void Palette::loadTXT(std::istream & ifstr){
 			label = line.substr(i, j+1-i);
 
 			/// First label in the file will be the title
-			if (title.empty()){
-				title = label;
+			if (HEADER){
+				if (title.empty()){
+					title = label;
+					// label.clear();
+					// labelPrev.clear();
+				}
+				else { // if (comment.empty()){
+					// Optional second line is a comment.
+					comment = label;
+
+					HEADER = false;
+				}
+				// NEW
 				label.clear();
 				labelPrev.clear();
 			}
@@ -640,6 +656,9 @@ void Palette::loadTXT(std::istream & ifstr){
 		mout.debug3(entry.label, '\t', entry);
 
 	}
+
+	mout.attention("title:", title);
+	mout.attention("comment:", comment);
 
 	// Todo: global type detection (minimum int type)
 	/*
@@ -1523,9 +1542,20 @@ std::ostream & drain::Sprinter::toStream(std::ostream & ostr, const drain::image
 	if (!palette.title.empty()){
 		ostr << "  " << layout.pairChars.prefix;
 		// ostr << layout.keyChars.prefix << "title" << layout.keyChars.suffix;
-		drain::Sprinter::toStream(ostr, "title", layout);
+		drain::Sprinter::toStream(ostr, "title", layout); // special prefix?
 		ostr << layout.pairChars.separator << ' ';
 		drain::Sprinter::toStream(ostr, palette.title, layout);
+		ostr << layout.pairChars.suffix;
+		ostr << layout.arrayChars.separator << '\n';
+	}
+
+	// Experimental!
+	if (!palette.comment.empty()){
+		ostr << "  " << layout.pairChars.prefix;
+		// ostr << layout.keyChars.prefix << "title" << layout.keyChars.suffix;
+		drain::Sprinter::toStream(ostr, "comment", layout);
+		ostr << layout.pairChars.separator << ' ';
+		drain::Sprinter::toStream(ostr, palette.comment, layout);
 		ostr << layout.pairChars.suffix;
 		ostr << layout.arrayChars.separator << '\n';
 	}

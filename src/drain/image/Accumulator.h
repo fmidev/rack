@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef ACCUMULATOR_H_
-#define ACCUMULATOR_H_
+#ifndef DRAIN_ACCUMULATOR_H_
+#define DRAIN_ACCUMULATOR_H_
 
 #include <drain/image/CoordinatePolicy.h>
 #include <limits>
@@ -292,17 +292,34 @@ protected:
 
 };
 
+
 inline
 std::ostream & operator<<(std::ostream &ostr, const Accumulator & accumulator){
 	return accumulator.Accumulator::toStream(ostr);
 }
 
+//DRAIN_ENUM_OSTREAM(Accumulator::FieldType);
 
 }  // image::
+
+//DRAIN_ENUM_OSTREAM(image::Accumulator::FieldType);
+
+/*
+inline
+std::ostream & operator<<(std::ostream &ostr, const image::Accumulator & accumulator){
+	return accumulator.Accumulator::toStream(ostr);
+}
+*/
 
 }  // drain::
 
 DRAIN_ENUM_OSTREAM(drain::image::Accumulator::FieldType);
+/*
+inline
+std::ostream & operator<<(std::ostream &ostr, const drain::image::Accumulator & accumulator){
+	return accumulator.Accumulator::toStream(ostr);
+}
+*/
 
 #endif /* Cumulator_H_ */
 

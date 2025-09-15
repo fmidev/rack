@@ -125,6 +125,9 @@ Palette & PaletteOp::getPalette(const std::string & key) {
 	Palette & palette = getPaletteMap().get(key);
 
 	if (key.empty()){
+		for (const auto & entry: getPaletteMap()){
+			mout.debug("key=", entry.first, " title='", entry.second.title, "' comment='", entry.second.comment, "'");
+		}
 		mout.experimental("Returning generic palette (empty quantity: [])");
 	}
 	else if (palette.empty()){
