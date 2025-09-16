@@ -69,6 +69,15 @@ const XML::intval_t XML::STYLE;
 const XML::intval_t XML::STYLE_SELECT;
 const XML::intval_t XML::SCRIPT;
 
+
+template <>
+const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict = {
+		{"&lt;",   XML::ENTITY_LESS_THAN},
+		{"&gt;",   XML::ENTITY_GREATER_THAN},
+		{"&nbsp;", XML::ENTITY_NONBREAKABLE_SPACE},
+		{"&amp;",  XML::ENTITY_AMPERSAND},
+};
+
 // reset() clears also the type
 //void XML::clear(){
 void XML::reset(){

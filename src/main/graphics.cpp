@@ -1015,8 +1015,8 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		// mout.attention("handle: ", attr.first, " ", v, " + ", format);
 
 		if (format.empty()){
-			// tspan->setText(attr.second, "&#160;"); // non-b.sp
-			tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
+			tspan->setText(attr.second, drain::XML::entity_t::ENTITY_NONBREAKABLE_SPACE); // , "&#160;" non-breakable space
+			// tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
 		}
 		else {
 			//mout.attention("handle: ", attr.first, " ", v, " + ", format);
@@ -1025,7 +1025,8 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			// tspan->ctext += sstr.str();
 			// tspan->setText(sstr.str(), "&#160;"); // non-b.sp
 			// tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
-			tspan->setText(sstr.str(), " ");
+			// tspan->setText(sstr.str(), " ");
+			tspan->setText(sstr.str(), drain::XML::entity_t::ENTITY_NONBREAKABLE_SPACE); // "&#160;",  non-breakable space
 		}
 
 	}

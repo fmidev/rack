@@ -70,6 +70,14 @@ public:
 	static const intval_t STYLE     = 4; // || flag_EXPLICIT
 	static const intval_t STYLE_SELECT = 5;
 
+	enum entity_t {
+		ENTITY_LESS_THAN,
+		ENTITY_GREATER_THAN,
+		ENTITY_NONBREAKABLE_SPACE,
+		ENTITY_AMPERSAND,
+	};
+	//OR: const std::string ENTITY_NONBREAKABLE_SPACE = "&#160;"
+
 	/// User may optionally filter attributes and CTEST with this using StringTools::replace(XML::encodingMap);
 	static
 	const std::map<char,std::string> encodingMap;
@@ -759,6 +767,11 @@ public:
 };
 
 
+template <>
+const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict;
+
+DRAIN_ENUM_OSTREAM(XML::entity_t);
+
 template <class TR>
 std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag, int indent){
 
@@ -895,7 +908,8 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 			ostr << data.ctext; // let < and > pass through
 		}
 		else {
-			StringTools::replace(XML::encodingMap, data.ctext, ostr); // any time issue?
+			ostr << data.ctext; // let < and > pass through
+			// StringTools::replace(XML::encodingMap, data.ctext, ostr); // sometimes an issue? // any time issue?
 		}
 
 		// Detect if all the children are of type CTEXT, to be rendered in a single line.

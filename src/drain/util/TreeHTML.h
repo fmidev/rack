@@ -76,9 +76,6 @@ struct Html {
 		HEAD, BASE, LINK, META, TITLE,
 		BODY, A, BR, CAPTION, DIV, H1, H2, H3, HR, IMG, LI, OL, P, PRE, SPAN, TABLE, TR, TH, TD, UL};
 
-	// check CTEXT, maybe implement in XML
-	// typedef NodeHTML xml_nod e_t;
-	// typedef TreeHTML tree_t;
 
 };
 
