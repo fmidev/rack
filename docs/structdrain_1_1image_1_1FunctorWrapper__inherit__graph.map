@@ -1,29 +1,23 @@
 <map id="FunctorWrapper&lt; F &gt;" name="FunctorWrapper&lt; F &gt;">
-<area shape="rect" id="Node000001" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="5,95,168,120"/>
+<area shape="rect" id="Node000001" title="Helper class that only ensures that functor is initialized before ImageOp." alt="" coords="5,63,168,88"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="222,5,421,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,85,165,62,215,41,257,28,258,33,217,46,167,67,123,90"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,57,215,41,267,28,268,33,217,46,152,62"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="216,55,427,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="182,92,216,87,216,92,182,97"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1FunctorOp.html" title=" " alt="" coords="224,119,419,159"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="182,118,224,123,223,129,182,123"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="258,184,385,209"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="123,125,167,147,217,169,258,181,257,186,215,174,165,152,121,129"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="475,63,713,88"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="397,183,425,169,441,153,448,135,456,116,473,99,498,86,501,90,476,103,460,119,453,137,445,156,428,173,399,188"/>
-<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="501,113,687,153"/>
-<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="389,178,507,150,509,155,391,183"/>
-<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="507,177,681,217"/>
-<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="398,194,507,194,507,199,398,199"/>
-<area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="510,241,678,267"/>
-<area shape="poly" id="edge10_Node000005_Node000011" title=" " alt="" coords="397,210,533,239,532,244,396,215"/>
-<area shape="rect" id="Node000012" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="517,291,671,331"/>
-<area shape="poly" id="edge11_Node000005_Node000012" title=" " alt="" coords="355,214,410,246,476,277,517,291,515,296,474,282,408,251,353,219"/>
-<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1CopyOp.html" title=" " alt="" coords="812,63,885,88"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="727,73,812,73,812,78,727,78"/>
-<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1TransparentOp.html" title=" " alt="" coords="791,120,907,145"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="700,130,790,130,790,135,700,135"/>
-<area shape="rect" id="Node000013" href="$classrack_1_1RadarFunctorOp.html" title=" " alt="" coords="761,262,936,302"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="685,298,761,289,761,295,685,304"/>
-<area shape="rect" id="Node000014" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="767,327,931,352"/>
-<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="685,319,767,328,766,333,685,324"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="182,73,216,73,216,78,182,78"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1FunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="258,120,385,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,89,217,105,268,117,267,123,215,110,151,94"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="475,33,713,59"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="397,116,425,105,439,96,449,87,459,78,474,69,510,56,511,61,476,74,462,82,452,91,443,101,428,110,399,121"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title=" " alt="" coords="501,83,687,123"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="398,122,501,111,501,116,399,127"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1BinaryFunctorOp.html" title="Class for using two&#45;parameter function objects (like std::functor) for sequential and spatial pixel i..." alt="" coords="510,148,678,173"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="399,138,510,149,509,155,398,143"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1UnaryFunctorOp.html" title="Class for using simple function objects (like std::functor) for sequential pixel iteration." alt="" coords="517,198,671,238"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="370,148,475,183,517,196,516,201,474,189,369,153"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1CopyOp.html" title=" " alt="" coords="807,33,880,59"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="727,43,807,43,807,49,727,49"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1TransparentOp.html" title=" " alt="" coords="785,91,901,116"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="700,101,785,101,785,106,700,106"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1RadarFunctorOp.html" title="Convenience (abbreviation)" alt="" coords="761,205,925,231"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="685,215,761,215,761,221,685,221"/>
 </map>

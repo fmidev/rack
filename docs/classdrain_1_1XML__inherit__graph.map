@@ -1,8 +1,8 @@
 <map id="XML" name="XML">
 <area shape="rect" id="Node000001" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="697,104,748,129"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="799,5,984,31"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="798,5,985,31"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="748,92,769,71,795,52,829,37,863,28,864,33,831,42,797,56,773,75,751,95"/>
-<area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="733,91,759,57,794,28,797,26,800,31,798,32,762,61,737,94"/>
+<area shape="poly" id="edge13_Node000001_Node000005" title=" " alt="" coords="733,91,759,57,794,28,796,27,799,31,798,32,762,61,737,94"/>
 <area shape="rect" id="Node000007" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="796,55,987,80"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="761,113,795,102,873,78,874,83,797,107,763,118"/>
 <area shape="poly" id="edge14_Node000001_Node000007" title=" " alt="" coords="747,95,795,78,797,78,799,83,797,83,749,100"/>

@@ -3,7 +3,7 @@ var searchData=
   ['sample_0',['sample',['../classdrain_1_1image_1_1NodeGDAL.html#a57f90c96bc66f332847a61d1b490ecdb',1,'drain::image::NodeGDAL']]],
   ['samplefileextension_1',['sampleFileExtension',['../namespacerack.html#ae24579491e45b3ad1f1b50479a3119fc',1,'rack']]],
   ['samplingarea_2',['samplingArea',['../classdrain_1_1image_1_1Window.html#a5f961b29ca6831614156e0c11ee232d8',1,'drain::image::Window']]],
-  ['scale_3',['scale',['../classdrain_1_1ValueScaling.html#a0478cd32f21923dfeae0447c9654550e',1,'drain::ValueScaling::scale'],['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale'],['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE'],['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale']]],
+  ['scale_3',['scale',['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale'],['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE'],['../classdrain_1_1ValueScaling.html#a0478cd32f21923dfeae0447c9654550e',1,'drain::ValueScaling::scale'],['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale']]],
   ['scalefinal_4',['scaleFinal',['../classdrain_1_1Functor.html#a9708cfcfdc71fafc417eab90771bec18',1,'drain::Functor']]],
   ['scriptcmd_5',['scriptCmd',['../classdrain_1_1CommandBank.html#abfef1e32656bc64c89c0f32238ec05ad',1,'drain::CommandBank']]],
   ['scripttriggerflag_6',['scriptTriggerFlag',['../classdrain_1_1CommandBank.html#a71c9fd767453e4d16ca55a279ba64cef',1,'drain::CommandBank']]],

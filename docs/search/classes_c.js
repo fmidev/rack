@@ -10,7 +10,7 @@ var searchData=
   ['nodesvg_7',['NodeSVG',['../classdrain_1_1image_1_1NodeSVG.html',1,'drain::image']]],
   ['nodexml_8',['NodeXML',['../classdrain_1_1NodeXML.html',1,'drain']]],
   ['nodexml_3c_20gdal_3a_3atag_5ft_20_3e_9',['NodeXML&lt; GDAL::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
-  ['nodexml_3c_20html_3a_3atag_5ft_20_3e_10',['NodeXML&lt; html::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
+  ['nodexml_3c_20html_3a_3atag_5ft_20_3e_10',['NodeXML&lt; Html::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
   ['nodexml_3c_20sld_3a_3atag_5ft_20_3e_11',['NodeXML&lt; SLD::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
   ['nodexml_3c_20svg_3a_3atag_5ft_20_3e_12',['NodeXML&lt; svg::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
   ['nonmet2op_13',['NonMet2Op',['../classrack_1_1NonMet2Op.html',1,'rack']]],

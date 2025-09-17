@@ -56,9 +56,12 @@ namespace drain {
 
 
 
-/// Wrapper for unique (static) dictionary of enum values.
+/// A container for a static dictionary of enumeration values.
 /**
  *  DrainCore
+ *
+ *  \tparam E - enumeration or integer type
+ *  \tparam OWNER - identifier type (separate type, typically a class, can be used if several dictionaries needed for the same enumeration type)
  *
  *  Template is needed to create a unique, shared (static) dict object for each template.
  */
@@ -67,11 +70,6 @@ struct EnumDict {
 
 	//typedef FlagResolver::dict_t dict_t;
 	typedef drain::Dictionary<std::string,E> dict_t;
-
-	/*
-	static
-	const E defaultValue;
-	*/
 
 	static
 	const dict_t dict;
@@ -90,12 +88,10 @@ struct EnumDict {
 	}
 
 
-	/// Convenience function for leniently setting string values to separate enum lists.
+	/// Assign string values to an enumeration type.
 	/**
-	 *  String arguments tested against several dictionaries.
-	 *  \tparam E2 - any enum type, for which \c dict has been defined.
+	 *  \tparam E - some enumeration type for which Dictionary \c dict has been defined.
 	 */
-	//template <typename E2>
 	static
 	bool setValue(const std::string & key, E & value){  // NOTE:  could be more general, without explicit template
 		if (drain::EnumDict<E>::dict.hasKey(key)){
@@ -145,11 +141,7 @@ struct EnumDict {
 // template <class E>
 // const E EnumDict<E>::defaultValue = 0;
 
-
-/*
-#undef  DRAIN_ENUM_NAMESPACE
-#define DRAIN_ENUM_ENTRY_PRE(key) {#key, DRAIN_ENUM_NAMESPACE::key}
-*/
+// Useful macros
 #define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
 
 #define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}

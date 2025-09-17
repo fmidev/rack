@@ -12,9 +12,9 @@
 <area shape="rect" id="Node000005" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="713,104,764,129"/>
 <area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="580,104,713,117,713,122,579,109"/>
 <area shape="poly" id="edge20_Node000003_Node000005" title=" " alt="" coords="663,97,714,105,713,111,663,102"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="831,5,1016,31"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="830,5,1017,31"/>
 <area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="774,106,778,103,792,89,801,76,811,64,827,52,861,37,895,28,896,33,863,42,829,56,814,68,805,80,796,92,782,107,777,110"/>
-<area shape="poly" id="edge14_Node000005_Node000006" title=" " alt="" coords="757,94,778,79,792,65,801,52,811,40,827,28,829,26,832,31,829,32,814,44,805,56,796,68,782,83,760,98"/>
+<area shape="poly" id="edge14_Node000005_Node000006" title=" " alt="" coords="757,94,778,79,792,65,801,52,811,40,827,28,828,27,831,31,829,32,814,44,805,56,796,68,782,83,760,98"/>
 <area shape="rect" id="Node000008" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="828,55,1019,80"/>
 <area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="777,115,827,102,905,78,907,83,829,107,778,120"/>
 <area shape="poly" id="edge15_Node000005_Node000008" title=" " alt="" coords="767,96,827,78,830,77,831,83,829,83,768,101"/>

@@ -1,113 +1,113 @@
 <map id="SlidingWindowMedian" name="SlidingWindowMedian">
-<area shape="rect" id="Node000001" title=" " alt="" coords="15,1476,182,1501"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="5,1387,192,1427"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,1440,101,1476,96,1476,96,1440"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="338,1312,513,1337"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,1343,176,1389,175,1384,365,1338"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="539,1049,669,1075"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="602,1089,592,1131,575,1185,548,1240,530,1267,510,1290,491,1304,470,1314,467,1309,488,1300,506,1286,526,1263,543,1238,570,1183,587,1130,597,1088"/>
-<area shape="rect" id="Node000054" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="121,1178,351,1218"/>
-<area shape="poly" id="edge56_Node000054_Node000004" title=" " alt="" coords="592,1088,564,1123,546,1140,525,1154,495,1166,452,1175,352,1189,351,1184,451,1170,493,1161,523,1150,543,1136,560,1119,588,1085"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="1264,950,1368,975"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1258,981,1171,1001,1072,1019,851,1045,670,1059,669,1054,851,1040,1072,1013,1170,995,1257,976"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="1388,838,1524,863"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1432,874,1333,952,1329,948,1429,870"/>
-<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="1269,838,1363,863"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="1319,878,1319,950,1313,950,1313,878"/>
-<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="1277,749,1385,774"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1329,788,1321,838,1315,837,1324,788"/>
-<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="1241,653,1345,679"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1305,690,1329,748,1324,750,1301,692"/>
-<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="1106,549,1195,574"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1175,581,1234,627,1273,651,1270,655,1230,632,1172,585"/>
-<area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="1097,448,1191,473"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="1145,487,1145,522,1150,548,1145,549,1140,523,1139,487"/>
-<area shape="rect" id="Node000012" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="995,353,1077,378"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1061,385,1132,446,1129,450,1058,389"/>
-<area shape="rect" id="Node000013" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="507,250,613,275"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="627,273,782,303,966,343,996,350,994,355,965,348,781,308,626,279"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="15,1487,182,1512"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingWindowHistogram.html" title=" " alt="" coords="5,1397,192,1437"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,1451,101,1486,96,1486,96,1451"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1SlidingWindow.html" title="Window implementation that uses incremental update of state." alt="" coords="275,1323,450,1348"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="312,1355,162,1400,160,1395,311,1349"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title="Base class for windows applied by WindowOp&#39;s." alt="" coords="532,1060,663,1085"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="598,1100,590,1144,575,1198,549,1254,531,1279,510,1301,482,1318,451,1328,449,1323,479,1313,506,1297,527,1276,545,1251,570,1196,585,1143,592,1099"/>
+<area shape="rect" id="Node000054" href="$classdrain_1_1image_1_1SlidingWindow.html" title=" " alt="" coords="121,1189,351,1229"/>
+<area shape="poly" id="edge56_Node000054_Node000004" title=" " alt="" coords="588,1099,566,1134,550,1151,532,1165,501,1177,456,1187,352,1201,351,1196,455,1182,499,1172,529,1160,547,1147,562,1131,584,1096"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1WindowCore.html" title="Container for source and target images, and their setters." alt="" coords="1217,955,1321,981"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1214,987,1199,991,1120,1012,1039,1029,834,1056,663,1070,663,1065,833,1051,1038,1024,1118,1007,1198,985,1213,982"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1WindowCoreBase.html" title="Container for source and target images, and their setters." alt="" coords="1341,838,1477,863"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1386,874,1285,957,1282,953,1383,870"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="1222,838,1317,863"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="1272,877,1272,955,1267,955,1267,877"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="1270,749,1378,774"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1312,787,1279,839,1274,836,1307,785"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="1235,653,1339,679"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1299,690,1322,748,1317,750,1294,692"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="1099,549,1189,574"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1169,581,1227,627,1266,651,1263,655,1224,632,1165,585"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1ImageConf.html" title="Struct for image (excluding data)" alt="" coords="1091,448,1184,473"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="1138,487,1139,522,1143,548,1138,549,1133,523,1133,487"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1image_1_1Encoding.html" title=" " alt="" coords="989,353,1070,378"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1055,385,1126,446,1122,450,1051,389"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1ValueScaling.html" title="Linear scaling and physical range for image intensities." alt="" coords="501,250,606,275"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="620,274,775,304,958,343,989,350,988,356,957,348,774,309,619,279"/>
 <area shape="rect" id="Node000055" href="$classdrain_1_1Histogram.html" title="Class for computing a histogram and some statistics: average, min, max, mean, std...." alt="" coords="73,353,164,378"/>
-<area shape="poly" id="edge61_Node000055_Node000013" title=" " alt="" coords="497,281,165,356,164,351,496,276"/>
-<area shape="rect" id="Node000014" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="379,155,547,180"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="486,188,550,248,546,252,483,191"/>
-<area shape="rect" id="Node000015" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="391,80,535,105"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="465,120,465,154,460,154,460,120"/>
-<area shape="rect" id="Node000016" href="$classdrain_1_1Range.html" title=" " alt="" coords="571,155,709,180"/>
-<area shape="poly" id="edge15_Node000013_Node000016" title=" " alt="" coords="623,192,572,252,568,248,619,189"/>
-<area shape="rect" id="Node000017" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="566,80,701,105"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="638,119,642,154,636,155,633,119"/>
-<area shape="rect" id="Node000018" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="285,5,429,31"/>
-<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="415,32,590,77,589,83,414,37"/>
-<area shape="rect" id="Node000037" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="274,749,409,774"/>
-<area shape="poly" id="edge32_Node000037_Node000018" title=" " alt="" coords="352,44,344,92,344,667,344,749,339,749,339,667,339,91,347,43"/>
-<area shape="rect" id="Node000019" href="$classdrain_1_1Caster.html" title=" " alt="" coords="1027,250,1091,275"/>
-<area shape="poly" id="edge18_Node000012_Node000019" title=" " alt="" coords="1056,289,1041,353,1036,352,1050,288"/>
-<area shape="rect" id="Node000034" href="$classdrain_1_1Castable.html" title=" " alt="" coords="1211,353,1290,378"/>
-<area shape="poly" id="edge28_Node000034_Node000019" title=" " alt="" coords="1094,279,1230,350,1228,355,1091,284"/>
-<area shape="rect" id="Node000020" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="1101,353,1187,378"/>
-<area shape="poly" id="edge19_Node000011_Node000020" title=" " alt="" coords="1147,392,1147,448,1141,448,1141,392"/>
-<area shape="rect" id="Node000027" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="821,353,953,378"/>
-<area shape="poly" id="edge20_Node000011_Node000027" title=" " alt="" coords="912,385,938,405,969,421,1098,448,1096,453,967,427,935,409,908,389"/>
-<area shape="rect" id="Node000052" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title=" " alt="" coords="523,950,685,975"/>
-<area shape="poly" id="edge51_Node000052_Node000027" title=" " alt="" coords="812,384,783,396,758,412,740,433,733,460,733,711,736,744,744,773,763,824,770,848,771,873,765,898,749,926,738,934,722,941,681,953,680,947,720,936,735,930,745,922,760,896,766,872,764,849,758,826,739,775,731,745,728,711,728,459,735,430,754,408,781,391,810,379"/>
-<area shape="rect" id="Node000028" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="805,243,969,283"/>
-<area shape="poly" id="edge21_Node000027_Node000028" title=" " alt="" coords="889,296,889,352,884,352,884,296"/>
-<area shape="rect" id="Node000029" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="815,155,959,180"/>
-<area shape="poly" id="edge22_Node000028_Node000029" title=" " alt="" coords="889,194,889,242,884,242,884,194"/>
-<area shape="rect" id="Node000030" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="1373,549,1504,574"/>
-<area shape="poly" id="edge23_Node000009_Node000030" title=" " alt="" coords="1413,584,1311,655,1308,651,1410,580"/>
-<area shape="rect" id="Node000031" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1327,448,1551,473"/>
-<area shape="poly" id="edge24_Node000030_Node000031" title=" " alt="" coords="1441,487,1441,548,1436,548,1436,487"/>
-<area shape="rect" id="Node000032" title=" " alt="" coords="1343,345,1534,385"/>
-<area shape="poly" id="edge25_Node000031_Node000032" title=" " alt="" coords="1441,399,1441,448,1436,448,1436,399"/>
-<area shape="rect" id="Node000033" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="1187,497,1314,523"/>
-<area shape="poly" id="edge26_Node000009_Node000033" title=" " alt="" coords="1257,536,1265,575,1291,652,1286,654,1260,577,1252,537"/>
-<area shape="poly" id="edge27_Node000033_Node000034" title=" " alt="" coords="1253,392,1253,497,1248,497,1248,392"/>
-<area shape="rect" id="Node000035" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="709,950,824,975"/>
-<area shape="poly" id="edge29_Node000004_Node000035" title=" " alt="" coords="758,989,748,1005,735,1018,700,1039,664,1052,662,1047,698,1034,732,1014,744,1001,754,987"/>
-<area shape="rect" id="Node000036" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="600,838,728,863"/>
-<area shape="poly" id="edge30_Node000035_Node000036" title=" " alt="" coords="686,872,758,948,754,952,683,876"/>
-<area shape="poly" id="edge52_Node000052_Node000036" title=" " alt="" coords="652,877,641,896,612,951,607,949,636,893,648,874"/>
-<area shape="poly" id="edge31_Node000036_Node000037" title=" " alt="" coords="398,775,622,835,621,840,396,780"/>
-<area shape="rect" id="Node000050" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="255,950,375,975"/>
-<area shape="poly" id="edge46_Node000050_Node000037" title=" " alt="" coords="315,784,293,805,276,832,272,848,271,864,279,897,293,926,308,948,303,951,289,929,274,899,266,864,266,847,271,830,288,802,311,781"/>
-<area shape="rect" id="Node000051" href="$classdrain_1_1Range.html" title=" " alt="" coords="286,838,397,863"/>
-<area shape="poly" id="edge48_Node000051_Node000037" title=" " alt="" coords="344,788,344,838,339,838,339,788"/>
-<area shape="rect" id="Node000038" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="803,838,906,863"/>
-<area shape="poly" id="edge33_Node000035_Node000038" title=" " alt="" coords="839,876,778,951,774,948,835,873"/>
-<area shape="rect" id="Node000039" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="769,749,941,774"/>
-<area shape="poly" id="edge34_Node000038_Node000039" title=" " alt="" coords="857,788,857,838,852,838,852,788"/>
-<area shape="rect" id="Node000040" title=" " alt="" coords="799,653,1006,679"/>
-<area shape="poly" id="edge35_Node000039_Node000040" title=" " alt="" coords="893,692,863,750,858,747,888,690"/>
-<area shape="rect" id="Node000041" href="$classdrain_1_1UniCloner.html" title=" " alt="" coords="857,950,1101,975"/>
-<area shape="poly" id="edge36_Node000004_Node000041" title=" " alt="" coords="926,982,787,1019,652,1052,651,1047,786,1013,924,976"/>
-<area shape="rect" id="Node000042" href="$classdrain_1_1Bank.html" title=" " alt="" coords="971,838,1082,863"/>
-<area shape="poly" id="edge37_Node000041_Node000042" title=" " alt="" coords="1018,877,986,951,981,949,1014,875"/>
-<area shape="rect" id="Node000043" title=" " alt="" coords="965,741,1147,781"/>
-<area shape="poly" id="edge38_Node000042_Node000043" title=" " alt="" coords="1048,795,1033,839,1028,837,1043,794"/>
-<area shape="rect" id="Node000044" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="1129,950,1239,975"/>
-<area shape="poly" id="edge39_Node000004_Node000044" title=" " alt="" coords="1117,980,911,1019,670,1055,669,1049,910,1013,1116,975"/>
-<area shape="rect" id="Node000045" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="1167,838,1238,863"/>
-<area shape="poly" id="edge40_Node000044_Node000045" title=" " alt="" coords="1201,877,1189,950,1183,949,1196,877"/>
-<area shape="rect" id="Node000046" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1171,749,1253,774"/>
-<area shape="poly" id="edge41_Node000045_Node000046" title=" " alt="" coords="1212,788,1207,838,1201,838,1207,788"/>
-<area shape="rect" id="Node000047" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="1083,653,1199,679"/>
-<area shape="poly" id="edge42_Node000046_Node000047" title=" " alt="" coords="1160,688,1205,747,1201,750,1156,691"/>
-<area shape="rect" id="Node000048" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="883,549,1069,574"/>
-<area shape="poly" id="edge43_Node000047_Node000048" title=" " alt="" coords="1008,579,1124,651,1121,655,1005,584"/>
-<area shape="rect" id="Node000049" title=" " alt="" coords="853,448,1073,473"/>
-<area shape="poly" id="edge44_Node000048_Node000049" title=" " alt="" coords="969,487,977,548,972,549,963,487"/>
-<area shape="poly" id="edge54_Node000003_Node000050" title=" " alt="" coords="330,986,351,1014,368,1026,384,1038,415,1072,436,1101,452,1132,465,1175,472,1207,472,1233,466,1259,454,1289,439,1313,434,1310,450,1287,461,1257,467,1233,467,1208,460,1177,447,1134,431,1103,410,1075,381,1042,365,1030,347,1018,326,989"/>
-<area shape="poly" id="edge45_Node000004_Node000050" title=" " alt="" coords="336,983,355,1000,377,1014,406,1023,447,1033,539,1049,538,1054,446,1038,404,1029,375,1018,352,1004,333,987"/>
-<area shape="poly" id="edge57_Node000054_Node000050" title=" " alt="" coords="309,990,245,1179,240,1177,304,988"/>
-<area shape="poly" id="edge47_Node000004_Node000051" title=" " alt="" coords="361,872,405,922,463,975,525,1017,581,1047,579,1052,523,1022,460,979,401,925,357,876"/>
-<area shape="poly" id="edge53_Node000052_Node000051" title=" " alt="" coords="395,865,436,879,466,893,479,908,491,922,519,937,550,947,548,952,517,942,488,926,475,911,462,897,434,884,393,870"/>
-<area shape="poly" id="edge49_Node000004_Node000052" title=" " alt="" coords="607,989,607,1049,601,1049,601,989"/>
-<area shape="rect" id="Node000053" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="421,831,576,871"/>
-<area shape="poly" id="edge50_Node000052_Node000053" title=" " alt="" coords="534,878,550,893,597,948,593,951,546,897,530,882"/>
-<area shape="poly" id="edge55_Node000003_Node000054" title=" " alt="" coords="278,1223,409,1310,406,1314,275,1228"/>
-<area shape="poly" id="edge58_Node000054_Node000054" title=" " alt="" coords="367,1188,378,1198,370,1207,352,1211,351,1206,368,1202,373,1198,363,1192"/>
-<area shape="poly" id="edge59_Node000002_Node000055" title=" " alt="" coords="107,391,92,423,85,460,85,1326,89,1358,95,1386,90,1387,83,1359,80,1326,80,459,87,421,102,389"/>
+<area shape="poly" id="edge61_Node000055_Node000013" title=" " alt="" coords="491,281,165,356,164,351,490,276"/>
+<area shape="rect" id="Node000014" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="372,155,540,180"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="480,188,543,248,539,252,476,191"/>
+<area shape="rect" id="Node000015" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="384,80,528,105"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="459,120,459,154,453,154,453,120"/>
+<area shape="rect" id="Node000016" href="$classdrain_1_1Range.html" title=" " alt="" coords="565,155,702,180"/>
+<area shape="poly" id="edge15_Node000013_Node000016" title=" " alt="" coords="617,192,565,252,561,248,612,189"/>
+<area shape="rect" id="Node000017" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="559,80,694,105"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="632,119,635,154,630,155,626,119"/>
+<area shape="rect" id="Node000018" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="279,5,423,31"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="408,32,584,77,582,83,407,37"/>
+<area shape="rect" id="Node000037" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="267,749,402,774"/>
+<area shape="poly" id="edge32_Node000037_Node000018" title=" " alt="" coords="345,44,337,92,337,667,337,749,332,749,332,667,332,91,340,43"/>
+<area shape="rect" id="Node000019" href="$classdrain_1_1Caster.html" title=" " alt="" coords="1019,250,1083,275"/>
+<area shape="poly" id="edge18_Node000012_Node000019" title=" " alt="" coords="1048,289,1034,353,1029,352,1043,288"/>
+<area shape="rect" id="Node000034" href="$classdrain_1_1Castable.html" title=" " alt="" coords="1205,353,1283,378"/>
+<area shape="poly" id="edge28_Node000034_Node000019" title=" " alt="" coords="1086,279,1223,350,1221,355,1084,284"/>
+<area shape="rect" id="Node000020" href="$classdrain_1_1image_1_1Geometry.html" title=" " alt="" coords="1094,353,1181,378"/>
+<area shape="poly" id="edge19_Node000011_Node000020" title=" " alt="" coords="1140,392,1140,448,1135,448,1135,392"/>
+<area shape="rect" id="Node000027" href="$classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="813,353,945,378"/>
+<area shape="poly" id="edge20_Node000011_Node000027" title=" " alt="" coords="904,385,931,404,962,421,1091,448,1090,453,960,427,928,409,900,389"/>
+<area shape="rect" id="Node000052" href="$classdrain_1_1image_1_1CoordinateHandler2D.html" title=" " alt="" coords="516,955,679,981"/>
+<area shape="poly" id="edge51_Node000052_Node000027" title=" " alt="" coords="805,384,776,396,751,412,733,433,727,460,727,711,730,744,737,773,756,824,762,848,764,872,758,898,742,926,730,936,710,944,662,958,661,953,708,939,727,931,738,922,753,896,759,872,757,849,751,826,732,775,724,745,721,711,721,459,729,431,748,408,774,391,803,379"/>
+<area shape="rect" id="Node000028" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="797,243,961,283"/>
+<area shape="poly" id="edge21_Node000027_Node000028" title=" " alt="" coords="881,296,881,352,876,352,876,296"/>
+<area shape="rect" id="Node000029" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="807,155,951,180"/>
+<area shape="poly" id="edge22_Node000028_Node000029" title=" " alt="" coords="881,194,881,242,876,242,876,194"/>
+<area shape="rect" id="Node000030" href="$classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="1367,549,1497,574"/>
+<area shape="poly" id="edge23_Node000009_Node000030" title=" " alt="" coords="1406,584,1305,655,1302,651,1403,580"/>
+<area shape="rect" id="Node000031" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1320,448,1544,473"/>
+<area shape="poly" id="edge24_Node000030_Node000031" title=" " alt="" coords="1435,487,1435,548,1429,548,1429,487"/>
+<area shape="rect" id="Node000032" title=" " alt="" coords="1337,345,1527,385"/>
+<area shape="poly" id="edge25_Node000031_Node000032" title=" " alt="" coords="1435,399,1435,448,1429,448,1429,399"/>
+<area shape="rect" id="Node000033" href="$classdrain_1_1CastableIterator.html" title=" " alt="" coords="1181,497,1307,523"/>
+<area shape="poly" id="edge26_Node000009_Node000033" title=" " alt="" coords="1250,536,1259,575,1284,652,1279,654,1253,577,1245,537"/>
+<area shape="poly" id="edge27_Node000033_Node000034" title=" " alt="" coords="1247,392,1247,497,1241,497,1241,392"/>
+<area shape="rect" id="Node000035" href="$classdrain_1_1image_1_1WindowConfig.html" title="Base class for configurations applied in image processing windows, e.g. for operators of type WindowO..." alt="" coords="703,955,817,981"/>
+<area shape="poly" id="edge29_Node000004_Node000035" title=" " alt="" coords="753,995,743,1013,728,1029,695,1049,659,1062,657,1057,692,1044,725,1025,738,1010,748,992"/>
+<area shape="rect" id="Node000036" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="593,838,721,863"/>
+<area shape="poly" id="edge30_Node000035_Node000036" title=" " alt="" coords="679,872,752,954,748,957,675,875"/>
+<area shape="poly" id="edge52_Node000052_Node000036" title=" " alt="" coords="645,877,634,896,605,956,600,954,630,893,641,874"/>
+<area shape="poly" id="edge31_Node000036_Node000037" title=" " alt="" coords="391,775,615,835,614,840,389,780"/>
+<area shape="rect" id="Node000050" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="257,955,377,981"/>
+<area shape="poly" id="edge46_Node000050_Node000037" title=" " alt="" coords="308,784,286,805,269,832,265,848,265,866,275,900,292,931,309,954,305,957,288,934,270,902,260,866,260,848,264,830,282,802,304,781"/>
+<area shape="rect" id="Node000051" href="$classdrain_1_1Range.html" title=" " alt="" coords="279,838,390,863"/>
+<area shape="poly" id="edge48_Node000051_Node000037" title=" " alt="" coords="337,788,337,838,332,838,332,788"/>
+<area shape="rect" id="Node000038" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="797,838,899,863"/>
+<area shape="poly" id="edge33_Node000035_Node000038" title=" " alt="" coords="833,876,771,957,767,954,829,872"/>
+<area shape="rect" id="Node000039" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="762,749,934,774"/>
+<area shape="poly" id="edge34_Node000038_Node000039" title=" " alt="" coords="851,788,851,838,845,838,845,788"/>
+<area shape="rect" id="Node000040" title=" " alt="" coords="793,653,999,679"/>
+<area shape="poly" id="edge35_Node000039_Node000040" title=" " alt="" coords="886,692,856,750,852,747,882,690"/>
+<area shape="rect" id="Node000041" href="$classdrain_1_1LocalCloner.html" title=" " alt="" coords="893,948,1040,988"/>
+<area shape="poly" id="edge36_Node000004_Node000041" title=" " alt="" coords="896,995,779,1029,647,1063,646,1057,778,1024,894,990"/>
+<area shape="rect" id="Node000042" href="$classdrain_1_1Bank.html" title=" " alt="" coords="981,838,1091,863"/>
+<area shape="poly" id="edge37_Node000041_Node000042" title=" " alt="" coords="1024,877,980,949,976,946,1020,874"/>
+<area shape="rect" id="Node000043" title=" " alt="" coords="959,741,1140,781"/>
+<area shape="poly" id="edge38_Node000042_Node000043" title=" " alt="" coords="1047,795,1040,838,1035,837,1042,795"/>
+<area shape="rect" id="Node000044" href="$structdrain_1_1UnaryFunctor.html" title=" " alt="" coords="1077,955,1187,981"/>
+<area shape="poly" id="edge39_Node000004_Node000044" title=" " alt="" coords="1077,987,897,1029,773,1050,663,1066,663,1061,772,1045,895,1024,1076,982"/>
+<area shape="rect" id="Node000045" href="$classdrain_1_1Functor.html" title="Base class for sequential computations. Optional scaling utilities." alt="" coords="1123,838,1194,863"/>
+<area shape="poly" id="edge40_Node000044_Node000045" title=" " alt="" coords="1156,877,1137,956,1132,955,1150,876"/>
+<area shape="rect" id="Node000046" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1165,749,1246,774"/>
+<area shape="poly" id="edge41_Node000045_Node000046" title=" " alt="" coords="1195,788,1167,839,1163,837,1190,785"/>
+<area shape="rect" id="Node000047" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="1077,653,1193,679"/>
+<area shape="poly" id="edge42_Node000046_Node000047" title=" " alt="" coords="1154,688,1199,747,1194,750,1150,691"/>
+<area shape="rect" id="Node000048" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="877,549,1062,574"/>
+<area shape="poly" id="edge43_Node000047_Node000048" title=" " alt="" coords="1001,579,1117,651,1115,655,998,584"/>
+<area shape="rect" id="Node000049" title=" " alt="" coords="846,448,1066,473"/>
+<area shape="poly" id="edge44_Node000048_Node000049" title=" " alt="" coords="962,487,970,548,965,549,957,487"/>
+<area shape="poly" id="edge54_Node000003_Node000050" title=" " alt="" coords="341,989,372,1024,408,1071,441,1126,465,1186,468,1222,457,1250,436,1274,408,1301,380,1325,377,1321,405,1297,432,1270,453,1247,463,1221,460,1187,437,1128,403,1074,368,1027,337,993"/>
+<area shape="poly" id="edge45_Node000004_Node000050" title=" " alt="" coords="352,985,430,1024,488,1043,543,1057,542,1063,487,1048,428,1029,350,990"/>
+<area shape="poly" id="edge57_Node000054_Node000050" title=" " alt="" coords="312,994,245,1189,240,1188,307,993"/>
+<area shape="poly" id="edge47_Node000004_Node000051" title=" " alt="" coords="353,873,397,927,456,986,518,1028,574,1058,571,1062,515,1032,453,990,393,931,349,876"/>
+<area shape="poly" id="edge53_Node000052_Node000051" title=" " alt="" coords="388,865,429,879,459,893,472,908,484,922,518,940,552,953,550,958,515,945,481,926,468,911,456,897,427,884,386,870"/>
+<area shape="poly" id="edge49_Node000004_Node000052" title=" " alt="" coords="600,995,600,1060,595,1060,595,995"/>
+<area shape="rect" id="Node000053" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="415,831,569,871"/>
+<area shape="poly" id="edge50_Node000052_Node000053" title=" " alt="" coords="528,878,543,893,591,953,587,957,539,896,524,882"/>
+<area shape="poly" id="edge55_Node000003_Node000054" title=" " alt="" coords="267,1236,353,1321,349,1324,263,1240"/>
+<area shape="poly" id="edge58_Node000054_Node000054" title=" " alt="" coords="367,1198,378,1208,370,1218,352,1222,351,1217,368,1213,373,1209,363,1203"/>
+<area shape="poly" id="edge59_Node000002_Node000055" title=" " alt="" coords="107,391,92,423,85,460,85,1337,89,1368,95,1397,90,1398,83,1369,80,1337,80,459,87,421,102,389"/>
 <area shape="rect" id="Node000056" title=" " alt="" coords="27,250,211,275"/>
 <area shape="poly" id="edge60_Node000055_Node000056" title=" " alt="" coords="121,289,121,353,116,353,116,289"/>
 </map>

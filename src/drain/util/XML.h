@@ -71,23 +71,40 @@ public:
 	static const intval_t STYLE_SELECT = 5;
 
 	enum entity_t {
-		ENTITY_LESS_THAN,
-		ENTITY_GREATER_THAN,
-		ENTITY_NONBREAKABLE_SPACE,
-		ENTITY_AMPERSAND,
+		AMPERSAND = '&',
+		LESS_THAN = '<',
+		EQUAL_TO  = '=',
+		GREATER_THAN = '>',
+		NONBREAKABLE_SPACE = ' ',
+		QUOTE = '"',
+		CURLY_LEFT  = '{',
+		CURLY_RIGHT = '}',
+		// ---
+		TAB = '\t',
+		NEWLINE = '\n',
 	};
-	//OR: const std::string ENTITY_NONBREAKABLE_SPACE = "&#160;"
+
+	/* Variants of entity map */
+
+	/// Characters that must be avoided in XML attribute keys: space, tab, =
+	static
+	const std::map<char,std::string> & getKeyConversionMap();
+
+	/// Characters that must be avoided in XML attribute values: ".
+	static
+	const std::map<char,std::string> & getAttributeConversionMap();
+
+	/// Characters to avoid in XML free text: <, >, {, },
+	static
+	const std::map<char,std::string> & getCTextConversionMap();
+
 
 	/// User may optionally filter attributes and CTEST with this using StringTools::replace(XML::encodingMap);
-	static
-	const std::map<char,std::string> encodingMap;
+	// OLD static	const std::map<char,std::string> encodingMap;
 
 	typedef ReferenceMap2<FlexibleVariable> map_t;
 
-protected:
 
-	virtual
-	void handleType() = 0;
 
 public:
 
@@ -150,15 +167,19 @@ protected:
 		return false;
 	};
 
-protected:
-
 	intval_t type = XML::UNDEFINED;
 
 	// String, still easily allowing numbers through set("id", ...)
 	std::string id;
 	// Consider either/or
 	std::string url;
+
+	virtual inline
+	void handleType(){}; // = 0;
+
+
 public:
+
 	std::string ctext;
 
 	// Could be templated, behind Static?
@@ -277,6 +298,14 @@ public:
 	template <class ...T>
 	void setText(const T & ...args) {
 		setText(StringBuilder<>(args...).str()); // str() to avoid infinite loop
+	}
+
+	template <class ...T>
+	void setTextSafe(const T & ...args) {
+		std::string dst;
+		StringTools::replace(getCTextConversionMap(), StringBuilder<>(args...).str(), dst); // str() to avoid infinite loop
+		setText(dst);
+		//setText(StringTools::replace(m, StringBuilder<>(args...).str(), ctext)); // str() to avoid infinite loop
 	}
 
 	virtual inline
@@ -533,16 +562,40 @@ public:
 	static
 	std::ostream & toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag="ELEM", int indent=0);
 
+	/// Handy map for converting characters to XML entities. Example: '&' -> "&amp;"
+	/**
+	 */
+	static
+	const std::map<char,std::string> & getEntityMap();
+
+	/// Handy map for converting characters to XML entities. Example: '&' -> "&amp;"
+	/**
+	 */
+
 
 	template <class V>
 	static inline
 	void xmlAttribToStream(std::ostream &ostr, const std::string & key, const V &value){
 		//StringTools::replace(XML::encodingMap, data.ctext, ostr);
 		//ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
+
+		static const std::map<char,char> keyMap = {
+				{' ','_'},
+				{'"','_'},
+				{'=','_'},
+		};
 		ostr << ' ';
-		StringTools::replace(XML::encodingMap, key, ostr);
+		StringTools::replace(keyMap, key, ostr); // XML::encodingMap
+		//StringTools::replace(getEntityMap(), key, ostr); // XML::encodingMap
+
+		static const std::map<char,std::string> valueMap = {
+				{entity_t::QUOTE, "'"},
+				{entity_t::LESS_THAN,"(("},
+				{entity_t::GREATER_THAN,"))"},
+		};
 		ostr << '=' << '"';
-		StringTools::replace(XML::encodingMap, value, ostr);
+		StringTools::replace(valueMap, value, ostr); // XML::encodingMap
+		//StringTools::replace(getEntityMap(), value, ostr); // XML::encodingMap
 		ostr << '"';
 		//<< key << '=' << '"' << value << '"'; // << ' ';
 	}
@@ -936,7 +989,8 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 					sep = ' '; // consider global setting?
 				}
 				//ostr << entry.second->getText();
-				StringTools::replace(XML::encodingMap, entry.second->getText(), ostr); // any time issue?
+				//StringTools::replace(XML::encodingMap, entry.second->getText(), ostr); // any time issue?
+				StringTools::replace(getEntityMap(), entry.second->getText(), ostr); // any time issue?
 				// ostr << entry.second->getText();
 			}
 		}

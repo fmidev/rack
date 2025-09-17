@@ -1,7 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,48,38"/>
-<area shape="rect" id="Node000001" href="$classdrain_1_1image_1_1SlidingStripeAverage.html" title="Stripe window for computing averages." alt="" coords="96,5,253,45"/>
-<area shape="poly" id="edge759_Node000000_Node000001" title=" " alt="" coords="62,23,96,23,96,28,62,28"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1SlidingStripeAverageWeighted.html" title="Stripe window for computing weight averages." alt="" coords="301,5,520,45"/>
-<area shape="poly" id="edge760_Node000001_Node000002" title=" " alt="" coords="267,23,301,23,301,28,267,28"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,79,64,104"/>
+<area shape="rect" id="Node000001" href="$classdrain_1_1SelectorXML.html" title="Currently used only as CSS element selector." alt="" coords="141,29,243,55"/>
+<area shape="poly" id="edge748_Node000000_Node000001" title=" " alt="" coords="76,75,111,63,147,52,149,57,113,69,78,80"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1StringBuilder.html" title=" " alt="" coords="112,79,272,104"/>
+<area shape="poly" id="edge751_Node000000_Node000004" title=" " alt="" coords="78,89,112,89,112,94,78,94"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Stringlet.html" title="A helper class for StringMapper." alt="" coords="153,128,231,153"/>
+<area shape="poly" id="edge752_Node000000_Node000005" title=" " alt="" coords="78,102,154,126,152,131,76,107"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1SelectorXMLcls.html" title=" " alt="" coords="320,5,441,31"/>
+<area shape="poly" id="edge749_Node000001_Node000002" title=" " alt="" coords="257,31,319,23,320,28,258,36"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1SelectorXMLid.html" title=" " alt="" coords="323,55,438,80"/>
+<area shape="poly" id="edge750_Node000001_Node000003" title=" " alt="" coords="258,48,323,57,323,62,257,53"/>
 </map>

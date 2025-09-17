@@ -87,34 +87,78 @@ public:
 	static
 	char lowerCase(char c);
 
+
+
 	/// Replaces instances of 'from' to 'to' in src, storing the result in dst.
 	/// In src, replaces instances of 'from' to 'to', returning the result.
 	/** Safe. Uses temporary std::string.
 	 *  \see RegExp::replace.
-	 */
+	 *
+	 *  Inconsistent design: other methods return void
 	static inline
 	std::string replace(const std::string &src, const std::string &from, const std::string & to){
 		std::string dst;
 		StringTools::replace(src, from, to, dst);
 		return dst;
 	}
+	 */
 
-	static inline
-	void replace(std::string &src, char from, char to){
-		replace(src, from, to, src);
-	}
+	/**  Fundamental version.
+	 *
+	 */
+	static
+	void replace(const std::string &src, char from, char to, std::ostream & ostr);
 
+	/// In src, replaces instances of \c 'from' to \c 'to', storing the result in dst.
+	/**
+	 *   Fundamental version (for chars only)
+	 *
+	 */
 	static
 	void replace(const std::string &src, char from, char to, std::string &dst);
 
 
+	/// In src, replaces instances of 'from' to 'to', storing the result in dst.
+	/**
+	 *   Fundamental version.
+	 *
+	 */
+	static
+	void replace(const std::string &src, const std::string &from, const std::string & to, std::string & dst);
+
+
+	/// Replaces a char or a substring in the argument itself.
+	/**
+	 *  Variant
+	 */
+	template <typename T1, typename T2>
+	static inline
+	void replace(std::string &src, const T1 &from, const T2 &to){
+		replace(src, from, to, src);
+	}
+
+	/// Convenience using copying of string.
+	/**
+	 *  Replaces a char or a substring.
+	 *
+	 *  \return result
+	 */
+	template <typename T1, typename T2>
+	static inline
+	std::string replace(const std::string &src, const T1 &from, const T2 &to){
+		std::string dst;
+		replace(src, from, to, dst);
+		return dst;
+	}
+
+	// MAP VERSIONS
+	// remove this:
 	typedef std::map<std::string,std::string> conv_map_t;
 
 	/// Replaces instances appearing as map keys to map values.
 	/**
 	 *  \see RegExp::replace.
 	 */
-	// std::map<std::string,std::string>
 	static
 	void replace(const conv_map_t & m, std::string &s, std::size_t pos = 0);
 
@@ -125,16 +169,54 @@ public:
 	 *  \see RegExp::replace.
 	 */
 	// std::map<std::string,std::string>
-	static
-	void replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr);
+	// static
+	// void replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr);
 
+	/*
 	static inline
 	void replace(const std::map<char,std::string> & m, const std::string & src, std::string & dst){
 		std::stringstream result;
-		replace(m, src, dst);
+		replace(m, src, result);
 		dst = result.str();
 
 	}
+	*/
+
+	/// NEW Fast implementation of char replace.
+	template <typename T>
+	static
+	void replace(const std::map<char,T> & m, const std::string & src, std::ostream & ostr){
+		typename std::map<char,T>::const_iterator it;
+		for (char c: src){
+			it = m.find(c);
+			if (it == m.end()){
+				ostr << c;
+			}
+			else {
+				ostr << it->second;
+			}
+		}
+	};
+
+	/// NEW Fast (in-place) implementation of char-to-char replace.
+	/**
+	 *
+	 */
+	static
+	void replace(const std::map<char,char> & m, const std::string & src, std::string & dst);
+
+	/**
+	 *  Implementation for all such results than can have length different than source.
+	 *  That is, from-set and/or to-set are strings.
+	 *
+	 */
+	template <class T1, class T2>
+	static inline
+	void replace(const std::map<T1,T2> & m, const std::string & src, std::string & dst){
+		std::stringstream result;
+		replace(m, src, result);
+		dst = result.str();
+	};
 
 
 	static inline
@@ -143,9 +225,7 @@ public:
 	}
 
 
-	/// In src, replaces instances of 'from' to 'to', storing the result in dst.
-	static
-	void replace(const std::string &src, const std::string &from, const std::string & to, std::string & dst);
+
 
 
 	/// Returns a string without leading and trailing whitespace (or str undesired chars).

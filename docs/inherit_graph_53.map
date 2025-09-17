@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,55,44,80"/>
 <area shape="rect" id="Node000001" href="$classdrain_1_1EnumFlagger.html" title="Flagger accepting values of enum type E." alt="" coords="107,5,254,31"/>
-<area shape="poly" id="edge668_Node000000_Node000001" title=" " alt="" coords="56,52,91,39,129,28,130,33,93,45,58,57"/>
+<area shape="poly" id="edge665_Node000000_Node000001" title=" " alt="" coords="56,52,91,39,129,28,130,33,93,45,58,57"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1Flags2.html" title="Flagger with own dictionary, and accepting values of (integer) type T." alt="" coords="129,55,232,80"/>
-<area shape="poly" id="edge669_Node000000_Node000002" title=" " alt="" coords="58,65,129,65,129,70,58,70"/>
+<area shape="poly" id="edge666_Node000000_Node000002" title=" " alt="" coords="58,65,129,65,129,70,58,70"/>
 <area shape="rect" id="Node000003" href="$classrack_1_1RadarDataFunctor.html" title="Checks nodata and undetect before calling the functor." alt="" coords="92,104,269,129"/>
-<area shape="poly" id="edge670_Node000000_Node000003" title=" " alt="" coords="58,77,93,89,134,101,133,107,91,94,56,82"/>
+<area shape="poly" id="edge667_Node000000_Node000003" title=" " alt="" coords="58,77,93,89,134,101,133,107,91,94,56,82"/>
 </map>

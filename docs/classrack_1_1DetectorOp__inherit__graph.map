@@ -1,71 +1,73 @@
 <map id="DetectorOp" name="DetectorOp">
-<area shape="rect" id="Node000001" title="Base class for anomaly detectors." alt="" coords="1249,499,1345,524"/>
-<area shape="rect" id="Node000010" href="$classrack_1_1AttenuationOp.html" title="Computes attenuation caused by precipitation." alt="" coords="1413,5,1529,31"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1298,485,1307,388,1325,256,1337,189,1352,127,1370,77,1391,42,1411,27,1414,32,1395,45,1375,79,1357,129,1342,190,1330,256,1312,388,1303,485"/>
-<area shape="rect" id="Node000011" href="$classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="1427,55,1514,80"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1299,485,1309,397,1328,280,1355,166,1372,122,1391,91,1408,78,1426,71,1428,76,1410,83,1395,94,1377,124,1360,168,1333,281,1314,398,1304,485"/>
-<area shape="rect" id="Node000012" href="$classrack_1_1CCorOp.html" title=" " alt="" coords="1435,104,1506,129"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1300,484,1312,406,1331,303,1358,205,1374,167,1391,140,1412,126,1434,118,1436,123,1414,131,1395,144,1379,169,1363,207,1336,305,1317,407,1305,485"/>
-<area shape="rect" id="Node000013" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps." alt="" coords="1429,153,1513,179"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1296,485,1300,425,1314,346,1326,304,1342,263,1364,224,1391,189,1408,177,1428,169,1430,174,1411,182,1395,193,1368,227,1347,265,1331,306,1319,347,1305,426,1301,485"/>
-<area shape="rect" id="Node000014" href="$classrack_1_1DefaultOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="1427,203,1515,228"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1298,485,1305,433,1320,368,1348,299,1367,267,1392,239,1408,227,1426,220,1428,225,1410,232,1395,243,1372,270,1353,301,1325,369,1310,434,1303,485"/>
-<area shape="rect" id="Node000015" href="$classrack_1_1DopplerNoiseOp.html" title="Detects suspicious variance in Doppler speed (VRAD)." alt="" coords="1407,252,1535,277"/>
-<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1300,484,1310,441,1327,389,1354,335,1371,310,1392,288,1411,275,1414,280,1395,292,1375,313,1358,338,1332,391,1315,443,1305,485"/>
-<area shape="rect" id="Node000016" href="$classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones." alt="" coords="1427,301,1515,327"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1304,484,1316,451,1334,412,1359,372,1392,337,1408,327,1426,320,1428,325,1410,332,1395,341,1364,375,1339,414,1321,453,1309,486"/>
-<area shape="rect" id="Node000017" href="$classrack_1_1ExtAndreOp.html" title="Base class for radar data processors." alt="" coords="1421,351,1520,376"/>
-<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1309,485,1343,436,1365,409,1392,386,1420,372,1422,377,1395,391,1369,413,1347,439,1314,488"/>
-<area shape="rect" id="Node000018" href="$classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="1404,400,1537,425"/>
-<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="1321,487,1353,461,1392,436,1422,423,1424,428,1395,440,1357,465,1324,491"/>
-<area shape="rect" id="Node000024" href="$classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="1393,449,1548,475"/>
-<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="1355,492,1424,472,1426,477,1356,497"/>
-<area shape="rect" id="Node000025" href="$classrack_1_1JammingOp.html" title="A detector for widespread electromagnetic interference." alt="" coords="1421,499,1520,524"/>
-<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="1359,509,1421,509,1421,514,1359,514"/>
-<area shape="rect" id="Node000026" href="$classrack_1_1LineOp.html" title="Quick emitter detection based on subtracting a horizontal segment lengths by inversed vertical segmen..." alt="" coords="1437,548,1504,573"/>
-<area shape="poly" id="edge25_Node000001_Node000026" title=" " alt="" coords="1356,525,1438,549,1436,554,1355,530"/>
-<area shape="rect" id="Node000027" href="$classrack_1_1NonMetOp.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="1425,597,1516,623"/>
-<area shape="poly" id="edge26_Node000001_Node000027" title=" " alt="" coords="1324,532,1356,559,1395,584,1426,597,1424,602,1392,588,1353,563,1320,536"/>
-<area shape="rect" id="Node000028" href="$classrack_1_1PrecipOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="1431,647,1511,672"/>
-<area shape="poly" id="edge27_Node000001_Node000028" title=" " alt="" coords="1314,535,1346,585,1369,611,1395,633,1432,650,1429,654,1392,638,1365,615,1342,588,1309,538"/>
-<area shape="rect" id="Node000029" href="$classrack_1_1ShipFastOp.html" title="Detects ships." alt="" coords="1423,696,1518,721"/>
-<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="1308,536,1320,570,1339,609,1363,649,1395,683,1424,698,1422,703,1392,687,1359,652,1334,612,1315,572,1303,538"/>
-<area shape="rect" id="Node000030" href="$classrack_1_1ShipOp.html" title="Detects ships." alt="" coords="1437,745,1505,771"/>
-<area shape="poly" id="edge29_Node000001_Node000030" title=" " alt="" coords="1305,537,1315,580,1331,632,1358,686,1375,710,1395,732,1415,744,1437,751,1436,757,1413,749,1392,736,1371,714,1353,689,1326,634,1309,581,1300,538"/>
-<area shape="rect" id="Node000031" href="$classrack_1_1SpeckleOp.html" title=" " alt="" coords="1425,795,1516,820"/>
-<area shape="poly" id="edge30_Node000001_Node000031" title=" " alt="" coords="1303,537,1309,589,1325,654,1352,723,1371,754,1395,781,1409,792,1426,798,1424,803,1407,796,1392,785,1367,757,1347,725,1320,656,1304,590,1298,538"/>
-<area shape="rect" id="Node000032" href="$classrack_1_1SunOp.html" title="Detects birds and insects." alt="" coords="1439,844,1503,869"/>
-<area shape="poly" id="edge31_Node000001_Node000032" title=" " alt="" coords="1301,538,1305,598,1318,676,1330,718,1347,759,1368,797,1395,831,1416,844,1439,851,1438,856,1413,849,1392,835,1364,800,1342,761,1325,720,1313,677,1300,598,1296,538"/>
-<area shape="rect" id="Node000033" href="$classrack_1_1TestOp.html" title=" " alt="" coords="1437,893,1504,919"/>
-<area shape="poly" id="edge32_Node000001_Node000033" title=" " alt="" coords="1305,538,1317,616,1336,719,1363,817,1378,855,1395,880,1415,893,1438,900,1436,906,1413,898,1391,884,1374,857,1358,818,1331,720,1311,617,1299,538"/>
-<area shape="rect" id="Node000034" href="$classrack_1_1TimeOp.html" title="A radio interference detector." alt="" coords="1434,943,1507,968"/>
-<area shape="poly" id="edge33_Node000001_Node000034" title=" " alt="" coords="1304,537,1314,625,1333,743,1360,856,1377,900,1395,930,1413,942,1435,949,1433,954,1411,947,1391,933,1372,902,1355,857,1328,744,1309,626,1299,538"/>
-<area shape="rect" id="Node000035" href="$classrack_1_1ZDRvarOp.html" title=" " alt="" coords="1426,992,1515,1017"/>
-<area shape="poly" id="edge34_Node000001_Node000035" title=" " alt="" coords="1303,538,1312,635,1330,767,1342,834,1357,895,1375,945,1395,979,1410,990,1427,997,1425,1002,1407,994,1391,982,1370,947,1352,897,1337,835,1324,768,1307,636,1298,538"/>
-<area shape="rect" id="Node000002" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="1123,499,1201,524"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1215,509,1249,509,1249,514,1215,514"/>
-<area shape="rect" id="Node000003" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="927,499,1075,524"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1088,509,1122,509,1122,514,1088,514"/>
-<area shape="rect" id="Node000004" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="756,499,879,524"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="892,509,926,509,926,514,892,514"/>
-<area shape="rect" id="Node000005" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="520,499,708,524"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="721,509,756,509,756,514,721,514"/>
-<area shape="rect" id="Node000006" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="305,491,472,531"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="486,509,520,509,520,514,486,514"/>
-<area shape="rect" id="Node000007" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="155,499,257,524"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="271,509,305,509,305,514,271,514"/>
-<area shape="rect" id="Node000008" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="5,473,107,499"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="121,494,155,500,154,505,120,499"/>
-<area shape="rect" id="Node000009" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="15,523,97,548"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="110,524,154,517,155,522,111,529"/>
-<area shape="rect" id="Node000019" href="$classrack_1_1ChaffOp.html" title=" " alt="" coords="1627,351,1701,376"/>
-<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="1534,394,1626,370,1627,375,1535,399"/>
-<area shape="rect" id="Node000020" href="$classrack_1_1DualPolBioMetOp.html" title=" " alt="" coords="1596,400,1732,425"/>
-<area shape="poly" id="edge19_Node000018_Node000020" title=" " alt="" coords="1551,410,1596,410,1596,415,1551,415"/>
-<area shape="rect" id="Node000023" href="$classrack_1_1NonMet2Op.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="1615,449,1713,475"/>
-<area shape="poly" id="edge22_Node000018_Node000023" title=" " alt="" coords="1535,426,1615,447,1614,452,1534,431"/>
-<area shape="rect" id="Node000021" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="1786,376,1853,401"/>
-<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="1745,397,1785,391,1786,396,1746,403"/>
-<area shape="rect" id="Node000022" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="1780,425,1859,451"/>
-<area shape="poly" id="edge21_Node000020_Node000022" title=" " alt="" coords="1746,423,1780,429,1779,434,1745,429"/>
+<area shape="rect" id="Node000001" title="Base class for anomaly detectors." alt="" coords="1249,524,1345,549"/>
+<area shape="rect" id="Node000010" href="$classrack_1_1AltitudeOp.html" title="Computes attenuation caused by precipitation." alt="" coords="1425,5,1516,31"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1298,510,1306,408,1323,267,1335,196,1351,131,1369,77,1391,40,1406,28,1424,21,1426,26,1409,33,1395,44,1374,80,1356,133,1340,197,1328,268,1311,408,1303,510"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1AttenuationOp.html" title="Computes attenuation caused by precipitation." alt="" coords="1413,55,1529,80"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1298,510,1308,418,1326,293,1354,172,1371,124,1391,91,1411,77,1414,81,1395,94,1376,126,1359,173,1331,294,1313,418,1304,511"/>
+<area shape="rect" id="Node000012" href="$classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="1427,104,1514,129"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1299,510,1310,427,1330,317,1357,211,1373,169,1391,140,1408,128,1426,120,1428,125,1410,132,1395,144,1378,172,1362,212,1335,318,1316,428,1304,511"/>
+<area shape="rect" id="Node000013" href="$classrack_1_1CCorOp.html" title=" " alt="" coords="1435,153,1506,179"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1295,510,1298,446,1310,361,1322,315,1339,270,1362,227,1391,189,1412,175,1434,168,1436,173,1414,180,1395,193,1367,230,1344,272,1327,317,1316,362,1303,447,1301,511"/>
+<area shape="rect" id="Node000014" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps." alt="" coords="1429,203,1513,228"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1297,510,1302,454,1317,382,1329,344,1345,306,1366,270,1392,239,1408,227,1427,219,1429,224,1411,231,1395,243,1370,273,1350,308,1334,345,1322,383,1307,455,1302,511"/>
+<area shape="rect" id="Node000015" href="$classrack_1_1DefaultOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="1427,252,1515,277"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1299,510,1307,463,1323,403,1351,342,1369,313,1392,288,1407,277,1425,269,1427,274,1410,281,1395,292,1373,317,1355,344,1328,405,1312,464,1304,511"/>
+<area shape="rect" id="Node000016" href="$classrack_1_1DopplerNoiseOp.html" title="Detects suspicious variance in Doppler speed (VRAD)." alt="" coords="1407,301,1535,327"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1302,510,1313,472,1330,425,1356,378,1392,337,1412,325,1415,329,1395,341,1361,381,1335,428,1318,473,1307,511"/>
+<area shape="rect" id="Node000017" href="$classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones." alt="" coords="1427,351,1515,376"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="1306,510,1338,449,1362,415,1392,386,1425,370,1428,374,1395,391,1366,419,1343,451,1311,513"/>
+<area shape="rect" id="Node000018" href="$classrack_1_1ExtAndreOp.html" title="Base class for radar data processors." alt="" coords="1421,400,1520,425"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="1314,511,1348,473,1392,436,1420,422,1422,427,1395,440,1351,476,1318,514"/>
+<area shape="rect" id="Node000019" href="$classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="1404,449,1537,475"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="1332,515,1392,485,1426,472,1428,477,1394,490,1334,520"/>
+<area shape="rect" id="Node000025" href="$classrack_1_1HydroClassBasedOp.html" title="Sets probabilities of non&#45;meteorological echoes based on precomputed hydrometeor classification." alt="" coords="1393,499,1548,524"/>
+<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="1359,525,1393,520,1393,525,1360,530"/>
+<area shape="rect" id="Node000026" href="$classrack_1_1JammingOp.html" title="A detector for widespread electromagnetic interference." alt="" coords="1421,548,1520,573"/>
+<area shape="poly" id="edge25_Node000001_Node000026" title=" " alt="" coords="1360,543,1422,551,1421,557,1359,548"/>
+<area shape="rect" id="Node000027" href="$classrack_1_1LineOp.html" title="Quick emitter detection based on subtracting a horizontal segment lengths by inversed vertical segmen..." alt="" coords="1437,597,1504,623"/>
+<area shape="poly" id="edge26_Node000001_Node000027" title=" " alt="" coords="1334,554,1394,584,1438,599,1436,604,1392,588,1331,558"/>
+<area shape="rect" id="Node000028" href="$classrack_1_1NonMetOp.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="1425,647,1516,672"/>
+<area shape="poly" id="edge27_Node000001_Node000028" title=" " alt="" coords="1318,559,1351,597,1395,633,1426,647,1424,652,1392,638,1347,601,1314,562"/>
+<area shape="rect" id="Node000029" href="$classrack_1_1PrecipOp.html" title="Simply, &quot;detects&quot; precipitation ie sets its probability." alt="" coords="1431,696,1511,721"/>
+<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="1311,561,1342,622,1366,655,1395,683,1412,693,1431,699,1430,704,1410,697,1392,687,1362,658,1338,625,1306,563"/>
+<area shape="rect" id="Node000030" href="$classrack_1_1ShipFastOp.html" title="Detects ships." alt="" coords="1423,745,1518,771"/>
+<area shape="poly" id="edge29_Node000001_Node000030" title=" " alt="" coords="1307,562,1317,600,1335,645,1360,692,1395,732,1424,748,1422,752,1392,736,1356,695,1330,648,1312,601,1301,563"/>
+<area shape="rect" id="Node000031" href="$classrack_1_1ShipOp.html" title="Detects ships." alt="" coords="1437,795,1505,820"/>
+<area shape="poly" id="edge30_Node000001_Node000031" title=" " alt="" coords="1304,563,1312,610,1328,668,1355,729,1373,757,1395,781,1415,794,1437,801,1436,806,1413,799,1392,785,1369,760,1350,732,1323,670,1307,611,1299,564"/>
+<area shape="rect" id="Node000032" href="$classrack_1_1SpeckleOp.html" title=" " alt="" coords="1425,844,1516,869"/>
+<area shape="poly" id="edge31_Node000001_Node000032" title=" " alt="" coords="1302,563,1307,618,1322,690,1333,728,1349,765,1370,800,1395,831,1409,841,1426,848,1424,853,1407,846,1392,835,1365,803,1345,768,1328,730,1316,692,1302,619,1297,563"/>
+<area shape="rect" id="Node000033" href="$classrack_1_1SunOp.html" title="Detects birds and insects." alt="" coords="1439,893,1503,919"/>
+<area shape="poly" id="edge32_Node000001_Node000033" title=" " alt="" coords="1301,563,1303,627,1315,712,1327,757,1344,802,1366,843,1395,880,1416,894,1439,901,1438,906,1413,899,1392,884,1362,846,1339,804,1322,759,1310,713,1298,627,1295,563"/>
+<area shape="rect" id="Node000034" href="$classrack_1_1TestOp.html" title=" " alt="" coords="1437,943,1504,968"/>
+<area shape="poly" id="edge33_Node000001_Node000034" title=" " alt="" coords="1304,563,1315,646,1335,756,1361,861,1378,902,1395,929,1415,943,1438,950,1436,955,1413,948,1391,933,1373,904,1356,863,1329,757,1310,647,1299,563"/>
+<area shape="rect" id="Node000035" href="$classrack_1_1TimeOp.html" title="A radio interference detector." alt="" coords="1434,992,1507,1017"/>
+<area shape="poly" id="edge34_Node000001_Node000035" title=" " alt="" coords="1303,563,1313,655,1331,780,1359,900,1376,947,1395,979,1413,992,1435,999,1433,1004,1411,996,1391,982,1371,949,1353,902,1326,781,1308,656,1298,563"/>
+<area shape="rect" id="Node000036" href="$classrack_1_1ZDRvarOp.html" title=" " alt="" coords="1426,1041,1515,1067"/>
+<area shape="poly" id="edge35_Node000001_Node000036" title=" " alt="" coords="1303,563,1311,665,1328,804,1341,875,1356,940,1374,992,1395,1028,1410,1039,1427,1046,1425,1051,1407,1044,1391,1032,1369,995,1351,941,1335,876,1323,805,1306,665,1298,563"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1AndreOp.html" title="The base class for detector and removal operators." alt="" coords="1123,524,1201,549"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1215,534,1249,534,1249,539,1215,539"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1VolumeTraversalOp.html" title="Class designed for &quot;sequential&quot; &quot;parallel&quot; processing of Sweeps." alt="" coords="927,524,1075,549"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1088,534,1122,534,1122,539,1088,539"/>
+<area shape="rect" id="Node000004" href="$classrack_1_1PolarProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="756,524,879,549"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="892,534,926,534,926,539,892,539"/>
+<area shape="rect" id="Node000005" href="$classrack_1_1VolumeOp.html" title=" " alt="" coords="520,524,708,549"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="721,534,756,534,756,539,721,539"/>
+<area shape="rect" id="Node000006" href="$classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="305,517,472,557"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="486,534,520,534,520,539,486,539"/>
+<area shape="rect" id="Node000007" href="$classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="155,524,257,549"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="271,534,305,534,305,539,271,539"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="5,499,107,524"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="121,519,155,525,154,531,120,525"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="15,548,97,573"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="110,549,154,542,155,547,111,555"/>
+<area shape="rect" id="Node000020" href="$classrack_1_1ChaffOp.html" title=" " alt="" coords="1627,400,1701,425"/>
+<area shape="poly" id="edge19_Node000019_Node000020" title=" " alt="" coords="1534,443,1626,419,1627,425,1535,448"/>
+<area shape="rect" id="Node000021" href="$classrack_1_1DualPolBioMetOp.html" title=" " alt="" coords="1596,449,1732,475"/>
+<area shape="poly" id="edge20_Node000019_Node000021" title=" " alt="" coords="1551,459,1596,459,1596,465,1551,465"/>
+<area shape="rect" id="Node000024" href="$classrack_1_1NonMet2Op.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="1615,499,1713,524"/>
+<area shape="poly" id="edge23_Node000019_Node000024" title=" " alt="" coords="1535,476,1615,496,1614,501,1534,481"/>
+<area shape="rect" id="Node000022" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="1786,425,1853,451"/>
+<area shape="poly" id="edge21_Node000021_Node000022" title=" " alt="" coords="1745,447,1785,440,1786,446,1746,452"/>
+<area shape="rect" id="Node000023" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="1780,475,1859,500"/>
+<area shape="poly" id="edge22_Node000021_Node000023" title=" " alt="" coords="1746,473,1780,478,1779,484,1745,478"/>
 </map>

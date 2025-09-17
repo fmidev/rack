@@ -518,13 +518,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>targetEncoding
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;&#160;</td>
-          <td class="paramname"><em>srcODIM</em>, </td>
+          <td class="paramname"><em>defaultODIM</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>applyDefaults</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>useDefaults</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -544,10 +544,11 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>targetEncoding
   <table class="params">
     <tr><td class="paramname">productODIM</td><td>- metadata to be modified </td></tr>
     <tr><td class="paramname">srcODIM</td><td>- metadata applied; typically that of an product operator or input data. </td></tr>
-    <tr><td class="paramname">applyDefaults</td><td>- use default values in encoding (esp. gain), if still unset at the end of this function call. </td></tr>
+    <tr><td class="paramname">applyDefaults</td><td>- use default values in encoding (esp. gain), if still unset at the end of this function call.</td></tr>
   </table>
   </dd>
 </dl>
+<p>Renamed second param from srcODIM to defaultODIM (because it originates not necessarily from src data) </p>
 
 </div>
 </div>

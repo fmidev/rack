@@ -167,7 +167,8 @@ var menudata={children:[
 {text:"v",url:"functions_type.html#index_v"},
 {text:"x",url:"functions_type.html#index_x"}]},
 {text:"Enumerations",url:"functions_enum.html"},
-{text:"Enumerator",url:"functions_eval.html"}]}]},
+{text:"Enumerator",url:"functions_eval.html"},
+{text:"Related Symbols",url:"functions_rela.html"}]}]},
 {text:"Files",url:"files.html",children:[
 {text:"File List",url:"files.html"}]},
 {text:"Examples",url:"examples.html"}]}

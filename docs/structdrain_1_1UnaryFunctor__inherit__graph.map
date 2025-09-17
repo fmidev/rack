@@ -42,7 +42,7 @@
 <area shape="poly" id="edge12_Node000006_Node000013" title=" " alt="" coords="569,311,652,311,652,317,569,317"/>
 <area shape="rect" id="Node000014" href="$classdrain_1_1FuzzySigmoid.html" title="A smooth step function, by default from &#45;1.0 to +1.0." alt="" coords="651,351,801,376"/>
 <area shape="poly" id="edge13_Node000006_Node000014" title=" " alt="" coords="570,327,667,348,666,353,569,332"/>
-<area shape="rect" id="Node000015" href="$classdrain_1_1FuzzyStep.html" title="A basic, linear transition from 0 to scale between (start) and (end) ." alt="" coords="663,400,789,425"/>
+<area shape="rect" id="Node000015" href="$classdrain_1_1FuzzyStep.html" title="A simple linear transition from 0 to 1 ." alt="" coords="663,400,789,425"/>
 <area shape="poly" id="edge14_Node000006_Node000015" title=" " alt="" coords="570,327,588,336,604,348,613,361,622,373,636,385,664,398,662,402,633,390,618,377,609,364,600,352,585,340,568,332"/>
 <area shape="rect" id="Node000016" href="$classdrain_1_1FuzzyStepsoid.html" title="A smooth step function between 0.0 and 1.0. Increasing (decreasing) with positive (negative) width...." alt="" coords="649,449,803,475"/>
 <area shape="poly" id="edge15_Node000006_Node000016" title=" " alt="" coords="570,325,588,336,600,348,607,361,613,387,619,411,626,423,636,435,657,447,654,452,633,439,621,426,614,413,608,388,602,363,596,351,585,340,567,329"/>

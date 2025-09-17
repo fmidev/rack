@@ -116,7 +116,12 @@ SVG panel example: Three radars, with automatic titles.</div></div>
 <img src="time_series.png" alt=""/>
 <div class="caption">
 SVG panel example: Time series.</div></div>
- Group layout can be set with <code>--gLayout</code> that sets orientation <code>HORZ</code> (rows) or <code>VERT</code> (column). Also direction can be changed.<div class="fragment"></div><!-- fragment -->Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Group layout can be set with <code>--gLayout</code> that sets orientation <code>HORZ</code> (rows) or <code>VERT</code> (column). Also direction can be changed.<div class="fragment"><div class="line">--gLayout &lt;orientation&gt;,&lt;direction&gt;   (section: graphics)</div>
+<div class="line">  Set main panel alignment</div>
+<div class="line">  - orientation (HORZ) [HORZ|VERT]</div>
+<div class="line">  - direction (INCR) [INCR|DECR]</div>
+<div class="line"> </div>
+</div><!-- fragment -->Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gLayout VERT,DECR --gGroupTitle <span class="stringliteral">&#39;Grouping by time: ${what:time|%H:%M} UTC&#39;</span> data-kiira/201708121?00*.h5 -o time_series2.svg</div>
 </div><!-- fragment --><div class="image">

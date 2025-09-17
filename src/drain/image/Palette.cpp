@@ -178,8 +178,13 @@ const Palette::value_type & Palette::getEntryByCode(const std::string & code, bo
 		}
 	}
 
-	mout.error("could not find code '", code_lc, "' with flexible (substring) matching");
-
+	//mout.error("could not find code '", code_lc, "' with flexible (substring) matching");
+	if (lenient){
+		mout.debug("could not find code '", code, "' with flexible (substring) matching");
+	}
+	else {
+		mout.error("could not find code '", code, "' with flexible (substring) matching");
+	}
 	/*
 	// if extra lenient...
 	static int counter = 0;

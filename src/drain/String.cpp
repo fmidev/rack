@@ -91,6 +91,38 @@ void StringTools::replace(const std::string &src, char from, char to, std::strin
 	}
 }
 
+void StringTools::replace(const std::string &src, char from, char to, std::ostream & ostr){
+	for (char c: src){
+		if (c != from){
+			ostr << c;
+		}
+		else {
+			ostr << to;
+		}
+	}
+}
+
+
+// NEW
+void replace(const std::map<char,char> & m, const std::string & src, std::string & dst){
+
+	if (&dst != &src){
+		dst.assign(src);
+	};
+
+	std::map<char,char>::const_iterator it;
+	for (char & c: dst){
+		it = m.find(c);
+		if (it != m.end()){
+			c = it->second;
+		}
+	}
+
+}
+
+
+
+
 
 void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::string & dst){
 
@@ -145,6 +177,7 @@ void StringTools::replace(const conv_map_t & m, std::string & s, std::size_t pos
 
 }
 
+/*
 void StringTools::replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr){
 
 
@@ -165,6 +198,8 @@ void StringTools::replace(const std::map<char,std::string> & m, const std::strin
 
 
 }
+*/
+
 
 
 std::string StringTools::trim(const std::string &s, const std::string & trimChars ){

@@ -1,11 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,106,148,131"/>
-<area shape="rect" id="Node000001" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="213,5,420,45"/>
-<area shape="poly" id="edge729_Node000000_Node000001" title=" " alt="" coords="110,97,150,75,195,55,230,43,232,48,197,60,152,80,112,101"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="205,69,429,109"/>
-<area shape="poly" id="edge730_Node000000_Node000002" title=" " alt="" coords="162,106,204,100,205,106,162,111"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="197,134,437,159"/>
-<area shape="poly" id="edge731_Node000000_Node000003" title=" " alt="" coords="162,126,208,131,207,137,162,131"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Window.html" title=" " alt="" coords="196,183,437,209"/>
-<area shape="poly" id="edge732_Node000000_Node000004" title=" " alt="" coords="116,135,197,168,244,181,243,186,195,173,114,140"/>
+<area shape="rect" id="Node000000" href="$structdrain_1_1image_1_1ProberControl.html" title="Container for parameters of SegmentProber." alt="" coords="5,5,116,31"/>
+<area shape="rect" id="Node000001" href="$structdrain_1_1image_1_1SimpleProberControl.html" title=" " alt="" coords="164,5,320,31"/>
+<area shape="poly" id="edge723_Node000000_Node000001" title=" " alt="" coords="129,15,164,15,164,21,129,21"/>
 </map>

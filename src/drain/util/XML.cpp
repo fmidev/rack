@@ -40,12 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-const std::map<char,std::string> XML::encodingMap = {
-		{'&', "&amp;"},
-		{'<', "&lt;"},
-		{'>', "&gt;"},
-		{'"', "&quot;"}
-};
 
 // array,map,pair,string,key, mapPair  [+AfillB:ared 2pxb-;+AopacityB:0.33-;+AscaleB:0.5-]
 const SprinterLayout StyleXML::styleLineLayout(";", ";",  ":", "", ""); //, "\"\"", "''", ":");
@@ -69,14 +63,80 @@ const XML::intval_t XML::STYLE;
 const XML::intval_t XML::STYLE_SELECT;
 const XML::intval_t XML::SCRIPT;
 
+typedef drain::EnumDict<XML::entity_t> xml_entity;
 
+#define DRAIN_XML_ENTITY(entity) {entity_t::entity, drain::EnumDict<XML::entity_t>::dict.getKey(entity_t::entity)}
+
+/**
+ *
+ *  https://www.w3schools.com/charsets/ref_utf_basic_latin.asp
+ */
 template <>
 const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict = {
-		{"&lt;",   XML::ENTITY_LESS_THAN},
-		{"&gt;",   XML::ENTITY_GREATER_THAN},
-		{"&nbsp;", XML::ENTITY_NONBREAKABLE_SPACE},
-		{"&amp;",  XML::ENTITY_AMPERSAND},
+		{"&#38;",  XML::AMPERSAND},  // &amp;
+		{"&#60;",  XML::LESS_THAN},  // &lt;
+		{"&#61;",  XML::EQUAL_TO},  // &lt;
+		{"&#62;",  XML::GREATER_THAN},  // &gt;
+		{"&#160;", XML::NONBREAKABLE_SPACE}, // &nbsp;
+		{"&#34;",  XML::QUOTE}, // &quot;
+		{"&#123;",  XML::CURLY_LEFT},
+		{"&#125;",  XML::CURLY_RIGHT},
+		// ---
+		{"-",  XML::TAB},
+		{"\\",  XML::NEWLINE},
 };
+
+// Consider 1) getKeyConversionMap
+
+const std::map<char,std::string> & XML::getKeyConversionMap(){
+
+	static const std::map<char,std::string> m = {
+			DRAIN_XML_ENTITY(LESS_THAN),
+			DRAIN_XML_ENTITY(GREATER_THAN),
+			DRAIN_XML_ENTITY(NONBREAKABLE_SPACE),
+			// --
+			DRAIN_XML_ENTITY(TAB),
+			DRAIN_XML_ENTITY(NEWLINE),
+	};
+
+	return m;
+
+}
+
+const std::map<char,std::string> & XML::getAttributeConversionMap(){
+
+	static const std::map<char,std::string> m = {
+			DRAIN_XML_ENTITY(QUOTE),
+			// DRAIN_XML_ENTITY(GREATER_THAN),
+			// DRAIN_XML_ENTITY(NONBREAKABLE_SPACE),
+	};
+
+	return m;
+
+}
+
+const std::map<char,std::string> & XML::getCTextConversionMap(){
+
+	static const std::map<char,std::string> m = {
+			{entity_t::LESS_THAN, "&#60;"},
+			{entity_t::GREATER_THAN, "&#62;"},
+			{entity_t::NONBREAKABLE_SPACE, "&#160;"}, // &nbsp;",
+			//entity_t::AMPERSAND, "&amp;",
+	};
+	return m;
+
+}
+
+
+/*
+const std::map<char,std::string> XML::encodingMap = {
+		{'&', "&amp;"},
+		{'<', "&lt;"},
+		{'>', "&gt;"},
+		{'"', "&quot;"},
+		{' ', "&nbsp;"},
+};
+*/
 
 // reset() clears also the type
 //void XML::clear(){
@@ -127,10 +187,26 @@ void XML::setText(const std::string & s) {
 	case XML::COMMENT:
 	default:
 		// TODO: check types, somehow...
-		drain::StringTools::import(s, ctext);
+		drain::StringTools::import(s, ctext); // ? obsolete code, orig with templates
 	}
 
 }
+
+const std::map<char,std::string> & XML::getEntityMap(){
+
+	static std::map<char,std::string> m;
+
+	if (m.empty()){
+		for (const auto & entry: drain::EnumDict<drain::XML::entity_t>::dict){
+			if (entry.second != XML::entity_t::NONBREAKABLE_SPACE){
+				m[entry.second] = entry.first;
+			}
+		}
+	}
+
+	return m;
+}
+
 
 void XML::specificAttributesToStream(std::ostream & ostr) const {
 

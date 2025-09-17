@@ -7,7 +7,7 @@ var searchData=
   ['sampler_4',['Sampler',['../classdrain_1_1image_1_1Sampler.html',1,'drain::image']]],
   ['sampling_20data_5',['Sampling data',['../text-output-page.html#sampling',1,'']]],
   ['samplingarea_6',['samplingArea',['../classdrain_1_1image_1_1Window.html#a5f961b29ca6831614156e0c11ee232d8',1,'drain::image::Window']]],
-  ['scale_7',['scale',['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale'],['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale'],['../classdrain_1_1ValueScaling.html#a0478cd32f21923dfeae0447c9654550e',1,'drain::ValueScaling::scale'],['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE']]],
+  ['scale_7',['scale',['../classdrain_1_1image_1_1Window.html#afbea441c9572e1c615e1a3885591cb94',1,'drain::image::Window::SCALE'],['../classdrain_1_1image_1_1PaletteOp.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::image::PaletteOp::scale'],['../classdrain_1_1Functor.html#a80d402d10e8341004c0caf10133b80ab',1,'drain::Functor::scale'],['../classdrain_1_1ValueScaling.html#a0478cd32f21923dfeae0447c9654550e',1,'drain::ValueScaling::scale']]],
   ['scalefinal_8',['scaleFinal',['../classdrain_1_1Functor.html#a9708cfcfdc71fafc417eab90771bec18',1,'drain::Functor']]],
   ['scaleforward_9',['scaleForward',['../classrack_1_1EncodingODIM.html#a85076a9bd9134d5aad580567b40287d9',1,'rack::EncodingODIM']]],
   ['scaleinverse_10',['scaleInverse',['../classrack_1_1EncodingODIM.html#a4fef8c2550d6bd24f749245feadc7fb3',1,'rack::EncodingODIM']]],

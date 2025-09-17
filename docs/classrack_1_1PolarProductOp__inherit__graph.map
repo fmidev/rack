@@ -84,16 +84,16 @@
 <area shape="poly" id="edge41_Node000041_Node000042" title=" " alt="" coords="1142,870,1296,870,1296,875,1142,875"/>
 <area shape="rect" id="Node000043" href="$classrack_1_1DetectorOp.html" title="Base class for anomaly detectors." alt="" coords="1523,811,1619,836"/>
 <area shape="poly" id="edge42_Node000042_Node000043" title=" " alt="" coords="1388,859,1523,831,1524,836,1389,864"/>
-<area shape="rect" id="Node000070" href="$classrack_1_1QualityCombinerOp.html" title="A quick QualityCombiner ." alt="" coords="1496,860,1647,885"/>
-<area shape="poly" id="edge47_Node000042_Node000070" title=" " alt="" coords="1388,870,1496,870,1496,875,1388,875"/>
-<area shape="rect" id="Node000071" href="$classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones." alt="" coords="1522,909,1621,935"/>
-<area shape="poly" id="edge48_Node000042_Node000071" title=" " alt="" coords="1389,881,1522,909,1521,914,1388,886"/>
-<area shape="rect" id="Node000044" href="$classrack_1_1AttenuationOp.html" title="Computes attenuation caused by precipitation." alt="" coords="1703,737,1819,763"/>
+<area shape="rect" id="Node000071" href="$classrack_1_1QualityCombinerOp.html" title="A quick QualityCombiner ." alt="" coords="1496,860,1647,885"/>
+<area shape="poly" id="edge47_Node000042_Node000071" title=" " alt="" coords="1388,870,1496,870,1496,875,1388,875"/>
+<area shape="rect" id="Node000072" href="$classrack_1_1RemoverOp.html" title="The simplest possible anomaly removal operator and the base class for more complex ones." alt="" coords="1522,909,1621,935"/>
+<area shape="poly" id="edge48_Node000042_Node000072" title=" " alt="" coords="1389,881,1522,909,1521,914,1388,886"/>
+<area shape="rect" id="Node000044" href="$classrack_1_1AltitudeOp.html" title="Computes attenuation caused by precipitation." alt="" coords="1715,737,1806,763"/>
 <area shape="poly" id="edge43_Node000043_Node000044" title=" " alt="" coords="1617,803,1726,760,1728,765,1619,808"/>
-<area shape="rect" id="Node000045" href="$classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="1717,787,1804,812"/>
-<area shape="poly" id="edge44_Node000043_Node000045" title=" " alt="" coords="1633,813,1716,802,1717,807,1634,818"/>
-<area shape="rect" id="Node000046" href="$classrack_1_1CCorOp.html" title=" " alt="" coords="1725,836,1796,861"/>
-<area shape="poly" id="edge45_Node000043_Node000046" title=" " alt="" coords="1634,829,1726,841,1725,847,1633,834"/>
-<area shape="rect" id="Node000047" href="$classrack_1_1ClutterOp.html" title="Based on pre&#45;computed clutter map, scales the clutter probability for desired sweeps." alt="" coords="1719,885,1803,911"/>
+<area shape="rect" id="Node000045" href="$classrack_1_1AttenuationOp.html" title="Computes attenuation caused by precipitation." alt="" coords="1703,787,1819,812"/>
+<area shape="poly" id="edge44_Node000043_Node000045" title=" " alt="" coords="1633,813,1702,804,1703,809,1634,818"/>
+<area shape="rect" id="Node000046" href="$classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="1717,836,1804,861"/>
+<area shape="poly" id="edge45_Node000043_Node000046" title=" " alt="" coords="1634,829,1717,840,1716,846,1633,834"/>
+<area shape="rect" id="Node000047" href="$classrack_1_1CCorOp.html" title=" " alt="" coords="1725,885,1796,911"/>
 <area shape="poly" id="edge46_Node000043_Node000047" title=" " alt="" coords="1633,838,1656,846,1704,872,1729,883,1727,888,1702,876,1654,851,1631,843"/>
 </map>

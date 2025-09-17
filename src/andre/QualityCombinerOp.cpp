@@ -444,11 +444,28 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 	//mout.advice("src qualities");
 	for (const auto & entry: srcDataSet.getQuality()){
 		if ((entry.first != "QIND") && (entry.first != "CLASS")){
-			mout.experimental("quality information [", entry.first, "] added here / elangle=", entry.second.odim.elangle);
+			mout.experimental<LOG_DEBUG>("special quality information [", entry.first, "] at elangle=", entry.second.odim.elangle);
 			//double marker = drain::image::PaletteOp::ge
+
+			drain::image::Palette & palette = PaletteManager::getPalette("CLASS");
+			const drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
+			if (legendEntry.second.color.empty()){
+				mout.fail<LOG_DEBUG>("Could not retrieve code (palette/legend entry) for [", entry.first, "]");
+				mout.info("Skipping CLASS and QIND update with non-listed quantity [", entry.first, "]");
+			}
+			else {
+				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));
+				//updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
+				mout.debug("srcData: ", entry.second.data);
+				updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, legendEntry.first);
+			}
+
+			/*
 			try {
+				// Update classification image, if and only if this quantity has an entry in The CLASS catalog.
 				drain::image::Palette & palette = PaletteManager::getPalette("CLASS");
-				const drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
+							const drain::image::Palette::value_type & legendEntry = palette.getEntryByCode(entry.first, true);
+
 				// double marker = palette.getValueByCode(entry.first, true);
 				mout.attention("found palette entry: ", sprinter(legendEntry.second, drain::Sprinter::jsonLayout));
 				//updateOverallDetection(entry.second.data, dstQIND, dstCLASS, entry.first, (short unsigned int)123);
@@ -458,6 +475,7 @@ void QualityCombinerOp::updateLocalQuality(const DataSet<PolarSrc> & srcDataSet,
 				mout.fail<LOG_DEBUG>("Could not retrieve code (palette/legend entry) for [", entry.first, "]");
 				mout.note("Skipping update of QIND and CLASS with [", entry.first, "]");
 			}
+			*/
 		}
 	}
 

@@ -53,6 +53,62 @@ const char SelectorXML::CLASS;
 const char SelectorXML::ID;
 */
 
+/*
+enum xml_entity {
+	AMPERSAND,
+	LESS_THAN,
+	GREATER_THAN,
+	NONBREAKABLE_SPACE,
+	QUOTE,
+};
+
+typedef drain::EnumDict<xml_entity> xml_entity_dict;
+typedef drain::EnumDict<char, xml_entity> xml_entity_char_dict;
+
+template <>
+const xml_entity_dict::dict_t xml_entity_dict::dict;
+
+template <>
+const xml_entity_dict::dict_t xml_entity_dict::dict = {};
+
+template <>
+const xml_entity_char_dict::dict_t xml_entity_char_dict::dict;
+
+template <>
+const xml_entity_char_dict::dict_t xml_entity_char_dict::dict = {};
+
+
+class XML2 {
+
+	template <xml_entity E>
+	class Entity {
+
+		const xml_entity e = E;
+		const char c;
+		const std::string code;
+
+		inline
+		Entity(char c, const std::string & code) : c(c), code(code) {
+			xml_entity_dict::dict.findByKey(code);
+			xml_entity_char_dict::dict.findByKey(c);
+		}
+	};
+
+	static
+	const Entity<AMPERSAND> ampersand; // ('&', "&amp;");
+
+	static
+	const Entity<LESS_THAN> less_than;
+
+	static
+	const Entity<GREATER_THAN> greater_than;
+
+	static
+	const Entity<NONBREAKABLE_SPACE> nonbreakable_space;
+
+};
+*/
+
 
 template <>
 const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict = {

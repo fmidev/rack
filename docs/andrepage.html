@@ -162,10 +162,10 @@ Detection results of <code>--aBiomet</code> .</div></div>
  <h2><a class="anchor" id="aBiomet2"></a>
 Detecting birds and insects (dual-pol)</h2>
 <p>There is also detectors for birds and insects using dual-pol data.</p>
-<div class="fragment"><div class="line">rack volume.h5 --aBird &#39;0,1,0.95,1,2500:5,1&#39; -o aBird.h5</div>
-<div class="line">  % dbzPeak=0 [Typical reflectivity (DBZH)]</div>
+<div class="fragment"><div class="line">rack volume.h5 --aBird &#39;-20:0,1,0.99:0.891,1,2500:5,1&#39; -o aBird.h5</div>
+<div class="line">  % dbzPeak=-20:0 [Typical reflectivity (dBZ)]</div>
 <div class="line">  % vradDevMin=1 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
-<div class="line">  % rhoHVmax=0.95 [Fuzzy threshold of maximum rhoHV value]</div>
+<div class="line">  % rhoHVmax=0.99:0.891 [Fuzzy threshold of maximum rhoHV value]</div>
 <div class="line">  % zdrAbsMin=1 [Fuzzy threshold of absolute ZDR]</div>
 <div class="line">  % window=2500:5 [beam-directional(m), azimuthal(deg)]</div>
 <div class="line">  % gamma=1 [Contrast adjustment, dark=0.0 &lt; 1.0 &lt; brighter ]</div>
@@ -173,10 +173,10 @@ Detecting birds and insects (dual-pol)</h2>
 <img src="result-bird-precip-bird.png" alt=""/>
 <div class="caption">
 Detection results of <code>--aBird</code> .</div></div>
- <div class="fragment"><div class="line">rack volume.h5 --aInsect &#39;0,5,0.95,3,2500:5,1&#39; -o aInsect.h5</div>
-<div class="line">  % dbzPeak=0 [Max reflectivity, +/-5dBZ]</div>
+ <div class="fragment"><div class="line">rack volume.h5 --aInsect &#39;-5:5,5,0.99:0.792,3,2500:5,1&#39; -o aInsect.h5</div>
+<div class="line">  % dbzMax=-5:5 [Max reflectivity]</div>
 <div class="line">  % vradDevMax=5 [Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)]</div>
-<div class="line">  % rhoHVmax=0.95 [Fuzzy threshold of maximum rhoHV value]</div>
+<div class="line">  % rhoHVmax=0.99:0.792 [Fuzzy threshold of maximum rhoHV value]</div>
 <div class="line">  % zdrAbsMin=3 [Fuzzy threshold of absolute ZDR]</div>
 <div class="line">  % window=2500:5 [beam-directional(m), azimuthal(deg)]</div>
 <div class="line">  % gamma=1 [Contrast adjustment, dark=0.0 &lt; 1.0 &lt; brighter ]</div>

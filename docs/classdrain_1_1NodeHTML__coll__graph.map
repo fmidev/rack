@@ -1,8 +1,8 @@
 <map id="NodeHTML" name="NodeHTML">
 <area shape="rect" id="Node000001" title=" " alt="" coords="397,772,490,797"/>
-<area shape="rect" id="Node000002" href="$structdrain_1_1html.html" title=" " alt="" coords="275,684,327,709"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="333,714,425,769,423,774,330,719"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="351,684,536,709"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1Html.html" title=" " alt="" coords="271,684,325,709"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="331,714,425,769,422,774,328,719"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="350,684,537,709"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="446,723,446,771,441,771,441,723"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="418,596,469,621"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="438,635,440,683,434,684,432,635"/>
@@ -33,8 +33,8 @@
 <area shape="rect" id="Node000014" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="154,5,298,31"/>
 <area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="229,45,229,80,223,80,223,45"/>
 <area shape="poly" id="edge15_Node000004_Node000015" title=" " alt="" coords="399,545,412,570,433,594,429,598,408,574,394,548"/>
-<area shape="rect" id="Node000016" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="560,684,631,709"/>
-<area shape="poly" id="edge20_Node000001_Node000016" title=" " alt="" coords="564,719,465,774,463,769,562,714"/>
-<area shape="rect" id="Node000017" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="560,596,631,621"/>
-<area shape="poly" id="edge21_Node000016_Node000017" title=" " alt="" coords="598,635,598,683,593,683,593,635"/>
+<area shape="rect" id="Node000016" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="561,684,632,709"/>
+<area shape="poly" id="edge20_Node000001_Node000016" title=" " alt="" coords="565,719,465,774,463,769,563,714"/>
+<area shape="rect" id="Node000017" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="561,596,632,621"/>
+<area shape="poly" id="edge21_Node000016_Node000017" title=" " alt="" coords="599,635,599,683,594,683,594,635"/>
 </map>

@@ -88,6 +88,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1AccumulationSection.html">AccumulationSection</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1AltitudeOp.html">AltitudeOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes attenuation caused by <em>precipitation</em>.  <a href="classrack_1_1AltitudeOp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1AnDReCommand.html">AnDReCommand</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1AndreContext.html">AndreContext</a></td></tr>
@@ -322,6 +325,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdQuantityConf.html">CmdQuantityConf</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdRename.html">CmdRename</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdSector.html">CmdSector</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdSelect.html">CmdSelect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.  <a href="classrack_1_1CmdSelect.html#details">More...</a><br /></td></tr>
@@ -1147,7 +1152,13 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>ProductBase::completeEncoding(odim, encoding) -&gt; odim.completeEncoding(encoding)</li>
 <li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html">DualPolBioMetOp</a>: dbzParam is a range (needed for birds) Release 13.4</li>
 <li><a class="el" href="classrack_1_1CappiOp.html" title="CAPPI and Pseudo-CAPPI: the constant altitude planar position indicator product.">CappiOp</a> height Release 13.5</li>
-<li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html">DualPolBioMetOp</a>: local functor bank</li>
+<li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html">DualPolBioMetOp</a>: local functor bank Release 13.6</li>
+<li>andre::AltitudeOp Release 13.7</li>
+<li><a class="el" href="classdrain_1_1BinaryThresholdFunctor.html" title="Thresholds intensity values.">drain::BinaryThresholdFunctor</a>: threshold is a span, inside which no thresholding. Release 13.8</li>
+<li>Minor changes (UniCloner -&gt; LocalCloner) Release 13.9</li>
+<li>Bug fixes, also help revisited Release 13.91</li>
+<li>Bug fixes: palette comment, palette key stored Release 13.92</li>
+<li>Revised XML::handleType(), XML Elem specialization (SVG)</li>
 </ul>
 <p>Version 12</p><ul>
 <li>Revised <a class="el" href="classrack_1_1QuantityMap.html" title="Registry for regular quantities appearing in weather radar.">QuantityMap</a>, allowing retrieve("DBZXP") Release 12.1</li>
@@ -1172,7 +1183,8 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> redesigned under FuzzyDualPolOp Version 12.9</li>
 <li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> with brightness adjustment (gamma correction) Release 12.91</li>
 <li>Fixed <a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> bug Release 12.92</li>
-<li>NonMet palette color (lighter orange)</li>
+<li>NonMet palette color (lighter orange) Release 12.93</li>
+<li>better XML entity (special chars) support, started revision of StringTool::replace()</li>
 </ul>
 <p>Version 11</p><ul>
 <li>Help supports "see also", linking related commands.</li>
