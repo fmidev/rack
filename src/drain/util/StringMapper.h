@@ -428,19 +428,16 @@ public:
 	 *  \par clear - if true, replace undefined variables with empty std::strings.
 	 */
 	template <class T>
-	void expand(const std::map<std::string,T> &m, bool clear=false) {
-		for (StringMapper::iterator it = begin(); it != end(); it++){
-			if (it->isVariable()){
-				typename std::map<std::string, T >::const_iterator mit = m.find(*it);
-				//std::cerr << __FUNCTION__ << " variable: " << *it << std::endl;
-				if (mit != m.end()){
-					//insert(it, Stringlet(Variable(mit->second).toStr()));
-					it->setLiteral(Variable(mit->second).toStr());
-					//it = erase(it);
+	void expand(const std::map<std::string,T> &m, const VariableFormatter<T> & formatter=VariableFormatter<T>(), bool clear=false) {
+		for (auto & entry: *this){
+			if (entry.isVariable()){
+				std::stringstream s;
+				if (formatter.handle(entry, m, s)){
+					entry.setLiteral(s.str());
 				}
-				else if (clear)
-					it->setLiteral("");
-					//it = erase(it);
+				else if (clear) {
+					entry.setLiteral("");
+				}
 			}
 		};
 	}
@@ -449,8 +446,27 @@ public:
 	/// Dumps the list of StringLet's
 	template <class T>
 	std::ostream &  debug(std::ostream & ostr, const std::map<std::string,T> &m ) const {
+
+		const VariableFormatter<T> formatter;
+
 		ostr << "StringMapper '"<< "', RegExp='" << regExp << "', " <<  size() << " segments:\n";
 		//StringMapper::const_iterator it;
+		for (const auto & entry: *this){
+			ostr << "  ";
+			if (entry.isVariable()){
+				ostr  << entry << "=";
+				if (!formatter.handle(entry, m, ostr)){
+					ostr << "???";
+				}
+			}
+			else {
+				// Literal
+				ostr << "'" << entry << "'";
+			}
+			ostr << '\n';
+		};
+
+		/*
 		for (StringMapper::const_iterator it = begin(); it != end(); it++){
 			//ostr << *it;
 			ostr << '\t';
@@ -469,6 +485,7 @@ public:
 			ostr << '\n';
 			//ostr << '\n';
 		}
+		*/
 		return ostr;
 	}
 
