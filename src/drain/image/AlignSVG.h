@@ -114,6 +114,8 @@ DRAIN_ENUM_OSTREAM(AlignBase::Pos);
 
 /// Container for Axis and Pos.
 /**
+ *   Explicit type parameters AX supports setting member \c axis a non-const or const value (HORZ or VERT).
+ *
  *   \tparam AX - const or non-const Align::Axis
  *   \tparam  A - axis init value AlignBase::Axis::HORZ or AlignBase::Axis::VERT
  *
@@ -122,14 +124,15 @@ DRAIN_ENUM_OSTREAM(AlignBase::Pos);
  *   Alignment<Align::Axis::HORZ>
  *   Alignment<Align::Axis::VERT>
  */
-template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS, typename POS = AlignBase::Pos> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
+template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> //, typename POS = AlignBase::Pos> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
 struct Alignment {
 
 	// Align::Axis
 	AX axis; // = V; // compiler error if different type?
 
 	//AlignBase::Pos pos
-	POS pos = AlignBase::Pos::UNDEFINED_POS; // or middle?
+	AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS; // or middle?
+	//POS pos = AlignBase::Pos::UNDEFINED_POS; // or middle?
 
 	/// Default constructor
 	inline
@@ -285,9 +288,9 @@ struct AlignSVG { // : protected Align {
 	 *  Notice that for an alignment to be complete, this function should be called twice:
 	 *  setting partial alignment for both owner=OBJECT and owner=ANCHOR .
 	 *
-	 *  \tparam OBJ - enum type \c Owner  or string
-	 *  \tparam A - enum type \c Axis or string
-	 *  \tparam V - enum type \c Alignment or string
+	 *  \tparam OBJ  - enum type \c Owner  or string
+	 *  \tparam A    - enum type \c Axis or string
+	 *  \tparam V    - enum type \c Alignment or string
 	 *  \param pos   - enum value \c OBJ or \c REF
 	 *  \param axis  - enum value \c HORZ or \c VERT
 	 *  \param value - enum value \c MAX , \c MID , or \c MIN (or string)

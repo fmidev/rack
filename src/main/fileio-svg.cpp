@@ -938,7 +938,7 @@ public:
 		rect->setAlign(AlignSVG2::REF, AlignSVG2::HORZ,  AlignSVG2::MIN);
 		*/
 
-		typedef drain::image::AlignSVG::Owner   AlOwner;
+		typedef drain::image::AlignSVG::Owner  Owner;
 		typedef drain::image::AlignBase::Pos   Pos;
 
 		const drain::EnumDict<Pos>::dict_t & dict = drain::EnumDict<Pos>::dict;
@@ -954,13 +954,13 @@ public:
 
 				char ph = dict.getKey(posHorz)[2];
 
-				for (const Pos & posVertRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // {AlignBase::MID}){
+				for (const Pos & posVertAnhor: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // {AlignBase::MID}){
 
-					char rv = dict.getKey(posVertRef)[2];
+					char rv = dict.getKey(posVertAnhor)[2];
 
-					for (const Pos & posHorzRef: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){
+					for (const Pos & posHorzAnchor: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){
 
-						char rh = dict.getKey(posHorzRef)[2];
+						char rh = dict.getKey(posHorzAnchor)[2];
 
 						//const std::string label = drain::StringBuilder<'-'>(posHorzRef, posVertRef, posHorz, posVert, '-', ph, pv, rh, rv);
 						const std::string label = drain::StringBuilder<'-'>(ph, pv, rh, rv);
@@ -968,11 +968,12 @@ public:
 						drain::image::TreeSVG & text = group[label + "text"](svg::TEXT);
 						text->setId(label+"_T");
 						text->getBoundingBox().setArea(60,30);
-						text->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
-						text->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
-						text->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
-						text->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
+						text->setAlign(Owner::ANCHOR, AlignBase::HORZ, posHorzAnchor);
+						text->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
+						text->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
+						text->setAlign(Owner::OBJECT, AlignBase::VERT, posVert);
 						text->setText(label);
+						text->setFontSize(6.0, 8.0);
 
 						drain::image::TreeSVG & textBox = group[label](svg::RECT);
 						textBox->setId(label+"_R");
@@ -982,10 +983,10 @@ public:
 						textBox->setStyle("opacity", 0.15);
 						textBox->setStyle("stroke-width", "2px");
 						textBox->setStyle("stroke", "black");
-						textBox->setAlign(AlOwner::ANCHOR, AlignBase::HORZ, posHorzRef);
-						textBox->setAlign(AlOwner::ANCHOR, AlignBase::VERT, posVertRef);
-						textBox->setAlign(AlOwner::OBJECT, AlignBase::HORZ, posHorz);
-						textBox->setAlign(AlOwner::OBJECT, AlignBase::VERT, posVert);
+						textBox->setAlign(Owner::ANCHOR, AlignBase::HORZ, posHorzAnchor);
+						textBox->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
+						textBox->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
+						textBox->setAlign(Owner::OBJECT, AlignBase::VERT, posVert);
 						//textBox->addClass(LayoutSVG::FLOAT);
 
 						//text->addClass(LayoutSVG::FLOAT);
