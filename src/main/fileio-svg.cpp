@@ -415,6 +415,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		// drain::StringTools::replace(ctx.svgPanelConf.groupTitleSyntax, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
+		mout.accept<LOG_WARNING>("old value: ", value);
 		drain::StringTools::replace(value, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
 		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupTitleSyntax);
 	}
@@ -642,13 +643,6 @@ public:
 
 
 		mout.reject<LOG_NOTICE>("Main align:", ctx.alignHorz, ", ", ctx.alignVert);
-
-		/*
-		std::string arg(value);
-		drain::StringTools::replace({{"\\n", "\n"}}, arg);
-		std::list<std::string> args;
-		drain::StringTools::split(arg, args, '\n');
-		*/
 
 		bool FIRST = true;
 		int index = 0;

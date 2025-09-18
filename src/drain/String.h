@@ -111,7 +111,7 @@ public:
 	static
 	void replace(const std::string &src, const S & search, const R & repl, std::ostream & ostr){
 
-		const size_t length = getLength(repl);
+		const size_t length = getLength(search);
 		std::string::size_type i = 0;
 		std::string::size_type pos;
 
@@ -151,6 +151,7 @@ public:
 	 *
 	 *  \return result
 	 */
+	/*
 	template <typename T1, typename T2>
 	static inline
 	std::string replace(const std::string &src, const T1 & search, const T2 & repl){
@@ -158,6 +159,7 @@ public:
 		replace(src, search, repl, dst);
 		return dst;
 	}
+	*/
 
 	// MAP VERSIONS
 
@@ -176,6 +178,14 @@ public:
 			}
 		}
 	};
+
+	template <typename T>
+	static inline
+	void replace(const std::string & src, const std::map<char,T> & m, std::string & dst){
+		std::stringstream result;
+		replace(src, m, result);
+		dst = result.str();
+	}
 
 	/// NEW Fast (in-place) implementation of char-to-char replace.
 	/**
@@ -218,11 +228,16 @@ private:
 	static inline
 	void replaceWithMap(const std::string & src, const M & m, std::string & dst){
 
-		if (&dst != &src){
-			dst = src; // clumsy?
+		if (m.empty()){
+			// Replace nothing in src, hence assign it directly to result.
+			if (&dst != &src){
+				dst = src; // clumsy?
+			}
+			return;
 		}
 
 		for (const auto & entry: m){
+			// std::cerr << "replacing " << entry.first << " -> " << entry.second << " in " << dst << std::endl;
 			replace(dst, entry.first, entry.second, dst);
 		}
 	};

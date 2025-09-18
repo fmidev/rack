@@ -32,17 +32,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_TYPE
 
 #include <iostream>
-#include <list>
-#include <set>
 #include <stdexcept>
 #include <typeinfo>
+
+#include <list>
+#include <set>
 #include <vector>
 
-// #include "Log.h"
-// #include "RegExp.h"
+
 
 namespace drain {
-
 
 /// Utilities related to std::type_info.
 /**
@@ -533,7 +532,7 @@ std::ostream & operator<<(std::ostream & ostr, const Type &t){
 
 
 
-// default implementation
+/// Default implementation
 /*
 
 */
@@ -541,17 +540,9 @@ template <typename T>
 struct TypeName
 {
 
-    // Recommended... See also: TreeXML
     static const std::string & str(){
         return name;
     }
-
-    /*
-    static const char* get(){
-    	return name.c_str();
-    }
-	*/
-
 
 protected:
 
@@ -623,6 +614,14 @@ struct TypeName<std::vector<T> > {
 	}
 
 };
+
+/*
+namespace std {
+	template <typename K, typename V>
+	class map<K,V>;
+}
+*/
+
 
 
 /// Returns the basic type (integer, float, bool, string, void) as a string.

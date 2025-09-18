@@ -41,13 +41,22 @@ namespace drain {
 // static
 std::string & StringMapper::convertEscaped(std::string &s){
 
+	/*
 	static
 	const std::map<std::string,char> conv = {
 			{"\\t", '\t'},
 			{"\\n", '\n'},
 	};
+	*/
 
+	const std::map<std::string,std::string> conv = {
+			{"\\t", "\t"},
+			{"\\n", "\n"},
+	};
+
+	std::cerr << __FUNCTION__ << '\n';
 	drain::StringTools::replace(s, conv, s);
+	std::cerr << __FUNCTION__ << " END " << '\n';
 
 	return s;
 }
@@ -72,9 +81,14 @@ StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
 	if (convertEscaped){
 		std::string s2(s);
-		return parse(StringMapper::convertEscaped(s2), regExp);
+		// mout.warn("converting: ", s2);
+		parse(StringMapper::convertEscaped(s2), regExp);
+		// mout.warn("converted:  ", s2);
+		//return parse(StringMapper::convertEscaped(s2), regExp);
+		return *this;
 	}
 	else {
+		// mout.warn("direct: ", s);
 		return parse(s, regExp);
 	}
 }

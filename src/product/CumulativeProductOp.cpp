@@ -115,7 +115,9 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	// mout.attention("accumulationMethod: ", accumulationMethod);
 	// mout.warn(DRAIN_LOG_VAR(accumulationMethod));
 
-	accumulator.setMethod(drain::StringTools::replace(accumulationMethod, ":", ","));
+	std::string s;
+	drain::StringTools::replace(accumulationMethod, ':', ',', s);
+	accumulator.setMethod(s);
 	accumulator.checkCompositingMethod(dstData.odim);
 	accumulator.accArray.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	accumulator.odim.rscale = dstData.odim.rscale;
