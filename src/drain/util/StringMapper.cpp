@@ -41,11 +41,14 @@ namespace drain {
 // static
 std::string & StringMapper::convertEscaped(std::string &s){
 
-	static StringTools::conv_map_t conversions = {
-			{"\\t", "\t"},
-			{"\\n", "\n"},
+	static
+	const std::map<std::string,char> conv = {
+			{"\\t", '\t'},
+			{"\\n", '\n'},
 	};
-	drain::StringTools::replace(conversions, s);
+
+	drain::StringTools::replace(s, conv, s);
+
 	return s;
 }
 

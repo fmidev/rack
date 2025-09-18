@@ -1324,7 +1324,8 @@ void Palette::exportSLD(TreeSLD & sld) const {
 	TreeSLD & namedLayer = sld[SLD::NamedLayer](SLD::NamedLayer);
 
 	TreeSLD & layerName = namedLayer[SLD::Name](SLD::Name);
-	layerName->ctext = title;
+	layerName->setTextSafe(title);
+	//layerName->ctext = title;
 
 	TreeSLD & comment = namedLayer[SLD::COMMENT](SLD::COMMENT);
 	comment = "GeoServer: the layer name is ignored, since the style may be applied to many different layers";
@@ -1333,7 +1334,10 @@ void Palette::exportSLD(TreeSLD & sld) const {
 
 	TreeSLD & name = userStyle[SLD::Name](SLD::Name);
 	name->ctext = title;
-	StringTools::replace({{" ", "_"}, {"-", "_"}}, name->ctext);
+	// StringTools::replace({{" ", "_"}, {"-", "_"}}, name->ctext);
+	// const std::map<char,std::string> conv = {{' ', "_"}, {'-', "_"}};
+	// StringTools::replace(name->ctext, {{" ", "_"}, {"-", "_"}}, name->ctext);
+	StringTools::replace(name->ctext, {{' ', '_'}, {'-', '_'}}, name->ctext);
 	StringTools::lowerCase(name->ctext);
 
 	TreeSLD & title = userStyle[SLD::Title](SLD::Title);

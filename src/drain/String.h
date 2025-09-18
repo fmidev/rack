@@ -89,103 +89,82 @@ public:
 
 
 
-	/// Replaces instances of 'from' to 'to' in src, storing the result in dst.
-	/// In src, replaces instances of 'from' to 'to', returning the result.
-	/** Safe. Uses temporary std::string.
-	 *  \see RegExp::replace.
-	 *
-	 *  Inconsistent design: other methods return void
-	static inline
-	std::string replace(const std::string &src, const std::string &from, const std::string & to){
-		std::string dst;
-		StringTools::replace(src, from, to, dst);
-		return dst;
-	}
-	 */
-
-	/**  Fundamental version.
-	 *
-	 */
-	static
-	void replace(const std::string &src, char from, char to, std::ostream & ostr);
-
-	/// In src, replaces instances of \c 'from' to \c 'to', storing the result in dst.
+	/// Replaces instances of 'search' to 'repl' in src
 	/**
-	 *   Fundamental version (for chars only)
+	 *  \see RegExp::replace.
+	 */
+	static
+	void replace(const std::string &src, char search, char repl, std::ostream & ostr);
+
+	/// In src, replaces instances of \c 'search' to \c 'repl', storing the result in dst.
+	/**
 	 *
 	 */
 	static
-	void replace(const std::string &src, char from, char to, std::string &dst);
+	void replace(const std::string &src, char from, char repl, std::string &dst);
+
+	/// In src, replaces instances of 'search' to 'repl', storing the result in dst.
+	/**
+	 *
+	 */
+	template <typename S, typename R>
+	static
+	void replace(const std::string &src, const S & search, const R & repl, std::ostream & ostr){
+
+		const size_t length = getLength(repl);
+		std::string::size_type i = 0;
+		std::string::size_type pos;
+
+		while (true) {
+			pos = src.find(search, i);
+			if (pos == std::string::npos){
+				ostr << src.substr(i);
+				return;
+			}
+
+			// String was found
+			ostr << src.substr(i, pos-i) << repl;
+
+			// Jump over <search>: move forward len(search) chars
+			i = pos + length;
+		}
+	}
 
 
 	/// In src, replaces instances of 'from' to 'to', storing the result in dst.
 	/**
-	 *   Fundamental version.
 	 *
-	 */
-	static
-	void replace(const std::string &src, const std::string &from, const std::string & to, std::string & dst);
-
-
-	/// Replaces a char or a substring in the argument itself.
-	/**
-	 *  Variant
 	 */
 	template <typename T1, typename T2>
 	static inline
-	void replace(std::string &src, const T1 &from, const T2 &to){
-		replace(src, from, to, src);
+	void replace(const std::string &src, const T1 &search, const T2 & repl, std::string & dst){
+		std::stringstream result;
+		replace(src, search, repl, result);
+		dst = result.str();
 	}
+
 
 	/// Convenience using copying of string.
 	/**
 	 *  Replaces a char or a substring.
+	 *  Inconsistent design: other methods return void
 	 *
 	 *  \return result
 	 */
 	template <typename T1, typename T2>
 	static inline
-	std::string replace(const std::string &src, const T1 &from, const T2 &to){
+	std::string replace(const std::string &src, const T1 & search, const T2 & repl){
 		std::string dst;
-		replace(src, from, to, dst);
+		replace(src, search, repl, dst);
 		return dst;
 	}
 
 	// MAP VERSIONS
-	// remove this:
-	typedef std::map<std::string,std::string> conv_map_t;
-
-	/// Replaces instances appearing as map keys to map values.
-	/**
-	 *  \see RegExp::replace.
-	 */
-	static
-	void replace(const conv_map_t & m, std::string &s, std::size_t pos = 0);
-
-	//typedef std::map<char,std::string> _map_t;
-
-	/// Replaces instances appearing as map keys to map values.
-	/**
-	 *  \see RegExp::replace.
-	 */
-	// std::map<std::string,std::string>
-	// static
-	// void replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr);
-
-	/*
-	static inline
-	void replace(const std::map<char,std::string> & m, const std::string & src, std::string & dst){
-		std::stringstream result;
-		replace(m, src, result);
-		dst = result.str();
-
-	}
-	*/
 
 	/// NEW Fast implementation of char replace.
 	template <typename T>
 	static
-	void replace(const std::map<char,T> & m, const std::string & src, std::ostream & ostr){
+	void replace(const std::string & src, const std::map<char,T> & m, std::ostream & ostr){
 		typename std::map<char,T>::const_iterator it;
 		for (char c: src){
 			it = m.find(c);
@@ -203,28 +182,53 @@ public:
 	 *
 	 */
 	static
-	void replace(const std::map<char,char> & m, const std::string & src, std::string & dst);
+	void replace(const std::string & src, const std::map<char,char> & m, std::string & dst);
 
 	/**
 	 *  Implementation for all such results than can have length different than source.
 	 *  That is, from-set and/or to-set are strings.
 	 *
 	 */
-	template <class T1, class T2>
+	template <class K, class V>
 	static inline
-	void replace(const std::map<T1,T2> & m, const std::string & src, std::string & dst){
-		std::stringstream result;
-		replace(m, src, result);
-		dst = result.str();
+	void replace(const std::string & src, const std::map<K,V> & m, std::string & dst){
+		replaceWithMap(src, m, dst);
+	};
+
+	template <class K, class V>
+	static inline
+	void replace(const std::string & src, const std::initializer_list<std::pair<K,V> > & m, std::string & dst){
+		replaceWithMap(src, m, dst);
 	};
 
 
+private:
+
 	static inline
-	void replace(const std::map<char,std::string> & m, std::string & src){
-		replace(m, src, src);
-	}
+	size_t getLength(char c){
+		return 1;
+	};
+
+	static inline
+	size_t getLength(const std::string & s){
+		return s.length();
+	};
+
+	template <class M>
+	static inline
+	void replaceWithMap(const std::string & src, const M & m, std::string & dst){
+
+		if (&dst != &src){
+			dst = src; // clumsy?
+		}
+
+		for (const auto & entry: m){
+			replace(dst, entry.first, entry.second, dst);
+		}
+	};
 
 
+public:
 
 
 

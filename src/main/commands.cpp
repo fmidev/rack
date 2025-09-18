@@ -382,23 +382,22 @@ public:
 
 		// NEW
 		std::string checkedValue(value);
-		//ctx.superSelector.reset();
 		mySelector.reset();
 
 		try {
 			// Setting test selector here will alert early
 			mySelector.setQuantities(checkedValue); // ","
-			//ctx.superSelector.getQuantitySelector();
 		} catch (const std::exception & e) {
 			mout.obsolete(checkedValue,  " - pattern matching has been replaced by RegExp matching: * -> .*, ? -> .? etc.");
 			mout.warn("msg: ", e.what());
-			drain::StringTools::replace(transTable, checkedValue);
+			drain::StringTools::replace(checkedValue, transTable, checkedValue);
 			//mout.warn("syntax error in selection string: ", value);
 			try {
 				mout.special("retrying with '", checkedValue, "'");
 				mySelector.setQuantities(checkedValue);
 				//ctx.superSelector.getQuantitySelector();
-			} catch (const std::exception & e) {
+			}
+			catch (const std::exception & e) {
 				mout.warn("msg: ", e.what());
 				mout.error("syntax error in selection string: ", value, " or ", checkedValue);
 				ctx.statusFlags.set(drain::Status::PARAMETER_ERROR); // resources.dataOk = false;

@@ -80,31 +80,31 @@ bool StringTools::endsWith(const std::string &s, const std::string & substring){
 // bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
 
 
-void StringTools::replace(const std::string &src, char from, char to, std::string &dst){
+void StringTools::replace(const std::string &src, char search, char repl, std::string &dst){
 	if (&dst != &src){
 		dst.assign(src);
 	};
 	for (char & c: dst){
-		if (c==from){
-			c = to;
+		if (c==search){
+			c = repl;
 		}
 	}
 }
 
-void StringTools::replace(const std::string &src, char from, char to, std::ostream & ostr){
+void StringTools::replace(const std::string &src, char search, char repl, std::ostream & ostr){
 	for (char c: src){
-		if (c != from){
+		if (c != search){
 			ostr << c;
 		}
 		else {
-			ostr << to;
+			ostr << repl;
 		}
 	}
 }
 
 
 // NEW
-void replace(const std::map<char,char> & m, const std::string & src, std::string & dst){
+void StringTools::replace(const std::string & src, const std::map<char,char> & m, std::string & dst){
 
 	if (&dst != &src){
 		dst.assign(src);
@@ -121,10 +121,42 @@ void replace(const std::map<char,char> & m, const std::string & src, std::string
 }
 
 
+/*
+void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::ostream & ostr){
 
 
+	std::string::size_type i = 0;
+	std::string::size_type pos;
+	//dst.clear();
 
+	while (true) {
+		pos = src.find(search, i);
+		if (pos == std::string::npos){
+			ostr << src.substr(i);
+			// dst.append(src, i, src.size()-i);
+			return; // result;
+			//return;
+		}
+
+		// String was found
+		ostr << src.substr(i, pos-i) << to;
+
+		// dst.append(src, i, pos-i);
+		// std::cerr << result << " 2\n";
+		// dst.append(to);
+		// std::cerr << result << " 3\n";
+
+		// Jump over <search>: move forward len(search) chars
+		i = pos + search.size();
+	}
+}
+*/
+
+
+/*
 void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::string & dst){
+
+
 
 	if (&dst == &src){
 		std::string tmp;
@@ -151,10 +183,11 @@ void StringTools::replace(const std::string &src, const std::string &search, con
 		//std::cerr << result << " 3\n";
 		i = pos + search.size();
 	}
-
 }
+*/
 
-void StringTools::replace(const conv_map_t & m, std::string & s, std::size_t pos){
+/*
+void StringTools::replaceFOO(const conv_map_t & m, std::string & s, std::size_t pos){
 
 	std::size_t len;
 	std::size_t step;
@@ -176,6 +209,7 @@ void StringTools::replace(const conv_map_t & m, std::string & s, std::size_t pos
 	}
 
 }
+*/
 
 /*
 void StringTools::replace(const std::map<char,std::string> & m, const std::string & src, std::ostream & ostr){

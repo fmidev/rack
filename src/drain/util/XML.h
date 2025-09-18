@@ -303,7 +303,7 @@ public:
 	template <class ...T>
 	void setTextSafe(const T & ...args) {
 		std::string dst;
-		StringTools::replace(getCTextConversionMap(), StringBuilder<>(args...).str(), dst); // str() to avoid infinite loop
+		StringTools::replace(StringBuilder<>(args...).str(), getCTextConversionMap(), dst); // str() to avoid infinite loop
 		setText(dst);
 		//setText(StringTools::replace(m, StringBuilder<>(args...).str(), ctext)); // str() to avoid infinite loop
 	}
@@ -585,7 +585,7 @@ public:
 				{'=','_'},
 		};
 		ostr << ' ';
-		StringTools::replace(keyMap, key, ostr); // XML::encodingMap
+		StringTools::replace(key, keyMap, ostr); // XML::encodingMap
 		//StringTools::replace(getEntityMap(), key, ostr); // XML::encodingMap
 
 		static const std::map<char,std::string> valueMap = {
@@ -594,7 +594,7 @@ public:
 				{entity_t::GREATER_THAN,"))"},
 		};
 		ostr << '=' << '"';
-		StringTools::replace(valueMap, value, ostr); // XML::encodingMap
+		StringTools::replace(value, valueMap, ostr); // XML::encodingMap
 		//StringTools::replace(getEntityMap(), value, ostr); // XML::encodingMap
 		ostr << '"';
 		//<< key << '=' << '"' << value << '"'; // << ' ';
@@ -990,7 +990,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 				}
 				//ostr << entry.second->getText();
 				//StringTools::replace(XML::encodingMap, entry.second->getText(), ostr); // any time issue?
-				StringTools::replace(getEntityMap(), entry.second->getText(), ostr); // any time issue?
+				StringTools::replace(entry.second->getText(), getEntityMap(), ostr); // any time issue?
 				// ostr << entry.second->getText();
 			}
 		}

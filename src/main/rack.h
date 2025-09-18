@@ -103,7 +103,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 12.92
  *  - NonMet palette color (lighter orange)
  *  Release 12.93
- *  - better XML entity (special chars) support, started revision of StringTool::replace()
+ *  - better XML entity (special chars) support, started revising StringTool::replace()
+ *  Release 12.94
+ *  - revised StringTool::replace()
  *
  *
  *  Version 11
