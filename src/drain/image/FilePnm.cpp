@@ -508,7 +508,8 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	const FlexVariableMap & vmap = image.getProperties();
 	if (vmap.hasKey("")){
 		mout.note("Comment override mode detected (comment with empty key)");
-		ofstr << '#' << ' ' << drain::StringTools::replace( vmap.get("", ""), "\n", "\n# ");
+		ofstr << '#' << ' '; // << drain::StringTools::replace( vmap.get("", ""), "\n", "\n# ");
+		drain::StringTools::replace(vmap.get("", ""), '\n', "\n# ", ofstr);
 		// ofstr << vmap.get("", "");
 		ofstr << '\n';
 	}
