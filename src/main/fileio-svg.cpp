@@ -1176,6 +1176,169 @@ public:
 
 };
 
+#include <drain/util/TreeUtils.h>
+
+class BBoxRetrieverSVG2 : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	BBoxSVG box;
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+
+
+		BBoxSVG b;
+
+		NodeSVG & node = tree(path).data;
+
+		if (node.isAbstract()){
+			return 1;
+		}
+
+		// node.get("data-bb") = 0.0;
+
+		double r=0.0;
+		switch (node.getNativeType()){
+		//switch (tree->getType()){
+		case svg::CIRCLE:
+			r = node.get("r");
+			b.setLocation(node.get("cx", 0.0)-r, node.get("cy", 0.0)-r);
+			b.setArea(2.0*r, 2.0*r);
+			// node.get("data-bb") = b.getLocation().tuple();
+			node.get("data-bb") << b.x << b.y << b.width << b.height;
+			// node.get("data-bb") << b.width << b.height;
+			break;
+		//case svg::RECT:
+		default:
+			drain::Logger(__FILE__, "BBoxRetrieverSVG2::visitPrefix").warn("unhandled type: ", tree->getNativeType());
+
+		}
+
+		if (box.empty()){
+			box = b; // .set(b.x, b.y, b.width, b.height);
+			//box.set(b.tuple());
+		}
+		else {
+			box.expand(b);
+		}
+
+
+		return 0; // continue
+	}
+
+	//int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+};
+
+drain::image::TreeSVG & getDummyObject(drain::image::TreeSVG & group, double dx, double dy){
+
+	drain::Logger mout(__FUNCTION__, __FILE__);
+	typedef drain::image::svg::tag_t tag_t;
+
+	const std::string name = drain::StringBuilder<>("dummy", group.getChildren().size());
+	drain::image::TreeSVG & subGroup = group[name](tag_t::GROUP);
+
+
+	drain::image::NodeSVG::Elem<tag_t::RECT> rect(subGroup[tag_t::RECT]);
+	rect.x = (::rand()&63) + dx;
+	rect.y = (::rand()&63) + dy;
+	rect.width  = (::rand()&255);
+	rect.height = (::rand()&255);
+	subGroup[tag_t::RECT] -> setStyle("fill", "red");
+	subGroup[tag_t::RECT] -> setStyle("opacity", 0.5);
+
+
+	drain::image::NodeSVG::Elem<tag_t::CIRCLE> circ(subGroup[tag_t::CIRCLE]);
+	circ.cx = (::rand()&63) + dx -20;
+	circ.cy = (::rand()&63) + dy +20;
+	circ.r = int(::rand()&63);
+	mout.attention("radius: ", circ.r, " = ", circ.node.get("r"), " = ", subGroup[tag_t::CIRCLE]->get("r"));
+	circ.r.info(std::cerr); std::cerr << std::endl;
+	subGroup[tag_t::CIRCLE]->get("r").info(std::cerr); std::cerr << std::endl;
+
+	subGroup[tag_t::CIRCLE] -> setStyle("fill", "green");
+	subGroup[tag_t::CIRCLE] -> setStyle("opacity", 0.5);
+	//subGroup[tag_t::CIRCLE] -> set("r", 100);
+
+	drain::image::NodeSVG::Elem<tag_t::POLYGON> poly(subGroup[tag_t::POLYGON]);
+	subGroup[tag_t::POLYGON] -> setStyle("stroke", "blue");
+	subGroup[tag_t::POLYGON] -> setStyle("fill",   "cyan");
+	subGroup[tag_t::POLYGON] -> setStyle("opacity", 0.5);
+
+	// poly.points.info(std::cerr); std::cerr << std::endl;
+	// mout.attention("poly.path.info");
+	poly.append(dx +     (::rand()&127), dy +     (::rand()&127));
+	poly.append(dx - 32+ (::rand()&63),  dy + 64 +(::rand()&127));
+	poly.append(dx + 64+ (::rand()&127), dy + 32 +(::rand()&63));
+
+	// drain::image::NodeSVG::Elem<tag_t::POLYGON> polyx(subGroup);
+
+
+	return subGroup;
+}
+
+class CmdAlignTest : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdAlignTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout", "foo") {
+		//getParameters().link("level", level = 5);
+	}
+
+	void exec() const override {
+
+		// ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
+		// ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		const drain::Frame2D<double> frame = {768.0, 640.0};
+
+		ctx.svgTrack->set("data-version", 2);
+		ctx.svgTrack->setWidth(1.2 * frame.width);
+		ctx.svgTrack->setHeight(1.2 * frame.height);
+
+		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
+		style[svg::RECT]->set("stroke-style", "dotted");
+
+
+		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
+		group->setId(value);
+		group->addClass(LayoutSVG::FLOAT);
+
+		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
+		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
+		group->setAlignAnchorHorz(ANCHOR_ELEM);
+
+		// Only writes alignRequest
+		RackSVG::applyAlignment(ctx, group);
+
+		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
+		rect->setWidth(frame.width);
+		rect->setHeight(frame.height);
+		// rect->set("width", );
+		// rect->set("width", 10); //margin!
+		// rect->set("height", frame.height);
+		rect->set("label", ANCHOR_ELEM); // ??
+		rect->setStyle("fill", "yellow");
+		rect->setStyle("opacity", 0.5);
+		// rect->setId("textRect"); // needed?
+
+		// Three sample objects, each consisting of three elements.
+		getDummyObject(group, 0.5*frame.width, 0.1*frame.height );
+		getDummyObject(group, 0.2*frame.width, 0.4*frame.height );
+		getDummyObject(group, 0.7*frame.width, 0.6*frame.height );
+
+		BBoxRetrieverSVG2 bbr;
+		drain::TreeUtils::traverse(bbr, ctx.svgTrack);
+		const drain::Box<svg::coord_t> & bb = bbr.box;
+		mout.attention(bb);
+
+	}
+
+};
 
 GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
@@ -1210,6 +1373,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdStyle>();
 
 	install<CmdSector>();
+	install<CmdAlignTest>();
 
 };
 

@@ -204,7 +204,7 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 	case image::svg::CIRCLE:
 		link("cx", box.x = 0);
 		link("cy", box.y = 0);
-		set("radius", static_cast<svg::coord_t>(0));
+		set("r", svg::coord_t(0));
 		// link("r", radius = 0);
 		break;
 	case image::svg::IMAGE:
@@ -215,6 +215,12 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 		// if (version == 1) {
 		link("xlink:href", url); // text_anchor
 		// if (version > 2.x ?) {
+		break;
+	case image::svg::POLYGON:
+		// link("path", ctext);
+		// set("path", "");
+		get("points").setType<std::string>();
+		get("points").setSeparator(0);
 		break;
 	case image::svg::TEXT:
 		link("x", box.x); //  = 0);
@@ -235,6 +241,15 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 
 
 }
+
+/* Well, every graphic obj may have DESC and TITLE?
+bool NodeSVG::isSingular() const {
+
+	return typeIs(
+			svg::CIRCLE,
+	);
+};
+*/
 
 /// Needed for handling units in strings, like "50%" or "640px".
 void NodeSVG::setAttribute(const std::string & key, const std::string &value){

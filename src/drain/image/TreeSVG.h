@@ -268,7 +268,26 @@ public:
 		return *this;
 	}
 
+	inline
+	NodeSVG & operator=(xml_tag_t type){
+		setType(type);
+		return *this;
+	}
 
+	// Dangerous, if XML has codes not registered by SVG?
+	/*
+	inline
+	NodeSVG & operator=(xml_tag_t type){
+		setType(type);
+		return *this;
+	}
+	*/
+
+
+	/* Well, every graphic obj may have DESC and TITLE?
+	virtual
+	bool isSingular() const override final;
+	*/
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
@@ -467,9 +486,16 @@ class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
 public:
 
 	inline
-	Elem(image::NodeSVG & node) : x(node["x"]), y(node["y"]), width(node["width"]), height(node["height"]){
-		node.setType(image::svg::tag_t::RECT);
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::RECT), x(node["x"]), y(node["y"]), width(node["width"]), height(node["height"]){
+		// node.setType(image::svg::tag_t::RECT); // ERROR: resets FlexMap
+		/*
+		if (!node.typeIs(image::svg::tag_t::RECT)){
+			throw std::runtime_error("Elem-node not RECT");
+		}
+		*/
 	};
+
+	NodeXML<image::svg::tag_t> & node;
 
 	FlexibleVariable & x;
 	FlexibleVariable & y;
@@ -484,26 +510,76 @@ template <>
 class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::CIRCLE>{
 public:
 
+	NodeXML<image::svg::tag_t> & node;
+
 	inline
-	Elem(image::NodeSVG & node) : x(node["x"]), y(node["y"]), radius(node["radius"]){
-		node.setType(image::svg::tag_t::CIRCLE);
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node["cx"]), cy(node["cy"]), r(node["r"] = 0.0){
 	};
 
-	FlexibleVariable & x;
-	FlexibleVariable & y;
-	FlexibleVariable & radius;
+	FlexibleVariable & cx;
+	FlexibleVariable & cy;
+	// Radius
+	FlexibleVariable & r;
 
-	/*
+	/**
+	 * problem: this NodeXML<T> class cannot access NodeSVG.box
+
 	inline
-	Elem(image::NodeSVG & node) : x(node.box.x), y(node.box.y), radius(node.radius){
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE),
+		cx(node.box.x), cy(node.box.y), r(node["r"]){
 	};
 
-	float & x;
-	float & y;
-	int & radius;
-	// double radius; // FAILS! Upon exiting scope, link becomes invalidated
-	*/
+	image::svg::coord_t & cx;
+	image::svg::coord_t & cy;
+	FlexibleVariable & r;
+	 */
+
 };
+
+template <>
+template <>
+class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::POLYGON>{
+public:
+
+	inline
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::POLYGON), points(node["points"]), writablePoints(node["points"]){
+		// node.setType(image::svg::tag_t::POLYGON); ERROR: resets FlexMap
+		/*
+		if (node.typeIs(image::svg::tag_t::POLYGON)){
+			throw std::runtime_error("Elem-node not POLYGON");
+		}
+		*/
+		// node["path"].link(node.ctext);
+	};
+
+	NodeXML<image::svg::tag_t> & node;
+
+	const FlexibleVariable & points;
+
+protected:
+
+	FlexibleVariable & writablePoints;
+
+public:
+
+	void clear(){
+		writablePoints.clear();
+	}
+
+	template <typename T>
+	inline
+	void append(const T &x, const T &y){
+		writablePoints << x << ',' << y << ' ';
+	}
+
+	template <typename T>
+	inline
+	void append(drain::Point2D<T> &p){
+		writablePoints << p.x << ',' << p.y << ' ';
+	}
+
+};
+
 
 }  // drain::
 

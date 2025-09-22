@@ -225,15 +225,16 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 
 }
 
+/// Apply an alignment, to next object only
 /*
- *   This could be in GraphicsContext, but ctx.log should be virtualized first, like getLog():
+ *q
+ *  This could be in GraphicsContext, but ctx.log should be virtualized first, like getLog():
  */
 void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	if (ctx.alignHorz.pos != AlignBase::UNDEFINED_POS){
-
 
 		group->setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.get(AlignSVG::INSIDE));  // simplify
 		mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
@@ -246,13 +247,6 @@ void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
 		// ctx.alignHorz.pos == AlignBase::UNDEFINED_POS
 		mout.attention(" HORZ state now: ", ctx.alignHorz);
 	}
-	/*
-	else {
-		group->setAlign(ctx.alignHorz);
-		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
-		mout.accept<LOG_NOTICE>("Using HORZ align: ", ctx.alignHorz, " -> ", group->getAlignStr());
-	}
-	 */
 
 	if (ctx.alignVert.pos != AlignBase::UNDEFINED_POS){
 		group->setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.get(AlignSVG::INSIDE)); // simplify
@@ -265,14 +259,6 @@ void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
 		mout.attention(" VERT state now: ", ctx.alignVert);
 		// ctx.alignVert.pos != AlignBase::UNDEFINED_POS
 	}
-	/*
-	else {
-		// group->setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // AlignSVG::BOTTOM);
-		group->setAlign(ctx.alignVert);
-		// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
-		mout.accept<LOG_NOTICE>("Using VERT align: ", ctx.alignVert, " -> ", group->getAlignStr());
-	}
-	 */
 
 
 }

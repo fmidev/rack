@@ -485,19 +485,13 @@ void CmdOutputFile::exec() const {
 	}
 	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
-		// ctx.get
 		svgGroup->set("id", path.basename);
-		if (!ctx.outputPrefix.empty())
-			svgGroup->set("outputPrefix", ctx.outputPrefix); // add "data:..."
-		// TODO: outDir
-		// track.data.set("outputPrefix", ctx.outputPrefix);
-		// track.data.set("prefix", path.basename);
+		if (!ctx.outputPrefix.empty()){
+			svgGroup->set("data-outputPrefix", ctx.outputPrefix); // add "data:..."
+		}
 
 		mout.experimental("writing SVG file: ", path);
 
-		//RackSVG::addRectangle(ctx, {120,500});
-		//if (!ctx.svgPanelConf.absolutePaths){
-		// mout.attention("svg: ", ctx.svgPanelConf.pathPolicyFlagger);
 		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(PanelConfSVG::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
 			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(PanelConfSVG::PREFIXED) ? "./" : "";
@@ -508,7 +502,14 @@ void CmdOutputFile::exec() const {
 		else {
 			// mout.attention("svg: ABSOLUTE paths");
 		}
-		RackSVG::completeSVG(ctx); //, path.dir);
+
+		if (ctx.svgTrack->get("data-version") == 2){
+			mout.attention("skipping alignment");
+		}
+		else {
+			RackSVG::completeSVG(ctx);
+		}
+
 
 		drain::Output ofstr(filepath);
 

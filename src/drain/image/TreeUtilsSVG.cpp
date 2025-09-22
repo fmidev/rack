@@ -591,9 +591,10 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 	}
 	else if (node->typeIs(svg::IMAGE)){
 		drain::image::TreeSVG & imageNode = tree(path);
-		const std::string imagePath = imageNode->getUrl(); //imageNode->get("xlink:href");
+		const std::string & imagePath = imageNode->getUrl(); //imageNode->get("xlink:href");
+
 		if (drain::StringTools::startsWith(imagePath, dir)){
-			// imageNode->set("xlink:href", imagePath.substr(dir.size())); // TODO: setURL ?
+			// Strip directory part from the imagePath, replace with prefix
 			imageNode->setUrl(prefix + imagePath.substr(dir.size()));
 		}
 		else {

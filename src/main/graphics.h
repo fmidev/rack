@@ -56,40 +56,6 @@ public:
 	// Identifier for the anchor background
 	static const std::string BACKGROUND_RECT; //  = "mainRect";
 
-	// static const std::string TECH_PANEL;
-	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	/*
-	enum ElemClass {
-		NONE = 0,
-		MAIN_TITLE = 1,  // Main title in SVG image
-		GROUP_TITLE = 2,
-		IMAGE_TITLE = 4,  // Small title in a corner of radar image (time, location)
-		TIME = 8,       // Date and time attributes
-		LOCATION = 16,   // Place (coordinates, municipality)
-		GENERAL = 32,    // Default type
-		ALL = (63),
-		MAIN,
-		IMAGE_PANEL,
-		IMAGE_BORDER, // RECT surrounding the image
-		SHARED_METADATA, // Something that should not be repeated in panels.
-		// --- unused ? ---
-		TITLE,      // Default title
-	  };
-    */
-
-	// Selected CSS classes corresponding to above element classes
-	/*
-	static const drain::ClassSelectorXML clsTITLE;// ('.', RackSVG::TITLE);
-	static const drain::ClassSelectorXML clsIMAGE_TITLE;// ('.', RackSVG::IMAGE_TITLE);
-	static const drain::ClassSelectorXML clsGROUP_TITLE;// ('.', RackSVG::GROUP_TITLE);
-	static const drain::ClassSelectorXML clsMAIN_TITLE;// ('.', RackSVG::MAIN_TITLE);
-	static const drain::ClassSelectorXML clsTIME;// ('.', RackSVG::TIME);
-	static const drain::ClassSelectorXML clsLOCATION;// ('.', RackSVG::LOCATION);
-	static const drain::ClassSelectorXML clsIMAGE_BORDER;// ('.', RackSVG::IMAGE_BORDER);
-	*/
-
-	// typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
-	//TitleFlagger svgTitles = ElemClass::NONE;
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
 	/**
