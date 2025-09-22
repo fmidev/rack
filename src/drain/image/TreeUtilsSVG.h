@@ -152,6 +152,13 @@ public:
 	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
 
 
+	static
+	void realignObjectHorzNEW(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz);
+
+	static
+	void realignObjectVertNEW(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
+
+
 	/// Recursively move elements with (x, y).
 	static
 	void translateAll(TreeSVG & group, const Point2D<svg::coord_t> &offset);

@@ -97,6 +97,11 @@ public:
 	BBoxSVG(const BBoxSVG & bbox) : drain::Box<svg::coord_t>(bbox)  {
 	}
 
+
+	// New
+
+
+
 	// Future option - also other units!
 	/*
 	bool x_PERCENTAGE = false;

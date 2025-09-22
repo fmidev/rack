@@ -1176,7 +1176,7 @@ public:
 
 };
 
-#include <drain/util/TreeUtils.h>
+//#include <drain/util/TreeUtils.h>
 
 class BBoxRetrieverSVG2 : public drain::TreeVisitor<TreeSVG> {
 
@@ -1230,6 +1230,140 @@ public:
 
 };
 
+void superDetectBoxes(drain::image::TreeSVG & group){ //, BBoxSVG & bbox){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//warn("nesting SVG elem not handled");
+
+	typedef drain::image::svg::tag_t tag_t;
+
+	if (group->typeIs(tag_t::GROUP, tag_t::SVG)){
+
+		BBoxSVG bbox; // for <svg>
+
+		BBoxSVG & b = (group->typeIs(tag_t::GROUP)) ? group->getBoundingBox() : bbox;
+
+		b.reset();
+
+		bool GRAPHICS = false;
+		for (auto & entry: group.getChildren()){
+
+			mout.pending<LOG_NOTICE>("initial BBOX ", b, " of: [", entry.first, "]=", entry.second.data);
+
+			if (entry.second->typeIs(tag_t::GROUP, tag_t::SVG)){
+
+				superDetectBoxes(entry.second); // returns if not SVG or G
+
+				// Now sub-GROUP bbox is ready.
+				b.expand(entry.second->getBoundingBox()); // is this ok? Consider N-level nesting (and translation)
+
+				mout.accept<LOG_NOTICE>("BBOX after GROUP/SVG", b);
+
+			}
+			else if (entry.second->typeIs(tag_t::SVG)){
+				mout.warn("nesting SVG elem not handled");
+			}
+			else if (!entry.second->isAbstract()){ // is graphic
+
+				GRAPHICS = true;
+
+				drain::image::NodeSVG & node = entry.second.data;
+
+				switch (node.getNativeType()){
+				case svg::CIRCLE: {
+					double cx = node.get("cx");
+					double cy = node.get("cy");
+					double r  = node.get("r");
+					b.expand(cx + r, cy + r);
+					b.expand(cx - r, cy - r);
+					mout.accept<LOG_NOTICE>("BBOX after svg::CIRCLE: ", b);
+					//node.get("data-bb") << b.x << b.y << b.width << b.height;
+				}
+				break;
+				case svg::RECT: {
+					b.expand(node.getBoundingBox());
+					mout.accept<LOG_NOTICE>("BBOX after svg::RECT: ", b);
+					//node.get("data-bb") << b.x << b.y << b.width << b.height;
+				}
+				break;
+				case svg::POLYGON: {
+					std::list<std::string> points;
+					double x=0.0, y=0.0;
+					drain::StringTools::split(node.get("points",""), points, ' '); // note: separator not comma
+					for (const auto & point: points){
+						drain::StringTools::split2(point, x,y, ','); // note: separator not comma
+						b.expand(x, y);
+					}
+					mout.accept<LOG_NOTICE>("BBOX after POLYGON: ", b);
+				}
+				break;
+				default:
+					mout.warn("unhandled type: ", node.getType());
+				}
+			}
+
+		}
+
+		if (GRAPHICS || (group.getChildren().size() > 1)){
+			drain::image::NodeSVG & debugRect = group["debugRect"](svg::RECT);
+			debugRect.addClass("DEBUG");
+			// debugRect.setStyle("stroke-width", 3);
+			// debugRect.setStyle("stroke-style", "dotted");
+			debugRect.getBoundingBox() = b;
+			debugRect.set("x", b.x);
+			debugRect.set("y", b.y);
+			debugRect.setFrame(b.getFrame());
+		}
+
+	}
+
+
+}
+
+void hyperAlign(drain::image::TreeSVG & group){ //, BBoxSVG & bbox){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//warn("nesting SVG elem not handled");
+
+	typedef drain::image::svg::tag_t tag_t;
+
+	if (!group->typeIs(tag_t::GROUP, tag_t::SVG)){
+		return;
+	}
+
+	drain::Point2D<svg::coord_t> point(0,0);
+
+	if (group->hasClass(LayoutSVG::ALIGN_FRAME)){ // consider orientation in class? ALIGN_LEFT ALIGN_DOWN
+
+		for (auto & entry: group.getChildren()){
+
+			drain::image::NodeSVG & node = entry.second.data;
+
+			if (node.typeIs(tag_t::GROUP)){
+				BBoxSVG & bbox = node.getBoundingBox();
+				drain::Point2D<svg::coord_t> translate;
+				translate.x = point.x - bbox.x;
+				translate.y = point.y - bbox.y;
+				//svg::coord_t dx = bbox.x;
+				//svg::coord_t dy = bbox.y;
+				// transform="translate(0 50)
+				node.transform.translate.set(translate);
+				// node.set("transform", drain::StringBuilder<>("translate(", translate.x, ' ', translate.y, ")").str());
+				point.x += bbox.width;
+				point.y += bbox.height;
+			}
+		}
+	}
+
+	for (auto & entry: group.getChildren()){
+		hyperAlign(entry.second);
+	}
+
+}
+
+
 drain::image::TreeSVG & getDummyObject(drain::image::TreeSVG & group, double dx, double dy){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
@@ -1238,33 +1372,31 @@ drain::image::TreeSVG & getDummyObject(drain::image::TreeSVG & group, double dx,
 	const std::string name = drain::StringBuilder<>("dummy", group.getChildren().size());
 	drain::image::TreeSVG & subGroup = group[name](tag_t::GROUP);
 
+	drain::image::TreeSVG & title = subGroup[tag_t::TITLE](tag_t::TITLE);
+	title = name;
 
-	drain::image::NodeSVG::Elem<tag_t::RECT> rect(subGroup[tag_t::RECT]);
+	drain::image::NodeSVG::Elem<tag_t::RECT> rect(subGroup["rectangle"]);
 	rect.x = (::rand()&63) + dx;
 	rect.y = (::rand()&63) + dy;
 	rect.width  = (::rand()&255);
 	rect.height = (::rand()&255);
-	subGroup[tag_t::RECT] -> setStyle("fill", "red");
-	subGroup[tag_t::RECT] -> setStyle("opacity", 0.5);
+	rect.node.setStyle("fill", "red");
+	rect.node.setStyle("opacity", 0.5);
 
-
-	drain::image::NodeSVG::Elem<tag_t::CIRCLE> circ(subGroup[tag_t::CIRCLE]);
+	drain::image::NodeSVG::Elem<tag_t::CIRCLE> circ(subGroup["circle"]);
 	circ.cx = (::rand()&63) + dx -20;
 	circ.cy = (::rand()&63) + dy +20;
 	circ.r = int(::rand()&63);
-	mout.attention("radius: ", circ.r, " = ", circ.node.get("r"), " = ", subGroup[tag_t::CIRCLE]->get("r"));
-	circ.r.info(std::cerr); std::cerr << std::endl;
-	subGroup[tag_t::CIRCLE]->get("r").info(std::cerr); std::cerr << std::endl;
+	// mout.attention("radius: ", circ.r, " = ", circ.node.get("r"), " = ", subGroup[tag_t::CIRCLE]->get("r"));
+	// circ.r.info(std::cerr); std::cerr << std::endl;
+	// subGroup[tag_t::CIRCLE]-> get("r").info(std::cerr); std::cerr << std::endl;
+	circ.node.setStyle("fill", "green");
+	circ.node.setStyle("opacity", 0.5);
 
-	subGroup[tag_t::CIRCLE] -> setStyle("fill", "green");
-	subGroup[tag_t::CIRCLE] -> setStyle("opacity", 0.5);
-	//subGroup[tag_t::CIRCLE] -> set("r", 100);
-
-	drain::image::NodeSVG::Elem<tag_t::POLYGON> poly(subGroup[tag_t::POLYGON]);
-	subGroup[tag_t::POLYGON] -> setStyle("stroke", "blue");
-	subGroup[tag_t::POLYGON] -> setStyle("fill",   "cyan");
-	subGroup[tag_t::POLYGON] -> setStyle("opacity", 0.5);
-
+	drain::image::NodeSVG::Elem<tag_t::POLYGON> poly(subGroup["triangle"]);
+	poly.node.setStyle("stroke", "blue");
+	poly.node.setStyle("fill",   "cyan");
+	poly.node.setStyle("opacity", 0.5);
 	// poly.points.info(std::cerr); std::cerr << std::endl;
 	// mout.attention("poly.path.info");
 	poly.append(dx +     (::rand()&127), dy +     (::rand()&127));
@@ -1272,7 +1404,6 @@ drain::image::TreeSVG & getDummyObject(drain::image::TreeSVG & group, double dx,
 	poly.append(dx + 64+ (::rand()&127), dy + 32 +(::rand()&63));
 
 	// drain::image::NodeSVG::Elem<tag_t::POLYGON> polyx(subGroup);
-
 
 	return subGroup;
 }
@@ -1300,13 +1431,20 @@ public:
 		ctx.svgTrack->setHeight(1.2 * frame.height);
 
 		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
-		style[svg::RECT]->set("stroke-style", "dotted");
+		style[".DEBUG"]->set({
+				{"stroke-width", 2},
+				{"stroke", "darkgreen"},
+				{"stroke-dasharray", {2,5,3}},
+				{"fill", "none"}
+		});
 
 
 		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
-		group->addClass(LayoutSVG::FLOAT);
+		// group->addClass(LayoutSVG::FLOAT);
+		group->addClass(LayoutSVG::ALIGN_FRAME);
+
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
@@ -1331,10 +1469,9 @@ public:
 		getDummyObject(group, 0.2*frame.width, 0.4*frame.height );
 		getDummyObject(group, 0.7*frame.width, 0.6*frame.height );
 
-		BBoxRetrieverSVG2 bbr;
-		drain::TreeUtils::traverse(bbr, ctx.svgTrack);
-		const drain::Box<svg::coord_t> & bb = bbr.box;
-		mout.attention(bb);
+		superDetectBoxes(ctx.svgTrack);
+		// mout.attention(box);
+		hyperAlign(ctx.svgTrack);
 
 	}
 

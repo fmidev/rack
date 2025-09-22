@@ -32,6 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FRAME_H_
 #define DRAIN_FRAME_H_
 
+#include <limits>
 #include <ostream>
 #include <stdexcept>
 
@@ -189,9 +190,20 @@ public:
 	Box(const Box & box) : drain::Point2D<T>(box), drain::Frame2D<T>(box)  {
 	}
 
+	static
+	const T undefined; //  = std::numeric_limits<T>::max();
+
+	inline
+	void reset(){
+		this->setArea(0,0);
+		// max is "readable", whereas float-mins approach zero
+		this->setLocation(undefined, undefined);
+	}
 
 	/// Update this box such that it contains the given \c bbox .
 	void expand(const Box & box){
+		expand(box.x, box.y);
+		expand(box.x + box.width, box.y + box.height);
 		/*
 		const T xMax = std::max(this->x + this->width,  box.x+box.width);
 		const T yMax = std::max(this->y + this->height, box.y+box.height);
@@ -201,21 +213,34 @@ public:
 		this->height = yMax - this->y;
 		expand(box.x, box.y);
 		*/
-		expand(box.x, box.y);
-		expand(box.x + box.width, box.y + box.height);
 	}
 
 	void expand(const T & x, const T & y){
-		// Logic fails if width or height is negative?
-		T m;
 
-		m = std::max(this->x + this->width,  x);
-		this->x = std::min(this->x, x);
-		this->width  = m - this->x;
+		// Consider separate for x and y?
+		if ((this->x != undefined) && (this->y != undefined)){
 
-		m = std::max(this->y + this->height, y);
-		this->y = std::min(this->y, y);
-		this->height = m - this->y;
+			// Logic fails if width or height is negative?
+			T m;
+
+			// Save max x :
+			m = std::max(this->x + this->width,  x);
+			// Adjust min x :
+			this->x = std::min(this->x, x);
+			this->width  = m - this->x;
+
+			// Save max y:
+			m = std::max(this->y + this->height, y);
+			// Adjust min y :
+			this->y = std::min(this->y, y);
+			this->height = m - this->y;
+
+		}
+		else {
+			this->setLocation(x,y);
+			this->setArea(0, 0); // probably was already, but ensure
+		}
+
 
 	}
 
@@ -243,6 +268,10 @@ public:
 };
 
 DRAIN_TYPENAME_T(Box, T);
+
+
+template <class T>
+const T Box<T>::undefined = std::numeric_limits<T>::max();
 
 
 template <class T>
