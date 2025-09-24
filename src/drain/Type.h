@@ -583,6 +583,12 @@ DRAIN_TYPENAME(char *);
 DRAIN_TYPENAME(const char *);  // why const separately...?
 DRAIN_TYPENAME(std::string);
 
+#define DRAIN_TYPENAME_T0(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=std::string(#cname)+'<'+drain::TypeName<T>::str()+'>'; return n;}}
+
+DRAIN_TYPENAME_T0(std::initializer_list, T);
+DRAIN_TYPENAME_T0(std::vector, T);
+
+/*
 template <typename T>
 struct TypeName<std::initializer_list<T> > {
 
@@ -614,6 +620,7 @@ struct TypeName<std::vector<T> > {
 	}
 
 };
+*/
 
 /*
 namespace std {

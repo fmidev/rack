@@ -49,7 +49,7 @@ namespace drain {
 
 
 template <class T>
-class Range : public drain::UniTuple<T,2> {
+class Range : public UniTuple<T,2> {
 public:
 
 	T & min;

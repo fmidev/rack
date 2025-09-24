@@ -330,13 +330,15 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
 		// mout.pending<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
 
 		BBoxSVG refBBOX;
+		svg::coord_t x=0;
+		svg::coord_t width=0;
 
 		const TreeSVG::path_elem_t & ah = node.getAlignAnchorHorz();
 		if (ah == "*"){ // TODO: enum
+			refBBOX = compoundBBox;
 			// Using compound ("accumulated") bbox
 			// mout.special<LOG_NOTICE>("WIDE horz align for ", entry.first, " => ", entry.second.data);
 			// TreeUtilsSVG::realignObjectHorzNEW(node, compoundBBox); // this far
-			refBBOX = compoundBBox;
 		}
 		else if (object.hasChild(ah)){ // Specific horz anchor (sibling)
 			// TreeUtilsSVG::realignObjectHorzNEW(node, object[ah]->getBoundingBox());

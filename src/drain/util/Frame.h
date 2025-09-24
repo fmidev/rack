@@ -154,33 +154,74 @@ public:
 
 DRAIN_TYPENAME_T(Frame2D, T);
 
+
+template <class T>
+struct Stub : public drain::UniTuple<T,2>{
+
+	typedef T coord_t;
+	coord_t & pos;
+	coord_t & span;
+
+	inline
+	Stub(coord_t pos=0, coord_t span=0) : drain::UniTuple<T,2>(pos, span), pos(this->next()), span(this->next()){
+	};
+
+	inline
+	Stub(const Stub & stub) : drain::UniTuple<T,2>(stub.tuple()), pos(this->next()), span(this->next()){
+	};
+
+
+};
+
+DRAIN_TYPENAME_T0(Stub, T);
+
+/*
+template <class T>
+struct StubHorz : public drain::UniTuple<T,2>{
+
+	typedef T coord_t;
+	coord_t & x;
+	coord_t & width;
+
+	inline
+	StubHorz(coord_t x=0, coord_t width=0) : drain::UniTuple<T,2>(x, width), x(this->next()), width(this->next()){
+	};
+
+	inline
+	StubHorz(const StubHorz & stub) : drain::UniTuple<T,2>(stub.tuple()), x(this->next()), width(this->next()){
+	};
+
+
+};
+
+template <class T>
+struct StubVert : public drain::UniTuple<T,2>{
+
+	typedef T coord_t;
+	coord_t & y;
+	coord_t & height;
+
+	inline
+	StubVert(coord_t y=0, coord_t width=0) : drain::UniTuple<T,2>(x, width), x(this->next()), width(this->next()){
+	};
+
+	inline
+	StubVert(const StubVert & stub) : drain::UniTuple<T,2>(stub.tuple()), x(this->next()), width(this->next()){
+	};
+
+};
+*/
+
+
 /// Something that has coordinates (x,y) and dimensions (width, height).
 /**
  *
  */
 template <class T>
 struct Box : public drain::Point2D<T>, public drain::Frame2D<T> {
-// struct Box : public drain::UniTuple<T,4> {
 
 public:
 
-	/*
-	typedef drain::UniTuple<T,4> tuple_t;
-	drain::Point2D<T> location;
-	drain::Frame2D<T> frame;
-
-	inline
-	Box(T x=0, T y=0, T width=0, T height=0) : tuple_t(), location((tuple_t &)*this, 0), frame((tuple_t &)*this, 2)  {
-		location.setLocation(x, y);
-		frame.setArea(width, height);
-	}
-
-	inline
-	Box(const Box<T> & box) : tuple_t(), location((tuple_t &)*this, 0), frame((tuple_t &)*this, 2){
-		location.setLocation(box.location);
-		frame.setArea(box.frame);
-	}
-	*/
 
 	typedef T coord_t;
 

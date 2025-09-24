@@ -43,6 +43,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+//DRAIN_TYPENAME_T(std::initializer_list, T);
+//DRAIN_TYPENAME_T(std::vector, T);
+
 ///
 /**
  *
