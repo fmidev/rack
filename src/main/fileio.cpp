@@ -507,6 +507,12 @@ void CmdOutputFile::exec() const {
 			mout.attention("skipping alignment");
 		}
 		else {
+			/*
+			TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
+			TreeUtilsSVG::addStackLayout(ctx.svgTrack, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
+			*/
+			//
 			RackSVG::completeSVG(ctx);
 		}
 

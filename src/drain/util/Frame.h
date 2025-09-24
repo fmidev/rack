@@ -32,9 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FRAME_H_
 #define DRAIN_FRAME_H_
 
-#include <limits>
-#include <ostream>
 #include <stdexcept>
+#include <ostream>
+#include <limits>
+#include <cmath> // isnan
 
 #include <drain/Log.h>
 #include <drain/UniTuple.h>
@@ -181,17 +182,20 @@ public:
 	}
 	*/
 
+	typedef T coord_t;
+
 
 	inline
-	Box(T x=0, T y=0, T width=0, T height=0) : drain::Point2D<T>(x, y), drain::Frame2D<T>(width, height)  {
+	Box(coord_t x=0, coord_t y=0, coord_t width=0, coord_t height=0) :
+		drain::Point2D<coord_t>(x, y), drain::Frame2D<coord_t>(width, height)  {
 	}
 
 	inline
-	Box(const Box & box) : drain::Point2D<T>(box), drain::Frame2D<T>(box)  {
+	Box(const Box & box) : drain::Point2D<coord_t>(box), drain::Frame2D<coord_t>(box)  {
 	}
 
 	static
-	const T undefined; //  = std::numeric_limits<T>::max();
+	const coord_t undefined; //  = std::numeric_limits<coord_t>::max();
 
 	inline
 	void reset(){
@@ -200,70 +204,88 @@ public:
 		this->setLocation(undefined, undefined);
 	}
 
-	/// Update this box such that it contains the given \c bbox .
-	void expand(const Box & box){
-		expand(box.x, box.y);
-		expand(box.x + box.width, box.y + box.height);
-		/*
-		const T xMax = std::max(this->x + this->width,  box.x+box.width);
-		const T yMax = std::max(this->y + this->height, box.y+box.height);
-		this->x = std::min(this->x, box.x);
-		this->y = std::min(this->y, box.y);
-		this->width  = xMax - this->x;
-		this->height = yMax - this->y;
-		expand(box.x, box.y);
-		*/
-	}
-
-	void expand(const T & x, const T & y){
-
-		// Consider separate for x and y?
-		if ((this->x != undefined) && (this->y != undefined)){
-
-			// Logic fails if width or height is negative?
-			T m;
-
-			// Save max x :
-			m = std::max(this->x + this->width,  x);
-			// Adjust min x :
-			this->x = std::min(this->x, x);
-			this->width  = m - this->x;
-
-			// Save max y:
-			m = std::max(this->y + this->height, y);
-			// Adjust min y :
-			this->y = std::min(this->y, y);
-			this->height = m - this->y;
-
-		}
-		else {
-			this->setLocation(x,y);
-			this->setArea(0, 0); // probably was already, but ensure
-		}
-
-
+	inline
+	void expand(coord_t x, coord_t y){
+		expandHorz(x);
+		expandVert(y);
 	}
 
 	inline
-	void expand(const drain::Point2D<T> & p){
-		expand(p.x, p.y);
+	void expand(const drain::Point2D<coord_t> & p){
+		expandHorz(p.x);
+		expandVert(p.y);
 	}
 
-	drain::Point2D<T> & getLocation(){
+	/// Update this box such that it contains the given \c bbox .
+	inline
+	void expand(const Box & box){
+		expandHorz(box);
+		expandVert(box);
+	}
+
+	inline
+	void expandHorz(const Box & box){
+		expandHorz(box.x);
+		expandHorz(box.x + box.width);
+		// box.y + box.height);
+	}
+
+	inline
+	void expandVert(const Box & box){
+		expandVert(box.y);
+		expandVert(box.y + box.height);
+	}
+
+	void expandHorz(coord_t x){
+		//if (this->x != undefined){
+		if (!isUndefined(this->x)){
+			const coord_t xMax = std::max(x, this->x + this->width);
+			this->x = std::min(this->x, x);
+			this->width = xMax - this->x;
+		}
+		else {
+			this->x = x;
+			this->width = 0; // probably was already, but ensure
+		}
+	}
+
+	void expandVert(coord_t y){
+		//if (this->y != undefined){
+		if (!isUndefined(this->y)){
+			const coord_t yMax = std::max(y, this->y + this->height);
+			this->y = std::min(this->y, y);
+			this->height = yMax - this->y;
+		}
+		else {
+			this->y = y;
+			this->height = 0; // probably was already, but ensure
+		}
+	}
+
+
+
+	drain::Point2D<coord_t> & getLocation(){
 		return *this;
 	};
 
-	const drain::Point2D<T> & getLocation() const {
+	const drain::Point2D<coord_t> & getLocation() const {
 		return *this;
 	};
 
-	drain::Frame2D<T> & getFrame(){
+	drain::Frame2D<coord_t> & getFrame(){
 			return *this;
 	};
 
-	const drain::Frame2D<T> & getFrame() const {
+	const drain::Frame2D<coord_t> & getFrame() const {
 			return *this;
 	};
+
+protected:
+
+	inline
+	bool isUndefined(coord_t coord){
+		return std::isnan(coord);
+	}
 
 };
 
@@ -271,7 +293,8 @@ DRAIN_TYPENAME_T(Box, T);
 
 
 template <class T>
-const T Box<T>::undefined = std::numeric_limits<T>::max();
+// const T Box<T>::undefined = std::numeric_limits<T>::max();
+const T Box<T>::undefined = std::numeric_limits<T>::quiet_NaN();
 
 
 template <class T>

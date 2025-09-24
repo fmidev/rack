@@ -1390,7 +1390,7 @@ public:
 		text.setAlign(drain::image::AlignSVG::MIDDLE);
 		text.setAlign(drain::image::AlignSVG::CENTER);
 
-		BBoxSVG bbox;
+		// BBoxSVG bbox;
 		TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
 		TreeUtilsSVG::addStackLayout(ctx.svgTrack, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 		TreeUtilsSVG::superAlignNEW(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
