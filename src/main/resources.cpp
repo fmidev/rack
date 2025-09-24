@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 RackContext::RackContext() : drain::SmartContext(__FUNCTION__) {
-	statusMap["version"] = __RACK_VERSION__;
+	statusMap["version"] = RACK_VERSION.str();
 	statusMap["rackContext"] = "BASE";
 	svgTrack->setType(drain::image::svg::SVG); //, xmlTrack(drain::image::BaseSVG::SVG)
 	svgTrack->set("width", 64);
@@ -54,7 +54,7 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 	// , xmlTrack(drain::image::BaseSVG::SVG)
 	svgTrack->setType(drain::image::svg::SVG);
 
-	statusMap["version"] = __RACK_VERSION__;
+	statusMap["version"] = RACK_VERSION.str(); // NEEDED?
 	statusMap["rackContext"] = "CLONED";
 	inputPrefix = ctx.inputPrefix;
 	outputPrefix = ctx.outputPrefix;

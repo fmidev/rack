@@ -2165,13 +2165,14 @@ public:
 
 	void exec() const {
 
-		std::cout << __RACK_VERSION__ << '\n';
-		std::cout << __RACK__ << ' ' << __RACK_VERSION__;
+		std::cout << RACK_VERSION << '\n';
+		std::cout << RACK_STAMP << ' ' << RACK_VERSION;
+
 #ifndef NDEBUG
 		std::cout << "(debug)";
 #endif
 		std::cout << ' ' << __DATE__ << '\n';
-
+		// std::cout << RACK_VERSION_NEW << '\n';
 		//std::cout << DRAIN_IMAGE << '\n';
 		std::cout << "Proj " << drain::Proj6::getProjVersion() << '\n'; // valgrind error
 

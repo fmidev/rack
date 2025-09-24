@@ -227,37 +227,38 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 
 /// Apply an alignment, to next object only
 /*
- *q
+ *
  *  This could be in GraphicsContext, but ctx.log should be virtualized first, like getLog():
  */
-void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
+//void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
+void RackSVG::applyAlignment(RackContext & ctx, drain::image::NodeSVG & node){
+
+	// TODO: return flags of set aligns?
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	if (ctx.alignHorz.pos != AlignBase::UNDEFINED_POS){
 
-		group->setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.get(AlignSVG::INSIDE));  // simplify
-		mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", group->getAlignStr());
+		node.setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.getOrDefault(AlignSVG::INSIDE));  // simplify
+		// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", node.getAlignStr());
 		// ctx.alignHorz.pos  = AlignSVG::UNDEFINED_TOPOL;
-		group->addClass(LayoutSVG::FLOAT); // what is this?
-		mout.attention("updated align: ",  group.data); // , " -> all:", group->getAlignStr()
+		node.addClass(LayoutSVG::FLOAT); // why is this? hmm explicitly, specifically aligned element is "separate"
+		// mout.attention("updated Horz align: ",  node); // , " -> all:", node.getAlignStr()
 
 		ctx.alignHorz.reset();
 		ctx.alignHorz.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
-		// ctx.alignHorz.pos == AlignBase::UNDEFINED_POS
-		mout.attention(" HORZ state now: ", ctx.alignHorz);
+		//mout.attention(" HORZ state now: ", ctx.alignHorz);
 	}
 
 	if (ctx.alignVert.pos != AlignBase::UNDEFINED_POS){
-		group->setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.get(AlignSVG::INSIDE)); // simplify
-		mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", group->getAlignStr());
+		node.setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.getOrDefault(AlignSVG::INSIDE)); // simplify
+		// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", node.getAlignStr());
 		// ctx.alignVert.pos  = AlignSVG::UNDEFINED_TOPOL;
-		group->addClass(LayoutSVG::FLOAT);
-		mout.attention("updated align: ",  group.data); //  " -> all:", group->getAlignStr()
+		node.addClass(LayoutSVG::FLOAT); // why is this? hmm explicitly, specifically aligned element is "separate"
+		// mout.attention("updated Vert align: ",  node); //  " -> all:", node.getAlignStr()
 		ctx.alignVert.reset();
 		ctx.alignVert.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
-		mout.attention(" VERT state now: ", ctx.alignVert);
-		// ctx.alignVert.pos != AlignBase::UNDEFINED_POS
+		// mout.attention(" VERT state now: ", ctx.alignVert);
 	}
 
 
@@ -329,7 +330,7 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 	if (alignedGroup -> isUndefined()){
 		alignedGroup->setType(svg::GROUP);
 		alignedGroup->setId(ctx.svgPanelConf.groupTitleFormatted);
-		alignedGroup->addClass(drain::image::LayoutSVG::ALIGN_FRAME);
+		alignedGroup->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 	}
 
 	return alignedGroup;
@@ -351,7 +352,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 	drain::image::TreeSVG & alignFrame = getCurrentAlignedGroup(ctx);
 
 	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
-	// comment->setText("start of ", LayoutSVG::ALIGN_FRAME, ' ', name, svg::GROUP);
+	// comment->setText("start of ", LayoutSVG::STACK_LAYOUT, ' ', name, svg::GROUP);
 
 	drain::image::TreeSVG & imagePanel = alignFrame[name];
 
@@ -873,7 +874,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 			return 0;
 		}
 	}
-	else if (group->hasClass(LayoutSVG::ALIGN_FRAME)){
+	else if (group->hasClass(LayoutSVG::STACK_LAYOUT)){
 		if (GROUP_AUTO){
 			// If no higher element will write meta data, write it here (perhaps repeatedly)
 			WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
@@ -893,7 +894,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 		}
 		else {
 			return 0;
-			mout.suspicious("could not interpret title of group of class ALIGN_FRAME :", svgConf.groupTitleFormatted);
+			mout.suspicious("could not interpret title of group of class STACK_LAYOUT :", svgConf.groupTitleFormatted);
 		}
 	}
 	else if (group->hasClass(PanelConfSVG::ElemClass::IMAGE_PANEL)){

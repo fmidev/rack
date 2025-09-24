@@ -29,7 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-//#include <drain/util/Convert.h>
+#include <drain/Version.h>
+
+
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
 #include <drain/util/TreeXML.h>
@@ -573,7 +575,8 @@ public:
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
-		group->setAlignAnchorHorz(ANCHOR_ELEM);
+		//group->setAlignAnchorHorz(ANCHOR_ELEM);
+		group->setAlignAnchor(ANCHOR_ELEM);
 
 		RackSVG::applyAlignment(ctx, group);
 
@@ -1177,7 +1180,7 @@ public:
 };
 
 //#include <drain/util/TreeUtils.h>
-
+/*
 class BBoxRetrieverSVG2 : public drain::TreeVisitor<TreeSVG> {
 
 public:
@@ -1229,167 +1232,37 @@ public:
 	//int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 
 };
-
-void superDetectBoxes(drain::image::TreeSVG & group){ //, BBoxSVG & bbox){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	//warn("nesting SVG elem not handled");
-
-	typedef drain::image::svg::tag_t tag_t;
-
-	if (group->typeIs(tag_t::GROUP, tag_t::SVG)){
-
-		BBoxSVG bbox; // for <svg>
-
-		BBoxSVG & b = (group->typeIs(tag_t::GROUP)) ? group->getBoundingBox() : bbox;
-
-		b.reset();
-
-		bool GRAPHICS = false;
-		for (auto & entry: group.getChildren()){
-
-			mout.pending<LOG_NOTICE>("initial BBOX ", b, " of: [", entry.first, "]=", entry.second.data);
-
-			if (entry.second->typeIs(tag_t::GROUP, tag_t::SVG)){
-
-				superDetectBoxes(entry.second); // returns if not SVG or G
-
-				// Now sub-GROUP bbox is ready.
-				b.expand(entry.second->getBoundingBox()); // is this ok? Consider N-level nesting (and translation)
-
-				mout.accept<LOG_NOTICE>("BBOX after GROUP/SVG", b);
-
-			}
-			else if (entry.second->typeIs(tag_t::SVG)){
-				mout.warn("nesting SVG elem not handled");
-			}
-			else if (!entry.second->isAbstract()){ // is graphic
-
-				GRAPHICS = true;
-
-				drain::image::NodeSVG & node = entry.second.data;
-
-				switch (node.getNativeType()){
-				case svg::CIRCLE: {
-					double cx = node.get("cx");
-					double cy = node.get("cy");
-					double r  = node.get("r");
-					b.expand(cx + r, cy + r);
-					b.expand(cx - r, cy - r);
-					mout.accept<LOG_NOTICE>("BBOX after svg::CIRCLE: ", b);
-					//node.get("data-bb") << b.x << b.y << b.width << b.height;
-				}
-				break;
-				case svg::RECT: {
-					b.expand(node.getBoundingBox());
-					mout.accept<LOG_NOTICE>("BBOX after svg::RECT: ", b);
-					//node.get("data-bb") << b.x << b.y << b.width << b.height;
-				}
-				break;
-				case svg::POLYGON: {
-					std::list<std::string> points;
-					double x=0.0, y=0.0;
-					drain::StringTools::split(node.get("points",""), points, ' '); // note: separator not comma
-					for (const auto & point: points){
-						drain::StringTools::split2(point, x,y, ','); // note: separator not comma
-						b.expand(x, y);
-					}
-					mout.accept<LOG_NOTICE>("BBOX after POLYGON: ", b);
-				}
-				break;
-				default:
-					mout.warn("unhandled type: ", node.getType());
-				}
-			}
-
-		}
-
-		if (GRAPHICS || (group.getChildren().size() > 1)){
-			drain::image::NodeSVG & debugRect = group["debugRect"](svg::RECT);
-			debugRect.addClass("DEBUG");
-			// debugRect.setStyle("stroke-width", 3);
-			// debugRect.setStyle("stroke-style", "dotted");
-			debugRect.getBoundingBox() = b;
-			debugRect.set("x", b.x);
-			debugRect.set("y", b.y);
-			debugRect.setFrame(b.getFrame());
-		}
-
-	}
+*/
 
 
-}
-
-void hyperAlign(drain::image::TreeSVG & group){ //, BBoxSVG & bbox){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	//warn("nesting SVG elem not handled");
-
-	typedef drain::image::svg::tag_t tag_t;
-
-	if (!group->typeIs(tag_t::GROUP, tag_t::SVG)){
-		return;
-	}
-
-	drain::Point2D<svg::coord_t> point(0,0);
-
-	if (group->hasClass(LayoutSVG::ALIGN_FRAME)){ // consider orientation in class? ALIGN_LEFT ALIGN_DOWN
-
-		for (auto & entry: group.getChildren()){
-
-			drain::image::NodeSVG & node = entry.second.data;
-
-			if (node.typeIs(tag_t::GROUP)){
-				BBoxSVG & bbox = node.getBoundingBox();
-				drain::Point2D<svg::coord_t> translate;
-				translate.x = point.x - bbox.x;
-				translate.y = point.y - bbox.y;
-				//svg::coord_t dx = bbox.x;
-				//svg::coord_t dy = bbox.y;
-				// transform="translate(0 50)
-				node.transform.translate.set(translate);
-				// node.set("transform", drain::StringBuilder<>("translate(", translate.x, ' ', translate.y, ")").str());
-				point.x += bbox.width;
-				point.y += bbox.height;
-			}
-		}
-	}
-
-	for (auto & entry: group.getChildren()){
-		hyperAlign(entry.second);
-	}
-
-}
 
 
-drain::image::TreeSVG & getDummyObject(drain::image::TreeSVG & group, double dx, double dy){
+// Constructionistic fine arts
+drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , double dx, double dy){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
 	typedef drain::image::svg::tag_t tag_t;
 
 	const std::string name = drain::StringBuilder<>("dummy", group.getChildren().size());
 	drain::image::TreeSVG & subGroup = group[name](tag_t::GROUP);
+	subGroup->setId(name);
+	// subGroup->addClass(drain::image::LayoutSVG::"COMPOUND");
 
 	drain::image::TreeSVG & title = subGroup[tag_t::TITLE](tag_t::TITLE);
 	title = name;
 
 	drain::image::NodeSVG::Elem<tag_t::RECT> rect(subGroup["rectangle"]);
-	rect.x = (::rand()&63) + dx;
-	rect.y = (::rand()&63) + dy;
+	rect.x = (::rand()&63); // + dx;
+	rect.y = (::rand()&63); // + dy;
 	rect.width  = (::rand()&255);
 	rect.height = (::rand()&255);
 	rect.node.setStyle("fill", "red");
 	rect.node.setStyle("opacity", 0.5);
 
 	drain::image::NodeSVG::Elem<tag_t::CIRCLE> circ(subGroup["circle"]);
-	circ.cx = (::rand()&63) + dx -20;
-	circ.cy = (::rand()&63) + dy +20;
+	circ.cx = (::rand()&63) -20;
+	circ.cy = (::rand()&63) +20;
 	circ.r = int(::rand()&63);
-	// mout.attention("radius: ", circ.r, " = ", circ.node.get("r"), " = ", subGroup[tag_t::CIRCLE]->get("r"));
-	// circ.r.info(std::cerr); std::cerr << std::endl;
-	// subGroup[tag_t::CIRCLE]-> get("r").info(std::cerr); std::cerr << std::endl;
 	circ.node.setStyle("fill", "green");
 	circ.node.setStyle("opacity", 0.5);
 
@@ -1399,14 +1272,29 @@ drain::image::TreeSVG & getDummyObject(drain::image::TreeSVG & group, double dx,
 	poly.node.setStyle("opacity", 0.5);
 	// poly.points.info(std::cerr); std::cerr << std::endl;
 	// mout.attention("poly.path.info");
-	poly.append(dx +     (::rand()&127), dy +     (::rand()&127));
-	poly.append(dx - 32+ (::rand()&63),  dy + 64 +(::rand()&127));
-	poly.append(dx + 64+ (::rand()&127), dy + 32 +(::rand()&63));
+	poly.append(      (::rand()&127),      (::rand()&127));
+	poly.append(-32 + (::rand()&63),  +64 +(::rand()&127));
+	poly.append(+64 + (::rand()&127), +32 +(::rand()&63));
+
+	drain::image::NodeSVG::Elem<tag_t::CIRCLE> origin(subGroup["origin"]);
+	origin.cx = 0; // + dx;
+	origin.cy = 0; // + dy;
+	origin.r = 5.0;
+	origin.node.setStyle("fill", "black");
+	origin.node.setStyle("opacity", 1.0);
 
 	// drain::image::NodeSVG::Elem<tag_t::POLYGON> polyx(subGroup);
 
 	return subGroup;
 }
+
+/**
+ *   Only 1) direct objects 2) under group/STACK_LAYOUT will be aligned.
+ *   - alignment axis (HORZ/VERT) alternates
+ *   - alignment relies on bounding box: GROUP/COMPOUND, RECT, IMAGE
+ *   - bbox will be adjusted: offset from origing removed, and alignment added as \c transform="translate(x,y)"
+ */
+
 
 class CmdAlignTest : public drain::SimpleCommand<std::string> {
 
@@ -1414,6 +1302,52 @@ public:
 
 	CmdAlignTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout", "foo") {
 		//getParameters().link("level", level = 5);
+	}
+
+	const std::string ANCHOR_ELEM = "myRect";
+
+
+	drain::image::TreeSVG & getPlayGround(RackContext & ctx) const {
+
+		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+
+		// const std::string name = "playGround";
+
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value]; // (svg::GROUP);
+
+		if (group -> isUndefined()){
+
+			group->setType(svg::GROUP);
+
+			// Ensure style
+			// This is "lazily" repeated upon repeated invocations
+			drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
+			style[".DEBUG"]->set({
+					{"stroke-width", 2},
+					{"stroke", "darkgreen"},
+					{"stroke-dasharray", {2,5,3}},
+					{"fill", "none"},
+					{"opacity", 0.7},
+			});
+
+			const drain::Frame2D<double> frame = {640.0, 480};
+
+			group->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
+
+			group->setAlignAnchorHorz(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
+
+			drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
+			rect->setName(ANCHOR_ELEM);
+			rect->getBoundingBox().setArea(frame);
+			rect->setStyle("fill", "yellow");
+			rect->setStyle("opacity", 0.5);
+
+			// group->getBoundingBox().setArea(frame); // needed?
+		}
+
+
+		return group;
+
 	}
 
 	void exec() const override {
@@ -1424,54 +1358,42 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
+		drain::Version<RackContext> version(1,2,3);
+
+		drain::Version<CmdAlignTest> version2(5,2,3);
+
 		const drain::Frame2D<double> frame = {768.0, 640.0};
 
 		ctx.svgTrack->set("data-version", 2);
 		ctx.svgTrack->setWidth(1.2 * frame.width);
 		ctx.svgTrack->setHeight(1.2 * frame.height);
 
-		drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
-		style[".DEBUG"]->set({
-				{"stroke-width", 2},
-				{"stroke", "darkgreen"},
-				{"stroke-dasharray", {2,5,3}},
-				{"fill", "none"}
-		});
-
-
-		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
-		group->setId(value);
-		// group->addClass(LayoutSVG::FLOAT);
-		group->addClass(LayoutSVG::ALIGN_FRAME);
-
-
-		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
-		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
-		group->setAlignAnchorHorz(ANCHOR_ELEM);
-
-		// Only writes alignRequest
-		RackSVG::applyAlignment(ctx, group);
-
-		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
-		rect->setWidth(frame.width);
-		rect->setHeight(frame.height);
-		// rect->set("width", );
-		// rect->set("width", 10); //margin!
-		// rect->set("height", frame.height);
-		rect->set("label", ANCHOR_ELEM); // ??
-		rect->setStyle("fill", "yellow");
-		rect->setStyle("opacity", 0.5);
-		// rect->setId("textRect"); // needed?
+		drain::image::TreeSVG & group = getPlayGround(ctx);
+		// const drain::Frame2D<double> frame2 = group->getBoundingBox().getFrame();
 
 		// Three sample objects, each consisting of three elements.
-		getDummyObject(group, 0.5*frame.width, 0.1*frame.height );
-		getDummyObject(group, 0.2*frame.width, 0.4*frame.height );
-		getDummyObject(group, 0.7*frame.width, 0.6*frame.height );
+		drain::image::TreeSVG & compoundObject = addDummyObject(group); //, 0.5*frame.width, 0.1*frame.height );
+		drain::image::NodeSVG & node = compoundObject; //, 0.5*frame.width, 0.1*frame.height );
+		node.transform.translate.set(0.5*frame.width, 0.1*frame.height);
 
-		superDetectBoxes(ctx.svgTrack);
-		// mout.attention(box);
-		hyperAlign(ctx.svgTrack);
+		if (group.getChildren().size()<=1){
+			node.setAlignAnchor(ANCHOR_ELEM);
+		}
+
+		RackSVG::applyAlignment(ctx, node);
+		// default? node.setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+		drain::image::NodeSVG & text = compoundObject[svg::TEXT](svg::TEXT);
+		text.setFontSize(10.0, 12.0);
+		text.setText(node.getAlignStr());
+		// text.setAlignAnchor(node.getId());
+		text.setAlignAnchor("rectangle");
+		text.setAlign(drain::image::AlignSVG::MIDDLE);
+		text.setAlign(drain::image::AlignSVG::CENTER);
+
+		BBoxSVG bbox;
+		TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
+		TreeUtilsSVG::addStackLayout(ctx.svgTrack, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		TreeUtilsSVG::superAlignNEW(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 
 	}
 
@@ -1514,7 +1436,51 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 };
 
+//Obsolete. See TreeUtilsSVG::superAlignNE
+/*
+void hyperAlign(drain::image::TreeSVG & group){ //, BBoxSVG & bbox){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//warn("nesting SVG elem not handled");
+
+	typedef drain::image::svg::tag_t tag_t;
+
+	if (!group->typeIs(tag_t::GROUP, tag_t::SVG)){
+		return;
+	}
+
+	drain::Point2D<svg::coord_t> point(0,0);
+
+	if (group->hasClass(LayoutSVG::STACK_LAYOUT)){ // consider orientation in class? ALIGN_LEFT ALIGN_DOWN
+
+		for (auto & entry: group.getChildren()){
+
+			drain::image::NodeSVG & node = entry.second.data;
+
+			if (node.typeIs(tag_t::GROUP)){
+				BBoxSVG & bbox = node.getBoundingBox();
+				drain::Point2D<svg::coord_t> translate;
+				translate.x = point.x - bbox.x;
+				translate.y = point.y - bbox.y;
+				//svg::coord_t dx = bbox.x;
+				//svg::coord_t dy = bbox.y;
+				// transform="translate(0 50)
+				node.transform.translate.set(translate);
+				// node.set("transform", drain::StringBuilder<>("translate(", translate.x, ' ', translate.y, ")").str());
+				point.x += bbox.width;
+				point.y += bbox.height;
+			}
+		}
+	}
+
+	for (auto & entry: group.getChildren()){
+		//TreeUtilsSVG::superAlignNEW(entry.second, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		hyperAlign(entry.second);
+	}
+
+}
+*/
 
 /**
  *

@@ -89,7 +89,8 @@ public:
 
 
 	static
-	void applyAlignment(RackContext & ctx, drain::image::TreeSVG & group);
+	//void applyAlignment(RackContext & ctx, drain::image::TreeSVG & group);
+	void applyAlignment(RackContext & ctx, drain::image::NodeSVG & node);
 
 	static
 	bool applyInclusion(RackContext & cxt, const drain::FilePath & filepath); // , SvgInclude fileFormat);

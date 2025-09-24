@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/SelectorXML.h"
 #include "drain/util/TreeXML.h"
 #include "AlignSVG.h"
+#include "TransformSVG.h"
 
 namespace drain {
 
@@ -111,86 +112,6 @@ public:
 	*/
 };
 
-
-template <size_t N>
-class Transform : public UniTuple<double,N> {
-
-public:
-
-	bool empty() const {
-		return (*this == 0.0);
-	}
-
-	virtual inline
-	void toStream(std::ostream & ostr) const override {
-		ostr << '(';
-		TupleBase<double,N>::toStreamFormatted(ostr, ' ');
-		ostr << ')';
-	}
-
-};
-
-
-template <size_t N>
-std::ostream & operator<<(std::ostream & ostr, Transform<N> & tr){
-	tr.toStream(ostr);
-	return ostr;
-}
-
-
-// Future option
-class TransformSVG {
-
-public:
-
-	TransformSVG();
-
-	inline
-	bool empty() const {
-		return (rotate.empty() && scale.empty() && translate.empty() && matrix.empty()) ;
-	}
-
-	inline
-	void setTranslate(const svg::coord_t & x, const svg::coord_t & y){
-		// translate.ensureSize(2);
-		translate.set(x,y);
-	}
-
-	inline
-	void setTranslateX(const svg::coord_t & x){
-		// translate.ensureSize(1);
-		// translate.set(x);
-		translate[0] = x;
-	}
-
-	inline
-	void setTranslateY(const svg::coord_t & y){
-		// translate.ensureSize(2);
-		// svg::coord_t x = translate.get<svg::coord_t>(1);
-		translate[1] = y;
-		// translate.set(x, y);
-	}
-
-	/// Angle (deg), [x,y]
-
-	Transform<3> rotate;
-	Transform<2> scale;
-	Transform<2> translate;
-	Transform<6> matrix;
-
-	/*
-	Variable rotate;
-	Variable scale;
-	Variable translate;
-	Variable matrix;
-	*/
-
-	// drain::Variable matrix;
-	// drain::Variable skewX;
-	// drain::Variable skewY;
-	void toStream(std::ostream & ostr) const;
-
-};
 
 //typedef drain::StyleSelectorXML<NodeSVG> SelectSVG;
 typedef drain::SelectorXML SelectSVG;

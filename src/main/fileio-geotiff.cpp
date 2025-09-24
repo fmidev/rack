@@ -110,7 +110,7 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 	// https://www.awaresystems.be/imaging/tiff/tifftags/minsamplevalue.html
 
 	// http://www.gdal.org/frmt_gtiff.html
-	file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder<>(__RACK__," ",__RACK_VERSION__).str());
+	file.setField(TIFFTAG_SOFTWARE, drain::StringBuilder<>(RACK_STAMP," ",RACK_VERSION).str());
 
 	file.setDefaults();
 	file.useDefaultTileSize();

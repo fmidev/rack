@@ -553,7 +553,7 @@ struct CompleteAlignment : public Alignment<AX,A> {
 	}
 
 	inline
-	const AlignSVG::Topol & get(const AlignSVG::Topol & defaultValue) const {
+	const AlignSVG::Topol & getOrDefault(const AlignSVG::Topol & defaultValue) const {
 		if (topol != AlignSVG::Topol::UNDEFINED_TOPOL){
 			return topol;
 		}
@@ -640,91 +640,6 @@ template <typename AX, AlignBase::Axis A>
 std::ostream & operator<<(std::ostream &ostr, const CompleteAlignment<AX,A> & ad){
 	return ostr << ad.topol << '_' << ad.axis << ':' << ad.pos;
 }
-
-
-/// Higher level controller for setting alignments.
-/**
- *  Also applied by PanelSVG
- */
-class LayoutSVG {
-
-public:
-
-
-	//enum Axis {HORZ=0, VERT=1};  // must be indexed! for vect_ UNDEFINED_AXIS=0,
-	typedef drain::EnumFlagger<drain::SingleFlagger<AlignBase::Axis> > AxisFlagger;
-	AxisFlagger orientation = AlignBase::HORZ;
-
-	enum Direction {
-		UNDEFINED_DIRECTION=0,
-		INCR = 1,
-		DECR = 2,
-	};
-	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
-	DirectionFlagger direction = INCR;
-
-	// Experimental CSS classes
-	enum GroupType {
-		HEADER,
-		ALIGN_FRAME,
-		// ALI GNED,  // needed? "anchor" attrib and getAlign() should work
-		ABSOLUTE, // "do not align (me or descendants) (future option)"
-		FLOAT,       // = element does not affect alignment of other elems
-	};
-
-
-	inline
-	LayoutSVG(AlignBase::Axis v=AlignBase::HORZ, Direction d=INCR) : orientation(v), direction(d) {
-	}
-
-	inline
-	LayoutSVG(const LayoutSVG & layout) : orientation(layout.orientation), direction(layout.direction){
-	}
-
-	template <typename V>
-	inline
-	void setOrientation(const V &v){
-		orientation.set(EnumDict<AlignBase::Axis>::getValue(v));
-	};
-
-	template <typename D>
-	inline
-	void setDirection(const D & d){
-		direction.set(EnumDict<LayoutSVG::Direction>::getValue(d));
-	};
-
-	/// Set direction and orientation
-	/**
-	 *
-	 */
-	template <typename D, typename V>
-	inline
-	void set(const D & d, const V &v){
-		direction.set(EnumDict<LayoutSVG::Direction>::getValue(d));
-		orientation.set(EnumDict<AlignBase::Axis>::getValue(v));
-	};
-
-
-	/*
-	static inline
-	Direction flip(Direction ...){
-		return ...
-	};
-	*/
-
-
-
-};
-
-
-
-template <>
-const EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict;
-DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);
-
-template<>
-const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict;
-DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
 
 
 
@@ -818,10 +733,7 @@ protected:
 
 DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Axis);
 DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Pos);
-
 DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
-
-DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
 
 
 #endif // DRAIN_ALIGN_SVG_H_

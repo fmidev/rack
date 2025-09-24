@@ -1,0 +1,156 @@
+/*
+
+MIT License
+
+Copyright (c) 2023 FMI Open Development / Markus Peura, first.last@fmi.fi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+/*
+Part of Rack development has been done in the BALTRAD projects part-financed
+by the European Union (European Regional Development Fund and European
+Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
+*/
+/*
+ * TreeSVG.h
+ *
+ *  Created on: Nov, 2024
+ *      Author: mpeura
+ */
+
+#ifndef DRAIN_LAYOUT_SVG
+#define DRAIN_LAYOUT_SVG
+
+#include <string>
+
+#include "AlignSVG.h"
+
+namespace drain {
+
+namespace image {
+
+
+
+/// Higher level controller for setting alignments.
+/**
+ *  Also applied by PanelSVG
+ */
+class LayoutSVG {
+
+public:
+
+
+	//enum Axis {HORZ=0, VERT=1};  // must be indexed! for vect_ UNDEFINED_AXIS=0,
+
+	enum Direction {
+		UNDEFINED_DIRECTION=0,
+		INCR = 1,
+		DECR = 2,
+	};
+
+	// Experimental CSS classes
+	enum GroupType {
+		HEADER,
+		STACK_LAYOUT, // future: flips the axis in each level of recursion
+		ALIGN,  // populate, "decorate" me with align instructions
+		FIXED,  // absolute position - do not align (me or descendants) (future option)
+		FLOAT,  // = element does not affect alignment of other elems
+	};
+
+
+	// TEST: these are not yet in use?
+
+protected:
+	typedef drain::EnumFlagger<drain::SingleFlagger<AlignBase::Axis> > AxisFlagger;
+	AxisFlagger orientation = AlignBase::HORZ;
+
+	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
+	DirectionFlagger direction = INCR;
+
+	inline
+	LayoutSVG(AlignBase::Axis v=AlignBase::HORZ, Direction d=INCR) : orientation(v), direction(d) {
+	}
+
+	inline
+	LayoutSVG(const LayoutSVG & layout) : orientation(layout.orientation), direction(layout.direction){
+	}
+
+	/// Set orientation: horizontal or vertical axis
+	/**
+	 *   \tparam V - enum type AlignBase::Axis or string.
+	 *   \param axis - axis as enum type (HORZ or VERT) or string.
+	 */
+	template <typename V>
+	inline
+	void setOrientation(const V & axis){
+		orientation.set(EnumDict<AlignBase::Axis>::getValue(axis));
+	};
+
+	/// Set direction: coordinates increasing or decreasing
+	/**
+	 *   \tparam D  - enum type LayoutSVG::Direction or string.
+	 *   \param dir - direction as enum type (INCR or DECR) or string.
+	 */
+	template <typename D>
+	inline
+	void setDirection(const D & dir){
+		direction.set(EnumDict<LayoutSVG::Direction>::getValue(dir));
+	};
+
+	/// Set direction and orientation
+	/**
+	 *
+	 */
+	template <typename D, typename V>
+	inline
+	void set(const D & d, const V &v){
+		direction.set(EnumDict<LayoutSVG::Direction>::getValue(d));
+		orientation.set(EnumDict<AlignBase::Axis>::getValue(v));
+	};
+
+	/*
+	static inline
+	Direction flip(Direction ...){
+	};
+	*/
+
+
+
+};
+
+
+template <>
+const EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict;
+DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);
+
+template<>
+const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict;
+DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
+
+}  // image::
+
+}  // drain::
+
+
+DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
+
+
+#endif // DRAIN_ALIGN_SVG_H_
+

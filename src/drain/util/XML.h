@@ -327,7 +327,7 @@ public:
 	template <class ...T>
 	inline
 	void setName(const T & ...args){
-		setAttribute("data-name", drain::StringBuilder<>(args...));
+		setAttribute("data-name", drain::StringBuilder<>(args...).str());
 	}
 
 

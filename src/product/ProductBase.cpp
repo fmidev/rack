@@ -283,8 +283,8 @@ void ProductBase::setODIMspecials(ODIM & dstODIM){
 }
 
 void ProductBase::setRackVersion(drain::VariableMap & how){
-	how["software"]   = __RACK__;
-	how["sw_version"] = __RACK_VERSION__;
+	how["software"]   = RACK_STAMP;
+	how["sw_version"] = RACK_VERSION.str();
 }
 
 

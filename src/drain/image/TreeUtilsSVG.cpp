@@ -40,6 +40,8 @@ namespace image {
 
 
 
+
+
 // PanelConfSVG TreeUtilsSVG::defaultConf;
 
 /*
@@ -54,7 +56,536 @@ const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
 */
 
 
-// Consider XMl Visitor...
+
+void TreeUtilsSVG::detectBoxNEW(drain::image::TreeSVG & group, bool debug){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//warn("nesting SVG elem not handled");
+
+	// typedef svg::tag_t tag_t;
+
+	if (group->typeIs(svg::GROUP, svg::SVG)){
+
+		BBoxSVG bbox; // for <svg>
+
+		BBoxSVG & b = (group->typeIs(svg::GROUP)) ? group->getBoundingBox() : bbox;
+
+		b.reset();
+
+		//bool GRAPHICS = false;
+		unsigned short count = 0;
+		for (auto & entry: group.getChildren()){
+
+			// mout.pending<LOG_NOTICE>("initial BBOX ", b, " of: [", entry.first, "]=", entry.second.data);
+			drain::image::NodeSVG & node = entry.second.data;
+
+			if (node.typeIs(svg::GROUP, svg::SVG)){
+
+				//BBoxSVG b2;
+				detectBoxNEW(entry.second); // returns if not SVG or G
+
+				// Now sub-GROUP bbox is ready.
+				b.expand(node.getBoundingBox()); // is this ok? Consider N-level nesting (and translation)
+
+				// mout.accept<LOG_NOTICE>("BBOX after GROUP/SVG", b);
+				++count;
+			}
+			else if (node.typeIs(svg::SVG)){
+				mout.warn("nesting SVG elem not handled");
+				++count;
+			}
+			else if (!node.isAbstract()){ // is graphic
+
+				switch (node.getNativeType()){
+				case svg::CIRCLE: {
+					double cx = node.get("cx");
+					double cy = node.get("cy");
+					double r  = node.get("r");
+					b.expand(cx + r, cy + r);
+					b.expand(cx - r, cy - r);
+					// mout.accept<LOG_NOTICE>("BBOX after svg::CIRCLE: ", b);
+					// node.get("data-bb") << b.x << b.y << b.width << b.height;
+				}
+				break;
+				case svg::RECT: {
+					b.expand(node.getBoundingBox());
+					// mout.accept<LOG_NOTICE>("BBOX after svg::RECT: ", b);
+					//node.get("data-bb") << b.x << b.y << b.width << b.height;
+				}
+				break;
+				case svg::POLYGON: {
+					std::list<std::string> points;
+					double x=0.0, y=0.0;
+					drain::StringTools::split(node.get("points",""), points, ' '); // note: separator not comma
+					for (const auto & point: points){
+						drain::StringTools::split2(point, x,y, ','); // note: separator not comma
+						b.expand(x, y);
+					}
+					// mout.accept<LOG_NOTICE>("BBOX after POLYGON: ", b);
+				}
+				break;
+				case svg::TEXT:
+					// "Point-like object"
+					// Height is real, relates to row height.
+					// Width is the margin only, yet pushed "bbox" out a bit.
+					// TEXT is assumed to be left/right/center aligned with enough space.
+					b.expand(node.getBoundingBox());
+					// b.expand(node.getBoundingBox().getLocation());
+					mout.accept<LOG_NOTICE>("BBOX after svg::TEXT: ", b);
+					break;
+				default:
+					mout.warn("unhandled type: ", node.getType());
+					continue;
+				}
+
+				++count;
+			}
+
+		}
+
+		// Develop...
+		if (debug && (count > 1)){
+			drain::image::NodeSVG & debugRect = group["debugRect"](svg::RECT);
+			debugRect.addClass("DEBUG");
+			// debugRect.setStyle("stroke-width", 3);
+			// debugRect.setStyle("stroke-style", "dotted");
+			debugRect.getBoundingBox() = b;
+			debugRect.set("x", b.x);
+			debugRect.set("y", b.y);
+			debugRect.setFrame(b.getFrame());
+		}
+
+	}
+
+
+}
+
+
+
+
+/// Set instructions, flipping axis in nesting groups of type STACK_LAYOUT
+/**
+ *  MOVE
+ */
+void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	NodeSVG & node = object.data;
+
+	if (!node.typeIs(svg::GROUP, svg::SVG, svg::RECT, svg::IMAGE, svg::TEXT)){
+		return;
+	}
+
+	// mout.attention("ACCEPT:", object->getTag());
+	mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", node); //, object->getId(), " -> ", object->getBoundingBox());
+
+	if (node.hasClass(LayoutSVG::FLOAT)){
+		if (!node.isAligned()){
+			node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
+		}
+	}
+	else { // if (object->hasClass(LayoutSVG::ALIGN)){
+		if (node.isAligned()){
+			//mout.special("Overriding Align for: ", object.data);
+		}
+		else {
+			setStackLayout(node, orientation, direction);
+		}
+	}
+
+	// Recursion
+	if (node.typeIs(svg::SVG, svg::GROUP)){
+
+		if (node.hasClass(LayoutSVG::ALIGN)){
+			orientation = AlignBase::flip(orientation);
+			mout.special("flipped orientation to ", orientation, " for children of ", node);
+		}
+
+		for (TreeSVG::pair_t & entry: object){
+			addStackLayout(entry.second, orientation, direction);
+		}
+	}
+
+
+}
+
+void TreeUtilsSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction){
+
+	if (orientation == drain::image::AlignBase::Axis::HORZ){
+		if (direction==LayoutSVG::Direction::INCR){
+			node.setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE);
+		}
+		else {
+			node.setAlign(AlignSVG::LEFT, AlignSVG::OUTSIDE);
+		}
+		// Assign "hanging"
+		node.setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // for some apps, could be BOTTOM as well?
+	}
+	else {
+		if (direction==LayoutSVG::Direction::INCR){
+			node.setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+		}
+		else {
+			node.setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+		}
+		node.setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // for some apps, could be RIGHT as well?
+	}
+}
+
+/**
+ *   Aligns any object which isAligned()
+ *   Does not check classes.
+ */
+void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	if (object->isAbstract()){
+		return;
+	}
+
+	// mout.attention("ACCEPT:", object->getTag());
+	mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
+
+	// Depth-first
+	for (TreeSVG::pair_t & entry: object){
+		superAlignNEW(entry.second);
+	}
+
+	if (! object->typeIs(svg::GROUP)){
+		return;
+	}
+
+	// Host element's |STACK_LAYOUT| bbox, to be updated below
+	BBoxSVG & compoundBBox = object->getBoundingBox();
+	compoundBBox.reset();
+
+
+	/**
+	 *   Special anchor: "*": current "compound bbox", ie the bbox of all the objects this far
+	 */
+
+	/* NOTE! Current policy is (potentially) ambiguous as group anchor is also the group's own specific anchor */
+
+	const TreeSVG::path_elem_t & groupAnchorHorz = object->getAlignAnchorHorz();
+	const bool GROUP_ANCHOR_HORZ = object->typeIs(svg::GROUP) && !groupAnchorHorz.empty(); // || ANCHOR_HORZ_CUMULATIVE);
+
+	if (GROUP_ANCHOR_HORZ && (groupAnchorHorz == "*")){
+		mout.warn("HORZ Group anchor '*' actually means group's own anchor.");
+	}
+
+	const TreeSVG::path_elem_t & groupAnchorVert = object->getAlignAnchorVert();
+	const bool GROUP_ANCHOR_VERT = object->typeIs(svg::GROUP) && !groupAnchorVert.empty(); //  || ANCHOR_VERT_CUMULATIVE);
+
+	if (GROUP_ANCHOR_VERT && (groupAnchorVert == "*")){
+		mout.warn("VERT Group anchor '*' actually means group's own anchor.");
+	}
+
+
+	// Incrementally growing extent (width/height)
+	BBoxSVG bbox;
+	BBoxSVG *bboxAnchorHorz = & bbox; // yes, pointer
+	BBoxSVG *bboxAnchorVert = & bbox; // yes, pointer
+
+	if (GROUP_ANCHOR_HORZ){
+		bboxAnchorHorz = & object[groupAnchorHorz]->getBoundingBox();
+		compoundBBox.expand(*bboxAnchorHorz);
+		// or ASSIGN?
+	}
+
+
+	if (GROUP_ANCHOR_VERT){
+		bboxAnchorVert = & object[groupAnchorVert]->getBoundingBox();
+		compoundBBox.expand(*bboxAnchorVert);
+		// or ASSIGN?
+	}
+
+	// bboxAnchorHorz->setLocation(0, 0); // replaces offset?
+	// bboxAnchorVert->setLocation(0, 0); // replaces offset?
+
+	// Step 2: setting Align instructions
+
+	for (TreeSVG::pair_t & entry: object){
+
+		NodeSVG & node = entry.second.data;
+
+		// New policy. Must have sensible/well behaving getBoundingBox()
+		if (!node.typeIs(svg::GROUP, svg::SVG, svg::RECT, svg::IMAGE, svg::TEXT)){
+			// TODO: if isGraphic() warn...
+			//return;
+			continue;
+		}
+
+		// Ensure alignment
+		if (!node.isAligned()){
+			continue;
+		}
+
+
+		// If the element has specific (sibling) anchor, use it.
+
+		// svg::coord_t w = node.getWidth();
+		// mout.pending<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
+
+		const TreeSVG::path_elem_t & ah = node.getAlignAnchorHorz();
+		if (ah == "*"){ // TODO: enum
+			// Using compound ("accumulated") bbox
+			// mout.special<LOG_NOTICE>("WIDE horz align for ", entry.first, " => ", entry.second.data);
+			TreeUtilsSVG::realignObjectHorzNEW(node, compoundBBox); // this far
+		}
+		else if (object.hasChild(ah)){ // Specific horz anchor (sibling)
+			TreeUtilsSVG::realignObjectHorzNEW(node, object[ah]->getBoundingBox());
+		}
+		else if (entry.first != groupAnchorHorz){
+			TreeUtilsSVG::realignObjectHorzNEW(node, *bboxAnchorHorz);
+		}
+		else if (!ah.empty()){
+			mout.warn("Unhandled/unfound Horz align anchor: ", ah);
+		}
+
+		/*
+		mout.reject<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
+		if (w != node.getWidth()){
+			mout.reject<LOG_NOTICE>("WIDTH changed ", w, "->", node.getWidth(), " for ", entry.second.data);
+		}
+		*/
+
+
+		const TreeSVG::path_elem_t & av = node.getAlignAnchorVert();
+		if (av == "*"){
+			// mout.special<LOG_NOTICE>("WIDE vert align for ", entry.first, " => ", entry.second.data);
+			TreeUtilsSVG::realignObjectVertNEW(node, compoundBBox); // this far
+		}
+		else if (object.hasChild(av)){ // Specific vert anchor (sibling)
+			TreeUtilsSVG::realignObjectVertNEW(node, object[av]->getBoundingBox());
+		}
+		else if (entry.first != groupAnchorVert){
+			TreeUtilsSVG::realignObjectVertNEW(node, *bboxAnchorVert);
+		}
+		else if (!av.empty()){
+			mout.warn("Unhandled/unfound Vert align anchor: ", av);
+		}
+
+
+		if (!node.hasClass(LayoutSVG::FLOAT)){
+
+			//mout.special<LOG_WARNING>("Expanding ", objectBBox.getFrame(), " of ", object->getId(), " with ", bbox.getFrame());
+			// Update compound bbox.
+
+			bbox = node.getBoundingBox(); // Notice: copy
+			if (&bbox == &compoundBBox){
+				mout.suspicious<LOG_WARNING>("Updating BBOX with itself");
+			}
+			compoundBBox.expand(bbox);
+			/// mout.special<LOG_WARNING>("Resulting BBOX=", objectBBox, " me: \t", object.data);
+			// mout.accept<LOG_NOTICE>("Expanded compound bbox: ", compoundBBox, " horz:", *bboxAnchorHorz, " vert:", *bboxAnchorVert);
+
+
+			// Adjust anchors:
+
+			if (!GROUP_ANCHOR_HORZ){
+				mout.accept<LOG_INFO>("Passing HORZ anchor role to: /", entry.first, "/ <", node.getTag(), "> ", node.getId());
+				bboxAnchorHorz = & node.getBoundingBox();
+			}
+
+			if (!GROUP_ANCHOR_VERT){
+				// Jumping anchor
+				mout.accept<LOG_INFO>("Passing VERT anchor role to: /", entry.first, "/ <", node.getTag(), "> ", node.getId());
+				bboxAnchorVert = & node.getBoundingBox();
+			}
+
+			/// mout.accept<LOG_NOTICE>("Expanding ... ", bbox, " now, after: ", node.data);
+
+		}
+
+
+	}
+
+
+}
+
+
+/**
+ *   Pick dx = bbox.x
+ *   translate.x = anchor.x -dx
+ *
+ *
+ */
+void TreeUtilsSVG::realignObjectHorzNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxHorz){
+
+	// return;
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	// TODO/FIX: currently TEXT not handled at all (this method not invoked)
+	const bool IS_TEXT = node.typeIs(svg::TEXT);
+
+	Box<svg::coord_t> & obox = node.getBoundingBox();
+
+	svg::coord_t coord = 0;
+
+	AlignBase::Pos alignLoc;
+
+	// STEP 1: ANCHOR
+
+	mout.debug("Adjusting location (", ") with ANCHOR's ref point");
+
+	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
+	case AlignBase::Pos::MIN:
+		coord = anchorBoxHorz.x;
+		break;
+	case AlignBase::Pos::MID:
+		coord = anchorBoxHorz.x + anchorBoxHorz.width/2;
+		break;
+	case AlignBase::Pos::MAX:
+		coord = anchorBoxHorz.x + anchorBoxHorz.width;
+		break;
+	case AlignBase::Pos::FILL:
+		// Maybe ok, since GROUP can be an anchor but also
+		// mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
+		break;
+	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
+		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
+		break;
+	default:
+		// assert undefined value.
+		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
+	}
+	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
+
+	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
+
+	static const std::string TEXT_ANCHOR("text-anchor");
+
+	// STEP 2: OBJECT
+
+	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
+	case AlignBase::Pos::MIN:
+		if (IS_TEXT){
+			node.setStyle(TEXT_ANCHOR, "start");
+			node.transform.translate.set(+2.0 * node.getMargin());
+		}
+		break;
+	case AlignBase::Pos::MID:
+		if (IS_TEXT){
+			node.setStyle(TEXT_ANCHOR, "middle");
+		}
+		else {
+			coord -= obox.width/2;
+		}
+		break;
+	case AlignBase::Pos::MAX:
+		if (IS_TEXT){
+			node.setStyle(TEXT_ANCHOR, "end");
+			node.transform.translate.set(-2.0 * node.getMargin());
+		}
+		else {
+			coord -= obox.width;
+		}
+		break;
+	case AlignBase::Pos::FILL:
+		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
+		mout.experimental<LOG_DEBUG>("FILL:ing horz: ",   obox, " width -> ", anchorBoxHorz.width);
+		coord = anchorBoxHorz.x;
+		obox.setWidth(anchorBoxHorz.width);
+
+		break;
+	case AlignBase::Pos::UNDEFINED_POS: // or absolute
+		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::HORZ, pos);
+		break;
+	default:
+		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
+	}
+
+	if (!IS_TEXT){
+		node.transform.translate.x = coord;
+	}
+	// mout.attention("Alignment::OBJECT-HORZ ", pos);
+	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
+}
+
+/**
+ *  \param anchorSpan - width or height of the achore rectangle.
+ */
+void TreeUtilsSVG::realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert){
+
+	Logger mout(__FILE__, __FUNCTION__);
+
+	const bool IS_TEXT = node.typeIs(svg::TEXT);
+
+	svg::coord_t coord = 0;
+
+	AlignBase::Pos alignLoc;
+
+	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
+	case AlignBase::Pos::MIN:
+		coord = anchorBoxVert.y;
+		break;
+	case AlignBase::Pos::MID:
+		coord = anchorBoxVert.y + anchorBoxVert.height/2;
+		break;
+	case AlignBase::Pos::MAX:
+		coord = anchorBoxVert.y + anchorBoxVert.height;
+		break;
+	case AlignBase::Pos::FILL:
+		mout.suspicious<LOG_NOTICE>("Alignment:: ANCHOR has fill request: HORZ FILL");
+		break;
+	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
+		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
+		break;
+	default:
+		// assert undefined value.
+		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
+	}
+	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
+	// mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
+	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
+
+	static const std::string TEXT_ANCHOR("text-anchor");
+
+	Box<svg::coord_t> & obox = node.getBoundingBox();
+
+	if (IS_TEXT){
+		node.transform.translate.y += (node.getHeight()-node.getMargin());
+	}
+
+	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
+	case AlignBase::Pos::MIN:
+		break;
+	case AlignBase::Pos::MID:
+		coord -= 0.5*obox.height;
+		break;
+	case AlignBase::Pos::MAX:
+		coord -= obox.height;
+		break;
+	case AlignBase::Pos::FILL:
+		// mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
+		// mout.experimental<LOG_DEBUG>("FILL:ing vert: ", obox, " height ");
+		coord = anchorBoxVert.y;
+		obox.setHeight(anchorBoxVert.height);
+		if (IS_TEXT){
+			mout.warn("FILL not applicable for TEXT elem - ", node);
+		}
+		break;
+	case AlignBase::Pos::UNDEFINED_POS: // or absolute
+		mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", alignLoc, " for ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::VERT);
+		break;
+	default:
+		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
+	}
+
+	node.transform.translate.y = coord;
+
+}
+
+
+
+
+// ---------------------------------------------------
+
+// Consider XMl Visitor... no
 bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & box){
 
 	if (elem->typeIs(svg::SVG) || elem->typeIs(svg::GROUP)){
@@ -82,7 +613,6 @@ bool TreeUtilsSVG::computeBoundingBox(const TreeSVG & elem, Box<svg::coord_t> & 
 
 
 
-
 void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -104,10 +634,6 @@ void TreeUtilsSVG::finalizeBoundingBox(TreeSVG & svg){
 	svg->set("viewBox", viewBox);
 
 }
-
-
-
-
 
 
 void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> & anchorBoxHorz){
@@ -285,184 +811,6 @@ void TreeUtilsSVG::realignObjectVert(TreeSVG & object, const Box<svg::coord_t> &
 }
 
 
-
-void TreeUtilsSVG::realignObjectHorzNEW(TreeSVG & object, const Box<svg::coord_t> & anchorBoxHorz){
-
-	return;
-
-	Logger mout(__FILE__, __FUNCTION__);
-
-	const bool IS_TEXT = object->typeIs(svg::TEXT);
-
-	Box<svg::coord_t> & obox = object->getBoundingBox();
-
-	svg::coord_t coord = 0;
-
-	AlignBase::Pos alignLoc;
-
-	mout.debug("Adjusting location (", ") with ANCHOR's ref point");
-
-	switch (alignLoc = object->getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
-	case AlignBase::Pos::MIN:
-		coord = anchorBoxHorz.x;
-		break;
-	case AlignBase::Pos::MID:
-		coord = anchorBoxHorz.x + anchorBoxHorz.width/2;
-		break;
-	case AlignBase::Pos::MAX:
-		coord = anchorBoxHorz.x + anchorBoxHorz.width;
-		break;
-	case AlignBase::Pos::FILL:
-		// Maybe ok, since GROUP can be an anchor but also
-		// mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
-		break;
-	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
-		break;
-	default:
-		// assert undefined value.
-		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
-	}
-	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
-
-	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
-
-	static const std::string TEXT_ANCHOR("text-anchor");
-
-	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
-	case AlignBase::Pos::MIN:
-		if (IS_TEXT){
-			object->setStyle(TEXT_ANCHOR, "start");
-			object->transform.translate.set(+2.0 * object->getMargin());
-		}
-		break;
-	case AlignBase::Pos::MID:
-		if (IS_TEXT){
-			object->setStyle(TEXT_ANCHOR, "middle");
-		}
-		else {
-			coord -= obox.width/2;
-		}
-		break;
-	case AlignBase::Pos::MAX:
-		if (IS_TEXT){
-			object->setStyle(TEXT_ANCHOR, "end");
-			object->transform.translate.set(-2.0 * object->getMargin());
-		}
-		else {
-			coord -= obox.width;
-		}
-		break;
-	case AlignBase::Pos::FILL:
-		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
-		mout.experimental<LOG_DEBUG>("FILL:ing horz: ",   obox, " width -> ", anchorBoxHorz.width);
-		coord = anchorBoxHorz.x;
-		obox.setWidth(anchorBoxHorz.width);
-
-		break;
-	case AlignBase::Pos::UNDEFINED_POS: // or absolute
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::HORZ, pos);
-		break;
-	default:
-		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
-	}
-
-	// mout.attention("Alignment::OBJECT-HORZ ", pos);
-	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
-
-	// NÄMÄ POIS
-	TranslatorSVG translator(coord - object->getBoundingBox().x, 0.0f);
-	TreeUtils::traverse(translator, object);
-
-}
-
-/**
- *  \param anchorSpan - width or height of the achore rectangle.
- */
-void TreeUtilsSVG::realignObjectVertNEW(TreeSVG & object, const Box<svg::coord_t> & anchorBoxVert){
-
-	return;
-
-	Logger mout(__FILE__, __FUNCTION__);
-
-	const bool IS_TEXT = object->typeIs(svg::TEXT);
-
-	svg::coord_t coord = 0;
-
-	AlignBase::Pos alignLoc;
-
-	switch (alignLoc = object->getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
-	case AlignBase::Pos::MIN:
-		coord = anchorBoxVert.y;
-		break;
-	case AlignBase::Pos::MID:
-		coord = anchorBoxVert.y + anchorBoxVert.height/2;
-		break;
-	case AlignBase::Pos::MAX:
-		coord = anchorBoxVert.y + anchorBoxVert.height;
-		break;
-	case AlignBase::Pos::FILL:
-		mout.suspicious<LOG_NOTICE>("Alignment:: ANCHOR has fill request: HORZ FILL");
-		break;
-	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
-		break;
-	default:
-		// assert undefined value.
-		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
-	}
-	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
-
-	// mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
-
-	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
-
-	static const std::string TEXT_ANCHOR("text-anchor");
-
-	Box<svg::coord_t> & obox = object->getBoundingBox();
-
-	if (IS_TEXT){
-		object->transform.translate[1] += (object->getHeight()-object->getMargin());
-	}
-
-	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
-	case AlignBase::Pos::MIN:
-		break;
-	case AlignBase::Pos::MID:
-		coord -= 0.5*obox.height;
-		break;
-	case AlignBase::Pos::MAX:
-		coord -= obox.height;
-		break;
-	case AlignBase::Pos::FILL:
-		// mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
-		// mout.experimental<LOG_DEBUG>("FILL:ing vert: ", obox, " height ");
-		coord = anchorBoxVert.y;
-		obox.setHeight(anchorBoxVert.height);
-		if (IS_TEXT){
-			mout.warn("FILL not applicable for TEXT elem - ", object.data);
-		}
-		break;
-	case AlignBase::Pos::UNDEFINED_POS: // or absolute
-		mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", alignLoc, " for ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::VERT);
-		break;
-	default:
-		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
-	}
-
-	// NÄMÄ POIS
-	TranslatorSVG translator(0.0f, coord - object->getBoundingBox().y);
-	TreeUtils::traverse(translator, object);
-	/*
-	if (object->typeIs(svg::GROUP)){
-		object->transform.translate[1] += coord - object->getBoundingBox().y;
-	}
-	else {
-	}
-	*/
-
-}
-
 /**
  *  \param anchorSpan - width or height of the achore rectangle.
  */
@@ -518,7 +866,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 
 	/// If main orientation (inside containers) is HORZ, stack containers VERT. And vice versa.
-	if (object->hasClass(LayoutSVG::ALIGN_FRAME)){
+	if (object->hasClass(LayoutSVG::STACK_LAYOUT)){
 		if (orientation == drain::image::AlignBase::Axis::VERT){
 			object->setAlign((direction==LayoutSVG::Direction::INCR) ? AlignSVG::RIGHT : AlignSVG::LEFT, AlignSVG::OUTSIDE);
 			object->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
@@ -664,209 +1012,6 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 }
 
-
-void TreeUtilsSVG::superAlignNEW(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
-
-	Logger mout(__FILE__, __FUNCTION__);
-
-	if (object->isAbstract()){
-		return;
-	}
-
-	// mout.attention("ACCEPT:", object->getTag());
-	mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
-
-	// Depth-first
-	for (TreeSVG::pair_t & entry: object){
-		superAlignNEW(entry.second, orientation, direction);
-	}
-
-	// New policy. Must have wrapping group
-	if (!object->typeIs(svg::GROUP, svg::SVG)){
-		return;
-	}
-
-	// this could be sufficient:
-	if (!object->hasClass(LayoutSVG::ALIGN_FRAME)){
-		return;
-	}
-
-	// mout.attention("ACCEPT:", object->getTag());
-	mout.special<LOG_DEBUG>(__FUNCTION__, " handle: ", object.data); //, object->getId(), " -> ", object->getBoundingBox());
-
-	// Step 1: setting Align instructions
-	/// If main orientation (inside containers) is HORZ, stack containers VERT. And vice versa.
-	if (orientation == drain::image::AlignBase::Axis::VERT){
-		object->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
-		if (direction==LayoutSVG::Direction::INCR){
-			object->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE);
-		}
-		else {
-			object->setAlign(AlignSVG::LEFT, AlignSVG::OUTSIDE);
-		}
-	}
-	else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
-		object->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
-		if (direction==LayoutSVG::Direction::INCR){
-			object->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-		}
-		else {
-			object->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-		}
-
-	}
-
-
-	// Host element's bbox, to be updated below
-	BBoxSVG & objectBBox = object->getBoundingBox();
-	// NEW:
-	objectBBox.reset();
-
-	/* NOTE! Current policy is (potentially) ambiguous as group anchor is also the group's own specific anchor */
-
-	const TreeSVG::path_elem_t & groupAnchorHorz = object->getAlignAnchorHorz();
-	const bool GROUP_ANCHOR_HORZ = object->typeIs(svg::GROUP) && !groupAnchorHorz.empty(); // || ANCHOR_HORZ_CUMULATIVE);
-
-	if (GROUP_ANCHOR_HORZ && (groupAnchorHorz == "*")){
-		mout.warn("HORZ Group anchor '*' actually means group's own anchor.");
-	}
-
-	const TreeSVG::path_elem_t & groupAnchorVert = object->getAlignAnchorVert();
-	const bool GROUP_ANCHOR_VERT = object->typeIs(svg::GROUP) && !groupAnchorVert.empty(); //  || ANCHOR_VERT_CUMULATIVE);
-
-	if (GROUP_ANCHOR_VERT && (groupAnchorVert == "*")){
-		mout.warn("VERT Group anchor '*' actually means group's own anchor.");
-	}
-
-
-	// Incrementally growing extent (width/height)
-	BBoxSVG bbox;
-	BBoxSVG *bboxAnchorHorz = &bbox;
-	BBoxSVG *bboxAnchorVert = &bbox;
-
-	if (GROUP_ANCHOR_HORZ){
-		bboxAnchorHorz = & object[groupAnchorHorz]->getBoundingBox();
-		objectBBox.expand(*bboxAnchorHorz);
-		// or ASSIGN?
-	}
-
-
-	if (GROUP_ANCHOR_VERT){
-		bboxAnchorVert = & object[groupAnchorVert]->getBoundingBox();
-		objectBBox.expand(*bboxAnchorVert);
-		// or ASSIGN?
-	}
-
-	// bboxAnchorHorz->setLocation(0, 0); // replaces offset?
-	// bboxAnchorVert->setLocation(0, 0); // replaces offset?
-
-	// Step 2: setting Align instructions
-
-	for (TreeSVG::pair_t & entry: object){
-
-		NodeSVG & node = entry.second; // implicit cast
-
-		if (node.isAbstract()){
-			continue;
-		}
-
-		// Ensure alignment
-		if (!node.isAligned()){
-			if (node.hasClass(LayoutSVG::FLOAT)){
-				node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
-			}
-			else {
-				if (orientation == AlignBase::Axis::HORZ){
-					if (direction==LayoutSVG::Direction::INCR){
-						node.setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE);
-					}
-					else {
-						node.setAlign(AlignSVG::LEFT, AlignSVG::OUTSIDE);
-					}
-					node.setAlign(AlignSVG::TOP);
-				}
-				else {
-					node.setAlign(AlignSVG::LEFT);
-					if (direction==LayoutSVG::Direction::INCR){
-						node.setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-					}
-					else {
-						node.setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-					}
-				}
-			}
-		}
-
-		// If the element has specific (sibling) anchor, use it.
-
-		// svg::coord_t w = node.getWidth();
-
-		// mout.pending<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
-
-		const TreeSVG::path_elem_t & ah = node.getAlignAnchorHorz();
-		if (ah == "*"){
-			// mout.special<LOG_NOTICE>("WIDE horz align for ", entry.first, " => ", entry.second.data);
-			TreeUtilsSVG::realignObjectHorzNEW(entry.second, objectBBox); // this far
-		}
-		else if (object.hasChild(ah)){ // Specific horz anchor (sibling)
-			TreeUtilsSVG::realignObjectHorzNEW(entry.second, object[ah]->getBoundingBox());
-		}
-		else if (entry.first != groupAnchorHorz){
-			TreeUtilsSVG::realignObjectHorzNEW(entry.second, *bboxAnchorHorz);
-		}
-
-		/*
-		mout.reject<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
-		if (w != node.getWidth()){
-			mout.reject<LOG_NOTICE>("WIDTH changed ", w, "->", node.getWidth(), " for ", entry.second.data);
-		}
-		*/
-
-
-		const TreeSVG::path_elem_t & av = node.getAlignAnchorVert();
-		if (av == "*"){
-			// mout.special<LOG_NOTICE>("WIDE vert align for ", entry.first, " => ", entry.second.data);
-			TreeUtilsSVG::realignObjectVertNEW(entry.second, objectBBox); // this far
-		}
-		else if (object.hasChild(av)){ // Specific vert anchor (sibling)
-			TreeUtilsSVG::realignObjectVertNEW(entry.second, object[av]->getBoundingBox());
-		}
-		else if (entry.first != groupAnchorVert){
-			TreeUtilsSVG::realignObjectVertNEW(entry.second, *bboxAnchorVert);
-		}
-
-
-		if (!node.hasClass(LayoutSVG::FLOAT)){
-
-			//mout.special<LOG_WARNING>("Expanding ", objectBBox.getFrame(), " of ", object->getId(), " with ", bbox.getFrame());
-			bbox = node.getBoundingBox(); // Notice: copy
-			if (&bbox == &objectBBox){
-				mout.suspicious("Updating BBOX with itself");
-			}
-			objectBBox.expand(bbox);
-			/// mout.special<LOG_WARNING>("Resulting BBOX=", objectBBox, " me: \t", object.data);
-
-			if (!GROUP_ANCHOR_HORZ){
-				mout.experimental<LOG_INFO>("Jumping HORZ anchor to: /", entry.first, "/ <", node.getTag(), "> ", node.getId());
-				bboxAnchorHorz = & node.getBoundingBox();
-			}
-
-			if (!GROUP_ANCHOR_VERT){
-				// Jumping anchor
-				mout.experimental<LOG_INFO>("Jumping VERT anchor to: /", entry.first, "/ <", node.getTag(), "> ", node.getId());
-				bboxAnchorVert = & node.getBoundingBox();
-			}
-
-			mout.accept<LOG_DEBUG>("Expanding ... ", objectBBox, " horz:", *bboxAnchorHorz, " vert:", *bboxAnchorVert);
-			/// mout.accept<LOG_NOTICE>("Expanding ... ", bbox, " now, after: ", entry.second.data);
-
-		}
-
-
-	}
-
-
-}
 
 /**  Iteratively traverses elements of ALIGN_GROUP, and (re)aligns elements inside them as panels.
  *

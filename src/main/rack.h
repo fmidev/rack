@@ -31,10 +31,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #ifndef __RACK_API__
 #define __RACK_API__
-#define __RACK__ "Rack_fmi.fi"
-#define __RACK_VERSION__ "13.93"
+#define RACK_STAMP "Rack_fmi.fi"
+#define RACK_VERSION_OLD "13.93"
+
+#include <drain/Version.h>
+#define RACK_VERSION drain::Version<>(14,0,0)
+
 
 /**
+ *  Version 14
+ *  Version 14.0.0 (beta)
+ *  - Revised SVG Layout
+ *
  *  Version 13
  *  - andre::ChaffOp
  *  Release 13.1

@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/EnumFlags.h>
 #include <drain/util/Rectangle.h>
 #include "AlignSVG.h"
+#include "LayoutSVG.h"
 #include "TreeSVG.h"
 
 namespace drain {
@@ -79,15 +80,58 @@ struct TreeUtilsSVG {
 
 public:
 
-	// static PanelConfSVG defaultConf; // Consider separating Rack-specific properties.
 
-	/*
+	/// Compute the bounding box recursively in objects of type IMAGE, RECT, POLYGON and G (group).
+	/**
+	 *  Traverses the structure recursively, updating bounding box at each level.
+	 *
+	 *  Future versions may also handle CIRCLE and TEXT (location)
+	 */
 	static
-	const std::set<XML::intval_t> abstractTags;
+	void detectBoxNEW(TreeSVG & group, bool debug = false);
+
+
+	/// Set stack layout as a default in a subtree.
+	/**
+	 *  Stack layout is applied in groups (G) of class STACK_LAYOUT.
+	 *  Stacking means the objects are laid subsequently next to each other,
+	 *  alternating horizontal and vertical orientation in each level of STACK_LAYOUTs.
+	 *
+	 *  Currently, the same direction parameter is used for both horizontal and vertical layout.
+	 *  In future, these could be set separately.
+	 *
+	 *   To actually align the objects, call also superAlignNew().	 *
+	 */
+	static
+	void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
+
+	/// Sets alignment applying stack layout in a single node.
+	/**
+	 *   This function is invoked by TreeUtilsSVG::addStackLayout() .
+	 *
+	 *   To finally align (translate) the objects, call also TreeUtilsSVG::superAlignNew().	 *
+	 */
+	static
+	void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction);
 
 	static
-	bool isAbstract(XML::intval_t tag);
-	*/
+	void superAlignNEW(TreeSVG & node);
+
+
+
+	static
+	void realignObjectHorzNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxHorz);
+
+	static
+	void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
+
+
+
+	// ...................................................
+
+
+
+
 
 	/// Compute bounding box of the whole structure.
 	/**
@@ -110,62 +154,30 @@ public:
 	 *
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
-	// static
-	// void getBoundingFrame(const TreeSVG & group, drain::Frame2D<int> & frame, AlignBase::Axis orientation=AlignBase::Axis::HORZ);
-
-	// replaced with traversing setter
-	// static void setRelativePaths(drain::image::TreeSVG & object, const drain::FilePath & filepath);
 
 
-	// NEW ---------------------
 	static
 	void superAlign(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
-	//const Point2D<svg::coord_t> & offset = {0,0}); // replaces alignSequence
 
-	static
-	void superAlignNEW(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
-
-
-	// static
-	// void realignElem(TreeSVG & elem, const Box<svg::coord_t> & anchorBox);
-
-	/// Align object respect to an anchor frame.
-	// static
-	// void realignObject(const Box<svg::coord_t> & anchorBox, TreeSVG & obj);
 
 	static
 	void realignObject(const Box<svg::coord_t> & anchorBoxHorz, const Box<svg::coord_t> & anchorBoxVert, TreeSVG & obj);
 
-	// static
-	// void realignObject(AlignBase::Axis axis, svg::coord_t pos, svg::coord_t width, TreeSVG & obj, svg::coord_t & newPos); // , Point2D<svg::coord_t> & newLocation);
-
-	// static
-	// void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz, svg::coord_t & coord);
 
 	static
 	void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz);
-
-	// static
-	 //void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert, svg::coord_t & coord);
 
 	static
 	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
 
 
-	static
-	void realignObjectHorzNEW(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz);
-
-	static
-	void realignObjectVertNEW(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
-
-
-	/// Recursively move elements with (x, y).
+	// UNUSED Recursively move elements with (x, y).
 	static
 	void translateAll(TreeSVG & group, const Point2D<svg::coord_t> &offset);
 
 };
 
-
+// Deprecating. Does not handle polygons etc
 class TranslatorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:

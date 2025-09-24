@@ -40,7 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-// DRAIN_TYPENAME_DEF(image::NodeSVG);
 
 namespace image {
 
@@ -104,7 +103,6 @@ DRAIN_TYPENAME_DEF(AlignSVG::HorzAlign);
 DRAIN_TYPENAME_DEF(AlignSVG::VertAlign);
 
 
-/// Combines both EnumDict<Alignment<> >:
 
 template <>
 const drain::EnumDict<Alignment<> >::dict_t  drain::EnumDict<Alignment<> >::dict = {
@@ -119,25 +117,11 @@ const drain::EnumDict<Alignment<> >::dict_t  drain::EnumDict<Alignment<> >::dict
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, VERT_FILL),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
-//EnumDict<Alignment<> >
 
 
-Alignment<> test(drain::image::AlignSVG::LEFT);
-Alignment<> test2 = drain::image::AlignSVG::LEFT;
+// Alignment<> test(drain::image::AlignSVG::LEFT);
+// Alignment<> test2 = drain::image::AlignSVG::LEFT;
 
-/*
-template <>
-const drain::EnumDict<AlignSVG>::dict_t  drain::EnumDict<AlignSVG>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
-};
-*/
 /// Handler for command line or configuration file arguments
 void AlignSVG::setAlign(const std::string & align){
 
@@ -238,22 +222,6 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 }
 
-// -----------------------------------------------------------------------------------------------------------
-
-template<>
-const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN_FRAME),
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALI GNED),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ABSOLUTE),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FLOAT),
-};
-
-template <>
-const drain::EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict = {
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, INCR),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, DECR)
-};
 
 template <>
 const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict = {
