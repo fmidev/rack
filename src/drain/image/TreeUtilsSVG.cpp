@@ -83,16 +83,12 @@ void TreeUtilsSVG::detectBoxNEW(drain::image::TreeSVG & group, bool debug){
 			if (node.typeIs(svg::GROUP, svg::SVG)){
 
 				//BBoxSVG b2;
-				detectBoxNEW(entry.second); // returns if not SVG or G
+				detectBoxNEW(entry.second, debug); // returns if not SVG or G
 
 				// Now sub-GROUP bbox is ready.
 				b.expand(node.getBoundingBox()); // is this ok? Consider N-level nesting (and translation)
 
 				// mout.accept<LOG_NOTICE>("BBOX after GROUP/SVG", b);
-				++count;
-			}
-			else if (node.typeIs(svg::SVG)){
-				mout.warn("nesting SVG elem not handled");
 				++count;
 			}
 			else if (!node.isAbstract()){ // is graphic
@@ -143,6 +139,8 @@ void TreeUtilsSVG::detectBoxNEW(drain::image::TreeSVG & group, bool debug){
 			}
 
 		}
+
+		mout.accept<LOG_NOTICE>("elem ", group->getId(), " has ", count, " children, debug=", debug);
 
 		// Develop...
 		if (debug && (count > 1)){
