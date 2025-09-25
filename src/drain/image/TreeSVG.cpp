@@ -82,9 +82,9 @@ const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = dr
 */
 
 // NEW (slower?)
-
-template <>
-const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = {
+// template <>
+// const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict
+DRAIN_ENUM_DICT(image::svg::tag_t) = {
 		/*
 		{"UNDEFINED", XML::UNDEFINED},
 		{"COMMENT",   XML::COMMENT},

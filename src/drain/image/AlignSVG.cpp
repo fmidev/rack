@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include "AlignSVG.h"
+#include <drain/image/AlignAdapterSVG.h>
 
 namespace drain {
 
@@ -250,14 +250,6 @@ bool AlignSVG::isAligned() const {
 	return false;
 };
 
-
-void AlignAdapterSVG::updateAlignStr(){
-
-	std::stringstream sstr;
-	confToStream(sstr);
-	alignStr = sstr.str();
-
-}
 
 
 }  // image::

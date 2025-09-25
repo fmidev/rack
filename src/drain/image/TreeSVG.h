@@ -38,12 +38,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_SVG
 #define DRAIN_TREE_SVG
 
+#include <drain/image/AlignAdapterSVG.h>
 #include "drain/util/EnumFlags.h"
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
 #include "drain/util/SelectorXML.h"
 #include "drain/util/TreeXML.h"
-#include "AlignSVG.h"
 #include "TransformSVG.h"
 
 namespace drain {
@@ -77,8 +77,9 @@ struct svg {
 const drain::EnumDict<image::svg::tag_t>::dict_t & getDict();
 
 
-template <>
-const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict;
+// template <>
+// const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict;
+DRAIN_ENUM_DICT(image::svg::tag_t);
 
 DRAIN_ENUM_OSTREAM(image::svg::tag_t)
 

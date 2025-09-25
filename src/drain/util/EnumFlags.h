@@ -135,6 +135,38 @@ struct EnumDict {
 		return dict.getValue(key, lenient);
 	}
 
+	/// Convenience for object.set(...) like commands.
+	/**
+	 *   \return enum value of the key
+	 *
+	 *   Note: cannot return (const E &) as storage type is (long) int.
+	static inline
+	E getKey(const E & value, bool lenient=true){
+		return value;
+	}
+	 */
+
+	/// Experimental. Convenience for object.set(...) like commands.
+	/**
+	 *   \param lenient - when key not found, only return empty, do not throw exception.
+	 *   \return enum value of the key
+	 */
+	static inline
+	const std::string & getKey(const E & value, bool lenient=true){
+		return dict.getKey(value, lenient);
+	}
+
+	/// Experimental. Convenience for object.set(...) like commands.
+	/**
+	 *   \param lenient - when value not found, only return empty, do not throw exception.
+	 *   \return enum value of the key
+
+	static inline
+	const std::string & getKey(const std::string & value, bool lenient=true){
+		return value;
+	}
+	 */
+
 };
 
 /// Default default value...
@@ -142,9 +174,14 @@ struct EnumDict {
 // const E EnumDict<E>::defaultValue = 0;
 
 // Useful macros
+
+// For declaration and definition.
+#define DRAIN_ENUM_DICT(enumtype) template <> const EnumDict<enumtype>::dict_t EnumDict<enumtype>::dict
+
 #define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
 
 #define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
+
 
 /* Perhaps useful!
 template <class E>

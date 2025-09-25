@@ -1295,6 +1295,14 @@ drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , doub
  *   - bbox will be adjusted: offset from origing removed, and alignment added as \c transform="translate(x,y)"
  */
 
+// operator T() const
+
+/*
+operator const std::string &()(drain::image::AlignBase::Axis){
+	static const std::string s("sksk");
+	return s;
+}
+*/
 
 class CmdAlignTest : public drain::SimpleCommand<std::string> {
 
@@ -1350,7 +1358,18 @@ public:
 
 	}
 
+	//template <typename T>
+	// std::string static_cast<std::string>(drain::EnumDict<T>::){};
+
 	void exec() const override {
+
+		// Koe<int> koe;
+		// Koe<const int> kiinto;
+
+		// koe.x = 123;
+		// kiinto.x = 345;
+
+		// std::string k = static_cast<std::string>(drain::image::AlignSVG::MIDDLE);
 
 		// ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
 		// ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
