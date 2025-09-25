@@ -76,6 +76,21 @@ struct PanelConfSVG {
 //template <>
 // const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict;
 
+template <AlignBase::Axis AX>
+struct CoordSpan {
+
+	// Starting coordinate (x or y).
+	svg::coord_t pos;
+	svg::coord_t span;
+
+	// ? void getTranslatedCoordSpan(const BBoxSVG & bbox);
+	void copyFrom(const NodeSVG & node);
+
+	void copyFrom(const BBoxSVG & bbox);
+
+};
+
+
 struct TreeUtilsSVG {
 
 public:
@@ -118,13 +133,26 @@ public:
 	void superAlignNEW(TreeSVG & node);
 
 
+	// TODO: templated
+	template <AlignBase::Axis AX>
+	static
+	void realignObject(NodeSVG & node, const CoordSpan<AX> & span);
+	//void realignObjectHorzNEW(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span);
 
+	// static
+	// void realignObjectVertNEW(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
+
+	// void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
+	// static
+	//void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
+
+	/*
 	static
 	void realignObjectHorzNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxHorz);
 
 	static
 	void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
-
+	*/
 
 
 	// ...................................................
@@ -176,6 +204,13 @@ public:
 	void translateAll(TreeSVG & group, const Point2D<svg::coord_t> &offset);
 
 };
+
+template <>
+void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span);
+
+template <>
+void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
+
 
 // Deprecating. Does not handle polygons etc
 class TranslatorSVG : public drain::TreeVisitor<TreeSVG> {

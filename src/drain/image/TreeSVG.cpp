@@ -285,22 +285,38 @@ void NodeSVG::updateAlign(){
 	this->unlink("data-anchorHorz");
 	this->unlink("data-anchorVert");
 
-	if (anchorHorz.empty() && anchorVert.empty()){
-		return;
+	if ((!myAnchorHorz.empty()) || (!myAnchorVert.empty())){
+
+		if (myAnchorHorz == myAnchorVert){
+			this->link("data-anchor", myAnchorHorz.str());
+		}
+		else if (!myAnchorHorz.empty()){
+			this->link("data-anchorHorz", myAnchorHorz.str());
+		}
+		else if (!myAnchorVert.empty()){
+			this->link("data-anchorVert", myAnchorVert.str());
+		}
+
 	}
 
-	if (anchorHorz == anchorVert){
-		this->link("data-anchor", anchorHorz);
-		return;
+	this->unlink("data-anchorDefault");
+	this->unlink("data-anchorHorzDefault");
+	this->unlink("data-anchorVertDefault");
+
+	if ((!defaultAnchorHorz.empty()) || (!defaultAnchorVert.empty())){
+
+		if (defaultAnchorHorz == defaultAnchorVert){
+			this->link("data-anchorDefault", defaultAnchorHorz.str());
+		}
+		else if (!defaultAnchorHorz.empty()){
+			this->link("data-anchorHorzDefault", defaultAnchorHorz.str());
+		}
+		else if (!defaultAnchorVert.empty()){
+			this->link("data-anchorVertDefault", defaultAnchorVert.str());
+		}
+
 	}
 
-	if (!anchorHorz.empty()){
-		this->link("data-anchorHorz", anchorHorz);
-	}
-
-	if (!anchorVert.empty()){
-		this->link("data-anchorVert", anchorVert);
-	}
 
 }
 

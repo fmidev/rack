@@ -51,41 +51,137 @@ namespace drain {
 namespace image {
 
 
+// Could be internal class in Adapter?
+struct AnchorElem : public std::string {
+
+	inline
+	AnchorElem(const std::string & s="") : std::string(s){
+	};
+
+	inline
+	AnchorElem(const AnchorElem & a) : std::string(a){
+	};
+
+	inline
+	const std::string & str() const {
+		return *this;
+	}
+
+	inline
+	std::string & str() {
+		return *this;
+	}
+
+
+	/// Make it dynamic, practically changed to last updated
+	inline
+	void setFlipping(){
+		assign("*");
+	}
+
+	inline
+	void setSpecific(const std::string & s){
+		if (s.empty()){
+			throw std::runtime_error("AnchorElem setSpecific arg empty");
+		}
+		else if (s == "*"){
+			throw std::runtime_error("AnchorElem setSpecific arg '*' reserved for 'flipping' mode");
+		}
+		assign(s);
+	}
+
+
+	/// If not set, use default.
+	inline
+	bool isSet() const {
+		return !empty();
+	}
+
+	/// Make it dynamic, practically changed to last updated
+	inline
+	bool isExtensive() const {
+		return (*this == "*");
+	}
+
+	/// Named element
+	inline
+	bool isSpecific() const {
+		return isSet() && !isExtensive();
+	}
+
+
+
+
+};
+
 /// Adapter designed for NodeSVG
 struct AlignAdapterSVG : public AlignSVG {
+
+	typedef AnchorElem anchor_t;
 
 	/// Mark one of the elements of this object (SVG or G) as a decisive position
 	// template <class T>
 	inline
 	void setAlignAnchor(const std::string & pathElem){
-		anchorVert = anchorHorz = pathElem; // getElem(pathElem);
+		myAnchorVert = myAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	// template <class T>
 	inline
 	void setAlignAnchorHorz(const std::string & pathElem){
-		anchorHorz = pathElem; // getElem(pathElem);
+		myAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	//template <class T>
 	inline
 	void setAlignAnchorVert(const std::string & pathElem){
-		anchorVert = pathElem; // getElem(pathElem);
+		myAnchorVert = pathElem; // getElem(pathElem);
+		updateAlign();
+	}
+
+	inline
+	void setAlignAnchorDefault(const std::string & pathElem){
+		defaultAnchorVert = defaultAnchorHorz = pathElem; // getElem(pathElem);
+		updateAlign();
+	}
+
+	// template <class T>
+	inline
+	void setAlignAnchorDefaultHorz(const std::string & pathElem){
+		defaultAnchorHorz = pathElem; // getElem(pathElem);
+		updateAlign();
+	}
+
+	//template <class T>
+	inline
+	void setAlignAnchorDefaultVert(const std::string & pathElem){
+		defaultAnchorVert = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	///
 	inline
-	const std::string & getAlignAnchorHorz() const {
-		return anchorHorz;
+	const anchor_t & getAlignAnchorHorz() const {
+		return myAnchorHorz;
 	}
 
 	inline
-	const std::string & getAlignAnchorVert() const {
-		return anchorVert;
+	const anchor_t & getAlignAnchorVert() const {
+		return myAnchorVert;
 	}
+
+	inline
+	const anchor_t & getAlignAnchorDefaultHorz() const {
+		return defaultAnchorHorz;
+	}
+
+	inline
+	const anchor_t & getAlignAnchorDefaultVert() const {
+		return defaultAnchorVert;
+	}
+
 
 	inline
 	const std::string & getAlignStr() const {
@@ -118,7 +214,7 @@ protected:
 	}
 	*/
 
-
+	/// Redefined in NodeSVG
 	virtual inline
 	void updateAlign() override {
 		updateAlignStr();
@@ -126,8 +222,12 @@ protected:
 
 	std::string alignStr;
 
-	std::string anchorHorz;
-	std::string anchorVert;
+	// essentially std::string's
+	anchor_t myAnchorHorz;
+	anchor_t myAnchorVert;
+
+	anchor_t defaultAnchorHorz;
+	anchor_t defaultAnchorVert;
 
 	void updateAlignStr();
 
