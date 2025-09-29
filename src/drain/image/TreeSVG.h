@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_SVG
 #define DRAIN_TREE_SVG
 
-#include <drain/image/AlignAdapterSVG.h>
+#include <drain/image/AlignAnchorSVG.h>
 #include "drain/util/EnumFlags.h"
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
@@ -124,8 +124,8 @@ typedef drain::SelectorXML SelectSVG;
   \see drain::TreeXML
 
  */
-// class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAdapterSVG {
-class NodeSVG: public NodeXML<svg::tag_t>, public AlignAdapterSVG {
+// class NodeSVG: public svg, public NodeXML<svg::tag_t>, public AlignAnchorSVG {
+class NodeSVG: public NodeXML<svg::tag_t>, public AlignSVG, public AlignAnchorSVG {
 public:
 
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"

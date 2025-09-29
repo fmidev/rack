@@ -402,8 +402,15 @@ struct AlignSVG { // : protected Align {
 
 	/**
 	 *  For some reason, toStream() conflicts with: drain::NodeXML<T>::toStream(std::ostream&, const T&, const string&, int)
-	 */
+	*/
 	void confToStream(std::ostream & ostr) const;
+
+	void updateAlignStr();
+
+	inline
+	const std::string & getAlignStr() const {
+		return alignStr;
+	}
 
 	/*
 	/// Checks if at least some combination of (ANCHOR|OBJECT) × (HORZ|VERT) × (LEFT|OBJECT),
@@ -423,6 +430,8 @@ protected:
 	// Future extension
 	mutable
 	bitvect_t alignment = 0;
+
+	std::string alignStr;
 
 	/// Change alignment configuration without updating the alignStr.
 	template <typename P, typename A, typename V>

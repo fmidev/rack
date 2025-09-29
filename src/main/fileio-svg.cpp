@@ -1314,15 +1314,17 @@ operator const std::string &()(drain::image::AlignBase::Axis){
 class CmdAlignTest : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
 
 public:
-	// CmdAlignTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout", "foo") {}
 
 	CmdAlignTest() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
 		getParameters().link("name", name, "label");
 		getParameters().link("panel", panel, "label");
-		getParameters().link("anchor", myAnchor, "label");
+		getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
-	// static
+	CmdAlignTest(const CmdAlignTest & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
 	const std::string defaultAnchor = "myRect";
 
 	std::string panel = "playGround1";
@@ -1356,7 +1358,7 @@ public:
 					{"opacity", 0.7},
 			});
 
-			const drain::Frame2D<double> frame = {640.0, 480};
+			const drain::Frame2D<double> frame = {1280.0, 900.0}; // {640.0, 480};
 
 			group->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 

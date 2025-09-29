@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include <drain/image/AlignAdapterSVG.h>
+#include <drain/image/AlignAnchorSVG.h>
 
 namespace drain {
 
@@ -210,7 +210,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 					ostr << axis << '-' << pos;
 				}
 
-				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAdapterSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAdapterSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAdapterSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
+				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAnchorSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAnchorSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAnchorSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
 			}
 
 			alignment |= (((bitvect_t)pos)<<bitShift);
@@ -221,7 +221,13 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 
 }
+void AlignSVG::updateAlignStr(){
 
+	std::stringstream sstr;
+	confToStream(sstr);
+	alignStr = sstr.str();
+
+}
 
 template <>
 const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict = {

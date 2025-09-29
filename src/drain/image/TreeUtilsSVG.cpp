@@ -921,14 +921,14 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 	/* NOTE! Current policy is (potentially) ambiguous as group anchor is also gthe group's own specific anchor */
 
-	const AlignAdapterSVG::anchor_t & groupAnchorHorz = object->getDefaultAlignAnchor<AlignBase::HORZ>();
+	const AlignAnchorSVG::anchor_t & groupAnchorHorz = object->getDefaultAlignAnchor<AlignBase::HORZ>();
 	const bool GROUP_ANCHOR_HORZ = object->typeIs(svg::GROUP) && !groupAnchorHorz.empty(); // || ANCHOR_HORZ_CUMULATIVE);
 
 	if (GROUP_ANCHOR_HORZ && (groupAnchorHorz == "*")){
 		mout.warn("HORZ Group anchor '*' actually means group's own anchor.");
 	}
 
-	const AlignAdapterSVG::anchor_t & groupAnchorVert = object->getDefaultAlignAnchor<AlignBase::VERT>();
+	const AlignAnchorSVG::anchor_t & groupAnchorVert = object->getDefaultAlignAnchor<AlignBase::VERT>();
 	const bool GROUP_ANCHOR_VERT  = object->typeIs(svg::GROUP) && !groupAnchorVert.empty(); //  || ANCHOR_VERT_CUMULATIVE);
 
 	if (GROUP_ANCHOR_VERT && (groupAnchorVert == "*")){
@@ -987,7 +987,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 		// mout.pending<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
 
-		const AlignAdapterSVG::anchor_t & ah = node.getMyAlignAnchor<AlignBase::HORZ>();
+		const AlignAnchorSVG::anchor_t & ah = node.getMyAlignAnchor<AlignBase::HORZ>();
 		if (ah == "*"){
 			// mout.special<LOG_NOTICE>("WIDE horz align for ", entry.first, " => ", entry.second.data);
 			TreeUtilsSVG::realignObjectHorz(entry.second, objectBBox); // this far
@@ -1007,7 +1007,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 		*/
 
 
-		const AlignAdapterSVG::anchor_t & av = node.getMyAlignAnchor<AlignBase::HORZ>();
+		const AlignAnchorSVG::anchor_t & av = node.getMyAlignAnchor<AlignBase::HORZ>();
 		if (av == "*"){
 			// mout.special<LOG_NOTICE>("WIDE vert align for ", entry.first, " => ", entry.second.data);
 			TreeUtilsSVG::realignObjectVert(entry.second, objectBBox); // this far
