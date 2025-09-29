@@ -231,7 +231,7 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
  *  This could be in GraphicsContext, but ctx.log should be virtualized first, like getLog():
  */
 //void RackSVG::applyAlignment(RackContext & ctx, drain::image::TreeSVG & group){
-void RackSVG::applyAlignment(RackContext & ctx, drain::image::NodeSVG & node){
+void RackSVG::consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & node){
 
 	// TODO: return flags of set aligns?
 
@@ -400,7 +400,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL); // Add elems ^ here ^ ?
 
 	// problematic, as init value!
-	applyAlignment(ctx, imagePanel);
+	consumeAlignRequest(ctx, imagePanel);
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
 	image->setFrame(src.getGeometry().area);
@@ -463,7 +463,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg
 
 	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);
 	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);
-	applyAlignment(ctx, imagePanel);
+	consumeAlignRequest(ctx, imagePanel);
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE);
 	image->setFrame(frame);
@@ -491,7 +491,7 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 	backgroundRect->addClass(elemClass);
 
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
-	backgroundRect->setAlignAnchor("*");
+	backgroundRect->setMyAlignAnchor("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	// backgroundRect->setHeight(40); // TODO!!
 
@@ -536,7 +536,9 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	TreeSVG & mainHeader = object[PanelConfSVG::ElemClass::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
 	mainHeader->addClass(LayoutSVG::FLOAT);
 	mainHeader->addClass(elemClass); // also GENERAL?
-	mainHeader->setAlignAnchor(anchor);
+	mainHeader->setMyAlignAnchor(anchor);
+	//mainHeader->setAlignAnchor(anchor);
+
 	/*
 	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
 		mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT); //AlignSVG::VertAlign::MIDDLE);
@@ -565,7 +567,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	TreeSVG & timeHeader = object[PanelConfSVG::ElemClass::TIME](svg::TEXT);
 	timeHeader->addClass(LayoutSVG::FLOAT);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
-	timeHeader->setAlignAnchor(anchor);
+	timeHeader->setMyAlignAnchor(anchor);
 	timeHeader["date"](svg::TSPAN);
 	timeHeader["date"]->addClass("date");
 	// timeHeader["date"]->addClass(PanelConfSVG::ElemClass::TIME);
@@ -580,7 +582,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	locationHeader->addClass(LayoutSVG::FLOAT);
 	//locationHeader->addClass(RackSVG::TITLE, RackSVG::LOCATION);
 	locationHeader->addClass(elemClass, PanelConfSVG::ElemClass::LOCATION);
-	locationHeader->setAlignAnchor(anchor);
+	locationHeader->setMyAlignAnchor(anchor);
 	/*
 	locationHeader->setAlign(AlignSVG::RIGHT);
 	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){

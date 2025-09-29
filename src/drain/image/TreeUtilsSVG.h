@@ -80,14 +80,27 @@ template <AlignBase::Axis AX>
 struct CoordSpan {
 
 	// Starting coordinate (x or y).
-	svg::coord_t pos;
-	svg::coord_t span;
+	svg::coord_t pos = BBoxSVG::undefined;
+
+	// Width or height
+	svg::coord_t span = BBoxSVG::undefined;
 
 	// ? void getTranslatedCoordSpan(const BBoxSVG & bbox);
 	void copyFrom(const NodeSVG & node);
 
 	void copyFrom(const BBoxSVG & bbox);
 
+	/*
+	inline
+	bool isUndefined(){
+		return std::isnan(pos) || std::isnan(span);
+	}
+	*/
+
+	inline
+	bool isDefined(){
+		return ! (std::isnan(pos) || std::isnan(span));
+	}
 };
 
 

@@ -235,8 +235,6 @@ public:
 	Box(const Box & box) : drain::Point2D<coord_t>(box), drain::Frame2D<coord_t>(box)  {
 	}
 
-	static
-	const coord_t undefined; //  = std::numeric_limits<coord_t>::max();
 
 	inline
 	void reset(){
@@ -321,12 +319,33 @@ public:
 			return *this;
 	};
 
-protected:
-
 	inline
+	bool isDefined() const {
+		return isDefined(this->x) && isDefined(this->y) && isDefined(this->width) && isDefined(this->height);
+	}
+
+//protected:
+	static inline
+	bool isDefined(coord_t coord){
+		return !std::isnan(coord);
+	}
+
+	static inline
 	bool isUndefined(coord_t coord){
 		return std::isnan(coord);
 	}
+
+	/*
+	static inline
+	void setUndefined(coord_t & coord){
+		coord = undefined;
+	}
+	*/
+
+
+	// Note: (nan == nan) return false, so don't compare...
+	static const
+	coord_t undefined; //  = std::numeric_limits<coord_t>::max();
 
 };
 

@@ -576,9 +576,9 @@ public:
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
 		//group->setAlignAnchorHorz(ANCHOR_ELEM);
-		group->setAlignAnchor(ANCHOR_ELEM);
+		group->setDefaultAlignAnchor(ANCHOR_ELEM);
 
-		RackSVG::applyAlignment(ctx, group);
+		RackSVG::consumeAlignRequest(ctx, group);
 
 		/*
 		if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
@@ -754,7 +754,7 @@ public:
 		group->addClass(PanelConfSVG::SIDE_PANEL);
 		//group->setAlignAnchor(RackSVG::BACKGROUND_RECT);
 
-		RackSVG::applyAlignment(ctx, group);
+		RackSVG::consumeAlignRequest(ctx, group);
 
 
 		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
@@ -777,12 +777,12 @@ public:
 
 		{
 			rect2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
-			rect2->setAlignAnchor(RackSVG::BACKGROUND_RECT);
+			rect2->setMyAlignAnchor(RackSVG::BACKGROUND_RECT);
 			rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
 			rect2->setHeight(120);
 
 			drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
-			text->setAlignAnchor(HEADER_RECT);
+			text->setMyAlignAnchor(HEADER_RECT);
 			text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
 			text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 			text->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
@@ -799,7 +799,7 @@ public:
 			std::stringstream sstr;
 
 			drain::image::TreeSVG & date = group["date"](svg::TEXT); //addTextElem(group, "date");
-			date->setAlignAnchor(HEADER_RECT);
+			date->setMyAlignAnchor(HEADER_RECT);
 			// date->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT); // CENTER);
 			date->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
 			date->setAlign(AlignSVG::CENTER);
@@ -811,7 +811,7 @@ public:
 			// mout.attention("DATE:", sstr.str());
 
 			drain::image::TreeSVG & time = group["time"](svg::TEXT); // addTextElem(group, "time");
-			time->setAlignAnchorHorz(HEADER_RECT);
+			time->setMyAlignAnchorHorz(HEADER_RECT);
 			//time->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
 			time->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE); // over ["date"]
 			time->setAlign(AlignSVG::CENTER);
@@ -838,8 +838,8 @@ public:
 
 				drain::image::TreeSVG & tkey = group[key](svg::TEXT);
 				tkey->setId(key);
-				tkey->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
-				tkey->setAlignAnchorVert(anchorVert);
+				tkey->setMyAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+				tkey->setMyAlignAnchorVert(anchorVert);
 				anchorVert.clear();
 				tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 				tkey->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
@@ -849,9 +849,9 @@ public:
 				tkey->setText(key);
 
 				drain::image::TreeSVG & tval = group[tkey->getId()+"Value"](svg::TEXT);
-				tval->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+				tval->setMyAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
 				tval->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
-				tval->setAlignAnchorVert(key);
+				tval->setMyAlignAnchorVert(key);
 				tval->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
 				tval->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 				tval->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
@@ -878,7 +878,7 @@ public:
 		drain::image::TreeSVG & t = group[key](svg::TEXT);
 		// t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 		t->setFontSize(10.0);
-		t->setAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+		t->setMyAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
 		t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 		t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 		return t;
@@ -909,7 +909,7 @@ public:
 		group->setId(value);
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("anchor-elem");
-		group->setAlignAnchor(ANCHOR_ELEM);
+		group->setDefaultAlignAnchor(ANCHOR_ELEM);
 		// rectGroup->setAlign<AlignSVG::OUTSIDE>(AlignSVG::RIGHT);
 
 
@@ -1241,14 +1241,20 @@ public:
 drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , double dx, double dy){
 
 	drain::Logger mout(__FUNCTION__, __FILE__);
-	typedef drain::image::svg::tag_t tag_t;
+
+	using namespace drain::image;
+
+	typedef svg::tag_t tag_t;
 
 	const std::string name = drain::StringBuilder<>("dummy", group.getChildren().size());
-	drain::image::TreeSVG & subGroup = group[name](tag_t::GROUP);
+	TreeSVG & subGroup = group[name](tag_t::GROUP);
 	subGroup->setId(name);
-	// subGroup->addClass(drain::image::LayoutSVG::"COMPOUND");
+	//
+	subGroup->addClass(LayoutSVG::COMPOUND); // Compute (add) BBOx, skip recursion, do not align sub elements.
+	// subGroup->addClass("COMPOUND"); // Compute (add) BBOx, skip recursion, do not align sub elements.
+	// subGroup->addClass("DETECT_BBOX");
 
-	drain::image::TreeSVG & title = subGroup[tag_t::TITLE](tag_t::TITLE);
+	TreeSVG & title = subGroup[tag_t::TITLE](tag_t::TITLE);
 	title = name;
 
 	drain::image::NodeSVG::Elem<tag_t::RECT> rect(subGroup["rectangle"]);
@@ -1284,6 +1290,7 @@ drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , doub
 	origin.node.setStyle("opacity", 1.0);
 
 	// drain::image::NodeSVG::Elem<tag_t::POLYGON> polyx(subGroup);
+	// TreeUtilsSVG::detectBoxNEW(subGroup, true);
 
 	return subGroup;
 }
@@ -1319,9 +1326,9 @@ public:
 
 		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
 
-		// const std::string name = "playGround";
+		const std::string name = "playGround";
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value]; // (svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[name]; // (svg::GROUP);
 
 		if (group -> isUndefined()){
 
@@ -1342,11 +1349,14 @@ public:
 
 			group->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 
-			group->setAlignAnchorHorz(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
+			//group->setDefaultAlignAnchorHorz(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
+			group->setDefaultAlignAnchor(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
 
 			drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
 			rect->setName(ANCHOR_ELEM);
-			rect->getBoundingBox().setArea(frame);
+			//rect->getBoundingBox().setArea(frame);
+			rect->setWidth(frame.width*0.75);
+			rect->setHeight(frame.height*0.75);
 			rect->setStyle("fill", "yellow");
 			rect->setStyle("opacity", 0.5);
 
@@ -1363,23 +1373,13 @@ public:
 
 	void exec() const override {
 
-		// Koe<int> koe;
-		// Koe<const int> kiinto;
-
-		// koe.x = 123;
-		// kiinto.x = 345;
-
-		// std::string k = static_cast<std::string>(drain::image::AlignSVG::MIDDLE);
-
-		// ClassLabelXML<drain::image::AlignSVG> label1(drain::image::AlignSVG::PANEL);
-		// ClassLabelXML<drain::image::AlignSVG> label2("PANEL");
+		using namespace drain::image;
 
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::Version<RackContext> version(1,2,3);
-
-		drain::Version<CmdAlignTest> version2(5,2,3);
+		// drain::Version<RackContext> version(1,2,3);
+		// drain::Version<CmdAlignTest> version2(5,2,3);
 
 		const drain::Frame2D<double> frame = {768.0, 640.0};
 
@@ -1387,31 +1387,37 @@ public:
 		ctx.svgTrack->setWidth(1.2 * frame.width);
 		ctx.svgTrack->setHeight(1.2 * frame.height);
 
+		ctx.svgTrack->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+
 		drain::image::TreeSVG & group = getPlayGround(ctx);
 		// const drain::Frame2D<double> frame2 = group->getBoundingBox().getFrame();
 
 		// Three sample objects, each consisting of three elements.
 		drain::image::TreeSVG & compoundObject = addDummyObject(group); //, 0.5*frame.width, 0.1*frame.height );
 		drain::image::NodeSVG & node = compoundObject; //, 0.5*frame.width, 0.1*frame.height );
-		node.transform.translate.set(0.5*frame.width, 0.1*frame.height);
+		// node.transform.translate.set(0.5*frame.width, 0.1*frame.height);
 
 		if (group.getChildren().size()<=1){
-			node.setAlignAnchor(ANCHOR_ELEM);
+			node.setMyAlignAnchor(ANCHOR_ELEM);
 		}
 
-		RackSVG::applyAlignment(ctx, node);
+		RackSVG::consumeAlignRequest(ctx, node);
 		// default? node.setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+
 		drain::image::NodeSVG & text = compoundObject[svg::TEXT](svg::TEXT);
 		text.setFontSize(10.0, 12.0);
-		text.setText(node.getAlignStr());
+		text.setLocation(5,16);
+		text.setText(value+'='+node.getAlignStr());
 		// text.setAlignAnchor(node.getId());
-		text.setAlignAnchor("rectangle");
+		text.setMyAlignAnchor("rectangle");
 		text.setAlign(drain::image::AlignSVG::MIDDLE);
 		text.setAlign(drain::image::AlignSVG::CENTER);
 
 		// BBoxSVG bbox;
-		TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
+		// TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
+		mout.attention("Stacking: ", ctx.svgTrack.data);
 		TreeUtilsSVG::addStackLayout(ctx.svgTrack, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		mout.attention("Aligning: ", ctx.svgTrack.data);
 		TreeUtilsSVG::superAlignNEW(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 
 	}

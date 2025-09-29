@@ -35,12 +35,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #define RACK_VERSION_OLD "13.93"
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(14,0)
+#define RACK_VERSION drain::Version<>(14,0,1)
 
 
 /**
  *  Version 14
  *  Version 14.0.0 (beta)
+ *  - Revised SVG Layout
+ *  Version 14.0.1 (beta)
  *  - Revised SVG Layout
  *
  *  Version 13

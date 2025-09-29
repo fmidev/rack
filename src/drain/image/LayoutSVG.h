@@ -69,7 +69,8 @@ public:
 	enum GroupType {
 		HEADER,
 		STACK_LAYOUT, // future: flips the axis in each level of recursion
-		ALIGN,  // populate, "decorate" me with align instructions
+		COMPOUND, // Skip recursion, do not align sub elements.
+		ALIGN,  // align me, with applicable rules and preferences (populate me with align instructions)
 		FIXED,  // absolute position - do not align (me or descendants) (future option)
 		FLOAT,  // = element does not affect alignment of other elems
 	};

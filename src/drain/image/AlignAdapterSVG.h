@@ -122,51 +122,54 @@ struct AlignAdapterSVG : public AlignSVG {
 	/// Mark one of the elements of this object (SVG or G) as a decisive position
 	// template <class T>
 	inline
-	void setAlignAnchor(const std::string & pathElem){
+	void setMyAlignAnchor(const std::string & pathElem){
 		myAnchorVert = myAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	// template <class T>
 	inline
-	void setAlignAnchorHorz(const std::string & pathElem){
+	void setMyAlignAnchorHorz(const std::string & pathElem){
 		myAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	//template <class T>
 	inline
-	void setAlignAnchorVert(const std::string & pathElem){
+	void setMyAlignAnchorVert(const std::string & pathElem){
 		myAnchorVert = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	inline
-	void setAlignAnchorDefault(const std::string & pathElem){
+	void setDefaultAlignAnchor(const std::string & pathElem){
 		defaultAnchorVert = defaultAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	// template <class T>
 	inline
-	void setAlignAnchorDefaultHorz(const std::string & pathElem){
+	void setDefaultAlignAnchorHorz(const std::string & pathElem){
 		defaultAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
 	//template <class T>
 	inline
-	void setAlignAnchorDefaultVert(const std::string & pathElem){
+	void setDefaultAlignAnchorVert(const std::string & pathElem){
 		defaultAnchorVert = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
-	///
-	inline
-	const anchor_t & getAlignAnchorHorz() const {
-		return myAnchorHorz;
-	}
+	/// Store anchor object/symbol for aligning this object.
+	template <AlignBase::Axis AX>
+	const anchor_t & getMyAlignAnchor() const;
 
+	/// Store anchor object/symbol for aligning object inside this G (group) or SVG element.
+	template <AlignBase::Axis AX>
+	const anchor_t & getDefaultAlignAnchor() const;
+
+	/*
 	inline
 	const anchor_t & getAlignAnchorVert() const {
 		return myAnchorVert;
@@ -181,7 +184,7 @@ struct AlignAdapterSVG : public AlignSVG {
 	const anchor_t & getAlignAnchorDefaultVert() const {
 		return defaultAnchorVert;
 	}
-
+	*/
 
 	inline
 	const std::string & getAlignStr() const {
@@ -192,27 +195,6 @@ struct AlignAdapterSVG : public AlignSVG {
 	~AlignAdapterSVG(){};
 
 protected:
-
-	/*
-	static inline
-	const std::string & getElem(const std::string &s){
-		return s;
-	};
-
-	static inline
-	const char * getElem(const char *s){
-		return s;
-	};
-	*/
-
-	/*
-	template <class T>
-	static inline
-	const std::string & getElem(const T & type){
-		// return EnumDict<T>::getKey(type, false);
-		return EnumDict<T>::dict.getKey(type, false);
-	}
-	*/
 
 	/// Redefined in NodeSVG
 	virtual inline
@@ -234,6 +216,30 @@ protected:
 };
 
 
+template <>
+inline
+const AlignAdapterSVG::anchor_t & AlignAdapterSVG::getMyAlignAnchor<AlignBase::Axis::HORZ>() const {
+	return myAnchorHorz;
+};
+
+template <>
+inline
+const AlignAdapterSVG::anchor_t & AlignAdapterSVG::getMyAlignAnchor<AlignBase::Axis::VERT>() const {
+	return myAnchorVert;
+};
+
+/// Store anchor object/symbol for aligning object inside this G (group) or SVG element.
+template <>
+inline
+const AlignAdapterSVG::anchor_t & AlignAdapterSVG::getDefaultAlignAnchor<AlignBase::Axis::HORZ>() const {
+	return defaultAnchorHorz;
+};
+
+template <>
+inline
+const AlignAdapterSVG::anchor_t & AlignAdapterSVG::getDefaultAlignAnchor<AlignBase::Axis::VERT>() const {
+	return defaultAnchorVert;
+};
 
 
 
