@@ -405,8 +405,6 @@ struct AlignSVG { // : protected Align {
 	*/
 	void confToStream(std::ostream & ostr) const;
 
-	void updateAlignStr();
-
 	inline
 	const std::string & getAlignStr() const {
 		return alignStr;
@@ -439,8 +437,13 @@ protected:
 		getAlign(owner, axis) = EnumDict<AlignBase::Pos>::getValue(value, false);
 	}
 
+
+	void updateAlignStr();
+
 	virtual inline
-	void updateAlign(){};
+	void updateAlign(){
+		updateAlignStr();
+	};
 
 
 	typedef std::vector<AlignBase::Pos> align_vect_t;

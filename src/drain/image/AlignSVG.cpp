@@ -222,11 +222,9 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 }
 void AlignSVG::updateAlignStr(){
-
 	std::stringstream sstr;
 	confToStream(sstr);
 	alignStr = sstr.str();
-
 }
 
 template <>
