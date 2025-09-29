@@ -79,11 +79,19 @@ struct PanelConfSVG {
 template <AlignBase::Axis AX>
 struct CoordSpan {
 
+	inline
+	CoordSpan(svg::coord_t pos = 0, svg::coord_t span = 0) : pos(pos), span(span) {
+	}
+
+	inline
+	CoordSpan(const CoordSpan & cspan) : pos(cspan.pos), span(cspan.span) {
+	}
+
 	// Starting coordinate (x or y).
-	svg::coord_t pos = BBoxSVG::undefined;
+	svg::coord_t pos = 0; //BBoxSVG::undefined;
 
 	// Width or height
-	svg::coord_t span = BBoxSVG::undefined;
+	svg::coord_t span = 0; // BBoxSVG::undefined;
 
 	// ? void getTranslatedCoordSpan(const BBoxSVG & bbox);
 	void copyFrom(const NodeSVG & node);

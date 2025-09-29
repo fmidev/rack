@@ -2,7 +2,8 @@
 
 
 # VERSION=$( $TARGET --version | head -1 )
-VERSION=$( fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
+# VERSION=$( fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
+VERSION=$( fgrep RACK_VERSION main/rack.h | tr '(),' '\t\t.' | cut -f2 )
 RACK_LATEST="rack-${VERSION}"
 
 echo "# Installing '$RACK' "
