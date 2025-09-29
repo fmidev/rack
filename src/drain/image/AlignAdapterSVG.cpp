@@ -40,6 +40,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor) = {
+		DRAIN_ENUM_ENTRY(drain::image::AnchorElem, DEFAULT),
+		DRAIN_ENUM_ENTRY(drain::image::AnchorElem, PREVIOUS),
+		DRAIN_ENUM_ENTRY(drain::image::AnchorElem, COMPOUND),
+		DRAIN_ENUM_ENTRY(drain::image::AnchorElem, NONE),
+};
+
 
 namespace image {
 

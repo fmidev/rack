@@ -1311,24 +1311,35 @@ operator const std::string &()(drain::image::AlignBase::Axis){
 }
 */
 
-class CmdAlignTest : public drain::SimpleCommand<std::string> {
+class CmdAlignTest : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
 
 public:
+	// CmdAlignTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout", "foo") {}
 
-	CmdAlignTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product", "layout", "foo") {
-		//getParameters().link("level", level = 5);
+	CmdAlignTest() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
+		getParameters().link("name", name, "label");
+		getParameters().link("panel", panel, "label");
+		getParameters().link("anchor", myAnchor, "label");
 	}
 
-	const std::string ANCHOR_ELEM = "myRect";
+	// static
+	const std::string defaultAnchor = "myRect";
+
+	std::string panel = "playGround1";
+	std::string name = "";
+	// Optional
+	std::string myAnchor = "";
 
 
 	drain::image::TreeSVG & getPlayGround(RackContext & ctx) const {
 
+		using namespace drain::image;
+
 		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
 
-		const std::string name = "playGround";
+		// const std::string name = "playGround";
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[name]; // (svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[panel]; // (svg::GROUP);
 
 		if (group -> isUndefined()){
 
@@ -1350,10 +1361,16 @@ public:
 			group->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 
 			//group->setDefaultAlignAnchorHorz(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
-			group->setDefaultAlignAnchor(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
+			group->setDefaultAlignAnchor(defaultAnchor); // Note: axis Horz/Vert should be taken from ctx?
+			// AnchorElem::Anchor anchor = DRAIN_ENUM_DICT(AnchorElem::Anchor)::getValue("");
+			AnchorElem::Anchor anchor = drain::EnumDict<AnchorElem::Anchor>::getValue(myAnchor);
+			mout.accept<LOG_WARNING>("ANCHOR:", anchor);
 
-			drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
-			rect->setName(ANCHOR_ELEM);
+
+			// default anchor
+			drain::image::TreeSVG & rect = group[defaultAnchor](svg::RECT); // +EXT!
+			rect->setId(defaultAnchor);
+			rect->setName(defaultAnchor);
 			//rect->getBoundingBox().setArea(frame);
 			rect->setWidth(frame.width*0.75);
 			rect->setHeight(frame.height*0.75);
@@ -1398,7 +1415,7 @@ public:
 		// node.transform.translate.set(0.5*frame.width, 0.1*frame.height);
 
 		if (group.getChildren().size()<=1){
-			node.setMyAlignAnchor(ANCHOR_ELEM);
+			node.setMyAlignAnchor(myAnchor);
 		}
 
 		RackSVG::consumeAlignRequest(ctx, node);
@@ -1407,7 +1424,7 @@ public:
 		drain::image::NodeSVG & text = compoundObject[svg::TEXT](svg::TEXT);
 		text.setFontSize(10.0, 12.0);
 		text.setLocation(5,16);
-		text.setText(value+'='+node.getAlignStr());
+		text.setText(name+'='+node.getAlignStr());
 		// text.setAlignAnchor(node.getId());
 		text.setMyAlignAnchor("rectangle");
 		text.setAlign(drain::image::AlignSVG::MIDDLE);

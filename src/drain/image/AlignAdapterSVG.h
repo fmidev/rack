@@ -54,6 +54,14 @@ namespace image {
 // Could be internal class in Adapter?
 struct AnchorElem : public std::string {
 
+	enum Anchor {
+		DEFAULT = 0, // previous or group anchor
+		NONE = '!',
+		PREVIOUS = '@',
+		COMPOUND = '*',
+	};
+
+
 	inline
 	AnchorElem(const std::string & s="") : std::string(s){
 	};
@@ -109,10 +117,8 @@ struct AnchorElem : public std::string {
 		return isSet() && !isExtensive();
 	}
 
-
-
-
 };
+
 
 /// Adapter designed for NodeSVG
 struct AlignAdapterSVG : public AlignSVG {
@@ -245,6 +251,9 @@ const AlignAdapterSVG::anchor_t & AlignAdapterSVG::getDefaultAlignAnchor<AlignBa
 
 
 }  // image::
+
+DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
+DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
 
 }  // drain::
 
