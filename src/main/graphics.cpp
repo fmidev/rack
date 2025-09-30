@@ -383,8 +383,10 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 }
 
 
-/// Add pixel image (PNG)
-// drain::image::TreeSVG &
+/// Add pixel image (PNG).
+/**
+ *   Idea: keep this minimal, add components only upon (eventual) saving of the SVG file.
+ */
 void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
 	if (!applyInclusion(ctx, filepath)){
@@ -665,12 +667,14 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 	// drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
+	/*
 	if (mout.isLevel(LOG_DEBUG)){
 		// mout.special("dumping SVG tree");
 		// drain::TreeUtils::dump(ctx.svgTrack);
 		drain::Output outfile("svg-0-unaligned.svg");
 		drain::image::NodeSVG::toStream(outfile.getStream(), ctx.svgTrack);
 	}
+	*/
 
 	mout.debug("next superAlign ", ctx.mainOrientation, '|', ctx.mainDirection);
 
@@ -692,15 +696,8 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		// drain::TreeUtils::dump(ctx.svgTrack);
 	}
 
-	// TODO
-	/*
-	if (ctx.svgTitles){ // also "false" !?
-		// Create titles for each image panel
-		TitleCreatorSVG titleCreator(ctx.svgTitles.getValue());
-		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
-	}
-	 */
-	//TitleCreatorSVG titleCreator(0xff);
+
+	// Writes over original syntax?
 	ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
 
 	TitleCreatorSVG titleCreator(ctx.svgPanelConf);
