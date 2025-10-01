@@ -269,8 +269,12 @@ for timestamp in args.TIMESTAMP.split(','):
                 rack_cmd.extend(args_output)
                 
                 if not args.max:
-                    print (args.newline.join(rack_cmd))
+                    cmd = args.newline.join(rack_cmd)
+                    print (cmd)
                     print ("")
+                    if (args.exec):
+                        os.system(cmd)
+                    rack_cmd = []
 
                 
         if args.max:
