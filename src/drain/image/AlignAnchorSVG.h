@@ -166,16 +166,35 @@ struct AlignAnchorSVG { // : public AlignSVG {
 		updateAlign();
 	}
 
+	template <class T>
+	inline
+	void setAlignAnchorVert(const T & key){
+		setAlignAnchorVert(EnumDict<T>::getKey(key, false));
+	}
+
 	inline
 	void setDefaultAlignAnchor(const std::string & pathElem){
-		defaultAnchorVert = defaultAnchorHorz = pathElem; // getElem(pathElem);
+		defaultAnchorHorz = defaultAnchorVert =pathElem; // getElem(pathElem);
 		updateAlign();
 	}
 
-	// template <class T>
+	template <class T>
+	inline
+	void setDefaultAlignAnchor(const T & key){
+		setDefaultAlignAnchor(EnumDict<T>::getKey(key, false));
+	}
+
 	inline
 	void setDefaultAlignAnchorHorz(const std::string & pathElem){
 		defaultAnchorHorz = pathElem; // getElem(pathElem);
+		updateAlign();
+	}
+
+
+	template <class T>
+	inline
+	void setDefaultAlignAnchorHorz(const T & key){
+		defaultAnchorHorz = setDefaultAlignAnchorHorz(EnumDict<T>::getKey(key, false));
 		updateAlign();
 	}
 
@@ -184,6 +203,13 @@ struct AlignAnchorSVG { // : public AlignSVG {
 	void setDefaultAlignAnchorVert(const std::string & pathElem){
 		defaultAnchorVert = pathElem; // getElem(pathElem);
 		updateAlign();
+	}
+
+
+	template <class T>
+	inline
+	void setDefaultAlignAnchorVert(const T & key){
+		setDefaultAlignAnchorVert(EnumDict<T>::getKey(key, false));
 	}
 
 	/// Store anchor object/symbol for aligning this object.

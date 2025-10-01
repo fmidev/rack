@@ -313,15 +313,7 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	//drain::image::TreeSVG & mainGroup = ctx.getMainGroup();
 	drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
-
-	// mout.attention(); drain::TreeUtils::dump(mainGroup, mout); mout.end();
-
-	//drain::image::NodeSVG::toStream(ostr, tree, defaultTag, indent)
-
-	//ctx.svgGroupNameFormatted = ctx.getFormattedStatus(ctx.svgGroupNameSyntax); // status updated upon last file save
-	// drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgGroupNameFormatted];
 
 	ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupTitleSyntax); // status updated upon last file save
 
@@ -340,10 +332,13 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 
 drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
 	const drain::VariableMap & map = ctx.getStatusMap();
 
-
 	drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", ""));
+
+	mout.experimental("external image panel request: ", filepath);
 
 	return getImagePanelGroup(ctx, filepath);
 }
@@ -370,6 +365,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 		imagePanel->setType(svg::GROUP);
 		imagePanel->setId(name);
+		imagePanel->setDefaultAlignAnchor(svg::IMAGE);
 
 		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
 

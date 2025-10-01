@@ -1408,7 +1408,20 @@ public:
 
 		ctx.svgTrack->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 
-		drain::image::TreeSVG & group = getPlayGround(ctx);
+		drain::image::TreeSVG & debugStyle = RackSVG::getStyle(ctx)[".DEBUG"];
+		if (debugStyle.empty()){
+			debugStyle->set({
+				{"stroke-width", 2},
+				{"stroke", "darkgreen"},
+				{"stroke-dasharray", {2,5,3}},
+				{"fill", "none"},
+				{"opacity", 0.7},
+			});
+		}
+
+		// drain::image::TreeSVG & group = getPlayGround(ctx);
+		drain::image::TreeSVG & group = RackSVG::getImagePanelGroup(ctx);
+
 		// const drain::Frame2D<double> frame2 = group->getBoundingBox().getFrame();
 
 		// Three sample objects, each consisting of three elements.
@@ -1417,7 +1430,7 @@ public:
 		// node.transform.translate.set(0.5*frame.width, 0.1*frame.height);
 
 		if (group.getChildren().size()<=1){
-			node.setMyAlignAnchor(myAnchor);
+			// node.setMyAlignAnchor(myAnchor);
 		}
 
 		RackSVG::consumeAlignRequest(ctx, node);
