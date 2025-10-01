@@ -31,6 +31,19 @@ parser.add_argument(
     "-e", "--exec", action='store_true',
     help="execute parsed command")
 
+parser.add_argument(
+    "-T", "--TIMESTAMP",
+    type=str,
+    default="202510011110,202510011110",
+    help="loop variable (separate with commas)")
+
+parser.add_argument(
+    "-S", "--SITE",
+    type=str,
+    default="fikor,fianj",
+    help="loop variable (separate with commas)")
+
+
 args = parser.parse_args()
 
 def load_json(file_path):
@@ -175,10 +188,10 @@ outfile_syntax = cmd_conf['output_basename'] # rename output -> outfile?
 
 
 
-for timestamp in ['202507081845']:
+for timestamp in args.TIMESTAMP.split(','):
 
     #conf['timestamp'] = timestamp
-    for site in ['fikor', 'fianj']:
+    for site in args.SITE.split(','):
         #conf['site'] = site
         #print (site)
         env = {"timestamp": timestamp, "site": site}

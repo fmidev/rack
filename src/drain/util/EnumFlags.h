@@ -176,12 +176,13 @@ struct EnumDict {
 // Useful macros
 
 // For declaration and definition.
+/*
 #define DRAIN_ENUM_DICT(enumtype) template <> const EnumDict<enumtype>::dict_t EnumDict<enumtype>::dict
 
 #define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
 
 #define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
-
+*/
 
 /* Perhaps useful!
 template <class E>
@@ -313,6 +314,12 @@ public:
 
 
 } // drain::
+
+#define DRAIN_ENUM_DICT(enumtype) template <> const drain::EnumDict<enumtype>::dict_t drain::EnumDict<enumtype>::dict
+
+#define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
+
+#define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
 
 
 #endif
