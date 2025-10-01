@@ -87,6 +87,9 @@ public:
 	static
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath);
 
+	static
+	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx);
+
 
 	static
 	//void applyAlignment(RackContext & ctx, drain::image::TreeSVG & group);

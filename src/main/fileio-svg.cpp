@@ -1435,7 +1435,7 @@ public:
 		// BBoxSVG bbox;
 		// TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
 		mout.attention("Stacking: ", ctx.svgTrack.data);
-		TreeUtilsSVG::addStackLayout(ctx.svgTrack, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		TreeUtilsSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 		mout.attention("Aligning: ", ctx.svgTrack.data);
 		TreeUtilsSVG::superAlignNEW(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 

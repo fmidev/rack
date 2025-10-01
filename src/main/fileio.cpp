@@ -515,6 +515,9 @@ void CmdOutputFile::exec() const {
 			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
 			*/
 			//
+			MetaDataPrunerSVG metadataPruner;
+			drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
+
 			RackSVG::completeSVG(ctx);
 		}
 

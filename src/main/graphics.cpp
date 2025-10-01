@@ -338,6 +338,16 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 }
 
 
+drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
+
+	const drain::VariableMap & map = ctx.getStatusMap();
+
+
+	drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", ""));
+
+	return getImagePanelGroup(ctx, filepath);
+}
+
 
 /// For each image an own group is created (for clarity, to contain also title TEXT's etc)
 /**
@@ -362,19 +372,9 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 		imagePanel->setId(name);
 
 		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
+
 		image->setId(filepath.basename); // unneeded, as TITLE also has it?
 		image->setUrl(filepath.str());
-		/*
-		image->set("data-dir", filepath.dir.str());
-		if (filepath.dir.hasRoot()){
-			image->setUrl(filepath.str());
-		}
-		else {
-			// Append "relative" root, './' to skip support colon ':' in filenames
-			//image->setUrl(drain::FilePath::path_t(".", filepath).str());
-			image->setUrl(drain::StringBuilder<'/'>(".", filepath.str()));
-		}
-		*/
 		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 	}
 
@@ -422,7 +422,11 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 	}
 
 	// TODO: 1) time formatting 2) priority (startdate, starttime)
-	for (const std::string key: {"what:date", "what:time", "what:product", "what:prodpar", "what:quantity", "where:elangle", "how:camethod", "prevCmdKey"}){
+	for (const std::string key: {
+		"what:date", "what:time", "what:product", "what:prodpar", "what:quantity",
+		"where:elangle", "where:lon", "where:lat", "where:projdef", "where:EPSG",
+		"how:camethod",
+		"prevCmdKey"}){
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');
 			if (i == std::string::npos){
@@ -685,9 +689,10 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		drain::image::NodeSVG::toStream(outfile.getStream(), ctx.svgTrack);
 	}
 
-
+	/*
 	MetaDataPrunerSVG metadataPruner;
 	drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
+	*/
 
 	if (mout.isLevel(LOG_DEBUG+2)){
 		mout.special("dumping SVG tree");
