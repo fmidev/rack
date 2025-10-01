@@ -199,13 +199,14 @@ for timestamp in args.TIMESTAMP.split(','):
         #args_input = [infile]
         args_input = [f'--inputFile {infile}']
         
-        rack_cmd_full = ['rack']
-        rack_cmd_full.extend(args_composite)
-        rack_cmd_full.extend(args_input)
+        rack_cmd = ['rack']
+        rack_cmd.extend(args_composite)
+        rack_cmd.extend(args_input)
 
         outprefix = rack_try_prefix(outprefix_syntax, env)
+        print ("outprefix ", outprefix_syntax, ' -> ', outprefix)
         if outprefix:
-            rack_cmd_full.append(f"--outputPrefix {outprefix}")
+            rack_cmd.append(f"--outputPrefix {outprefix}")
         
         
         for c in cmd_conf['products']:
@@ -215,11 +216,20 @@ for timestamp in args.TIMESTAMP.split(','):
 
             if not outprefix:
                 outprefix = rack_try_prefix(outprefix_syntax, env)
+                print ("outprefix ", outprefix_syntax, ' -> ', outprefix)
                 if outprefix:
-                    rack_cmd_full.append(f"--outputPrefix {outprefix}")
-
+                    rack_cmd.append(f"--outputPrefix {outprefix}")
+                    outprefix = None
+                
         
             for parameter in c['parameters']:
+
+                if args.max and not outprefix:
+                    outprefix = rack_try_prefix(outprefix_syntax, env)
+                    print ("outprefix ", outprefix_syntax, ' -> ', outprefix)
+                    if outprefix:
+                        rack_cmd.append(f"--outputPrefix {outprefix}")
+                        outprefix = None
 
                 env["parameter"] = parameter
                         
@@ -236,33 +246,34 @@ for timestamp in args.TIMESTAMP.split(','):
 
                 # continue
                 if not args.max:
-                    rack_cmd_full = ["rack"]
-                    rack_cmd_full.extend(args_composite)
-                    rack_cmd_full.extend(args_input)
+                    rack_cmd = ["rack"]
+                    rack_cmd.extend(args_composite)
+                    rack_cmd.extend(args_input)
+                    outprefix = None
 
-                rack_cmd_full.extend(args_prod)
-                rack_cmd_full.append('--cCreateTile')
-                    #rack_cmd_full.extend(args_prod)
+                rack_cmd.extend(args_prod)
+                rack_cmd.append('--cCreateTile')
+                    #rack_cmd.extend(args_prod)
                 
                 if not outprefix:
                     outprefix = rack_try_prefix(outprefix_syntax, env)
                     if outprefix:
-                        rack_cmd_full.append(f"--outputPrefix {outprefix}")
                         rack_cmd.append(f"--outputPrefix {outprefix}")
+                        
 
                 file_format = c['file_format']
                 # args_output = []
                 outfile   = outfile_syntax.format(**env) #.removesuffix('.h5')
                 args_output = rack_args_output([], output_basename=outfile, formats=file_format) #, output_prefix=outprefix)
 
-                rack_cmd_full.extend(args_output)
+                rack_cmd.extend(args_output)
                 
                 if not args.max:
-                    print (args.newline.join(rack_cmd_full))
+                    print (args.newline.join(rack_cmd))
                     print ("")
 
                 
         if args.max:
             #print (f"=== Full cmd for {timestamp}-{site} ===")
-            print (args.newline.join(rack_cmd_full))                
+            print (args.newline.join(rack_cmd))                
             print ("\n\n")
