@@ -461,7 +461,7 @@ public:
 		ctx.getUpdatedStatusMap(); // for variables in file path
 		drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
 		mout.note("linking: ", filePath);
-		RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::GroupType::FLOAT));
+		RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
 		// EnumDict<LayoutSVG::GroupType>::dict
 
 	}
@@ -644,7 +644,7 @@ public:
 		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
-		group->addClass(LayoutSVG::FLOAT);
+		group->addClass(LayoutSVG::INDEPENDENT);
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
@@ -1002,7 +1002,7 @@ public:
 		rect->set("label", ANCHOR_ELEM);
 		rect->setStyle("fill", "red");
 
-		// rect->addClass(LayoutSVG::FLOAT);
+		// rect->addClass(LayoutSVG::INDEPENDENT);
 
 		// rect->setAlign(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
 		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
@@ -1063,9 +1063,9 @@ public:
 						textBox->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
 						textBox->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
 						textBox->setAlign(Owner::OBJECT, AlignBase::VERT, posVert);
-						//textBox->addClass(LayoutSVG::FLOAT);
+						//textBox->addClass(LayoutSVG::INDEPENDENT);
 
-						//text->addClass(LayoutSVG::FLOAT);
+						//text->addClass(LayoutSVG::INDEPENDENT);
 						// drain::image::TreeSVG & textSpan = text["tspan"](svg::TSPAN);
 						// textSpan->setText(text->getAlignStr());
 
@@ -1382,7 +1382,7 @@ operator const std::string &()(drain::image::AlignBase::Axis){
 	static const std::string s("sksk");
 	return s;
 }
- */
+*/
 
 class CmdAlignTest : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
 

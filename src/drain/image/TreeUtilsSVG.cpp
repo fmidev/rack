@@ -180,8 +180,9 @@ void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation,
 	// mout.attention("ACCEPT:", object->getTag());
 	mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", node); //, object->getId(), " -> ", object->getBoundingBox());
 
-	if (node.hasClass(LayoutSVG::FLOAT)){
+	if (node.hasClass(LayoutSVG::INDEPENDENT)){
 		if (!node.isAligned()){
+			// somewhat atribitrary
 			node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
 		}
 	}
@@ -399,7 +400,8 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
 				"H:",  anchorSpanHorz.pos, ',', anchorSpanHorz.span, ", ",
 				"V:",  anchorSpanVert.pos, ',', anchorSpanVert.span);
 
-		if (!node.hasClass(LayoutSVG::FLOAT)){
+		//if (!node.hasClass(LayoutSVG::INDEPENDENT)){
+		if (!node.hasClass(LayoutSVG::INEFFECTIVE)){
 			compoundBBox.expandHorz(anchorSpanHorz.pos);
 			compoundBBox.expandHorz(anchorSpanHorz.pos + anchorSpanHorz.span);
 			compoundBBox.expandVert(anchorSpanVert.pos);
@@ -970,7 +972,8 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 		}
 
 		if (!node.isAligned()){
-			if (node.hasClass(LayoutSVG::FLOAT)){
+			if (node.hasClass(LayoutSVG::INDEPENDENT)){
+				// Somewhat aribitrary choice (as INDEPENDENT affects (prohibits) anchoring of further objects)
 				node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
 			}
 			else {
@@ -1024,7 +1027,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 		}
 
 
-		if (!node.hasClass(LayoutSVG::FLOAT)){
+		if (!node.hasClass(LayoutSVG::INDEPENDENT)){
 
 			//mout.special<LOG_WARNING>("Expanding ", objectBBox.getFrame(), " of ", object->getId(), " with ", bbox.getFrame());
 			bbox = node.getBoundingBox(); // Notice: copy

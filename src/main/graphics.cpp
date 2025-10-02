@@ -252,7 +252,7 @@ void RackSVG::consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & nod
 		node.setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.getOrDefault(AlignSVG::INSIDE));  // simplify
 		// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignHorz, " -> ", node.getAlignStr());
 		// ctx.alignHorz.pos  = AlignSVG::UNDEFINED_TOPOL;
-		node.addClass(LayoutSVG::FLOAT); // why is this? hmm explicitly, specifically aligned element is "separate"
+		node.addClass(LayoutSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
 		// mout.attention("updated Horz align: ",  node); // , " -> all:", node.getAlignStr()
 
 		ctx.alignHorz.reset();
@@ -264,7 +264,7 @@ void RackSVG::consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & nod
 		node.setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.getOrDefault(AlignSVG::INSIDE)); // simplify
 		// mout.unimplemented<LOG_NOTICE>("Set: ", ctx.alignVert, " -> ", node.getAlignStr());
 		// ctx.alignVert.pos  = AlignSVG::UNDEFINED_TOPOL;
-		node.addClass(LayoutSVG::FLOAT); // why is this? hmm explicitly, specifically aligned element is "separate"
+		node.addClass(LayoutSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
 		// mout.attention("updated Vert align: ",  node); //  " -> all:", node.getAlignStr()
 		ctx.alignVert.reset();
 		ctx.alignVert.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
@@ -490,7 +490,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg
 drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<drain::image::svg::coord_t> & frame){
 	drain::image::TreeSVG & imageBorder = imagePanelGroup[PanelConfSVG::ElemClass::IMAGE_BORDER](svg::RECT); // +EXT!
 	imageBorder->addClass(PanelConfSVG::ElemClass::IMAGE_BORDER); // style
-	imageBorder->addClass(drain::image::LayoutSVG::FLOAT);
+	imageBorder->addClass(drain::image::LayoutSVG::INDEPENDENT);
 	imageBorder->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 	return imageBorder;
 }
@@ -546,7 +546,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	// TODO: title area "filling order", by group class.
 
 	TreeSVG & mainHeader = object[PanelConfSVG::ElemClass::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
-	mainHeader->addClass(LayoutSVG::FLOAT);
+	mainHeader->addClass(LayoutSVG::INDEPENDENT);
 	mainHeader->addClass(elemClass); // also GENERAL?
 	mainHeader->setMyAlignAnchor(anchor);
 	//mainHeader->setAlignAnchor(anchor);
@@ -577,7 +577,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & timeHeader = object[PanelConfSVG::ElemClass::TIME](svg::TEXT);
-	timeHeader->addClass(LayoutSVG::FLOAT);
+	timeHeader->addClass(LayoutSVG::INDEPENDENT);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
 	timeHeader->setMyAlignAnchor(anchor);
 	timeHeader["date"](svg::TSPAN);
@@ -591,7 +591,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG & locationHeader = object[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
-	locationHeader->addClass(LayoutSVG::FLOAT);
+	locationHeader->addClass(LayoutSVG::INDEPENDENT);
 	//locationHeader->addClass(RackSVG::TITLE, RackSVG::LOCATION);
 	locationHeader->addClass(elemClass, PanelConfSVG::ElemClass::LOCATION);
 	locationHeader->setMyAlignAnchor(anchor);
@@ -1006,7 +1006,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		// text->setStyle("font-size", fontSize); //
 		// text->setHeight(14);     // row height
 		// text->setMargin(4); // margin
-		// text->addClass(LayoutSVG::FLOAT); // Anchor defined, but need for proper bbox computation! (Yet text should be discarded)
+		// text->addClass(LayoutSVG::INDEPENDENT); // Anchor defined, but need for proper bbox computation! (Yet text should be discarded)
 
 
 		// mout.attention("handle: ", attr.first, " ", v, " + ", format);

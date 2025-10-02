@@ -38,9 +38,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_LAYOUT_SVG
 #define DRAIN_LAYOUT_SVG
 
-#include <drain/image/AlignAnchorSVG.h>
-#include <string>
+//#include <string>
 
+#include <drain/image/AlignAnchorSVG.h>
 
 namespace drain {
 
@@ -56,29 +56,33 @@ class LayoutSVG {
 
 public:
 
-
-	//enum Axis {HORZ=0, VERT=1};  // must be indexed! for vect_ UNDEFINED_AXIS=0,
-
+	/// Direction for "Stacked", horziontally or vertically sequentially aligned layout
+	/**
+	 *  Typically, the axis is Align::Axis .
+	 *
+	 */
 	enum Direction {
 		UNDEFINED_DIRECTION=0,
 		INCR = 1,
 		DECR = 2,
 	};
 
-	// Experimental CSS classes
+	/// Experimental SVG style classes
 	enum GroupType {
-		HEADER,
-		STACK_LAYOUT, // future: flips the axis in each level of recursion
-		COMPOUND, // Skip recursion, do not align sub elements.
-		ALIGN,  // align me, with applicable rules and preferences (populate me with align instructions)
-		FIXED,  // absolute position - do not align (me or descendants) (future option)
-		FLOAT,  // = element does not affect alignment of other elems
+		STACK_LAYOUT, // Align elements in rows or columns. (Alternat the axis in nesting STACK_LAYOUT levels)
+		HEADER,       // Requests alignment as a title, typically title box combining TEXT (and TSPAN) on a background RECT
+		ALIGN,        // align me, with applicable rules and preferences (populate me with align instructions, unless already set)
+		COMPOUND,     // Internal elements are already aligned, so skip the recursion for aligning them.
+		FIXED,        // Absolute position - do not align (me or descendants) (future option); \see COMPOUND
+		INDEPENDENT,  // no anchoring allowed to this element, but collective bounding box is adjusted to include this element
+		INEFFECTIVE,  // the element is not included in (updating) the collective bounding box – it can be used as anchor, however
+		//
+		CROP,         // minimize bbox covering all the included objects. \see GroupType::FIXED
 	};
 
 
-	// TEST: these are not yet in use?
-
 protected:
+
 	typedef drain::EnumFlagger<drain::SingleFlagger<AlignBase::Axis> > AxisFlagger;
 	AxisFlagger orientation = AlignBase::HORZ;
 

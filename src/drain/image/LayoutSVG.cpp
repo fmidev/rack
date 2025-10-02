@@ -49,7 +49,9 @@ const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dic
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FIXED),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FLOAT),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INDEPENDENT),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INEFFECTIVE),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
 };
 
 template <>
