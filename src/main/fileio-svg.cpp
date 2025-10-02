@@ -76,7 +76,7 @@ void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
 
 
 }
-*/
+ */
 
 //namespace drain {
 
@@ -104,7 +104,7 @@ public:
 	}
 
 };
-*/
+ */
 
 
 
@@ -142,7 +142,7 @@ public:
 			drain::sprinter(direction::dict.getKeys(), {"|"}).str()
 	){
 	}
-	*/
+	 */
 
 	virtual
 	void exec() const override {
@@ -184,23 +184,47 @@ protected:
  *
  *  Warns if both are outside, ie. diagonally aligned to original image (or other graphical object).
  */
-class CmdAlign : public drain::SimpleCommand<std::string> {
+//class CmdAlign : public drain::SimpleCommand<std::string> {
+class CmdAlign : public drain::BasicCommand {
 
 public:
 
-	// Like INSIDE:RIGHT or RIGHT:OUTSIDE
-
-	// drain::StringBuilder<':'>(topol_enum::dict.getKeys())
+	/*
 	CmdAlign() : drain::SimpleCommand<std::string>(__FUNCTION__, "Alignment of the next element", "topology", "",
 			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
-			// drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str() + ':'+
 			drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
 			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
 			drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
-			// drain::sprinter(drain::EnumDict<AlignBase::Pos>::dict.getKeys(), {"|"}).str()
 	){
 		//getParameters().link("", x, drain::StringBuilder<':'>());
 	}
+	 */
+
+
+	CmdAlign() : drain::BasicCommand(__FUNCTION__, "Alignment of the next element"){
+
+		getParameters().link("position", position,
+				drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+				drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
+				drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+				drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
+		).setSeparator(':');
+
+		getParameters().link("anchor", anchor.str(),
+				std::string("<name>|<empty>") + drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), {"|"}).str()
+		);
+		getParameters().link("anchorHorz", anchorHorz.str(),
+				"..."
+		);
+		getParameters().link("anchorVert", anchorVert.str(),
+				"..."
+		);
+	}
+
+	CmdAlign(const CmdAlign & cmd) : drain::BasicCommand(cmd){
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	};
+
 
 	virtual
 	void exec() const override {
@@ -208,21 +232,39 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		std::list<std::string> args;
-		drain::StringTools::split(value, args, ',');
+		// Anchor
+		if (anchor.isSet()){
+			mout.attention("setting anchor for next graphic object: ", anchor);
+			mout.attention("isPrevious:\t",  anchor.isPrevious());
+			mout.attention("isExtensive:\t", anchor.isExtensive());
+			mout.attention("isSpecific:\t",  anchor.isSpecific());
+			mout.attention("isNone:\t",      anchor.isNone());
+			anchorHorz = anchor;
+			anchorVert = anchor;
+			anchor.clear();
+		}
+		ctx.anchorHorz = anchorHorz;
+		ctx.anchorVert = anchorVert;
+		mout.attention("new anchors: ", ctx.anchorHorz, 'x', ctx.anchorVert);
 
-		for (const std::string & arg: args){
+		// Position
+		if (!position.empty()){
 
-			std::list<std::string> keys;
-			drain::StringTools::split(arg, keys, ':');
+			std::list<std::string> args;
+			drain::StringTools::split(position, args, ':');
 
-			CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS); //(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Axis::UNDEFINED_AXIS, AlignBase::Pos::UNDEFINED_POS);
+			for (const std::string & arg: args){
 
-			for (const std::string & key: keys){
-				align.set(key);
-			}
+				std::list<std::string> keys;
+				drain::StringTools::split(arg, keys, '.');
 
-			switch (align.axis) {
+				CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
+
+				for (const std::string & key: keys){
+					align.set(key);
+				}
+
+				switch (align.axis) {
 				case AlignBase::Axis::HORZ:
 					ctx.alignHorz.set(align.topol, align.pos); // AlignBase::Axis::HORZ,
 					mout.accept<LOG_NOTICE>(align.topol, AlignBase::Axis::HORZ, align.pos, " -> ", ctx.alignHorz.topol, '/', ctx.alignHorz.axis, '/', ctx.alignHorz);
@@ -235,17 +277,16 @@ public:
 					break;
 				case AlignBase::Axis::UNDEFINED_AXIS:
 				default:
-
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<Alignment<> >::dict.getKeys(), {"|"}).str());
 					mout.error("could not determine axis from argument '", arg, "'");
 					break;
-			}
+				}
 
-			//mout.accept<LOG_NOTICE>(align.topol, '/',(Align &)align);
-			// ctx.topol = align.topol;
+
+			}
 
 		}
 
@@ -256,8 +297,40 @@ public:
 
 protected:
 
+	std::string position;
+
+	mutable
+	drain::image::AnchorElem anchor;
+
+	mutable
+	drain::image::AnchorElem anchorHorz;
+
+	mutable
+	drain::image::AnchorElem anchorVert;
 
 };
+
+/*
+class CmdAnchor : public drain::SimpleCommand<std::string> {
+
+public:
+
+	inline
+	CmdAnchor() : drain::SimpleCommand<std::string>(__FUNCTION__, "Alignment of the next element", "topology", "",
+			drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), {"|"}).str()
+	){
+		//getParameters().link("", x, drain::StringBuilder<':'>());
+	}
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+	}
+};
+ */
 
 /// "Virtual" command base for FontSizes and HeaderSizes
 class CmdAdjustSizes : public drain::SimpleCommand<std::string> {
@@ -331,7 +404,7 @@ public:
 		style[drain::SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
 		style[drain::SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
 	}
-	*/
+	 */
 
 };
 
@@ -353,7 +426,7 @@ public:
 		mout.accept<LOG_WARNING>("new BOX  values: ", ctx.svgPanelConf.boxHeights);
 
 		for (size_t i= 0; i<ctx.svgPanelConf.boxHeights.size(); ++i){
-			 ctx.svgPanelConf.fontSizes[i] = 0.65 * ctx.svgPanelConf.boxHeights[i];
+			ctx.svgPanelConf.fontSizes[i] = 0.65 * ctx.svgPanelConf.boxHeights[i];
 		}
 		mout.accept<LOG_WARNING>("new FONT values: ", ctx.svgPanelConf.fontSizes);
 
@@ -497,7 +570,7 @@ public:
 	}
 
 };
-*/
+ */
 
 
 class CmdInclude : public drain::SimpleCommand<std::string> {
@@ -547,7 +620,7 @@ public:
 	}
 
 };
-*/
+ */
 
 
 class CmdPanelFoo : public drain::SimpleCommand<std::string> {
@@ -603,7 +676,7 @@ public:
 			// group->setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE); // AlignSVG::LEFT);
 			mout.accept<LOG_NOTICE>("Using VERT align: ", ctx.alignVert, " -> ", group->getAlignStr());
 		}
-		*/
+		 */
 
 		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
 		rect->set("width", frame.width);
@@ -639,7 +712,7 @@ public:
 		textGroup->setId("textGroup");
 		textGroup->setAlign(value);
 		drain::image::AlignBase::Pos horzPos = textGroup->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
-		*/
+		 */
 
 		drain::image::AlignBase::Pos horzPos = group->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
 		// AlignSVG alignSvg;
@@ -689,7 +762,7 @@ public:
 		/*
 		ctx.alignHorz.topol  = AlignSVG::UNDEFINED_TOPOL;
 		ctx.alignVert.topol  = AlignSVG::UNDEFINED_TOPOL;
-		*/
+		 */
 	}
 };
 
@@ -939,7 +1012,7 @@ public:
 		rect->setAlign(AlignSVG2::ORIG, AlignSVG2::HORZ,  AlignSVG2::MID);
 		rect->setAlign(AlignSVG2::REF, AlignSVG2::VERT,  AlignSVG2::MAX);
 		rect->setAlign(AlignSVG2::REF, AlignSVG2::HORZ,  AlignSVG2::MIN);
-		*/
+		 */
 
 		typedef drain::image::AlignSVG::Owner  Owner;
 		typedef drain::image::AlignBase::Pos   Pos;
@@ -1024,7 +1097,7 @@ public:
 	};
 
 };
-*/
+ */
 
 class CmdSector : public drain::SimpleCommand<std::string> {
 
@@ -1054,7 +1127,7 @@ public:
 			ostr << '\n';
 		}
 	}
-	*/
+	 */
 
 	virtual inline
 	void parameterKeysToStream(std::ostream & ostr) const override {
@@ -1232,7 +1305,7 @@ public:
 	//int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 
 };
-*/
+ */
 
 
 
@@ -1286,7 +1359,7 @@ drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , doub
 	origin.cx = 0; // + dx;
 	origin.cy = 0; // + dy;
 	origin.r = 5.0;
-	origin.node.setStyle("fill", "black");
+	origin.node.setStyle("fill", "darkblue");
 	origin.node.setStyle("opacity", 1.0);
 
 	// drain::image::NodeSVG::Elem<tag_t::POLYGON> polyx(subGroup);
@@ -1309,7 +1382,7 @@ operator const std::string &()(drain::image::AlignBase::Axis){
 	static const std::string s("sksk");
 	return s;
 }
-*/
+ */
 
 class CmdAlignTest : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
 
@@ -1328,11 +1401,11 @@ public:
 	const std::string defaultAnchor = "myRect";
 
 	std::string panel = "playGround1";
-	std::string name = "";
+	std::string name  = "";
 	// Optional
 	std::string myAnchor = "";
 
-
+	/*
 	drain::image::TreeSVG & getPlayGround(RackContext & ctx) const {
 
 		using namespace drain::image;
@@ -1351,11 +1424,11 @@ public:
 			// This is "lazily" repeated upon repeated invocations
 			drain::image::TreeSVG & style = RackSVG::getStyle(ctx);
 			style[".DEBUG"]->set({
-					{"stroke-width", 2},
-					{"stroke", "darkgreen"},
-					{"stroke-dasharray", {2,5,3}},
-					{"fill", "none"},
-					{"opacity", 0.7},
+				{"stroke-width", 2},
+				{"stroke", "darkgreen"},
+				{"stroke-dasharray", {2,5,3}},
+				{"fill", "none"},
+				{"opacity", 0.7},
 			});
 
 			const drain::Frame2D<double> frame = {1280.0, 900.0}; // {640.0, 480};
@@ -1386,8 +1459,9 @@ public:
 		return group;
 
 	}
+	*/
 
-	//template <typename T>
+	// template <typename T>
 	// std::string static_cast<std::string>(drain::EnumDict<T>::){};
 
 	void exec() const override {
@@ -1459,19 +1533,18 @@ public:
 GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	// const drain::Flagger::ivalue_t section = drain::Static::get<GraphicsSection>().index;
-
-	// const ScienceModule & mod = drain::Static::get<ScienceModule>();
-
-	// drain::CommandBank & cmdBank = drain::getCommandBank();
-
-	// drain::BeanRefCommand<FreezingLevel> freezingLevel(RainRateOp::freezingLevel);
-	// cmdBank.addExternal(freezingLevel).section = section;
 	// const drain::bank_section_t IMAGES = drain::Static::get<drain::HiddenSection>().index;
+
 	const drain::bank_section_t HIDDEN = drain::Static::get<drain::HiddenSection>().index;
 
 	install<CmdLinkImage>(); //
-	install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
-	install<CmdAlign>();
+	// install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
+	// install<CmdAlign>();
+	DRAIN_CMD_INSTALL(Cmd, Align)();
+	// DRAIN_CMD_INSTALL(Cmd, Anchor)();
+	DRAIN_CMD_INSTALL(Cmd, Layout)();
+	linkRelatedCommands(Align, Layout);
+
 	install<CmdFontSizes>();
 	//install<CmdGroupTitle>();
 	DRAIN_CMD_INSTALL(Cmd, GroupTitle)();
@@ -1537,7 +1610,7 @@ void hyperAlign(drain::image::TreeSVG & group){ //, BBoxSVG & bbox){
 	}
 
 }
-*/
+ */
 
 /**
  *
@@ -1632,7 +1705,7 @@ void CmdOutputPanel::exec() const {
 
 
 }
-*/
+ */
 
 /**
  *
@@ -1683,7 +1756,7 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 	// comment->setType(NodeXML::COMM)
 
 }
-*/
+ */
 
 
 

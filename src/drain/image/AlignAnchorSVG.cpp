@@ -38,18 +38,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "AlignAnchorSVG.h"
 
-namespace drain {
-
 DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor) = {
 		{"", drain::image::AnchorElem::DEFAULT},
-		{"@PREV", drain::image::AnchorElem::PREVIOUS},
-		{"@BBOX", drain::image::AnchorElem::EXTENSIVE},
+		{"@PREVIOUS", drain::image::AnchorElem::PREVIOUS},
+		{"@COMPOUND", drain::image::AnchorElem::EXTENSIVE},
 		{"@NONE", drain::image::AnchorElem::NONE},
 		// DRAIN_ENUM_ENTRY(drain::image::AnchorElem, DEFAULT),  // Use anchor element set by the parent group
 		// DRAIN_ENUM_ENTRY(drain::image::AnchorElem, PREVIOUS), // Use the last object aligned, unless it is of class FLOAT
 		// DRAIN_ENUM_ENTRY(drain::image::AnchorElem, COMPOUND), // As an anchor, use teh bounding box of the compound object "accumulated" this far
 		// DRAIN_ENUM_ENTRY(drain::image::AnchorElem, NONE),     // Do not align this object
 };
+
+namespace drain {
+
+
 
 
 namespace image {

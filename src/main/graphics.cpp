@@ -237,6 +237,16 @@ void RackSVG::consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & nod
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	if (ctx.anchorHorz.isSet()){
+		node.setMyAlignAnchorHorz(ctx.anchorHorz);
+		ctx.anchorHorz.clear();
+	}
+
+	if (ctx.anchorVert.isSet()){
+		node.setMyAlignAnchorVert(ctx.anchorVert);
+		ctx.anchorVert.clear();
+	}
+
 	if (ctx.alignHorz.pos != AlignBase::UNDEFINED_POS){
 
 		node.setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.getOrDefault(AlignSVG::INSIDE));  // simplify

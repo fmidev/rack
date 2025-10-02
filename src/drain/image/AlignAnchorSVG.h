@@ -112,20 +112,26 @@ struct AnchorElem : public std::string {
 		return !empty();
 	}
 
-	/// Make it dynamic, practically changed to last updated
+	// Use the bounding box of the compound, "accumulated" object as anchor.
 	inline
 	bool isExtensive() const {
 		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::EXTENSIVE);
 	}
 
+	// Use the bounding box of the latest object as anchor.
 	bool isPrevious() const {
 		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::PREVIOUS);
 	}
 
-	/// Named element
+	// Explicitly states that an object uses no anchor, hence the position is absolute (not aligned)
+	bool isNone() const {
+		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::NONE);
+	}
+
+	// Use the bounding box of a named object as anchor.
 	inline
 	bool isSpecific() const {
-		return isSet() && (!isExtensive()) &&  (!isPrevious());
+		return isSet() && (!isExtensive()) &&  (!isPrevious()) &&  (!isNone());
 	}
 
 
@@ -138,6 +144,19 @@ struct AnchorElem : public std::string {
 
 };
 
+}
+
+}
+
+DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
+
+DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
+
+
+
+namespace drain {
+
+namespace image {
 
 /// Adapter designed for NodeSVG
 struct AlignAnchorSVG { // : public AlignSVG {
@@ -297,11 +316,12 @@ const AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase
 
 }  // image::
 
+/*
 DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
 DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
+*/
 
 }  // drain::
-
 
 
 #endif // DRAIN_ALIGN_SVG_H_

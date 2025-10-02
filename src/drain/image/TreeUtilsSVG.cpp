@@ -288,25 +288,29 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 	const AnchorElem & anchorElem = node.getMyAlignAnchor<AX>().isSet() ? node.getMyAlignAnchor<AX>() : object->getDefaultAlignAnchor<AX>();
 
 	if (anchorElem.isSet()){
-		if (anchorElem.isExtensive()){
+		if (anchorElem.isNone()){
+			mout.experimental("anchor", AX, " =[", anchorElem,"] skipping ", AX, " align of node ", node);
+			return;
+		}
+		else if (anchorElem.isExtensive()){
 			span.copyFrom(object->getBoundingBox()); // translate should be anyway 0,0 (now, still)
 		}
 		else if (anchorElem.isSpecific()){
 			if (object.hasChild(anchorElem)){
 				const NodeSVG & anchorNode = object[anchorElem];
 				if (&anchorNode == &node){ // IMPORTANT!
-					mout.pending<LOG_NOTICE>("self-anchoring skipped for [", anchorElem,"] = ", node);
+					mout.debug("self-anchoring (", AX, ") skipped for [", anchorElem,"] = ", node);
 				}
 				else {
 					span.copyFrom(anchorNode);
 				}
 			}
 			else {
-				mout.warn("non-existing anchor elem [", anchorElem,"] requested for node ", node);
+				mout.warn("non-existing (", AX, ") anchor elem [", anchorElem,"] requested for node ", node);
 			}
 		}
 		else {
-			mout.error("program error - illegal anchor [", anchorElem, "] requested for node  [", node);
+			mout.error("program error - illegal (", AX, ") anchor [", anchorElem, "] requested for node  [", node);
 		}
 		mout.note(AX, " anchor '", anchorElem, "' for ", node.getTag(), ':', node.getId());
 	}

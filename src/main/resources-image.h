@@ -240,6 +240,9 @@ public:
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
 
+	AlignAnchorSVG::anchor_t anchorHorz;
+	AlignAnchorSVG::anchor_t anchorVert;
+
 	int svgDebug = 0;
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
