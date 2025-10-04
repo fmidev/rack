@@ -150,7 +150,7 @@ public:
 	~NodeSVG(){};
 
 	inline
-	bool isAbstract(){
+	bool isAbstract() const {
 		return typeIs(
 				svg::tag_t::STYLE,
 				svg::tag_t::DESC,

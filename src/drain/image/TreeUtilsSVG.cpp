@@ -308,6 +308,12 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 			}
 			else {
 				mout.warn("non-existing (", AX, ") anchor elem [", anchorElem,"] requested for node ", node);
+				for (const auto & entry: object.getChildren()){
+					const NodeSVG & n = entry.second.data;
+					if ((&n != &node) && !n.isAbstract()){
+						mout.advice("candidate [", entry.first, "]  = <", n.getTag(), " id=", n.getId(), " >");
+					}
+				}
 			}
 		}
 		else {

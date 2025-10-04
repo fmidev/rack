@@ -1389,9 +1389,9 @@ class CmdAlignTest : public drain::BasicCommand { // drain::SimpleCommand<std::s
 public:
 
 	CmdAlignTest() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
-		getParameters().link("name", name, "label");
-		getParameters().link("panel", panel, "label");
-		getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+		getParameters().link("name",   name, "label");
+		getParameters().link("panel",  panel, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdAlignTest(const CmdAlignTest & cmd) : drain::BasicCommand(cmd) {
@@ -1402,8 +1402,6 @@ public:
 
 	std::string panel = "playGround1";
 	std::string name  = "";
-	// Optional
-	std::string myAnchor = "";
 
 	/*
 	drain::image::TreeSVG & getPlayGround(RackContext & ctx) const {

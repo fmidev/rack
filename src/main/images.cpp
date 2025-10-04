@@ -1076,25 +1076,31 @@ public:
 		mout.special("comment: ", palette.comment);
 
 
-		// const drain::VariableMap & statusMap = ctx.getStatusMap();
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
-		// VariableFormatterODIM<drain::Variable> odimHandler;
-		// std::string filepath
 		drain::FilePath filepath = mapper.toStr(ctx.getStatusMap(), -1, RackContext::variableFormatter);
 
 		if (ctx.formatStr.empty()){
 
 			// drain::FilePath filepath(ctx.outputPrefix + value);
 			if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
+
 				mout.special("writing SVG legend");
+
 				TreeSVG svg;
 				palette.exportSVGLegend(svg, true);
-				//TreeSVG & imageSvg =
-				RackSVG::addImage(ctx, svg, filepath);
-				// imageSvg -> addClass("legend"); // TODO: embed gAlign
 				drain::Output ofstr(filepath.str());
 				NodeSVG::toStream(ofstr, svg);
+
+				// OLD: create a new image panel
+				// RackSVG::addImage(ctx, svg, filepath);
+				// New: attach "directly" to current panel.
+				TreeSVG & paletteImage = RackSVG::getImagePanelGroup(ctx)["palette"](svg::IMAGE);
+				paletteImage->setFrame(svg->getBoundingBox().getFrame());
+				paletteImage->setUrl(filepath.str());
+				RackSVG::consumeAlignRequest(ctx, paletteImage);
+				// TreeSVG & paletteImage = ;
+
 			}
 			else {
 				palette.write(ctx.outputPrefix + value);

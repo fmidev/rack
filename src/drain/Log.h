@@ -548,7 +548,7 @@ public:
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & advice(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::UNDERLINE);// 40);
+		static const Notification notif(__FUNCTION__, TextStyle::Colour::PURPLE);// 40); ,
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;

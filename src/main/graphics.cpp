@@ -433,6 +433,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 		"where:elangle", "where:lon", "where:lat", "where:projdef", "where:EPSG",
 		"how:camethod",
 		"prevCmdKey"}){
+
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');
 			if (i == std::string::npos){
@@ -441,8 +442,8 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 			else {
 				metadata->set(key.substr(i+1), src.properties[key]);
 			}
-
 		}
+
 	}
 
 

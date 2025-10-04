@@ -169,27 +169,6 @@ public:
 
 public:
 
-
-
-	/**
-	 *   This function should not be called upon construction, as the dictionary does not exist.
-	 */
-	virtual
-	const std::string & getTag() const {
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
-		return drain::EnumDict<T>::getDict().getKey((T)type, false);
-	}
-
-	/**
-	 *   This function should not be called upon construction. Consider dynamic getDict() to skip
-	 */
-	static inline // needed?
-	const std::string & getTag(const T & type){
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
-		return drain::EnumDict<T>::getDict().getKey((T)type, false);
-	}
-
-
 	inline
 	void set(const NodeXML & node){
 		if (isUndefined()){
@@ -203,10 +182,12 @@ public:
 		drain::SmartMapTools::setValues<map_t>(getAttributes(), node.getAttributes());
 	}
 
+
 	inline
 	void set(const intval_t & type){
 		setType(type);
 	}
+
 
 	inline
 	void set(const std::string & s){
@@ -223,19 +204,6 @@ public:
 		setText(s);
 	}
 
-	/*
-	inline
-	void set(const std::initializer_list<Variable::init_pair_t > &l){
-		// TODO: redirect to set(key,value), for consistency
-		if (type == STYLE){
-			drain::SmartMapTools::setValues(style, l);
-		}
-		else {
-			drain::SmartMapTools::setValues<map_t,true>(getAttributes(), l);       // add new keys
-			// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
-		}
-	}
-	*/
 
 	inline
 	//void set(const std::initializer_list<std::pair<const char *,const char *> > & args){
@@ -307,6 +275,27 @@ public:
 		}
 
 	}
+
+
+	/**
+	 *   This function should not be called upon construction, as the dictionary does not exist.
+	 */
+	virtual
+	const std::string & getTag() const {
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
+		return drain::EnumDict<T>::getDict().getKey((T)type, false);
+	}
+
+	/**
+	 *   This function should not be called upon construction. Consider dynamic getDict() to skip
+	 */
+	static inline // needed?
+	const std::string & getTag(const T & type){
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
+		return drain::EnumDict<T>::getDict().getKey((T)type, false);
+	}
+
+
 
 	inline
 	NodeXML & operator=(const NodeXML & node){

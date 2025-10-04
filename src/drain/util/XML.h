@@ -160,25 +160,6 @@ public:
 		}
 	};
 
-protected:
-
-	inline
-	bool typeIs() const {
-		return false;
-	};
-
-	intval_t type = XML::UNDEFINED;
-
-	// String, still easily allowing numbers through set("id", ...)
-	std::string id;
-	// Consider either/or
-	std::string url;
-
-	virtual inline
-	void handleType(){}; // = 0;
-
-
-public:
 
 	std::string ctext;
 
@@ -330,6 +311,11 @@ public:
 		setAttribute("data-name", drain::StringBuilder<>(args...).str());
 	}
 
+	inline
+	const FlexibleVariable & getName(){
+		return (*this)["data-name"];
+	}
+
 
 	// ---------------- Attributes ---------------
 
@@ -404,6 +390,27 @@ public:
 		}
 	}
 
+
+
+protected:
+
+	inline
+	bool typeIs() const {
+		return false;
+	};
+
+	intval_t type = XML::UNDEFINED;
+
+	// String, still easily allowing numbers through set("id", ...)
+	std::string id;
+	// Consider either/or
+	std::string url;
+
+	virtual inline
+	void handleType(){}; // = 0;
+
+
+public:
 
 	// ------------------ Style ---------------
 
