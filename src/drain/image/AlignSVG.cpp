@@ -43,8 +43,10 @@ namespace drain {
 
 namespace image {
 
-
-
+/** Future option: re-map to normalized coordinates: MIN=0.0, MID=0.5, MAX=1.0
+ *  FILL must be left as a flag.
+ *
+ */
 template <>
 const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, UNDEFINED_POS),

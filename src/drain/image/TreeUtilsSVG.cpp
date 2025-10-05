@@ -362,16 +362,8 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
 
 	mout.pending<LOG_NOTICE>("start: extensiveBBox ", compoundBBox, " obj=", object.data);
 
-	// const AnchorElem & defaultAnchorHorz = object->getAlignAnchorDefaultHorz();
-	// const AnchorElem & defaultAnchorVert = object->getAlignAnchorDefaultVert();
-
 	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz;
-	// anchorSpanHorz.pos  = 0;
-	// anchorSpanHorz.span = 0;
-
 	CoordSpan<AlignBase::Axis::VERT> anchorSpanVert;
-	// anchorSpanVert.pos  = 0;
-	// anchorSpanVert.span = 0;
 
 	// Main loop (other than recursion)
 	for (TreeSVG::pair_t & entry: object){

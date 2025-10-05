@@ -169,7 +169,8 @@ RUN_TEST  \\ --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --palette \
 # --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:0'" --gStyle rect.GROUP_TITLE="'stroke:white;stroke-width:2'"
 
 WRITE_DOC 'Grouping without displaying titles can be done with prefix \c NONE . For example, using plain (unformatted) timestamp as follows:'
-RUN_TEST \\   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'NONE:Invisible grouping criterion-\${what:date}\${what:time}'"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o 'Without_group_titles'
+RUN_TEST \\   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupId "'Invisible grouping criterion-\${what:date}\${what:time}'"  --gGroupTitle "''"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o 'Without_group_titles'
+# RUN_TEST \\   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'NONE:Invisible grouping criterion-\${what:date}\${what:time}'"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o 'Without_group_titles'
 
 
 WRITE_DOC 'Similar example using radar site code for grouping:'

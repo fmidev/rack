@@ -490,12 +490,65 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		// drain::StringTools::replace(ctx.svgPanelConf.groupTitleSyntax, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
-		mout.accept<LOG_WARNING>("old value: ", value);
-		drain::StringTools::replace(value, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
-		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupTitleSyntax);
+		ctx.svgPanelConf.groupTitle = value;
+		if (value.length()>=4){
+			const std::string prefix(value, 0,4);
+			if (prefix=="NONE"){
+				ctx.svgPanelConf.groupTitle = "";
+				if (value.length()==5){
+					mout.suspicious("argument ", prefix, " ");
+				}
+				if (value.length()>4){
+					// perhaps starts with some separator like ':'
+					drain::StringTools::replace(value.substr(5), '/', '-', ctx.svgPanelConf.groupIdentifier);
+					mout.deprecating("combination of '", prefix, "' and ID: use instead: --gGroupId '", ctx.svgPanelConf.groupIdentifier, "' --gGroupTitle ''");
+				}
+			}
+			else if (prefix=="AUTO"){
+				ctx.svgPanelConf.groupTitle = prefix;
+				if (value.length()>4){
+					mout.deprecating("combination of ", prefix, "+<title>, the latter forwarded to --gGroupId");
+					// perhaps starts with some separator like ':'
+					drain::StringTools::replace(value.substr(5), '/', '-', ctx.svgPanelConf.groupIdentifier);
+				}
+			}
+		}
+		if (ctx.svgPanelConf.groupIdentifier.empty()){
+			mout.revised("setting also GroupId");
+			// mout.accept<LOG_WARNING>("old value: ", value);
+			drain::StringTools::replace(value, '/', '-', ctx.svgPanelConf.groupIdentifier);
+			mout.accept<LOG_WARNING>("new groupID/rule: ", ctx.svgPanelConf.groupIdentifier);
+		}
+		mout.attention("groupId: ", ctx.svgPanelConf.groupIdentifier);
 	}
 
 };
+
+class CmdGroupId : public drain::SimpleCommand<std::string> {
+
+public:
+
+	//CmdGroupTitle() : drain::BasicCommand(__FUNCTION__, "Set titles automatically") {
+	CmdGroupId() : drain::SimpleCommand<std::string>(__FUNCTION__, "Set grouping criterion based on variables", "syntax") {
+		getParameters().separator = 0;
+	}
+
+	CmdGroupId(const CmdGroupTitle & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	}
+
+	void exec() const override {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		// mout.accept<LOG_WARNING>("old value: ", value);
+		drain::StringTools::replace(value, '/', '-', ctx.svgPanelConf.groupIdentifier);
+		// notice if pruned/modified?
+		mout.accept<LOG_WARNING>("new value: ", ctx.svgPanelConf.groupIdentifier);
+	}
+
+};
+
+
 
 class CmdImageTitle : public drain::BasicCommand {
 
@@ -1546,10 +1599,13 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdFontSizes>();
 	//install<CmdGroupTitle>();
 	DRAIN_CMD_INSTALL(Cmd, GroupTitle)();
+	DRAIN_CMD_INSTALL(Cmd, GroupId)();
 	DRAIN_CMD_INSTALL(Cmd, Title)();
 	DRAIN_CMD_INSTALL(Cmd, TitleHeights)();
 	// install<CmdTitleHeights>();
 	linkRelatedCommands(Title, GroupTitle, TitleHeights);
+
+	linkRelatedCommands(Layout, GroupTitle, GroupId);
 
 	install<CmdInclude>();
 	// install<CmdGroupTitle>().section = HIDDEN; // under construction

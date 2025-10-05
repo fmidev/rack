@@ -123,7 +123,9 @@ struct PanelConfSVG {
 	// bool absolutePaths = true;
 
 	std::string mainTitle = "AUTO"; // redesign?
-	std::string groupTitleSyntax = "AUTO"; // redesign?
+	// std::string groupIdentifier = "AUTO"; // redesign?
+	std::string groupIdentifier = ""; // NEW
+	std::string groupTitle = "AUTO"; // NEW
 	std::string groupTitleFormatted;
 
 

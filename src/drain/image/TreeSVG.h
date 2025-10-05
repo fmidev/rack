@@ -248,6 +248,20 @@ public:
 		// setAttribute("data:bbox", StringBuilder<' '>(b.x, b.y, b.getWidth(), b.getHeight()));
 	}
 
+	template <typename T>
+	inline
+	void setViewBox(const drain::Box<T> & bb){
+		setViewBox(bb.x, bb.y, bb.width, bb.height);
+		//set("viewBox", drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height));
+		// setAttribute("data:bbox", StringBuilder<' '>(b.x, b.y, b.getWidth(), b.getHeight()));
+	}
+
+	template <typename T>
+	inline
+	void setViewBox(T & x, T & y, T & width, T & height){
+		set("viewBox", drain::StringBuilder<' '>(x, y, width, height).str());
+	}
+
 	/// Set position (x,y) of an object.
 	template <typename T>
 	inline

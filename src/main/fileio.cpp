@@ -511,8 +511,9 @@ void CmdOutputFile::exec() const {
 			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 				// Finalize view box
-			const std::string viewBox = drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height);
-			ctx.svgTrack->set("viewBox", viewBox);
+			ctx.svgTrack->setViewBox(bb);
+			// const std::string viewBox = drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height);
+			// ctx.svgTrack->set("viewBox", viewBox);
 		}
 		else {
 			/*

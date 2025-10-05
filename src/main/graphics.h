@@ -269,7 +269,7 @@ public:
 
 
 	/**
-	 *   Function useful, as attributes of two groups are considered: specific (private) and shared.
+	 *   Useful function – as attributes of two groups are considered: panel-specific and shared.
 	 */
 	static
 	void writeTitles(TreeSVG & group, const NodeSVG::map_t & attributes);

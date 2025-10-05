@@ -166,7 +166,7 @@ GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
 	//svgPanelConf.absolutePaths = ctx.svgPanelConf.absolutePaths;
 	svgPanelConf.pathPolicyFlagger = ctx.svgPanelConf.pathPolicyFlagger;
 	svgPanelConf.pathPolicy = ctx.svgPanelConf.pathPolicy;
-	svgPanelConf.groupTitleSyntax = ctx.svgPanelConf.groupTitleSyntax;
+	svgPanelConf.groupIdentifier = ctx.svgPanelConf.groupIdentifier;
 	// svgTitles    = ctx.svgTitles;
 }
 

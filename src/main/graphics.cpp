@@ -325,7 +325,7 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 
 	drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
-	ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupTitleSyntax); // status updated upon last file save
+	ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier); // status updated upon last file save
 
 	drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgPanelConf.groupTitleFormatted];
 
@@ -430,7 +430,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 	// TODO: 1) time formatting 2) priority (startdate, starttime)
 	for (const std::string key: {
 		"what:date", "what:time", "what:product", "what:prodpar", "what:quantity",
-		"where:elangle", "where:lon", "where:lat", "where:projdef", "where:EPSG",
+		"where:elangle", "where:lon", "where:lat", "where:EPSG", // "where:projdef",
 		"how:camethod",
 		"prevCmdKey"}){
 
@@ -502,7 +502,6 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
-
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setMyAlignAnchor("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
@@ -518,13 +517,7 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 	case PanelConfSVG::ElemClass::GROUP:
 		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
 		backgroundRect->setHeight(conf.boxHeights[1]);
-		// backgroundRect->setHeight(40);
 		break;
-		// case PanelConfSVG::ElemClass::IMAGE_TITLE:
-		// backgroundRect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-		// backgroundRect->setHeight(40);
-		// backgroundRect->setHeight(conf.boxHeights[2]);
-		// break;
 	default:
 		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.suspicious("Unhandled elemClass: ", elemClass);
@@ -850,6 +843,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 
 	// Apply to groups only.
 	TreeSVG & group = root(path);
+
 	if (!group->typeIs(svg::GROUP)){ //
 		return 0;
 	}
@@ -867,9 +861,16 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	const bool WRITE_PRIVATE_METADATA = !attributesPrivate.empty();
 	bool WRITE_SHARED_METADATA = !attributesShared.empty(); // SHARED_METADATA_EXISTS;
 
+	if (svgConf.groupTitle=="NONE"){
+		mout.obsolete("groupTitle 'NONE'");
+		// svgConf.groupTitle = "";
+		// svgConf.groupTitleFormatted = ""; // OK?
+	}
+
+
 	const bool MAIN_AUTO  = (svgConf.mainTitle == "AUTO");
-	const bool GROUP_AUTO = (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
-	const bool GROUP_NONE = (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
+	const bool GROUP_AUTO = (svgConf.groupTitle=="AUTO"); // (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
+	const bool GROUP_NONE = svgConf.groupTitle.empty(); // (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
 	const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty() || GROUP_AUTO || GROUP_NONE);
 
 
@@ -887,7 +888,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG & root, const TreeSVG::path_t & path){
 	}
 	else if (group->hasClass(LayoutSVG::STACK_LAYOUT)){
 		if (GROUP_AUTO){
-			// If no higher element will write meta data, write it here (perhaps repeatedly)
+			// If no higher element will write meta data, flush it here (perhaps repeatedly)
 			WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
 			if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA){
 				RackSVG::addTitleBox(svgConf, group, PanelConfSVG::ElemClass::GROUP);
@@ -976,6 +977,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		if (text->isUndefined()){
 			text->setType(svg::COMMENT); // only test...
 			text->setText("skipped elem");
+			// Why no return here?
 		}
 
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
