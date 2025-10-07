@@ -397,29 +397,46 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 */
 
 
+// Utility
+class NodePrinter {
+
+public:
+
+	inline
+	NodePrinter(const NodeSVG & node){
+		std::stringstream sstr;
+		sstr << "<" << node.getTag();
+		if (::atoi(node.getId().c_str())==0){
+			sstr << " id=" << node.getId();
+		}
+		if (node.getName().isValid()){
+			sstr << " name=" << node.getName();
+		}
+		sstr << '>';
+		id = sstr.str();
+	}
+
+	const std::string & str() const {
+		return id;
+	}
+
+
+protected:
+
+	std::string id;
+
+};
+
 }  // image::
 
+
+/*
 inline
 std::ostream & operator<<(std::ostream &ostr, const image::NodeSVG & node){
 	return node.nodeToStream(ostr);
 }
-
-/*
-template <>
-template <>
-class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
-public:
-
-	inline
-	Elem(image::NodeSVG & node) : x(node.box.x), y(node.box.y), width(node.box.width), height(node.box.height){
-	};
-
-	float & x;
-	float & y;
-	double & width;
-	double & height;
-};
 */
+
 
 template <>
 template <>
@@ -428,12 +445,6 @@ public:
 
 	inline
 	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::RECT), x(node["x"]), y(node["y"]), width(node["width"]), height(node["height"]){
-		// node.setType(image::svg::tag_t::RECT); // ERROR: resets FlexMap
-		/*
-		if (!node.typeIs(image::svg::tag_t::RECT)){
-			throw std::runtime_error("Elem-node not RECT");
-		}
-		*/
 	};
 
 	NodeXML<image::svg::tag_t> & node;
@@ -457,23 +468,15 @@ public:
 	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node["cx"]), cy(node["cy"]), r(node["r"] = 0.0){
 	};
 
+	// Center point, x coord
 	FlexibleVariable & cx;
+	// Center point, y coord
 	FlexibleVariable & cy;
 	// Radius
 	FlexibleVariable & r;
 
-	/**
-	 * problem: this NodeXML<T> class cannot access NodeSVG.box
-
-	inline
-	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE),
-		cx(node.box.x), cy(node.box.y), r(node["r"]){
-	};
-
-	image::svg::coord_t & cx;
-	image::svg::coord_t & cy;
-	FlexibleVariable & r;
-	 */
+	// NodeXML<T> class could not access NodeSVG.box
+    // Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node.box.x), cy(node.box.y), r(node["r"]){
 
 };
 
@@ -484,13 +487,6 @@ public:
 
 	inline
 	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::POLYGON), points(node["points"]), writablePoints(node["points"]){
-		// node.setType(image::svg::tag_t::POLYGON); ERROR: resets FlexMap
-		/*
-		if (node.typeIs(image::svg::tag_t::POLYGON)){
-			throw std::runtime_error("Elem-node not POLYGON");
-		}
-		*/
-		// node["path"].link(node.ctext);
 	};
 
 	NodeXML<image::svg::tag_t> & node;
@@ -526,10 +522,14 @@ public:
 
 
 inline
+std::ostream & operator<<(std::ostream &ostr, const drain::image::NodeSVG & node){
+	return node.nodeToStream(ostr);
+}
+
+
+inline
 std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSVG & tree){
-	//return drain::NodeXML<const drain::image::NodeSVG>::docToStream(ostr, tree);
 	return drain::image::NodeSVG::docToStream(ostr, tree);
-	//return drain::image::TreeSVG::node_data_t::docToStream(ostr, tree);
 }
 
 

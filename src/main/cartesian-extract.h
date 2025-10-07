@@ -45,7 +45,9 @@ public:
 
 	CartesianExtract() : Compositor(__FUNCTION__, "Extract (export) data from the internal accumulation array"){
 		getParameters().separator = ':'; // Consider Command help notif, if not comma (,) .
-		getParameters().link("channels", channels="DATA,WEIGHT", drain::sprinter(Composite::dict.getKeys(), drain::Command::cmdArgLayout).str()); // Accumulation layers to be extracted
+		getParameters().link("channels", channels="DATA,WEIGHT",
+				drain::sprinter(drain::EnumDict<Accumulator::FieldType>::dict.getKeys(), drain::Command::cmdArgLayout).str());
+				//drain::sprinter(Composite::dict.getKeys(), drain::Command::cmdArgLayout).str()); // Accumulation layers to be extracted
 		getParameters().link("bbox", crop, "Optional cropping: ...:<LLx>,<LLy>,<URx>,<URy> or INPUT or OVERLAP");
 	};
 

@@ -135,6 +135,13 @@ struct EnumDict {
 		return dict.getValue(key, lenient);
 	}
 
+	/*
+	static inline
+	E getValue(char * const key, bool lenient=true){
+		return dict.getValue(key, lenient);
+	}
+	*/
+
 	/// Convenience for object.set(...) like commands.
 	/**
 	 *   \return enum value of the key
@@ -152,9 +159,29 @@ struct EnumDict {
 	 *   \return enum value of the key
 	 */
 	static inline
+	const std::string & getKey(const std::string & s, bool lenient=true){
+		return s;
+	}
+
+	static inline
+	const char * getKey(const char * s, bool lenient=true){
+		return s;
+	}
+
+	static inline
 	const std::string & getKey(const E & value, bool lenient=true){
 		return dict.getKey(value, lenient);
 	}
+
+	/*
+	static inline
+	const std::string & getKey(const char *value, bool lenient=true){
+		//return dict.getKey(std::string(value), lenient);
+		return dict.getKey(std::string(value), lenient);
+	}
+	*/
+
+
 
 	/// Experimental. Convenience for object.set(...) like commands.
 	/**

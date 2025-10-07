@@ -517,9 +517,9 @@ public:
 			mout.revised("setting also GroupId");
 			// mout.accept<LOG_WARNING>("old value: ", value);
 			drain::StringTools::replace(value, '/', '-', ctx.svgPanelConf.groupIdentifier);
-			mout.accept<LOG_WARNING>("new groupID/rule: ", ctx.svgPanelConf.groupIdentifier);
+			mout.accept<LOG_DEBUG>("new groupID/rule: ", ctx.svgPanelConf.groupIdentifier);
 		}
-		mout.attention("groupId: ", ctx.svgPanelConf.groupIdentifier);
+		// mout.attention("groupId: ", ctx.svgPanelConf.groupIdentifier);
 	}
 
 };
@@ -937,7 +937,7 @@ public:
 			// mout.attention("DATE:", sstr.str());
 
 			drain::image::TreeSVG & time = group["time"](svg::TEXT); // addTextElem(group, "time");
-			time->setMyAlignAnchorHorz(HEADER_RECT);
+			time->setMyAlignAnchor<AlignBase::Axis::HORZ>(HEADER_RECT);
 			//time->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
 			time->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE); // over ["date"]
 			time->setAlign(AlignSVG::CENTER);
@@ -964,8 +964,8 @@ public:
 
 				drain::image::TreeSVG & tkey = group[key](svg::TEXT);
 				tkey->setId(key);
-				tkey->setMyAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
-				tkey->setMyAlignAnchorVert(anchorVert);
+				tkey->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
+				tkey->setMyAlignAnchor<AlignBase::VERT>(anchorVert);
 				anchorVert.clear();
 				tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 				tkey->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
@@ -975,9 +975,9 @@ public:
 				tkey->setText(key);
 
 				drain::image::TreeSVG & tval = group[tkey->getId()+"Value"](svg::TEXT);
-				tval->setMyAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+				tval->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
 				tval->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
-				tval->setMyAlignAnchorVert(key);
+				tval->setMyAlignAnchor<AlignBase::VERT>(key);
 				tval->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
 				tval->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 				tval->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
@@ -1001,10 +1001,10 @@ public:
 
 	// , const drain::VariableMap & vmap
 	drain::image::TreeSVG & addTextElem(drain::image::TreeSVG & group, const std::string & key) const {
-		drain::image::TreeSVG & t = group[key](svg::TEXT);
+		TreeSVG & t = group[key](svg::TEXT);
 		// t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
 		t->setFontSize(10.0);
-		t->setMyAlignAnchorHorz(RackSVG::BACKGROUND_RECT);
+		t->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
 		t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 		t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 		return t;

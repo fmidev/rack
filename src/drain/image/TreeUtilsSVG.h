@@ -139,7 +139,7 @@ public:
 	 *   To actually align the objects, call also superAlignNew().	 *
 	 */
 	static
-	void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
+	void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, unsigned short depth=0);
 
 	/// Sets alignment applying stack layout in a single node.
 	/**

@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Type.h>
 #include "Accumulator.h"
 
-
-const drain::image::Accumulator::dict_t drain::image::Accumulator::dict = {
+DRAIN_ENUM_DICT(drain::image::Accumulator::FieldType) = {
+// const drain::image::Accumulator::dict_t drain::image::Accumulator::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, DATA),
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, WEIGHT),
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, COUNT),
@@ -56,39 +56,17 @@ const drain::image::Accumulator::dict_t drain::image::Accumulator::dict = {
 namespace drain
 {
 
-/*
-const image::Accumulator::dict_t image::Accumulator::dict = {
-		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, DATA),
-		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, WEIGHT),
-		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, COUNT),
-		DRAIN_ENUM_ENTRY(image::Accumulator::FieldType, DEVIATION),
-		//		{"DATA", rack::Composite::FieldType::DATA},
-		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-		//		{"COUNT", rack::Composite::FieldType::COUNT},
-		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
-};
-*/
 
 namespace image
 {
 
-/*
-const Accumulator::dict_t Accumulator::dict = {
-		DRAIN_ENUM_ENTRY(Accumulator::FieldType, DATA),
-		DRAIN_ENUM_ENTRY(Accumulator::FieldType, WEIGHT),
-		DRAIN_ENUM_ENTRY(Accumulator::FieldType, COUNT),
-		DRAIN_ENUM_ENTRY(Accumulator::FieldType, DEVIATION),
-		//		{"DATA", rack::Composite::FieldType::DATA},
-		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-		//		{"COUNT", rack::Composite::FieldType::COUNT},
-		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
-};
-*/
 
 Accumulator::FieldType Accumulator::getField(char field){
 
 	short int i;
-	for (const auto & entry: Accumulator::dict){
+	//EnumDict<Accumulator::FieldType>::dict
+	//for (const auto & entry: Accumulator::dict){
+	for (const auto & entry: EnumDict<FieldType>::dict){
 		i = static_cast<short int>(entry.second);
 		if ((entry.second&127) == i){
 			return entry.second;
@@ -131,7 +109,7 @@ void Accumulator::createFieldList(const std::string & fieldChars, FieldList & fi
 			mout.error("Unsupported field marker: char '", c, "'");
 		}
 
-		mout.info("Converted field code: ", c, " => ", dict.getKey(fieldList.back()));
+		mout.info("Converted field code: ", c, " => ", EnumDict<FieldType>::dict.getKey(fieldList.back()));
 
 	}
 
@@ -144,7 +122,7 @@ void Accumulator::getFields(const std::string & fieldStr, FieldList & fieldList)
 	std::list<std::string> fieldKeys;
 	drain::StringTools::split(fieldStr, fieldKeys, ','); // ':');
 		for (const std::string & key: fieldKeys){
-			int value = dict.getValue(key);
+			int value = EnumDict<FieldType>::dict.getValue(key);
 			if (value > 0){
 				fieldList.push_back((FieldType)value);
 			}

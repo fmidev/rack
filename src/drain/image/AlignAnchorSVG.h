@@ -84,28 +84,6 @@ struct AnchorElem : public std::string {
 
 	void set(const AnchorElem::Anchor & anchor);
 
-
-	/// Make it dynamic, practically changed to last updated
-	/*
-	inline
-	void setFlipping(){
-		assign("*");
-	}
-
-
-	inline
-	void setSpecific(const std::string & s){
-		if (s.empty()){
-			throw std::runtime_error("AnchorElem setSpecific arg empty");
-		}
-		else if (s == "*"){
-			throw std::runtime_error("AnchorElem setSpecific arg '*' reserved for 'flipping' mode");
-		}
-		assign(s);
-	}
-	*/
-
-
 	/// If not set, use default.
 	inline
 	bool isSet() const {
@@ -135,26 +113,23 @@ struct AnchorElem : public std::string {
 	}
 
 
-	// Perhaps not needed. (Alignment applied only if class directs so.)
-	/*
-	bool isNone() const {
-		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::NONE);
-	}
-	*/
-
 };
 
 }
 
 }
 
+/*
 DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
 
 DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
-
+*/
 
 
 namespace drain {
+
+DRAIN_ENUM_DICT(image::AnchorElem::Anchor);
+DRAIN_ENUM_OSTREAM(image::AnchorElem::Anchor);
 
 namespace image {
 
@@ -165,79 +140,174 @@ struct AlignAnchorSVG { // : public AlignSVG {
 
 	/// Mark one of the elements of this object (SVG or G) as a decisive position
 	// template <class T>
+	/*
 	inline
 	void setMyAlignAnchor(const std::string & pathElem){
 		myAnchorVert = myAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
+	*/
 
-	// template <class T>
+protected:
+
+	// "string detectors"
+
+	static inline
+	void adjustAnchor(AnchorElem & anchor, const std::string & value){
+		anchor.assign(value);
+	}
+
+	static inline
+	void adjustAnchor(AnchorElem & anchor, const char * value){
+		anchor.assign(value);
+	}
+
+	static inline
+	void adjustAnchor(AnchorElem & anchor, const AnchorElem & elem){
+		anchor.assign(elem);
+	}
+
+	template <class T>
+	static inline
+	void adjustAnchor(AnchorElem & anchor, const T & value){
+		anchor.assign(EnumDict<T>::getKey(value));
+	}
+
+public:
+
+	template <class T>
+	inline
+	void setMyAlignAnchor(const T & value){
+		adjustAnchor(myAnchorHorz, value);
+		// myAnchorHorz.assign(EnumDict<AnchorElem::Anchor>::getKey(value));
+		myAnchorVert = myAnchorHorz; // , false); // setMyAlignAnchor(EnumDict<AnchorElem::Anchor>::getKey(value, false));
+		updateAlign();
+	}
+
+	template <AlignBase::Axis AX, class T>
+	inline
+	void setMyAlignAnchor(const T & value){
+		adjustAnchor(getMyAlignAnchor<AX>(), value);
+		// getMyAlignAnchor<AX>() = EnumDict<T>::getKey(value);
+		updateAlign();
+	}
+
+	template <class T>
+	inline
+	void setDefaultAlignAnchor(const T & value){
+		adjustAnchor(defaultAnchorHorz, value);
+		// defaultAnchorHorz.assign(EnumDict<T>::getKey(value));
+		defaultAnchorVert = defaultAnchorHorz;
+		updateAlign();
+	}
+
+	template <AlignBase::Axis AX, class T>
+	inline
+	void setDefaultAlignAnchor(const T & value){
+		adjustAnchor(getDefaultAlignAnchor<AX>(), value);
+		// getDefaultAlignAnchor<AX>() = EnumDict<AnchorElem::Anchor>::getKey(value);
+		updateAlign();
+	}
+
+	/*
 	inline
 	void setMyAlignAnchorHorz(const std::string & pathElem){
 		myAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
+	*/
 
-	//template <class T>
+	/*
+	template <class T>
+	inline
+	void setMyAlignAnchorHorz(const T & value){
+		myAnchorHorz.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // , false);
+		updateAlign();
+		//setMyAlignAnchorHorz(EnumDict<AnchorElem::Anchor>::getKey(key, false));
+	}
+	*/
+
+	/*
 	inline
 	void setMyAlignAnchorVert(const std::string & pathElem){
 		myAnchorVert = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
+	*/
 
+	/*
 	template <class T>
 	inline
-	void setAlignAnchorVert(const T & key){
-		setAlignAnchorVert(EnumDict<T>::getKey(key, false));
-	}
-
-	inline
-	void setDefaultAlignAnchor(const std::string & pathElem){
-		defaultAnchorHorz = defaultAnchorVert =pathElem; // getElem(pathElem);
+	void setMyAlignAnchorVert(const T & value){
+		//setMyAlignAnchorVert(EnumDict<AnchorElem::Anchor>::getKey(key, false));
+		myAnchorVert.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // ,false);
+		// myAnchorVert = EnumDict<AnchorElem::Anchor>::getKey(value, false);
 		updateAlign();
 	}
+	*/
 
-	template <class T>
+	/*
 	inline
-	void setDefaultAlignAnchor(const T & key){
-		setDefaultAlignAnchor(EnumDict<T>::getKey(key, false));
+	void setDefaultAlignAnchor(const std::string & pathElem){
+		defaultAnchorHorz = defaultAnchorVert = pathElem;
+		updateAlign();
 	}
+	 */
 
+	/*
 	inline
 	void setDefaultAlignAnchorHorz(const std::string & pathElem){
 		defaultAnchorHorz = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
+	*/
 
-
+	/*
 	template <class T>
 	inline
-	void setDefaultAlignAnchorHorz(const T & key){
-		defaultAnchorHorz = setDefaultAlignAnchorHorz(EnumDict<T>::getKey(key, false));
+	void setDefaultAlignAnchorHorz(const T & value){
+		myAnchorHorz = EnumDict<T>::getKey(value);
+		// defaultAnchorHorz.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // ,false);
+		//defaultAnchorHorz = setDefaultAlignAnchorHorz(EnumDict<AnchorElem::Anchor>::getKey(key, false));
 		updateAlign();
 	}
+	*/
 
 	//template <class T>
+	/*
 	inline
 	void setDefaultAlignAnchorVert(const std::string & pathElem){
 		defaultAnchorVert = pathElem; // getElem(pathElem);
 		updateAlign();
 	}
+	*/
 
-
+	/*
 	template <class T>
 	inline
-	void setDefaultAlignAnchorVert(const T & key){
-		setDefaultAlignAnchorVert(EnumDict<T>::getKey(key, false));
+	void setDefaultAlignAnchorVert(const T & value){
+		myAnchorVert = EnumDict<T>::getKey(value);
+		// defaultAnchorVert.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // ,false);
+		updateAlign();
+		// setDefaultAlignAnchorVert(EnumDict<AnchorElem::Anchor>::getKey(key, false));
 	}
+	*/
 
 	/// Store anchor object/symbol for aligning this object.
 	template <AlignBase::Axis AX>
 	const anchor_t & getMyAlignAnchor() const;
 
-	/// Store anchor object/symbol for aligning object inside this G (group) or SVG element.
+	///
 	template <AlignBase::Axis AX>
 	const anchor_t & getDefaultAlignAnchor() const;
+
+	///
+	template <AlignBase::Axis AX>
+	anchor_t & getMyAlignAnchor();
+
+	///
+	template <AlignBase::Axis AX>
+	anchor_t & getDefaultAlignAnchor();
 
 	/*
 	inline
@@ -311,18 +381,41 @@ const AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase
 	return defaultAnchorVert;
 };
 
+template <>
+inline
+AlignAnchorSVG::anchor_t & AlignAnchorSVG::getMyAlignAnchor<AlignBase::Axis::HORZ>() {
+	return myAnchorHorz;
+};
+
+template <>
+inline
+AlignAnchorSVG::anchor_t & AlignAnchorSVG::getMyAlignAnchor<AlignBase::Axis::VERT>() {
+	return myAnchorVert;
+};
+
+/// Store anchor object/symbol for aligning object inside this G (group) or SVG element.
+template <>
+inline
+AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase::Axis::HORZ>() {
+	return defaultAnchorHorz;
+};
+
+template <>
+inline
+AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase::Axis::VERT>() {
+	return defaultAnchorVert;
+};
 
 
 
 }  // image::
 
-/*
-DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
-DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
-*/
+
 
 }  // drain::
 
+//DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
+//DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
 
 #endif // DRAIN_ALIGN_SVG_H_
 

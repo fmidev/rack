@@ -238,12 +238,12 @@ void RackSVG::consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & nod
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	if (ctx.anchorHorz.isSet()){
-		node.setMyAlignAnchorHorz(ctx.anchorHorz);
+		node.setMyAlignAnchor<AlignBase::HORZ>(ctx.anchorHorz);
 		ctx.anchorHorz.clear();
 	}
 
 	if (ctx.anchorVert.isSet()){
-		node.setMyAlignAnchorVert(ctx.anchorVert);
+		node.setMyAlignAnchor<AlignBase::VERT>(ctx.anchorVert);
 		ctx.anchorVert.clear();
 	}
 
@@ -503,7 +503,7 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
-	backgroundRect->setMyAlignAnchor("*");
+	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::EXTENSIVE); // ("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	// backgroundRect->setHeight(40); // TODO!!
 
@@ -702,6 +702,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 	}
 
 
+	/*
 	// Writes over original syntax?
 	ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
 
@@ -712,7 +713,7 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 	TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 
 	TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
-
+	*/
 
 }
 

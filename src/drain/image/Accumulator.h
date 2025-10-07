@@ -95,8 +95,8 @@ public:
 
 	typedef drain::EnumDict<FieldType>::dict_t dict_t;
 
-	static
-	const dict_t dict;
+	//static
+	// const dict_t dict;
 
 	typedef std::list<FieldType> FieldList;
 
@@ -313,6 +313,7 @@ std::ostream & operator<<(std::ostream &ostr, const image::Accumulator & accumul
 
 }  // drain::
 
+DRAIN_ENUM_DICT(drain::image::Accumulator::FieldType);
 DRAIN_ENUM_OSTREAM(drain::image::Accumulator::FieldType);
 /*
 inline

@@ -167,7 +167,7 @@ void TreeUtilsSVG::detectBoxNEW(drain::image::TreeSVG & group, bool debug){
 /**
  *  MOVE
  */
-void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction, unsigned short depth){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -201,10 +201,13 @@ void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation,
 		if (node.hasClass(LayoutSVG::STACK_LAYOUT)){
 			orientation = AlignBase::flip(orientation);
 			mout.special("flipped orientation to ", orientation, " for children of ", node);
+			// Also mark and increment level:
+			node.addClass(StringBuilder<'_'>("STACK", depth).str());
+			++depth;
 		}
 
 		for (TreeSVG::pair_t & entry: object){
-			addStackLayout(entry.second, orientation, direction);
+			addStackLayout(entry.second, orientation, direction, depth);
 		}
 	}
 
@@ -281,6 +284,13 @@ std::ostream & operator<<(std::ostream & ostr, const CoordSpan<AX> &span){
 }
 
 
+/*
+std::ostream & operator<<(std::ostream & ostr, const NodePrinter &np){
+	ostr << "span" << AX << "=" << span.pos << "(+" << span.pos <<  ')';
+	return ostr;
+}
+*/
+
 template <AlignBase::Axis AX>
 void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 
@@ -288,9 +298,13 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 
 	const AnchorElem & anchorElem = node.getMyAlignAnchor<AX>().isSet() ? node.getMyAlignAnchor<AX>() : object->getDefaultAlignAnchor<AX>();
 
+
+	std::string id = NodePrinter(node).str();
+	mout.note("NODE: ", id);
+
 	if (anchorElem.isSet()){
 		if (anchorElem.isNone()){
-			mout.experimental("anchor", AX, " =[", anchorElem,"] skipping ", AX, " align of node ", node);
+			mout.experimental("SKIPPING anchor", AX, " =[", anchorElem,"] for ", id);
 			return;
 		}
 		else if (anchorElem.isExtensive()){
@@ -300,33 +314,33 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 			if (object.hasChild(anchorElem)){
 				const NodeSVG & anchorNode = object[anchorElem];
 				if (&anchorNode == &node){ // IMPORTANT!
-					mout.debug("self-anchoring (", AX, ") skipped for [", anchorElem,"] = ", node);
+					mout.debug("self-anchoring (", AX, ") skipped for [", anchorElem,"] = ", id);
 				}
 				else {
 					span.copyFrom(anchorNode);
 				}
 			}
 			else {
-				mout.warn("non-existing (", AX, ") anchor elem [", anchorElem,"] requested for node ", node);
+				mout.warn("non-existing (", AX, ") anchor elem [", anchorElem,"] requested for node ", id);
 				for (const auto & entry: object.getChildren()){
 					const NodeSVG & n = entry.second.data;
 					if ((&n != &node) && !n.isAbstract()){
-						mout.advice("candidate [", entry.first, "]  = <", n.getTag(), " id=", n.getId(), " >");
+						mout.advice("candidate [", entry.first, "]  = ", NodePrinter(n).str());
 					}
 				}
 			}
 		}
 		else {
-			mout.error("program error - illegal (", AX, ") anchor [", anchorElem, "] requested for node  [", node);
+			mout.error("program error - illegal (", AX, ") anchor [", anchorElem, "] requested for ", id);
 		}
-		mout.note(AX, " anchor '", anchorElem, "' for ", node.getTag(), ':', node.getId());
+		mout.note(AX, " anchor '", anchorElem, "' for ", id);
 	}
 	else {
-		mout.note("No ", AX, " anchor for ", node.getTag(), ':', node.getId());
+		mout.note("No ", AX, " anchor for ", id);
 	}
 
 	if (span.isDefined()){
-		mout.note("Aligning ", AX, " span, ", span, " anchor for ", node.getTag(), ':', node.getId());
+		mout.note("Aligning ", AX, " span, ", span, " anchor for ", id);
 		TreeUtilsSVG::realignObject(node, span);
 	}
 
@@ -928,15 +942,15 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 	const AlignAnchorSVG::anchor_t & groupAnchorHorz = object->getDefaultAlignAnchor<AlignBase::HORZ>();
 	const bool GROUP_ANCHOR_HORZ = object->typeIs(svg::GROUP) && !groupAnchorHorz.empty(); // || ANCHOR_HORZ_CUMULATIVE);
 
-	if (GROUP_ANCHOR_HORZ && (groupAnchorHorz == "*")){
-		mout.warn("HORZ Group anchor '*' actually means group's own anchor.");
+	if (GROUP_ANCHOR_HORZ && groupAnchorHorz.isExtensive()){  // (groupAnchorHorz == "*")
+		mout.warn("HORZ Group anchor ", drain::image::AnchorElem::Anchor::EXTENSIVE ," '*' actually means group's own anchor.");
 	}
 
 	const AlignAnchorSVG::anchor_t & groupAnchorVert = object->getDefaultAlignAnchor<AlignBase::VERT>();
 	const bool GROUP_ANCHOR_VERT  = object->typeIs(svg::GROUP) && !groupAnchorVert.empty(); //  || ANCHOR_VERT_CUMULATIVE);
 
-	if (GROUP_ANCHOR_VERT && (groupAnchorVert == "*")){
-		mout.warn("VERT Group anchor '*' actually means group's own anchor.");
+	if (GROUP_ANCHOR_VERT && groupAnchorVert.isExtensive()){ // (groupAnchorVert == "*")){
+		mout.warn("VERT Group anchor '", drain::image::AnchorElem::Anchor::EXTENSIVE ,"' actually means group's own anchor.");
 	}
 
 
@@ -993,7 +1007,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 		// mout.pending<LOG_NOTICE>(object->getTag(), " object BBOX: ", objectBBox);
 
 		const AlignAnchorSVG::anchor_t & ah = node.getMyAlignAnchor<AlignBase::HORZ>();
-		if (ah == "*"){
+		if (ah.isExtensive()){ //  ah == "*"){
 			// mout.special<LOG_NOTICE>("WIDE horz align for ", entry.first, " => ", entry.second.data);
 			TreeUtilsSVG::realignObjectHorz(entry.second, objectBBox); // this far
 		}
@@ -1013,7 +1027,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & object, AlignBase::Axis orientation, Lay
 
 
 		const AlignAnchorSVG::anchor_t & av = node.getMyAlignAnchor<AlignBase::HORZ>();
-		if (av == "*"){
+		if (av.isExtensive()){ // == "*"){
 			// mout.special<LOG_NOTICE>("WIDE vert align for ", entry.first, " => ", entry.second.data);
 			TreeUtilsSVG::realignObjectVert(entry.second, objectBBox); // this far
 		}

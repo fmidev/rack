@@ -47,6 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Revised SVG Layout
  *  Version 14.0.2 (beta)
  *  - Completing new SVG Layout
+ *  Version 14.0.3 (beta)
+ *  - Fix: prodpar=elangle for product=PPI
  *
  *  Version 13
  *  - andre::ChaffOp

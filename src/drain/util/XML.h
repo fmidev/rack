@@ -312,7 +312,7 @@ public:
 	}
 
 	inline
-	const FlexibleVariable & getName(){
+	const FlexibleVariable & getName() const {
 		return (*this)["data-name"];
 	}
 

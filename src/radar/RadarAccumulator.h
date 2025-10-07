@@ -34,9 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <sstream>
 
-// #include <drain/image/Sampler.h>
+// #include <drain/image/Sampler.h>drain::image::Accumulator::FieldType
+#include <drain/image/Accumulator.h>  //  ostream field...
 #include <drain/image/AccumulatorGeo.h>
-
 
 #include "data/ODIM.h"
 #include "data/ODIMPath.h"
@@ -408,8 +408,9 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 	// TODO: clean confusing mixture of referring to dataCoder.dataODIM <==> odimData
 	DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 
+	mout.attention("extracting field '", field, "' = ", static_cast<int>(field), " #", drain::EnumDict<drain::image::Accumulator::FieldType>::dict.getKey(field));
+
 	{
-		mout.attention("extracting field '", field, "' = ", static_cast<int>(field));
 
 		/*
 		if (odimData.quantity.empty()){
