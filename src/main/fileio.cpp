@@ -543,13 +543,14 @@ void CmdOutputFile::exec() const {
 
 
 			// OLD
-			// TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
+			TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
 			// NEW:
+			/*
 			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 			ctx.svgTrack->setViewBox(bb);
 			mout.attention("Nice BBOX: ", bb);
-
+			*/
 		}
 
 
