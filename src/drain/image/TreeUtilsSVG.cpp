@@ -279,7 +279,7 @@ void CoordSpan<AlignBase::Axis::VERT>::copyFrom(const NodeSVG & node){
 
 template <AlignBase::Axis AX>
 std::ostream & operator<<(std::ostream & ostr, const CoordSpan<AX> &span){
-	ostr << "span" << AX << "=" << span.pos << "(+" << span.pos <<  ')';
+	ostr << "span" << AX << "=" << span.pos << "(+" << span.span <<  ')';
 	return ostr;
 }
 
@@ -290,9 +290,26 @@ std::ostream & operator<<(std::ostream & ostr, const NodePrinter &np){
 	return ostr;
 }
 */
+template <AlignBase::Axis AX>
+void expandBBox(BBoxSVG & bbox, CoordSpan<AX> & anchorSpan){
+	Logger(__FILE__, __FUNCTION__).error("Unimplemented method");
+}
+
+template <>
+void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::HORZ> & anchorSpan){
+	bbox.expandHorz(anchorSpan.pos);
+	bbox.expandHorz(anchorSpan.pos + anchorSpan.span);
+}
+
+template <>
+void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::VERT> & anchorSpan){
+	bbox.expandVert(anchorSpan.pos);
+	bbox.expandVert(anchorSpan.pos + anchorSpan.span);
+}
+
 
 template <AlignBase::Axis AX>
-void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
+void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & anchorSpan){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -300,7 +317,7 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 
 
 	std::string id = NodePrinter(node).str();
-	mout.note("NODE: ", id);
+	// mout.note("NODE: ", id);
 
 	if (anchorElem.isSet()){
 		if (anchorElem.isNone()){
@@ -308,7 +325,10 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 			return;
 		}
 		else if (anchorElem.isExtensive()){
-			span.copyFrom(object->getBoundingBox()); // translate should be anyway 0,0 (now, still)
+			BBoxSVG b;
+			TreeUtilsSVG::detectFinalBox(object, b);
+			//anchorSpan.copyFrom(object->getBoundingBox()); // translate should be anyway 0,0 (now, still)
+			anchorSpan.copyFrom(b); // translate should be anyway 0,0 (now, still)
 		}
 		else if (anchorElem.isSpecific()){
 			if (object.hasChild(anchorElem)){
@@ -317,7 +337,10 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 					mout.debug("self-anchoring (", AX, ") skipped for [", anchorElem,"] = ", id);
 				}
 				else {
-					span.copyFrom(anchorNode);
+					BBoxSVG b;
+					TreeUtilsSVG::detectFinalBox(anchorNode, b);
+					// anchorSpan.copyFrom(anchorNode);
+					anchorSpan.copyFrom(b);
 				}
 			}
 			else {
@@ -339,9 +362,15 @@ void handleAlign(TreeSVG & object, NodeSVG & node, CoordSpan<AX> & span){
 		mout.note("No ", AX, " anchor for ", id);
 	}
 
-	if (span.isDefined()){
-		mout.note("Aligning ", AX, " span, ", span, " anchor for ", id);
-		TreeUtilsSVG::realignObject(node, span);
+	if (anchorSpan.isDefined()){
+		mout.note("Aligning ", AX, " span, ", anchorSpan, " anchor for ", id);
+		TreeUtilsSVG::realignObject(node, anchorSpan);
+		mout.accept<LOG_NOTICE>("Current COMPOUND bbox: ", object->getBoundingBox());
+		mout.accept<LOG_NOTICE>("Current span ", AX, ": ", anchorSpan);
+		if (!node.hasClass(LayoutSVG::INEFFECTIVE)){
+			expandBBox(object->getBoundingBox(), anchorSpan);
+			mout.accept<LOG_NOTICE>("New     COMPOUND bbox: ", object->getBoundingBox());
+		}
 	}
 
 }
@@ -354,12 +383,6 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	// Quick check
-	/*
-	if (object->isAbstract()){
-		return;
-	}
-	*/
 
 	if (!object->typeIs(svg::SVG, svg::GROUP)){
 		return;
@@ -388,7 +411,6 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
 			continue;
 		}
 
-		// Depth first; complete sub-objects first.
 
 		if (node.hasClass(LayoutSVG::COMPOUND)){
 			detectBoxNEW(entry.second, true); // only
@@ -405,8 +427,8 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
 		}
 
 		// Save the last one
-		anchorSpanHorz.copyFrom(node);
-		anchorSpanVert.copyFrom(node);
+		anchorSpanHorz.copyFrom(node); // adjusted by transform.x
+		anchorSpanVert.copyFrom(node); // adjusted by transform.y
 
 		mout.accept<LOG_NOTICE>("completed ", node.getTag(),'=', node.getId(), ": ",
 				"H:",  anchorSpanHorz.pos, ',', anchorSpanHorz.span, ", ",
@@ -462,10 +484,8 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & object){ //, const Point2D<svg::coord
  *
  *
  */
-// static
 template <>
-void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span){
-// void TreeUtilsSVG::realignObjectHorzNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxHorz){
+void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & anchorSpan){
 
 	// return;
 
@@ -486,13 +506,13 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
-		coord = span.pos;
+		coord = anchorSpan.pos; // "+ 0%"
 		break;
 	case AlignBase::Pos::MID:
-		coord = span.pos + span.span/2;
+		coord = anchorSpan.pos + anchorSpan.span/2; // " + 50%"
 		break;
 	case AlignBase::Pos::MAX:
-		coord = span.pos + span.span;
+		coord = anchorSpan.pos + anchorSpan.span; // " + 50%"
 		break;
 	case AlignBase::Pos::FILL:
 		// Maybe ok, since GROUP can be an anchor but also
@@ -517,7 +537,8 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			node.setStyle(TEXT_ANCHOR, "start");
-			node.transform.translate.set(+2.0 * node.getMargin());
+			// node.transform.translate.set(+2.0 * node.getMargin());
+			coord += 2.0*node.getMargin();
 		}
 		break;
 	case AlignBase::Pos::MID:
@@ -531,18 +552,22 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
 			node.setStyle(TEXT_ANCHOR, "end");
-			node.transform.translate.set(-2.0 * node.getMargin());
+			// node.transform.translate.set(-2.0 * node.getMargin());
+			coord -= 2.0*node.getMargin();
 		}
 		else {
 			coord -= obox.width;
 		}
 		break;
 	case AlignBase::Pos::FILL:
-		//mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
-		mout.experimental<LOG_DEBUG>("FILL:ing horz: ",   obox, " width -> ", span.span);
-		coord = span.pos;
-		obox.setWidth(span.span);
-
+		if (IS_TEXT){
+			mout.reject<LOG_WARNING>("skipping FILL horz set for TEXT, : ", NodePrinter(node).str());
+		}
+		else {
+			mout.experimental<LOG_DEBUG>("FILL:ing horz: ",   obox, " width -> ", anchorSpan.span);
+			coord = anchorSpan.pos;
+			obox.setWidth(anchorSpan.span);
+		}
 		break;
 	case AlignBase::Pos::UNDEFINED_POS: // or absolute
 		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::HORZ, pos);
@@ -551,9 +576,14 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
 	}
 
-	if (!IS_TEXT){
-		node.transform.translate.x = coord;
+	if (IS_TEXT){
+		if ((obox.x)||(obox.y)){
+			mout.suspicious("TEXT element with absolute coords: ", obox);
+		}
 	}
+	//if (!IS_TEXT){
+	node.transform.translate.x = coord;
+	//}
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
 }
@@ -562,7 +592,7 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
  *  \param anchorSpan - width or height of the achore rectangle.
  */
 template <>
-void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span){
+void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & anchorSpan){
 // void TreeUtilsSVG::realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert){
 
 	Logger mout(__FILE__, __FUNCTION__);
@@ -575,13 +605,13 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
-		coord = span.pos;
+		coord = anchorSpan.pos;
 		break;
 	case AlignBase::Pos::MID:
-		coord = span.pos + span.span/2.0;
+		coord = anchorSpan.pos + anchorSpan.span/2.0;
 		break;
 	case AlignBase::Pos::MAX:
-		coord = span.pos + span.span;
+		coord = anchorSpan.pos + anchorSpan.span;
 		break;
 	case AlignBase::Pos::FILL:
 		mout.suspicious<LOG_NOTICE>("Alignment:: ANCHOR has fill request: HORZ FILL");
@@ -602,7 +632,8 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	Box<svg::coord_t> & obox = node.getBoundingBox();
 
 	if (IS_TEXT){
-		node.transform.translate.y += (node.getHeight()-node.getMargin());
+		//node.transform.translate.y += (node.getHeight()-node.getMargin());
+		coord += (node.getHeight()-node.getMargin());
 	}
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
@@ -617,10 +648,13 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	case AlignBase::Pos::FILL:
 		// mout.experimental("STRETCHING..." );mout.experimental("STRETCHING..." );
 		// mout.experimental<LOG_DEBUG>("FILL:ing vert: ", obox, " height ");
-		coord = span.pos;
-		obox.setHeight(span.span);
 		if (IS_TEXT){
-			mout.warn("FILL not applicable for TEXT elem - ", node);
+			mout.reject<LOG_WARNING>("skipping FILL (vert) set for TEXT, : ", NodePrinter(node).str());
+			// mout.warn("FILL not applicable for TEXT elem - ", node);
+		}
+		else {
+			coord = anchorSpan.pos;
+			obox.setHeight(anchorSpan.span);
 		}
 		break;
 	case AlignBase::Pos::UNDEFINED_POS: // or absolute

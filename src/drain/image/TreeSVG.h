@@ -412,6 +412,9 @@ public:
 		if (node.getName().isValid()){
 			sstr << " name=" << node.getName();
 		}
+		if (!node.getClasses().empty()){
+			sstr << " class=[" << node.getClasses() << ']';
+		}
 		sstr << '>';
 		id = sstr.str();
 	}

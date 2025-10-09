@@ -126,6 +126,15 @@ public:
 	static
 	void detectBoxNEW(TreeSVG & group, bool debug = false);
 
+	static inline
+	void detectFinalBox(const NodeSVG & node, BBoxSVG & bbox, bool debug = false){
+		//detectBoxNEW(group, debug);
+		bbox = node.getBoundingBox();
+		bbox.x += node.transform.translate.x;
+		bbox.y += node.transform.translate.y;
+	}
+
+
 
 	/// Set stack layout as a default in a subtree.
 	/**

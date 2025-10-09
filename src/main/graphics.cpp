@@ -485,7 +485,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg
 		// image->addClass(styleClass);
 	}
 
-	// return image;
+	return; //  imagePanel;
 }
 
 drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<drain::image::svg::coord_t> & frame){

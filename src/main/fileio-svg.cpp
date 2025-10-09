@@ -462,6 +462,8 @@ public:
 		drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
 		mout.note("linking: ", filePath);
 		RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
+		// RackSVG::addImage(ctx, frame, filePath, drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
+		// drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);
 		// EnumDict<LayoutSVG::GroupType>::dict
 
 	}

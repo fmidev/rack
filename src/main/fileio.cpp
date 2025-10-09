@@ -533,24 +533,21 @@ void CmdOutputFile::exec() const {
 			drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 
 			// NEW:
-			/*
+
 			TreeUtilsSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
-			*/
 
 			// OLD
-			TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
-
-
-			// OLD
-			TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
-			// NEW:
 			/*
+			TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
+			TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
+			*/
+			// NEW:
+
 			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 			ctx.svgTrack->setViewBox(bb);
 			mout.attention("Nice BBOX: ", bb);
-			*/
 		}
 
 
