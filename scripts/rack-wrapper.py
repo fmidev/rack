@@ -1,3 +1,11 @@
+""" Rack command line argument generator
+
+Utility for constructing strings that can be executed in shell.
+
+    * property
+    * property2
+
+"""
 import argparse
 import json
 import sys
@@ -10,6 +18,8 @@ default_tiledir  = 'tiles/'
 default_tilename = '${what:date}${what:time}-${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5'
 
 def build_parser():
+    """ Creates registry of supported options of this script
+    """
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
 
     """
