@@ -33,10 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(14,0,3)
+#define RACK_VERSION drain::Version<>(14,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
-// #define RACK__VERSION_OLD "13.93"
 
 
 /**
@@ -49,6 +48,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Completing new SVG Layout
  *  Version 14.0.3 (beta)
  *  - Fix: prodpar=elangle for product=PPI
+ *  Version 14.1
+ *  - Fix: cCreateTile source/NOD reset
  *
  *  Version 13
  *  - andre::ChaffOp

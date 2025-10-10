@@ -11,11 +11,12 @@ import json
 import sys
 from pathlib import Path
 import os
+import re # GEOCONF filename-KEY extraction
 
 
 # Global
 default_tiledir  = 'tiles/'
-default_tilename = '${what:date}${what:time}-${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5'
+default_tilename = '${what:date}${what:time}-GEOCONF={GEOCONF}_${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5'
 
 def build_parser():
     """ Creates registry of supported options of this script
@@ -30,14 +31,48 @@ def build_parser():
     parser.add_argument("--logfile", default=None, help="Path to log file")
     """
 
-    parser.add_argument("inputFiles", nargs='*', help="Input files")
-    parser.add_argument("--OUTFILE", default="", help="Output file (basename). See --FORMAT")
+    parser.add_argument(
+        "INFILE",
+        nargs='*',
+        help="Input files")
+
+    parser.add_argument(
+        "--OUTFILE",
+        default="",
+        help="Output file (basename). See --FORMAT")
     
-    # RACK=${RACK:-'rack'}
-    parser.add_argument("--BBOX", default='6,51.3,49,70.2', metavar="<lonLL,latLL,lonUR,latUR>", help="Bounding box [cBBox]")  # FMI Scandinavia
-    parser.add_argument("--PROJ", default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs", help="")   # Same as epsg:4326
-    parser.add_argument("--SIZE", default="800,800", help="") 
-    parser.add_argument("--METHOD", default="MAXIMUM", help="Compositing method. See: rack -h cMethod") 
+
+    """ Geographical information
+
+
+
+    """
+    parser.add_argument(
+        "--GEOCONF",
+        metavar="<KEY>|<filepath>-<KEY>.json>",
+        help="Read BBOX, PROJ, SIZE from file, default: geoconf/geoconf-<KEY>.json")  # FMI Scandinavia
+
+    parser.add_argument(
+        "--BBOX",
+        default='6,51.3,49,70.2',
+        metavar="<lonLL,latLL,lonUR,latUR>",
+        help="Bounding box [cBBox]")  # FMI Scandinavia
+
+    parser.add_argument(
+        "--PROJ",
+        default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+        help="")   # Same as epsg:4326
+
+    parser.add_argument(
+        "--SIZE",
+        default="800,800",
+        help="") 
+
+    parser.add_argument(
+        "--METHOD",
+        default="MAXIMUM",
+        help="Compositing method. See: rack -h cMethod") 
+
     parser.add_argument(
         "--PPROD",
         metavar="<pProd>[,<args>]|<quantity>",
@@ -79,9 +114,15 @@ def build_parser():
         help="Compositing scheme. For TILE, default OUTDIR={default_tiledir}, OUTFILE={default_tiledir}") 
 
     # Optional config file
-    parser.add_argument("--config", help="Path to JSON config file")
+    parser.add_argument(
+        "--config",
+        help="Path to JSON config file")
+    
     # CONFFILE=mposite-${CONF:+$CONF}.cnf"
-    parser.add_argument("--export-config", default=None, help="Save configuration to file")
+    parser.add_argument(
+        "--export-config",
+        default=None,
+        help="Save configuration to file")
 
     #parser.add_argument("--loop", type=str, help="<file>.json Path to JSON config file")
     parser.add_argument(
@@ -140,6 +181,23 @@ def build_parser():
 
     return parser
 
+""" Utils etc
+
+"""
+
+
+"""    
+def traverse_loop(loop, conf, inputList:list, routineList:list, outputList:list):
+    if not loop:
+        return
+    k,v = loops.popitem()
+    if k == 'SITE':
+        inputList.append()
+"""
+
+class safe_dict(dict):
+    def __missing__(self, key):
+        return '{' + key + '}'
 
 """
 Simplifies lists and dictionaries for command line use.
@@ -189,30 +247,53 @@ def load_config(filename):
         return json.load(f)
 
 
-def merge_args(parser):
+def read_default_args(parser):
     """Parse args with precedence:
        CLI > JSON config > defaults
     """
-    # 1️⃣ First parse known args to see if --config is given
+    # First parse known args to see if --config is given
     args, remaining_argv = parser.parse_known_args()
 
-    config = {}
     if args.config:
         config = load_config(args.config)
         parser.set_defaults(**config)
 
-    # 2️⃣ Re-parse all args with updated defaults
-    final_args = parser.parse_args()
+    # Re-parse all args with updated defaults
+    # final_args = parser.parse_args()
+    # return final_args
 
-    return final_args
+def read_geoconf(args, parser):
+
+    # First, assume it is a full path.
+    filepath = Path(args.GEOCONF)
+    args.GEOCONF = str(filepath.name)
+    
+    m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', args.GEOCONF)
+    if m:
+        # Nothing removed - plain key given?
+        if args.GEOCONF == m.group(1):
+            filepath = Path(f'geoconf/geoconf-{args.GEOCONF}.json')
+        else:
+            # Adopt keyword "reduced" from filepath.
+            args.GEOCONF = m.group(1)
+    else:
+        Exception('--GEOCONF: could not extract KEY from filename: ', key)
+
+    
+    geoconf = load_config(filepath)
+    parser.set_defaults(**geoconf)
+    
+    # print ("GEOCONF: ", args.GEOCONF, " = ", filepath)
+
+    
 
 def append_geoconf(cmdList:list, conf:dict):
     geo_dict = {'cSize':'SIZE', 'cProj':'PROJ', 'cBBox':'BBOX', 'cMethod':'CMETHOD'}
     # consider argument-less options: val is None
     for (key,confkey) in geo_dict.items():
         if (confkey in conf):
-            cmdList.append("--{key} '{val}'".format(key=key, val=conf[confkey]))
-    # cmdList.extend("--cSize {SIZE}\\--cProj {PROJ}\\--cBBox {BBOX}\\--cMethod {CMETHOD}".format(**args).split('\\'))
+            cmdList.append("--{key} '{val}'".format(key=key, val=arg2str(conf[confkey])))
+
 
 
 def append_outputs(cmdList:list, output_basename:str, formats: list, output_prefix=None):
@@ -259,18 +340,6 @@ def append_outputs(cmdList:list, output_basename:str, formats: list, output_pref
         
     return cmdList
             
-"""    
-def traverse_loop(loop, conf, inputList:list, routineList:list, outputList:list):
-    if not loop:
-        return
-    k,v = loops.popitem()
-    if k == 'SITE':
-        inputList.append()
-"""
-
-class safe_dict(dict):
-    def __missing__(self, key):
-        return '{' + key + '}'
 
 
 def extract_prefix(paths: list, shortPaths=None):
@@ -283,30 +352,80 @@ def extract_prefix(paths: list, shortPaths=None):
     shortPaths.extend([str(p).removeprefix(prefix) for p in paths])
     return prefix
 
+def expand_string(inputSet, key, values):
+    """ Given
+    """
+    if type(inputSet) is not set:
+        inputSet = set(inputSet) # also converts a list to a set
+
+    key = '{'+key+'}'
+        
+    if type(values) is str:
+        values = values.split(',')
+
+    result = set()
+    for x in inputSet:
+        x = str(x)
+        for v in values:
+            result.add(x.replace(key, v))
+            
+    return result
+        
+    
+    
+
+def handle_tilepath_defaults(dirpath, filepath) -> (str, str):
+    if not filepath:
+        filepath = default_tilename
+    else:
+        filepath = Path(filepath)
+        tiledir = str(filepath.parent)
+        if (tiledir == '.'):
+            if dirpath:
+                dirpath = Path(dirpath)
+        else:
+            if dirpath:
+                # Append
+                dirpath = Path(dirpath, tiledir)
+            # Strip
+            filepath = str(filepath.name)
+
+    if not dirpath:
+        dirpath = default_tiledir
+            
+    return (str(dirpath).removesuffix('/')+'/', filepath)
+    
     
 def main():
+
     parser = build_parser()
 
     # Export template if user requests it
-    # args = parser.parse_args()
-    args = merge_args(parser)
+    read_default_args(parser)
+
+    args = parser.parse_args()
 
     # Needs parser for arg definitions, args for current values
-    if (args.export_config):
+    if args.export_config:
         export_defaults_to_json(parser, args, args.export_config)
         #sys.exit(0)
 
-    # if (args.loop):
-    #    args.loop = load_config(args.loop)
+    # Settings
+    if args.GEOCONF:
+        read_geoconf(args, parser)
+        # Save reduced value and refresh
+        geoconf = args.GEOCONF
+        args = parser.parse_args()
+        args.GEOCONF = geoconf
+        
+    arg_vars = vars(args)
 
-    # args = merge_args(parser)
-
+    # "MAIN"
+    
     cmdList = ['rack']
     cmdRoutine = []
     # Outputs
-    arg_vars = vars(args)
 
-    # Settings
     append_geoconf(cmdList, vars(args))
     print (cmdList)
     
@@ -325,14 +444,29 @@ def main():
         else:
             cmdRoutine.append(f"--{key} '{value}'")
 
+    """ Compositing
+    """
+    if args.SCHEME in ['TILE', 'TILED']:
+        if not args.GEOCONF:
+        #    raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
+            print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
+    
     if (args.SCHEME == 'TILE'):
-        if not args.OUTDIR:
-            args.OUTDIR = default_tiledir
-        args.OUTDIR = args.OUTDIR.removesuffix('/')
-        if not args.OUTFILE:
-            args.OUTFILE = default_tilename
-        cmdRoutine.append(f"--cCreateTile -o '{args.OUTDIR}/{args.OUTFILE}'")
-    #elif (args.SCHEME == 'TILED'):
+        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
+        print(dirpath,filepath)
+        args.OUTDIR  = dirpath # .removesuffix('/')
+        args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+        cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
+        cmdRoutine.append(f"--cCreateTile -o '{args.OUTFILE}'")
+    elif (args.SCHEME == 'TILED'):
+
+
+        (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
+        if not args.INDIR:
+            args.INDIR = default_tiledir
+        args.INDIR = args.INDIR.removesuffix('/')
+        if not args.INFILE:
+            args.INFILE = default_tilename.replace('{GEOCONF}', args.GEOCONF)
     else:
         if not args.OUTFILE:
             args.OUTFILE = 'out.h5'
@@ -340,32 +474,31 @@ def main():
 
     test = safe_dict(arg_vars)
 
-    print (args.inputFiles)
-            
-    if (args.inputFiles):
+    print (args.INFILE)
 
-        inputSet = set()
+    #mika = expand_string(args.INFILE, "SITE", "fikor,fivan,finur")
+    #print (mika)
+    #mika = expand_string(mika, "TIMESTAMP", "202192,545919201,99237021")
+    #print (mika)
+    
+    if (args.INFILE):
 
-        # print(inputSet)
+        if (args.SITE):
+            args.INFILE  = expand_string(args.INFILE, "SITE", args.SITE)
+
+        # Probably makes little sense in oper. use
+        if (args.TIMESTAMP):
+            args.INFILE  = expand_string(args.INFILE, "TIMESTAMP", args.TIMESTAMP)
+
         
-        for SITE in args.SITE.split(','):
-            print(f"SITE={SITE}")
-            arg_vars['SITE'] = SITE
-            for f in args.inputFiles:
-                inputSet.add(f.format_map(arg_vars))
-
-        print(inputSet)
-
-        args.inputFiles = inputSet
-        
-        if len(args.inputFiles)==1 :
+        if len(args.INFILE)==1 :
             
-            cmdList.extend(args.inputFiles) # list of 1 elem
+            cmdList.extend(args.INFILE) # list of 1 elem
             cmdList.extend(cmdRoutine)
         else:
             shortPaths=[]
             if (args.inputPrefix == 'AUTO'):
-                args.inputPrefix = extract_prefix(args.inputFiles, shortPaths)
+                args.inputPrefix = extract_prefix(args.INFILE, shortPaths)
             if (args.inputPrefix):
                 cmdList.append(f'--inputPrefix "{args.inputPrefix}"')
             cmdRoutine = " ".join(cmdRoutine).replace("'",'"')

@@ -335,7 +335,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 					*/
 				}
 				mout.debug("Storing metadata: " , composite.odim );
-				composite.odim.completeEncoding( encoding); // NEW: unneeded? WAS: note, needed even if encoding==""
+				composite.odim.completeEncoding(encoding); // NEW: unneeded? WAS: note, needed even if encoding==""
 			}
 			else {
 
@@ -388,7 +388,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			//hi5::Hi5Base::writeText(src(parent), std::cout);
 
 			const drain::VariableMap & what = src(dataPath)[ODIMPathElem::WHAT].data.attributes;
-			//			mout.attention(parent, '|', current, " ATTR: ", what);
+			// mout.attention(parent, '|', current, " ATTR: ", what);
 			// TODO: consider copying all the features to composite.metadata(Map) ?
 			const drain::Variable & legend = what["legend"];
 

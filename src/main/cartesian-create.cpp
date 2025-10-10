@@ -125,15 +125,20 @@ void CompositeCreateTile::exec() const {
 	}
 
 	if ((composite.odim.ACCnum > 0) || (!composite.odim.quantity.empty())){
-		mout.debug("Clearing previous composite...");
+		mout.info("Clearing previous composite...");
+		// Why not always, if this is a tile?
 		// Consider: composite.clear() ?
 		composite.accArray.clear();
 		composite.odim.quantity.clear();
 		composite.odim.ACCnum = 0;
 		composite.odim.scaling.set(0,0);
 		composite.odim.type.clear(); // ? risky
-		mout.info("Cleared previous composite");
+		mout.debug("Cleared previous composite");
 	}
+
+	composite.odim.nodes.clear();
+	composite.odim.source.clear();
+	composite.nodeMap.clear();
 
 	if (ctx.statusFlags){ // drain::Status::INPUT_ERROR
 		// mout.warn("errors: ", ctx.statusFlags);
@@ -146,8 +151,6 @@ void CompositeCreateTile::exec() const {
 	add(composite, RackContext::POLAR|RackContext::CURRENT, true); // updateSelector
 
 	extract(composite, {drain::image::Accumulator::DATA, drain::image::Accumulator::WEIGHT});
-	// extract(composite, "dw");
-
 
 	// "Debugging"
 	if (!composite.isCropping()){
