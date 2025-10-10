@@ -4,6 +4,11 @@ import sys
 from pathlib import Path
 import os
 
+
+# Global
+default_tiledir  = 'tiles/'
+default_tilename = '${what:date}${what:time}-${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5'
+
 def build_parser():
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
 
@@ -16,7 +21,7 @@ def build_parser():
     """
 
     parser.add_argument("inputFiles", nargs='*', help="Input files")
-    
+    parser.add_argument("--OUTFILE", default="", help="Output file (basename). See --FORMAT")
     
     # RACK=${RACK:-'rack'}
     parser.add_argument("--BBOX", default='6,51.3,49,70.2', metavar="<lonLL,latLL,lonUR,latUR>", help="Bounding box [cBBox]")  # FMI Scandinavia
@@ -61,7 +66,7 @@ def build_parser():
         "--SCHEME",
         default='',
         metavar="<empty>|TILE|TILED",
-        help="Compositing scheme (h5, png, tif)") 
+        help="Compositing scheme. For TILE, default OUTDIR={default_tiledir}, OUTFILE={default_tiledir}") 
 
     # Optional config file
     parser.add_argument("--config", help="Path to JSON config file")
@@ -77,12 +82,13 @@ def build_parser():
         help="Common path of input files.")
 
     parser.add_argument(
-        "--outputPrefix",
+        "--OUTDIR",
         type=str,
         metavar="<path>|AUTO",
-        default="AUTO",
+        default=None,
         help="Common path of output files.")
 
+    """
     parser.add_argument(
         "--tiledir",
         type=str,
@@ -96,7 +102,8 @@ def build_parser():
         metavar="<filename_syntax>",
         default="${what:date}${what:time}-${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5",
         help="Directory for reading and writing tiles.")
-
+    """
+    
     parser.add_argument(
         "--newline",
         type=str,
@@ -197,12 +204,64 @@ def append_geoconf(cmdList:list, conf:dict):
             cmdList.append("--{key} '{val}'".format(key=key, val=conf[confkey]))
     # cmdList.extend("--cSize {SIZE}\\--cProj {PROJ}\\--cBBox {BBOX}\\--cMethod {CMETHOD}".format(**args).split('\\'))
 
+
+def append_outputs(cmdList:list, output_basename:str, formats: list, output_prefix=None):
+
+    
+    if len(formats) > 1:
+        if not output_prefix:
+            output_prefix = str(Path(output_basename).parent)
+            #print ("prefix: ", type(output_prefix))
+            if (output_prefix == '.'):
+                output_prefix = None
+
+        if output_prefix:
+            #output_prefix = str(output_prefix) + '/'
+            output_prefix += '/'
+            cmdList.append(f"--outputPrefix {output_prefix}")
+            output_basename = output_basename.removeprefix(output_prefix)
+            
+
+    #cmdList.append(f"--echo {formats}")
+    if not formats:
+        fmt = output_basename.split('.').pop()
+        formats = [ fmt ]
+        output_basename.removesuffix(fmt)
+    
+    #file_suffix = 
+    fmts = [];
+    fmts.extend(formats)
+    if 'h5' in fmts:
+        fmts.remove('h5')
+        cmdList.append(f"--outputFile {output_basename}.h5")
+
+    if 'tif' in fmts:
+        fmts.remove('tif')
+        cmdList.append(f"--outputConf tif:tile=512 -o {output_basename}.tif")
+
+    if 'png' in fmts:
+        fmts.remove('png')
+        cmdList.append(f"--palette default -o {output_basename}.png")
+
+    
+    if (fmts):
+        raise Exception('Unhandled formats:', fmts)
+        
+    return cmdList
+            
+"""    
 def traverse_loop(loop, conf, inputList:list, routineList:list, outputList:list):
     if not loop:
         return
     k,v = loops.popitem()
     if k == 'SITE':
         inputList.append()
+"""
+
+class safe_dict(dict):
+    def __missing__(self, key):
+        return '{' + key + '}'
+
 
 def extract_prefix(paths: list, shortPaths=None):
     str_paths = [str(p) for p in paths]
@@ -235,6 +294,7 @@ def main():
     cmdList = ['rack']
     cmdRoutine = []
     # Outputs
+    arg_vars = vars(args)
 
     # Settings
     append_geoconf(cmdList, vars(args))
@@ -256,14 +316,40 @@ def main():
             cmdRoutine.append(f"--{key} '{value}'")
 
     if (args.SCHEME == 'TILE'):
-        args.tiledir.removesuffix('/')
-        cmdRoutine.append(f"--cCreateTile -o '{args.tiledir}/{args.tilename}'")
+        if not args.OUTDIR:
+            args.OUTDIR = default_tiledir
+        args.OUTDIR = args.OUTDIR.removesuffix('/')
+        if not args.OUTFILE:
+            args.OUTFILE = default_tilename
+        cmdRoutine.append(f"--cCreateTile -o '{args.OUTDIR}/{args.OUTFILE}'")
     #elif (args.SCHEME == 'TILED'):
     else:
+        if not args.OUTFILE:
+            args.OUTFILE = 'out.h5'
         cmdRoutine.append("--cAdd")
+
+    test = safe_dict(arg_vars)
+
+    print (args.inputFiles)
             
     if (args.inputFiles):
+
+        inputSet = set()
+
+        # print(inputSet)
+        
+        for SITE in args.SITE.split(','):
+            print(f"SITE={SITE}")
+            arg_vars['SITE'] = SITE
+            for f in args.inputFiles:
+                inputSet.add(f.format_map(arg_vars))
+
+        print(inputSet)
+
+        args.inputFiles = inputSet
+        
         if len(args.inputFiles)==1 :
+            
             cmdList.extend(args.inputFiles) # list of 1 elem
             cmdList.extend(cmdRoutine)
         else:
@@ -277,8 +363,17 @@ def main():
             cmdList.extend(shortPaths)
             #print (shortPaths)
 
-    print (args.newline.join(cmdList))                
+    if (args.SCHEME != 'TILE'):
+        cmdList.append("--cExtract DATA,WEIGHT")
+        append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
+
+    cmd = args.newline.join(cmdList)
+    print (cmd)
     print ("\n\n")
+
+    if (args.exec):
+        os.system(cmd)
+
     
 if __name__ == "__main__":
     main()
