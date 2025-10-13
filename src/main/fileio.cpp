@@ -523,7 +523,7 @@ void CmdOutputFile::exec() const {
 			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
 			*/
 			//
-			MetaDataPrunerSVG metadataPruner;
+			MetaDataCollectorSVG metadataPruner;
 			drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
 
 			RackSVG::completeSVG(ctx);
@@ -553,8 +553,8 @@ void CmdOutputFile::exec() const {
 		}
 
 		drain::TreePruner<drain::image::TreeSVG> textPruner;
-		textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::ALL;
-		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::ALL;
+		textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::TEXT | drain::XmlEmptiness::CHILDREN;
+		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT; // drain::XmlEmptiness::ALLdrain::XmlEmptiness::ALL;
 		drain::TreeUtils::traverse(textPruner, ctx.svgTrack);
 
 		drain::Output ofstr(filepath);

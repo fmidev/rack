@@ -90,8 +90,8 @@ struct PanelConfSVG {
 
 	enum ElemClass {
 		NONE = 0,
-		MAIN = 1,  // Main title in SVG image
-		GROUP = 2, // Group title
+		MAIN_TITLE = 1,  // Main title in SVG image
+		GROUP_TITLE = 2, // Group title
 		IMAGE = 4,  // Image title: small text (time, location) in corners of radar images
 		TIME = 8,       // Date and time attributes
 		LOCATION = 16,   // Place (coordinates, municipality)

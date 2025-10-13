@@ -138,7 +138,7 @@ int TreePruner<T>::visitPostfix(T & tree, const typename  T::path_t & path){
 
 			typename tag_selector_t::const_iterator it = tagSelector.find(child->getNativeType());
 			if (it != tagSelector.end()){
-				mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , ElemPrinter<typename T::node_data_t>(child).str());
+				// mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , ElemPrinter<typename T::node_data_t>(child).str());
 				// check rule
 				if (flagger.isSet(it->second)){
 					empties.push_back(entry.first);
@@ -165,7 +165,7 @@ int TreePruner<T>::visitPostfix(T & tree, const typename  T::path_t & path){
 		}
 
 		for (const typename T::path_elem_t & elem: empties){
-			mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , ElemPrinter<typename T::node_data_t>(current[elem]).str());
+			// mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , ElemPrinter<typename T::node_data_t>(current[elem]).str());
 			current.erase(elem);
 		}
 

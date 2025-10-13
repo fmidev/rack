@@ -217,7 +217,7 @@ protected:
 /**
  *
  */
-class MetaDataPrunerSVG : public drain::TreeVisitor<TreeSVG> {
+class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
@@ -238,40 +238,7 @@ protected:
 
 };
 
-/*
-class TreePruner2 : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	enum Emptiness {
-		CHILDREN = 1,
-		TEXT = 2, // consider whitespace remover?
-		ATTRIBUTES = 4,
-		//DATA = 4,
-		ALL = CHILDREN|TEXT|ATTRIBUTES,
-		// require any or all?
-		ANY = 128,
-	};
-
-	typedef std::map<TreeSVG::node_data_t::xml_tag_t, short unsigned int> tag_selector_t;
-
-	tag_selector_t tagSelector;
-	TreePruner2(){
-	}
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-
-protected:
-
-	typedef std::map<std::string, unsigned short> variableStat_t;
-
-};
-*/
-
-/// "Collects" titles from metadata. Invoked by drain::TreeUtils::traverse()
+/// Formats titles from metadata. Invoked by drain::TreeUtils::traverse()
 /**
  *   In tree traversal, maintains information on metadata.
  *
@@ -304,8 +271,9 @@ public:
 
 	};
 
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & odimPath) override;
-
+	/**
+	 */
+	int visitPostfix(TreeSVG &root, const TreeSVG::path_t &path) override;
 
 	/**
 	 *   Useful function – as attributes of two groups are considered: panel-specific and shared.

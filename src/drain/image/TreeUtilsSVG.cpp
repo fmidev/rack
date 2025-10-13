@@ -30,8 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
+#include <drain/StringBuilder.h>
 #include <drain/util/Output.h> // Debugging
 #include <drain/util/Point.h>
+
 #include "TreeUtilsSVG.h"
 
 namespace drain {
@@ -438,6 +440,8 @@ void adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX> anchorSpan){ 
 	}
 	*/
 
+	BBoxSVG & compoundBBox = group->getBoundingBox();
+
 	if (anchorSpan.isDefined()){
 
 		if (anchorElem.isNone()){
@@ -456,13 +460,31 @@ void adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX> anchorSpan){ 
 		if (!node.hasClass(LayoutSVG::INEFFECTIVE)){
 			// BBoxSVG b;
 			// TreeUtilsSVG::getAdjustedBBox(group.data, b);
-			expandBBox(group->getBoundingBox(), anchorSpan);
-			mout.accept<LOG_NOTICE>("New     COMPOUND bbox: ", group->getBoundingBox(), " for ", NodePrinter(group).str());
+			expandBBox(compoundBBox, anchorSpan);
+			mout.accept<LOG_NOTICE>("New     COMPOUND bbox: ", compoundBBox, " for ", NodePrinter(group).str());
 		}
 	}
 	else {
 		// When should this happen?
 	}
+
+	if (group->hasClass(LayoutSVG::STACK_LAYOUT)){
+		TreeSVG & adapter = group["ADAPTER"];
+		adapter.data.transform.translate.x = -compoundBBox.x;
+		adapter.data.transform.translate.y = -compoundBBox.y;
+		compoundBBox.x = 0;
+		compoundBBox.y = 0;
+		//adapter->set("sss", drain::StringBuilder<'|'>(adapter.data.transform).str());
+		adapter->set("sss", adapter.data.transform.translate.tuple());
+		// compoundBBox.
+	}
+
+	/*
+	if (node.hasClass("MAIN")){
+		node.transform.translate.x = -node.getBoundingBox().x;
+		node.transform.translate.y = -node.getBoundingBox().y;
+	}
+	*/
 
 }
 
@@ -569,6 +591,12 @@ void TreeUtilsSVG::superAlignNEW(TreeSVG & group){ //, const Point2D<svg::coord_
 	// debugRect.set("y", b.y);
 	// debugRect.setFrame(b.getFrame());
 
+	if (group->hasClass("MAIN")){
+		group->transform.translate.x = -group->getBoundingBox().x;
+		group->transform.translate.y = -group->getBoundingBox().y;
+	}
+
+
 }
 
 
@@ -587,6 +615,9 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 
 	// TODO/FIX: currently TEXT not handled at all (this method not invoked)
 	const bool IS_TEXT = node.typeIs(svg::TEXT);
+
+	// Elements with x and y attributes (typically declaring Upper Right corner, except for TEXT)
+	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT);
 
 	Box<svg::coord_t> & obox = node.getBoundingBox();
 
@@ -623,21 +654,22 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
-	static const std::string TEXT_ANCHOR("text-anchor");
+	//static const std::string TEXT_ANCHOR("text-anchor");
 
 	// STEP 2: OBJECT
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
-			node.setStyle(TEXT_ANCHOR, "start");
+			node.setStyle(StyleXML::TEXT_ANCHOR, "start");
 			// node.transform.translate.set(+2.0 * node.getMargin());
-			coord += 2.0*node.getMargin();
+			// coord += 2.0*node.getMargin();
+			node.transform.translate.x = +2.0*node.getMargin();
 		}
 		break;
 	case AlignBase::Pos::MID:
 		if (IS_TEXT){
-			node.setStyle(TEXT_ANCHOR, "middle");
+			node.setStyle(StyleXML::TEXT_ANCHOR, "middle");
 		}
 		else {
 			coord -= obox.width/2;
@@ -645,9 +677,10 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 		break;
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
-			node.setStyle(TEXT_ANCHOR, "end");
+			node.setStyle(StyleXML::TEXT_ANCHOR, "end");
 			// node.transform.translate.set(-2.0 * node.getMargin());
-			coord -= 2.0*node.getMargin();
+			node.transform.translate.x = -2.0*node.getMargin();
+			//coord -= 2.0*node.getMargin();
 		}
 		else {
 			coord -= obox.width;
@@ -675,9 +708,13 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 			mout.suspicious("TEXT element with absolute coords: ", obox);
 		}
 	}
-	//if (!IS_TEXT){
-	node.transform.translate.x = coord;
-	//}
+
+	if (HAS_TRUE_ORIGIN){
+		node.getBoundingBox().x = coord;
+	}
+	else {
+		node.transform.translate.x = coord;
+	}
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
 }
@@ -692,6 +729,9 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	Logger mout(__FILE__, __FUNCTION__);
 
 	const bool IS_TEXT = node.typeIs(svg::TEXT);
+
+	// Elements with x and y attributes (typically declaring Upper Right corner, except for TEXT)
+	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT);
 
 	svg::coord_t coord = 0;
 
@@ -726,8 +766,10 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	Box<svg::coord_t> & obox = node.getBoundingBox();
 
 	if (IS_TEXT){
-		//node.transform.translate.y += (node.getHeight()-node.getMargin());
-		coord += (node.getHeight()-node.getMargin());
+		// node.transform.translate.y += (node.getHeight()-node.getMargin());
+		// coord += (node.getHeight()-node.getMargin());
+		coord += node.getHeight();
+		node.transform.translate.y = -node.getMargin();
 	}
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
@@ -758,10 +800,18 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
 	}
 
-	if (IS_TEXT){
-		// NOT HANDLED!
+	//if (IS_TEXT){
+	if (HAS_TRUE_ORIGIN){
+		node.getBoundingBox().y = coord;
+		// if (IS_TEXT){
+
+		//}
 	}
-	node.transform.translate.y = coord;
+	else {
+		node.transform.translate.y = coord;
+	}
+
+	// node.transform.translate.y = coord;
 
 }
 
@@ -861,18 +911,18 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
-	static const std::string TEXT_ANCHOR("text-anchor");
+	//static const std::string TEXT_ANCHOR("text-anchor");
 
 	switch (alignLoc = object->getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
-			object->setStyle(TEXT_ANCHOR, "start");
+			object->setStyle(StyleXML::TEXT_ANCHOR, "start");
 			object->transform.translate.set(+2.0 * object->getMargin());
 		}
 		break;
 	case AlignBase::Pos::MID:
 		if (IS_TEXT){
-			object->setStyle(TEXT_ANCHOR, "middle");
+			object->setStyle(StyleXML::TEXT_ANCHOR, "middle");
 		}
 		else {
 			coord -= obox.width/2;
@@ -880,7 +930,7 @@ void TreeUtilsSVG::realignObjectHorz(TreeSVG & object, const Box<svg::coord_t> &
 		break;
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
-			object->setStyle(TEXT_ANCHOR, "end");
+			object->setStyle(StyleXML::TEXT_ANCHOR, "end");
 			object->transform.translate.set(-2.0 * object->getMargin());
 		}
 		else {

@@ -650,7 +650,7 @@ x	 *  \see clearData()
 			//drain::Logger(__FILE__, __LINE__, __FUNCTION__).error("unimplemented code");
 			for (iterator it = children.begin(); it != children.end(); ++it){
 				if (it->first == *pit){
-					drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("deleting (one) ", *pit);
+					// drain::Logger(__FILE__, __LINE__, __FUNCTION__).attention("deleting child: ", *pit);
 					parent.children.erase(it);
 					return;
 				}

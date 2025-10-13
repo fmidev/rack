@@ -35,57 +35,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#ifndef DRAIN_STYLE_XML
-#define DRAIN_STYLE_XML
-
-#include <ostream>
-
-#include <drain/Sprinter.h>
-#include <drain/FlexibleVariable.h>
-
-#include "ReferenceMap.h"
+#include "StyleXML.h"
 
 namespace drain {
 
+// array,map,pair,string,key, mapPair  [+AfillB:ared 2pxb-;+AopacityB:0.33-;+AscaleB:0.5-]
+const SprinterLayout StyleXML::styleLineLayout(";", ";",  ":", "", ""); //, "\"\"", "''", ":");
 
-/**
- *   Flexibility is used (at least) in:
- *   - linking box.height to font-size (in TEXT or TSPAN elems)
- */
-class StyleXML : public ReferenceMap2<FlexibleVariable> {
+// The record starts by \n, separates entries with \n, and finishes with a \n.
+// Every key, like "table" is prefixed woth \t and suffixed with space ' '.
+const SprinterLayout StyleXML::styleRecordLayout("\n\n\n", "", "","{\n}",  "\t ", "{ }"); // , "{>", "  ", ":"// ??? ("[,]", "{,}",  "(,)", "\"\"", "''", ":");
 
-public:
+const SprinterLayout StyleXML::styleRecordLayoutActual("{\n}","(.)", " :;","","\t ");
+// Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like
 
-	inline
-	StyleXML(){};
-
-	static const SprinterLayout styleLineLayout;
-	static const SprinterLayout styleRecordLayout;
-	static const SprinterLayout styleRecordLayoutActual;
-
-	/// Practical utility, helps in adding C++ code commenting...
-	template <class T>
-	static inline
-	void commentToStream(std::ostream & ostr, const T & v){
-		ostr << "/* " << v << " */ ";
-	};
-
-	static
-	const std::string TEXT_ANCHOR;
-
-protected:
-
-};
-
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
-	drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
-	return ostr;
-}
+const std::string StyleXML::TEXT_ANCHOR("text-anchor");
 
 
 }  // drain::
 
-#endif /* DRAIN_XML */
 
