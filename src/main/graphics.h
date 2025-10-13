@@ -36,6 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // #include <drain/prog/CommandInstaller.h>
 
+
+//#include <drain/util/TreeUtilsXML.h>
+
 #include "resources-image.h"
 #include "resources.h"
 
@@ -196,7 +199,6 @@ namespace rack {
 
 /**
  *
- */
 class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
@@ -210,6 +212,7 @@ protected:
 	typedef std::map<std::string, unsigned short> variableStat_t;
 
 };
+ */
 
 /**
  *
@@ -218,7 +221,11 @@ class MetaDataPrunerSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		// always continue
+		return 0;
+	}
 
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 
@@ -231,6 +238,38 @@ protected:
 
 };
 
+/*
+class TreePruner2 : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	enum Emptiness {
+		CHILDREN = 1,
+		TEXT = 2, // consider whitespace remover?
+		ATTRIBUTES = 4,
+		//DATA = 4,
+		ALL = CHILDREN|TEXT|ATTRIBUTES,
+		// require any or all?
+		ANY = 128,
+	};
+
+	typedef std::map<TreeSVG::node_data_t::xml_tag_t, short unsigned int> tag_selector_t;
+
+	tag_selector_t tagSelector;
+	TreePruner2(){
+	}
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+
+protected:
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+};
+*/
 
 /// "Collects" titles from metadata. Invoked by drain::TreeUtils::traverse()
 /**

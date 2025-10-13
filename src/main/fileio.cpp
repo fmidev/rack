@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
 #include <drain/util/TreeOrdered.h>
+#include <drain/util/TreeUtilsXML.h> // pruner
 // #include <drain/util/TextDecorator.h>
 #include <drain/util/TreeHTML.h>
 #include <drain/image/FilePng.h>
@@ -537,6 +538,7 @@ void CmdOutputFile::exec() const {
 			TreeUtilsSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
 
+
 			// OLD
 			/*
 			TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
@@ -550,6 +552,10 @@ void CmdOutputFile::exec() const {
 			mout.attention("Nice BBOX: ", bb);
 		}
 
+		drain::TreePruner<drain::image::TreeSVG> textPruner;
+		textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::ALL;
+		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::ALL;
+		drain::TreeUtils::traverse(textPruner, ctx.svgTrack);
 
 		drain::Output ofstr(filepath);
 

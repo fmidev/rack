@@ -58,7 +58,7 @@ struct AnchorElem : public std::string {
 		DEFAULT = 0, // previous or group anchor
 		NONE = 1,
 		PREVIOUS,
-		EXTENSIVE,
+		COLLECTIVE,
 	};
 
 
@@ -92,8 +92,8 @@ struct AnchorElem : public std::string {
 
 	// Use the bounding box of the compound, "accumulated" object as anchor.
 	inline
-	bool isExtensive() const {
-		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::EXTENSIVE);
+	bool isCollective() const {
+		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::COLLECTIVE);
 	}
 
 	// Use the bounding box of the latest object as anchor.
@@ -109,7 +109,7 @@ struct AnchorElem : public std::string {
 	// Use the bounding box of a named object as anchor.
 	inline
 	bool isSpecific() const {
-		return isSet() && (!isExtensive()) &&  (!isPrevious()) &&  (!isNone());
+		return isSet() && (!isCollective()) &&  (!isPrevious()) &&  (!isNone());
 	}
 
 
@@ -136,17 +136,69 @@ namespace image {
 /// Adapter designed for NodeSVG
 struct AlignAnchorSVG { // : public AlignSVG {
 
-	typedef AnchorElem anchor_t;
 
-	/// Mark one of the elements of this object (SVG or G) as a decisive position
-	// template <class T>
-	/*
+public:
+
+	typedef AnchorElem anchor_t; // needed?
+
+	template <class T>
 	inline
-	void setMyAlignAnchor(const std::string & pathElem){
-		myAnchorVert = myAnchorHorz = pathElem; // getElem(pathElem);
+	void setMyAlignAnchor(const T & value){
+		adjustAnchor(myAnchorHorz, value);
+		myAnchorVert = myAnchorHorz;
 		updateAlign();
 	}
-	*/
+
+	template <AlignBase::Axis AX, class T>
+	inline
+	void setMyAlignAnchor(const T & value){
+		adjustAnchor(getMyAlignAnchor<AX>(), value);
+		updateAlign();
+	}
+
+	template <class T>
+	inline
+	void setDefaultAlignAnchor(const T & value){
+		adjustAnchor(defaultAnchorHorz, value);
+		defaultAnchorVert = defaultAnchorHorz;
+		updateAlign();
+	}
+
+	template <AlignBase::Axis AX, class T>
+	inline
+	void setDefaultAlignAnchor(const T & value){
+		AnchorElem & defaultAnchor = getDefaultAlignAnchor<AX>();
+		adjustAnchor(defaultAnchor, value);
+		if (defaultAnchor.isPrevious()){
+			Logger(__FILE__, __FUNCTION__, __LINE__).suspicious("Removing explicit ", AnchorElem::Anchor::PREVIOUS, " as non-informative for group default");
+			// getDefaultAlignAnchor<AX>() = AnchorElem::Anchor::DEFAULT;
+			adjustAnchor(defaultAnchor, AnchorElem::Anchor::DEFAULT);
+		}
+		updateAlign();
+	}
+
+
+	/// Store anchor object/symbol for aligning this object.
+	template <AlignBase::Axis AX>
+	const anchor_t & getMyAlignAnchor() const;
+
+	///
+	template <AlignBase::Axis AX>
+	const anchor_t & getDefaultAlignAnchor() const;
+
+	///
+	template <AlignBase::Axis AX>
+	anchor_t & getMyAlignAnchor();
+
+	///
+	template <AlignBase::Axis AX>
+	anchor_t & getDefaultAlignAnchor();
+
+
+
+	inline virtual
+	~AlignAnchorSVG(){};
+
 
 protected:
 
@@ -173,176 +225,9 @@ protected:
 		anchor.assign(EnumDict<T>::getKey(value));
 	}
 
-public:
-
-	template <class T>
-	inline
-	void setMyAlignAnchor(const T & value){
-		adjustAnchor(myAnchorHorz, value);
-		// myAnchorHorz.assign(EnumDict<AnchorElem::Anchor>::getKey(value));
-		myAnchorVert = myAnchorHorz; // , false); // setMyAlignAnchor(EnumDict<AnchorElem::Anchor>::getKey(value, false));
-		updateAlign();
-	}
-
-	template <AlignBase::Axis AX, class T>
-	inline
-	void setMyAlignAnchor(const T & value){
-		adjustAnchor(getMyAlignAnchor<AX>(), value);
-		// getMyAlignAnchor<AX>() = EnumDict<T>::getKey(value);
-		updateAlign();
-	}
-
-	template <class T>
-	inline
-	void setDefaultAlignAnchor(const T & value){
-		adjustAnchor(defaultAnchorHorz, value);
-		// defaultAnchorHorz.assign(EnumDict<T>::getKey(value));
-		defaultAnchorVert = defaultAnchorHorz;
-		updateAlign();
-	}
-
-	template <AlignBase::Axis AX, class T>
-	inline
-	void setDefaultAlignAnchor(const T & value){
-		adjustAnchor(getDefaultAlignAnchor<AX>(), value);
-		// getDefaultAlignAnchor<AX>() = EnumDict<AnchorElem::Anchor>::getKey(value);
-		updateAlign();
-	}
-
-	/*
-	inline
-	void setMyAlignAnchorHorz(const std::string & pathElem){
-		myAnchorHorz = pathElem; // getElem(pathElem);
-		updateAlign();
-	}
-	*/
-
-	/*
-	template <class T>
-	inline
-	void setMyAlignAnchorHorz(const T & value){
-		myAnchorHorz.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // , false);
-		updateAlign();
-		//setMyAlignAnchorHorz(EnumDict<AnchorElem::Anchor>::getKey(key, false));
-	}
-	*/
-
-	/*
-	inline
-	void setMyAlignAnchorVert(const std::string & pathElem){
-		myAnchorVert = pathElem; // getElem(pathElem);
-		updateAlign();
-	}
-	*/
-
-	/*
-	template <class T>
-	inline
-	void setMyAlignAnchorVert(const T & value){
-		//setMyAlignAnchorVert(EnumDict<AnchorElem::Anchor>::getKey(key, false));
-		myAnchorVert.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // ,false);
-		// myAnchorVert = EnumDict<AnchorElem::Anchor>::getKey(value, false);
-		updateAlign();
-	}
-	*/
-
-	/*
-	inline
-	void setDefaultAlignAnchor(const std::string & pathElem){
-		defaultAnchorHorz = defaultAnchorVert = pathElem;
-		updateAlign();
-	}
-	 */
-
-	/*
-	inline
-	void setDefaultAlignAnchorHorz(const std::string & pathElem){
-		defaultAnchorHorz = pathElem; // getElem(pathElem);
-		updateAlign();
-	}
-	*/
-
-	/*
-	template <class T>
-	inline
-	void setDefaultAlignAnchorHorz(const T & value){
-		myAnchorHorz = EnumDict<T>::getKey(value);
-		// defaultAnchorHorz.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // ,false);
-		//defaultAnchorHorz = setDefaultAlignAnchorHorz(EnumDict<AnchorElem::Anchor>::getKey(key, false));
-		updateAlign();
-	}
-	*/
-
-	//template <class T>
-	/*
-	inline
-	void setDefaultAlignAnchorVert(const std::string & pathElem){
-		defaultAnchorVert = pathElem; // getElem(pathElem);
-		updateAlign();
-	}
-	*/
-
-	/*
-	template <class T>
-	inline
-	void setDefaultAlignAnchorVert(const T & value){
-		myAnchorVert = EnumDict<T>::getKey(value);
-		// defaultAnchorVert.assign(EnumDict<AnchorElem::Anchor>::getKey(value)); // ,false);
-		updateAlign();
-		// setDefaultAlignAnchorVert(EnumDict<AnchorElem::Anchor>::getKey(key, false));
-	}
-	*/
-
-	/// Store anchor object/symbol for aligning this object.
-	template <AlignBase::Axis AX>
-	const anchor_t & getMyAlignAnchor() const;
-
-	///
-	template <AlignBase::Axis AX>
-	const anchor_t & getDefaultAlignAnchor() const;
-
-	///
-	template <AlignBase::Axis AX>
-	anchor_t & getMyAlignAnchor();
-
-	///
-	template <AlignBase::Axis AX>
-	anchor_t & getDefaultAlignAnchor();
-
-	/*
-	inline
-	const anchor_t & getAlignAnchorVert() const {
-		return myAnchorVert;
-	}
-
-	inline
-	const anchor_t & getAlignAnchorDefaultHorz() const {
-		return defaultAnchorHorz;
-	}
-
-	inline
-	const anchor_t & getAlignAnchorDefaultVert() const {
-		return defaultAnchorVert;
-	}
-	*/
-
-
-	inline virtual
-	~AlignAnchorSVG(){};
-
-protected:
-
 	/// Redefined in NodeSVG
-	/*
-	virtual inline
-	void updateAlign() override {
-		updateAlignStr();
-	}
-	*/
 	virtual
 	void updateAlign() = 0;
-
-	// std::string alignStr;
 
 	// essentially std::string's
 	anchor_t myAnchorHorz;
@@ -351,7 +236,6 @@ protected:
 	anchor_t defaultAnchorHorz;
 	anchor_t defaultAnchorVert;
 
-	//void updateAlignStr();
 
 };
 

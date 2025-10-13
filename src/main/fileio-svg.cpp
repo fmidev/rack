@@ -236,7 +236,7 @@ public:
 		if (anchor.isSet()){
 			mout.attention("setting anchor for next graphic object: ", anchor);
 			mout.attention("isPrevious:\t",  anchor.isPrevious());
-			mout.attention("isExtensive:\t", anchor.isExtensive());
+			mout.attention("isExtensive:\t", anchor.isCollective());
 			mout.attention("isSpecific:\t",  anchor.isSpecific());
 			mout.attention("isNone:\t",      anchor.isNone());
 			anchorHorz = anchor;

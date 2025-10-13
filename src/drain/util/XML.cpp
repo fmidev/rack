@@ -198,9 +198,19 @@ const std::map<char,std::string> & XML::getEntityMap(){
 
 	if (m.empty()){
 		for (const auto & entry: drain::EnumDict<drain::XML::entity_t>::dict){
+			switch (entry.second) {
+				case XML::entity_t::NONBREAKABLE_SPACE:
+				case XML::entity_t::EQUAL_TO:
+					break;
+				default:
+					m[entry.second] = entry.first;
+					break;
+			}
+			/*
 			if (entry.second != XML::entity_t::NONBREAKABLE_SPACE){
 				m[entry.second] = entry.first;
 			}
+			*/
 		}
 	}
 

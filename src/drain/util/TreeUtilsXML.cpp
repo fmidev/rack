@@ -28,41 +28,25 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
- 
 /*
- * TreeSVG.cpp
+ * TreeXML.h
  *
- *  Created on: Jun 24, 2012
+ *  Created on: 2025/10
  *      Author: mpeura
  */
 
-#include "AlignAnchorSVG.h"
 
+
+#include "TreeUtilsXML.h"
 
 namespace drain {
 
-DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor) = {
-		{"", drain::image::AnchorElem::DEFAULT},
-		{"@NONE", drain::image::AnchorElem::NONE},
-		{"@PREVIOUS", drain::image::AnchorElem::PREVIOUS},
-		{"@COMPOUND", drain::image::AnchorElem::COLLECTIVE},
-};
-
-
-namespace image {
-
-void AnchorElem::set(const std::string & s){
-	assign(s);
-}
-
-// inline?
-void AnchorElem::set(const AnchorElem::Anchor & anchor){
-	set(drain::EnumDict<AnchorElem::Anchor>::getKey(anchor));
-}
-
-
-}  // image::
 
 }  // drain::
 
+DRAIN_ENUM_DICT(drain::XmlEmptiness) = {
+		DRAIN_ENUM_ENTRY(drain::XmlEmptiness, CHILDREN),
+		DRAIN_ENUM_ENTRY(drain::XmlEmptiness, ATTRIBUTES),
+		DRAIN_ENUM_ENTRY(drain::XmlEmptiness, TEXT),
+};
 

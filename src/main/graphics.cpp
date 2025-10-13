@@ -359,6 +359,28 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
  *
  */
 
+// Add later to PanelConf (or from there, LayoutSVG?)
+static
+const std::string ADAPTER("ADAPTER");
+
+/** Intermediate group "hiding" translation that moves upper left corner of the object to the origin.
+ *
+ */
+// drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
+
+	/*
+	drain::image::TreeSVG & adapterGroup = group[ADAPTER];
+	if (adapterGroup->isUndefined()){
+		adapterGroup->setType(svg::GROUP);
+		adapterGroup->addClass(ADAPTER);
+		adapterGroup->transform.translate.set(0,0);
+	}
+	return adapterGroup;
+	*/
+//	return group;
+//}
+
+
 drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath){
 
 	// For each image an own group is created to contain also title TEXT's etc.
@@ -369,7 +391,10 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
 	// comment->setText("start of ", LayoutSVG::STACK_LAYOUT, ' ', name, svg::GROUP);
 
-	drain::image::TreeSVG & imagePanel = alignFrame[name];
+	drain::image::TreeSVG & adapterFrame = alignFrame;// getAdapterGroup(alignFrame);
+
+	drain::image::TreeSVG & imagePanel = adapterFrame[name];
+	// drain::image::TreeSVG & imagePanel = alignFrame[name];
 
 	if (imagePanel->isUndefined()){
 
@@ -384,6 +409,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
 	}
 
+	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);
 	return imagePanel;
 
 }
@@ -475,7 +501,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg
 	}
 
 	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);
-	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);
+	//imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);
 	consumeAlignRequest(ctx, imagePanel);
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE);
@@ -503,7 +529,7 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
-	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::EXTENSIVE); // ("*");
+	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::COLLECTIVE); // ("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	// backgroundRect->setHeight(40); // TODO!!
 
@@ -529,7 +555,7 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 
 }
 
-void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object, const std::string & anchor, PanelConfSVG::ElemClass elemClass){
+void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group, const std::string & anchor, PanelConfSVG::ElemClass elemClass){
 
 	/** TODO
 	const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
@@ -539,7 +565,9 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// TODO: title area "filling order", by group class.
 
-	TreeSVG & mainHeader = object[PanelConfSVG::ElemClass::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
+	TreeSVG & adapterFrame = group; // getAdapterGroup(group);
+
+	TreeSVG & mainHeader = adapterFrame[PanelConfSVG::ElemClass::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
 	mainHeader->addClass(LayoutSVG::INDEPENDENT);
 	mainHeader->addClass(elemClass); // also GENERAL?
 	mainHeader->setMyAlignAnchor(anchor);
@@ -570,7 +598,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	mainHeader["camethod"]->addClass("product");
 
 	// Layout principle: there should be always time... so start/continue from left.
-	TreeSVG & timeHeader = object[PanelConfSVG::ElemClass::TIME](svg::TEXT);
+	TreeSVG & timeHeader = adapterFrame[PanelConfSVG::ElemClass::TIME](svg::TEXT);
 	timeHeader->addClass(LayoutSVG::INDEPENDENT);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
 	timeHeader->setMyAlignAnchor(anchor);
@@ -584,7 +612,7 @@ void RackSVG::addTitles(const PanelConfSVG & conf,drain::image::TreeSVG & object
 	// timeHeader["time"]->setText("time"); //CTXX
 
 	// Layout principle: there should be always time... so start/continue from left.
-	TreeSVG & locationHeader = object[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
+	TreeSVG & locationHeader = adapterFrame[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
 	locationHeader->addClass(LayoutSVG::INDEPENDENT);
 	//locationHeader->addClass(RackSVG::TITLE, RackSVG::LOCATION);
 	locationHeader->addClass(elemClass, PanelConfSVG::ElemClass::LOCATION);
@@ -719,21 +747,26 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 
 
-
+/*
 int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
 	// std::cerr << __FUNCTION__ << ':' << path << std::endl;
 	return 0;
 }
+*/
 
 
 
+/// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
+/**
+ *  Collects meta data written upon creating image panels.
+ *
+ */
 int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	TreeSVG & current = tree(path);
 
-	//if (!((current->getType()==svg::GROUP) || (current->getType()==svg::IMAGE))){ // At least METADATA must be skipped...
 	if (!current->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
 		return 0;
 	}
@@ -741,94 +774,92 @@ int MetaDataPrunerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path
 	/// Statistics: computer count for each (key,value) pair, for example (what:time, "20240115")
 	typedef std::map<std::string, unsigned short> variableStat_t;
 	variableStat_t stat;
+
 	/// Number of children having (any) metadata.
 	int count = 0;
 
-	/// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
-	for (auto & entry: current.getChildren()){
-		TreeSVG & child = entry.second;
+	/// Iterate children and their attributes: mark down all the (key,value) pairs.
+	for (const auto & entry: current.getChildren()){
+		const TreeSVG & child = entry.second;
 		if (child.hasChild(svg::METADATA) && !child->hasClass("legend")){ // or has "data"?
 			++count;
-			TreeSVG & childMetadata = entry.second[svg::METADATA](svg::METADATA);
-			for (const auto & attr: childMetadata->getAttributes()){
-				// tehty jo metadata->set(attr.first, attr.second);
+			for (const auto & attr: child[svg::METADATA]->getAttributes()){
 				std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
 				++stat[s];
 			}
 		}
 	}
 
+	if (count == 0){
+		return 0;
+	}
 
-	if (count > 0){
+	// There are metadata, so investigate...
 
-		TreeSVG & metadata = current[svg::METADATA](svg::METADATA);
-		metadata->addClass("md_shared");
+	TreeSVG & metadata = current[svg::METADATA](svg::METADATA);
+	metadata->addClass("SHARED");
 
-		TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
-		debugSharedBase->set("data-type", "SHARED"); // ??
-		// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
-		// debugShared->setText("SHARED: "); //CTXX
+	TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
+	debugSharedBase->addClass("SHARED"); // just a marker.
+	// debugSharedBase->set("data-type", "SHARED"); // ??
+	// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
+	// debugShared->setText("SHARED: "); //CTXX
 
-		if (mout.isLevel(LOG_DEBUG)){
-			TreeSVG & debugAll = current["description"](svg::DESC);
-			debugAll->set("COUNT", count);
-			debugAll->setText("All"); //CTXX
-		}
+	if (mout.isLevel(LOG_DEBUG)){
+		TreeSVG & debugAll = current["description"](svg::DESC);
+		debugAll->set("COUNT", count);
+		debugAll->setText("All"); //CTXX
+	}
 
-		/*
+	/*
 		TreeSVG & debugExplicit = current["rejected"](svg::DESC);
 		debugExplicit->addClass("EXPLICIT");
 		debugAll->ctext += drain::sprinter(stat).str();
-		 */
+	 */
 
-		// metadata->getAttributes().clear();
-		mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
+	// metadata->getAttributes().clear();
+	mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
 
-		// If this group level has variable entries ABC=123, DEF=456, ... , prune them from the lower level
-		for (const auto & e: stat){
+	// If this group level has variable entries ABC=123, DEF=456, ... , prune them from the lower level
+	for (const auto & e: stat){
 
-			mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
+		mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
 
-			// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
+		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
+		if (e.second == count){ // = ALL,  shared by all the children.
+
+			mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
+
+			debugSharedBase.addChild() = e.first;
+
+			// Update/extend, "upwards".
 			std::string key, value;
 			drain::StringTools::split2(e.first, key, value, '=');
-			if (e.second == count){ // = ALL,  shared by all the children.
+			metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
 
-				mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
-
-				//debugSharedBase->set(e.first, 1);
-				// debugSharedBase->ctext += ' ';
-				// debugSharedBase->ctext += e.first;
-				debugSharedBase.addChild() = e.first;
-				// debugShared->set(key, value);
-
-				// Update/extend, "upwards".
-				metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
-
-				// Actual pruning, "downwards"
-				// if (count > 1){
-				//if (true){
-				for (auto & entry: current.getChildren()){
-					TreeSVG & child = entry.second;
-					if (child.hasChild(svg::METADATA)){
-						TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
-						childMetadata->removeAttribute(key);
-						childMetadata->addClass("md_pruned");
-						TreeSVG & childMetadata2 = entry.second[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
-						childMetadata2->addClass("md_general");
-						childMetadata2->set(key, value);
-					}
+			// Actual pruning, "downwards"
+			// if (count > 1){
+			//if (true){
+			for (auto & entry: current.getChildren()){
+				TreeSVG & child = entry.second;
+				if (child.hasChild(svg::METADATA)){
+					TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
+					childMetadata->removeAttribute(key);
+					childMetadata->addClass("PRUNED");
+					TreeSVG & childMetadata2 = entry.second[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
+					childMetadata2->addClass("SHARED");
+					childMetadata2->set(key, value);
 				}
-				// }
+			}
+			// }
 
-			}
-			else {
-				mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
-				// debugExplicit->ctext += e.first;
-			}
 		}
-
+		else {
+			mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
+			// debugExplicit->ctext += e.first;
+		}
 	}
+
 
 	return 0;
 
@@ -1040,7 +1071,71 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 }
 
 
+// Remark: could be emptynode pruner, with
+/**
+ *    enum Marker = ATTRIBUTES, DATA,CHILDREN
+ *
+ *    // init value, or even Flagger?
+ *    prunable[svg::TEXT]  = ATTRIBUTES | DATA |CHILDREN
+ *    prunable[svg::TSPAN] = ATTRIBUTES | DATA
+ *	  defaultPruner or prunable[svg::UNDEFINED] = ....
+ */
+/*
+int TreePruner::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+	return 0;
+}
+
+
+int TreePruner::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	TreeSVG & current = tree(path);
+
+	std::list<TreeSVG::path_elem_t> empties;
+
+	for (const auto & entry: current.getChildren()){
+
+		drain::EnumFlagger<drain::MultiFlagger<Emptiness> > flagger;
+
+		const TreeSVG & child = entry.second;
+
+		if (child.getChildren().empty())
+			flagger.add(CHILDREN);
+
+		if (child.data.getAttributes().empty())
+			flagger.add(ATTRIBUTES);
+
+		if (child.data.getText().empty())
+			flagger.add(TEXT);
+
+		tag_selector_t::const_iterator it = tagSelector.find(child->getNativeType());
+		if (it != tagSelector.end()){
+			mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , NodePrinter(child).str());
+			// check rule
+			if (flagger.isSet(it->second)){
+				empties.push_back(entry.first);
+			}
+		}
+
+	}
+
+	for (const TreeSVG::path_elem_t & elem: empties){
+		mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , NodePrinter(current[elem]).str());
+		current.erase(elem);
+	}
+
+
+	return 0;
+}
+*/
 
 
 } // namespace rack
+
+/*
+DRAIN_ENUM_DICT(TreePruner<TreeSVG>::Emptiness) = {
+		DRAIN_ENUM_ENTRY(TreePruner<TreeSVG>::Emptiness, CHILDREN),
+};
+*/
 
