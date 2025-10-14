@@ -69,12 +69,21 @@ public:
 
 };
 
+}
+
+}
+
 
 template <size_t N>
-std::ostream & operator<<(std::ostream & ostr, Transform<N> & tr){
+std::ostream & operator<<(std::ostream & ostr, const drain::image::Transform<N> & tr){
 	tr.toStream(ostr);
 	return ostr;
 }
+
+
+namespace drain {
+
+namespace image {
 
 
 // Future option
@@ -145,6 +154,12 @@ public:
 } // image::
 
 } // drain::
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const drain::image::TransformSVG & tr){
+	tr.toStream(ostr);
+	return ostr;
+}
 
 #endif
 

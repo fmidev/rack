@@ -536,21 +536,17 @@ void CmdOutputFile::exec() const {
 			// NEW:
 
 			TreeUtilsSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
-			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
-
+			TreeUtilsSVG::superAlign(ctx.svgTrack);
 
 			// OLD
-			/*
-			TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
-			TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
-			*/
-			// NEW:
+			// TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 
 			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 			ctx.svgTrack->setViewBox(bb);
-			mout.attention("Nice BBOX: ", bb);
+			// mout.attention("View BBOX: ", bb);
 		}
+
 
 		drain::TreePruner<drain::image::TreeSVG> textPruner;
 		textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::TEXT | drain::XmlEmptiness::CHILDREN;

@@ -70,6 +70,7 @@ public:
 	/// Experimental SVG style classes
 	enum GroupType {
 		STACK_LAYOUT, // Align elements in rows or columns. (Alternat the axis in nesting STACK_LAYOUT levels)
+		ADAPTER,      // Translate group object such that its location is origin.
 		HEADER,       // Requests alignment as a title, typically title box combining TEXT (and TSPAN) on a background RECT
 		ALIGN,        // align me, with applicable rules and preferences (populate me with align instructions, unless already set)
 		COMPOUND,     // Internal elements are already aligned, so skip the recursion for aligning them.

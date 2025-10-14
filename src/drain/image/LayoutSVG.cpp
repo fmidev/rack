@@ -42,9 +42,11 @@ namespace drain {
 
 namespace image {
 
-template<>
-const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict = {
+// template<>
+// const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict =
+DRAIN_ENUM_DICT(LayoutSVG::GroupType) = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
@@ -54,8 +56,9 @@ const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dic
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
 };
 
-template <>
-const drain::EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict = {
+// template <>
+// const drain::EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict = {
+DRAIN_ENUM_DICT(LayoutSVG::Direction) = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, INCR),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, DECR)
 };

@@ -117,6 +117,7 @@ struct TreeUtilsSVG {
 public:
 
 
+
 	/// Compute the bounding box recursively in objects of type IMAGE, RECT, POLYGON and G (group).
 	/**
 	 *  Traverses the structure recursively, updating bounding box at each level.
@@ -124,7 +125,7 @@ public:
 	 *  Future versions may also handle CIRCLE and TEXT (location)
 	 */
 	static
-	void detectBoxNEW(TreeSVG & group, bool debug = false);
+	void detectBox(TreeSVG & group, bool debug = false);
 
 	static inline
 	void getAdjustedBBox(const NodeSVG & node, BBoxSVG & bbox) { //, bool debug = false){
@@ -134,7 +135,9 @@ public:
 		bbox.y += node.transform.translate.y;
 	}
 
-
+	template <AlignBase::Axis AX>
+	static
+	void adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX> anchorSpan);
 
 	/// Set stack layout as a default in a subtree.
 	/**
@@ -160,78 +163,16 @@ public:
 	void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction);
 
 	static
-	void superAlignNEW(TreeSVG & node);
+	void superAlign(TreeSVG & node);
 
 
 	// TODO: templated
 	template <AlignBase::Axis AX>
 	static
 	void realignObject(NodeSVG & node, const CoordSpan<AX> & span);
-	//void realignObjectHorzNEW(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span);
-
-	// static
-	// void realignObjectVertNEW(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
-
-	// void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
-	// static
-	//void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
-
-	/*
-	static
-	void realignObjectHorzNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxHorz);
-
-	static
-	void realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert);
-	*/
-
-
-	// ...................................................
 
 
 
-
-
-	/// Compute bounding box of the whole structure.
-	/**
-	 *
-	 */
-	static
-	bool computeBoundingBox(const TreeSVG & group, drain::Box<svg::coord_t> & box);
-
-	/// Compute bounding box and set the top-level SVG width, height and viewBox properties.
-	/**
-	 *
-	 */
-	static
-	void finalizeBoundingBox(TreeSVG & svg);
-
-
-	/// Computes the width and height for a bounding box  IMAGE and RECT elements.
-	/**
-	 *  The result is the minimal bounding box that covers the IMAGE and RECT elements aligned non-overlapping in a row (orientation \c HORZ ) or a column (orientation \c VERT ).
-	 *
-	 *  Future versions may also handle CIRCLE and TEXT (location)
-	 */
-
-
-	static
-	void superAlign(TreeSVG & node, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR);
-
-
-	static
-	void realignObject(const Box<svg::coord_t> & anchorBoxHorz, const Box<svg::coord_t> & anchorBoxVert, TreeSVG & obj);
-
-
-	static
-	void realignObjectHorz(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxHorz);
-
-	static
-	void realignObjectVert(TreeSVG & obj, const Box<svg::coord_t> & anchorBoxVert);
-
-
-	// UNUSED Recursively move elements with (x, y).
-	static
-	void translateAll(TreeSVG & group, const Point2D<svg::coord_t> &offset);
 
 };
 
@@ -241,39 +182,6 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 template <>
 void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
 
-
-// Deprecating. Does not handle polygons etc
-class TranslatorSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	const Point2D<svg::coord_t> offset;
-
-	template <class T>
-	inline
-	TranslatorSVG(const Point2D<T> & offset) : offset(offset){};
-
-	template <typename T>
-	inline
-	TranslatorSVG(T dx, T dy) : offset(dx, dy){};
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	// int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-};
-
-
-class BBoxRetrieverSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	BBoxSVG box;
-	// Box<svg::coord_t> box;
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-};
 
 
 class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
@@ -319,14 +227,6 @@ public:
 
 
 }  // image::
-
-/*
-template <>
-const drain::EnumDict<image::LayoutSVG::Axis>::dict_t  drain::EnumDict<image::LayoutSVG::Axis>::dict;
-
-template <>
-const drain::EnumDict<image::LayoutSVG::Direction>::dict_t  drain::EnumDict<image::LayoutSVG::Direction>::dict;
-*/
 
 }  // drain::
 

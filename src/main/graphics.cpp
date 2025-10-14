@@ -217,6 +217,7 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 	if (main -> isUndefined()){
 		main->setType(svg::GROUP);
 		main->addClass("MAIN"); // request translate upon file write
+		main->addClass(LayoutSVG::ADAPTER);
 		// mout.attention("Created MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
 	}
 	// mout.attention("Providing MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
@@ -319,26 +320,26 @@ bool RackSVG::applyInclusion(RackContext & ctx, const drain::FilePath & filepath
 
 /// Return current row or column of image panels.
 // Add later to PanelConf (or from there, LayoutSVG?)
-static
-const std::string ADAPTER("ADAPTER");
+//static
+//const std::string ADAPTER("ADAPTER");
 
 /** Intermediate group "hiding" translation that moves upper left corner of the object to the origin.
  *
  */
 drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
 
-	//group->addClass(ADAPTER);
-	//return group;
-
-
-	drain::image::TreeSVG & adapterGroup = group[ADAPTER];
+	// EnumDict<drain::image::LayoutSVG::GroupType>::dict::getKey(LayoutSVG::ADAPTER)
+	drain::image::TreeSVG & adapterGroup = group["ADAPTER"];
 	//drain::image::TreeSVG & adapterGroup = group[name];
 	if (adapterGroup->isUndefined()){
 		adapterGroup->setType(svg::GROUP);
-		adapterGroup->addClass(ADAPTER);
+		adapterGroup->addClass(LayoutSVG::ADAPTER);
 		adapterGroup->transform.translate.set(0,0);
 	}
 	return adapterGroup;
+
+	//group->addClass(ADAPTER);
+	//return group;
 
 }
 
@@ -528,7 +529,8 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg
 drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePanelGroup){ //, const drain::Frame2D<drain::image::svg::coord_t> & frame){
 	drain::image::TreeSVG & imageBorder = imagePanelGroup[PanelConfSVG::ElemClass::IMAGE_BORDER](svg::RECT); // +EXT!
 	imageBorder->addClass(PanelConfSVG::ElemClass::IMAGE_BORDER); // style
-	imageBorder->addClass(drain::image::LayoutSVG::INDEPENDENT);
+	imageBorder->addClass(drain::image::LayoutSVG::INDEPENDENT);  // next object won't treat me as anchor (unless specifically called for)
+	imageBorder->addClass(drain::image::LayoutSVG::INEFFECTIVE);  // does not expand COMPOUND bbox
 	imageBorder->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 	return imageBorder;
 }
@@ -900,12 +902,15 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 
 		TreeSVG & text  = group[elemClass];
 		if (text->isUndefined()){
-			//text->setType(svg::COMMENT); // only test...
+			text->setType(svg::COMMENT); // only test...
+			/*
 			text->setType(svg::TEXT);
 			text->addClass("SKIP");
 			text->addClass(elemClass);
+			*/
 			// text->setText("skip...", elemClass);
 			// Why no return here?
+			continue;
 		}
 
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
@@ -968,73 +973,75 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 
 
 int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
+
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// Apply to groups only.
+
 	TreeSVG &group = root(path);
+
 	if (!group->typeIs(svg::GROUP)) {
-		//
 		return 0;
 	}
+
 	if (!group.hasChild(svg::METADATA)) {
-		mout.reject<LOG_DEBUG>("skipping, group has no METADATA element: ",
-				group.data);
+		mout.reject<LOG_DEBUG>("skipping, group has no METADATA element: ", group.data);
 		return 0;
 	}
 	// TreeSVG & metadata = group[svg::METADATA];
-	const NodeSVG::map_t &attributesPrivate =
-			group[svg::METADATA]->getAttributes();
-	const NodeSVG::map_t &attributesShared =
-			group[PanelConfSVG::ElemClass::SHARED_METADATA]->getAttributes();
+	const NodeSVG::map_t &attributesPrivate = group[svg::METADATA]->getAttributes();
+	const NodeSVG::map_t &attributesShared  = group[PanelConfSVG::ElemClass::SHARED_METADATA]->getAttributes();
 	const bool WRITE_PRIVATE_METADATA = !attributesPrivate.empty();
+
 	bool WRITE_SHARED_METADATA = !attributesShared.empty(); // SHARED_METADATA_EXISTS;
+
 	if (svgConf.groupTitle == "NONE") {
 		mout.obsolete("groupTitle 'NONE'");
-		// svgConf.groupTitle = "";
-		// svgConf.groupTitleFormatted = ""; // OK?
 	}
-	const bool MAIN_AUTO = (svgConf.mainTitle == "AUTO");
-	const bool GROUP_AUTO = (svgConf.groupTitle == "AUTO"); // (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
-	const bool GROUP_NONE = svgConf.groupTitle.empty(); // (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
-	const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty()
-			|| GROUP_AUTO || GROUP_NONE);
-	if (group->hasClass(PanelConfSVG::ElemClass::MAIN_TITLE)) {
+	const bool MAIN_AUTO  =  (svgConf.mainTitle == "AUTO");
+	const bool GROUP_AUTO =  (svgConf.groupTitle == "AUTO"); // (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
+	const bool GROUP_NONE =  (svgConf.groupTitle.empty()); // (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
+	const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty() || GROUP_AUTO || GROUP_NONE);
+	//if (group->hasClass(PanelConfSVG::ElemClass::MAIN_TITLE)) {
+	if (group->hasClass("MAIN")) {
 		if (MAIN_AUTO) {
 			if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA) {
-				RackSVG::addTitleBox(svgConf, group,
-						PanelConfSVG::ElemClass::MAIN_TITLE);
+				RackSVG::addTitleBox(svgConf, group, PanelConfSVG::ElemClass::MAIN_TITLE);
 			}
-		} else if (!svgConf.mainTitle.empty()) {
+		}
+		else if (!svgConf.mainTitle.empty()) {
 			RackSVG::addTitleBox(svgConf, group, // NEW!
 					PanelConfSVG::ElemClass::MAIN_TITLE);
-			group[PanelConfSVG::ElemClass::GENERAL]->setText(
-					svgConf.mainTitle);
+			group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.mainTitle);
 			return 0;
 		}
 	}
 	else if (group->hasClass(LayoutSVG::STACK_LAYOUT)) {
+		TreeSVG  & adapterGroup = getAdapterGroup(group);
 		if (GROUP_AUTO) {
 			// If no higher element will write meta data, flush it here (perhaps repeatedly)
 			WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
 			if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA) {
-				RackSVG::addTitleBox(svgConf, group[ADAPTER], // NEW
+				RackSVG::addTitleBox(svgConf, adapterGroup, // group[LayoutSVG::ADAPTER], // NEW
 						PanelConfSVG::ElemClass::GROUP_TITLE);
 			}
 		}
 		else if (GROUP_USER) {
-			RackSVG::addTitleBox(svgConf, group[ADAPTER], // [ADAPTER], // UNSTABLE
+			RackSVG::addTitleBox(svgConf, adapterGroup, // group[LayoutSVG::ADAPTER], // [ADAPTER], // UNSTABLE
 					PanelConfSVG::ElemClass::GROUP_TITLE);
 			// group[PanelConfSVG::ElemClass::GENERAL]->setText(group[svg::TITLE]);
-			group[ADAPTER][PanelConfSVG::ElemClass::GENERAL]->setText(
-					group->getId()+ " Hey, Check");
+			// group[LayoutSVG::ADAPTER]
+			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->getId());
 			// group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.groupTitleFormatted+ "..dynamic=temporary WRONG!");
 			return 0;
-		} else if (GROUP_NONE) {
+		}
+		else if (GROUP_NONE) {
 			return 0;
-		} else {
-			return 0;
+		}
+		else {
 			mout.suspicious(
 					"could not interpret title of group of class STACK_LAYOUT :",
 					svgConf.groupTitleFormatted);
+			return 0;
 		}
 	}
 	else if (group->hasClass(PanelConfSVG::ElemClass::IMAGE_PANEL)) {
