@@ -378,6 +378,8 @@ struct AlignSVG { // : protected Align {
 
 	void resetAlign();
 
+	void swapAlign(AlignSVG & align);
+
 	/// Return alignment setting of an object along horizontal or vertical axis  .
 	/*
 	 *  \tparam P - enum type Owner \c REF or \c OBJ , or respective string.
@@ -410,6 +412,7 @@ struct AlignSVG { // : protected Align {
 		return alignStr;
 	}
 
+	void swapAlign();
 	/*
 	/// Checks if at least some combination of (ANCHOR|OBJECT) × (HORZ|VERT) × (LEFT|OBJECT),
 	template <typename ...TT>

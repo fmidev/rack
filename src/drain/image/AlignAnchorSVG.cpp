@@ -60,6 +60,13 @@ void AnchorElem::set(const AnchorElem::Anchor & anchor){
 	set(drain::EnumDict<AnchorElem::Anchor>::getKey(anchor));
 }
 
+void AlignAnchorSVG::swapAnchors(AlignAnchorSVG & anchors){
+	myAnchorHorz.swap(anchors.myAnchorHorz);
+	myAnchorVert.swap(anchors.myAnchorVert);
+	defaultAnchorHorz.swap(anchors.defaultAnchorHorz);
+	defaultAnchorVert.swap(anchors.defaultAnchorVert);
+};
+
 
 }  // image::
 

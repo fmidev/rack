@@ -49,16 +49,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/*
-template <class T>
-class SuperGlue { // :public  drain::NodeXML<Luokko> {
-
-};
-*/
-template <typename N>
-class HiddenGlue  {
-};
-
 /**
  *  \tparam T - index type; may be enum.
  */
@@ -141,6 +131,8 @@ public:
 	inline
 	~NodeXML(){};
 
+	virtual
+	void swap(NodeXML<T> & node);
 
 	/*
 	template <class T2> // "final"
@@ -419,6 +411,16 @@ protected:
 
 
 };
+
+template <class T>
+void NodeXML<T>::swap(NodeXML<T> & node){
+	// Swap attributes
+	ReferenceMap2<FlexibleVariable>::swap(node);
+	// Swap classes
+	this->classList.swap(node.classList);
+}
+
+
 
 /*
    Impossible. Cannot construct final object, for example members are not available for #link() .

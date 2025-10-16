@@ -53,6 +53,7 @@ namespace image {
 class NodeSVG;
 
 typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
+//typedef NodeXML<NodeSVG>::xml_tree_t TreeSVG;
 
 struct svg {
 
@@ -368,6 +369,8 @@ public:
 	void specificAttributesToStream(std::ostream & ostr) const override;
 
 
+	void swapSVG(NodeSVG & node);
+
 protected:
 
 	virtual
@@ -429,6 +432,10 @@ protected:
 	std::string id;
 
 };
+
+
+//typedef NodeSVG::xml_tree_t TreeSVG;
+
 
 }  // image::
 
@@ -528,6 +535,7 @@ inline
 std::ostream & operator<<(std::ostream &ostr, const drain::image::NodeSVG & node){
 	return node.nodeToStream(ostr);
 }
+
 
 
 inline

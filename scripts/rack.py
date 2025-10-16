@@ -13,6 +13,13 @@ from pathlib import Path
 import os
 import re # GEOCONF filename-KEY extraction
 
+from types import SimpleNamespace
+
+import logging
+logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
+logger = logging.getLogger("rack.py") # change to __NAME__ etc
+logger.setLevel(logging.INFO)
+
 
 # Global
 default_tiledir  = 'tiles/'
@@ -43,8 +50,6 @@ def build_parser():
     
 
     """ Geographical information
-
-
 
     """
     parser.add_argument(
@@ -113,20 +118,10 @@ def build_parser():
         metavar="<empty>|TILE|TILED",
         help="Compositing scheme. For TILE, default OUTDIR={default_tiledir}, OUTFILE={default_tiledir}") 
 
-    # Optional config file
-    parser.add_argument(
-        "--config",
-        help="Path to JSON config file")
-    
-    # CONFFILE=mposite-${CONF:+$CONF}.cnf"
-    parser.add_argument(
-        "--export-config",
-        default=None,
-        help="Save configuration to file")
 
     #parser.add_argument("--loop", type=str, help="<file>.json Path to JSON config file")
     parser.add_argument(
-        "--inputPrefix",
+        "--INDIR",
         type=str,
         metavar="<path>|AUTO",
         default="AUTO",
@@ -155,16 +150,47 @@ def build_parser():
         help="Directory for reading and writing tiles.")
     """
     
+    # Optional config file
     parser.add_argument(
-        "--newline",
+        "--config",
+        help="Path to JSON config file")
+    
+    # CONFFILE=mposite-${CONF:+$CONF}.cnf"
+    parser.add_argument(
+        "--export-config",
+        default=None,
+        help="Save configuration to file")
+
+    parser.add_argument(
+        "-n", "--newline",
         type=str,
         metavar="<chars>",
         default=" \\\n",
         help="Argument separator for the resulting command string.")
     
     parser.add_argument(
-        "-e", "--exec", action='store_true',
+        "-e", "--exec",
+        action='store_true',
         help="execute parsed command")
+
+    parser.add_argument(
+        "-d", "--debug",
+        action='store_true',
+        help="same as --log_level DEBUG")
+
+    parser.add_argument(
+        "-v", "--verbose",
+        action='store_true',
+        help="same as --log_level VERBOSE")
+
+    parser.add_argument(
+        "-l", "--log_level",
+        help="verbosity level for python wrapper and Rack cmd")
+
+    parser.add_argument(
+        "-p", "--print",
+        action='store_true',
+        help="print parsed command")
 
     parser.add_argument(
         "-T", "--TIMESTAMP",
@@ -220,6 +246,8 @@ def get_defaults(parser):
 
 def export_defaults_to_json(parser, args, filename="config_template.json"):
     """Write all parser defaults to a JSON file."""
+    logger.debug(f'Writing defaults to a JSON file: {filename}')
+    
     defaults = get_defaults(parser)
     conf = {}
     for k,v in vars(args).items():
@@ -234,7 +262,7 @@ def export_defaults_to_json(parser, args, filename="config_template.json"):
     with open(filename, "w") as f:
         json.dump(conf, f, indent=4)
         #json.dump(defaults, f, indent=4)
-    print(f"✅ Config template written to: {filename}")
+    logger.info(f"✅ Config template written to: {filename}")
 
 
 def load_config(filename):
@@ -262,7 +290,7 @@ def read_default_args(parser):
     # final_args = parser.parse_args()
     # return final_args
 
-def read_geoconf(args, parser):
+def read_geoconf(args): #, parser):
 
     # First, assume it is a full path.
     filepath = Path(args.GEOCONF)
@@ -281,7 +309,10 @@ def read_geoconf(args, parser):
 
     
     geoconf = load_config(filepath)
-    parser.set_defaults(**geoconf)
+    vars(args).update(geoconf)
+    return geoconf
+    
+    # parser.set_defaults(**geoconf)
     
     # print ("GEOCONF: ", args.GEOCONF, " = ", filepath)
 
@@ -378,6 +409,10 @@ def handle_tilepath_defaults(dirpath, filepath) -> (str, str):
     if not filepath:
         filepath = default_tilename
     else:
+        if type(filepath) == list:
+            if (len(filepath) > 1):
+                raise Exception('Multiple outputs not supported by SCHEME=TILE: ', args.OUTFILE)
+            filepath = filepath[0]
         filepath = Path(filepath)
         tiledir = str(filepath.parent)
         if (tiledir == '.'):
@@ -394,35 +429,53 @@ def handle_tilepath_defaults(dirpath, filepath) -> (str, str):
         dirpath = default_tiledir
             
     return (str(dirpath).removesuffix('/')+'/', filepath)
+
+
+def compose_command(args):
+    """Main library entry point.
+
+    Args:
+        args (argparse.Namespace): Parsed arguments from `build_parser()`
+    """
+
+    if isinstance(args, dict):
+        args = argparse.Namespace(**args)
+
+
+    cmdList = ['rack']
+
+    if (args.debug):
+        args.log_level = logging.DEBUG
+    elif (args.verbose):
+        args.log_level = logging.VERBOSE
     
-    
-def main():
+    if (args.log_level):
+        if hasattr(logging, args.log_level):
+            logger.setLevel(getattr(logging, args.log_level))
+        else:
+            logger.setLevel(int(args.log_level))
+        cmdList.append(f"--verbose '{args.log_level}'")
+   
+    # Example usage
+    #if args.debug:
+    #    print("Debug mode enabled")
 
-    parser = build_parser()
-
-    # Export template if user requests it
-    read_default_args(parser)
-
-    args = parser.parse_args()
-
-    # Needs parser for arg definitions, args for current values
-    if args.export_config:
-        export_defaults_to_json(parser, args, args.export_config)
-        #sys.exit(0)
+    #assert hasattr(args, "rack") and hasattr(args, "version"), "Missing required arguments"
+    #print(f"Using {args.rack}:{args.version}")
 
     # Settings
     if args.GEOCONF:
-        read_geoconf(args, parser)
+        read_geoconf(args) #, parser)
         # Save reduced value and refresh
-        geoconf = args.GEOCONF
-        args = parser.parse_args()
-        args.GEOCONF = geoconf
+        #geoconf = args.GEOCONF
+        #args = parser.parse_args()
+        #args.GEOCONF = geoconf
         
     arg_vars = vars(args)
 
     # "MAIN"
     
-    cmdList = ['rack']
+
     cmdRoutine = []
     # Outputs
 
@@ -480,11 +533,16 @@ def main():
     #print (mika)
     #mika = expand_string(mika, "TIMESTAMP", "202192,545919201,99237021")
     #print (mika)
+
+    print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
     
     if (args.INFILE):
 
+        print ("INFILE", type(args.INFILE), args.INFILE)
+
         if (args.SITE):
             args.INFILE  = expand_string(args.INFILE, "SITE", args.SITE)
+            print ("INFILE", args.INFILE)
 
         # Probably makes little sense in oper. use
         if (args.TIMESTAMP):
@@ -497,26 +555,71 @@ def main():
             cmdList.extend(cmdRoutine)
         else:
             shortPaths=[]
-            if (args.inputPrefix == 'AUTO'):
-                args.inputPrefix = extract_prefix(args.INFILE, shortPaths)
-            if (args.inputPrefix):
-                cmdList.append(f'--inputPrefix "{args.inputPrefix}"')
+            if (args.INDIR == 'AUTO'):
+                args.INDIR = extract_prefix(args.INFILE, shortPaths)
+            if (args.INDIR):
+                cmdList.append(f'--inputPrefix "{args.INDIR}"')
             cmdRoutine = " ".join(cmdRoutine).replace("'",'"')
             cmdList.append(f"--script '{cmdRoutine}'")
             cmdList.extend(shortPaths)
             #print (shortPaths)
 
+    if (args.OUTFILE):
+
+        if type(args.OUTFILE) == str:
+            args.OUTFILE = [ args.OUTFILE ]
+            #print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
+            
+        if (args.SITE):
+            args.OUTFILE  = expand_string(args.OUTFILE, "SITE", args.SITE)
+            #print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
+
+        # Probably makes little sense in oper. use
+        if (args.TIMESTAMP):
+            args.OUTFILE  = expand_string(args.OUTFILE, "TIMESTAMP", args.TIMESTAMP)
+        if (args.SCHEME == 'TILE') and (len(args.OUTFILE) > 1):
+            #print(args.OUTFILE, file=sys.stderr)
+            raise Exception('Multiple outputs not supported by SCHEME=TILE: ', args.OUTFILE)
+
+            
     if (args.SCHEME != 'TILE'):
         cmdList.append("--cExtract DATA,WEIGHT")
         append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
 
-    cmd = args.newline.join(cmdList)
-    print (cmd)
-    print ("\n\n")
+    return args.newline.join(cmdList)
+    #print (cmd)
+    #print ("\n\n")
+
+def exec_command(args):
+    cmd = compose_cmd(args)
+    os.system(cmd)
+    
+def main():
+
+    parser = build_parser()
+
+    read_default_args(parser)
+
+    args = parser.parse_args()
+
+    # Selected commands only for direct command line use
+
+    # Needs parser for arg definitions, args for current values
+
+    # Export template if user requests it
+    if args.export_config:
+        export_defaults_to_json(parser, args, args.export_config)
+        sys.exit(0)
+
+    cmd = compose_command(args)
+
+    if args.print:
+        print(cmd)
 
     if (args.exec):
         os.system(cmd)
 
     
+
 if __name__ == "__main__":
     main()

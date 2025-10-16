@@ -223,10 +223,19 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 
 }
+
 void AlignSVG::updateAlignStr(){
 	std::stringstream sstr;
 	confToStream(sstr);
 	alignStr = sstr.str();
+}
+
+void AlignSVG::swapAlign(AlignSVG & align){
+
+	alignments.swap(align.alignments);
+
+	updateAlign();
+	align.updateAlign();
 }
 
 template <>

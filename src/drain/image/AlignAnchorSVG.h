@@ -50,15 +50,37 @@ namespace drain {
 
 namespace image {
 
+/*  Semantics:
+ *
+ *  if myAnchor is set, use it.
+ *  if myAnchor is unset, use group anchor; it servers as a default anchor
+ *  if groupAnchor is unset -> use previous object as anchor.
+ *
+ *  GroupAnchor (default anchor):
+    DEFAULT(=UNSET): use previous object
+	NONE: use nothing, don't align
+	PREVIOUS: use previous (unneeded, this is the default for group)
+	COLLECTIVE: use compound bounding bbox
+
+	MyAnchor (specific anchor, always overrides)
+	DEFAULT(=UNSET) -> use GroupAnchor
+	NONE: don't align me! (raise error if Align set?)
+	PREVIOUS:
+	COLLECTIVE: use compound bounding box
+
+	SPECIAL: both DEFAULT: use PREVIOUS
+ *
+ */
 
 // Could be internal class in Adapter?
 struct AnchorElem : public std::string {
 
+	// More like a symbol.
 	enum Anchor {
-		DEFAULT = 0, // previous or group anchor
-		NONE = 1,
-		PREVIOUS,
-		COLLECTIVE,
+		DEFAULT = 0, // use group's default anchor, or if that is not set, use previous
+		NONE = 1,    // don't align at alla
+		PREVIOUS,	 // use previous object
+		COLLECTIVE,  // use dynamically growing bounding box or the compound
 	};
 
 
@@ -199,6 +221,7 @@ public:
 	inline virtual
 	~AlignAnchorSVG(){};
 
+	void swapAnchors(AlignAnchorSVG & anchors);
 
 protected:
 

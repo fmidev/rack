@@ -83,6 +83,36 @@ void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
 
 //}
 
+
+namespace drain {
+
+	template <>
+	template <>
+	class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::STYLE_SELECT>{
+	public:
+
+		NodeXML<image::svg::tag_t> & node;
+
+		inline
+		Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node["cx"]), cy(node["cy"]), r(node["r"] = 0.0){
+		};
+
+		// Center point, x coord
+		FlexibleVariable & cx;
+		// Center point, y coord
+		FlexibleVariable & cy;
+		// Radius
+		FlexibleVariable & r;
+
+		// NodeXML<T> class could not access NodeSVG.box
+		// Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node.box.x), cy(node.box.y), r(node["r"]){
+
+	};
+
+
+}
+
+
 namespace rack {
 
 // typedef drain::image::TreeUtilsSVG tsvg;
@@ -1583,6 +1613,53 @@ public:
 
 };
 
+
+class CmdDebug : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdDebug() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
+		getParameters().link("name",   name, "label");
+		getParameters().link("panel",  panel, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	}
+
+	CmdDebug(const CmdDebug & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	const std::string defaultAnchor = "myRect";
+
+	std::string panel = "playGround1";
+	std::string name  = "";
+
+	struct NodeVisitor : public drain::TreeVisitor<TreeSVG> {
+
+		virtual inline
+		int visitPrefix(TreeSVG & tree, const typename TreeSVG::path_t & path){
+			return 0;
+		}
+
+
+	};
+
+	void exec() const override {
+
+		using namespace drain::image;
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		NodeVisitor visitor;
+		// drain::TreeUtils::traverse(ctx.svgTrack, visitor);
+
+
+	}
+
+
+
+};
+
 GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	// const drain::Flagger::ivalue_t section = drain::Static::get<GraphicsSection>().index;
@@ -1619,6 +1696,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	install<CmdSector>();
 	install<CmdAlignTest>();
+	install<CmdDebug>();
 
 };
 
