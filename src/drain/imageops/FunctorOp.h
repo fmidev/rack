@@ -197,10 +197,12 @@ protected:
 		}
 
 		if (NORM){
-			if (SIGN)
+			if (SIGN){
 				dst.setPhysicalRange(-1.0, +1.0, true);
-			else
+			}
+			else {
 				dst.setPhysicalRange( 0.0, +1.0, true);
+			}
 		}
 
 		dst.setGeometry(src.getGeometry()); //geometry = src.geometry;

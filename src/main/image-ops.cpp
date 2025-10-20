@@ -225,6 +225,10 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		dstQuantitySyntax="${what:quantity}";
 		//dstQuantitySyntax = ImageContext::outputQuantitySyntax;
 	}
+	else {
+		CHANGE_SCALING = true;
+		//CHANGE_TYPE = true;
+	}
 
 	mout.experimental("output quantity (syntax): ", dstQuantitySyntax);
 
@@ -381,7 +385,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			Data<dst_t> & srcData = dstDataSet.getData(quantity);
 
 			//mout.fail("src coords: ", srcData.data.getCoordinatePolicy());
-			mout.fail(DRAIN_LOG(srcData.data.getCoordinatePolicy()));
+			mout.debug(DRAIN_LOG(srcData.data.getCoordinatePolicy()));
 
 
 			/// SOURCE: Add src data (always from h5 struct)
@@ -439,6 +443,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 				const std::string dstQuantity = quantitySyntaxMapper.toStr(statusVariables);
 
+				std::string targetEncoding;
+				drain::StringTools::replace(ctx.targetEncoding, dstQuantitySyntax, dstQuantity, targetEncoding);
+				if (targetEncoding != ctx.targetEncoding){
+					mout.pending<LOG_WARNING>(DRAIN_LOG(ctx.targetEncoding)) ;
+					mout.accept<LOG_WARNING>(DRAIN_LOG(targetEncoding)) ;
+				}
+
 				if (quantityListNew.find(dstQuantity) != quantityListNew.end()){
 					mout.fail("output ", quantitySyntaxMapper, "='", dstQuantity, "' exists already for input: ", quantity);
 					break;
@@ -450,12 +461,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				mout.info("Processing quantity: ", quantity, '(', srcData.odim.quantity, ") -> ", dstQuantity);
 
 				// Type is explicitly set, and differs from
-				const bool CHANGE_TYPE = (!superOdim.type.empty()) && (superOdim.type != srcData.odim.type);
+				const bool CHANGE_TYPE = (!dstQuantitySyntax.empty()) || ((!superOdim.type.empty()) && (superOdim.type != srcData.odim.type));
 
 				const size_t origSize = dstDataSet.size();
 				Data<dst_t> & dstData = dstDataSet.getData(dstQuantity); // USER_QUANTITY ? dstDataSet.getData(dstQuantity) : dit->second;
 				dstData.data.setName(dstQuantity);
-
 
 				if (origSize == dstDataSet.size()){
 					mout.note("Image processing result: ", datasetElem, "/data?/ [", dstQuantity, "]");
@@ -466,22 +476,34 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				// This replaces: bean.makeCompatible(srcConf, dstData.data);
 
 
+
 				dstData.odim.updateFromMap(srcData.odim);
 				// dstData.odim.quantity = dstQuantity; Must be done below (override)
 
 				ImageConf dstConf;
-				//dstConf.setCoordinatePolicy(srcConf.coordinatePolicy);
+
+				// Size, coord policy and INITIAL type
+				bean.getDstConf(srcConf, dstConf);
 
 				if (!ctx.targetEncoding.empty()){
+
+					mout.special(DRAIN_LOG(CHANGE_TYPE));
+					mout.special(DRAIN_LOG(CHANGE_SCALING));
 					// mout.special("trying: " , dstQuantity , '/' , ctx.targetEncoding );
 
 					if (CHANGE_TYPE || CHANGE_SCALING){
 
 						if (CHANGE_TYPE){
+							dstConf.setType<void>();
+							dstData.odim.type ="";
+							dstData.odim.scaling.set(0);
+							dstData.data.setScaling(0);
 							mout.attention("data storage TYPE change requested by user");
 						}
 
 						if (CHANGE_SCALING){
+							dstData.odim.scaling.set(0);
+							dstData.data.setScaling(0);
 							mout.attention("data SCALING change requested by user");
 						}
 
@@ -508,14 +530,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					dstConf.setType(drain::Type::getTypeInfo(dstData.odim.type));
 					dstConf.setScaling(dstData.odim);
 					mout.special(DRAIN_LOG(dstConf));
+
 				}
 
 				dstData.odim.quantity = dstQuantity;
 
-
 				mout.debug2(DRAIN_LOG(dstDataSet) );
-
-				bean.getDstConf(srcConf, dstConf);
+				mout.note("initial0: ", DRAIN_LOG(dstConf));
 
 				if (!dstConf.typeIsSet()){
 					dstConf.setType(srcConf.getType());
@@ -523,14 +544,18 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 
 				//dstData.odim.type = drain::Type::getTypeChar(dstConf.getType());
-				mout.info("initial: ", DRAIN_LOG(dstConf));
+				mout.note("initial2: ", DRAIN_LOG(dstConf));
 				// Problems: if quantity remains same for dst, src image is modified here!
 
-				//dstData.data.setType(dstConf.getType()); // NEW     2023/04/21
-				//dstData.data.setType(dstConf.getType()); // REMOVED 2023/05/10 is in conf!
-				// REALLY NEW
 				bean.makeCompatible(dstConf, dstData.data);
-				mout.special("dst (after makeCompatible):", dstData.data);
+				mout.special("after makeCompatible:", DRAIN_LOG(dstData.data));
+				if (CHANGE_TYPE || CHANGE_SCALING){
+					dstData.data.setConf(dstConf);
+					// dstData.odim has been set above?
+					//dstData.odim.scaling.setScaling(dstConf.getScaling());
+					mout.special("after rescale:", DRAIN_LOG(dstData.data));
+				}
+
 
 				// NEWISH dstData.data.setConf(dstConf);
 				// TODO: alpha channel should be filled?
@@ -541,8 +566,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				// bean.makeCompatible(srcConf, dstData.data);
 
 				// Use channel, because tray will use...
-				dstData.data.getChannel(0).setScaling(dstData.odim.scaling);
-				dstData.data.setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
+				//dstData.data.getChannel(0).setScaling(dstData.odim.scaling);
+				dstData.data.getChannel(0).setScaling(dstData.data.getScaling());
+
+				// This caused a mess with PROB, still -327.67,327.66 haunting from input dBZ?
+				// dstData.data.setPhysicalRange(dstData.odim.getMin(), dstData.odim.getMax());
 
 				/*
 				if (dstData.data.hasAlphaChannel()){
