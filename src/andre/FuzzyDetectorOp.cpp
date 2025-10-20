@@ -168,7 +168,7 @@ void FuzzyDetectorOp::applyOperator(const ImageOp & op,  const PlainData<PolarSr
 
 	if (dstFeature.data.isEmpty()){
 		mout.attention("Computing feature [", featureQuantity, "] ");
-		// mout.attention(DRAIN_LOG_VAR(dstFeature.odim.quantity));
+		// mout.attention(DRAIN_LOG(dstFeature.odim.quantity));
 		// dstFeature.odim.quantity = feature; // this causes weird duplicates - ?
 		const QuantityMap & qm = getQuantityMap();
 		qm.setQuantityDefaults(dstFeature, "PROB");

@@ -418,9 +418,9 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 			mout.note("quantity=", odimData.quantity);
 		}
 		*/
-		mout.debug(DRAIN_LOG_VAR(dataCoder));
-		mout.debug2(DRAIN_LOG_VAR(dataCoder.dataODIM));
-		mout.debug2(DRAIN_LOG_VAR(dataCoder.qualityODIM));
+		mout.debug(DRAIN_LOG(dataCoder));
+		mout.debug2(DRAIN_LOG(dataCoder.dataODIM));
+		mout.debug2(DRAIN_LOG(dataCoder.qualityODIM));
 
 		/// Also available: if (type.isSet()) ...
 

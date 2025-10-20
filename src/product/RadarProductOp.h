@@ -389,7 +389,7 @@ void RadarProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	ODIMPathElem parent(ODIMPathElem::DATASET); // /dataset1
 	ODIMPathElem child(ODIMPathElem::DATA); // /dataset1
 
-	mout.note(DRAIN_LOG_VAR(ProductBase::appendResults));
+	mout.note(DRAIN_LOG(ProductBase::appendResults));
 	if (ProductBase::appendResults.getType() == ODIMPathElem::DATASET){
 		ODIMPathTools::getNextChild(dst, parent);
 	}

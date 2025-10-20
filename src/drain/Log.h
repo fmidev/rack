@@ -299,8 +299,8 @@ public:
 
 };
 
-/// To be used like mout.warn(DRAIN_LOG_VAR(name))
-#define DRAIN_LOG_VAR(name) '#', #name, '=', name
+/// To be used like mout.warn(DRAIN_LOG(name))
+#define DRAIN_LOG(name) '#', #name, '=', name
 
 
 

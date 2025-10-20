@@ -316,12 +316,12 @@ public:
 		if (jEnd < jStart)
 			jEnd = picker.height-1;
 
-		mout.attention(DRAIN_LOG_VAR(iStart));
-		mout.attention(DRAIN_LOG_VAR(iStep));
-		mout.attention(DRAIN_LOG_VAR(iEnd));
-		mout.attention(DRAIN_LOG_VAR(jStart));
-		mout.attention(DRAIN_LOG_VAR(jStep));
-		mout.attention(DRAIN_LOG_VAR(jEnd));
+		mout.attention(DRAIN_LOG(iStart));
+		mout.attention(DRAIN_LOG(iStep));
+		mout.attention(DRAIN_LOG(iEnd));
+		mout.attention(DRAIN_LOG(jStart));
+		mout.attention(DRAIN_LOG(jStep));
+		mout.attention(DRAIN_LOG(jEnd));
 
 		// Main loop: traverse image area with (i,j)
 		// SamplePicker has set variableMap references (ie. geographical coords j2=(height-1-j) ).

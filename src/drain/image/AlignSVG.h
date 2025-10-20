@@ -468,12 +468,14 @@ std::ostream & operator<<(std::ostream &ostr, const AlignSVG & align){
 }
 
 
-template <>
-const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>::dict;
+// template <>
+// const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>::dict;
+DRAIN_ENUM_DICT(AlignSVG::Owner);
 DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
 
-template <>
-const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict;
+//template <>
+//const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict;
+DRAIN_ENUM_DICT(AlignSVG::Topol);
 DRAIN_ENUM_OSTREAM(AlignSVG::Topol);
 
 template <>

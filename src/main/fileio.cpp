@@ -558,9 +558,9 @@ void CmdOutputFile::exec() const {
 		mout.hint<LOG_DEBUG>("\t convert ", path, " out.png # Use full system paths");
 		// ofstr << ctx.xmlTrack << '\n';
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
-		mout.attention(DRAIN_LOG_VAR(ctx.svgPanelConf.groupIdentifier));
-		mout.attention(DRAIN_LOG_VAR(ctx.svgPanelConf.groupTitle));
-		mout.attention(DRAIN_LOG_VAR(ctx.svgPanelConf.groupTitleFormatted));
+		mout.attention(DRAIN_LOG(ctx.svgPanelConf.groupIdentifier));
+		mout.attention(DRAIN_LOG(ctx.svgPanelConf.groupTitle));
+		// mout.attention(DRAIN_LOG(ctx.svgPanelConf.groupTitleFormatted));
 	}
 	else if (DATA_HTML) { // drain::NodeHTML::fileInfo.checkPath(path)
 

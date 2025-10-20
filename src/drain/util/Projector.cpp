@@ -84,7 +84,7 @@ void Projector::setProjection(int epsg, CRS_mode crs){
 	{
 		PJ *pjTmp = proj_create(pjContext, epsgTag.c_str()); // pjContext: better with or without (0)?
 		const char *projStr = proj_as_proj_string(pjContext, pjTmp, PJ_PROJ_4, nullptr);
-		mout.special("Converting 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
+		mout.special<LOG_INFO>("Converting 'EPSG:", epsg, "' to non-(x,y)-swapping '", projStr,"'");
 		storeProjDef(projStr);
 		proj_destroy(pjTmp);
 	}

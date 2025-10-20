@@ -354,8 +354,7 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 
 	//ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier); // status updated upon last file save
 	std::string groupId = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier);
-
-	ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupTitle); // status updated upon each PNG file save
+	std::string groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupTitle); // status updated upon each PNG file save
 
 
 	//drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgPanelConf.groupTitleFormatted];
@@ -365,7 +364,7 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 		alignedGroup->setType(svg::GROUP);
 		//alignedGroup->setId(ctx.svgPanelConf.groupTitleFormatted);
 		//alignedGroup->setId(groupId);
-		alignedGroup->set("data-title", ctx.svgPanelConf.groupTitleFormatted);
+		alignedGroup->set("data-title", groupTitleFormatted);
 		alignedGroup->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 	}
 
@@ -409,7 +408,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
 	// comment->setText("start of ", LayoutSVG::STACK_LAYOUT, ' ', name, svg::GROUP);
 
-	// drain::image::TreeSVG & adapterFrame = alignFrame;// getAdapterGroup(alignFrame);
+	// drain::image::TreeSVG & group = alignFrame;// getAdapterGroup(alignFrame);
 	// drain::image::TreeSVG & adapterFrame = getAdapterGroup(alignFrame, name);
 
 	// drain::image::TreeSVG & imagePanel = adapterFrame[name];
@@ -573,40 +572,36 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 		break;
 	}
 
-	addTitles(conf, object, BACKGROUND_RECT, elemClass);
+	addTitleElements(conf, object, BACKGROUND_RECT, elemClass);
 
 
 }
 
-void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group, const std::string & anchor, PanelConfSVG::ElemClass elemClass){
+void RackSVG::addTitleElements(const PanelConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, PanelConfSVG::ElemClass elemClass) {
 
 	/** TODO
-	const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
-			root[drain::image::svg::STYLE][elemClass]->get("font-size", 12.5);
+	 const double fontSize = // getStyleValue(root, RackSVG::TITLE, "font-size", 12.5);
+	 root[drain::image::svg::STYLE][elemClass]->get("font-size", 12.5);
 	 */
-
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	// TODO: title area "filling order", by group class.
-
-	TreeSVG & adapterFrame = group;
+	//TreeSVG & group = group;
 	// if (group->hasClass(ADAPTER))
-	//TreeSVG & adapterFrame = getAdapterGroup(group);
-
-	TreeSVG & mainHeader = adapterFrame[PanelConfSVG::ElemClass::GENERAL](svg::TEXT); // group[GENERAL](svg::TEXT);
+	// TreeSVG & group = getAdapterGroup(group);
+	TreeSVG &mainHeader = group[PanelConfSVG::ElemClass::GENERAL](
+			svg::TEXT); // group[GENERAL](svg::TEXT);
 	mainHeader->addClass(LayoutSVG::INDEPENDENT, LayoutSVG::INEFFECTIVE); // testing LayoutSVG::INEFFECTIVE
 	mainHeader->addClass(elemClass); // also GENERAL?
 	mainHeader->setMyAlignAnchor(anchor);
 	//mainHeader->setAlignAnchor(anchor);
-
 	/*
-	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
-		mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT); //AlignSVG::VertAlign::MIDDLE);
-	}
-	else {
-		mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); //AlignSVG::VertAlign::MIDDLE);
-	}
-	// mainHeader->setHeight(conf.boxHeights[0]);
-	// mainHeader->setMargin(conf.boxHeights[0]*0.2); // ADJUST
+	 if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
+	 mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT); //AlignSVG::VertAlign::MIDDLE);
+	 }
+	 else {
+	 mainHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); //AlignSVG::VertAlign::MIDDLE);
+	 }
+	 // mainHeader->setHeight(conf.boxHeights[0]);
+	 // mainHeader->setMargin(conf.boxHeights[0]*0.2); // ADJUST
 	 */
 	// Ensure order
 	mainHeader["product"](svg::TSPAN);
@@ -614,16 +609,13 @@ void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group
 	// mainHeader["product"]->setText("product"); //CTXX // debugging
 	mainHeader["prodpar"](svg::TSPAN);
 	mainHeader["prodpar"]->addClass("product"); // yes, same...
-
-
 	// NEW
 	mainHeader["quantity"](svg::TSPAN);
 	mainHeader["quantity"]->addClass("product");
 	mainHeader["camethod"](svg::TSPAN);
 	mainHeader["camethod"]->addClass("product");
-
 	// Layout principle: there should be always time... so start/continue from left.
-	TreeSVG & timeHeader = adapterFrame[PanelConfSVG::ElemClass::TIME](svg::TEXT);
+	TreeSVG &timeHeader = group[PanelConfSVG::ElemClass::TIME](svg::TEXT);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
 	timeHeader->addClass(LayoutSVG::INDEPENDENT, LayoutSVG::INEFFECTIVE); // testing LayoutSVG::INEFFECTIVE
 	timeHeader->setMyAlignAnchor(anchor);
@@ -631,22 +623,21 @@ void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group
 	timeHeader["date"]->addClass("date"); // PanelConfSVG::ElemClass::TIME);
 	timeHeader["time"](svg::TSPAN);
 	timeHeader["time"]->addClass("time"); // PanelConfSVG::ElemClass::TIME);
-
 	// Layout principle: there should be always time... so start/continue from left.
-	TreeSVG & locationHeader = adapterFrame[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
+	TreeSVG &locationHeader = group[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
 	locationHeader->addClass(elemClass, PanelConfSVG::ElemClass::LOCATION);
 	locationHeader->addClass(LayoutSVG::INDEPENDENT, LayoutSVG::INEFFECTIVE); // testing LayoutSVG::INEFFECTIVE
 	locationHeader->setMyAlignAnchor(anchor);
 	/*
-	locationHeader->setAlign(AlignSVG::RIGHT);
-	if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
-		locationHeader->setAlign(AlignSVG::TOP);
-	}
-	else {
-		locationHeader->setAlign(AlignSVG::MIDDLE);
-	}
-	locationHeader->setHeight(16);
-	locationHeader->setMargin(3); // adjust
+	 locationHeader->setAlign(AlignSVG::RIGHT);
+	 if (elemClass == PanelConfSVG::ElemClass::IMAGE_TITLE){
+	 locationHeader->setAlign(AlignSVG::TOP);
+	 }
+	 else {
+	 locationHeader->setAlign(AlignSVG::MIDDLE);
+	 }
+	 locationHeader->setHeight(16);
+	 locationHeader->setMargin(3); // adjust
 	 */
 	locationHeader["NOD"](svg::TSPAN);
 	locationHeader["NOD"]->addClass("NOD");
@@ -654,11 +645,8 @@ void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group
 	locationHeader["PLC"]->addClass("PLC");
 	// locationHeader["NOD"]->setText("NOD"); //CTXX
 	// locationHeader["PLC"]->setText("PLC"); //CTXX
-
-
-	double textBoxHeight = 0; // conf.boxHeights[0]; // MAIN_HEADER
-	double textBoxMargin = 0;
-
+	double textBoxHeight = 0.0;
+	double textBoxMargin = 0.0;
 	switch (elemClass) {
 	case PanelConfSVG::ElemClass::MAIN_TITLE:
 		textBoxHeight = conf.boxHeights[0]; // fontSizes
@@ -674,12 +662,11 @@ void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group
 		break;
 	case PanelConfSVG::ElemClass::IMAGE:
 		textBoxHeight = conf.boxHeights[2]; // fontSizes
-		if (textBoxHeight > 0.0){
+		if (textBoxHeight > 0.0) {
 			mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT);
 			timeHeader->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 			locationHeader->setAlign(AlignSVG::TOP, AlignSVG::RIGHT);
-		}
-		else {
+		} else {
 			mainHeader->setComment("removed");
 			timeHeader->setComment("removed");
 			locationHeader->setComment("removed");
@@ -690,24 +677,15 @@ void RackSVG::addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & group
 		mout.error(__LINE__, "unhandled ElemClass", elemClass);
 		break;
 	}
-
-
-
 	textBoxMargin = textBoxHeight * 0.25;
-
 	mainHeader->setHeight(textBoxHeight);
 	mainHeader->setMargin(textBoxMargin); // adjust
-
 	timeHeader->setHeight(textBoxHeight);
 	timeHeader->setMargin(textBoxMargin); // adjust
-
 	locationHeader->setHeight(textBoxHeight);
 	locationHeader->setMargin(textBoxMargin); // adjust
 
-
-
 }
-
 
 // Consider changing this to visitor.
 
@@ -996,20 +974,23 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 		mout.reject<LOG_DEBUG>("skipping, group has no METADATA element: ", group.data);
 		return 0;
 	}
-	// TreeSVG & metadata = group[svg::METADATA];
+
 	const NodeSVG::map_t &attributesPrivate = group[svg::METADATA]->getAttributes();
 	const NodeSVG::map_t &attributesShared  = group[PanelConfSVG::ElemClass::SHARED_METADATA]->getAttributes();
 	const bool WRITE_PRIVATE_METADATA = !attributesPrivate.empty();
 
-	bool WRITE_SHARED_METADATA = !attributesShared.empty(); // SHARED_METADATA_EXISTS;
+	bool WRITE_SHARED_METADATA = !attributesShared.empty();
 
 	if (svgConf.groupTitle == "NONE") {
 		mout.obsolete("groupTitle 'NONE'");
 	}
+
 	const bool MAIN_AUTO  =  (svgConf.mainTitle == "AUTO");
 	const bool GROUP_AUTO =  (svgConf.groupTitle == "AUTO"); // (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
 	const bool GROUP_NONE =  (svgConf.groupTitle.empty()); // (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
-	const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty() || GROUP_AUTO || GROUP_NONE);
+	//const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty() || GROUP_AUTO || GROUP_NONE);
+	const bool GROUP_USER = !(GROUP_AUTO || GROUP_NONE);
+
 	//if (group->hasClass(PanelConfSVG::ElemClass::MAIN_TITLE)) {
 	if (group->hasClass("MAIN")) {
 		if (MAIN_AUTO) {
@@ -1018,8 +999,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 			}
 		}
 		else if (!svgConf.mainTitle.empty()) {
-			RackSVG::addTitleBox(svgConf, group, // NEW!
-					PanelConfSVG::ElemClass::MAIN_TITLE);
+			RackSVG::addTitleBox(svgConf, group, PanelConfSVG::ElemClass::MAIN_TITLE);
 			group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.mainTitle);
 			return 0;
 		}
@@ -1030,17 +1010,17 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 			// If no higher element will write meta data, flush it here (perhaps repeatedly)
 			WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
 			if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA) {
-				RackSVG::addTitleBox(svgConf, adapterGroup, // group[LayoutSVG::ADAPTER], // NEW
-						PanelConfSVG::ElemClass::GROUP_TITLE);
+				RackSVG::addTitleBox(svgConf, adapterGroup, PanelConfSVG::ElemClass::GROUP_TITLE);
+				adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO1");
+			}
+			else {
+				adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO2_EMPTY");
 			}
 		}
 		else if (GROUP_USER) {
-			RackSVG::addTitleBox(svgConf, adapterGroup, // group[LayoutSVG::ADAPTER], // [ADAPTER], // UNSTABLE
-					PanelConfSVG::ElemClass::GROUP_TITLE);
-			// group[PanelConfSVG::ElemClass::GENERAL]->setText(group[svg::TITLE]);
-			// group[LayoutSVG::ADAPTER]
-			// adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->getId());
+			RackSVG::addTitleBox(svgConf, adapterGroup, PanelConfSVG::ElemClass::GROUP_TITLE);
 			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->get("data-title", ""));
+			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_USER");
 			// group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.groupTitleFormatted+ "..dynamic=temporary WRONG!");
 			return 0;
 		}
@@ -1048,9 +1028,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 			return 0;
 		}
 		else {
-			mout.suspicious(
-					"could not interpret title of group of class STACK_LAYOUT :",
-					svgConf.groupTitleFormatted);
+			mout.suspicious("could not interpret title of group of class STACK_LAYOUT at: ", path);
 			return 0;
 		}
 	}
@@ -1058,8 +1036,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 		// WRITE_SHARED_METADATA = ! (titles.isSet(PanelConfSVG::ElemClass::GROUP_TITLE) && titles.isSet(PanelConfSVG::ElemClass::MAIN_TITLE));
 		WRITE_SHARED_METADATA &= !(MAIN_AUTO || GROUP_AUTO);
 		if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA) {
-			RackSVG::addTitles(svgConf, group, "image",
-					PanelConfSVG::ElemClass::IMAGE);
+			RackSVG::addTitleElements(svgConf, group, "image", PanelConfSVG::ElemClass::IMAGE);
 		}
 		// If no higher element will write metadata, write it here (perhaps repeatedly)
 	} else {

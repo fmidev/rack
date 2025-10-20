@@ -126,7 +126,7 @@ struct PanelConfSVG {
 	// std::string groupIdentifier = "AUTO"; // redesign?
 	std::string groupIdentifier = ""; // NEW
 	std::string groupTitle = "AUTO"; // NEW
-	std::string groupTitleFormatted;
+	// std::string groupTitleFormatted; dynamic, so better store in data-title attribute
 
 
 	/*

@@ -460,13 +460,14 @@ QuantityMap & getQuantityMap() {
 					"Probability",
 					{
 							{"PROB_.*", "radar_target_class_probability", "Target class probability"},
-							{"FUZZY.*", "radar_target_class_probability", "Target class probability"},
+							{"FUZZY.*", "fuzzy_membership", "Fuzzy membership"},
 					},
 					{0.0, 1.0},
 					'C',
 					{
 							{'C', 1.0/250.0},
-							{'S', 1.0/65535.0}
+							{'S', 1.0/50000.0}
+							//{'S', 1.0/65535.0}
 					}
 			}
 			},

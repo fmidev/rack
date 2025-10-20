@@ -82,6 +82,8 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> 
 
 	const double eta = srcData.odim.elangle * drain::DEG2RAD;
 	double h, hEncoded;
+
+	const bool DEBUG = mout.isDebug(1);
 	for (unsigned int i = 0; i < dstData.odim.area.width; ++i) {
 		//std::cerr << i << '\t' << ground << " m\t h=" << h << " >" << h/odim.scale << " m\n";
 
@@ -99,6 +101,9 @@ void BeamAltitudeOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> 
 		}
 		else {
 			dstData.data.put(i, dstData.odim.undetect); // quality?
+		}
+		if (DEBUG){
+			mout.debug("i=", i, "\thEnc=", hEncoded, "\t orig h=", h);
 		}
 		//std::cerr << i << '\t' << dst.data.get<short>(i) << '\t' << dst.odim.scaleForward(dst.data.get<double>(i)) << '\n';
 	}

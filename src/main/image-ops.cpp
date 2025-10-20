@@ -213,10 +213,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		superOdim.type = "";
 		superOdim.link("what:quantity", dstQuantitySyntax); // consider "${what:quantity}_FILT"
 		superOdim.addShortKeys();
-		superOdim.updateValues(ctx.targetEncoding); // do not clear yet. But risk: quantity(Syntax) causes scaling effors below.
+		superOdim.updateValues(ctx.targetEncoding); // do not clear yet. But risk: quantity(Syntax) causes scaling errors below.
 		//mout.debug("new quantity? - " , dstQuantity );
 		CHANGE_SCALING = (superOdim.scaling.scale != 0.0);
 		//USER_TYPE    = (!superOdim.type.empty());
+		mout.attention(DRAIN_LOG(superOdim));
 	}
 
 	if (dstQuantitySyntax.empty()){ // == explicitly cleared by user
@@ -379,7 +380,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			// Yes, of dst type, but used as src
 			Data<dst_t> & srcData = dstDataSet.getData(quantity);
 
-			mout.fail("src coords: ", srcData.data.getCoordinatePolicy());
+			//mout.fail("src coords: ", srcData.data.getCoordinatePolicy());
+			mout.fail(DRAIN_LOG(srcData.data.getCoordinatePolicy()));
 
 
 			/// SOURCE: Add src data (always from h5 struct)
@@ -387,7 +389,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 			drain::ValueScaling & scaling = srcData.data.getScaling();
 			scaling.setScaling(srcData.odim.scaling);
 			/// TODO: clarify those...
-			mout.attention("Src SCALING: ", srcData.odim.scaling);
+			mout.attention(DRAIN_LOG(srcData.odim.scaling));
 
 			if (ctx.imagePhysical){ // user wants to give thresholds etc params in phys units
 				if (!scaling.isPhysical()){
@@ -485,13 +487,14 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 						const QuantityMap & qmap = getQuantityMap();
 						if (qmap.hasQuantity(dstQuantity)){
-							mout.special("conf exists for: ", dstQuantity);
+							mout.accept<LOG_WARNING>("conf exists for: ", dstQuantity);
 							qmap.setQuantityDefaults(dstData.odim, dstQuantity, ctx.targetEncoding); // if only quantity?
 							// NOTE: dstData.odim.quantity may NOW contain variable syntax,  "${what:quantity}_X"
 						}
 						else {
-							//dstData.odim.updateValues(ctx.targetEncoding);
-							dstData.odim.completeEncoding( ctx.targetEncoding);
+							mout.pending<LOG_WARNING>("no conf for: ", dstQuantity);
+
+							dstData.odim.completeEncoding(ctx.targetEncoding);
 							// dstData.odim.quantity = dstQuantity; // replace syntax pattern
 							if (CHANGE_TYPE && ! CHANGE_SCALING){
 								mout.attention("no conf for: ", dstQuantity);
@@ -504,23 +507,23 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 					// dstData.odim.quantity = dstQuantity;
 					dstConf.setType(drain::Type::getTypeInfo(dstData.odim.type));
 					dstConf.setScaling(dstData.odim);
-					mout.special("user conf: ", dstConf);
+					mout.special(DRAIN_LOG(dstConf));
 				}
 
 				dstData.odim.quantity = dstQuantity;
 
 
-				mout.debug2("dst dataset: " , dstDataSet );
+				mout.debug2(DRAIN_LOG(dstDataSet) );
 
 				bean.getDstConf(srcConf, dstConf);
 
 				if (!dstConf.typeIsSet()){
 					dstConf.setType(srcConf.getType());
-					mout.obsolete(" setting src type? " , dstConf.getEncoding() );
+					mout.warn("Copied src type? " , DRAIN_LOG(dstConf.getEncoding()));
 				}
 
 				//dstData.odim.type = drain::Type::getTypeChar(dstConf.getType());
-				mout.info("initial dstConf: ", dstConf);
+				mout.info("initial: ", DRAIN_LOG(dstConf));
 				// Problems: if quantity remains same for dst, src image is modified here!
 
 				//dstData.data.setType(dstConf.getType()); // NEW     2023/04/21
@@ -547,8 +550,8 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				}
 				*/
 
-				mout.debug("dst:    ", dstData.data, " <- ", EncodingODIM(dstData.odim));
-				mout.debug("dst[0]: ", dstData.data.getChannel(0));
+				mout.attention(DRAIN_LOG(dstData.data), " <- ", EncodingODIM(dstData.odim));
+				mout.attention(DRAIN_LOG(dstData.data.getChannel(0)));
 
 				// dstTray.setChannels(dstData.data); // sets all the channels
 				dstTray.appendImage(dstData.data);
@@ -692,12 +695,12 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		// MAIN
 		mout.debug("Main");
 		//drain::image::ImageTray<const Channel> srcTray(dstTray); // fix
-		mout.debug("src tray :\n", srcTray);
-		mout.debug("dst tray before:\n", dstTray);
+		mout.debug(DRAIN_LOG(srcTray));
+		mout.debug(DRAIN_LOG(dstTray));
 		// bean.process(srcTray, dstTray); //, true);
 		bean.traverseChannels(srcTray, dstTray);
 		// bean.traverseChannels(srcTray, dstTray);
-		mout.debug("dst tray after:\n", dstTray);
+		mout.debug("after:\n", DRAIN_LOG(dstTray));
 
 		//mout.unimplemented() = "what:gain and what:offset in HDF5 struct";
 		/*

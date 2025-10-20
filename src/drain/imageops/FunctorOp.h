@@ -228,21 +228,36 @@ void UnaryFunctorOp<T,NORM,SIGN>::traverseChannel(const Channel &src, Channel & 
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 	mout.debug("start" );
 
-	const drain::ValueScaling  & ss = src.getScaling();
-	const drain::ValueScaling  & ds = dst.getScaling();
-	const bool SCALE = ss.isScaled() || ds.isScaled();
+	const drain::ValueScaling  & srcScale = src.getScaling();
+	const drain::ValueScaling  & dstScale = dst.getScaling();
+	const bool SCALE = srcScale.isScaled() || dstScale.isScaled();
 	mout.debug("SCALE=" , (int)SCALE );
 	mout.debug("functor=" , this->functor );
 
-	if (mout.isDebug(2)){
-		for (int i = 0; i < 256; i+=8) {
-			std::cout <<  __FILE__ << ':' << __FUNCTION__ << ':' << i << "\t -> " << ss.fwd(i) << "\t" << this->functor(ss.fwd(i)) << '\n';
+	if (mout.isDebug(0)){
+		if (drain::Type::call<drain::typeIsInteger>(src.getType())){
+			mout.warn("float dst type, but LIMIT applied" , dst );
+			const double coeff = 0.01 * drain::Type::call<drain::typeMax,double>(src.getType());
+			double d;
+			for (int i = 0; i < 100; ++i) {
+				d = ::round(coeff * static_cast<double>(i));
+				std::cout <<  __FILE__ << ':' << __FUNCTION__ << ':' << d << "\t -> ";
+				d = srcScale.fwd(d);
+				std::cout << d << "\t";
+				d = this->functor(d);
+				std::cout << d << "\t";
+				d = dstScale.inv(d);
+				std::cout << d << '\n';
+			}
+		}
+		else {
+
 		}
 	}
 
 	if (SCALE){
-		mout.debug2("ss scale:" , ss );
-		mout.debug2("ds scale:" , ds );
+		mout.info(DRAIN_LOG(srcScale));
+		mout.info(DRAIN_LOG(dstScale));
 	}
 
 	Channel::const_iterator s  = src.begin();
@@ -259,7 +274,7 @@ void UnaryFunctorOp<T,NORM,SIGN>::traverseChannel(const Channel &src, Channel & 
 		}
 		else {
 			while (d != dst.end()){
-				*d = ds.inv(this->functor(ss.fwd(static_cast<double>(*s))));
+				*d = dstScale.inv(this->functor(srcScale.fwd(static_cast<double>(*s))));
 				++s;
 				++d;
 			}
@@ -267,8 +282,9 @@ void UnaryFunctorOp<T,NORM,SIGN>::traverseChannel(const Channel &src, Channel & 
 	}
 	else { // LIMIT
 
-		if (!drain::Type::call<drain::typeIsInteger>(dst.getType()))
+		if (!drain::Type::call<drain::typeIsInteger>(dst.getType())){
 			mout.warn("float dst type, but LIMIT applied" , dst );
+		}
 
 		//typedef drain::typeLimiter<double> Limiter;
 		drain::typeLimiter<double>::value_t limiter = dst.getLimiter<double>(); //Type::call<Limiter>(dst.getType());
@@ -281,7 +297,7 @@ void UnaryFunctorOp<T,NORM,SIGN>::traverseChannel(const Channel &src, Channel & 
 		}
 		else {
 			while (d != dst.end()){
-				*d = limiter(ds.inv(this->functor(ss.fwd(static_cast<double>(*s)))));
+				*d = limiter(dstScale.inv(this->functor(srcScale.fwd(static_cast<double>(*s)))));
 				++s;
 				++d;
 			}

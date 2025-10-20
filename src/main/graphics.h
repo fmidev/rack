@@ -123,8 +123,10 @@ public:
 	static
 	void addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & object, PanelConfSVG::ElemClass elemClass);
 
+	// TODO: title area "filling order", by group class.
+	/// Add title elements in given group, to "reserve slots" for actual text content to be added later.
 	static
-	void addTitles(const PanelConfSVG & conf, drain::image::TreeSVG & object, const std::string & anchor, PanelConfSVG::ElemClass elemClass);
+	void addTitleElements(const PanelConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, PanelConfSVG::ElemClass elemClass);
 
 	/// Add rectangle
 	static

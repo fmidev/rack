@@ -113,7 +113,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 	/// Some product generators may have user defined accumulation methods.
 	// mout.attention("accumulationMethod: ", accumulationMethod);
-	// mout.warn(DRAIN_LOG_VAR(accumulationMethod));
+	// mout.warn(DRAIN_LOG(accumulationMethod));
 
 	std::string s;
 	drain::StringTools::replace(accumulationMethod, ':', ',', s);

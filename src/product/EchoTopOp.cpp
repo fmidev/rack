@@ -1115,7 +1115,7 @@ void EchoTopOp::computeSingleProduct(const DataSetMap<src_t> & srcSweeps, DataSe
 	}
 	*/
 
-	mout.accept<LOG_NOTICE>(DRAIN_LOG_VAR(threshold));
+	mout.accept<LOG_NOTICE>(DRAIN_LOG(threshold));
 
 	// dstEchoTop.odim.product = "ETOP";
 	// dstProduct.getWhat()["comment"] = "EchoTop2-test";

@@ -299,6 +299,8 @@ std::ostream & operator<<(std::ostream &ostr, const Accumulator & accumulator){
 }
 
 //DRAIN_ENUM_OSTREAM(Accumulator::FieldType);
+DRAIN_ENUM_DICT(Accumulator::FieldType);
+DRAIN_ENUM_OSTREAM(Accumulator::FieldType);
 
 }  // image::
 
@@ -313,8 +315,10 @@ std::ostream & operator<<(std::ostream &ostr, const image::Accumulator & accumul
 
 }  // drain::
 
+/*
 DRAIN_ENUM_DICT(drain::image::Accumulator::FieldType);
 DRAIN_ENUM_OSTREAM(drain::image::Accumulator::FieldType);
+*/
 /*
 inline
 std::ostream & operator<<(std::ostream &ostr, const drain::image::Accumulator & accumulator){

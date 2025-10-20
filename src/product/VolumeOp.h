@@ -178,7 +178,7 @@ Hi5Tree & VolumeOp<M>::processVolume(const Hi5Tree &srcRoot, Hi5Tree &dstRoot) c
 		std::string datetime = srcODIM.startdate + srcODIM.starttime;
 
 		dstODIM.updateLenient(srcODIM);
-		mout.attention<LOG_DEBUG>(dstODIM.startdate, '+', dstODIM.starttime, " ?== ", datetime, " < ", dstODIM.enddate, '+', dstODIM.endtime);
+		mout.attention<LOG_DEBUG+1>("start=", dstODIM.startdate, '+', dstODIM.starttime, " nominal<", datetime, "> end==", dstODIM.enddate, '+', dstODIM.endtime);
 
 		if (sweeps.find(datetime) == sweeps.end()){
 			mout.debug2("adding time=", datetime, ':', parentElem);

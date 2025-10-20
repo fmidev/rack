@@ -464,13 +464,13 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		if (composite.odim.product=="PPI"){
 			if (composite.odim.prodpar.empty()){
 				if (polarSrc.odim.elangle == 0.0){
-					mout.suspicious(DRAIN_LOG_VAR(polarSrc.odim.elangle));
+					mout.suspicious(DRAIN_LOG(polarSrc.odim.elangle));
 				}
 				composite.odim.prodpar = "?"; // init
 				composite.odim["what:prodpar"] = polarSrc.odim.elangle;
 				// ODIM requirement
-				mout.revised(DRAIN_LOG_VAR(polarSrc.odim.elangle));
-				mout.revised(DRAIN_LOG_VAR(composite.odim.product), " -> adding: ", DRAIN_LOG_VAR(composite.odim.prodpar));
+				mout.revised(DRAIN_LOG(polarSrc.odim.elangle));
+				mout.revised(DRAIN_LOG(composite.odim.product), " -> adding: ", DRAIN_LOG(composite.odim.prodpar));
 			}
 		}
 

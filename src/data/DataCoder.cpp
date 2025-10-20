@@ -61,10 +61,10 @@ void DataCoder::init(){
 
 	//SKIP_UNDETECT = ((!q.hasUndetectValue()) || (DataCoder::undetectQualityCoeff==0));
 
-	mout.debug(DRAIN_LOG_VAR(DataCoder::undetectQualityCoeff));
-	mout.debug(DRAIN_LOG_VAR(dataODIM.quantity));
-	mout.debug(DRAIN_LOG_VAR(q.hasUndetectValue()));
-	mout.debug(DRAIN_LOG_VAR(SKIP_UNDETECT));
+	mout.debug(DRAIN_LOG(DataCoder::undetectQualityCoeff));
+	mout.debug(DRAIN_LOG(dataODIM.quantity));
+	mout.debug(DRAIN_LOG(q.hasUndetectValue()));
+	mout.debug(DRAIN_LOG(SKIP_UNDETECT));
 	// mout.debug("DataCoder::undetectQualityCoeff: " , DataCoder::undetectQualityCoeff );
 	// mout.debug('[', dataODIM.quantity, ']');
 	// mout.debug("q.hasUndetectValue: ", q.hasUndetectValue());
