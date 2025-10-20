@@ -45,11 +45,11 @@ namespace image {
 // template<>
 // const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict =
 DRAIN_ENUM_DICT(LayoutSVG::GroupType) = {
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FIXED),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INDEPENDENT),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INEFFECTIVE),

@@ -67,18 +67,19 @@ public:
 		DECR = 2,
 	};
 
-	/// Experimental SVG style classes
+	/// Experimental SVG style classes (requests)
 	enum GroupType {
-		STACK_LAYOUT, // Align elements in rows or columns. (Alternat the axis in nesting STACK_LAYOUT levels)
-		ADAPTER,      // Translate group object such that its location is origin.
-		HEADER,       // Requests alignment as a title, typically title box combining TEXT (and TSPAN) on a background RECT
-		ALIGN,        // align me, with applicable rules and preferences (populate me with align instructions, unless already set)
-		COMPOUND,     // Internal elements are already aligned, so skip the recursion for aligning them.
-		FIXED,        // Absolute position - do not align (me or descendants) (future option); \see COMPOUND
-		INDEPENDENT,  // no anchoring allowed to this element, but collective bounding box is adjusted to include this element
-		INEFFECTIVE,  // the element is not included in (updating) the collective bounding box – it can be used as anchor, however
+		STACK_LAYOUT, // Align elements in rows or columns. (Alternate the axis in nesting STACK_LAYOUT levels)
+		ADAPTER,      // Translate this group object such that the upper right corner of graphics are in the origin (0,0).
+		ALIGN,        // Align this object, with applicable rules and preferences (populate me with align instructions, unless already set)
+		COMPOUND,     // Internal elements are already aligned, bypass recursion.
+		FIXED,        // Absolute position - do not align.
+		INDEPENDENT,  // No anchoring allowed to this element, but collective bounding box is adjusted to include this element
+		INEFFECTIVE,  // The object is not included in updating the collective bounding box but can be used as anchor. \see INDEPENDENT
 		//
 		CROP,         // minimize bbox covering all the included objects. \see GroupType::FIXED
+		// Future options
+		// HEADER,       // Requests alignment as a title, typically title box combining TEXT (and TSPAN) on a background RECT
 	};
 
 
