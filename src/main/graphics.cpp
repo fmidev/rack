@@ -885,7 +885,7 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 
 }
 
-void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attributes){
+void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes){
 
 	if (attributes.empty()){
 		return;
@@ -932,10 +932,10 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 		if (elemClass == PanelConfSVG::ElemClass::TIME){
 			if (format.empty()){
 				format = RackSVG::guessFormat(key);
-				text->set("format", format);
+				text->set("data-format", format);
 			}
 			else {
-				text->set("format", format); // DEBUG
+				text->set("data-format", format); // DEBUG
 			}
 			// mout.accept<LOG_DEBUG>("TIME text format", format);
 		}
@@ -964,17 +964,13 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			//drain::StringTools::replace(drain::XML::)
 			// tspan->setText(attr.second, drain::XML::entity_t::NONBREAKABLE_SPACE); // , "&#160;" non-breakable space
 			tspan->setTextSafe(attr.second, ' ');
-			// tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
 		}
 		else {
 			//mout.attention("handle: ", attr.first, " ", v, " + ", format);
 			std::stringstream sstr;
 			formatter.formatVariable(key, attr.second, format, sstr);
-			// tspan->ctext += sstr.str();
-			// tspan->setText(sstr.str(), "&#160;"); // non-b.sp
-			// tspan->setText(attr.second, " "); // escape code & in non-b.sp caused problems...
 			// tspan->setText(sstr.str(), " ");
-			//tspan->setText(sstr.str(), drain::XML::entity_t::NONBREAKABLE_SPACE); // "&#160;",  non-breakable space
+			// tspan->setText(sstr.str(), drain::XML::entity_t::NONBREAKABLE_SPACE); // "&#160;",  non-breakable space
 			tspan->setTextSafe(sstr.str(), ' '); // "&#160;",  non-breakable space
 		}
 
@@ -1078,9 +1074,9 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 	 }
 	 */
 	// Always
-	writeTitles(group, attributesPrivate);
+	formatTitle(group, attributesPrivate);
 	if (WRITE_SHARED_METADATA) {
-		writeTitles(group, attributesShared);
+		formatTitle(group, attributesShared);
 	}
 	/*
 	 if (WRITE_SHARED_METADATA && group.hasChild(PanelConfSVG::ElemClass::SHARED_METADATA)){ // explicit request: GROUP

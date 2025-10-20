@@ -279,7 +279,7 @@ public:
 	 *   Useful function – as attributes of two groups are considered: panel-specific and shared.
 	 */
 	static
-	void writeTitles(TreeSVG & group, const NodeSVG::map_t & attributes);
+	void formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes);
 
 	const PanelConfSVG & svgConf;
 
