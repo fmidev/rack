@@ -310,6 +310,7 @@ def read_geoconf(args): #, parser):
     
     geoconf = load_config(filepath)
     vars(args).update(geoconf)
+    logger.warn(f"Geoconf: {args.GEOCONF}")
     return geoconf
     
     # parser.set_defaults(**geoconf)
@@ -411,7 +412,7 @@ def handle_tilepath_defaults(dirpath, filepath) -> (str, str):
     else:
         if type(filepath) == list:
             if (len(filepath) > 1):
-                raise Exception('Multiple outputs not supported by SCHEME=TILE: ', args.OUTFILE)
+                raise Exception('Multiple outputs not supported by SCHEME=TILE: ', filepath)
             filepath = filepath[0]
         filepath = Path(filepath)
         tiledir = str(filepath.parent)
@@ -474,19 +475,19 @@ def compose_command(args):
     arg_vars = vars(args)
 
     # "MAIN"
-    
+    logger.warning(f"Geoconf: {args.GEOCONF}")
 
     cmdRoutine = []
     # Outputs
 
-    append_geoconf(cmdList, vars(args))
-    print (cmdList)
+    append_geoconf(cmdList, arg_vars)
+    # print (cmdList)
     
-    print("🔧 Final configuration:")
+    #print("🔧 Final configuration:")
     print(vars(args))
-    print("🔧 Final configuration:")
+    logger.debug("🔧 Final configuration:")
     for key, value in vars(args).items():
-        print(f"  {key}: {value}")
+        logger.debug(f"  {key}: {value}")
 
 
     #print (f"=== Full cmd for {timestamp}-{site} ===")
@@ -499,46 +500,46 @@ def compose_command(args):
 
     """ Compositing
     """
-    if args.SCHEME in ['TILE', 'TILED']:
+    if args.SCHEME in ['TILE','TILED']:
         if not args.GEOCONF:
-        #    raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
-            print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
+            # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
+            # print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
+            logger.note('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]')
     
     if (args.SCHEME == 'TILE'):
         (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
         print(dirpath,filepath)
         args.OUTDIR  = dirpath # .removesuffix('/')
-        args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+        #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
         cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
         cmdRoutine.append(f"--cCreateTile -o '{args.OUTFILE}'")
     elif (args.SCHEME == 'TILED'):
 
-
         (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
         if not args.INDIR:
-            args.INDIR = default_tiledir
+            args.INDIR = dirpath # default_tiledir
         args.INDIR = args.INDIR.removesuffix('/')
         if not args.INFILE:
-            args.INFILE = default_tilename.replace('{GEOCONF}', args.GEOCONF)
+            args.INFILE = filepath #default_tilename.replace('{GEOCONF}', args.GEOCONF)
     else:
-        if not args.OUTFILE:
-            args.OUTFILE = 'out.h5'
         cmdRoutine.append("--cAdd")
 
-    test = safe_dict(arg_vars)
-
-    print (args.INFILE)
-
-    #mika = expand_string(args.INFILE, "SITE", "fikor,fivan,finur")
-    #print (mika)
-    #mika = expand_string(mika, "TIMESTAMP", "202192,545919201,99237021")
-    #print (mika)
+    if not args.OUTFILE:
+        args.OUTFILE = 'out.h5'
 
     print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
     
     if (args.INFILE):
 
         print ("INFILE", type(args.INFILE), args.INFILE)
+        if type(args.INFILE) == str:
+            args.INFILE = [ args.INFILE ]
+        #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+
+        if (args.GEOCONF):
+            # Note: should not contain comma...?
+            args.INFILE  = expand_string(args.INFILE, "GEOCONF", args.GEOCONF)
+            print ("INFILE", args.INFILE)
 
         if (args.SITE):
             args.INFILE  = expand_string(args.INFILE, "SITE", args.SITE)
@@ -550,7 +551,6 @@ def compose_command(args):
 
         
         if len(args.INFILE)==1 :
-            
             cmdList.extend(args.INFILE) # list of 1 elem
             cmdList.extend(cmdRoutine)
         else:
@@ -577,14 +577,17 @@ def compose_command(args):
         # Probably makes little sense in oper. use
         if (args.TIMESTAMP):
             args.OUTFILE  = expand_string(args.OUTFILE, "TIMESTAMP", args.TIMESTAMP)
-        if (args.SCHEME == 'TILE') and (len(args.OUTFILE) > 1):
-            #print(args.OUTFILE, file=sys.stderr)
-            raise Exception('Multiple outputs not supported by SCHEME=TILE: ', args.OUTFILE)
 
+        #if (args.SCHEME == 'TILE') and (len(args.OUTFILE) > 1):
+        if len(args.OUTFILE) > 1:
+            #print(args.OUTFILE, file=sys.stderr)
+            raise Exception(f'Multiple outputs not supported : {args.OUTFILE}') # by SCHEME=TILE
+
+        args.OUTFILE = args.OUTFILE.pop() # set
             
-    if (args.SCHEME != 'TILE'):
-        cmdList.append("--cExtract DATA,WEIGHT")
-        append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
+        if (args.SCHEME != 'TILE'):
+            cmdList.append("--cExtract DATA,WEIGHT")
+            append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
 
     return args.newline.join(cmdList)
     #print (cmd)

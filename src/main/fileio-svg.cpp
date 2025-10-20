@@ -523,6 +523,7 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 		// drain::StringTools::replace(ctx.svgPanelConf.groupTitleSyntax, '/', '-', ctx.svgPanelConf.groupTitleSyntax);
 		ctx.svgPanelConf.groupTitle = value;
+
 		if (value.length()>=4){
 			const std::string prefix(value, 0,4);
 			if (prefix=="NONE"){
@@ -533,7 +534,8 @@ public:
 				if (value.length()>4){
 					// perhaps starts with some separator like ':'
 					drain::StringTools::replace(value.substr(5), '/', '-', ctx.svgPanelConf.groupIdentifier);
-					mout.deprecating("combination of '", prefix, "' and ID: use instead: --gGroupId '", ctx.svgPanelConf.groupIdentifier, "' --gGroupTitle ''");
+					mout.deprecating("combination of '", prefix, "' and ID");
+					mout.advice("use instead: --gGroupId '", ctx.svgPanelConf.groupIdentifier, "' --gGroupTitle '", prefix,"'");
 				}
 			}
 			else if (prefix=="AUTO"){
@@ -542,9 +544,11 @@ public:
 					mout.deprecating("combination of ", prefix, "+<title>, the latter forwarded to --gGroupId");
 					// perhaps starts with some separator like ':'
 					drain::StringTools::replace(value.substr(5), '/', '-', ctx.svgPanelConf.groupIdentifier);
+					mout.advice("use: --gGroupId '", ctx.svgPanelConf.groupIdentifier, "' --gGroupTitle '", prefix,"'");
 				}
 			}
 		}
+
 		if (ctx.svgPanelConf.groupIdentifier.empty()){
 			mout.revised("setting also GroupId");
 			// mout.accept<LOG_WARNING>("old value: ", value);

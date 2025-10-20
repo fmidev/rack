@@ -135,9 +135,6 @@ public:
 		pngConf.copyStruct(cmd.pngConf,     cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
 		svgConf.copyStruct(cmd.svgConf,     cmd, *this, drain::ReferenceMap::LINK); //,
-
-		// RackContext & ctx = getContext<RackContext>();
-		//svgConf.link("group", ctx.svgPanelConf.groupName); // otherwise could be other/static ctx, because of LINK above ?
 	}
 
 
@@ -561,6 +558,9 @@ void CmdOutputFile::exec() const {
 		mout.hint<LOG_DEBUG>("\t convert ", path, " out.png # Use full system paths");
 		// ofstr << ctx.xmlTrack << '\n';
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
+		mout.attention(DRAIN_LOG_VAR(ctx.svgPanelConf.groupIdentifier));
+		mout.attention(DRAIN_LOG_VAR(ctx.svgPanelConf.groupTitle));
+		mout.attention(DRAIN_LOG_VAR(ctx.svgPanelConf.groupTitleFormatted));
 	}
 	else if (DATA_HTML) { // drain::NodeHTML::fileInfo.checkPath(path)
 

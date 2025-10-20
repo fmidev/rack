@@ -216,8 +216,9 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 	drain::image::TreeSVG & main = ctx.svgTrack["MAIN"]; //drain::image::LayoutSVG::
 	if (main -> isUndefined()){
 		main->setType(svg::GROUP);
-		main->addClass("MAIN"); // request translate upon file write
+		main->addClass("MAIN"); // TitleCreatorSVG::visitPostfix
 		main->addClass(LayoutSVG::ADAPTER);
+		// request translate upon file write:?
 		// mout.attention("Created MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
 	}
 	// mout.attention("Providing MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
@@ -351,13 +352,20 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 
 	drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
-	ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier); // status updated upon last file save
+	//ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier); // status updated upon last file save
+	std::string groupId = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier);
 
-	drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgPanelConf.groupTitleFormatted];
+	ctx.svgPanelConf.groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupTitle); // status updated upon each PNG file save
+
+
+	//drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgPanelConf.groupTitleFormatted];
+	drain::image::TreeSVG & alignedGroup = mainGroup[groupId];
 
 	if (alignedGroup -> isUndefined()){
 		alignedGroup->setType(svg::GROUP);
-		alignedGroup->setId(ctx.svgPanelConf.groupTitleFormatted);
+		//alignedGroup->setId(ctx.svgPanelConf.groupTitleFormatted);
+		//alignedGroup->setId(groupId);
+		alignedGroup->set("data-title", ctx.svgPanelConf.groupTitleFormatted);
 		alignedGroup->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 	}
 
@@ -449,10 +457,10 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 	consumeAlignRequest(ctx, imagePanel);
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
+	image->addClass(LayoutSVG::FIXED);
+	image->setLocation(0,0);
 	image->setFrame(src.getGeometry().area);
-	addImageBorder(imagePanel); //, src.getGeometry().area);
-
-
+	addImageBorder(imagePanel);
 
 
 	// Metadata:
@@ -517,10 +525,12 @@ void RackSVG::addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg
 	consumeAlignRequest(ctx, imagePanel);
 
 	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE);
+	image->addClass(LayoutSVG::FIXED);
+	image->setLocation(0,0);
 	image->setFrame(frame);
+
 	if (!styleClass.empty()){
 		imagePanel->addClass(styleClass);
-		// image->addClass(styleClass);
 	}
 
 	return; //  imagePanel;
@@ -902,7 +912,10 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 
 		TreeSVG & text  = group[elemClass];
 		if (text->isUndefined()){
-			text->setType(svg::COMMENT); // only test...
+			// At least group titles can still be undefined by now.
+			text->setType(svg::TEXT);
+			// text->setType(svg::COMMENT); // only test...
+			//text->setText("This ", attr.first, '=', attr.second,  " [", elemClass, "] was left undefined?");
 			/*
 			text->setType(svg::TEXT);
 			text->addClass("SKIP");
@@ -910,7 +923,7 @@ void TitleCreatorSVG::writeTitles(TreeSVG & group, const NodeSVG::map_t & attrib
 			*/
 			// text->setText("skip...", elemClass);
 			// Why no return here?
-			continue;
+			// continue;
 		}
 
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
@@ -1030,7 +1043,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 					PanelConfSVG::ElemClass::GROUP_TITLE);
 			// group[PanelConfSVG::ElemClass::GENERAL]->setText(group[svg::TITLE]);
 			// group[LayoutSVG::ADAPTER]
-			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->getId());
+			// adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->getId());
+			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->get("data-title", ""));
 			// group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.groupTitleFormatted+ "..dynamic=temporary WRONG!");
 			return 0;
 		}

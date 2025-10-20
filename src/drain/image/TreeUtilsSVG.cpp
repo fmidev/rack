@@ -224,7 +224,7 @@ void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation,
 			orientation = AlignBase::flip(orientation);
 			mout.special("flipped orientation to ", orientation, " for children of ", node);
 			// Also mark and increment level:
-			node.addClass(StringBuilder<'_'>("STACK", depth).str());
+			// node.addClass(StringBuilder<'_'>("STACK", depth).str()); // future option...
 			++depth;
 		}
 
@@ -512,18 +512,22 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 		}
 
 
-		if (!node.hasClass(LayoutSVG::COMPOUND)){
+		if (node.hasClass(LayoutSVG::FIXED)){ // consider joining this with COMPOUND?
+			// mout.attention("fixed, ok ", node);
+		}
+		else if (!node.hasClass(LayoutSVG::COMPOUND)){
 			// First, align the children of this node, recursively
 			superAlign(entry.second);
 		}
-		else {
+		else { // COMPOUND - or require detectBox being already calculated?
 			// Unused at the moment?
+			mout.attention("detecting bbox of ", node);
 			detectBox(entry.second, true); // only
 		}
 
 
 		// At least some align instruction has been set. (This could be sufficient, replacing above test?)
-		if (node.isAligned()){
+		if (node.isAligned() && !node.hasClass(LayoutSVG::FIXED)){
 			adjustLocation(group, node, anchorSpanHorz);
 			adjustLocation(group, node, anchorSpanVert);
 		}
@@ -655,10 +659,11 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 
 	AlignBase::Pos alignLoc;
 
-	// STEP 1: ANCHOR
+	// STEP 1: derive reference point at the ANCHOR
+
 	const std::string ns = NodePrinter(node).str();
 
-	mout.note("Adjusting ", ns, " with ", anchorSpan);
+	mout.debug("Adjusting ", ns, " with ", anchorSpan);
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
@@ -682,20 +687,15 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
 	}
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
-
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
-	//static
-	// const std::string ns = NodePrinter(node).str();
 
-	// STEP 2: OBJECT
+	// STEP 2: OBJECT itself – define the reference point of the object to be aligned, i.e. adjusted.
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "start");
-			// node.transform.translate.set(+2.0 * node.getMargin());
-			// coord += 2.0*node.getMargin();
 			node.transform.translate.x = +2.0*node.getMargin();
 		}
 		break;
@@ -710,9 +710,7 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "end");
-			// node.transform.translate.set(-2.0 * node.getMargin());
 			node.transform.translate.x = -2.0*node.getMargin();
-			//coord -= 2.0*node.getMargin();
 		}
 		else {
 			coord -= obox.width;
@@ -736,24 +734,25 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	}
 
 	if (IS_TEXT){
+		// Debuggin, remove later
 		if ((obox.x)||(obox.y)){
 			mout.suspicious("TEXT element with absolute coords: ", obox);
 		}
 	}
 
-	if (HAS_TRUE_ORIGIN || (node.typeIs(svg::GROUP) && (node.hasClass("MAIN") || node.hasClass(LayoutSVG::ADAPTER)))){
+	if (HAS_TRUE_ORIGIN){ // || node.hasClass(LayoutSVG::ADAPTER)){ // (node.typeIs(svg::GROUP) && (node.hasClass("MAIN") || node.hasClass(LayoutSVG::ADAPTER)))){
 		node.getBoundingBox().x = coord;
 		if ((!IS_TEXT) && (node.transform.translate.x != 0.0)){
 			mout.warn("Node to be moved by (x,y) also has translation:", node.transform.translate.tuple());
 		}
-		mout.accept<LOG_NOTICE>(ns, " <- ", anchorSpan, " MOVING -> ", node.getBoundingBox(), " (tr=", node.transform.translate.tuple(), ")");
+		mout.debug("moved: ", ns, " <- ", anchorSpan, " MOVING -> ", node.getBoundingBox(), " (tr=", node.transform.translate.tuple(), ")");
 	}
 	else {
 		node.transform.translate.x = coord;
 		if (node.getBoundingBox().x != 0.0){
 			mout.warn("Node to be translated also has non-zero x coordinate: ", node.getBoundingBox());
 		}
-		mout.accept<LOG_NOTICE>(ns, " <- ", anchorSpan, "  -> (", node.getBoundingBox(), ") TRANSLATED: tr=", node.transform.translate.tuple());
+		mout.debug("translated: ", ns, " <- ", anchorSpan, "  -> (", node.getBoundingBox(), ") TRANSLATED: tr=", node.transform.translate.tuple());
 	}
 	// mout.attention("Alignment::OBJECT-HORZ ", pos);
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::OBJECT, '/', axis, '=', alignLoc);
@@ -774,8 +773,10 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT);
 
 	svg::coord_t coord = 0;
-
 	AlignBase::Pos alignLoc;
+
+	// STEP 1: derive reference point at the ANCHOR
+
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
@@ -801,13 +802,10 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	// mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
-	static const std::string TEXT_ANCHOR("text-anchor");
-
+	// STEP 2: OBJECT itself – define the reference point of the object to be aligned, i.e. adjusted.
 	Box<svg::coord_t> & obox = node.getBoundingBox();
 
 	if (IS_TEXT){
-		// node.transform.translate.y += (node.getHeight()-node.getMargin());
-		// coord += (node.getHeight()-node.getMargin());
 		coord += node.getHeight();
 		node.transform.translate.y = -node.getMargin();
 	}
@@ -840,7 +838,7 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 		mout.unimplemented<LOG_ERR>("AlignSVG::Pos ", alignLoc);
 	}
 
-	if (HAS_TRUE_ORIGIN){
+	if (HAS_TRUE_ORIGIN) { // || node.hasClass(LayoutSVG::ADAPTER)){ //){
 		node.getBoundingBox().y = coord;
 	}
 	else {
