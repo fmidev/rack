@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['extlinkpolicy_0',['extlinkpolicy',['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1',1,'drain::ReferenceMap2::extLinkPolicy'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1',1,'drain::ReferenceMap::extLinkPolicy']]]
+  ['direction_0',['Direction',['../classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa',1,'drain::image::LayoutSVG']]]
 ];

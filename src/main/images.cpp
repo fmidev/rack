@@ -739,7 +739,7 @@ public:
 			}
 
 			if (NO_SAVE){
-				mout.advice("use explicit --encoding quantity={...} (before) or --keep ", elem, ":/data: (after) to include colour image in saving HDF5.");
+				mout.hint("use explicit --encoding quantity={...} (before) or --keep ", elem, ":/data: (after) to include colour image in saving HDF5.");
 			}
 
 			mout.debug("target encoding: ", EncodingODIM(encoding));

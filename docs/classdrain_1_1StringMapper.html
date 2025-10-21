@@ -153,10 +153,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLiteral</b> () cons
 <tr class="memitem:ae0a3324409d405177019c60c26c5933a"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ae0a3324409d405177019c60c26c5933a">toStr</a> (const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=-1, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;()) const</td></tr>
 <tr class="memdesc:ae0a3324409d405177019c60c26c5933a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last parsed std::string to a std::string.  <br /></td></tr>
 <tr class="separator:ae0a3324409d405177019c60c26c5933a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e0962219865d494884bed208c5fdb65" id="r_a6e0962219865d494884bed208c5fdb65"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a6e0962219865d494884bed208c5fdb65"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a6e0962219865d494884bed208c5fdb65">expand</a> (const std::map&lt; std::string, T &gt; &amp;m, bool clear=false)</td></tr>
-<tr class="memdesc:a6e0962219865d494884bed208c5fdb65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals.">StringMapper</a>, turning expanded variables to constants.  <br /></td></tr>
-<tr class="separator:a6e0962219865d494884bed208c5fdb65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a840aa0feb8c17d0580fd7677c14bff0d" id="r_a840aa0feb8c17d0580fd7677c14bff0d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a840aa0feb8c17d0580fd7677c14bff0d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a840aa0feb8c17d0580fd7677c14bff0d">expand</a> (const std::map&lt; std::string, T &gt; &amp;m, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;(), bool clear=false)</td></tr>
+<tr class="memdesc:a840aa0feb8c17d0580fd7677c14bff0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals.">StringMapper</a>, turning expanded variables to constants.  <br /></td></tr>
+<tr class="separator:a840aa0feb8c17d0580fd7677c14bff0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0251e21918935ed068840c5d5aa63be" id="r_aa0251e21918935ed068840c5d5aa63be"><td class="memTemplParams" colspan="2"><a id="aa0251e21918935ed068840c5d5aa63be" name="aa0251e21918935ed068840c5d5aa63be"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:aa0251e21918935ed068840c5d5aa63be"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;m) const</td></tr>
@@ -284,8 +284,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>formatting</b></td></
 
 </div>
 </div>
-<a id="a6e0962219865d494884bed208c5fdb65" name="a6e0962219865d494884bed208c5fdb65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e0962219865d494884bed208c5fdb65">&#9670;&#160;</a></span>expand()</h2>
+<a id="a840aa0feb8c17d0580fd7677c14bff0d" name="a840aa0feb8c17d0580fd7677c14bff0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a840aa0feb8c17d0580fd7677c14bff0d">&#9670;&#160;</a></span>expand()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,6 +300,12 @@ template&lt;class T &gt; </div>
           <td>(</td>
           <td class="paramtype">const std::map&lt; std::string, T &gt; &amp;&#160;</td>
           <td class="paramname"><em>m</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>formatter</em> = <code><a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt;T&gt;()</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

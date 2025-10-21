@@ -1,5 +1,5 @@
 <map id="AlignSVG" name="AlignSVG">
-<area shape="rect" id="Node000001" title="User&#45;friendly programming interface for alignment considering two elements." alt="" coords="58,269,141,295"/>
-<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos." alt="" coords="5,5,193,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,44,102,269,97,269,97,44"/>
+<area shape="rect" id="Node000001" title="User&#45;friendly programming interface for alignment considering two elements." alt="" coords="41,269,124,295"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos." alt="" coords="5,5,160,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,44,85,269,80,269,80,44"/>
 </map>

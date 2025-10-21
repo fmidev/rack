@@ -222,7 +222,7 @@ void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation,
 
 		if (node.hasClass(LayoutSVG::STACK_LAYOUT)){
 			orientation = AlignBase::flip(orientation);
-			mout.special("flipped orientation to ", orientation, " for children of ", node);
+			// mout.special("flipped orientation to ", orientation, " for children of ", node);
 			// Also mark and increment level:
 			// node.addClass(StringBuilder<'_'>("STACK", depth).str()); // future option...
 			++depth;
@@ -480,19 +480,12 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 	// mout.attention("ACCEPT:", object->getTag());
 	// mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", group.data); //, object->getId(), " -> ", object->getBoundingBox());
 
-	// Host element's |STACK_LAYOUT| bbox, to be updated below
-	// Incrementally growing extent: not only width/height but also x,y.
-	BBoxSVG & compoundBBox = group->getBoundingBox();
-	compoundBBox.reset();
 
 	// mout.pending<LOG_NOTICE>("start: extensiveBBox ", compoundBBox, " obj=", group.data);
 
 	// Starting point (indeed): origin.
 	// Basic idea: Stack-align objects on a "blanche", and finally adjust group if needed.
 
-	// Initial anchor box is actually just a point (0,0)
-	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz(0, 0);
-	CoordSpan<AlignBase::Axis::VERT> anchorSpanVert(0, 0);
 
 	/// Ideally, each object (graphic element or compound object) should:
 	/**  - return a bounding box, or more specifically (width,height) that is, bbox.getFrame())
@@ -504,11 +497,11 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 	 *
 	 */
 
-	std::set<TreeSVG::path_elem_t>  aligned;
-	//std::list<TreeSVG::path_elem_t> alignWaitingForNext;
-	TreeSVG::path_elem_t alignWaitingForNext;
+	// std::set<TreeSVG::path_elem_t>  aligned;
+	// TreeSVG::path_elem_t anchorHorzRequest;
+	// TreeSVG::path_elem_t anchorVertRequest;
 
-	std::list<TreeSVG::path_elem_t> alignWaitingForCollectiveBBox;
+	// std::list<TreeSVG::path_elem_t> alignWaitingForCollectiveBBox;
 
 
 	for (TreeSVG::pair_t & entry: group){
@@ -518,7 +511,6 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 		if (node.isAbstract()){ // Non-graphic
 			continue;
 		}
-
 
 		if (node.hasClass(LayoutSVG::FIXED)){ // consider joining this with COMPOUND?
 			// mout.attention("fixed, ok ", node);
@@ -532,28 +524,58 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 			mout.attention("detecting bbox of ", node);
 			detectBox(entry.second, true); // only
 		}
+	}
 
-		// At least some align instruction has been set. (This could be sufficient, replacing above test?)
-		if (node.isAligned() && !node.hasClass(LayoutSVG::FIXED)){
+	// Separated to two loops for future option: @NEXT and @COLLECTIVE_FINAL (bbox) – using several iterations if needed.
+
+	// Host element's |STACK_LAYOUT| bbox, to be updated below
+	// Incrementally growing extent: not only width/height but also x,y.
+	BBoxSVG & compoundBBox = group->getBoundingBox();
+	compoundBBox.reset();
+
+	// Initial anchor box is actually just a point (0,0)
+	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz(0, 0);
+	CoordSpan<AlignBase::Axis::VERT> anchorSpanVert(0, 0);
+
+	for (TreeSVG::pair_t & entry: group){
+
+		NodeSVG & node = entry.second.data;
+
+		if (node.isAbstract()){ // Non-graphic
+			continue;
+		}
+
+		if (node.hasClass(LayoutSVG::FIXED)){
+			// skip moving/translating
+		}
+		else if (node.isAligned()){
+			// if (node.getMyAlignAnchor<AlignBase::HORZ>().)
 			adjustLocation(group, node, anchorSpanHorz);
+			// if false (has store HORZ request) skip?
 			adjustLocation(group, node, anchorSpanVert);
 		}
 
-		if (!alignWaitingForNext.empty()){
+		/*
+		if (!anchorHorzRequest.empty()){
 			NodeSVG & n = group[alignWaitingForNext];
-			adjustLocation(group, n, anchorSpanHorz);
-			adjustLocation(group, n, anchorSpanVert);
 			alignWaitingForNext.clear();
 		}
+		*/
 
-		if (node.hasClass(LayoutSVG::ADAPTER)){ //  || node.hasClass("MAIN")
-			// mout.accept<LOG_NOTICE>("Finally TUNING  ... ", compoundBBox, " of ", group.data);
+		// Update spanHorz and spanVert
+
+		if (node.hasClass(LayoutSVG::ADAPTER)){
+			// This is a riddle... consider better nodePrinter with aligns.
+			///mout.accept<LOG_NOTICE>(" adapt1: ", NodePrinter(node).str() );
 			BBoxSVG & bn =  node.getBoundingBox();
 			node.transform.setTranslate(-bn.x, -bn.y);
 			bn.setLocation(0.0, 0.0);
 			// Save the last one
-			anchorSpanHorz.copyFrom(bn); // adjusted by transform.x
-			anchorSpanVert.copyFrom(bn); // adjusted by transform.y
+			anchorSpanHorz.copyFrom(bn); // NOT adjusted by transform.x
+			anchorSpanVert.copyFrom(bn); // NOT adjusted by transform.y
+			// anchorSpanHorz.copyFrom(node); // adjusted by transform.x
+			// anchorSpanVert.copyFrom(node); // adjusted by transform.y
+			// mout.accept<LOG_NOTICE>(" adapt2: ", NodePrinter(node).str() );
 		}
 		else {
 			// Save the last one
@@ -561,8 +583,9 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 			anchorSpanVert.copyFrom(node); // adjusted by transform.y
 		}
 
+
 		if (!node.hasClass(LayoutSVG::INDEPENDENT)){
-			aligned.insert(entry.first);
+			//aligned.insert(entry.first);
 		}
 
 

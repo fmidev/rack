@@ -87,23 +87,116 @@ $(function() {
  <a href="classdrain_1_1TreeVisitor.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="TreeUtils_8h_source.html">TreeUtils.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for TreeVisitor&lt; T &gt;:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdrain_1_1TreeVisitor__inherit__graph.png" border="0" usemap="#aTreeVisitor_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="aTreeVisitor_3_01T_01_4_inherit__map" id="aTreeVisitor_3_01T_01_4_inherit__map">
+<area shape="rect" title="Default implementation of a tree visitor (concept) compatible TreeUtils::traverser()" alt="" coords="5,5,135,31"/>
+<area shape="rect" href="classdrain_1_1TreePruner.html" title=" " alt="" coords="5,79,135,104"/>
+<area shape="poly" title=" " alt="" coords="73,44,73,79,67,79,67,44"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a54bd2c7f232a37d8d48d9926f4c11d3e" id="r_a54bd2c7f232a37d8d48d9926f4c11d3e"><td class="memItemLeft" align="right" valign="top"><a id="a54bd2c7f232a37d8d48d9926f4c11d3e" name="a54bd2c7f232a37d8d48d9926f4c11d3e"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPrefix</b> (T &amp;tree, const typename T::path_t &amp;path)</td></tr>
-<tr class="memdesc:a54bd2c7f232a37d8d48d9926f4c11d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed before traversing child nodes. <br /></td></tr>
+<tr class="memitem:a54bd2c7f232a37d8d48d9926f4c11d3e" id="r_a54bd2c7f232a37d8d48d9926f4c11d3e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeVisitor.html#a54bd2c7f232a37d8d48d9926f4c11d3e">visitPrefix</a> (T &amp;tree, const typename T::path_t &amp;path)</td></tr>
+<tr class="memdesc:a54bd2c7f232a37d8d48d9926f4c11d3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed before traversing child nodes.  <br /></td></tr>
 <tr class="separator:a54bd2c7f232a37d8d48d9926f4c11d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79898a5f2ed0bd16911b81b0d1f357b7" id="r_a79898a5f2ed0bd16911b81b0d1f357b7"><td class="memItemLeft" align="right" valign="top"><a id="a79898a5f2ed0bd16911b81b0d1f357b7" name="a79898a5f2ed0bd16911b81b0d1f357b7"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPostfix</b> (T &amp;tree, const typename T::path_t &amp;path)</td></tr>
-<tr class="memdesc:a79898a5f2ed0bd16911b81b0d1f357b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed after traversing child nodes. <br /></td></tr>
+<tr class="memitem:a79898a5f2ed0bd16911b81b0d1f357b7" id="r_a79898a5f2ed0bd16911b81b0d1f357b7"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreeVisitor.html#a79898a5f2ed0bd16911b81b0d1f357b7">visitPostfix</a> (T &amp;tree, const typename T::path_t &amp;path)</td></tr>
+<tr class="memdesc:a79898a5f2ed0bd16911b81b0d1f357b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed after traversing child nodes.  <br /></td></tr>
 <tr class="separator:a79898a5f2ed0bd16911b81b0d1f357b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
 class drain::TreeVisitor&lt; T &gt;</div><p>Default implementation of a tree visitor (concept) compatible TreeUtils::traverser() </p>
 <p>Notice that the first argument (visitor) of TreeUtils::traverser() is templated, hence does not have to be derived from this class. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a79898a5f2ed0bd16911b81b0d1f357b7" name="a79898a5f2ed0bd16911b81b0d1f357b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79898a5f2ed0bd16911b81b0d1f357b7">&#9670;&#160;</a></span>visitPostfix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int visitPostfix </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename T::path_t &amp;&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tasks to be executed after traversing child nodes. </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1TreePruner.html#af46553cf7f5d32397bc21754d47dd684">TreePruner&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<a id="a54bd2c7f232a37d8d48d9926f4c11d3e" name="a54bd2c7f232a37d8d48d9926f4c11d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54bd2c7f232a37d8d48d9926f4c11d3e">&#9670;&#160;</a></span>visitPrefix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int visitPrefix </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>tree</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const typename T::path_t &amp;&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tasks to be executed before traversing child nodes. </p>
+
+<p>Reimplemented in <a class="el" href="classdrain_1_1TreePruner.html#a14b0933c7a2b13e9c9a9737ccfd05dec">TreePruner&lt; T &gt;</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/drain/util/<a class="el" href="TreeUtils_8h_source.html">TreeUtils.h</a></li>
 </ul>
 </div><!-- contents -->

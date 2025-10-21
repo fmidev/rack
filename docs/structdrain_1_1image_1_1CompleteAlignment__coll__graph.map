@@ -1,5 +1,5 @@
 <map id="CompleteAlignment&lt; AX, A &gt;" name="CompleteAlignment&lt; AX, A &gt;">
-<area shape="rect" id="Node000001" title="&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its..." alt="" coords="18,79,181,119"/>
-<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos." alt="" coords="5,5,193,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,44,102,79,97,79,97,44"/>
+<area shape="rect" id="Node000001" title="&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its..." alt="" coords="5,79,168,119"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos." alt="" coords="9,5,164,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,44,89,79,84,79,84,44"/>
 </map>

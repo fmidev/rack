@@ -26,6 +26,5 @@ var searchData=
   ['unituple_3c_20t_2c_202_20_3e_23',['UniTuple&lt; T, 2 &gt;',['../classdrain_1_1UniTuple.html',1,'drain']]],
   ['unituple_3c_20t_2c_203_20_3e_24',['UniTuple&lt; T, 3 &gt;',['../classdrain_1_1UniTuple.html',1,'drain']]],
   ['unituple_3c_20t_2c_204_20_3e_25',['UniTuple&lt; T, 4 &gt;',['../classdrain_1_1UniTuple.html',1,'drain']]],
-  ['unituple_3c_20t_2c_205_20_3e_26',['UniTuple&lt; T, 5 &gt;',['../classdrain_1_1UniTuple.html',1,'drain']]],
-  ['utilsxml_27',['UtilsXML',['../classdrain_1_1UtilsXML.html',1,'drain']]]
+  ['unituple_3c_20t_2c_205_20_3e_26',['UniTuple&lt; T, 5 &gt;',['../classdrain_1_1UniTuple.html',1,'drain']]]
 ];

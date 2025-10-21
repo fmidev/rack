@@ -12,6 +12,6 @@ var searchData=
   ['xmlattributelayout_9',['xmlAttributeLayout',['../classdrain_1_1Sprinter.html#a2188b35299ea8a1a720616668443eb0e',1,'drain::Sprinter']]],
   ['xmldoc_5fattrib_5fmap_5ft_10',['xmldoc_attrib_map_t',['../classdrain_1_1NodeXML.html#a2477c45e8927ffda85951d534957c453',1,'drain::NodeXML']]],
   ['xmlsettype_11',['xmlSetType',['../classdrain_1_1XML.html#a8053373244433a9288cbe744c3f7990c',1,'drain::XML']]],
-  ['xscale_12',['xscale',['../classrack_1_1VerticalCrossSectionODIM.html#ac9ea1df8d926e2a6ed51a93a56ea0eea',1,'rack::VerticalCrossSectionODIM::xscale'],['../classdrain_1_1image_1_1GeoFrame.html#a3ccbdf0c5b972f5de8c857ce3b448634',1,'drain::image::GeoFrame::xScale']]],
+  ['xscale_12',['xscale',['../classdrain_1_1image_1_1GeoFrame.html#a3ccbdf0c5b972f5de8c857ce3b448634',1,'drain::image::GeoFrame::xScale'],['../classrack_1_1VerticalCrossSectionODIM.html#ac9ea1df8d926e2a6ed51a93a56ea0eea',1,'rack::VerticalCrossSectionODIM::xscale']]],
   ['xsize_13',['xsize',['../classrack_1_1VerticalCrossSectionODIM.html#adf0e37945d5ed8be73e1f09d87bf1da0',1,'rack::VerticalCrossSectionODIM']]]
 ];

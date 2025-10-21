@@ -78,8 +78,9 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1LayoutSVG-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">LayoutSVG Class Reference</div></div>
 </div><!--header-->
@@ -88,7 +89,7 @@ $(function() {
 <p>Higher level controller for setting alignments.  
  <a href="classdrain_1_1image_1_1LayoutSVG.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="AlignSVG_8h_source.html">AlignSVG.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="LayoutSVG_8h_source.html">LayoutSVG.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for LayoutSVG:</div>
 <div class="dyncontent">
@@ -117,48 +118,60 @@ Collaboration diagram for LayoutSVG:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a224b9163917ac32fc95a60d8c1eec3aa" id="r_a224b9163917ac32fc95a60d8c1eec3aa"><td class="memItemLeft" align="right" valign="top"><a id="a224b9163917ac32fc95a60d8c1eec3aa" name="a224b9163917ac32fc95a60d8c1eec3aa"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Direction</b> { <b>UNDEFINED_DIRECTION</b> =0
+<tr class="memitem:a224b9163917ac32fc95a60d8c1eec3aa" id="r_a224b9163917ac32fc95a60d8c1eec3aa"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a> { <b>UNDEFINED_DIRECTION</b> =0
 , <b>INCR</b> = 1
 , <b>DECR</b> = 2
  }</td></tr>
+<tr class="memdesc:a224b9163917ac32fc95a60d8c1eec3aa"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structdrain_1_1image_1_1Direction.html">Direction</a> for "Stacked", horziontally or vertically sequentially aligned layout.  <a href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">More...</a><br /></td></tr>
 <tr class="separator:a224b9163917ac32fc95a60d8c1eec3aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3de1267c3b87dda21863fd739439d918" id="r_a3de1267c3b87dda21863fd739439d918"><td class="memItemLeft" align="right" valign="top"><a id="a3de1267c3b87dda21863fd739439d918" name="a3de1267c3b87dda21863fd739439d918"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>GroupType</b> { <b>HEADER</b>
-, <b>ALIGN_FRAME</b>
-, <b>ABSOLUTE</b>
-, <b>FLOAT</b>
+<tr class="memitem:a3de1267c3b87dda21863fd739439d918" id="r_a3de1267c3b87dda21863fd739439d918"><td class="memItemLeft" align="right" valign="top"><a id="a3de1267c3b87dda21863fd739439d918" name="a3de1267c3b87dda21863fd739439d918"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918">GroupType</a> { <br />
+&#160;&#160;<b>STACK_LAYOUT</b>
+, <b>ADAPTER</b>
+, <b>ALIGN</b>
+, <b>COMPOUND</b>
+, <br />
+&#160;&#160;<b>FIXED</b>
+, <b>INDEPENDENT</b>
+, <b>INEFFECTIVE</b>
+, <b>CROP</b>
+<br />
  }</td></tr>
+<tr class="memdesc:a3de1267c3b87dda21863fd739439d918"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental SVG style classes (requests) <br /></td></tr>
 <tr class="separator:a3de1267c3b87dda21863fd739439d918"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-types" name="pro-types"></a>
+Protected Types</h2></td></tr>
 <tr class="memitem:aaade4a3eeef68010e0c2ab84bd7503ed" id="r_aaade4a3eeef68010e0c2ab84bd7503ed"><td class="memItemLeft" align="right" valign="top"><a id="aaade4a3eeef68010e0c2ab84bd7503ed" name="aaade4a3eeef68010e0c2ab84bd7503ed"></a>
 typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; AlignBase::Axis &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AxisFlagger</b></td></tr>
 <tr class="separator:aaade4a3eeef68010e0c2ab84bd7503ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95fd829a653b0d6903960c9852175b35" id="r_a95fd829a653b0d6903960c9852175b35"><td class="memItemLeft" align="right" valign="top"><a id="a95fd829a653b0d6903960c9852175b35" name="a95fd829a653b0d6903960c9852175b35"></a>
-typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; Direction &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DirectionFlagger</b></td></tr>
+typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1SingleFlagger.html">drain::SingleFlagger</a>&lt; <a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DirectionFlagger</b></td></tr>
 <tr class="separator:a95fd829a653b0d6903960c9852175b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
 <tr class="memitem:ae13e7904cdf3a0ca9fb3fae5563d21ab" id="r_ae13e7904cdf3a0ca9fb3fae5563d21ab"><td class="memItemLeft" align="right" valign="top"><a id="ae13e7904cdf3a0ca9fb3fae5563d21ab" name="ae13e7904cdf3a0ca9fb3fae5563d21ab"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>LayoutSVG</b> (AlignBase::Axis v=AlignBase::HORZ, Direction d=INCR)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>LayoutSVG</b> (AlignBase::Axis v=AlignBase::HORZ, <a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a> d=INCR)</td></tr>
 <tr class="separator:ae13e7904cdf3a0ca9fb3fae5563d21ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f2b4ffff7a0e9f151422e391b2deeb4" id="r_a0f2b4ffff7a0e9f151422e391b2deeb4"><td class="memItemLeft" align="right" valign="top"><a id="a0f2b4ffff7a0e9f151422e391b2deeb4" name="a0f2b4ffff7a0e9f151422e391b2deeb4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>LayoutSVG</b> (const <a class="el" href="classdrain_1_1image_1_1LayoutSVG.html">LayoutSVG</a> &amp;layout)</td></tr>
 <tr class="separator:a0f2b4ffff7a0e9f151422e391b2deeb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52335f684ae412e6370101d3c605a09d" id="r_a52335f684ae412e6370101d3c605a09d"><td class="memTemplParams" colspan="2"><a id="a52335f684ae412e6370101d3c605a09d" name="a52335f684ae412e6370101d3c605a09d"></a>
-template&lt;typename V &gt; </td></tr>
-<tr class="memitem:a52335f684ae412e6370101d3c605a09d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setOrientation</b> (const V &amp;v)</td></tr>
-<tr class="separator:a52335f684ae412e6370101d3c605a09d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac280802c64b72d9f2c6b5289fc061988" id="r_ac280802c64b72d9f2c6b5289fc061988"><td class="memTemplParams" colspan="2"><a id="ac280802c64b72d9f2c6b5289fc061988" name="ac280802c64b72d9f2c6b5289fc061988"></a>
-template&lt;typename D &gt; </td></tr>
-<tr class="memitem:ac280802c64b72d9f2c6b5289fc061988"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setDirection</b> (const D &amp;d)</td></tr>
-<tr class="separator:ac280802c64b72d9f2c6b5289fc061988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a04c2c39553a67d5b7cdc3016023e7d" id="r_a6a04c2c39553a67d5b7cdc3016023e7d"><td class="memTemplParams" colspan="2">template&lt;typename V &gt; </td></tr>
+<tr class="memitem:a6a04c2c39553a67d5b7cdc3016023e7d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a6a04c2c39553a67d5b7cdc3016023e7d">setOrientation</a> (const V &amp;axis)</td></tr>
+<tr class="memdesc:a6a04c2c39553a67d5b7cdc3016023e7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set orientation: horizontal or vertical axis.  <br /></td></tr>
+<tr class="separator:a6a04c2c39553a67d5b7cdc3016023e7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c7de2748e0e91f7adaef301b01dab71" id="r_a0c7de2748e0e91f7adaef301b01dab71"><td class="memTemplParams" colspan="2">template&lt;typename D &gt; </td></tr>
+<tr class="memitem:a0c7de2748e0e91f7adaef301b01dab71"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a0c7de2748e0e91f7adaef301b01dab71">setDirection</a> (const D &amp;dir)</td></tr>
+<tr class="memdesc:a0c7de2748e0e91f7adaef301b01dab71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set direction: coordinates increasing or decreasing.  <br /></td></tr>
+<tr class="separator:a0c7de2748e0e91f7adaef301b01dab71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93ab0c33ad9e2df97bc773db7bfde908" id="r_a93ab0c33ad9e2df97bc773db7bfde908"><td class="memTemplParams" colspan="2"><a id="a93ab0c33ad9e2df97bc773db7bfde908" name="a93ab0c33ad9e2df97bc773db7bfde908"></a>
 template&lt;typename D , typename V &gt; </td></tr>
 <tr class="memitem:a93ab0c33ad9e2df97bc773db7bfde908"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const D &amp;d, const V &amp;v)</td></tr>
 <tr class="memdesc:a93ab0c33ad9e2df97bc773db7bfde908"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set direction and orientation. <br /></td></tr>
 <tr class="separator:a93ab0c33ad9e2df97bc773db7bfde908"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:a31081fff8daef1ed7a3c35f3fa467b2d" id="r_a31081fff8daef1ed7a3c35f3fa467b2d"><td class="memItemLeft" align="right" valign="top"><a id="a31081fff8daef1ed7a3c35f3fa467b2d" name="a31081fff8daef1ed7a3c35f3fa467b2d"></a>
 <a class="el" href="classdrain_1_1EnumFlagger.html">AxisFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>orientation</b> = AlignBase::HORZ</td></tr>
 <tr class="separator:a31081fff8daef1ed7a3c35f3fa467b2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,8 +182,111 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Higher level controller for setting alignments. </p>
 <p>Also applied by PanelSVG </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/drain/image/<a class="el" href="AlignSVG_8h_source.html">AlignSVG.h</a></li>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a224b9163917ac32fc95a60d8c1eec3aa" name="a224b9163917ac32fc95a60d8c1eec3aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a224b9163917ac32fc95a60d8c1eec3aa">&#9670;&#160;</a></span>Direction</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">Direction</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="structdrain_1_1image_1_1Direction.html">Direction</a> for "Stacked", horziontally or vertically sequentially aligned layout. </p>
+<p>Typically, the axis is Align::Axis . </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0c7de2748e0e91f7adaef301b01dab71" name="a0c7de2748e0e91f7adaef301b01dab71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c7de2748e0e91f7adaef301b01dab71">&#9670;&#160;</a></span>setDirection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename D &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setDirection </td>
+          <td>(</td>
+          <td class="paramtype">const D &amp;&#160;</td>
+          <td class="paramname"><em>dir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set direction: coordinates increasing or decreasing. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">D</td><td>- enum type <a class="el" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa" title="Direction for &quot;Stacked&quot;, horziontally or vertically sequentially aligned layout.">LayoutSVG::Direction</a> or string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dir</td><td>- direction as enum type (INCR or DECR) or string. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6a04c2c39553a67d5b7cdc3016023e7d" name="a6a04c2c39553a67d5b7cdc3016023e7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a04c2c39553a67d5b7cdc3016023e7d">&#9670;&#160;</a></span>setOrientation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename V &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setOrientation </td>
+          <td>(</td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>axis</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set orientation: horizontal or vertical axis. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">V</td><td>- enum type AlignBase::Axis or string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td>- axis as enum type (HORZ or VERT) or string. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/drain/image/<a class="el" href="LayoutSVG_8h_source.html">LayoutSVG.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

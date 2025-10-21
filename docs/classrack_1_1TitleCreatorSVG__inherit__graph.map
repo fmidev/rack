@@ -1,5 +1,5 @@
 <map id="TitleCreatorSVG" name="TitleCreatorSVG">
-<area shape="rect" id="Node000001" title="&quot;Collects&quot; titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="29,79,156,104"/>
+<area shape="rect" id="Node000001" title="Formats titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="29,79,156,104"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,5,180,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
 </map>

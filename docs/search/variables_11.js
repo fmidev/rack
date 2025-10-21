@@ -17,7 +17,6 @@ var searchData=
   ['right_14',['RIGHT',['../structdrain_1_1image_1_1AlignSVG.html#a6460278e118b30ab348f901bf71dea5e',1,'drain::image::AlignSVG']]],
   ['role_15',['role',['../classdrain_1_1image_1_1NodeGDAL.html#af3e5220f5a9e8d12b1431c2600585e29',1,'drain::image::NodeGDAL']]],
   ['root_16',['ROOT',['../classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339',1,'rack::ODIMPathElem']]],
-  ['rotate_17',['rotate',['../classdrain_1_1image_1_1TransformSVG.html#aa60b242103cb04ad8c62b3d9b70a72df',1,'drain::image::TransformSVG']]],
-  ['rscale_18',['rscale',['../classrack_1_1PolarODIM.html#a7a209526bccd05d33534ea350c72ce46',1,'rack::PolarODIM']]],
-  ['rstart_19',['rstart',['../classrack_1_1PolarODIM.html#af807d1a13a5ed0ed49cc508a3a77d5f3',1,'rack::PolarODIM']]]
+  ['rscale_17',['rscale',['../classrack_1_1PolarODIM.html#a7a209526bccd05d33534ea350c72ce46',1,'rack::PolarODIM']]],
+  ['rstart_18',['rstart',['../classrack_1_1PolarODIM.html#af807d1a13a5ed0ed49cc508a3a77d5f3',1,'rack::PolarODIM']]]
 ];

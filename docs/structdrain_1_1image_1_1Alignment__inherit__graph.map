@@ -1,9 +1,9 @@
-<map id="Alignment&lt; AX, A, POS &gt;" name="Alignment&lt; AX, A, POS &gt;">
-<area shape="rect" id="Node000001" title="Container for Axis and Pos." alt="" coords="5,99,193,124"/>
-<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1CompleteAlignment.html" title=" " alt="" coords="241,5,429,60"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,92,252,58,253,63,152,97"/>
-<area shape="rect" id="Node000003" href="$structdrain_1_1image_1_1CompleteAlignment.html" title=" " alt="" coords="244,84,427,139"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,109,244,109,244,114,207,114"/>
-<area shape="rect" id="Node000004" href="$structdrain_1_1image_1_1CompleteAlignment.html" title="&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its..." alt="" coords="254,163,417,203"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="156,126,270,161,268,166,154,131"/>
+<map id="Alignment&lt; AX, A &gt;" name="Alignment&lt; AX, A &gt;">
+<area shape="rect" id="Node000001" title="Container for Axis and Pos." alt="" coords="5,99,160,124"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1CompleteAlignment.html" title=" " alt="" coords="208,5,396,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,91,224,58,226,63,133,96"/>
+<area shape="rect" id="Node000003" href="$structdrain_1_1image_1_1CompleteAlignment.html" title=" " alt="" coords="211,84,393,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,109,211,109,211,114,174,114"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1image_1_1CompleteAlignment.html" title="&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its..." alt="" coords="221,163,383,203"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="136,126,241,161,239,166,134,131"/>
 </map>

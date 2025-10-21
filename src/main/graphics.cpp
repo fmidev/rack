@@ -769,6 +769,12 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 		return 0;
 	}
 
+	/*
+	if (current->hasClass(LayoutSVG::ADAPTER) && !current->hasClass("MAIN")){
+		return 0;
+	}
+	*/
+
 	/// Statistics: computer count for each (key,value) pair, for example (what:time, "20240115")
 	typedef std::map<std::string, unsigned short> variableStat_t;
 	variableStat_t stat;
@@ -816,6 +822,10 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 	 */
 
 	// metadata->getAttributes().clear();
+
+	// const bool ADAPTER = current->hasClass(LayoutSVG::ADAPTER);
+
+
 	mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
 
 	// If this group level has variable entries ABC=123, DEF=456, ... , prune them from the lower level
@@ -838,8 +848,17 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 			// Actual pruning, "downwards"
 			// if (count > 1){
 			//if (true){
+			//if (current.hasChild("ADAPTER"))
+			//	continue;
+
 			for (auto & entry: current.getChildren()){
 				TreeSVG & child = entry.second;
+				/*
+				if (child->hasClass(LayoutSVG::ADAPTER)){
+					continue;
+					// Don't prune!
+				}
+				*/
 				if (child.hasChild(svg::METADATA)){
 					TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
 					childMetadata->removeAttribute(key);
@@ -892,6 +911,10 @@ void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attrib
 		if (text->isUndefined()){
 			// At least group titles can still be undefined by now.
 			text->setType(svg::TEXT);
+
+			text[svg::COMMENT]->setComment("skipped: ", attr.first, ' ', attr.second);
+			//continue;
+
 			// text->setType(svg::COMMENT); // only test...
 			//text->setText("This ", attr.first, '=', attr.second,  " [", elemClass, "] was left undefined?");
 			/*
@@ -1016,11 +1039,13 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 			else {
 				adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO2_EMPTY");
 			}
+			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText("...");
+			// adapterGroup["MIKA"](svg::CIRCLE);
 		}
 		else if (GROUP_USER) {
 			RackSVG::addTitleBox(svgConf, adapterGroup, PanelConfSVG::ElemClass::GROUP_TITLE);
 			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText(group->get("data-title", ""));
-			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_USER");
+			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_USER"); // This goes to correct place!
 			// group[PanelConfSVG::ElemClass::GENERAL]->setText(svgConf.groupTitleFormatted+ "..dynamic=temporary WRONG!");
 			return 0;
 		}

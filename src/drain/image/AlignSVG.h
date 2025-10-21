@@ -314,7 +314,9 @@ struct AlignSVG { // : protected Align {
 	 */
 	inline
 	void setAlign(const AlignBase::Axis & axis, const AlignBase::Pos & pos, Topol topol=Topol::INSIDE){
-		modifyAlign(ANCHOR, axis, pos);
+		if (pos != AlignBase::FILL){
+			modifyAlign(ANCHOR, axis, pos);
+		}
 		modifyAlign(OBJECT, axis, (topol==INSIDE) ? pos : AlignBase::flip(pos));
 		updateAlign();
 	}
