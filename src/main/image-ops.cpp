@@ -232,19 +232,6 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 
 	mout.experimental("output quantity (syntax): ", dstQuantitySyntax);
 
-	/*
-	const bool USER_QUANTITY = true; // !!! !dstQuantitySyntax.empty();
-
-	if (!USER_QUANTITY){
-
-		mout.warn("No output quantity, storing to a separate image" );
-
-		if (paths.size() > 1){
-			paths.erase(++paths.begin());
-			mout.warn("Found several paths - using first path only" );
-		}
-	}
-	*/
 
 	//mout.debug("Selector results: " );
 	for (const ODIMPath & path: paths){
@@ -287,41 +274,11 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		// Strip root (all leading slashes)
 		path.trimHead();
 
-		/*
-		if (path.front().isRoot()){
-			path.pop_front();
-			mout.debug("path started with root, trimmed it to: ", path);
-			if (path.empty()){
-				mout.error("empty path, skipping...");
-				continue;
-			}
-		}
-		*/
-
 		const ODIMPathElem & datasetElem = path.front(); // *path.begin();
 
 		/// This makes using QIND difficult...
 		mout.info("using: ", datasetElem, " / [", datasetSelector.getQuantity(), "]");
 
-		/*
-		mout.fail("1st src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
-
-		// Data<dst_t> foo(dst[datasetElem]["data1"], datasetSelector.quantity);
-		// mout.fail("1b  src coords: ", foo.data.getCoordinatePolicy());
-		Data<dst_t> koe(dst[datasetElem]["data1"], "DBZH");
-
-		mout.fail("2st  src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
-
-		DataTools::updateInternalAttributes(dst["dataset1"]["data1"]);
-
-		mout.fail("2ast src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
-
-		{
-			mout.fail("type", drain::TypeName<Data<dst_t> >::get());
-			Data<dst_t> koe(dst[datasetElem]["data1"], "DBZH");
-		}
-		mout.fail("2bst src coords: ", dst["dataset1"]["data1"]["data"].data.image.getCoordinatePolicy());
-		*/
 
 		DataSet<dst_t> dstDataSet(dst[datasetElem], datasetSelector.getQuantity());
 
@@ -365,12 +322,6 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 		typedef std::set<std::string>  qlist_t;
 		qlist_t quantityList;
 		qlist_t quantityListNew;
-
-		/*
-		for (DataSet<dst_t >::iterator dit = dstDataSet.begin(); dit != dstDataSet.end(); ++dit){
-			quantityList.insert(dit->second.odim.quantity);
-		}
-		*/
 
 		for (const auto & entry: dstDataSet){
 			quantityList.insert(entry.first); // == entry.second.odim.quantity
@@ -485,7 +436,7 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 				// Size, coord policy and INITIAL type
 				bean.getDstConf(srcConf, dstConf);
 
-				if (!ctx.targetEncoding.empty()){
+				if (!targetEncoding.empty()){
 
 					mout.special(DRAIN_LOG(CHANGE_TYPE));
 					mout.special(DRAIN_LOG(CHANGE_SCALING));
@@ -510,13 +461,13 @@ void ImageOpExec::execOp(const ImageOp & bean, RackContext & ctx) const {
 						const QuantityMap & qmap = getQuantityMap();
 						if (qmap.hasQuantity(dstQuantity)){
 							mout.accept<LOG_WARNING>("conf exists for: ", dstQuantity);
-							qmap.setQuantityDefaults(dstData.odim, dstQuantity, ctx.targetEncoding); // if only quantity?
+							qmap.setQuantityDefaults(dstData.odim, dstQuantity, targetEncoding); // if only quantity?
 							// NOTE: dstData.odim.quantity may NOW contain variable syntax,  "${what:quantity}_X"
 						}
 						else {
 							mout.pending<LOG_WARNING>("no conf for: ", dstQuantity);
 
-							dstData.odim.completeEncoding(ctx.targetEncoding);
+							dstData.odim.completeEncoding(targetEncoding);
 							// dstData.odim.quantity = dstQuantity; // replace syntax pattern
 							if (CHANGE_TYPE && ! CHANGE_SCALING){
 								mout.attention("no conf for: ", dstQuantity);

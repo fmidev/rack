@@ -464,8 +464,8 @@ std::ostream & operator<<(std::ostream & ostr, const drain::image::TransformSVG 
 */
 
 /**
- *   Aligns any object which isAligned()
- *   Does not check classes.
+ *   Aligns each object which isAligned()
+ *
  */
 void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
 
@@ -503,6 +503,14 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 	 *   When should an object have both?
 	 *
 	 */
+
+	std::set<TreeSVG::path_elem_t>  aligned;
+	//std::list<TreeSVG::path_elem_t> alignWaitingForNext;
+	TreeSVG::path_elem_t alignWaitingForNext;
+
+	std::list<TreeSVG::path_elem_t> alignWaitingForCollectiveBBox;
+
+
 	for (TreeSVG::pair_t & entry: group){
 
 		NodeSVG & node = entry.second.data;
@@ -525,11 +533,17 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 			detectBox(entry.second, true); // only
 		}
 
-
 		// At least some align instruction has been set. (This could be sufficient, replacing above test?)
 		if (node.isAligned() && !node.hasClass(LayoutSVG::FIXED)){
 			adjustLocation(group, node, anchorSpanHorz);
 			adjustLocation(group, node, anchorSpanVert);
+		}
+
+		if (!alignWaitingForNext.empty()){
+			NodeSVG & n = group[alignWaitingForNext];
+			adjustLocation(group, n, anchorSpanHorz);
+			adjustLocation(group, n, anchorSpanVert);
+			alignWaitingForNext.clear();
 		}
 
 		if (node.hasClass(LayoutSVG::ADAPTER)){ //  || node.hasClass("MAIN")
@@ -547,19 +561,20 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 			anchorSpanVert.copyFrom(node); // adjusted by transform.y
 		}
 
-		// mout.accept<LOG_NOTICE>("NOW ", NodePrinter(node).str(), " with ", anchorSpanHorz, " and ", anchorSpanVert, " are expanding BBOX of ", NodePrinter(group).str());
+		if (!node.hasClass(LayoutSVG::INDEPENDENT)){
+			aligned.insert(entry.first);
+		}
 
 
 		/*
+		// mout.accept<LOG_NOTICE>("NOW ", NodePrinter(node).str(), " with ", anchorSpanHorz, " and ", anchorSpanVert, " are expanding BBOX of ", NodePrinter(group).str());
 		mout.accept<LOG_NOTICE>("completed ", node.getTag(),'=', node.getId(), ": ",
 				"H:",  anchorSpanHorz.pos, ',', anchorSpanHorz.span, ", ",
 				"V:",  anchorSpanVert.pos, ',', anchorSpanVert.span);
 		*/
 
-		//if (!node.hasClass(LayoutSVG::INDEPENDENT)){
 		if (!node.hasClass(LayoutSVG::INEFFECTIVE)){
 			//compoundBBox.expand(node.getBoundingBox()); // this should be valid :-(
-
 			compoundBBox.expandHorz(anchorSpanHorz.pos);
 			compoundBBox.expandHorz(anchorSpanHorz.pos + anchorSpanHorz.span);
 			compoundBBox.expandVert(anchorSpanVert.pos);

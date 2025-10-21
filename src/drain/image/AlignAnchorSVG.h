@@ -80,7 +80,9 @@ struct AnchorElem : public std::string {
 		DEFAULT = 0, // use group's default anchor, or if that is not set, use previous
 		NONE = 1,    // don't align at alla
 		PREVIOUS,	 // use previous object
-		COLLECTIVE,  // use dynamically growing bounding box or the compound
+		NEXT,	     // use next object - applied typically by background map adapting to actual overlay image (requires revisiting loop)
+		COLLECTIVE_CURRENT,  // use dynamically growing bounding box or the compound
+		COLLECTIVE_FINAL,    // use dynamically growing bounding box or the compound - in the end.
 	};
 
 
@@ -115,7 +117,7 @@ struct AnchorElem : public std::string {
 	// Use the bounding box of the compound, "accumulated" object as anchor.
 	inline
 	bool isCollective() const {
-		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::COLLECTIVE);
+		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::COLLECTIVE_CURRENT);
 	}
 
 	// Use the bounding box of the latest object as anchor.

@@ -551,7 +551,7 @@ void RackSVG::addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & obj
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
-	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::COLLECTIVE); // ("*");
+	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::COLLECTIVE_CURRENT); // ("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	// backgroundRect->setHeight(40); // TODO!!
 
