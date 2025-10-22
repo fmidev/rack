@@ -533,6 +533,8 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 	BBoxSVG & compoundBBox = group->getBoundingBox();
 	compoundBBox.reset();
 
+	// Future option / Iterative loop starts here
+
 	// Initial anchor box is actually just a point (0,0)
 	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz(0, 0);
 	CoordSpan<AlignBase::Axis::VERT> anchorSpanVert(0, 0);

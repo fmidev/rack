@@ -852,20 +852,26 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 			//	continue;
 
 			for (auto & entry: current.getChildren()){
+
 				TreeSVG & child = entry.second;
-				/*
-				if (child->hasClass(LayoutSVG::ADAPTER)){
-					continue;
-					// Don't prune!
-				}
-				*/
+
 				if (child.hasChild(svg::METADATA)){
-					TreeSVG & childMetadata = entry.second[svg::METADATA]; //(svg::METADATA);
-					childMetadata->removeAttribute(key);
+
+					TreeSVG & childMetadata = child[svg::METADATA]; //(svg::METADATA);
 					childMetadata->addClass("PRUNED");
-					TreeSVG & childMetadata2 = entry.second[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
+					childMetadata->removeAttribute(key);
+
+					TreeSVG & childMetadata2 = child[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
 					childMetadata2->addClass("SHARED");
 					childMetadata2->set(key, value);
+
+					if (child->hasClass(LayoutSVG::ADAPTER) ){
+						// "cancel" parent metadata lift
+						//metadata->removeAttribute(key);
+					}
+					else {
+						// childMetadata->removeAttribute(key);
+					}
 				}
 			}
 			// }

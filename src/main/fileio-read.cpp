@@ -318,16 +318,34 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentHi5 =      & ctx.polarInputHi5;
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
+		if (object == "SCAN"){
+			mout.revised<LOG_WARNING>("moving /how attributes to /dataset../how attributes");
+
+			for (const char * key: { "lowprf", "highprf", "NI", "astart", "rpm", "nsampleH", "nsampleV", "how:scan_index"}){
+
+				if (srcTmp[ODIMPathElem::HOW].data.attributes.hasKey(key)){
+
+					const drain::Variable & v = srcTmp[ODIMPathElem::HOW].data.attributes[key];
+
+					for (auto & entry: srcTmp){
+						if (entry.first.belongsTo(ODIMPathElem::DATASET)){
+							if (!entry.second[ODIMPathElem::HOW].data.attributes.hasKey(key)){
+								mout.revised<LOG_INFO>("moving ", key, "=", v, " -> ", entry.first, '/', ODIMPathElem::HOW);
+								entry.second[ODIMPathElem::HOW].data.attributes[key] = v;
+							}
+						}
+					}
+				}
+			}
+		}
+
 		// TODO: force APPEND / REPLACE?
 		if (ctx.polarInputHi5.empty() || ctx.SCRIPT_DEFINED){
-			if (ctx.SCRIPT_DEFINED)
+			if (ctx.SCRIPT_DEFINED){
 				mout.info("Script defined, resetting previous inputs (if exist)");
-				//mout.info("SCRIPT_DEFINED: ", ctx.SCRIPT_DEFINED, " thread:", ctx.getName());
+			}
 			ctx.polarInputHi5.swap(srcTmp);
 			ctx.polarInputHi5.data.image.properties.clearVariables();
-			// getResources().polarAccumulator.odim.ACCnum = 567;
-			// ctx.polarInputHi5.data.attributes["how:ACCnum"] = 234;
-			// mout.suspicious("data.image.properties:", ctx.polarInputHi5.data.image.properties);
 		}
 		else {
 			// "Automatic" append. Consider timestamp difference limit?

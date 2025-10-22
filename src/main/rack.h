@@ -52,6 +52,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fix: cCreateTile source/NOD reset
  *  Version 14.3
  *  - Almost perfect SVG logic, still --gGroupId problem
+ *  Version 14.4
+ *  - SCAN: copy /how attributes to /dataset1/how to support PVOL creation
  *
  *  Version 13
  *  - andre::ChaffOp

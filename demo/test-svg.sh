@@ -168,7 +168,7 @@ RUN_TEST  \\ --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --palette \
 
 # --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:0'" --gStyle rect.GROUP_TITLE="'stroke:white;stroke-width:2'"
 
-WRITE_DOC 'Grouping without displaying titles can be done with prefix \c NONE . For example, using plain (unformatted) timestamp as follows:'
+WRITE_DOC 'Grouping without displaying titles can be done with setting a criterion with \c --gGroupId \c [criterion] followed by  \c --gGroupTitle \c '' . For example, using plain (unformatted) timestamp as follows:'
 RUN_TEST \\   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupId "'Invisible grouping criterion-\${what:date}\${what:time}'"  --gGroupTitle "''"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o 'Without_group_titles'
 # RUN_TEST \\   --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'NONE:Invisible grouping criterion-\${what:date}\${what:time}'"  \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o 'Without_group_titles'
 
@@ -196,7 +196,7 @@ WRITE_DOC 'A further example, usage of styles'
 RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gLayout 'VERT' \\ --gTitle "'Larger font here...'"  --gGroupTitle "'...but smaller here, with still readable timestamp \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" --gTitleHeights "'40,20,15'" \\  'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "User-defined_title_height"
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'AUTO:\${what:time}'"  \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN='fill:forestgreen'" --gStyle "rect.GROUP='fill:lightgreen'"  \\   --gStyle "text.MAIN='font-family:Times'"  --gStyle ".LOCATION='fill:brown'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "Multiple_styles"
+RUN_TEST \\   --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gGroupTitle "'\${what:time}'"  \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN='fill:forestgreen'" --gStyle "rect.GROUP='fill:lightgreen'"  \\   --gStyle "text.MAIN='font-family:Times'"  --gStyle ".LOCATION='fill:brown'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "Multiple_styles"
 
 
 
