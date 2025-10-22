@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(14,2)
+#define RACK_VERSION drain::Version<>(14,3)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -50,6 +50,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fix: prodpar=elangle for product=PPI
  *  Version 14.1
  *  - Fix: cCreateTile source/NOD reset
+ *  Version 14.3
+ *  - Almost perfect SVG logic, still --gGroupId problem
  *
  *  Version 13
  *  - andre::ChaffOp
