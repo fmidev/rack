@@ -6,7 +6,11 @@ prefix=/opt
 USE_GEOTIFF=YES
 
 # Change to acrual Rack version?
-VERSION=$(shell fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
+# VERSION=$(shell fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
+# export VERSION=$(fgrep __RACK_VERSION__ src/main/rack.h | cut -d' ' -f 3 | tr -d '"')
+VERSION=$(shell rack --version | head -1)
+
+
 
 help:
 #	@ X="`cat Makefile Makefile-doxygen | grep '^[a-z.-]\+:' | cut -d' ' -f1 | tr ':' '|' `" && echo make \[ $$X \]
