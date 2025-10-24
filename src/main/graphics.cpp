@@ -330,8 +330,9 @@ bool RackSVG::applyInclusion(RackContext & ctx, const drain::FilePath & filepath
 drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
 
 	// EnumDict<drain::image::LayoutSVG::GroupType>::dict::getKey(LayoutSVG::ADAPTER)
+
 	drain::image::TreeSVG & adapterGroup = group["ADAPTER"];
-	//drain::image::TreeSVG & adapterGroup = group[name];
+
 	if (adapterGroup->isUndefined()){
 		adapterGroup->setType(svg::GROUP);
 		adapterGroup->addClass(LayoutSVG::ADAPTER);
@@ -339,8 +340,8 @@ drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
 	}
 	return adapterGroup;
 
-	//group->addClass(ADAPTER);
-	//return group;
+	// group->addClass(LayoutSVG::ADAPTER);
+	// return group;
 
 }
 
@@ -690,6 +691,7 @@ void RackSVG::addTitleElements(const PanelConfSVG &conf, drain::image::TreeSVG &
 // Consider changing this to visitor.
 
 // Re-align elements etc
+/*
 void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepath){
 
 
@@ -697,14 +699,12 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 
 	// drain::image::TreeSVG & mainGroup = getMainGroup(ctx);
 
-	/*
 	if (mout.isLevel(LOG_DEBUG)){
 		// mout.special("dumping SVG tree");
 		// drain::TreeUtils::dump(ctx.svgTrack);
 		drain::Output outfile("svg-0-unaligned.svg");
 		drain::image::NodeSVG::toStream(outfile.getStream(), ctx.svgTrack);
 	}
-	*/
 
 	mout.debug("next superAlign ", ctx.mainOrientation, '|', ctx.mainDirection);
 
@@ -715,10 +715,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		drain::image::NodeSVG::toStream(outfile.getStream(), ctx.svgTrack);
 	}
 
-	/*
-	MetaDataPrunerSVG metadataPruner;
-	drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
-	*/
 
 	if (mout.isLevel(LOG_DEBUG+2)){
 		mout.special("dumping SVG tree");
@@ -726,7 +722,10 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 		drain::image::NodeSVG::toStream(outfile.getStream(), ctx.svgTrack);
 		// drain::TreeUtils::dump(ctx.svgTrack);
 	}
+}
 
+
+*/
 
 	/*
 	// Writes over original syntax?
@@ -741,7 +740,6 @@ void RackSVG::completeSVG(RackContext & ctx){ //, const drain::FilePath & filepa
 	TreeUtilsSVG::finalizeBoundingBox(ctx.svgTrack);
 	*/
 
-}
 
 
 
@@ -754,141 +752,8 @@ int MetaDataPrunerSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)
 
 
 
-/// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
-/**
- *  Collects meta data written upon creating image panels.
- *
- */
-int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	TreeSVG & current = tree(path);
-
-	if (!current->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
-		return 0;
-	}
-
-	/*
-	if (current->hasClass(LayoutSVG::ADAPTER) && !current->hasClass("MAIN")){
-		return 0;
-	}
-	*/
-
-	/// Statistics: computer count for each (key,value) pair, for example (what:time, "20240115")
-	typedef std::map<std::string, unsigned short> variableStat_t;
-	variableStat_t stat;
-
-	/// Number of children having (any) metadata.
-	int count = 0;
-
-	/// Iterate children and their attributes: mark down all the (key,value) pairs.
-	for (const auto & entry: current.getChildren()){
-		const TreeSVG & child = entry.second;
-		if (child.hasChild(svg::METADATA) && !child->hasClass("legend")){ // or has "data"?
-			++count;
-			for (const auto & attr: child[svg::METADATA]->getAttributes()){
-				std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
-				++stat[s];
-			}
-		}
-	}
-
-	if (count == 0){
-		return 0;
-	}
-
-	// There are metadata, so investigate...
-
-	TreeSVG & metadata = current[svg::METADATA](svg::METADATA);
-	metadata->addClass("SHARED");
-
-	TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
-	debugSharedBase->addClass("SHARED"); // just a marker.
-	// debugSharedBase->set("data-type", "SHARED"); // ??
-	// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
-	// debugShared->setText("SHARED: "); //CTXX
-
-	if (mout.isLevel(LOG_DEBUG)){
-		TreeSVG & debugAll = current["description"](svg::DESC);
-		debugAll->set("COUNT", count);
-		debugAll->setText("All"); //CTXX
-	}
-
-	/*
-		TreeSVG & debugExplicit = current["rejected"](svg::DESC);
-		debugExplicit->addClass("EXPLICIT");
-		debugAll->ctext += drain::sprinter(stat).str();
-	 */
-
-	// metadata->getAttributes().clear();
-
-	// const bool ADAPTER = current->hasClass(LayoutSVG::ADAPTER);
-
-
-	mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(stat), path.str());
-
-	// If this group level has variable entries ABC=123, DEF=456, ... , prune them from the lower level
-	for (const auto & e: stat){
-
-		mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
-
-		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
-		if (e.second == count){ // = ALL,  shared by all the children.
-
-			mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
-
-			debugSharedBase.addChild() = e.first;
-
-			// Update/extend, "upwards".
-			std::string key, value;
-			drain::StringTools::split2(e.first, key, value, '=');
-			metadata->set(key, value); // NOTE: becoming strings (consider type dict?)
-
-			// Actual pruning, "downwards"
-			// if (count > 1){
-			//if (true){
-			//if (current.hasChild("ADAPTER"))
-			//	continue;
-
-			for (auto & entry: current.getChildren()){
-
-				TreeSVG & child = entry.second;
-
-				if (child.hasChild(svg::METADATA)){
-
-					TreeSVG & childMetadata = child[svg::METADATA]; //(svg::METADATA);
-					childMetadata->addClass("PRUNED");
-					childMetadata->removeAttribute(key);
-
-					TreeSVG & childMetadata2 = child[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
-					childMetadata2->addClass("SHARED");
-					childMetadata2->set(key, value);
-
-					if (child->hasClass(LayoutSVG::ADAPTER) ){
-						// "cancel" parent metadata lift
-						//metadata->removeAttribute(key);
-					}
-					else {
-						// childMetadata->removeAttribute(key);
-					}
-				}
-			}
-			// }
-
-		}
-		else {
-			mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
-			// debugExplicit->ctext += e.first;
-		}
-	}
-
-
-	return 0;
-
-}
-
-void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes){
+// rename back to... sthg... because adds title box.
+void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes) const {
 
 	if (attributes.empty()){
 		return;
@@ -913,24 +778,19 @@ void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attrib
 			elemClass = PanelConfSVG::ElemClass::LOCATION;
 		}
 
+		if (!group.hasChild(elemClass)){
+			// getGroupTitle
+			RackSVG::addTitleBox(this->svgConf, group, PanelConfSVG::GROUP_TITLE);
+			TreeSVG & t = group[elemClass];
+			t[svg::COMMENT]->setComment("added: ", attr.first, ' ', attr.second);
+		}
+
 		TreeSVG & text  = group[elemClass];
 		if (text->isUndefined()){
 			// At least group titles can still be undefined by now.
-			text->setType(svg::TEXT);
-
-			text[svg::COMMENT]->setComment("skipped: ", attr.first, ' ', attr.second);
+			// text->setType(svg::TEXT);
+			// text[svg::COMMENT]->setComment("skipped: ", attr.first, ' ', attr.second);
 			//continue;
-
-			// text->setType(svg::COMMENT); // only test...
-			//text->setText("This ", attr.first, '=', attr.second,  " [", elemClass, "] was left undefined?");
-			/*
-			text->setType(svg::TEXT);
-			text->addClass("SKIP");
-			text->addClass(elemClass);
-			*/
-			// text->setText("skip...", elemClass);
-			// Why no return here?
-			// continue;
 		}
 
 		TreeSVG & tspan = text[attr.first](svg::TSPAN);
@@ -1037,16 +897,18 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 		TreeSVG  & adapterGroup = getAdapterGroup(group);
 		if (GROUP_AUTO) {
 			// If no higher element will write meta data, flush it here (perhaps repeatedly)
-			WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
+			if (!svgConf.mainTitle.empty()){
+				WRITE_SHARED_METADATA = false;
+			}
+			// WRITE_SHARED_METADATA &= (svgConf.mainTitle.empty()); // explicitly set main title MAY still  rewrite some metadata.
 			if (WRITE_PRIVATE_METADATA || WRITE_SHARED_METADATA) {
 				RackSVG::addTitleBox(svgConf, adapterGroup, PanelConfSVG::ElemClass::GROUP_TITLE);
-				adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO1");
+				//adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO1");
 			}
 			else {
-				adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO2_EMPTY");
+				// adapterGroup[PanelConfSVG::ElemClass::GENERAL]->set("data-hack", "GROUP_AUTO2_EMPTY");
 			}
 			adapterGroup[PanelConfSVG::ElemClass::GENERAL]->setText("...");
-			// adapterGroup["MIKA"](svg::CIRCLE);
 		}
 		else if (GROUP_USER) {
 			RackSVG::addTitleBox(svgConf, adapterGroup, PanelConfSVG::ElemClass::GROUP_TITLE);

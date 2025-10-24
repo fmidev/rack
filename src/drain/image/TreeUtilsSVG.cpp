@@ -920,6 +920,137 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 	return 1; // skip this subtree
 }
 
+/// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
+/**
+ *  Collects meta data written upon creating image panels.
+ *
+ *  General - move to TreeUtilsSVG
+ */
+int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	TreeSVG & current = tree(path);
+
+	if (!current->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
+		return 0;
+	}
+
+
+	/// Statistics: computer count for each (key,value) pair, for example (what:time, "20240115")
+	// typedef std::map<std::string, unsigned short> variableStat_t;
+
+	// Statistics of "<key>=<value>" entries.
+	variableStat_t attributeValueCounts;
+
+	/// Number of children having (any) metadata.
+	int childCount = 0;
+
+	/// Iterate children and their attributes: mark down all the (key,value) pairs.
+	for (const auto & entry: current.getChildren()){
+		const TreeSVG & child = entry.second;
+		if (child.hasChild(svg::METADATA) && !child->hasClass("legend")){ // or has "data"? Is this for Palette? Generalize somehow...
+			++childCount;
+			for (const auto & attr: child[svg::METADATA]->getAttributes()){
+				std::string s = drain::StringBuilder<>(attr.first,'=',attr.second);
+				++attributeValueCounts[s];
+			}
+		}
+	}
+
+	if (childCount == 0){
+		return 0;
+	}
+
+	// There are metadata, so investigate...
+
+
+	TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
+	// debugSharedBase->addClass("SHARED"); // just a marker.
+	// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
+
+	if (mout.isLevel(LOG_DEBUG)){
+		TreeSVG & debugAll = current["description"](svg::DESC);
+		debugAll->set("COUNT", childCount);
+		debugAll->setText("All"); //CTXX
+	}
+	/*
+		TreeSVG & debugExplicit = current["rejected"](svg::DESC);
+		debugExplicit->addClass("EXPLICIT");
+		debugAll->ctext += drain::sprinter(stat).str();
+	 */
+
+	// Better order this way - METADATA elems (LOCAL and SHARED) will be together.
+	TreeSVG & metadata = current[svg::METADATA](svg::METADATA);
+
+
+	mout.pending<LOG_DEBUG>("pruning: ", drain::sprinter(attributeValueCounts), path.str());
+
+	// If this group level has variable entries ABC=123, DEF=456, ... , "lift" them from the lower level, ie prune them there
+	for (const auto & e: attributeValueCounts){
+
+		mout.pending<LOG_DEBUG>('\t', e.first, ':', e.second);
+		// std::cerr << "\t vector " << e.first << ' ' << e.second << std::endl;
+
+		if (e.second == childCount){ // This attribute value is shared by all the children.
+
+			mout.accept<LOG_DEBUG>('\t', e.first, ' ', path.str());
+
+			debugSharedBase.addChild() = e.first;
+
+			// Split the entry back to (key,value) pair and update "upwards", ie. from children to this level.
+			std::string key, value;
+			drain::StringTools::split2(e.first, key, value, '=');
+			metadata->set(key, value); // NOTE: forced strings (later, consider type dict?)
+
+			// Actual pruning, "downwards".
+
+			for (auto & entry: current.getChildren()){
+
+				TreeSVG & child = entry.second;
+
+				if (child.hasChild(svg::METADATA)){
+
+					TreeSVG & childMetadata = child[svg::METADATA]; //(svg::METADATA);
+					//
+					childMetadata->addClass("LOCAL");
+					childMetadata->removeAttribute(key);
+
+					//TreeSVG & childMetadata2 = child[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
+					TreeSVG & childMetadata2 = child["SHARED_METADATA"](svg::METADATA);
+					childMetadata2->addClass("SHARED");
+					childMetadata2->set(key, value);
+
+				}
+			}
+			// }
+
+		}
+		else {
+			mout.reject<LOG_DEBUG>('\t', e.first, ' ', path.str());
+			// debugExplicit->ctext += e.first;
+		}
+	}
+
+	/*
+	if (current.hasChild("ADAPTER")){
+
+		TreeSVG & adapterMetadata = current["ADAPTER"][svg::METADATA];
+
+		for (const auto & entry: metadata->getAttributes()){
+			adapterMetadata->set(entry.first, entry.second);
+		}
+		// adapterMetadata->set("time", "123456");
+		// mout.warn(adapterMetadata->getAttributes());
+	}
+	*/
+
+
+	return 0;
+
+}
+
+
 
 /**
  *

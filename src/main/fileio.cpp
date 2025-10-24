@@ -520,10 +520,10 @@ void CmdOutputFile::exec() const {
 			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
 			*/
 			//
-			MetaDataCollectorSVG metadataPruner;
+			drain::image::MetaDataCollectorSVG metadataPruner;
 			drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
 
-			RackSVG::completeSVG(ctx);
+			//  RackSVG::completeSVG(ctx);
 
 			ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
 

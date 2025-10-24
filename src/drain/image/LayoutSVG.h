@@ -143,6 +143,7 @@ protected:
 };
 
 
+/*
 template <>
 const EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict;
 DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);
@@ -150,14 +151,23 @@ DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);
 template<>
 const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict;
 DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
+*/
 
 }  // image::
+
+DRAIN_ENUM_DICT(image::LayoutSVG::Direction);
+DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
 
 }  // drain::
 
 
 DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
+DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::GroupType);
 
+#include "TreeSVG.h"
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool drain::image::TreeSVG::hasChild(const drain::image::LayoutSVG::GroupType & type) const;
 
 #endif // DRAIN_ALIGN_SVG_H_
 

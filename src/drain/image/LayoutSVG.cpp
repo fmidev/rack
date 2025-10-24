@@ -40,11 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-namespace image {
-
-// template<>
-// const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict =
-DRAIN_ENUM_DICT(LayoutSVG::GroupType) = {
+DRAIN_ENUM_DICT(image::LayoutSVG::GroupType) = {
 		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
@@ -56,12 +52,13 @@ DRAIN_ENUM_DICT(LayoutSVG::GroupType) = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
 };
 
-// template <>
-// const drain::EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict = {
-DRAIN_ENUM_DICT(LayoutSVG::Direction) = {
+DRAIN_ENUM_DICT(image::LayoutSVG::Direction) = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, INCR),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, DECR)
 };
+
+namespace image {
+
 
 /*
 void LayoutSVG::setStackAlignment(AlignBase::Axis orientation, LayoutSVG::Direction direction){
@@ -90,6 +87,15 @@ void LayoutSVG::setStackAlignment(AlignBase::Axis orientation, LayoutSVG::Direct
 
 }  // image::
 
+
 }  // drain::
+
+
+#include "TreeSVG.h"
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool drain::image::TreeSVG::hasChild(const drain::image::LayoutSVG::GroupType & type) const {
+	return hasChild(EnumDict<drain::image::LayoutSVG::GroupType>::dict.getKey(type, true)); // no error
+}
 
 

@@ -206,6 +206,29 @@ public:
 };
 
 
+/**
+ *
+ */
+class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		// always continue
+		return 0;
+	}
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	// Also
+	//GraphicsContext::TitleFlagger titles;
+
+protected:
+
+	typedef std::map<std::string, unsigned short> variableStat_t;
+
+};
 
 
 /**

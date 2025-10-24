@@ -146,8 +146,8 @@ public:
 
 	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
 	// Re-align elements etc
-	static
-	void completeSVG(RackContext & ctx); // , const drain::FilePath & filepath);
+	// static
+	// void completeSVG(RackContext & ctx); // , const drain::FilePath & filepath);
 
 	/// Given variable name, like "time" or "enddate", returns "TIME", and so on.
 	// static
@@ -216,29 +216,6 @@ protected:
 };
  */
 
-/**
- *
- */
-class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	inline
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
-		// always continue
-		return 0;
-	}
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	// Also
-	//GraphicsContext::TitleFlagger titles;
-
-protected:
-
-	typedef std::map<std::string, unsigned short> variableStat_t;
-
-};
 
 /// Formats titles from metadata. Invoked by drain::TreeUtils::traverse()
 /**
@@ -280,8 +257,8 @@ public:
 	/**
 	 *   Useful function – as attributes of two groups are considered: panel-specific and shared.
 	 */
-	static
-	void formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes);
+	//static
+	void formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes) const;
 
 	const PanelConfSVG & svgConf;
 
