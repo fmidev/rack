@@ -213,6 +213,19 @@ class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:
 
+	static
+	const std::string LOCAL;
+
+	static
+	const std::string SHARED;
+
+	/*
+	enum MetaDataType {
+		LOCAL,
+		SHARED
+	};
+	*/
+
 	inline
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
 		// always continue
@@ -230,6 +243,7 @@ protected:
 
 };
 
+// DRAIN_ENUM_DICT(MetaDataCollectorSVG::MetaDataType);
 
 /**
  *

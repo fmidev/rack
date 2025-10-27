@@ -107,6 +107,7 @@ DRAIN_ENUM_DICT(image::svg::tag_t) = {
 		{"line", drain::image::svg::LINE},
 		{"metadata", drain::image::svg::METADATA},
 		{"polygon", drain::image::svg::POLYGON},
+		{"path", drain::image::svg::PATH},
 		{"rect", drain::image::svg::RECT},
 		{"style", drain::image::svg::STYLE}, // raise?
 		{"text", drain::image::svg::TEXT},
@@ -196,6 +197,10 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 		// if (version == 1) {
 		link("xlink:href", url); // text_anchor
 		// if (version > 2.x ?) {
+		break;
+	case image::svg::PATH:
+		get("d").setType<std::string>();
+		get("d").setSeparator(0);
 		break;
 	case image::svg::POLYGON:
 		// link("path", ctext);

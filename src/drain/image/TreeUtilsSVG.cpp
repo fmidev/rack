@@ -920,6 +920,11 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 	return 1; // skip this subtree
 }
 
+
+const std::string MetaDataCollectorSVG::LOCAL("LOCAL");
+
+const std::string MetaDataCollectorSVG::SHARED("SHARED");
+
 /// Iterate children and their attributes: check which attributes (key and value) are shared by all the children.
 /**
  *  Collects meta data written upon creating image panels.
@@ -1017,8 +1022,8 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 					childMetadata->removeAttribute(key);
 
 					//TreeSVG & childMetadata2 = child[PanelConfSVG::ElemClass::SHARED_METADATA](svg::METADATA);
-					TreeSVG & childMetadata2 = child["SHARED_METADATA"](svg::METADATA);
-					childMetadata2->addClass("SHARED");
+					TreeSVG & childMetadata2 = child[MetaDataCollectorSVG::SHARED](svg::METADATA);
+					childMetadata2->addClass(MetaDataCollectorSVG::SHARED);
 					childMetadata2->set(key, value);
 
 				}
@@ -1083,10 +1088,25 @@ int  AttributeCheckerXML::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & pa
 	return 0;
 
 }
-	*/
-
+*/
 
 
 }  // image::
+
+/*
+DRAIN_ENUM_DICT(image::MetaDataCollectorSVG::MetaDataType) = {
+		DRAIN_ENUM_ENTRY(image::MetaDataCollectorSVG, LOCAL),
+		DRAIN_ENUM_ENTRY(image::MetaDataCollectorSVG, SHARED),
+};
+*/
+
+/*
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const image::MetaDataCollectorSVG::MetaDataType & type) const {
+	return (*this)[EnumDict<image::MetaDataCollectorSVG::MetaDataType>::dict.getKey(type, false)];
+}
+*/
+
 
 }  // drain::

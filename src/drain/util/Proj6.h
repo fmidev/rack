@@ -187,6 +187,13 @@ public:
 		project<PJ_FWD>(point);
 	}
 
+	/// Forward projection. Example implementation of project<>() .
+	inline
+	void projectFwd(const drain::Point2D<double> & point, drain::Point2D<double> & point2) const {
+		project<PJ_FWD>(point2 = point);
+	}
+
+
 	// Inverse projection (in-place)
 	inline
 	void projectInv(double & x, double & y) const {
@@ -205,6 +212,12 @@ public:
 	inline
 	void projectInv(drain::Point2D<double> & point) const {
 		project<PJ_INV>(point);
+	}
+
+	/// Forward projection. Example implementation of project<>() .
+	inline
+	void projectInv(const drain::Point2D<double> & point, drain::Point2D<double> & point2) const {
+		project<PJ_INV>(point2 = point);
 	}
 
 

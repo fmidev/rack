@@ -119,14 +119,17 @@ public:
 	void addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg::coord_t> & frame, const drain::FilePath & filepath, const std::string & styleClass = "");
 
 
-	/// Add TEXT elements: MAINTITLE, LOCATION, TIME, GENERAL
+	/// Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)
+	/**
+	 *  \return TEXT element located at child(GENERAL)
+	 */
 	static
-	void addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & object, PanelConfSVG::ElemClass elemClass);
+	drain::image::TreeSVG & addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & object, PanelConfSVG::ElemClass elemClass);
 
 	// TODO: title area "filling order", by group class.
 	/// Add title elements in given group, to "reserve slots" for actual text content to be added later.
 	static
-	void addTitleElements(const PanelConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, PanelConfSVG::ElemClass elemClass);
+	drain::image::TreeSVG & appendTitleElements(const PanelConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, PanelConfSVG::ElemClass elemClass);
 
 	/// Add rectangle
 	static
