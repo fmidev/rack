@@ -222,25 +222,34 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Dictionary.html">EnumDict&lt;LayoutSVG::Direction&gt;::dict_t</a>  <a class="code hl_struct" href="structdrain_1_1EnumDict.html">drain::EnumDict&lt;LayoutSVG::Direction&gt;::dict</a>;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>DRAIN_ENUM_OSTREAM(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">LayoutSVG::Direction</a>);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Dictionary.html">EnumDict&lt;LayoutSVG::GroupType&gt;::dict_t</a> <a class="code hl_struct" href="structdrain_1_1EnumDict.html">EnumDict&lt;LayoutSVG::GroupType&gt;::dict</a>;</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>DRAIN_ENUM_OSTREAM(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918">LayoutSVG::GroupType</a>);</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>}  <span class="comment">// image::</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">const EnumDict&lt;LayoutSVG::Direction&gt;::dict_t  drain::EnumDict&lt;LayoutSVG::Direction&gt;::dict;</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"></span> </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">template&lt;&gt;</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">const EnumDict&lt;LayoutSVG::GroupType&gt;::dict_t EnumDict&lt;LayoutSVG::GroupType&gt;::dict;</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment">DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}  <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}  <span class="comment">// image::</span></div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>DRAIN_ENUM_OSTREAM(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">drain::image::LayoutSVG::Direction</a>);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>DRAIN_ENUM_DICT(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">image::LayoutSVG::Direction</a>);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>DRAIN_ENUM_DICT(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918">image::LayoutSVG::GroupType</a>);</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#endif </span><span class="comment">// DRAIN_ALIGN_SVG_H_</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>}  <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition</b> Dictionary.h:63</div></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>DRAIN_ENUM_OSTREAM(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">drain::image::LayoutSVG::Direction</a>);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>DRAIN_ENUM_OSTREAM(<a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918">drain::image::LayoutSVG::GroupType</a>);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="preprocessor">#include &quot;TreeSVG.h&quot;</span></div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="keyword">template</span> &lt;&gt; <span class="comment">// for T (Tree class)</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">template</span> &lt;&gt; <span class="comment">// for K (path elem arg)</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="keywordtype">bool</span> drain::image::TreeSVG::hasChild(<span class="keyword">const</span> <a class="code hl_enumeration" href="classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918">drain::image::LayoutSVG::GroupType</a> &amp; type) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="preprocessor">#endif </span><span class="comment">// DRAIN_ALIGN_SVG_H_</span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Default default value...</div><div class="ttdef"><b>Definition</b> EnumFlags.h:247</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1LayoutSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1LayoutSVG.html">drain::image::LayoutSVG</a></div><div class="ttdoc">Higher level controller for setting alignments.</div><div class="ttdef"><b>Definition</b> LayoutSVG.h:55</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1LayoutSVG_html_a0c7de2748e0e91f7adaef301b01dab71"><div class="ttname"><a href="classdrain_1_1image_1_1LayoutSVG.html#a0c7de2748e0e91f7adaef301b01dab71">drain::image::LayoutSVG::setDirection</a></div><div class="ttdeci">void setDirection(const D &amp;dir)</div><div class="ttdoc">Set direction: coordinates increasing or decreasing.</div><div class="ttdef"><b>Definition</b> LayoutSVG.h:120</div></div>

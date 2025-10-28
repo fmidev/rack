@@ -15,7 +15,7 @@ var searchData=
   ['maximummethod_12',['MaximumMethod',['../classdrain_1_1image_1_1MaximumMethod.html',1,'drain::image']]],
   ['maximumweightmethod_13',['MaximumWeightMethod',['../classdrain_1_1image_1_1MaximumWeightMethod.html',1,'drain::image']]],
   ['measurement_14',['Measurement',['../structrack_1_1Measurement.html',1,'rack']]],
-  ['metadatacollectorsvg_15',['MetaDataCollectorSVG',['../classrack_1_1MetaDataCollectorSVG.html',1,'rack']]],
+  ['metadatacollectorsvg_15',['MetaDataCollectorSVG',['../classdrain_1_1image_1_1MetaDataCollectorSVG.html',1,'drain::image']]],
   ['methodweights_16',['MethodWeights',['../structrack_1_1MethodWeights.html',1,'rack']]],
   ['methodweights_3c_20double_20_3e_17',['MethodWeights&lt; double &gt;',['../structrack_1_1MethodWeights.html',1,'rack']]],
   ['minimumfunctor_18',['MinimumFunctor',['../classdrain_1_1MinimumFunctor.html',1,'drain']]],

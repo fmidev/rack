@@ -108,8 +108,8 @@ SVG panel example: Example with a legend.</div></div>
 <div class="caption">
 SVG panel example: Three radars, with automatic titles.</div></div>
  <b> Grouping images by timestamp or other metadata </b><code>Rack</code> supports grouping output images to rows or columns. The groups are identified with <code>--gGroupTitle</code> <code>arg</code> , using distinguishing variables in the argument, for example <code>${NOD}</code> , <code>${what:date}</code> or <code>${what:time}</code> . </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gGroupTitle <span class="stringliteral">&#39;Grouping by time: ${what:time|%H:%M} UTC&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00*.h5 \</div>
 <div class="line">   -o time_series.svg</div>
 </div><!-- fragment --><div class="image">
@@ -129,9 +129,9 @@ SVG panel example: Time series.</div></div>
 <img src="time_series2.png" alt=""/>
 <div class="caption">
 SVG panel example: Time series2.</div></div>
- Grouping without displaying titles can be done with prefix <code>NONE</code> . For example, using plain (unformatted) timestamp as follows: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
+ Grouping without displaying titles can be done with setting a criterion with <code>--gGroupId</code> <code>t</code> followed by <code>--gGroupTitle</code> <code></code>. For example, using plain (unformatted) timestamp as follows: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --gGroupId <span class="stringliteral">&#39;Invisible grouping criterion-${what:date}${what:time}&#39;</span> --gGroupTitle <span class="stringliteral">&#39;&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5 \</div>
 <div class="line">   -o without_group_titles.svg</div>
 </div><!-- fragment --><div class="image">
@@ -139,8 +139,8 @@ SVG panel example: Time series2.</div></div>
 <div class="caption">
 SVG panel example: Without group titles.</div></div>
  Similar example using radar site code for grouping: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gGroupTitle <span class="stringliteral">&#39;Grouping using radar name: ${PLC} (${NOD})&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/20170812*.h5 \</div>
 <div class="line">   -o grouping_by_site_codes.svg</div>
 </div><!-- fragment --><div class="image">
@@ -148,8 +148,8 @@ SVG panel example: Without group titles.</div></div>
 <div class="caption">
 SVG panel example: Grouping by site codes.</div></div>
  The main title can be set explicitly with <code>--gTitle</code> command . The default value, <code>AUTO</code> , displays main title as in the examples above. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gTitle <span class="stringliteral">&#39;My Main Title for ${what:date|%A, %d %B %Y}&#39;</span> --gGroupTitle <span class="stringliteral">&#39;Radar ${PLC}&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_*{ika,kor,van}.h5 \</div>
 <div class="line">   -o user-defined_title.svg</div>
 </div><!-- fragment --><div class="image">
@@ -157,8 +157,8 @@ SVG panel example: Grouping by site codes.</div></div>
 <div class="caption">
 SVG panel example: User-defined title.</div></div>
  Main title can be removed with empty arg: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gTitle <span class="stringliteral">&#39;&#39;</span> --gGroupTitle <span class="stringliteral">&#39;${what:time|%H:%M} &#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5 \</div>
 <div class="line">   -o group_titles_only.svg</div>
 </div><!-- fragment --><div class="image">
@@ -166,9 +166,9 @@ SVG panel example: User-defined title.</div></div>
 <div class="caption">
 SVG panel example: Group titles only.</div></div>
  <b>Changing style of graphic panels</b>A further example, usage of styles </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gLayout VERT \</div>
 <div class="line">   --gTitle <span class="stringliteral">&#39;Larger font here...&#39;</span> --gGroupTitle <span class="stringliteral">&#39;...but smaller here, with still readable timestamp ${what:date|%A, %d %B %Y} at ${what:time|%H:%M} UTC&#39;</span> --gTitleHeights <span class="stringliteral">&#39;40,20,15&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5 \</div>
 <div class="line">   -o user-defined_title_height.svg</div>
 </div><!-- fragment --><div class="image">
@@ -176,10 +176,10 @@ SVG panel example: Group titles only.</div></div>
 <div class="caption">
 SVG panel example: User-defined title height.</div></div>
  A further example, usage of styles </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
-<div class="line">   --gGroupTitle <span class="stringliteral">&#39;AUTO:${what:time}&#39;</span> \</div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;${what:time}&#39;</span> \</div>
 <div class="line">   --gStyle .IMAGE_BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1&#39;</span> --gStyle rect.MAIN=<span class="stringliteral">&#39;fill:forestgreen&#39;</span> --gStyle rect.GROUP=<span class="stringliteral">&#39;fill:lightgreen&#39;</span> \</div>
 <div class="line">   --gStyle text.MAIN=<span class="stringliteral">&#39;font-family:Times&#39;</span> --gStyle .LOCATION=<span class="stringliteral">&#39;fill:brown&#39;</span> \</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5 \</div>
 <div class="line">   -o multiple_styles.svg</div>
 </div><!-- fragment --><div class="image">

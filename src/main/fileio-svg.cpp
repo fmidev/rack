@@ -1172,12 +1172,14 @@ public:
 
 #include <drain/image/TreeSVG.h>
 
+#define DRAIN_SVG_ELEM_CLS(E) drain::NodeXML<drain::image::svg::tag_t>::Elem<drain::image::svg::tag_t::E>
+
 namespace drain {
 
 
 template <>
 template <>
-class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH>{
+class DRAIN_SVG_ELEM_CLS(PATH){
 public:
 
 	inline
@@ -1350,16 +1352,36 @@ public:
 		node["d"].clear();
 	}
 
+	/*
 	template <Command C, Coord R=RELATIVE,typename ...T>
 	void append(const T... args){
 		appendCmd<C,R>();
+		appendArgs<C>(args...);
+	}
+	*/
+
+	template <Command C, typename ...T>
+	void relative(const T... args){
+		appendCmd<C,RELATIVE>();
+		appendArgs<C>(args...);
+	}
+
+	template <Command C, typename ...T>
+	void absolute(const T... args){
+		appendCmd<C,ABSOLUTE>();
 		appendArgs<C>(args...);
 	}
 
 
 };
 
-typedef NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH> svg_PATH;
+
+#define DRAIN_SVG_ELEM(E) typedef drain::NodeXML<drain::image::svg::tag_t>::Elem<drain::image::svg::tag_t::E> svg##E;
+
+// typedef NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH> svg_PATH;
+DRAIN_SVG_ELEM(PATH)
+
+// DRAIN_SVG_ELEM_CLS(PATH)
 
 /*
 template <>
@@ -1368,34 +1390,129 @@ void svg_PATH::appendCmd<svg_PATH::CLOSE, svg_PATH::RELATIVE>(){
 */
 
 template <>
-void svg_PATH::appendArgs<svg_PATH::CLOSE>(){
+void svgPATH::appendArgs<svgPATH::CLOSE>(){
 };
 
 
 template <>
-void svg_PATH::appendArgs<svg_PATH::MOVE>(double x, double y){
+void svgPATH::appendArgs<svgPATH::MOVE>(double x, double y){
 	appendPoints(x, y);
 };
 
 template <>
-void svg_PATH::appendArgs<svg_PATH::LINE>(double x, double y){
+void svgPATH::appendArgs<svgPATH::LINE>(double x, double y){
 	appendPoints(x, y);
 };
 
 template <>
-void svg_PATH::appendArgs<svg_PATH::CURVE>(double x1, double y1, double x2, double y2, double x3, double y3){
+void svgPATH::appendArgs<svgPATH::CURVE>(double x1, double y1, double x2, double y2, double x3, double y3){
 	appendPoints(x1,y1, x2,y2, x3,y3);
 };
 
-
-
-//void NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH>::appendArgs<MOVE,RELATIVE>(){
+// void NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH>::appendArgs<MOVE,RELATIVE>(){
 // };
 
 }
 
+
 namespace rack {
 
+// consider RackSVG
+class RadarSVG {
+public:
+
+	RadarProj radarProj;
+
+	drain::image::GeoFrame geoFrame;
+
+
+	/// Number of "sectors" in a sphere.
+	void setRadialResolution(int n){
+		radialResolution = n;
+		theta = 2.0*M_PI/ static_cast<double>(radialResolution);
+		double k = 4.0/3.0 * ::tan(theta/4.0);
+
+		bezierRadialCoeff = sqrt(1.0 + k*k);
+		bezierAngularOffset = ::atan(k);
+	}
+
+	// typedef DRAIN_SVG_ELEM_CLS(PATH) svgPath;
+	inline
+	void convert(double radius, double azimuth, drain::Point2D<int> & imgPoint) const {
+		drain::Point2D<double> geoPoint;
+		polarToMeters(radius, azimuth, geoPoint);
+		// radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
+		geoFrame.m2pix(geoPoint, imgPoint);
+	};
+
+	inline
+	void polarToMeters(double radius, double azimuth, drain::Point2D<double> & geoPoint) const {
+		radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
+		//geoFrame.m2pix(geoPoint, imgPoint);
+	};
+
+
+	inline
+	void moveTo(drain::svgPATH & elem, double radius, double azimuth) const {
+
+		drain::Point2D<int> imgPoint;
+
+		/*
+		drain::Point2D<double> geoPoint;
+		radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
+
+		geoFrame.m2pix(geoPoint, imgPoint);
+		*/
+		convert(radius, azimuth, imgPoint);
+
+		elem.absolute<drain::svgPATH::MOVE>(imgPoint.x, imgPoint.y);
+	}
+
+	void cubicBezier(drain::svgPATH & elem, double radius, double azimuthStartR, double azimuthEndR, const drain::Point2D<int> & imgPointStart){
+
+		const double radiusCtrl = radius * bezierRadialCoeff;
+
+		double azimuthCtrl = 0.0;
+
+		drain::Point2D<double> ctr1, ctr2;
+
+		azimuthCtrl = azimuthStartR + bezierAngularOffset;
+
+		ctr1.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
+
+		drain::Point2D<double> geoPoint;
+
+		//polarToMeters(radius, azimuthStartR, geoPoint);
+
+		drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
+		radarProj.projectFwd(ctr1, geoPoint);
+		geoFrame.m2pix(geoPoint, imgPointCtrl1);
+
+		azimuthCtrl = azimuthEndR - bezierAngularOffset;
+		ctr2.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
+
+		radarProj.projectFwd(ctr2, geoPoint);
+		geoFrame.m2pix(geoPoint, imgPointCtrl2);
+
+		// drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
+
+		elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPointStart);
+	}
+
+	inline
+	void close(drain::svgPATH & elem){
+		elem.absolute<drain::svgPATH::CLOSE>();
+	}
+
+protected:
+
+	int radialResolution;
+
+	double theta; //  2.0*M_PI/ static_cast<double>(radialResolution);
+	// double coeff; //  = 4.0/3.0 * ::tan(theta/4.0);
+	double bezierRadialCoeff; // = sqrt(1.0 + coeff*coeff);
+	double bezierAngularOffset; // = ::atan(coeff);
+};
 
 class CmdSector : public drain::SimpleCommand<std::string> {
 
@@ -1420,10 +1537,10 @@ public:
 
 	/**
 	 *  \param rangeR in radians
-	 */
 	static
 	void polarBezierCreatorR(double rangeM, const drain::Range<double> & rangeR,
 			const drain::Point2D<double> & pnt1, drain::Point2D<double> & ctr1, drain::Point2D<double> & ctr2, drain::Point2D<double> & pnt2);
+	 */
 
 	virtual
 	void exec() const override {
@@ -1450,7 +1567,12 @@ public:
 
 		std::cout << polarSector.getParameters() << std::endl;
 
-		RadarProj radarProj(srcPolar[ODIMPathElem::WHERE].data.attributes["lon"], srcPolar[ODIMPathElem::WHERE].data.attributes["lat"]);
+		RadarSVG radarSVG;
+		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
+
+		radarSVG.radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
+
+		// RadarProj radarProj(srcPolar[ODIMPathElem::WHERE].data.attributes["lon"], srcPolar[ODIMPathElem::WHERE].data.attributes["lat"]);
 		// proj.setSiteLocationDeg();
 
 		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
@@ -1465,25 +1587,25 @@ public:
 			// const drain::Rectangle<double> bboxComposite(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
 			// mout.special("Composite BBOX:", bboxComposite);
 
-			drain::image::GeoFrame geoFrame;
+			// drain::image::GeoFrame geoFrame;
 			int epsg = where.get("epsg", 0); // non-standard
 			if (epsg){
 				mout.attention("EPSG found: ", epsg);
-				geoFrame.setProjectionEPSG(epsg);
+				radarSVG.geoFrame.setProjectionEPSG(epsg);
 			}
 			else {
-				geoFrame.setProjection(where["projdef"]);
+				radarSVG.geoFrame.setProjection(where["projdef"]);
 			}
-			geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
-			geoFrame.setGeometry(where["xsize"], where["ysize"]);
+			radarSVG.geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			radarSVG.geoFrame.setGeometry(where["xsize"], where["ysize"]);
 
-			mout.special("GeoFrame BBOX: ", geoFrame);
-			mout.special("GeoFrame BBOX: ", geoFrame.getBoundingBoxNat());
+			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame);
+			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame.getBoundingBoxNat());
 
-			radarProj.setProjectionDst(where.get("projdef", ""));
+			radarSVG.radarProj.setProjectionDst(where.get("projdef", ""));
 			double radius = 250000.0;
 			drain::Rectangle<double> bbox;
-			radarProj.determineBoundingBoxM(radius, bbox); // M = "native"
+			radarSVG.radarProj.determineBoundingBoxM(radius, bbox); // M = "native"
 			// drain::Rectangle<double> bbox;
 			mout.special("BBOX (250km) of the last input:", bbox);
 
@@ -1513,20 +1635,36 @@ public:
 			// Circle as a polygon (to master projection)
 			// <polygon points="100,100 150,25 150,75 200,0" fill="none" stroke="black" />
 			drain::image::TreeSVG & circle = geoGroup["radarCircle"](drain::image::svg::POLYGON);
+			circle->setStyle({
+				{"fill", "blue"},
+				{"stroke", "red"},
+				{"stroke-width", 5.1},
+				{"opacity", 0.65},
+			});
+			/*
 			circle -> setStyle("fill",   "blue");
 			circle -> setStyle("stroke", "red");
 			circle -> setStyle("stroke-width", 5.1);
 			circle -> setStyle("opacity", 0.85);
+			*/
+			DRAIN_SVG_ELEM_CLS(POLYGON) polygonElem(circle);
 
 			drain::image::TreeSVG & curve = geoGroup["radarPath"](drain::image::svg::PATH);
-			curve -> setStyle("fill",   "none");
-			curve -> setStyle("stroke", "green");
-			curve -> setStyle("stroke-width", 12.0);
-			curve -> setStyle("opacity", 0.95);
+			curve -> setStyle({
+				{"fill", "none"},
+				{"stroke", "green"},
+				{"stroke-width", 12.0},
+				{"opacity", 0.65}
+			});
+			// curve -> setStyle("fill",   "none");
+			// curve -> setStyle("stroke", "green");
+			// curve -> setStyle("stroke-width", 12.0);
+			// curve -> setStyle("opacity", 0.95);
 
 			// typedef drain::image::svg::tag_t::PATH curve_t ;
 
-			drain::svg_PATH curveElem(curve);
+			DRAIN_SVG_ELEM_CLS(PATH) bezierElem(curve);
+			// drain::svg_PATH curveElem(curve);
 			// Bezier curve points
 			drain::Point2D<double> pnt1, ctr1, ctr2, pnt2;
 
@@ -1554,16 +1692,19 @@ public:
 				azimuth = static_cast<double>(i*360/radialResolution) * drain::DEG2RAD;
 				azimuths.max = azimuth;
 
-				radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
+				radarSVG.radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
 				// radarProj.projectFwd(125000.0, static_cast<double>(i), geoPoint.x, geoPoint.y);
-				geoFrame.m2pix(geoPoint, imgPoint);
+				radarSVG.geoFrame.m2pix(geoPoint, imgPoint);
 				//if (imgPoint)
 				path.push_back(imgPoint);
 
+				polygonElem.append(imgPoint);
+
 				if (i == 0){
-					//getPolarPoint(radius, azimuth, pnt1);
+					// getPolarPoint(radius, azimuth, pnt1);
 					// geoFrame.m2pix(pnt1, imgPoint);
-					curveElem.append<drain::svg_PATH::MOVE, drain::svg_PATH::ABSOLUTE>(imgPoint);
+					// bezierElem.absolute<drain::svgPATH::MOVE>(imgPoint);
+					radarSVG.moveTo(bezierElem, radius, azimuth);
 				}
 				else {
 					// play dynamic
@@ -1571,15 +1712,15 @@ public:
 
 					azimuthCtrl = azimuths.min + angularOffset;
 					ctr1.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-					radarProj.projectFwd(ctr1, geoPoint);
-					geoFrame.m2pix(geoPoint, imgPointCtrl1);
+					radarSVG.radarProj.projectFwd(ctr1, geoPoint);
+					radarSVG.geoFrame.m2pix(geoPoint, imgPointCtrl1);
 
 					azimuthCtrl = azimuths.max - angularOffset;
 					ctr2.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-					radarProj.projectFwd(ctr2, geoPoint);
-					geoFrame.m2pix(geoPoint, imgPointCtrl2);
+					radarSVG.radarProj.projectFwd(ctr2, geoPoint);
+					radarSVG.geoFrame.m2pix(geoPoint, imgPointCtrl2);
 
-					curveElem.append<drain::svg_PATH::CURVE, drain::svg_PATH::ABSOLUTE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
+					bezierElem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
 					// curveElem.append<drain::svg_PATH::LINE, drain::svg_PATH::ABSOLUTE>(imgPoint);
 				}
 
@@ -1588,12 +1729,13 @@ public:
 
 			}
 
-			curveElem.append<drain::svg_PATH::CLOSE>();
+			bezierElem.absolute<drain::svgPATH::CLOSE>();
 
 			// mout.accept<LOG_NOTICE>(path);
 			std::string polygonPathStr = drain::sprinter(path, {" "}).str();
 			mout.accept<LOG_NOTICE>(polygonPathStr);
-			circle -> set("points", polygonPathStr);
+			//circle -> set("points", polygonPathStr);
+			circle[drain::image::svg::DESC]->setText(polygonPathStr);
 
 		}
 
@@ -1642,6 +1784,7 @@ public:
 
  */
 
+/*
 void CmdSector::polarBezierCreatorR(double radiusM, const drain::Range<double> & rangeR,
 		const drain::Point2D<double> & pnt1, drain::Point2D<double> & ctr1, drain::Point2D<double> & pnt2, drain::Point2D<double> & ctr2){
 
@@ -1654,10 +1797,8 @@ void CmdSector::polarBezierCreatorR(double radiusM, const drain::Range<double> &
 	pnt2.set(radiusM * cos(rangeR.max), radiusM * sin(rangeR.max)); // swap sin<->cos to get radar coords
 
 	ctr2.set(pnt2.x + k*::sin(rangeR.max), pnt1.y - k*::cos(rangeR.max));
-
-
-
 }
+*/
 
 //#include <drain/util/TreeUtils.h>
 /*

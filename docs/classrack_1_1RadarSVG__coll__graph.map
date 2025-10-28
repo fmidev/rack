@@ -1,0 +1,27 @@
+<map id="RadarSVG" name="RadarSVG">
+<area shape="rect" id="Node000001" title=" " alt="" coords="277,560,364,585"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1RadarProj.html" title=" " alt="" coords="342,472,427,497"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="370,510,332,561,327,558,366,507"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="344,311,399,336"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,349,386,471,381,472,371,350"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="221,472,311,497"/>
+<area shape="poly" id="edge7_Node000007_Node000003" title=" " alt="" coords="331,329,294,339,277,348,264,361,253,389,252,420,257,449,264,471,259,473,252,450,247,420,248,388,260,359,274,344,292,334,329,324"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1Projector.html" title=" " alt="" coords="331,208,411,233"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="374,247,374,311,369,311,369,247"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="285,95,458,135"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="374,149,374,208,369,208,369,149"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="286,5,457,45"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="374,59,374,95,369,95,369,59"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="270,510,278,535,288,547,301,558,298,562,285,551,273,537,265,512"/>
+<area shape="rect" id="Node000008" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="40,311,201,336"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="117,350,114,398,119,424,131,446,144,455,167,463,222,475,221,480,165,469,142,460,127,450,114,426,108,399,112,349"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="5,159,140,184"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="83,196,119,310,114,311,78,198"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="67,13,211,38"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="127,51,102,96,78,159,73,158,97,94,122,49"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="112,102,247,127"/>
+<area shape="poly" id="edge13_Node000012_Node000010" title=" " alt="" coords="153,50,176,101,172,103,148,52"/>
+<area shape="rect" id="Node000011" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="107,208,254,233"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="169,246,130,312,125,309,165,244"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="182,141,183,207,178,208,177,141"/>
+</map>

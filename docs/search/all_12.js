@@ -42,7 +42,7 @@ var searchData=
   ['measurements_39',['Adding point measurements',['../pointdata.html#pointmeasurements',1,'']]],
   ['metadata_40',['metadata',['../modifypage.html#CmdSetODIM',1,'Adding and changing ODIM metadata'],['../modifypage.html#CmdCompleteODIM',1,'Ensuring ODIM metadata'],['../text-output-page.html#text-output',1,'Extracting metadata'],['../modifypage.html#modify',1,'Modifying data arrays and metadata'],['../text-output-page.html#dumps',1,'Simple dump of metadata']]],
   ['metadata_20output_20using_20templates_41',['Formatting metadata output using templates',['../text-output-page.html#templates',1,'']]],
-  ['metadatacollectorsvg_42',['MetaDataCollectorSVG',['../classrack_1_1MetaDataCollectorSVG.html',1,'rack']]],
+  ['metadatacollectorsvg_42',['MetaDataCollectorSVG',['../classdrain_1_1image_1_1MetaDataCollectorSVG.html',1,'drain::image']]],
   ['meteorogical_20targets_43',['Detecting sea clutter and other non-meteorogical targets',['../andrepage.html#aNonMet',1,'']]],
   ['meteorological_20products_44',['meteorological products',['../productspage.html',1,'Meteorological products'],['../index.html#products_brief',1,'Meteorological products'],['../quickpage.html#commands_product',1,'Meteorological products']]],
   ['methods_45',['Compositing methods',['../compositespage.html#cmethods',1,'']]],

@@ -78,7 +78,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classrack_1_1TitleCreatorSVG-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TitleCreatorSVG Class Reference</div></div>
@@ -148,6 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4cf5bbd6b7724a51ab75d7df8862f003" id="r_a4cf5bbd6b7724a51ab75d7df8862f003"><td class="memItemLeft" align="right" valign="top"><a id="a4cf5bbd6b7724a51ab75d7df8862f003" name="a4cf5bbd6b7724a51ab75d7df8862f003"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPostfix</b> (TreeSVG &amp;root, const TreeSVG::path_t &amp;path) override</td></tr>
 <tr class="separator:a4cf5bbd6b7724a51ab75d7df8862f003"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af719d810ee21788c5f91b3c5f512b316" id="r_af719d810ee21788c5f91b3c5f512b316"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TitleCreatorSVG.html#af719d810ee21788c5f91b3c5f512b316">formatTitle</a> (TreeSVG &amp;group, const NodeSVG::map_t &amp;attributes) const</td></tr>
+<tr class="separator:af719d810ee21788c5f91b3c5f512b316"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1TreeVisitor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1TreeVisitor')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1TreeVisitor.html">TreeVisitor&lt; TreeSVG &gt;</a></td></tr>
 <tr class="memitem:a54bd2c7f232a37d8d48d9926f4c11d3e inherit pub_methods_classdrain_1_1TreeVisitor" id="r_a54bd2c7f232a37d8d48d9926f4c11d3e"><td class="memItemLeft" align="right" valign="top">
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPrefix</b> (TreeSVG &amp;tree, const typename T::path_t &amp;path)</td></tr>
@@ -158,11 +159,6 @@ virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPostfix</
 <tr class="memdesc:a79898a5f2ed0bd16911b81b0d1f357b7 inherit pub_methods_classdrain_1_1TreeVisitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed after traversing child nodes. <br /></td></tr>
 <tr class="separator:a79898a5f2ed0bd16911b81b0d1f357b7 inherit pub_methods_classdrain_1_1TreeVisitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a83af57ade5386dd4bc620e1c0edc2b0b" id="r_a83af57ade5386dd4bc620e1c0edc2b0b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TitleCreatorSVG.html#a83af57ade5386dd4bc620e1c0edc2b0b">formatTitle</a> (TreeSVG &amp;group, const NodeSVG::map_t &amp;attributes)</td></tr>
-<tr class="separator:a83af57ade5386dd4bc620e1c0edc2b0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:afee3d03117d4db687677caef1789074d" id="r_afee3d03117d4db687677caef1789074d"><td class="memItemLeft" align="right" valign="top"><a id="afee3d03117d4db687677caef1789074d" name="afee3d03117d4db687677caef1789074d"></a>
@@ -171,17 +167,19 @@ const <a class="el" href="structrack_1_1PanelConfSVG.html">PanelConfSVG</a> &amp
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Formats titles from metadata. Invoked by <a class="el" href="classdrain_1_1TreeUtils.html#a3487b023a9c115792f41c1f155ea2f0f" title="Traverse tree, visiting each node as a prefix operation.">drain::TreeUtils::traverse()</a> </p>
-<p>In tree traversal, maintains information on metadata.</p>
+<p>class MetaDataCollectorSVG : public drain::TreeVisitor&lt;TreeSVG&gt; {</p>
+<p>public: </p><pre class="fragment">int visitPrefix(TreeSVG &amp; tree, const TreeSVG::path_t &amp; path)  override;
+
+int visitPostfix(TreeSVG &amp; tree, const TreeSVG::path_t &amp; path)  override;
+</pre><p> protected: </p><pre class="fragment">typedef std::map&lt;std::string, unsigned short&gt; variableStat_t;
+</pre><p> }; In tree traversal, maintains information on metadata.</p>
 <p>Invoked by, hence compatible with <a class="el" href="classdrain_1_1TreeUtils.html#a3487b023a9c115792f41c1f155ea2f0f" title="Traverse tree, visiting each node as a prefix operation.">drain::TreeUtils::traverse()</a> </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a83af57ade5386dd4bc620e1c0edc2b0b" name="a83af57ade5386dd4bc620e1c0edc2b0b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83af57ade5386dd4bc620e1c0edc2b0b">&#9670;&#160;</a></span>formatTitle()</h2>
+<a id="af719d810ee21788c5f91b3c5f512b316" name="af719d810ee21788c5f91b3c5f512b316"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af719d810ee21788c5f91b3c5f512b316">&#9670;&#160;</a></span>formatTitle()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void formatTitle </td>
@@ -198,14 +196,9 @@ const <a class="el" href="structrack_1_1PanelConfSVG.html">PanelConfSVG</a> &amp
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td></td>
+          <td></td><td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 <p>Useful function – as attributes of two groups are considered: panel-specific and shared. </p>
 

@@ -119,10 +119,9 @@ Reading and writing text files</h1>
 </div><!-- fragment --><p> For using format templates and hadling multiple files on a single command line, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a>.</p>
 <p>Volume can be also created using a text file like the one created above, that is, with the desired structure and data types. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.txt -o volume-<span class="keyword">new</span>.h5</div>
 </div><!-- fragment --><p>One can modify the metadata directly from the command line by means of <code>--setODIM</code> <code>&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; command.</p>
-<div class="fragment"><div class="line">--setODIM &lt;assignment&gt;   (section: general)</div>
+<div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (Section: general)</div>
 <div class="line">  Set data properties (ODIM). Works also directly: --/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]. See --completeODIM</div>
-<div class="line">  - assignment () [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
-<div class="line"> </div>
+<div class="line">    assignment= [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
 </div><!-- fragment --><p>The command has a special shorthand <code>--/&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; . For example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=myValue          -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=123.456          -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset2/data3/what:quantity=<span class="stringliteral">&quot;PROB&quot;</span> -o volume-<span class="keyword">new</span>.h5</div>
@@ -227,14 +226,12 @@ Writing HTML files</h1>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --pCappi 1500 -c --encoding quantity=<span class="stringliteral">&#39;DBZH&#39;</span>  --palette <span class="stringliteral">&#39;default&#39;</span> -o pCappi-1500m-RGB.html</div>
 </div><!-- fragment --><h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
-<div class="fragment"><div class="line">--histogram &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;,&lt;commentChar&gt;   (section: general)</div>
-<div class="line">  Histogram. Optionally --format using keys index,range,range.min,range.max,count,label</div>
-<div class="line">  - count (0)</div>
-<div class="line">  - range (0:0)</div>
-<div class="line">  - filename () [&lt;filename&gt;.txt|-]</div>
-<div class="line">  - attribute (histogram) [&lt;attribute_key&gt;]</div>
-<div class="line">  - commentChar (#) [Prefix for header and postfix for labels]</div>
-<div class="line"> </div>
+<div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;  (Section: general)</div>
+<div class="line">  Histogram. Optionally --format using keys index,range,count,label</div>
+<div class="line">    count=0 </div>
+<div class="line">    range=0:0 </div>
+<div class="line">    filename= [&lt;filename&gt;.txt|-]</div>
+<div class="line">    attribute=histogram [&lt;attribute_key&gt;]</div>
 </div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=TH&#39;</span> --histogram filename=histogram.dat</div>
 </div><!-- fragment --><p>The resulting file consists of lines containing values and counts </p><div class="fragment"><div class="line"># ${index}   =${count} #${label} [${range}[ </div>
 <div class="line"># [0,256] [-327.68,327.68]</div>

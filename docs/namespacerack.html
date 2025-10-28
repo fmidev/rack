@@ -629,8 +629,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1Measurement.html">Measurement</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single measurement (bin), with height coordinate and measurement value (reflectivity).  <a href="structrack_1_1Measurement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1MetaDataCollectorSVG.html">MetaDataCollectorSVG</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1MethodWeights.html">MethodWeights</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1MyOp.html">MyOp</a></td></tr>
@@ -799,6 +797,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProj.html">RadarProj</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProj4.html">RadarProj4</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html">RadarSVG</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarWindowAvg.html">RadarWindowAvg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1052,8 +1052,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>quoted</b> (co
 <tr class="memitem:af438f7e5852a5bc0a886e8cac3fc042e" id="r_af438f7e5852a5bc0a886e8cac3fc042e"><td class="memTemplParams" colspan="2">template&lt;class P &gt; </td></tr>
 <tr class="memitem:af438f7e5852a5bc0a886e8cac3fc042e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#af438f7e5852a5bc0a886e8cac3fc042e">sampleData</a> (const typename P::dataset_t &amp;dataset, const <a class="el" href="classdrain_1_1image_1_1Sampler.html">Sampler</a> &amp;sampler, const std::string &amp;format, std::ostream &amp;ostr)</td></tr>
 <tr class="separator:af438f7e5852a5bc0a886e8cac3fc042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4529b561ba64738c5b239d58fe62f7fc" id="r_a4529b561ba64738c5b239d58fe62f7fc"><td class="memItemLeft" align="right" valign="top"><a id="a4529b561ba64738c5b239d58fe62f7fc" name="a4529b561ba64738c5b239d58fe62f7fc"></a>
-drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addDummyObject</b> (drain::image::TreeSVG &amp;group)</td></tr>
+<tr class="memitem:a4529b561ba64738c5b239d58fe62f7fc" id="r_a4529b561ba64738c5b239d58fe62f7fc"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a4529b561ba64738c5b239d58fe62f7fc">addDummyObject</a> (drain::image::TreeSVG &amp;group)</td></tr>
 <tr class="separator:a4529b561ba64738c5b239d58fe62f7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae77d9d4e4c2a5d1281ae95db6520d7e" id="r_aae77d9d4e4c2a5d1281ae95db6520d7e"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#aae77d9d4e4c2a5d1281ae95db6520d7e">getAdapterGroup</a> (drain::image::TreeSVG &amp;group)</td></tr>
 <tr class="memdesc:aae77d9d4e4c2a5d1281ae95db6520d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return current row or column of image panels.  <br /></td></tr>
@@ -1154,12 +1153,17 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Rack is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.</p>
 <p>Rack is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Rack. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<p>Version 15</p><ul>
+<li>SVG alignment complete: gTitle, gGroupTitle, gLayout, gAnchor, gAlign</li>
+</ul>
 <p>Version 14 Version 14.0.0 (beta)</p><ul>
 <li>Revised SVG Layout Version 14.0.1 (beta)</li>
 <li>Revised SVG Layout Version 14.0.2 (beta)</li>
 <li>Completing new SVG Layout Version 14.0.3 (beta)</li>
 <li>Fix: prodpar=elangle for product=PPI Version 14.1</li>
-<li>Fix: cCreateTile source/NOD reset</li>
+<li>Fix: cCreateTile source/NOD reset Version 14.3</li>
+<li>Almost perfect SVG logic, still &ndash;gGroupId problem Version 14.4</li>
+<li>SCAN: copy /how attributes to /dataset1/how to support PVOL creation</li>
 </ul>
 <p>Version 13</p><ul>
 <li>andre::ChaffOp Release 13.1</li>
@@ -1529,6 +1533,33 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a4529b561ba64738c5b239d58fe62f7fc" name="a4529b561ba64738c5b239d58fe62f7fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4529b561ba64738c5b239d58fe62f7fc">&#9670;&#160;</a></span>addDummyObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">drain::image::TreeSVG &amp; addDummyObject </td>
+          <td>(</td>
+          <td class="paramtype">drain::image::TreeSVG &amp;&#160;</td>
+          <td class="paramname"><em>group</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>r = radius θ = central angle of the arc segment (radians)</p>
+<p>The curve starts at angle α and ends at α + θ.</p>
+<p>Start point: P0 = (r cos α, r sin α)</p>
+<p>End point: P3 = (r cos(α + θ), r sin(α + θ))</p>
+<p>Control points: P1 = P0 + k * (-r sin α, r cos α) P2 = P3 + k * (r sin(α + θ), -r cos(α + θ))</p>
+<p>where k = 4/3 * tan(θ / 4)</p>
+<p>But with notations px0 = r cos α, py0 = r sin α px3 = r cos (α + θ), py3 = r sin (α + θ)</p>
+<p>P0 = (px0, py0) P3 = (px3, py3)</p>
+<p>P1 = P0 + k* (-py0, px0) P2 = P3 + k* ( py3, -px3) </p>
+
+</div>
+</div>
 <a id="a253917f57da82948270417a9f334ac1e" name="a253917f57da82948270417a9f334ac1e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a253917f57da82948270417a9f334ac1e">&#9670;&#160;</a></span>dbzToZ()</h2>
 

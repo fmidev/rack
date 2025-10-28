@@ -535,13 +535,10 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	/// -------------------------------------------------------
 	// TODO: interpolation (for INJECTION)
 
-
 	drain::Rectangle<double> bboxD;
 	m2deg(bboxInput.lowerLeft,  bboxD.lowerLeft);
 	m2deg(bboxInput.upperRight, bboxD.upperRight);
-	//updateDataExtent(bboxD);
 	updateDataExtentNat(bboxInput);
-
 
 	// Non-standard: add position of radar in image coords
 	drain::Point2D<double> cMetric;
@@ -550,18 +547,17 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	m2pix(cMetric, cImg);
 	updateNodeMap(SourceODIM(srcData.odim.source).getSourceCode(), cImg.x, cImg.y);
 
-
-
 	odim.updateLenient(srcData.odim); // Time, date, new
-	if (odim.NI == 0)
-		odim.NI = srcData.odim.getNyquist();
+	if (odim.NI == 0){
+		odim.NI = srcData.odim.getNyquist(); // move under updateLenient
+	}
+
 	++odim.ACCnum;
 
 	mout.debug("completed");
 
 	// drain::image::File::write(data,"compD.png");
 	// drain::image::File::write(weight,"compQ.png");
-
 
 }
 

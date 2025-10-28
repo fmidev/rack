@@ -22,7 +22,7 @@ var searchData=
   ['formatdate_19',['formatDate',['../classrack_1_1VariableFormatterODIM.html#a49be86851dc3bfbe93b9b640fd05ca00',1,'rack::VariableFormatterODIM']]],
   ['formatplace_20',['formatPlace',['../classrack_1_1VariableFormatterODIM.html#a9cfdcffac6d12c077472aecfc28f05f0',1,'rack::VariableFormatterODIM']]],
   ['formattime_21',['formatTime',['../classrack_1_1VariableFormatterODIM.html#ad4de3ea3aef4dc62480c3270e5105074',1,'rack::VariableFormatterODIM']]],
-  ['formattitle_22',['formatTitle',['../classrack_1_1TitleCreatorSVG.html#a83af57ade5386dd4bc620e1c0edc2b0b',1,'rack::TitleCreatorSVG']]],
+  ['formattitle_22',['formatTitle',['../classrack_1_1TitleCreatorSVG.html#af719d810ee21788c5f91b3c5f512b316',1,'rack::TitleCreatorSVG']]],
   ['formatvalue_23',['formatValue',['../classdrain_1_1VariableFormatter.html#a03b15b6726031ae8edaf079cef4a2850',1,'drain::VariableFormatter']]],
   ['formatvariable_24',['formatvariable',['../classrack_1_1VariableFormatterODIM.html#a963dbf297de9cdb670be46dfffc9b24e',1,'rack::VariableFormatterODIM::formatVariable()'],['../classdrain_1_1VariableFormatter.html#a1cc38325830b73cfca63ae059ba0cefb',1,'drain::VariableFormatter::formatVariable(const std::string &amp;key, const T &amp;value, const std::string &amp;format, std::ostream &amp;ostr) const'],['../classdrain_1_1VariableFormatter.html#a966844c88d252e46c3005c79b0248361',1,'drain::VariableFormatter::formatVariable(const std::string &amp;key, const T &amp;value, const std::string &amp;format, std::string &amp;str) const final']]],
   ['fromstreamt_25',['fromStreamT',['../classdrain_1_1Caster.html#adf571abe8fa6912f4fd9015ed9196b83',1,'drain::Caster']]],
