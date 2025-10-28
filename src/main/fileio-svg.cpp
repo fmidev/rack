@@ -1429,11 +1429,22 @@ public:
 	/// Number of "sectors" in a sphere.
 	void setRadialResolution(int n){
 		radialResolution = n;
+		/*
 		theta = 2.0*M_PI/ static_cast<double>(radialResolution);
 		double k = 4.0/3.0 * ::tan(theta/4.0);
-
 		bezierRadialCoeff = sqrt(1.0 + k*k);
 		bezierAngularOffset = ::atan(k);
+		*/
+	}
+
+	/**
+	 *  \param n - spherical resolution (number of sectors of sphere, arcs of which are spanned by cubic control vectors).
+	 */
+	void getCubicCoeff(int n, double & radialCoeff, double & angularOffset) const {
+		double theta = 2.0*M_PI / static_cast<double>(n);
+		double k = 4.0/3.0 * ::tan(theta/4.0);
+		radialCoeff = sqrt(1.0 + k*k);
+		angularOffset = ::atan(k);
 	}
 
 	// typedef DRAIN_SVG_ELEM_CLS(PATH) svgPath;
@@ -1451,52 +1462,89 @@ public:
 		//geoFrame.m2pix(geoPoint, imgPoint);
 	};
 
-
 	inline
-	void moveTo(drain::svgPATH & elem, double radius, double azimuth) const {
+	void radarGeoToCompositeImage(drain::Point2D<double> & radarPoint, drain::Point2D<int> & imagePoint) const {
+		drain::Point2D<double> compositePoint;
+		radarProj.projectFwd(radarPoint, compositePoint);
+		geoFrame.m2pix(compositePoint, imagePoint);
+	}
 
-		drain::Point2D<int> imgPoint;
 
-		/*
-		drain::Point2D<double> geoPoint;
-		radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
-
-		geoFrame.m2pix(geoPoint, imgPoint);
-		*/
-		convert(radius, azimuth, imgPoint);
-
+	/// Move to image point at (radius, azimuth)
+	/**
+	 *
+	 */
+	inline
+	void moveTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthR) const {
+		convert(radiusM, azimuthR, imgPoint);
 		elem.absolute<drain::svgPATH::MOVE>(imgPoint.x, imgPoint.y);
 	}
 
-	void cubicBezier(drain::svgPATH & elem, double radius, double azimuthStartR, double azimuthEndR, const drain::Point2D<int> & imgPointStart){
+	// Simple version not sharing end point.
+	/**
+	 *
+	 */
+	inline
+	void moveTo(drain::svgPATH & elem, double radius, double azimuth) const {
+		drain::Point2D<int> imgPoint;
+		moveTo(elem, imgPoint, radius, azimuth);
+	}
 
-		const double radiusCtrl = radius * bezierRadialCoeff;
 
+	/// Single command to draw arc
+	/**
+	 *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
+	 */
+	void cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimuthStartR, double azimuthEndR) const {
+		drain::Point2D<int> imgPoint;
+		convert(radiusM, azimuthEndR, imgPoint);
+		cubicBezierTo(elem, imgPoint, radiusM, azimuthStartR, azimuthEndR);
+	}
+
+	/**
+	 *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
+	 */
+	void cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthStartR, double azimuthEndR) const {
+
+		double bezierRadialCoeff;
+		double bezierAngularOffset;
+		getCubicCoeff(radialResolution, bezierRadialCoeff, bezierAngularOffset);
+
+		const double radiusCtrl = radiusM * bezierRadialCoeff;
 		double azimuthCtrl = 0.0;
 
-		drain::Point2D<double> ctr1, ctr2;
+		// Geographic coordinates [metric (or degrees?]
+		drain::Point2D<double> radarPointCtrl;
+
+		// Final image coordinates [pix]
+		drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
 
 		azimuthCtrl = azimuthStartR + bezierAngularOffset;
-
-		ctr1.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-
-		drain::Point2D<double> geoPoint;
-
-		//polarToMeters(radius, azimuthStartR, geoPoint);
-
-		drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
-		radarProj.projectFwd(ctr1, geoPoint);
-		geoFrame.m2pix(geoPoint, imgPointCtrl1);
+		radarPointCtrl.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
+		radarGeoToCompositeImage(radarPointCtrl, imgPointCtrl1);
 
 		azimuthCtrl = azimuthEndR - bezierAngularOffset;
-		ctr2.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
+		radarPointCtrl.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
+		radarGeoToCompositeImage(radarPointCtrl, imgPointCtrl2);
 
-		radarProj.projectFwd(ctr2, geoPoint);
-		geoFrame.m2pix(geoPoint, imgPointCtrl2);
+		elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
 
+
+		/*
+		// radarProj.projectFwd(radarControlPoint1, geoPoint);
+		// geoFrame.m2pix(geoPoint, imgPointCtrl1);
+
+		azimuthCtrl = azimuthEndR - bezierAngularOffset;
+		radarControlPoint2.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
+
+		radarGeoToCompositeImage(radarControlPoint1, imgPointCtrl2);
+		// radarProj.projectFwd(radarControlPoint2, geoPoint);
+		// geoFrame.m2pix(geoPoint, imgPointCtrl2);
 		// drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
+		convert(radiusM, azimuthEndR, imgPoint);
 
-		elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPointStart);
+		elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
+		*/
 	}
 
 	inline
@@ -1507,11 +1555,11 @@ public:
 protected:
 
 	int radialResolution;
-
+	/*
 	double theta; //  2.0*M_PI/ static_cast<double>(radialResolution);
-	// double coeff; //  = 4.0/3.0 * ::tan(theta/4.0);
 	double bezierRadialCoeff; // = sqrt(1.0 + coeff*coeff);
 	double bezierAngularOffset; // = ::atan(coeff);
+	*/
 };
 
 class CmdSector : public drain::SimpleCommand<std::string> {
@@ -1647,6 +1695,7 @@ public:
 			circle -> setStyle("stroke-width", 5.1);
 			circle -> setStyle("opacity", 0.85);
 			*/
+
 			DRAIN_SVG_ELEM_CLS(POLYGON) polygonElem(circle);
 
 			drain::image::TreeSVG & curve = geoGroup["radarPath"](drain::image::svg::PATH);
@@ -1663,68 +1712,40 @@ public:
 
 			// typedef drain::image::svg::tag_t::PATH curve_t ;
 
-			DRAIN_SVG_ELEM_CLS(PATH) bezierElem(curve);
-			// drain::svg_PATH curveElem(curve);
-			// Bezier curve points
-			drain::Point2D<double> pnt1, ctr1, ctr2, pnt2;
+			drain::svgPATH bezierElem(curve);
 
 			// Note: polygon path has (here) integer coordinates; assuming integer frame.
 			drain::Point2D<double> geoPoint;
 			drain::Point2D<int> imgPoint;
 			// consider generalize?
-			std::list<drain::Point2D<int> > path;
+			std::list<drain::Point2D<int> > debugPath;
 
-			double azimuth;
+			const int radialResolution = 7; // steps
+			radarSVG.setRadialResolution(radialResolution);
 
-			drain::Range<double> azimuths(0,0);
+			double azimuth, azimuthPrev = 0.0;
 
-			const int radialResolution = 12; // steps
-			const double theta = 2.0*M_PI/ static_cast<double>(radialResolution);
-			const double coeff = 4.0/3.0 * ::tan(theta/4.0);
-			const double radialCoeff = sqrt(1.0 + coeff*coeff);
-			const double angularOffset = ::atan(coeff);
-
-			double radiusCtrl, azimuthCtrl;
-			drain::Point2D<int> imgPointCtrl1;
-			drain::Point2D<int> imgPointCtrl2;
 
 			for (int i=0; i<=radialResolution; ++i){
 				azimuth = static_cast<double>(i*360/radialResolution) * drain::DEG2RAD;
-				azimuths.max = azimuth;
+				// azimuths.max = azimuth;
 
 				radarSVG.radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
-				// radarProj.projectFwd(125000.0, static_cast<double>(i), geoPoint.x, geoPoint.y);
 				radarSVG.geoFrame.m2pix(geoPoint, imgPoint);
-				//if (imgPoint)
-				path.push_back(imgPoint);
+				debugPath.push_back(imgPoint);
 
 				polygonElem.append(imgPoint);
 
+				// Bezier
 				if (i == 0){
-					// getPolarPoint(radius, azimuth, pnt1);
-					// geoFrame.m2pix(pnt1, imgPoint);
-					// bezierElem.absolute<drain::svgPATH::MOVE>(imgPoint);
 					radarSVG.moveTo(bezierElem, radius, azimuth);
 				}
 				else {
-					// play dynamic
-					radiusCtrl = radius*radialCoeff;
-
-					azimuthCtrl = azimuths.min + angularOffset;
-					ctr1.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-					radarSVG.radarProj.projectFwd(ctr1, geoPoint);
-					radarSVG.geoFrame.m2pix(geoPoint, imgPointCtrl1);
-
-					azimuthCtrl = azimuths.max - angularOffset;
-					ctr2.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-					radarSVG.radarProj.projectFwd(ctr2, geoPoint);
-					radarSVG.geoFrame.m2pix(geoPoint, imgPointCtrl2);
-
-					bezierElem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
-					// curveElem.append<drain::svg_PATH::LINE, drain::svg_PATH::ABSOLUTE>(imgPoint);
+					// radarSVG.cubicBezierTo(bezierElem, imgPoint, radius, azimuthPrev, azimuth);
+					radarSVG.cubicBezierTo(bezierElem, radius, azimuthPrev, azimuth);
 				}
 
-				azimuths.min = azimuth;
+				azimuthPrev = azimuth;
 				// polarBezierCreatorR(range, )
 
 			}
@@ -1732,7 +1753,7 @@ public:
 			bezierElem.absolute<drain::svgPATH::CLOSE>();
 
 			// mout.accept<LOG_NOTICE>(path);
-			std::string polygonPathStr = drain::sprinter(path, {" "}).str();
+			std::string polygonPathStr = drain::sprinter(debugPath, {" "}).str();
 			mout.accept<LOG_NOTICE>(polygonPathStr);
 			//circle -> set("points", polygonPathStr);
 			circle[drain::image::svg::DESC]->setText(polygonPathStr);
