@@ -38,13 +38,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/TreeHTML.h>
 
 #include <drain/image/FilePng.h>
+#include <drain/image/TreeSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
+#include <drain/image/TreeElemUtilsSVG.h>
 
 //#include "data/SourceODIM.h" // for NOD
+//
 #include "radar/PolarSector.h"
 
-#include "fileio-svg.h"
 #include "graphics.h"
+#include "graphics-radar.h"
+
+#include "fileio-svg.h"
 
 
 /*
@@ -83,34 +88,6 @@ void Convert2<FlexibleVariable>::convert(const S &src, FlexibleVariable & dst){
 
 //}
 
-
-namespace drain {
-
-	template <>
-	template <>
-	class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::STYLE_SELECT>{
-	public:
-
-		NodeXML<image::svg::tag_t> & node;
-
-		inline
-		Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node["cx"]), cy(node["cy"]), r(node["r"] = 0.0){
-		};
-
-		// Center point, x coord
-		FlexibleVariable & cx;
-		// Center point, y coord
-		FlexibleVariable & cy;
-		// Radius
-		FlexibleVariable & r;
-
-		// NodeXML<T> class could not access NodeSVG.box
-		// Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node.box.x), cy(node.box.y), r(node["r"]){
-
-	};
-
-
-}
 
 
 namespace rack {
@@ -1170,13 +1147,198 @@ public:
 
 }
 
-#include <drain/image/TreeSVG.h>
-#include <drain/image/TreeElemUtilsSVG.h>
-
-#include "graphics-radar.h"
-
 
 namespace rack {
+
+
+class CmdPolarGrid : public drain::SimpleCommand<std::string> {
+
+public:
+
+	// double is over
+	drain::Range<int> rangeMeters = {0,250000};
+	// Major, minor?
+	int meterStep = 25000;
+
+	drain::Range<int> rangeDegrees = {0,360};
+	// Major, minor?
+	int degreeStep = 15;
+
+
+	CmdPolarGrid() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	};
+
+
+	virtual inline
+	void parameterKeysToStream(std::ostream & ostr) const override {
+		// Command::parameterKeysToStream(ostr, polarSector.getParameters().getKeyList(), ',');
+	};
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		// polarSector.reset();
+
+		// polarSector.setParameters(value);
+
+		const Hi5Tree & srcPolar = ctx.getHi5(RackContext::POLAR|RackContext::CURRENT); // , RackContext::CURRENT
+		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT);
+
+		if (srcPolar.empty()){
+			mout.warn("No polar data read, cannot focus on a specific radar");
+			return;
+		}
+
+
+		RadarSVG radarSVG;
+		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
+
+		radarSVG.radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
+
+		// RadarProj radarProj(srcPolar[ODIMPathElem::WHERE].data.attributes["lon"], srcPolar[ODIMPathElem::WHERE].data.attributes["lat"]);
+		// proj.setSiteLocationDeg();
+
+		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
+		if ((object == "SCAN") || (object == "PVOL")){
+			mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
+			mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
+			return;
+		}
+		else {
+			// mout.note("Cartesian");
+
+			const drain::VariableMap & where = srcCurr[ODIMPathElem::WHERE].data.attributes;
+
+			// const drain::Rectangle<double> bboxComposite(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			// mout.special("Composite BBOX:", bboxComposite);
+
+			// drain::image::GeoFrame geoFrame;
+			int epsg = where.get("epsg", 0); // non-standard
+			if (epsg){
+				mout.attention("EPSG found: ", epsg);
+				radarSVG.geoFrame.setProjectionEPSG(epsg);
+			}
+			else {
+				radarSVG.geoFrame.setProjection(where["projdef"]);
+			}
+			radarSVG.geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			radarSVG.geoFrame.setGeometry(where["xsize"], where["ysize"]);
+
+			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame);
+			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame.getBoundingBoxNat());
+
+			radarSVG.radarProj.setProjectionDst(where.get("projdef", ""));
+			double radius = 250000.0;
+			drain::Rectangle<double> bbox;
+			radarSVG.radarProj.determineBoundingBoxM(radius, bbox); // M = "native"
+			// drain::Rectangle<double> bbox;
+			mout.special("BBOX (250km) of the last input:", bbox);
+
+			//
+			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
+			//RackSVG::get
+
+
+			// TODO: default group?
+			drain::image::TreeSVG & geoGroup = group["geoGroup"](drain::image::svg::GROUP);
+
+			// Set defaults...
+			geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+			geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
+			// ... but override, if explicitly set.
+			RackSVG::consumeAlignRequest(ctx, geoGroup);
+
+
+			// Circle as a polygon (to master projection)
+			// <polygon points="100,100 150,25 150,75 200,0" fill="none" stroke="black" />
+			drain::image::TreeSVG & circle = geoGroup["radarCircle"](drain::image::svg::POLYGON);
+			circle->setStyle({
+				{"fill", "blue"},
+				{"stroke", "red"},
+				{"stroke-width", 5.1},
+				{"opacity", 0.65},
+			});
+
+			DRAIN_SVG_ELEM_CLS(POLYGON) polygonElem(circle);
+
+			drain::image::TreeSVG & curve = geoGroup["radarPath"](drain::image::svg::PATH);
+			curve -> setStyle({
+				{"fill", "none"},
+				{"stroke", "green"},
+				{"stroke-width", 12.0},
+				{"opacity", 0.65}
+			});
+
+			// typedef drain::image::svg::tag_t::PATH curve_t ;
+
+			drain::svgPATH bezierElem(curve);
+
+			// Note: polygon path has (here) integer coordinates; assuming integer frame.
+			drain::Point2D<double> geoPoint;
+			drain::Point2D<int> imgPoint;
+			// consider generalize?
+			std::list<drain::Point2D<int> > debugPath;
+
+			const int radialResolution = 7; // steps
+			radarSVG.setRadialResolution(radialResolution);
+
+			/*
+
+			for (int i=0; i<=radialResolution; ++i){
+				azimuth = static_cast<double>(i*360/radialResolution) * drain::DEG2RAD;
+				// azimuths.max = azimuth;
+
+				radarSVG.radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
+				radarSVG.geoFrame.m2pix(geoPoint, imgPoint);
+				debugPath.push_back(imgPoint);
+
+				polygonElem.append(imgPoint);
+
+
+				azimuthPrev = azimuth;
+
+			}
+			*/
+
+			const drain::Range<double> r(rangeMeters); // int->double
+			const drain::Range<double> a(rangeDegrees);// int->double
+			a.min *= drain::DEG2RAD;
+			a.max *= drain::DEG2RAD;
+
+			for (int i=rangeMeters.min; i<rangeMeters.max; i += meterStep){
+				radarSVG.moveTo(bezierElem, i, a.min);
+				radarSVG.cubicBezierTo(bezierElem, i, a.min, a.max);
+			}
+
+
+			// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
+			/*
+			radarSVG.moveTo(bezierElem, r.max, a.min);
+			radarSVG.cubicBezierTo(bezierElem, r.max, a.min, a.max);
+			radarSVG.lineTo(bezierElem, r.min, a.max);
+			radarSVG.cubicBezierTo(bezierElem, r.min, a.max, a.min);
+			radarSVG.lineTo(bezierElem, r.max, a.min);
+			radarSVG.close(bezierElem);
+			*/
+
+			// mout.accept<LOG_NOTICE>(path);
+			/*
+			std::string polygonPathStr = drain::sprinter(debugPath, {" "}).str();
+			mout.accept<LOG_NOTICE>(polygonPathStr);
+			//circle -> set("points", polygonPathStr);
+			circle[drain::image::svg::DESC]->setText(polygonPathStr);
+			*/
+		}
+
+	};
+
+
+};
+
 
 
 class CmdSector : public drain::SimpleCommand<std::string> {
@@ -1184,6 +1346,145 @@ class CmdSector : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdSector() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	};
+
+
+	virtual inline
+	void parameterKeysToStream(std::ostream & ostr) const override {
+		Command::parameterKeysToStream(ostr, polarSector.getParameters().getKeyList(), ',');
+	};
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		polarSector.reset();
+
+		polarSector.setParameters(value);
+
+		const Hi5Tree & srcPolar = ctx.getHi5(RackContext::POLAR|RackContext::CURRENT); // , RackContext::CURRENT
+		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT);
+
+		if (srcPolar.empty()){
+			mout.warn("No polar data read, cannot focus on a specific radar");
+			return;
+		}
+
+		// prepare ("interpret") arguments
+		if (polarSector.binRange.max < 0){
+
+		}
+
+		std::cout << polarSector.getParameters() << std::endl;
+
+		RadarSVG radarSVG;
+		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
+
+		radarSVG.radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
+
+		// RadarProj radarProj(srcPolar[ODIMPathElem::WHERE].data.attributes["lon"], srcPolar[ODIMPathElem::WHERE].data.attributes["lat"]);
+		// proj.setSiteLocationDeg();
+
+		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
+		if ((object == "SCAN") || (object == "PVOL")){
+			mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
+		}
+		else {
+			mout.note("Cartesian");
+
+			const drain::VariableMap & where = srcCurr[ODIMPathElem::WHERE].data.attributes;
+
+			// const drain::Rectangle<double> bboxComposite(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			// mout.special("Composite BBOX:", bboxComposite);
+
+			// drain::image::GeoFrame geoFrame;
+			int epsg = where.get("epsg", 0); // non-standard
+			if (epsg){
+				mout.attention("EPSG found: ", epsg);
+				radarSVG.geoFrame.setProjectionEPSG(epsg);
+			}
+			else {
+				radarSVG.geoFrame.setProjection(where["projdef"]);
+			}
+			radarSVG.geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+			radarSVG.geoFrame.setGeometry(where["xsize"], where["ysize"]);
+
+			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame);
+			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame.getBoundingBoxNat());
+
+			radarSVG.radarProj.setProjectionDst(where.get("projdef", ""));
+			double radius = 250000.0;
+			drain::Rectangle<double> bbox;
+			radarSVG.radarProj.determineBoundingBoxM(radius, bbox); // M = "native"
+			// drain::Rectangle<double> bbox;
+			mout.special("BBOX (250km) of the last input:", bbox);
+
+			//
+			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
+			//RackSVG::get
+
+
+			// TODO: default group?
+			drain::image::TreeSVG & geoGroup = group["geoGroup"](drain::image::svg::GROUP);
+
+			// Set defaults...
+			geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+			geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
+			// ... but override, if explicitly set.
+			RackSVG::consumeAlignRequest(ctx, geoGroup);
+
+
+			drain::image::TreeSVG & curve = geoGroup["radarPath"](drain::image::svg::PATH);
+			curve -> setStyle({
+				{"fill", "none"},
+				{"stroke", "green"},
+				{"stroke-width", 12.0},
+				{"opacity", 0.65}
+			});
+
+			// TreeElemUtilsSVG.h
+			drain::svgPATH bezierElem(curve);
+
+			// Note: polygon path has (here) integer coordinates; assuming integer frame.
+			// drain::Point2D<double> geoPoint;
+			// drain::Point2D<int> imgPoint;
+
+			const int radialResolution = 8; // steps
+			radarSVG.setRadialResolution(radialResolution);
+
+
+			const drain::Range<double> & r = polarSector.distanceRange;
+			const drain::Range<double> & a = polarSector.azmRange;
+			a.min *= drain::DEG2RAD;
+			a.max *= drain::DEG2RAD;
+
+			// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
+			radarSVG.moveTo(bezierElem, r.max, a.min);
+			radarSVG.cubicBezierTo(bezierElem, r.max, a.min, a.max);
+			radarSVG.lineTo(bezierElem, r.min, a.max);
+			radarSVG.cubicBezierTo(bezierElem, r.min, a.max, a.min);
+			radarSVG.lineTo(bezierElem, r.max, a.min);
+			radarSVG.close(bezierElem);
+
+
+		}
+
+	};
+
+	mutable
+	PolarSector polarSector;
+
+};
+
+
+class CmdSectorTest : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdSectorTest() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 	};
 
 
@@ -1382,7 +1683,6 @@ public:
 	PolarSector polarSector;
 
 };
-
 
 
 //#include <drain/util/TreeUtils.h>
@@ -1742,7 +2042,11 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	// install<CmdImageTitle>(); consider
 	install<CmdStyle>();
 
-	install<CmdSector>();
+	DRAIN_CMD_INSTALL(Cmd, PolarGrid)();
+	DRAIN_CMD_INSTALL(Cmd, Sector)();
+	linkRelatedCommands(PolarGrid, Sector);
+
+
 	install<CmdAlignTest>();
 	install<CmdDebug>();
 

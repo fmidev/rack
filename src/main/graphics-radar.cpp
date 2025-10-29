@@ -82,11 +82,13 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimu
 
 	if (::abs(azimuthEndR - azimuthStartR) > conf.delta){// (M_PI_4)
 		// split by two
-		std::cerr << "delta=" << (azimuthEndR - azimuthStartR) << " splitting... \n";
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.debug("delta=", (azimuthEndR - azimuthStartR), " splitting...");
 		double azimuthCenterR = (azimuthStartR + azimuthEndR)/2.0;
-		std::cerr << "=> " << azimuthStartR  << '\t' << azimuthCenterR << "\n";
-		std::cerr << "=> " << azimuthCenterR << '\t' << azimuthEndR << "\n";
-		//exit(1);
+		mout.debug("=> ", azimuthStartR, '\t', azimuthCenterR);
+		mout.debug("=> ", azimuthCenterR, '\t', azimuthEndR);
+		// std::cerr << "=> " << azimuthCenterR << '\t' << azimuthEndR << "\n";
+		// exit(1);
 		cubicBezierTo(elem, radiusM, azimuthStartR,  azimuthCenterR);
 		cubicBezierTo(elem, radiusM, azimuthCenterR, azimuthEndR);
 		return;
@@ -95,6 +97,7 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimu
 	drain::Point2D<int> imgPoint;
 	convert(radiusM, azimuthEndR, imgPoint);
 	cubicBezierTo(elem, imgPoint, radiusM, azimuthStartR, azimuthEndR);
+
 }
 
 /**
@@ -102,7 +105,7 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimu
  */
 void RadarSVG::cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthStartR, double azimuthEndR) const {
 
-	std::cerr << "Start " << azimuthStartR  << '\t' << azimuthEndR << "\n";
+	// std::cerr << "Start " << azimuthStartR  << '\t' << azimuthEndR << "\n";
 
 
 	CubicBezierConf conf;

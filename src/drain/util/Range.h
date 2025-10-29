@@ -61,7 +61,13 @@ public:
 	};
 
 	/// Copy constructor.
-	Range(const Range & r) :  min(this->next()), max(this->next()){
+	Range(const Range<T> & r) :  min(this->next()), max(this->next()){
+		this->set(r.tuple());
+	};
+
+	/// Copy constructor variants
+	template <class T2>
+	Range(const Range<T2> & r) :  min(this->next()), max(this->next()){
 		this->set(r.tuple());
 	};
 

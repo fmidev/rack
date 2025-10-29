@@ -63,9 +63,100 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-DRAIN_SVG_ELEM(PATH)
 
-//DRAIN_SVG_SUPER(PATH)
+
+template <>
+template <>
+class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
+public:
+
+	inline
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::RECT), x(node["x"]), y(node["y"]), width(node["width"]), height(node["height"]){
+	};
+
+	NodeXML<image::svg::tag_t> & node;
+
+	FlexibleVariable & x;
+	FlexibleVariable & y;
+	FlexibleVariable & width;
+	FlexibleVariable & height;
+};
+DRAIN_SVG_ELEM(RECT)
+
+
+
+template <>
+template <>
+class DRAIN_SVG_ELEM_CLS(CIRCLE){
+
+//template <>
+//template <>
+// class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::CIRCLE>{
+public:
+
+	NodeXML<image::svg::tag_t> & node;
+
+	inline
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node["cx"]), cy(node["cy"]), r(node["r"] = 0.0){
+	};
+
+	// Center point, x coord
+	FlexibleVariable & cx;
+	// Center point, y coord
+	FlexibleVariable & cy;
+	// Radius
+	FlexibleVariable & r;
+
+	// NodeXML<T> class could not access NodeSVG.box
+    // Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::CIRCLE), cx(node.box.x), cy(node.box.y), r(node["r"]){
+
+};
+DRAIN_SVG_ELEM(CIRCLE)
+
+
+
+template <>
+template <>
+class DRAIN_SVG_ELEM_CLS(POLYGON){
+
+// template <>
+// template <>
+// class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::POLYGON>{
+public:
+
+	inline
+	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::POLYGON), points(node["points"]), writablePoints(node["points"]){
+	};
+
+	NodeXML<image::svg::tag_t> & node;
+
+	const FlexibleVariable & points;
+
+protected:
+
+	FlexibleVariable & writablePoints;
+
+public:
+
+	void clear(){
+		writablePoints.clear();
+	}
+
+	template <typename T>
+	inline
+	void append(const T &x, const T &y){
+		writablePoints << x << ',' << y << ' ';
+	}
+
+	template <typename T>
+	inline
+	void append(drain::Point2D<T> &p){
+		writablePoints << p.x << ',' << p.y << ' ';
+	}
+
+};
+DRAIN_SVG_ELEM(POLYGON)
+
 
 
 template <>
@@ -266,8 +357,7 @@ public:
 
 
 };
-
-
+DRAIN_SVG_ELEM(PATH)
 
 
 template <>
@@ -294,9 +384,9 @@ void svgPATH::appendArgs<svgPATH::CURVE>(double x1, double y1, double x2, double
 	appendPoints(x1,y1, x2,y2, x3,y3);
 };
 
+
+
 namespace image {
-
-
 
 }  // image::
 
