@@ -1171,396 +1171,13 @@ public:
 }
 
 #include <drain/image/TreeSVG.h>
+#include <drain/image/TreeElemUtilsSVG.h>
 
-#define DRAIN_SVG_ELEM_CLS(E) drain::NodeXML<drain::image::svg::tag_t>::Elem<drain::image::svg::tag_t::E>
-
-namespace drain {
-
-
-template <>
-template <>
-class DRAIN_SVG_ELEM_CLS(PATH){
-public:
-
-	inline
-	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::PATH), d(node["d"]) {
-	};
-
-	~Elem(){
-		flush();
-		//node["d"] = sstr.str();
-		//d = sstr.str();
-
-	}
-
-	NodeXML<image::svg::tag_t> & node;
-
-	// Path description, "d" attribute.
-	const FlexibleVariable & d;
-
-	enum Command {
-		MOVE = 'M',
-		LINE = 'L',
-		CURVE = 'C',
-		CLOSE = 'Z',
-	};
-
-	enum Coord {
-		ABSOLUTE = 0,
-		RELATIVE = 32, // upper case 'm' -> 'M'
-	};
-
-
-protected:
-
-	mutable
-	std::stringstream sstr;
-
-
-	template <Command C, Coord R=RELATIVE>
-	inline
-	void appendCmd(){
-		sstr << char(int(C) + int(R)) << ' ';
-	}
-
-
-	template <Command C>
-	void appendArgs();
-
-	template <Command C>
-	void appendArgs(double x, double y);
-
-	template <Command C>
-	void appendArgs(double x, double y, double x2, double y2);
-
-	template <Command C>
-	void appendArgs(double x, double y, double x2, double y2, double x3, double y3);
-
-
-	template <Command C, typename T>
-	inline
-	void appendArgs(const drain::Point2D<T> & p){
-		appendArgs<C>(p.x, p.y);
-	}
-
-	template <Command C, typename T>
-	inline
-	void appendArgs(const drain::Point2D<T> & p, const drain::Point2D<T> & p2){
-		appendArgs<C>(p.x, p.y, p2.x, p2.y);
-	}
-
-	template <Command C, typename T>
-	inline
-	void appendArgs(const drain::Point2D<T> & p, const drain::Point2D<T> & p2, const drain::Point2D<T> & p3){
-		appendArgs<C>(p.x, p.y, p2.x, p2.y, p3.x, p3.y);
-	}
-
-
-	/*
-	inline
-	void appendPoint(double x, double y){
-		sstr << x << ' ' << y << ' ';
-	}
-	*/
-
-	inline
-	void appendPoint(double x){
-		sstr << x << ' ';
-	}
-
-	template <typename T>
-	inline
-	void appendPoint(const drain::Point2D<T> & p){
-		sstr << p.x << ' ' << p.y << ' ';
-	}
-
-
-	// Terminal function
-	/*
-	inline
-	void appendPoints(){
-	}
-
-	template <typename T>
-	inline
-	void appendPoints(const T & p){
-		appendPoint(p);
-		sstr << ',';
-		// appendPoints(args...);
-		//
-	}
-	*/
-
-	template <typename ...TT>
-	inline
-	void appendPoints(double x, double y, const TT... args){
-		//appendPoint(p);
-		sstr << x << ' ' << y;
-		appendMorePoints(args...);
-		//sstr << ' ';
-	}
-
-	template <typename T, typename ...TT>
-	inline
-	void appendPoints(const drain::Point2D<double> & p, const TT... args){
-		sstr << p.x << ' ' << p.y;
-		//appendPoint(p);
-		appendMorePoints(args...);
-	}
-
-	template <typename ...TT>
-	inline
-	void appendMorePoints(const TT... args){
-		sstr << ',';
-		appendPoints(args...);
-	}
-
-	inline
-	void appendMorePoints(){
-		sstr << ' ';
-	}
-
-
-
-	/*
-	inline
-	void appendPoint(double x, double y, double x2, double y2, double x3, double y3){
-		sstr << x  << ' ' << y  << ' ';
-		sstr << x2 << ' ' << y2 << ' ';
-		sstr << x3 << ' ' << y3 << ' ';
-	}
-	*/
-
-	/*
-	inline
-	void appendPoint(const drain::Point2D<double> & p){
-		sstr << p.x << ' ' << p.y << ' ';
-	}
-	*/
-
-
-public:
-
-	void flush(){
-		node["d"] = sstr.str();
-		//d << sstr.str();
-		sstr.str("");
-	}
-
-	void clear(){
-		sstr.str("");
-		node["d"].clear();
-	}
-
-	/*
-	template <Command C, Coord R=RELATIVE,typename ...T>
-	void append(const T... args){
-		appendCmd<C,R>();
-		appendArgs<C>(args...);
-	}
-	*/
-
-	template <Command C, typename ...T>
-	void relative(const T... args){
-		appendCmd<C,RELATIVE>();
-		appendArgs<C>(args...);
-	}
-
-	template <Command C, typename ...T>
-	void absolute(const T... args){
-		appendCmd<C,ABSOLUTE>();
-		appendArgs<C>(args...);
-	}
-
-
-};
-
-
-#define DRAIN_SVG_ELEM(E) typedef drain::NodeXML<drain::image::svg::tag_t>::Elem<drain::image::svg::tag_t::E> svg##E;
-
-// typedef NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH> svg_PATH;
-DRAIN_SVG_ELEM(PATH)
-
-// DRAIN_SVG_ELEM_CLS(PATH)
-
-/*
-template <>
-void svg_PATH::appendCmd<svg_PATH::CLOSE, svg_PATH::RELATIVE>(){
-};
-*/
-
-template <>
-void svgPATH::appendArgs<svgPATH::CLOSE>(){
-};
-
-
-template <>
-void svgPATH::appendArgs<svgPATH::MOVE>(double x, double y){
-	appendPoints(x, y);
-};
-
-template <>
-void svgPATH::appendArgs<svgPATH::LINE>(double x, double y){
-	appendPoints(x, y);
-};
-
-template <>
-void svgPATH::appendArgs<svgPATH::CURVE>(double x1, double y1, double x2, double y2, double x3, double y3){
-	appendPoints(x1,y1, x2,y2, x3,y3);
-};
-
-// void NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::PATH>::appendArgs<MOVE,RELATIVE>(){
-// };
-
-}
+#include "graphics-radar.h"
 
 
 namespace rack {
 
-// consider RackSVG
-class RadarSVG {
-public:
-
-	RadarProj radarProj;
-
-	drain::image::GeoFrame geoFrame;
-
-
-	/// Number of "sectors" in a sphere.
-	void setRadialResolution(int n){
-		radialResolution = n;
-		/*
-		theta = 2.0*M_PI/ static_cast<double>(radialResolution);
-		double k = 4.0/3.0 * ::tan(theta/4.0);
-		bezierRadialCoeff = sqrt(1.0 + k*k);
-		bezierAngularOffset = ::atan(k);
-		*/
-	}
-
-	/**
-	 *  \param n - spherical resolution (number of sectors of sphere, arcs of which are spanned by cubic control vectors).
-	 */
-	void getCubicCoeff(int n, double & radialCoeff, double & angularOffset) const {
-		double theta = 2.0*M_PI / static_cast<double>(n);
-		double k = 4.0/3.0 * ::tan(theta/4.0);
-		radialCoeff = sqrt(1.0 + k*k);
-		angularOffset = ::atan(k);
-	}
-
-	// typedef DRAIN_SVG_ELEM_CLS(PATH) svgPath;
-	inline
-	void convert(double radius, double azimuth, drain::Point2D<int> & imgPoint) const {
-		drain::Point2D<double> geoPoint;
-		polarToMeters(radius, azimuth, geoPoint);
-		// radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
-		geoFrame.m2pix(geoPoint, imgPoint);
-	};
-
-	inline
-	void polarToMeters(double radius, double azimuth, drain::Point2D<double> & geoPoint) const {
-		radarProj.projectFwd(radius*::sin(azimuth), radius*::cos(azimuth), geoPoint.x, geoPoint.y);
-		//geoFrame.m2pix(geoPoint, imgPoint);
-	};
-
-	inline
-	void radarGeoToCompositeImage(drain::Point2D<double> & radarPoint, drain::Point2D<int> & imagePoint) const {
-		drain::Point2D<double> compositePoint;
-		radarProj.projectFwd(radarPoint, compositePoint);
-		geoFrame.m2pix(compositePoint, imagePoint);
-	}
-
-
-	/// Move to image point at (radius, azimuth)
-	/**
-	 *
-	 */
-	inline
-	void moveTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthR) const {
-		convert(radiusM, azimuthR, imgPoint);
-		elem.absolute<drain::svgPATH::MOVE>(imgPoint.x, imgPoint.y);
-	}
-
-	// Simple version not sharing end point.
-	/**
-	 *
-	 */
-	inline
-	void moveTo(drain::svgPATH & elem, double radius, double azimuth) const {
-		drain::Point2D<int> imgPoint;
-		moveTo(elem, imgPoint, radius, azimuth);
-	}
-
-
-	/// Single command to draw arc
-	/**
-	 *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
-	 */
-	void cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimuthStartR, double azimuthEndR) const {
-		drain::Point2D<int> imgPoint;
-		convert(radiusM, azimuthEndR, imgPoint);
-		cubicBezierTo(elem, imgPoint, radiusM, azimuthStartR, azimuthEndR);
-	}
-
-	/**
-	 *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
-	 */
-	void cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthStartR, double azimuthEndR) const {
-
-		double bezierRadialCoeff;
-		double bezierAngularOffset;
-		getCubicCoeff(radialResolution, bezierRadialCoeff, bezierAngularOffset);
-
-		const double radiusCtrl = radiusM * bezierRadialCoeff;
-		double azimuthCtrl = 0.0;
-
-		// Geographic coordinates [metric (or degrees?]
-		drain::Point2D<double> radarPointCtrl;
-
-		// Final image coordinates [pix]
-		drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
-
-		azimuthCtrl = azimuthStartR + bezierAngularOffset;
-		radarPointCtrl.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-		radarGeoToCompositeImage(radarPointCtrl, imgPointCtrl1);
-
-		azimuthCtrl = azimuthEndR - bezierAngularOffset;
-		radarPointCtrl.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-		radarGeoToCompositeImage(radarPointCtrl, imgPointCtrl2);
-
-		elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
-
-
-		/*
-		// radarProj.projectFwd(radarControlPoint1, geoPoint);
-		// geoFrame.m2pix(geoPoint, imgPointCtrl1);
-
-		azimuthCtrl = azimuthEndR - bezierAngularOffset;
-		radarControlPoint2.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
-
-		radarGeoToCompositeImage(radarControlPoint1, imgPointCtrl2);
-		// radarProj.projectFwd(radarControlPoint2, geoPoint);
-		// geoFrame.m2pix(geoPoint, imgPointCtrl2);
-		// drain::Point2D<int> imgPointCtrl1, imgPointCtrl2;
-		convert(radiusM, azimuthEndR, imgPoint);
-
-		elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
-		*/
-	}
-
-	inline
-	void close(drain::svgPATH & elem){
-		elem.absolute<drain::svgPATH::CLOSE>();
-	}
-
-protected:
-
-	int radialResolution;
-	/*
-	double theta; //  2.0*M_PI/ static_cast<double>(radialResolution);
-	double bezierRadialCoeff; // = sqrt(1.0 + coeff*coeff);
-	double bezierAngularOffset; // = ::atan(coeff);
-	*/
-};
 
 class CmdSector : public drain::SimpleCommand<std::string> {
 
@@ -1575,20 +1192,6 @@ public:
 		Command::parameterKeysToStream(ostr, polarSector.getParameters().getKeyList(), ',');
 	};
 
-	/*
-	static inline
-	void getPolarPoint(double radiusM, double angleR, drain::Point2D<double> & pnt){
-		pnt.set(radiusM * cos(angleR), radiusM * sin(angleR));
-	}
-	*/
-
-
-	/**
-	 *  \param rangeR in radians
-	static
-	void polarBezierCreatorR(double rangeM, const drain::Range<double> & rangeR,
-			const drain::Point2D<double> & pnt1, drain::Point2D<double> & ctr1, drain::Point2D<double> & ctr2, drain::Point2D<double> & pnt2);
-	 */
 
 	virtual
 	void exec() const override {
@@ -1736,6 +1339,7 @@ public:
 
 				polygonElem.append(imgPoint);
 
+				/*
 				// Bezier
 				if (i == 0){
 					radarSVG.moveTo(bezierElem, radius, azimuth);
@@ -1744,13 +1348,25 @@ public:
 					// radarSVG.cubicBezierTo(bezierElem, imgPoint, radius, azimuthPrev, azimuth);
 					radarSVG.cubicBezierTo(bezierElem, radius, azimuthPrev, azimuth);
 				}
+				*/
 
 				azimuthPrev = azimuth;
-				// polarBezierCreatorR(range, )
 
 			}
 
-			bezierElem.absolute<drain::svgPATH::CLOSE>();
+			const drain::Range<double> & r = polarSector.distanceRange;
+			const drain::Range<double> & a = polarSector.azmRange;
+			a.min *= drain::DEG2RAD;
+			a.max *= drain::DEG2RAD;
+
+			// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
+			radarSVG.moveTo(bezierElem, r.max, a.min);
+			radarSVG.cubicBezierTo(bezierElem, r.max, a.min, a.max);
+			radarSVG.lineTo(bezierElem, r.min, a.max);
+			radarSVG.cubicBezierTo(bezierElem, r.min, a.max, a.min);
+			radarSVG.lineTo(bezierElem, r.max, a.min);
+
+			radarSVG.close(bezierElem);
 
 			// mout.accept<LOG_NOTICE>(path);
 			std::string polygonPathStr = drain::sprinter(debugPath, {" "}).str();
@@ -1768,58 +1384,6 @@ public:
 };
 
 
-/**
- *
- *
-
-    r = radius
-    θ = central angle of the arc segment (radians)
-
-    The curve starts at angle α and ends at α + θ.
-
-    Start point:
-    P0 = (r cos α, r sin α)
-
-    End point:
-    P3 = (r cos(α + θ), r sin(α + θ))
-
-    Control points:
-	P1 = P0 + k * (-r sin α, r cos α)
-	P2 = P3 + k * (r sin(α + θ), -r cos(α + θ))
-
-	where
-	k = 4/3 * tan(θ / 4)
-
-    But with notations
-    px0 = r cos α,
-    py0 = r sin α
-    px3 = r cos (α + θ),
-    py3 = r sin (α + θ)
-
-    P0 = (px0, py0)
-    P3 = (px3, py3)
-
-    P1 = P0 + k* (-py0,  px0)
-    P2 = P3 + k* ( py3, -px3)
-
-
- */
-
-/*
-void CmdSector::polarBezierCreatorR(double radiusM, const drain::Range<double> & rangeR,
-		const drain::Point2D<double> & pnt1, drain::Point2D<double> & ctr1, drain::Point2D<double> & pnt2, drain::Point2D<double> & ctr2){
-
-	const double k = 4.0/3.0 * ::tan(rangeR.width() /4.0);
-
-	// pnt1.set(radiusM * cos(rangeR.min), radiusM * sin(rangeR.min)); // swap sin<->cos to get radar coords
-
-	ctr1.set(pnt1.x - k*::sin(rangeR.min), pnt1.y + k*::cos(rangeR.min));
-
-	pnt2.set(radiusM * cos(rangeR.max), radiusM * sin(rangeR.max)); // swap sin<->cos to get radar coords
-
-	ctr2.set(pnt2.x + k*::sin(rangeR.max), pnt1.y - k*::cos(rangeR.max));
-}
-*/
 
 //#include <drain/util/TreeUtils.h>
 /*

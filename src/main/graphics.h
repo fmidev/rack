@@ -29,15 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-// Vector graphics (mainly SVG) – EXPERIMENTAL
 
 #ifndef RACK_GRAPHICS
 #define RACK_GRAPHICS
 
-// #include <drain/prog/CommandInstaller.h>
-
-
-//#include <drain/util/TreeUtilsXML.h>
 
 #include "resources-image.h"
 #include "resources.h"
@@ -48,8 +43,8 @@ namespace rack {
 
 
 
-/// SVG panel utils
-class RackSVG { // : public drain::BasicCommand {
+/// SVG support for creating aligned image panels
+class RackSVG {
 
 
 public:
@@ -144,29 +139,12 @@ public:
 	drain::image::TreeSVG & addImageBorder(drain::image::TreeSVG & imagePanel); // , const drain::Frame2D<double> & frame = {200,200});
 
 
-	//	static
-	//	void generateTitles(RackContext & ctx);
-
-	/// Traverse groups, collecting info, recognizing common (shared) variables and pruning them recursively.
-	// Re-align elements etc
-	// static
-	// void completeSVG(RackContext & ctx); // , const drain::FilePath & filepath);
-
-	/// Given variable name, like "time" or "enddate", returns "TIME", and so on.
-	// static
-	// const std::string  & getTextClass(const std::string & key, const std::string & defaultClass = "");
-
 protected:
 
-	// Under construction...
-	// static
-	// void createTitleBox(TreeSVG & tree);
 
 };
 
-//DRAIN_ENUM_OSTREAM(RackSVG::ElemClass);
-
-}
+} // rack
 
 namespace drain {
 
@@ -202,22 +180,6 @@ const std::string std::static_cast<std::string>(const RackSVG::ElemClass & e){
 namespace rack {
 
 
-/**
- *
-class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path)  override;
-
-protected:
-
-	typedef std::map<std::string, unsigned short> variableStat_t;
-
-};
- */
 
 
 /// Formats titles from metadata. Invoked by drain::TreeUtils::traverse()

@@ -862,71 +862,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 	return 0;
 }
 
-// Remark: could be emptynode pruner, with
-/**
- *    enum Marker = ATTRIBUTES, DATA,CHILDREN
- *
- *    // init value, or even Flagger?
- *    prunable[svg::TEXT]  = ATTRIBUTES | DATA |CHILDREN
- *    prunable[svg::TSPAN] = ATTRIBUTES | DATA
- *	  defaultPruner or prunable[svg::UNDEFINED] = ....
- */
-/*
-int TreePruner::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
-	return 0;
-}
 
 
-int TreePruner::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+} // rack
 
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	TreeSVG & current = tree(path);
-
-	std::list<TreeSVG::path_elem_t> empties;
-
-	for (const auto & entry: current.getChildren()){
-
-		drain::EnumFlagger<drain::MultiFlagger<Emptiness> > flagger;
-
-		const TreeSVG & child = entry.second;
-
-		if (child.getChildren().empty())
-			flagger.add(CHILDREN);
-
-		if (child.data.getAttributes().empty())
-			flagger.add(ATTRIBUTES);
-
-		if (child.data.getText().empty())
-			flagger.add(TEXT);
-
-		tag_selector_t::const_iterator it = tagSelector.find(child->getNativeType());
-		if (it != tagSelector.end()){
-			mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , NodePrinter(child).str());
-			// check rule
-			if (flagger.isSet(it->second)){
-				empties.push_back(entry.first);
-			}
-		}
-
-	}
-
-	for (const TreeSVG::path_elem_t & elem: empties){
-		mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , NodePrinter(current[elem]).str());
-		current.erase(elem);
-	}
-
-
-	return 0;
-}
-*/
-
-
-} // namespace rack
-
-/*
-DRAIN_ENUM_DICT(TreePruner<TreeSVG>::Emptiness) = {
-		DRAIN_ENUM_ENTRY(TreePruner<TreeSVG>::Emptiness, CHILDREN),
-};
-*/
 
