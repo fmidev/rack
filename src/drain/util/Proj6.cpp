@@ -80,7 +80,7 @@ const std::string & Proj6::getProjVersion(){
 */
 
 
-void Proj6::setMapping(bool lenient){
+void Proj6::setDirectMapping(bool lenient){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	if (isSet()){ // (projSrc != nullptr) && (projDst != nullptr)
 		/*

@@ -209,6 +209,10 @@ void TreeUtilsSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation,
 			node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
 		}
 	}
+	else if (node.hasClass(LayoutSVG::FIXED)){
+		// don't align, so don't add instructions either
+		return;
+	}
 	else if (node.isAligned()){
 		//mout.special("Overriding Align for: ", object.data);
 	}

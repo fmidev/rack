@@ -82,6 +82,8 @@ public:
 		// ---
 		TAB = '\t',
 		NEWLINE = '\n',
+		// ---
+		DEGREE = 176,
 	};
 
 	/* Variants of entity map */

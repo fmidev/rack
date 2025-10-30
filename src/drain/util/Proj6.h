@@ -86,11 +86,21 @@ public:
 	/**
 	 *
 	 */
+	/*
 	inline
 	void setProjectionSrc(const std::string & projDef, Projector::CRS_mode crs=Projector::FORCE_CRS){
 		//src.clear();
 		src.setProjection(projDef, crs);
 		setMapping(true);
+	}
+	*/
+
+	template <typename ...T>
+	inline
+	void setProjectionSrc(const T& ...args){
+		//src.clear();
+		src.setProjection(args...);
+		setDirectMapping(true);
 	}
 
 	/// Sets source projection, primarily using EPSG code.
@@ -106,10 +116,19 @@ public:
 	}
 
     /// Sets destination projection.
+	/*
 	inline
 	void setProjectionDst(const std::string & projDef, Projector::CRS_mode crs=Projector::FORCE_CRS){
 		dst.setProjection(projDef, crs);
-		setMapping(true);
+		setDirectMapping(true);
+	}
+	*/
+
+	template <typename ...T>
+	inline
+	void setProjectionDst(const T & ...args){
+		dst.setProjection(args...);
+		setDirectMapping(true);
 	}
 
 
@@ -127,7 +146,7 @@ public:
 	void setProjections(const std::string & projDefSrc, const std::string & projDefDst){
 		src.setProjection(projDefSrc, Projector::FORCE_CRS);
 		dst.setProjection(projDefDst, Projector::FORCE_CRS);
-		setMapping(false);
+		setDirectMapping(false);
 	}
 
 
@@ -276,8 +295,8 @@ protected:
 	PJ_CONTEXT *pjContext = nullptr; // = proj_context_create();
 	PJ *proj = nullptr;            // two-way
 
-    // typedef drain::Dictionary<int, std::string> epsg_dict_t;
-	void setMapping(bool lenient);
+	/// Set crs_to_crs projection, if both src and dst projections are set.
+	void setDirectMapping(bool lenient);
 
 protected:
 

@@ -496,14 +496,25 @@ public:
 	template <class K>
 	inline
 	tree_t & operator[](const K & key){
-		// return retrieveChild(getKey(key)); // 2025
-		return retrieveChild(static_cast<key_t>(key)); // OLD
+		/*
+		std::stringstream sstr;
+		sstr << key;
+		return retrieveChild(sstr.str());
+		*/
+		//return retrieveChild(getKey(key)); // 2025
+		// return retrieveChild(static_cast<key_t>(key)); // OLD
+		return retrieveChild(key); // OLD
 	}
 
 	/// NEW 2025 templated child addressing operator
 	template <class K>
 	inline
 	const tree_t & operator[](const K & key) const {
+		/*
+		std::stringstream sstr;
+		sstr << key;
+		return retrieveChild(sstr.str());
+		*/
 		// return retrieveChild(getKey(key)); // 2025
 		return retrieveChild(static_cast<key_t>(key)); // OLD
 	}

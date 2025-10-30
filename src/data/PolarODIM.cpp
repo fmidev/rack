@@ -103,8 +103,10 @@ void PolarODIM::updateLenient(const PolarODIM & odim){
 
 double PolarODIM::getMaxRange(bool warn) const {
 
+	//
+
 	if (!warn)
-		return rstart + static_cast<double>(area.width)*rscale;
+		return rstart + rscale*static_cast<double>(area.width);
 	else {
 		drain::Logger mout("PolarODIM", __FUNCTION__);
 		if (area.width == 0){
@@ -115,7 +117,7 @@ double PolarODIM::getMaxRange(bool warn) const {
 			// mout.warn("rscale==0, returning default range=" , PolarODIM::defaultRange , 'm' );
 			// return 250000;
 		}
-		double r = rscale*static_cast<double>(area.width);
+		double r = rstart + rscale*static_cast<double>(area.width);
 		if (r == 0.0){
 			if (PolarODIM::defaultRange > 0){
 				r = PolarODIM::defaultRange;

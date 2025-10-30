@@ -184,7 +184,12 @@ public:
 	enum Command {
 		MOVE = 'M',
 		LINE = 'L',
-		CURVE = 'C',
+		// Cubic Bezier curves
+		CURVE_C = 'C',
+		CURVE_C_SHORT = 'S',
+		// Quadratic Bezier curves
+		CURVE_Q = 'Q',
+		CURVE_Q_SHORT = 'T',
 		CLOSE = 'Z',
 	};
 
@@ -193,19 +198,40 @@ public:
 		RELATIVE = 32, // upper case 'm' -> 'M'
 	};
 
+public:
+
+	template <Command C, typename ...T>
+	void relative(const T... args){
+		appendCmd<C,RELATIVE>();
+		appendArgs<C>(args...);
+	}
+
+	template <Command C, typename ...T>
+	void absolute(const T... args){
+		appendCmd<C,ABSOLUTE>();
+		appendArgs<C>(args...);
+	}
+
+	void flush(){
+		node["d"] = sstr.str();
+		sstr.str("");
+	}
+
+	void clear(){
+		sstr.str("");
+		node["d"].clear();
+	}
 
 protected:
 
 	mutable
 	std::stringstream sstr;
 
-
 	template <Command C, Coord R=RELATIVE>
 	inline
 	void appendCmd(){
 		sstr << char(int(C) + int(R)) << ' ';
 	}
-
 
 	template <Command C>
 	void appendArgs();
@@ -239,12 +265,6 @@ protected:
 	}
 
 
-	/*
-	inline
-	void appendPoint(double x, double y){
-		sstr << x << ' ' << y << ' ';
-	}
-	*/
 
 	inline
 	void appendPoint(double x){
@@ -258,21 +278,6 @@ protected:
 	}
 
 
-	// Terminal function
-	/*
-	inline
-	void appendPoints(){
-	}
-
-	template <typename T>
-	inline
-	void appendPoints(const T & p){
-		appendPoint(p);
-		sstr << ',';
-		// appendPoints(args...);
-		//
-	}
-	*/
 
 	template <typename ...TT>
 	inline
@@ -298,62 +303,13 @@ protected:
 		appendPoints(args...);
 	}
 
+	// Terminal function
 	inline
 	void appendMorePoints(){
 		sstr << ' ';
 	}
 
 
-
-	/*
-	inline
-	void appendPoint(double x, double y, double x2, double y2, double x3, double y3){
-		sstr << x  << ' ' << y  << ' ';
-		sstr << x2 << ' ' << y2 << ' ';
-		sstr << x3 << ' ' << y3 << ' ';
-	}
-	*/
-
-	/*
-	inline
-	void appendPoint(const drain::Point2D<double> & p){
-		sstr << p.x << ' ' << p.y << ' ';
-	}
-	*/
-
-
-public:
-
-	void flush(){
-		node["d"] = sstr.str();
-		//d << sstr.str();
-		sstr.str("");
-	}
-
-	void clear(){
-		sstr.str("");
-		node["d"].clear();
-	}
-
-	/*
-	template <Command C, Coord R=RELATIVE,typename ...T>
-	void append(const T... args){
-		appendCmd<C,R>();
-		appendArgs<C>(args...);
-	}
-	*/
-
-	template <Command C, typename ...T>
-	void relative(const T... args){
-		appendCmd<C,RELATIVE>();
-		appendArgs<C>(args...);
-	}
-
-	template <Command C, typename ...T>
-	void absolute(const T... args){
-		appendCmd<C,ABSOLUTE>();
-		appendArgs<C>(args...);
-	}
 
 
 };
@@ -380,8 +336,14 @@ void svgPATH::appendArgs<svgPATH::LINE>(double x, double y){
 
 template <>
 inline
-void svgPATH::appendArgs<svgPATH::CURVE>(double x1, double y1, double x2, double y2, double x3, double y3){
+void svgPATH::appendArgs<svgPATH::CURVE_C>(double x1, double y1, double x2, double y2, double x3, double y3){
 	appendPoints(x1,y1, x2,y2, x3,y3);
+};
+
+template <>
+inline
+void svgPATH::appendArgs<svgPATH::CURVE_C_SHORT>(double x2, double y2, double x, double y){
+	appendPoints(x2,y2, x,y);
 };
 
 

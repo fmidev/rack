@@ -56,16 +56,67 @@ namespace rack {
 class RadarSVG {
 public:
 
+
+	inline
+	RadarSVG(int radialBezierResolution = 8){
+		setRadialResolution(radialBezierResolution);
+	};
+
+	inline
+	RadarSVG(const RadarSVG & radarSvg){
+		setRadialResolution(radialBezierResolution);
+	};
+
+
+
+	enum StyleClasses {
+		GRID,
+		HIGHLIGHT,
+	};
+
+	/// Sets some CSS properties applicable in radar graphics.
+	/**
+	 *  Creates a style element only if i does not exist already.
+	 *
+	 */
+	static
+	drain::image::TreeSVG & getStyle(drain::image::TreeSVG & svgDoc);
+
+	/// Get (create) group dedicated for layers drawn over radar data
+	/**
+	 *
+	 */
+	static
+	drain::image::TreeSVG & getGeoGroup(drain::image::TreeSVG & svgDoc);
+
+
+	// Projection of the latest radar input.
 	RadarProj radarProj;
 
+	// Maximum range of the latest radar input.
+	int maxRange = 0; // metres
+
+	/// Geographic extent and projection (Cartesian)
 	drain::image::GeoFrame geoFrame;
 
+	/// Read meta data related to polar coordinates, that is, geographic configuration of a single radar.
+	/**
+	 *  This command can be used together with configureCartesian().
+	 */
+	void updateRadarConf(const drain::VariableMap & where);
+
+	/// Read meta data related to Cartesian data, that is, geographic configuration of a radar composite.
+	/**
+	 *
+	 *  This command can be used together with configurePolar().
+	 */
+	void updateCartesianConf(const drain::VariableMap & where);
 
 	/// Number of "sectors" in a sphere.
 	inline
 	void setRadialResolution(int n){
 		getCubicBezierConf(conf, n);
-		radialResolution = n;
+		radialBezierResolution = n;
 	}
 
 	/**
@@ -174,12 +225,34 @@ public:
 
 protected:
 
-	int radialResolution;
+	int radialBezierResolution;
 
 };
 
 
 } // rack::
 
+
+DRAIN_ENUM_DICT(rack::RadarSVG::StyleClasses);
+
+DRAIN_ENUM_OSTREAM(rack::RadarSVG::StyleClasses);
+
+namespace drain {
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG & image::TreeSVG::operator[](const rack::RadarSVG::StyleClasses & cls) const {
+	return (*this)[EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, false)];
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+image::TreeSVG & image::TreeSVG::operator[](const rack::RadarSVG::StyleClasses & cls) {
+	return (*this)[EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, false)];
+}
+
+}
 
 #endif

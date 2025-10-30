@@ -90,6 +90,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	TreeSVG & style = ctx.svgTrack[svg::STYLE];
 
+
 	using namespace drain;
 
 	if (style->isUndefined()){
@@ -175,6 +176,30 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke", "none"},
 				{"fill", "white"},
 		};
+
+		/*
+		// These could be
+		style[SelectorXMLcls("GRID")] = {
+			{"stroke", "white"},
+			{"stroke-width", 1.0},
+			{"fill", "none"}, // debug
+			//{"fill", "blue"}, // debug
+			//{"fill-opacity", 0.35},
+		};
+
+		style[SelectorXMLcls(svg::TEXT, "GRID")] = {
+				{"text-anchor", "middle"},
+				{"font-size", ctx.svgPanelConf.fontSizes[1]},
+				// {"font-size", 20.0},
+				{"paint-order", "stroke"},
+				{"stroke", "black"},
+				{"stroke-opacity", "0.5"},
+				{"stroke-width", "0.3em"},
+				{"stroke-linejoin", "round"},
+				{"fill", "white"}, // debug
+				{"fill-opacity", "1"},
+		};
+		*/
 
 	}
 

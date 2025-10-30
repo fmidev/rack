@@ -70,11 +70,14 @@ const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dic
 		{"&#62;",  XML::GREATER_THAN},  // &gt;
 		{"&#160;", XML::NONBREAKABLE_SPACE}, // &nbsp;
 		{"&#34;",  XML::QUOTE}, // &quot;
-		{"&#123;",  XML::CURLY_LEFT},
-		{"&#125;",  XML::CURLY_RIGHT},
+		{"&#123;", XML::CURLY_LEFT},
+		{"&#125;", XML::CURLY_RIGHT},
+		// {"&#00B0;",  XML::DEGREE}, // &deg;
 		// ---
 		{"-",  XML::TAB},
 		{"\\",  XML::NEWLINE},
+		// ---
+		{"&#176;", XML::DEGREE}, //
 };
 
 // Consider 1) getKeyConversionMap

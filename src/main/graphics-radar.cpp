@@ -43,16 +43,178 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 //#include "fileio-svg.h"
 #include "graphics.h"
-*/
+ */
+
+#include <drain/util/EnumFlags.h>
+#include <drain/util/SelectorXML.h>
+#include <drain/image/LayoutSVG.h>
 
 #include "graphics-radar.h"
 
-namespace drain {
+
+DRAIN_ENUM_DICT(rack::RadarSVG::StyleClasses) = {
+		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, GRID),
+		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, HIGHLIGHT),
+};
+
+
+namespace rack {
+
+using namespace drain;
+
+
+drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
+
+	// Consider areas or frames: MAIN_FRAME, GROUP_FRAME, IMAGE_FRAME
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	using namespace drain::image;
+
+	if (!svgDoc.hasChild("GRID")){
+		svgDoc.getChildren().push_front(TreeSVG::node_pair_t("GRID", TreeSVG()));
+	}
+
+
+	TreeSVG & style = svgDoc[StyleClasses::GRID];
+
+
+	if (style->isUndefined()){
+
+		// mout.debug("initializing style");
+
+		style->setType(svg::STYLE);
+		// These could be
+		style[SelectorXMLcls("GRID")] = {
+				{"stroke", "white"},
+				{"stroke-width", 2.0},
+				{"fill", "none"}, // debug
+				//{"fill", "blue"}, // debug
+				//{"fill-opacity", 0.35},
+		};
+
+		style[SelectorXMLcls(image::svg::TEXT, "GRID")] = {
+				{"text-anchor", "middle"},
+				{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
+				// {"font-size", 20.0},
+				{"paint-order", "stroke"},
+				{"stroke", "black"},
+				{"stroke-opacity", "0.5"},
+				{"stroke-width", "0.3em"},
+				{"stroke-linejoin", "round"},
+				{"fill", "white"}, // debug
+				{"fill-opacity", "1"},
+		};
+
+		style[SelectorXML(".HIGHLIGHT", ":hover")] = {
+				//{"display", "block"},
+				{"font-size", "larger"},
+				{"fill", "red"},
+				{"stroke-width", 3.0},
+				{"stroke-color", "orange"},
+		};
+	}
+
+	return style;
+}
+
+
+drain::image::TreeSVG & RadarSVG::getGeoGroup(drain::image::TreeSVG & group){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	static const std::string GEO_GROUP("geoGroup");
+
+	if (!group.hasChild(GEO_GROUP)){
+
+		using namespace drain::image;
+
+		TreeSVG & geoGroup = group[GEO_GROUP](svg::GROUP);
+		geoGroup->addClass(StyleClasses::GRID);
+		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
+
+		// Set defaults...
+		geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+		geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
+		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
+
+		return geoGroup;
+	}
+	else {
+		return group[GEO_GROUP];
+	}
+
+}
+
+void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// Todo: also support fully cartesian input (without single-site metadata)
+	// drain::Point2D<double> location(where["lon"], where["lat"]);
+	const double lon = where.get("lon", 0.0);
+	const double lat = where.get("lat", 0.0);
+
+	if ((lat != 0.0) && (lon != 0.0)){
+		radarProj.setSiteLocationDeg(lon, lat);
+	}
+	else {
+		// warn?
+	}
+
+	// NOTE: typically these are not in polar data. Only in projected (ie cartesian)
+	const int epsg = where.get("epsg", 0); // non-standard
+	if (epsg){
+		mout.attention("EPSG found: ", epsg);
+		// geoFrame.setProjectionEPSG(epsg);
+		radarProj.setProjectionDst(epsg);
+	}
+	else {
+		const std::string projdef = where.get("projdef", ""); // // otherwise gets "null"
+		if (!projdef.empty()){
+			radarProj.setProjectionDst(projdef); // Cartesian!
+		}
+		else {
+			// radarProj
+		}
+	}
+
+	/*
+	// PolarODIM odim;
+	// rstart + rscale*static_cast<double>(area.width);
+	// double radius = 250000.0;
+	double maxRange =  where.get("rstart", 0.0) + where.get("rscale", 0.0)*where.get("nbins", 0.0);
+	drain::Rectangle<double> bbox;
+	radarProj.determineBoundingBoxM(maxRange, bbox); // M = "native"
+	mout.special("BBOX (250km) of the last input:", bbox);
+	// mout.special("GeoFrame BBOX: ", geoFrame);
+	mout.special("GeoFrame BBOX: ", geoFrame.getBoundingBoxNat());
+	*/
+}
+
+
+void RadarSVG::updateCartesianConf(const drain::VariableMap & where) {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// Todo: also support fully cartesian input (without single-site metadata)
+	// radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
+
+	const int epsg = where.get("epsg", 0); // non-standard
+	if (epsg){
+		mout.attention("EPSG found: ", epsg);
+		geoFrame.setProjectionEPSG(epsg);
+		// radarProj.setProjectionDst(epsg);
+	}
+	else {
+		const std::string projdef = where.get("projdef", ""); // otherwise gets "null"
+		geoFrame.setProjection(projdef);
+		// radarProj.setProjectionDst(projdef);
+	}
+	geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+	geoFrame.setGeometry(where["xsize"], where["ysize"]);
 
 }
 
 
-namespace rack {
 
 void RadarSVG::getCubicBezierConf(CubicBezierConf & conf, double angleStartR, double angleEndR) const {
 	//conf.sectorCount = n;
@@ -100,6 +262,7 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimu
 
 }
 
+
 /**
  *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
  */
@@ -107,11 +270,8 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoi
 
 	// std::cerr << "Start " << azimuthStartR  << '\t' << azimuthEndR << "\n";
 
-
 	CubicBezierConf conf;
 	getCubicBezierConf(conf, azimuthStartR, azimuthEndR);
-
-	// getCubicCoeff(radialResolution, bezierRadialCoeff, bezierAngularOffset);
 
 	const double radiusCtrl = radiusM * conf.radialCoeff;
 	double azimuthCtrl = 0.0;
@@ -130,7 +290,7 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoi
 	radarPointCtrl.set(radiusCtrl*::sin(azimuthCtrl), radiusCtrl*::cos(azimuthCtrl));
 	radarGeoToCompositeImage(radarPointCtrl, imgPointCtrl2);
 
-	elem.absolute<drain::svgPATH::CURVE>(imgPointCtrl1, imgPointCtrl2, imgPoint);
+	elem.absolute<drain::svgPATH::CURVE_C>(imgPointCtrl1, imgPointCtrl2, imgPoint);
 
 	convert(radiusM, azimuthEndR, imgPoint);
 
