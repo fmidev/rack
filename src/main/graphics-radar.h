@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/GeoFrame.h>
 #include <drain/image/TreeElemUtilsSVG.h>
 
+#include "radar/Composite.h"
 #include "radar/RadarProj.h"
 
 
@@ -70,8 +71,9 @@ public:
 
 
 	enum StyleClasses {
-		GRID,
-		HIGHLIGHT,
+		VECTOR_OVERLAY, // this is more for group ID/name
+		GRID,           // CSS
+		HIGHLIGHT,      // CSS
 	};
 
 	/// Sets some CSS properties applicable in radar graphics.
@@ -110,7 +112,11 @@ public:
 	 *
 	 *  This command can be used together with configurePolar().
 	 */
+	// template <class T>
+	// void updateCartesianConf(const drain::SmartMap<T> & where);
 	void updateCartesianConf(const drain::VariableMap & where);
+
+	void updateCartesianConf(const Composite & comp);
 
 	/// Number of "sectors" in a sphere.
 	inline
@@ -229,6 +235,30 @@ protected:
 
 };
 
+/*
+template <class T>
+void RadarSVG::updateCartesianConf(const drain::SmartMap<T> & where) {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// Todo: also support fully cartesian input (without single-site metadata)
+	// radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
+
+	const int epsg = where.get("epsg", 0); // non-standard
+	if (epsg){
+		mout.attention("EPSG found: ", epsg);
+		geoFrame.setProjectionEPSG(epsg);
+		// radarProj.setProjectionDst(epsg);
+	}
+	else {
+		const std::string projdef = where.get("projdef", ""); // otherwise gets "null"
+		geoFrame.setProjection(projdef);
+		// radarProj.setProjectionDst(projdef);
+	}
+	geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
+	geoFrame.setGeometry(where["xsize"], where["ysize"]);
+
+}
+*/
 
 } // rack::
 
@@ -251,6 +281,13 @@ template <> // for K (path elem arg)
 inline
 image::TreeSVG & image::TreeSVG::operator[](const rack::RadarSVG::StyleClasses & cls) {
 	return (*this)[EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, false)];
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+bool image::TreeSVG::hasChild(const rack::RadarSVG::StyleClasses & cls) const {
+        return hasChild(EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, true)); // no error
 }
 
 }

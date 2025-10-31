@@ -49,6 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 //#include "fileio-svg.h"
 #include "graphics.h"
+#include "graphics-radar.h"
 
 
 namespace drain {
@@ -234,29 +235,6 @@ const std::string & RackSVG::guessFormat(const std::string & key){
 		// mout.accept<LOG_DEBUG>("TIME text format", format);
 }
 
-drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std::string & name
-
-	//using namespace drain::image;
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	// Ensure STYLE elem and definitions
-	RackSVG::getStyle(ctx);
-	// ctx.getStyle();
-	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
-
-	drain::image::TreeSVG & main = ctx.svgTrack["MAIN"]; //drain::image::LayoutSVG::
-	if (main -> isUndefined()){
-		main->setType(svg::GROUP);
-		main->addClass("MAIN"); // TitleCreatorSVG::visitPostfix
-		main->addClass(LayoutSVG::ADAPTER);
-		// request translate upon file write:?
-		// mout.attention("Created MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
-	}
-	// mout.attention("Providing MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
-
-	return main;
-
-}
 
 /// Apply an alignment, to next object only
 /*
@@ -345,6 +323,32 @@ bool RackSVG::applyInclusion(RackContext & ctx, const drain::FilePath & filepath
 	}
 
 }
+
+
+drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std::string & name
+
+	//using namespace drain::image;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	// Ensure STYLE elem and definitions
+	RackSVG::getStyle(ctx);
+	// ctx.getStyle();
+	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
+
+	drain::image::TreeSVG & main = ctx.svgTrack["MAIN"]; //drain::image::LayoutSVG::
+	if (main->isUndefined()){
+		main->setType(svg::GROUP);
+		main->addClass("MAIN"); // TitleCreatorSVG::visitPostfix
+		main->addClass(LayoutSVG::ADAPTER);
+		// request translate upon file write:?
+		// mout.attention("Created MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
+	}
+	// mout.attention("Providing MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
+
+	return main;
+
+}
+
 // Need ctx.
 
 /// Return current row or column of image panels.
@@ -365,6 +369,13 @@ drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
 		adapterGroup->setType(svg::GROUP);
 		adapterGroup->addClass(LayoutSVG::ADAPTER);
 		adapterGroup->transform.translate.set(0,0);
+
+		// Parking lots!
+		adapterGroup[svg::IMAGE]->setType(svg::GROUP);
+		adapterGroup[svg::IMAGE]->addClass("RASTERS"); // set("data-debug", "IMAGEs");
+		adapterGroup[RadarSVG::VECTOR_OVERLAY]; // parking lot ->setType(svg::GROUP);
+		// adapterGroup[RadarSVG::VECTOR_OVERLAY]; //->set("data-debug", "VECTOR_OVERLAYs");
+
 	}
 	return adapterGroup;
 
@@ -391,8 +402,7 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 
 	if (alignedGroup -> isUndefined()){
 		alignedGroup->setType(svg::GROUP);
-		//alignedGroup->setId(ctx.svgPanelConf.groupTitleFormatted);
-		//alignedGroup->setId(groupId);
+		alignedGroup->set("data-id",    groupId);
 		alignedGroup->set("data-title", groupTitleFormatted);
 		alignedGroup->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
 	}
@@ -402,6 +412,14 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 	// Later, include perhaps here...
 	drain::image::TreeSVG & adapterGroup = getAdapterGroup(alignedGroup);
 
+	// TreeSVG & geoGroup =
+	// alignedGroup[RadarSVG::VECTOR_OVERLAY]; // reserve a parking lot? Maybe unneeded.
+	/*
+	adapterGroup[svg::IMAGE]->setType(svg::GROUP);
+	adapterGroup[svg::IMAGE]->addClass("RASTERS"); // set("data-debug", "IMAGEs");
+	adapterGroup[RadarSVG::VECTOR_OVERLAY]; // parking lot ->setType(svg::GROUP);
+	adapterGroup[RadarSVG::VECTOR_OVERLAY]; //->set("data-debug", "VECTOR_OVERLAYs");
+	*/
 	return adapterGroup;
 
 }
@@ -434,15 +452,9 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 	drain::image::TreeSVG & alignFrame = getCurrentAlignedGroup(ctx);
 
-	// drain::image::TreeSVG & comment = alignFrame[svg::COMMENT](svg::COMMENT);
-	// comment->setText("start of ", LayoutSVG::STACK_LAYOUT, ' ', name, svg::GROUP);
-
-	// drain::image::TreeSVG & group = alignFrame;// getAdapterGroup(alignFrame);
-	// drain::image::TreeSVG & adapterFrame = getAdapterGroup(alignFrame, name);
-
-	// drain::image::TreeSVG & imagePanel = adapterFrame[name];
-	// drain::image::TreeSVG & imagePanel = adapterFrame[ADAPTER];
-	drain::image::TreeSVG & imagePanel = alignFrame[name];
+	// drain::image::TreeSVG & imagePanel = alignFrame[name];
+	drain::image::TreeSVG & imageGroup = alignFrame[svg::IMAGE]; // (svg::GROUP);
+	drain::image::TreeSVG & imagePanel = imageGroup[name];
 
 	if (imagePanel->isUndefined()){
 
@@ -804,18 +816,18 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 
 	const NodeSVG::map_t &attributesPrivate = group[svg::METADATA]->getAttributes();
 	const NodeSVG::map_t &attributesShared  = group[MetaDataCollectorSVG::SHARED]->getAttributes();
-	const bool WRITE_PRIVATE_METADATA = !attributesPrivate.empty();
+	// const bool WRITE_PRIVATE_METADATA = !attributesPrivate.empty();
 
-	bool WRITE_SHARED_METADATA = !attributesShared.empty();
+	// bool WRITE_SHARED_METADATA = !attributesShared.empty();
 
 	if (svgConf.groupTitle == "NONE") {
 		mout.obsolete("groupTitle 'NONE'");
 	}
 
 	// const bool MAIN_AUTO  =  (svgConf.mainTitle == "AUTO");
-	const bool GROUP_AUTO =  (svgConf.groupTitle == "AUTO"); // (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
-	const bool GROUP_NONE =  (svgConf.groupTitle.empty()); // (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
-	//const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty() || GROUP_AUTO || GROUP_NONE);
+	// const bool GROUP_AUTO =  (svgConf.groupTitle == "AUTO"); // (svgConf.groupTitleFormatted.substr(0,4) == "AUTO");
+	// const bool GROUP_NONE =  (svgConf.groupTitle.empty()); // (svgConf.groupTitleFormatted.substr(0,4) == "NONE");
+	// const bool GROUP_USER = !(svgConf.groupTitleFormatted.empty() || GROUP_AUTO || GROUP_NONE);
 	// const bool GROUP_USER = !(GROUP_AUTO || GROUP_NONE);
 
 	//if (group->hasClass(PanelConfSVG::ElemClass::MAIN_TITLE)) {
@@ -861,8 +873,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 		formatTitle(group, attributesPrivate);
 	}
 	else {
-		// CHECK when?
-		mout.suspicious<LOG_WARNING>("Skipped group:", NodePrinter(group).str());
+		// "Neutral groups go here"
+		mout.debug("Skipped group:", NodePrinter(group).str());
 	}
 
 

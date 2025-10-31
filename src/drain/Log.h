@@ -300,7 +300,8 @@ public:
 };
 
 /// To be used like mout.warn(DRAIN_LOG(name))
-#define DRAIN_LOG(name) '#', #name, '=', name
+//  #define DRAIN_LOG(name) '#', #name, '=', name
+#define DRAIN_LOG(name) ' ', #name, '=', name
 
 
 

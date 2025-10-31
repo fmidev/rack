@@ -318,11 +318,11 @@ void CmdOutputFile::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	drain::Logger mout(ctx.log, __FILE__, getName());
 
 	// mout.attention(ctx.getName());
 	// mout.warn("ctx.select=", ctx.select);
-
 	/*
 	if (value.empty()){
 		mout.error("File name missing. (Use '-' for stdout.)" );
@@ -558,8 +558,8 @@ void CmdOutputFile::exec() const {
 		mout.hint<LOG_DEBUG>("\t convert ", path, " out.png # Use full system paths");
 		// ofstr << ctx.xmlTrack << '\n';
 		// mout.unimplemented("not support yet, use --outputPanel / dumpXML");
-		mout.attention(DRAIN_LOG(ctx.svgPanelConf.groupIdentifier));
-		mout.attention(DRAIN_LOG(ctx.svgPanelConf.groupTitle));
+		mout.debug(DRAIN_LOG(ctx.svgPanelConf.groupIdentifier));
+		mout.debug(DRAIN_LOG(ctx.svgPanelConf.groupTitle));
 		// mout.attention(DRAIN_LOG(ctx.svgPanelConf.groupTitleFormatted));
 	}
 	else if (DATA_HTML) { // drain::NodeHTML::fileInfo.checkPath(path)
@@ -779,6 +779,20 @@ void CmdOutputFile::exec() const {
 				if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
 					vmap["what:typesize"] = drain::Type::call<drain::sizeGetter>(img.getType());
 					vmap["what:typename"] = drain::Type::call<drain::compactName>(img.getType());
+				}
+				vmap["path"] = path.str();
+				if (path.front().is(ODIMPathElem::DATASET)){
+					vmap["dataset"] = path.front().getIndex();
+					if (path.size() > 1){
+						vmap["data"] = (++path.begin())->getIndex();
+					}
+					else {
+						vmap["data"] = 0; //.setType(typeid(std::string));
+					}
+				}
+				else {
+					vmap["dataset"] = 0; //.setType(typeid(std::string)); // empty ""
+					vmap["data"] = 0;
 				}
 				// output << path << ':' << src(path).data.attributes << '\n';
 				// const drain::FlexVariableMap & vmap = src(path).data.image.properties;

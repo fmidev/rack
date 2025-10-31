@@ -74,11 +74,6 @@ public:
 	static
 	drain::image::TreeSVG & getMainGroup(RackContext & ctx);
 
-	//drain::image::TreeSVG & getCurrentAlignedGroup();
-
-	// virtual
-	// std::string getFormattedStatus(RackContext & ctx, const std::string & format) const = 0;
-
 	static
 	drain::image::TreeSVG & getCurrentAlignedGroup(RackContext & ctx);
 

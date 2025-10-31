@@ -52,7 +52,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-radar.h"
 
 
+
 DRAIN_ENUM_DICT(rack::RadarSVG::StyleClasses) = {
+		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, VECTOR_OVERLAY),
 		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, GRID),
 		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, HIGHLIGHT),
 };
@@ -72,7 +74,8 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 	using namespace drain::image;
 
 	if (!svgDoc.hasChild("GRID")){
-		svgDoc.getChildren().push_front(TreeSVG::node_pair_t("GRID", TreeSVG()));
+		// svgDoc.getChildren().push_front(TreeSVG::node_pair_t("GRID", TreeSVG()));
+		svgDoc.prependChild("GRID"); // test first
 	}
 
 
@@ -122,14 +125,16 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 drain::image::TreeSVG & RadarSVG::getGeoGroup(drain::image::TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+	// static const std::string GEO_GROUP("geoGroup");
 
-	static const std::string GEO_GROUP("geoGroup");
+	TreeSVG & geoGroup = group[VECTOR_OVERLAY]; // (svg::GROUP);
 
-	if (!group.hasChild(GEO_GROUP)){
+	//if (!group.hasChild(VECTOR_OVERLAY)){
+	if (geoGroup->isUndefined()){
 
 		using namespace drain::image;
-
-		TreeSVG & geoGroup = group[GEO_GROUP](svg::GROUP);
+		geoGroup->setType(svg::GROUP);
+		//TreeSVG & geoGroup = group[VECTOR_OVERLAY](svg::GROUP);
 		geoGroup->addClass(StyleClasses::GRID);
 		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
 
@@ -137,13 +142,9 @@ drain::image::TreeSVG & RadarSVG::getGeoGroup(drain::image::TreeSVG & group){
 		geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 		geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
-
-		return geoGroup;
-	}
-	else {
-		return group[GEO_GROUP];
 	}
 
+	return geoGroup;
 }
 
 void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
@@ -191,6 +192,7 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 	*/
 }
 
+// Composite has ReferenceMap, Hi5Tree has VariableMap (drain::image::properties)
 
 void RadarSVG::updateCartesianConf(const drain::VariableMap & where) {
 
@@ -214,6 +216,26 @@ void RadarSVG::updateCartesianConf(const drain::VariableMap & where) {
 
 }
 
+
+void RadarSVG::updateCartesianConf(const Composite & comp) {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	// Todo: also support fully Cartesian input (without single-site metadata)
+	// radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
+
+	const int epsg = comp.projGeo2Native.getDst().getEPSG(); // non-standard
+	if (epsg){
+		mout.attention("EPSG found: ", epsg);
+		geoFrame.setProjectionEPSG(epsg);
+	}
+	else {
+		// const std::string projdef = comp.getProjection(); // otherwise gets "null"
+		geoFrame.setProjection(comp.getProjection());
+	}
+	geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
+	geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
+
+}
 
 
 void RadarSVG::getCubicBezierConf(CubicBezierConf & conf, double angleStartR, double angleEndR) const {

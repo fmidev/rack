@@ -793,8 +793,10 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 	}
 	else {
 		node.transform.translate.x = coord;
-		if (node.getBoundingBox().x != 0.0){
-			mout.warn("Node to be translated also has non-zero x coordinate: ", node.getBoundingBox());
+		if (node.getBoundingBox().isDefined()){
+			if (node.getBoundingBox().x != 0.0){
+				mout.warn("Node to be translated also has non-zero x coordinate: ", node.getBoundingBox());
+			}
 		}
 		mout.debug("translated: ", ns, " <- ", anchorSpan, "  -> (", node.getBoundingBox(), ") TRANSLATED: tr=", node.transform.translate.tuple());
 	}

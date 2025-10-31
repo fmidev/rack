@@ -113,10 +113,10 @@ public:
 	std::string nodes;
 
 	/// This is needed for palette operations (of single-radar Cartesian products).
-	//double NI;
+	//  double NI;
 
 	/// HOW, for compatibility (should be WHERE)
-	int epsg;
+	int epsg = 0;
 
 
 	inline

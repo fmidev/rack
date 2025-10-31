@@ -871,21 +871,11 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 			where["BBOX_overlap"] = bboxDataOverlapNat.tuple();
 
 			mout.debug("composite INPUT bbox (nat): ", bboxDataNat.tuple());
-			/*
-			if (!composite.isLongLat()){
-				drain::Rectangle<double> bn;
-				composite.deg2m(bboxDataD.lowerLeft,  bn.lowerLeft);
-				composite.deg2m(bboxDataD.upperRight, bn.upperRight);
-				where["BBOX_input_native"].setType(typeid(int));
-				where["BBOX_input_native"] = bn.tuple(); // toVector();
-			}
-			*/
 
 			drain::Rectangle<int> bboxDataPix;
 			composite.m2pix(bboxDataNat.lowerLeft, bboxDataPix.lowerLeft);
 			composite.m2pix(bboxDataNat.upperRight, bboxDataPix.upperRight);
-			// composite.deg2pix(bboxDataNat.lowerLeft, bboxDataPix.lowerLeft);
-			// composite.deg2pix(bboxDataNat.upperRight, bboxDataPix.upperRight);
+
 			where["BBOX_input_pix"].setType(typeid(short int));
 			where["BBOX_input_pix"] = bboxDataPix.tuple(); // toVector();
 			where["SIZE_input"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();

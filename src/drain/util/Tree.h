@@ -839,6 +839,40 @@ x	 *  \see clearData()
 		#endif
 	};
 
+	// Push in the front. This is only available for ordered trees.
+ 	virtual
+	tree_t & prependChild(const key_t & key = key_t()){ // Added default empty 2024/04
+
+		#ifdef DRAIN_TREE_ORDERED
+
+ 		return addChild(key);
+
+		#else
+
+ 		if (key.empty()){ // Should be exceptional... Warning?
+			throw std::runtime_error(drain::StringBuilder<':'>(__FILE__,__FUNCTION__, " empty key (ADD static child counter based naming"));
+			return *this;
+		}
+
+		if (EXCLUSIVE)
+			this->clearData();
+
+		// Try searching first. So, does not reposition (delete and prepend) if exists.
+		if (!isMulti()){
+			for (auto & entry: children){
+				if (entry.first == key){
+					return entry.second;
+				}
+			}
+		}
+
+		// Add:
+		children.push_front(pair_t(key, tree_t()));
+		return children.back().second;
+		#endif
+
+	};
+
 
 	// retrieveChild(key, create ALWAYS / IF_NOT_FOUND
 

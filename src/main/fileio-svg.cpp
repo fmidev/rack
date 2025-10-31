@@ -1225,7 +1225,7 @@ public:
 		// polarSector.setParameters(value);
 
 		const Hi5Tree & srcPolar = ctx.getHi5(RackContext::POLAR|RackContext::CURRENT); // , RackContext::CURRENT
-		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT);
+		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT); // this works well with -c (--cCreate)
 
 		if (srcPolar.empty()){
 			mout.warn("No polar data read, cannot focus on a specific radar");
@@ -1237,29 +1237,49 @@ public:
 		mout.note(getParameters());
 
 		RadarSVG radarSVG;
-		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
+		const drain::VariableMap & wherePolar = srcPolar[ODIMPathElem::WHERE].data.attributes;
 
 		//radarSVG.radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
-		radarSVG.updateRadarConf(where); // lon, lat
+		radarSVG.updateRadarConf(wherePolar); // lon, lat
 
 
 		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
 		if ((object == "SCAN") || (object == "PVOL")){
 			mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
 			mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
-			return;
+			// return;
 		}
-		else {
+
+		// TRUE
+		{
 			// mout.note("Cartesian");
+			// const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT | RackContext::CARTESIAN);
+			const Hi5Tree & srcCartesian = ctx.getHi5(RackContext::CARTESIAN);
 
-			const drain::VariableMap & where = srcCurr[ODIMPathElem::WHERE].data.attributes;
+			if (!srcCartesian.empty()){ // HDF5 has been either loaded or extracted.
+				mout.note("Cartesian YES");
+				//mout.note(DRAIN_LOG(srcCartesion));
+				const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
+				radarSVG.updateRadarConf(whereCart);
+				radarSVG.updateCartesianConf(whereCart);
+			}
+			else {
+				Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
+				mout.note(DRAIN_LOG(composite));
+				composite.toStream(std::cerr);
+				// mout.error("Cartesian empty");
+				// composite.odim;
+				radarSVG.updateCartesianConf(composite);
+			}
 
-			radarSVG.updateRadarConf(where);
-			radarSVG.updateCartesianConf(where);
 
-			//
-			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
+			/*
+			const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
+			radarSVG.updateRadarConf(whereCart);
+			radarSVG.updateCartesianConf(whereCart);
+			*/
 
+			drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
 			drain::image::TreeSVG & geoGroup = RadarSVG::getGeoGroup(group);
 			RackSVG::consumeAlignRequest(ctx, geoGroup);
 

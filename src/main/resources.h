@@ -149,14 +149,16 @@ public:
 	 *  \param filter - flags marking the allowed/desired properties (POLAR, INPUT, ...) in order of preference
 	 *  \return Requested data object, with properties defined by filter.
 	 */
-	template <typename T, typename ...TT>
-	Hi5Tree & getHi5(const T &filter, const TT &... filters){
+	// template <typename T, typename ...TT>
+	// Hi5Tree & getHi5(const T &filter, const TT &... filters){
+	template <typename ...TT>
+	Hi5Tree & getHi5(const Hi5RoleFlagger::ivalue_t &filter, const TT &... filters){
 
-		T f(filter);
-		//Hi5Tree & dst = getHi5Full(f);
+		Hi5RoleFlagger::ivalue_t f(filter);
+		// Hi5Tree & dst = getHi5Full(f);
 		if (f != 0){
 			// return dst;
-			//Hi5Tree & dst = getHi5Full(f);
+			// Hi5Tree & dst = getHi5Full(f);
 			return getHi5Full(f);
 		}
 		else
