@@ -45,6 +45,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - SVG: new files TreeElemUtils, graphics-radar
  *  Version 15.2
  *  - SVG: gPolarGrid, gPolarSector, gPolarScope
+ *  Version 15.3
+ *  - SVG: continued
+ *  - format (text dump) ${path} ${dataset} ${data}
  *
  *  Version 14
  *  Version 14.0.0 (beta)
