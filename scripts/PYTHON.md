@@ -10,7 +10,17 @@ Rack comes with a set of Python scripts packed as a module [rack](./rack).
 
 ### Statistics
 
-## Example
+## Examples
+
+```bash
+# PYTHONPATH=$PYTHONPATH:<path..>/scripts
+python3 ./test.py   volume.h5
+```
+Produces:
+```
+
+```
+
 
 test.py
 ```python

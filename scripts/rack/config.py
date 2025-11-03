@@ -21,15 +21,34 @@ def add_parameters(parser, path_prefix=None):
         help="Save configuration to file")
 
 
+# No good
+def read_defaults(parser):
+    """Parse args with precedence:
+       CLI > JSON config > defaults
+    """
+    # First parse known args to see if --config is given
+    args, remaining_argv = parser.parse_known_args()
 
-def read(filename): # todo path prefix?
+    if args.config:
+        config = read(args.config, False)
+        args.config = None
+        parser.set_defaults(**config)
+
+        
+
+def read(filename, lenient=False): # todo path prefix?
     """Load JSON config if it exists."""
     path = Path(filename)
     if not path.is_file():
-        print(f"⚠️  File not found: {filename}", file=sys.stderr)
-        return {}
+        msg = f"⚠️  File not found: {filename}"
+        if lenient:
+            print(msg, file=sys.stderr)
+            return {}
+        else:
+            raise Exception(msg)
     with open(path, "r") as f:
         return json.load(f)
+
 
 def write(filename, conf:dict, exclude=[]):
 
@@ -42,11 +61,9 @@ def write(filename, conf:dict, exclude=[]):
             continue
         conf_copy[k] = v
 
-    
     with open(filename, "w") as f:
         json.dump(conf_copy, f, indent=4)
-        #json.dump(defaults, f, indent=4)
-        #logger.info(f"✅ Config template written to: {filename}")
+
 
 
 
