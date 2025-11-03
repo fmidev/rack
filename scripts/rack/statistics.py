@@ -8,9 +8,13 @@ Utility for collecting metadata simply using directories and text files.
 """
 import argparse
 
+
+
 #import sys
 #from pathlib import Path
 import os
+
+import rack.base
 
 def build_parser():
     """ Creates registry of supported options of this script
@@ -60,7 +64,7 @@ def build_parser():
         "--variables",
         type=str,
         metavar="<file>.json",
-        #default='./statistics',
+        default=None,
         help="Mapping of program variables (SITE, TIMESTAMP,...) to syntax containing odim variables (${NOD}, ${what:date},...) "
     )
 
@@ -75,44 +79,13 @@ def nested_dict():
 
 my_dict = nested_dict()
 
-def copy_values(conf:dict, keys:list) -> list:
-    """Pick values from a dict, not removing them
-    """
-    return [conf[i] for i in keys]
-
-def extract_values(conf:dict, keys:list) -> list:
-    """Pick values from a dict, removing them
-    """
-    return [conf.pop(i) for i in keys]
 
 
-def load_config(filename):
-    """Load JSON config if it exists."""
-    path = Path(filename)
-    if not path.is_file():
-        print(f"⚠️ File not found: {filename}", file=sys.stderr)
-        return {}
-    with open(path, "r") as f:
-        return json.load(f)
 
+def run(args):
 
-def exec(args):
-
-    if args.variables:
-        if type(args.variables) is str:
-            print("loading ", args.variables)
-            variable_conf = load_conf(variable_conf)
-
-            
-def main():
-
-    parser = build_parser()
-    args = parser.parse_args()
-
-
-    exec(args)
     
-    variable_conf = {
+    variables = {
         'SITE'   : '${NOD}',
         'MINUTE' : '${what:time|%M}min',
         'DATASET': '${dataset|%02d}',
@@ -125,8 +98,13 @@ def main():
     }
 
     if args.variables:
-        variable_conf = load_conf(variables)
+        if type(args.variables) is str:
+            print("loading ", args.variables)
+            variables = rack.base.load_config(args.variables)
 
+            
+            
+    
     SEPARATOR='_'
 
     if not args.INFILE:
@@ -139,7 +117,7 @@ def main():
         # fmt = '${NOD}/${what:time|%M}/${path}'
         # fmt = '${NOD}/${what:time|%M}min/dataset${dataset|%02d}'
         # fmt = '${path}_${what:date|%Y-%m-%d}T${what:time|%M:%S}_${what:startdate|%Y-%m-%d}T${what:starttime|%M:%S}_${where:elangle|%.2f}_${how:lowprf}/${how:highprf}_${where:nrays}x${where:nbins}x${whX.ere:rscale}'
-        fmt = SEPARATOR.join(variable_conf.values())
+        fmt = SEPARATOR.join(variables.values())
         cmd = f'rack {INFILE} --select data: --format {fmt}\n -o -'.split(' ')
         print (" ".join(cmd))
 
@@ -150,7 +128,7 @@ def main():
         for i in metadata:
             # print (i)
             # print (i.split(SEPARATOR))
-            data = dict(zip(variable_conf.keys(), i.split(SEPARATOR)))
+            data = dict(zip(variables.keys(), i.split(SEPARATOR)))
             data['PRF'] = ':'.join(set(data['PRF'].split('-')))
             # print (data)
             dirkey  = args.OUTDIR_SYNTAX.format(**data)
@@ -187,7 +165,19 @@ def main():
             print (f'[{key}][{k}]: ', line )
 
 
+
+def main():
+
+    parser = build_parser()
+    args = parser.parse_args()
+
+    print(args)
+    print(vars(args))
     
+    run(args)
+
+
+
 
 if __name__ == "__main__":
     main()
