@@ -10,11 +10,17 @@ import argparse
 
 
 
-#import sys
+import sys
 #from pathlib import Path
-import os
+import os # mkdirs()
 
-import rack.base
+
+#import rack.base
+import pathlib #Path
+import rack.config
+import rack.log
+from rack.log import logger
+logger.name = pathlib.Path(__file__).name
 
 def build_parser():
     """ Creates registry of supported options of this script
@@ -28,22 +34,22 @@ def build_parser():
 
     
     parser.add_argument(
-        '-D', "--OUTDIR_SYNTAX",
+        '-D', "--OUTDIR",
         type=str,
-        metavar="<path>",
+        metavar="<dir_syntax>",
         default='./statistics/{SITE}/{MINUTE}/{DATASET}',
-        help="Path syntax for output files.")
+        help="String syntax for output directories.")
 
     parser.add_argument(
-        '-F', "--OUTFILE_SYNTAX",
+        '-F', "--OUTFILE",
         type=str,
-        metavar="filename_syntax",
+        metavar="<filename_syntax>",
         default='{TIMESTAMP}_{ELANGLE}_{PRF}_{GEOM}',
-        help="Path syntax for output files."
+        help="String syntax for output files."
     )
 
     parser.add_argument(
-        '-L', "--LINE_SYNTAX",
+        '-L', "--LINE",
         type=str,
         metavar="<syntax>",
         default='{TIMESTAMP} {TIMESTAMP_START} {ELANGLE} # {QUANTITY}',
@@ -67,6 +73,17 @@ def build_parser():
         default=None,
         help="Mapping of program variables (SITE, TIMESTAMP,...) to syntax containing odim variables (${NOD}, ${what:date},...) "
     )
+
+    parser.add_argument(
+        "--write",
+        type=bool,
+        #metavar="<file>.json",
+        default=True,
+        help="Write to text files"
+    )
+
+    rack.config.add_parameters(parser)
+    rack.log.add_parameters(parser)
 
     return parser
 
@@ -100,26 +117,29 @@ def run(args):
     if args.variables:
         if type(args.variables) is str:
             print("loading ", args.variables)
-            variables = rack.base.load_config(args.variables)
+            variables = rack.config.read(args.variables)
 
-            
-            
+    if args.export_config:
+        conf = vars(args)
+        conf['variables'] = variables
+        rack.config.write(args.export_config, conf)
+        exit (0)
     
     SEPARATOR='_'
-
+    
     if not args.INFILE:
         print("No inputs?")
         # print help
         exit(0)
 
     for INFILE in args.INFILE:
-        print (INFILE)
+        logger.debug(f'reading {INFILE}')
         # fmt = '${NOD}/${what:time|%M}/${path}'
         # fmt = '${NOD}/${what:time|%M}min/dataset${dataset|%02d}'
         # fmt = '${path}_${what:date|%Y-%m-%d}T${what:time|%M:%S}_${what:startdate|%Y-%m-%d}T${what:starttime|%M:%S}_${where:elangle|%.2f}_${how:lowprf}/${how:highprf}_${where:nrays}x${where:nbins}x${whX.ere:rscale}'
         fmt = SEPARATOR.join(variables.values())
         cmd = f'rack {INFILE} --select data: --format {fmt}\n -o -'.split(' ')
-        print (" ".join(cmd))
+        logger.debug(" ".join(cmd))
 
 
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
@@ -131,13 +151,13 @@ def run(args):
             data = dict(zip(variables.keys(), i.split(SEPARATOR)))
             data['PRF'] = ':'.join(set(data['PRF'].split('-')))
             # print (data)
-            dirkey  = args.OUTDIR_SYNTAX.format(**data)
-            filekey = args.OUTFILE_SYNTAX.format(**data)
-            # dirkey  = '/'.join(extract_values(data, ['SITE', 'MINUTE', 'DATASET']))
-            # filekey = '_'.join(copy_values(data, ['NOMINAL','ELANGLE','PRF', 'GEOM']))
+            outdir  = args.OUTDIR.format(**data)
+            outfile = args.OUTFILE.format(**data)
+            # outdir  = '/'.join(extract_values(data, ['SITE', 'MINUTE', 'DATASET']))
+            # outfile = '_'.join(copy_values(data, ['NOMINAL','ELANGLE','PRF', 'GEOM']))
             # key = "{NOMINAL}_{ELANGLE}_{PRF}_{GEOM}".format(**data)
 
-            m = my_dict[dirkey][filekey]
+            m = my_dict[outdir][outfile]
 
             # Special handling for quantities
             QUANTITY = data.pop('QUANTITY')
@@ -146,11 +166,20 @@ def run(args):
             m['QUANTITY'].append(QUANTITY)
             m.update(data)
 
-            
 
+    file = sys.stderr
+            
     # Results
-    for key,val in my_dict.items():
-        for k,v in val.items():
+    for outdir,val in my_dict.items():
+        if (args.write):
+            logger.info(outdir)
+            os.makedirs(outdir,exist_ok=True) # mode=0o777
+         
+        for outfile,v in val.items():
+
+            if (args.write):
+                file = open(f'{outdir}/{outfile}', 'a')
+
             v = dict(v)
             if 'LDR' in v['QUANTITY']:
                 v['LDR'] = True
@@ -158,22 +187,23 @@ def run(args):
                 v['DUALPOL'] = True
             v['QUANTITY'] = '-'.join(v['QUANTITY'])
 
-            # write-back.. needed?
-            val[k] = v
+            # write-back (as a std dict).. needed?
+            val[outfile] = v
 
-            line = args.LINE_SYNTAX.format(**v)
-            print (f'[{key}][{k}]: ', line )
-
+            line = args.LINE.format(**v).strip()
+            # print (f'{outdir} / {outfile}.txt : ', line )
+            print (line+'\n', file = file)
+            
+            if (args.write):
+                file.close()
 
 
 def main():
 
     parser = build_parser()
     args = parser.parse_args()
-
-    print(args)
-    print(vars(args))
-    
+    #print(args)
+    #print(vars(args))
     run(args)
 
 
