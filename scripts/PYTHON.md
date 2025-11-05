@@ -12,13 +12,17 @@ Rack comes with a set of Python scripts packed as a module [rack](./rack).
 
 ## Examples
 
+In the following examples, `$SCR` equals to the absolute path of `rack/scripts`. Further, `$PYTHONPATH` is assumed to contain it.
 ```bash
-# PYTHONPATH=$PYTHONPATH:<path..>/scripts
-python3 ./test.py   volume.h5
+# Daywise file of for sweep (identified by dataset<N>):
+python3 $SRC/rack/statistics.py  --OUTDIR './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --OUTFILE '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
+
+# Files for each volume, separated by polarization modes and pulse repetition modes:
+python3 $SRC/rack/statistics.py  --OUTDIR './stats1/{SITE}'  --OUTFILE '{TIMESTAMP}_{POL}_{PRF}.txt' 
 ```
 Produces:
 ```
-
+Test
 ```
 
 
