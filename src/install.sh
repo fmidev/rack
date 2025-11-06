@@ -29,7 +29,7 @@ if [ $? != 0 ]; then
 fi
 
 INSTALL_SCRIPTS='Y'
-read -e  -i "$INSTALL_SCRIPTS" -p "  Install rack scripts as well? " INSTALL_SCRIPTS
+read -e  -i "$INSTALL_SCRIPTS" -p "  Install rack shell scripts as well? " INSTALL_SCRIPTS
 
 INSTALL_SCRIPTS=${INSTALL_SCRIPTS^}
 
@@ -40,3 +40,12 @@ if [ "${INSTALL_SCRIPTS}" == 'Y' ]; then
     done
 fi
 
+#read -e  -i "$INSTALL_SCRIPTS" -p "  Install rack scripts as well? " INSTALL_SCRIPTS
+if [ "$PYTHON_DIR" != '' ]; then
+    mkdir -v --parents ${PYTHON_DIR}/rack/
+    # including __init__.py
+    for i in ../scripts/rack/*.py; do
+	TARGET=${i##*/}
+	cp -vu $i ${PYTHON_DIR}/rack/
+    done
+fi
