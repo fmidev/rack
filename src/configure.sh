@@ -176,7 +176,7 @@ ask_variable CC      "C++ compiler (g++, g++-12, g++-13, ...)"
 ask_variable prefix 'Directory prefix for binary executable: ${prefix}/bin/'
 warn_if_unfound $prefix
 
-ask_variable PYTHON_DIR 'NEW: optional directory for python module "rack". For example: $HOME/python'
+ask_variable PYTHON_DIR "NEW: optional directory for python module 'rack'. For example: $HOME/python"
 
 echo "# GeoTiff support (optional)" >> $CONF_FILE
 USE_GEOTIFF='NO'

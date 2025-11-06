@@ -48,4 +48,10 @@ if [ "$PYTHON_DIR" != '' ]; then
 	TARGET=${i##*/}
 	cp -vu $i ${PYTHON_DIR}/rack/
     done
+    PYTHONPATH_STRIP=${PYTHONPATH//"${PYTHON_DIR}"/}
+    if [ "$PYTHONPATH_STRIP" == "$PYTHONPATH" ]; then
+	echo "Consider setting:"
+	echo "export PYTHONPATH='$PYTHONPATH:${PYTHON_DIR}'"
+    fi
+    #$PYTHONPATH
 fi
