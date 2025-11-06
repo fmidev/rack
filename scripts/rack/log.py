@@ -1,10 +1,22 @@
 
+import pathlib # Path
 import logging
 logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
-logger = logging.getLogger("rack.py") # change to __NAME__ etc : logger.name = ....
+logger = logging.getLogger(pathlib.Path(__file__).stem) 
 logger.setLevel(logging.INFO)
 
-
+"""
+dir (logging)
+Out[98]: 
+ 'CRITICAL',
+ 'DEBUG',
+ 'ERROR',
+ 'FATAL',
+ 'INFO',
+ 'WARN',
+ 'WARNING',
+"""
+ 
 def add_parameters(parser, path_prefix=None):
     """ Creates registry of supported options of this script
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
@@ -37,9 +49,9 @@ def handle_parameters(args):
     """
     
     if (args.debug):
-        args.log_level = logging.DEBUG
+        args.log_level = str(logging.DEBUG)
     elif (args.verbose):
-        args.log_level = logging.VERBOSE
+        args.log_level = str(logging.INFO)
     
     if (args.log_level):
         if hasattr(logging, args.log_level):

@@ -88,6 +88,7 @@ def smart_format(template: str, data: dict) -> str:
 
 if __name__ == "__main__":
     data = {
+        "Mika": 1,
         "name": "Ada",
         "value": -3.1415926,
         "time": datetime(2025, 11, 3, 14, 25),

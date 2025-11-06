@@ -6,30 +6,32 @@ Utility for collecting metadata simply using directories and text files.
     * property2
 
 """
-import argparse
-
 
 
 import sys
-#from pathlib import Path
 import os # mkdirs()
-
-
-#import rack.base
 import pathlib #Path
+import argparse
 import json
 import subprocess
 
+import rack.base
+#import rack.log
 import rack.config
-import rack.log
-from rack.log import logger
-#from rack.formatter import SmartFormatter
+
+# from rack.log import logger
+# from rack.formatter import SmartFormatter
 from rack.formatter import smart_format
 
 # Here we go!
-logger.name = pathlib.Path(__file__).name
+#logger.name = pathlib.Path(__file__).name
+logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
 def build_parser():
+
+    log = logger.getChild("parser")
+    log.debug("parsing")
+    
     """ Creates registry of supported options of this script
     """
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
@@ -102,7 +104,7 @@ def build_parser():
 
 
     rack.config.add_parameters(parser)
-    rack.log.add_parameters(parser)
+    rack.base.add_parameters_logging(parser)
 
     return parser
 
@@ -176,6 +178,8 @@ variables = {
 
 def create_gnuplot_script(files: list,settings=dict()) -> str:
 
+    log = logger.getChild("create_gnuplot_script")
+    
     conf = {
         "datafile": "separator whitespace",
         "xdata": "time",
@@ -202,10 +206,11 @@ def create_gnuplot_script(files: list,settings=dict()) -> str:
     split_name = files[0].replace('/', SEPARATOR).split(SEPARATOR)
     title = " ".join([split_name[i] for i in shared_indices])
     conf['title'] = f'"{title}"'
-    
+
+    log.debug("add configuration")
     prog = [f"set {k} {v}" for (k,v) in conf.items()]
 
-    
+    log.debug("adding input files")
     files.reverse()
     prog.append('plot \\')
     while files:
@@ -224,6 +229,10 @@ def create_gnuplot_script(files: list,settings=dict()) -> str:
 
 def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
+    log = logger.getChild("extract_metadata")
+    #
+    log.debug("start")
+
     global TIMEFORMAT
     SEPARATOR='_'
 
@@ -236,7 +245,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     # Main loop 1: traverse HDF5 files
     for INFILE in INFILES:
-        logger.debug(f'reading {INFILE}')
+        log.info(f'reading {INFILE}')
         
         # Todo: better cmd creator
         cmd = ['rack', INFILE ]
@@ -262,6 +271,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             
             if dataset_id not in metadata:
                 # Start new sweep
+                log.info(f"dataset: {dataset_id}")
                 if m:
                     logger.debug(m)
                 m = metadata[dataset_id] = dict()
@@ -277,13 +287,18 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             m.update(info)            
             m['QUANTITY'].append(QUANTITY)
             
-            logger.debug(m)
+            log.debug(m)
 
+    log.debug("end")
         
 
 def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:str):
 
-    #fmt = SmartFormatter()
+    log = logger.getChild("write_metadata")
+    #
+    log.info(f"outdir_syntax:  {dir_syntax}")
+    log.info(f"outfile_syntax: {file_syntax}")
+    
             
     # Results
     outdirs = set()
@@ -309,17 +324,20 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
 
         if (not STDOUT):
             #outdir = dir_syntax.format(**info)
-            outdir = rack.formatter.smart_format(dir_syntax, **info)
+            outdir = rack.formatter.smart_format(dir_syntax, info)
             if outdir not in outdirs:
+                log.info(f"outdir: {outdir}")
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
+                outdirs.add(outdir)
                 # logger.info(f'outdir = {outdir}')
-            outfile = rack.formatter.smart_format(file_syntax, **info) #file_syntax.format(**info)
+            outfile = rack.formatter.smart_format(file_syntax, info) #file_syntax.format(**info)
             outfile = open(f'{outdir}/{outfile}', 'a')
-
-        logger.debug(info)
+            # Todo: smarter file open/close
+            
+        log.debug(info)
         
         #line = line_syntax.format(**info).strip()
-        line = rack.formatter.smart_format(line_syntax, **info).strip()
+        line = rack.formatter.smart_format(line_syntax, info).strip()
         print (line, file = outfile) # print adds newline
 
         if (not STDOUT):
@@ -331,12 +349,16 @@ def run(args):
 
     global variables_fixed
     global variables
-
+    global logger
+    
+    log = logger.getChild("run")
+ 
     # Handle --log_level <level>, --debug, --verbose
-    rack.log.handle_parameters(args)
+    rack.base.handle_parameters_logging(args)
 
     # This happens only through API call of run(args)
     if args.config:
+        log.debug("reading config file {args.config}")
         vars(args).update(rack.config.read(args.config))
 
     if args.variables:
@@ -346,7 +368,7 @@ def run(args):
 
     # Override...
     variables.update(variables_fixed)
-    #logger.warn(variables)
+    #logger.warning(variables)
             
     if args.list_variables:
         json.dump(variables, sys.stdout, indent=4)
@@ -357,9 +379,9 @@ def run(args):
         #    print ('\t{"'+k+'":"'+v+'"}')
 
         
-
-    if args.config:
-        vars(args).update(rack.config.read(args.config))
+    # Again?
+    #if args.config:
+    #    vars(args).update(rack.config.read(args.config))
             
     #rack.config.handle_parameters(args)
     if args.export_config:
@@ -367,19 +389,16 @@ def run(args):
         conf['variables'] = variables
         rack.config.write(args.export_config, conf)
         exit (0) # OK?
-
-    
-
     
     if not args.INFILE:
-        print("No inputs?")
+        log.warning("No inputs?")
         # print help
         exit(0)
 
     if args.gnuplot:
         lines = create_gnuplot_script(args.INFILE)
         if args.gnuplot == 'exec':
-            logger.note("running?")
+            log.info("running?")
             print("\n".join(lines))
         else:
             with open(args.gnuplot, 'w') as f:
