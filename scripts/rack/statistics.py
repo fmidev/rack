@@ -23,7 +23,8 @@ import subprocess
 import rack.config
 import rack.log
 from rack.log import logger
-from rack.formatter import SmartFormatter
+#from rack.formatter import SmartFormatter
+from rack.formatter import smart_format
 
 # Here we go!
 logger.name = pathlib.Path(__file__).name
@@ -225,6 +226,9 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     global TIMEFORMAT
     SEPARATOR='_'
+
+    # DEBUG
+    #sfmt = SmartFormatter()
     
     fmt = list(variables.values())
     fmt = SEPARATOR.join(fmt)
@@ -262,9 +266,11 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
                     logger.debug(m)
                 m = metadata[dataset_id] = dict()
                 m['QUANTITY'] = list()
-                for i in ['TASK', 'START', 'END']:
-                    info[i] = dt.datetime.strptime(info[i], TIMEFORMAT)
 
+            for i in ['TASK', 'START', 'END']:
+                info[i] = dt.datetime.strptime(info[i], TIMEFORMAT)
+
+            #print(sfmt.format("Time: {TASK|%Y-%m-%d %H %M}\n", **info))
                     
             # Special handling for some properties
             QUANTITY = info.pop('QUANTITY')
@@ -277,7 +283,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
 def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:str):
 
-    fmt = SmartFormatter()
+    #fmt = SmartFormatter()
             
     # Results
     outdirs = set()
@@ -302,17 +308,18 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         info['QUANTITY'] = '-'.join(info['QUANTITY'])
 
         if (not STDOUT):
-            outdir = dir_syntax.format(**info)
+            #outdir = dir_syntax.format(**info)
+            outdir = rack.formatter.smart_format(dir_syntax, **info)
             if outdir not in outdirs:
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
                 # logger.info(f'outdir = {outdir}')
-            outfile = file_syntax.format(**info)
+            outfile = rack.formatter.smart_format(file_syntax, **info) #file_syntax.format(**info)
             outfile = open(f'{outdir}/{outfile}', 'a')
 
         logger.debug(info)
         
         #line = line_syntax.format(**info).strip()
-        line = fmt.format(line_syntax, **info).strip()
+        line = rack.formatter.smart_format(line_syntax, **info).strip()
         print (line, file = outfile) # print adds newline
 
         if (not STDOUT):
