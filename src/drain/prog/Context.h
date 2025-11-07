@@ -43,11 +43,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/util/ReferenceMap.h"
 
 #include "drain/util/Cloner.h"
-
 #include "drain/util/StatusFlags.h"
 #include "drain/util/StringMapper.h"
 #include "drain/util/VariableMap.h" // statusMap
 
+
+#include "CommandSequence.h"
 
 
 namespace drain {
@@ -62,6 +63,8 @@ public:
 
 	Context(const Context & ctx);
 
+	// Experimental
+	Script addedCommands;
 
 	/// Used by copy const
 	const std::string basename;

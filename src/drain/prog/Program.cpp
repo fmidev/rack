@@ -36,11 +36,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
+/*
 typename Script::entry_t & Script::add(const std::string & cmd, const std::string & params){
 	this->push_back(typename list_t::value_type(cmd, params));
 	return back();
 }
+*/
 
 
 
@@ -54,6 +55,19 @@ Command & Program::add(const list_t::value_type::first_type & key, Command & cmd
 	}
 
 	return cmd;
+}
+
+Program::iterator Program::add(const list_t::value_type::first_type & key, Command & cmd, Program::iterator pos){ // const std::string & params = ""){
+
+	//this->push_back(typename list_t::value_type(key, & cmd));
+	this->insert(pos, typename list_t::value_type(key, & cmd));
+
+	if (contextIsSet()){
+		cmd.setExternalContext(getContext<>());
+	}
+
+	return ++pos;
+
 }
 
 

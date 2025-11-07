@@ -31,70 +31,74 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // New design (2020)
 
-#ifndef DRAIN_PROGRAM_H_
-#define DRAIN_PROGRAM_H_
+#ifndef DRAIN_CMD_SEQ_H_
+#define DRAIN_CMD_SEQ_H_
 
-// #include <iostream>
+#include <iostream>
+#include <list>
 
 #include <drain/Sprinter.h>
 
-#include "CommandSequence.h"
-#include "Command.h"
 
 
 namespace drain {
 
-/// Sequence consisting of Command:s retrieved from a CommandBank.
-/**
- *   A program may contain a single routine.
- *
- */
-//class Program :  public CommandSequence<std::pair<std::string,Command *> > {
-class Program :  public CommandSequence<std::pair<std::string,Command *> >, public Contextual {
+/// A base class for Script and Program
+template <class T>
+class CommandSequence : public std::list<T> {
+
+public:
+
+	typedef T entry_t;
+
+	typedef std::list<T> list_t;
+
+	// virtual consider
+	// typename list_t::value_type & add(key, cmd) = 0;
+
+	/// Check if this routine is defined.
+	inline
+	operator bool(){ return !this->empty(); };
+
+};
+
+template <class T>
+inline
+std::ostream & operator<<(std::ostream & ostr, const CommandSequence<T> & commands){
+
+	/**
+	 *  Array layout: elements (of the Sequence) will be separated by newline.
+	 *  Map layout {,}: unused - or something is going wrong.
+	 *  Pair layout : key=value
+	 *  String layout: plain, because keys are strings but not desired to be hyphenated.
+	 *  (Future extensions of Sprinter will separate keys and values?)
+	 */
+	static const SprinterLayout layout("\n", "{,}", "=", "");
+
+	Sprinter::sequenceToStream(ostr, commands, layout);
+	return ostr;
+}
+
+
+
+
+class Script : public CommandSequence<std::pair<std::string,std::string> > {
 
 public:
 
 	inline
-	Program(){};
-
-	inline
-	Program(const Program &prog){
-		std::cerr << "Program copy ctor: ctx?\n";
-	};
-
-	inline
-	Program(Context & ctx){
-		setExternalContext(ctx);
-	};
-
-
-	Command & add(const std::string & key, Command & cmd);
-
-	// Return
-	iterator add(const std::string & key, Command & cmd, iterator pos);
-
-	/// Main
-	void run() const;
+	typename list_t::value_type & add(const std::string & key, const std::string & params=""){
+	//typename Script::entry_t & Script::add(const std::string & cmd, const std::string & params){
+		this->push_back(typename list_t::value_type(key, params));
+		return back();
+	}
 
 };
 
-/// Structure for implementing threads in parallelized OpenMP \c for loop.
-//class ProgramVector : public std::vector<Program> {
-class ProgramVector : public std::map<int,Program> {
 
-public:
-
-	/// Adds a new, empty program to thread vector.
-	Program & add(Context & ctx);
-
-	void debug();
-
-};
 
 
 
 } /* namespace drain */
 
-#endif /* DRAINLET_H_ */
-
-// Rack
+#endif // CMD_SEQ

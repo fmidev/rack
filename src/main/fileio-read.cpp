@@ -68,11 +68,10 @@ void CmdInputFile::exec() const {
 
 void CmdInputFile::readFile(const std::string & fileName) const {
 
-//void CmdInputFile::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
-	drain::Logger mout(ctx.log, getName().c_str()); // __FILE__
+	drain::Logger mout(ctx.log, __FILE__, getName()); // __FILE__
 
 	if (fileName.empty()){
 		mout.error("empty filename");
@@ -106,10 +105,11 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 		}
 		else if (listFileExtension.test(fileName)){
 			if (!ctx.inputPrefix.empty()){
-				mout.note("Reading LST file directly from: '", fileName, "', omitting prefix: ", ctx.inputPrefix);
+				mout.note("Reading .lst file '", fileName, "', omitting prefix: ", ctx.inputPrefix);
 			}
 			readListFile(fileName);
-			//readListFile(fullFilename);
+			// It is better to "save" inputPrefix for inputFiles
+			// readListFile(fullFilename);
 		}
 		else if (drain::image::FileTIFF::fileInfo.checkExtension(path.extension)){
 			mout.advice("Writing TIFF files is supported");
@@ -952,10 +952,35 @@ void CmdInputFile::readListFile(const std::string & fullFilename) const  {
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout( ;
 
+	drain::FilePath path(fullFilename);
+
+	bool APPEND_COMMANDS = false;
+	if (path.extension == "vol"){
+		APPEND_COMMANDS = false;
+	}
+	else if (path.extension == "lst"){
+		APPEND_COMMANDS = true;
+	}
+	else {
+		mout.error("unknown list file extension: ", path.extension);
+	}
+
+
+	std::string prefix;
+	if (ctx.inputPrefix.empty()){
+		prefix = path.dir.str() + '/';
+		mout.revised("adding inputPrefix=", ctx.inputPrefix);
+		//
+	}
+	else {
+		prefix = ctx.inputPrefix;
+	}
+
 	drain::Input input(fullFilename);
+	mout.experimental("Reading list: ", fullFilename);
 
 	std::string line;
-	while ( std::getline((std::ifstream &)input, line) ){
+	while (std::getline((std::ifstream &)input, line)){
 		if (!line.empty()){
 			// mout.debug2(line );
 			if (line.at(0) != '#'){
@@ -967,7 +992,16 @@ void CmdInputFile::readListFile(const std::string & fullFilename) const  {
 					mout.error("Recursion detected while reading ", fullFilename);
 				}
 				else {
-					readFile(inputFileName);
+					if (APPEND_COMMANDS){
+						mout.experimental("extending command sequence with: ", inputFileName);
+						ctx.addedCommands.add("inputFile", prefix + inputFileName);
+						//ctx.addedCommands.add(prefix + inputFileName);
+					}
+					else {
+						// Now expect volume, read sweep(s) directly and append. No script exec after each.
+						readFile(prefix + inputFileName);
+					}
+					//
 				}
 			}
 		}

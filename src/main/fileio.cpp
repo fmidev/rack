@@ -83,7 +83,7 @@ namespace rack {
 //  Edited 2017/07 such that also files without extension are considered h5 files. BALTRAD bug
 
 /// Syntax for command files, typically used reading HDF5 input lists.
-const drain::RegExp listFileExtension(".*\\.(lst)$",  REG_EXTENDED | REG_ICASE);
+const drain::RegExp listFileExtension(".*\\.(lst|vol)$",  REG_EXTENDED); //  | REG_ICASE);
 
 /// Syntax for recognising text files.
 const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
@@ -1100,6 +1100,8 @@ FileModule::FileModule(drain::CommandBank & bank) : module_t(bank) { // :(){ // 
 	const drain::FlagResolver::ivalue_t IMAGES  = drain::Static::get<ImageSection>().index;
 
 	install<CmdInputFile>('i').addSection(TRIGGER);
+
+	//CmdOutputFile mika;
 	install<CmdOutputFile>('o');
 	install<CmdOutputTree>('t');
 	// install<CmdOutputPanel>();

@@ -170,6 +170,8 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 		}
 	}
 
+
+
 }
 
 
@@ -511,8 +513,6 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	mout.debug(ctx.getName());
 
-	//ctx.SCRIPT_DEFINED = false;
-
 	// Iterate commands.
 	// foreach-auto not possible, because --execScript commands may be inserted during iteration.
 	for (Program::iterator it = prog.begin(); it != prog.end(); ++it) {
@@ -525,8 +525,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		Command & cmd     = *it->second;
 		const ReferenceMap & constParams = ((const Command &)cmd).getParameters();
 
-		//value_t & cmd     = *it->second;
-
+		// value_t & cmd     = *it->second;
 		// Context & ctx = cmd.getContext<>(); //.log;
 		// Log & log = ctx.log;
 		// log.setVerbosity(baseLog.getVerbosity());
@@ -567,16 +566,6 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// ctx.setStatus("script", true);
 			//ctx.statusFlags.set(SCRIPT_DEFINED);
 		}
-		// Explicit launch NOT needed, but a passive trigger cmd
-		/*
-		else if (cmd.getName() == execScriptCmd){
-			// Explicit launch
-			mout.experimental("executing script" );
-			Program progSub;
-			append(prog.routine, cmd.getContext<Context>(), progSub); // append() has access to command registry (Prog does not)
-			run(progSub, contextCloner);
-		}
-		*/
 		else if (cmd.getName() == execFileCmd){ // "execFile"
 
 			// TODO: redesign to resemble --script <cmd...>
@@ -584,22 +573,6 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// TODO catch
 			mout.attention("embedding (inserting commands on-the-fly) from '", pit->second, "' (should have been preprocessed?)");
 			mout.error("mislocated: inserting commands on-the-fly, ", pit->second);
-			/*
-			Script script;
-			readFile(pit->second, script);
-			mout.debug(script );
-			Program::iterator itNext = it;
-			++itNext;
-			for (Script::value_type & subCmd: script){
-				mout.debug(sprinter(subCmd) );
-				command_t & cmd = clone(subCmd.first);
-				cmd.setExternalContext(ctx);
-				cmd.setParameters(subCmd.second);
-				//prog.add(it->first, cmd);
-				prog.insert(itNext, Program::value_type(subCmd.first, &cmd));
-				//run(subCmd.first, subCmd.second, ctx);
-			}
-			*/
 			// Debug: print resulting program that contains embedded commands
 			// mout.warn(sprinter(prog) );
 		}
@@ -745,12 +718,25 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			cmd.update(); //  --select etc
 			cmd.exec();
 
+			if (!ctx.addedCommands.empty()){
+				for (const auto & entry: ctx.addedCommands){
+					mout.experimental("appending: ", entry.first, ' ', entry.second);
+					command_t & cmd = clone(entry.first);
+					cmd.setExternalContext(ctx);
+					cmd.setParameters(entry.second);
+					// mout.attention("adding a cloned cmd ", entry.first, ", params: ", entry.second);
+					//prog.add(entry.first, cmd, prog.end());
+					Program::iterator ait = it;
+					prog.add(entry.first, cmd, ++ait); // dangerous? current prog iterator
+				}
+				// this->append(ctx.addedCommands, ctx, prog);
+				ctx.addedCommands.clear();
+				mout.experimental("prog: \n", prog);
+			}
+
 			//const ReferenceMap & params = ((const Command &)cmd).getParameters();
 			ctx.setStatus(key, constParams.getValues()); // make earlier?
-			/*
-			ctx.setStatus("cmd", cmd.getName()); //
-			ctx.setStatus("cmdKey", key); // not getName()
-			*/
+
 
 			// Obsolete:
 			ctx.setStatus("cmdParams", constParams.getValues());
@@ -758,17 +744,8 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// NEW
 			ctx.setStatus("prevCmd", cmd.getName()); //
 			ctx.setStatus("prevCmdKey", key); // not getName()
-			//ctx.setStatus("prevCmdArgs", cmd.getParameters().getValues());
 			ctx.setStatus("prevCmdArgs", cmd.getLastParameters());
 
-			/*
-				}
-				catch (const std::exception & e){
-					mout.fail(e.what() );
-					mout.warn("stopping" );
-					return;
-				}
-			 */
 		}
 		// TODO: when to explicitly clear routine?
 
