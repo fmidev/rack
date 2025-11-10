@@ -364,7 +364,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
                 if m:
                     logger.debug(m)
                 m = metadata[dataset_id] = dict()
-                m['QUANTITY'] = list()1309779919
+                m['QUANTITY'] = list()
 
             for i in ['NOMINAL', 'START', 'END']:
                 info[i] = dt.datetime.strptime(info[i], TIMEFORMAT)
