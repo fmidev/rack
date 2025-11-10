@@ -139,6 +139,7 @@ dt.datetime.strptime("2025-10-09","%Y-%m-%d")
 TIMEFORMAT='%Y-%m-%dT%H:%M:%S'
 
 # This are used and handled by the system
+"""
 variables_fixed = {
     'SITECODE' : "${NOD}-${WMO}",
     'TASK':  '${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}',
@@ -150,29 +151,108 @@ variables_fixed = {
     #    'NOW':   "",
 }
 
-#variables = dict()
-#variables.update(variables_fixed)
-
 variables = {
     'SITE'   : '${NOD}',
     'TIMESTAMP': '${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}',
-#    'YEAR'   : '${what:date|%Y}',
-#    'MONTH'  : '${what:date|%m}',
-#    'DAY'    : '${what:date|%d}',
-#    'HOUR'   : '${what:date|%H}',
-#    'MINUTE' : '${what:time|%M}',
-#    'MINUTE1': '${what:starttime|%M}',
-#    'SECOND' : '${what:time|%S}',
-#    'SECOND1': '${what:starttime|%S}',
-#    'DATASET': '${dataset|%02d}',
-#    'TIMESTAMP_START' : '${what:startdate|%Y-%m-%d}T${what:starttime|%H:%M:%S}',
-#  consider TYPES (set)
     'ELANGLE': '${where:elangle|%05.2f}',
     'GEOM'   : '${where:nbins}x${where:nrays}x${where:rscale}',
     'POL' : 'AUTO', # UNSET
     'LDR' : 'AUTO', # UNSET
 }
+"""
 
+variables_fixed = {
+    "SITECODE" : {
+        "desc": "Unique descriptor of the radar",
+        "type": "string",
+        "rack_expr": "${NOD}-${WMO}"
+    },
+    "NOMINAL": {
+        "desc": "Nominal time of measurement",
+        "type": "datetime",
+        "rack_expr": "${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}"
+    },
+    "START": {
+        "desc": "Start time of scan",
+        "type": "datetime",
+        "rack_expr": "${what:startdate|%Y-%m-%d}T${what:starttime|%H:%M:%S}"
+    },
+    "END": {
+        "desc": "End time of scan",
+        "type": "datetime",
+        "rack_expr": "${what:enddate|%Y-%m-%d}T${what:endtime|%H:%M:%S}"
+    },
+    "START_REL": {
+        "desc": "Difference between start time and nominal time",
+        "type": "datetime",
+        "rack_expr": "AUTOMATIC",
+    },
+    "END_REL": {
+        "desc": "Difference between end time and nominal time",
+        "type": "datetime",
+        "rack_expr": "AUTOMATIC",
+    },
+    "FILE": {
+        "desc": "Filename without directory and extension",
+        "type": "",
+        "rack_expr": "${inputBasename}"
+    },
+    "PRF" : {
+        "desc": "Pulse repetition frequency",
+        #"type": "",
+        "rack_expr": "${how:lowprf}-${how:highprf}"
+    },
+    "QUANTITY": {
+        "desc": "Quantity",
+        "type": "list",
+        "rack_expr": "${what:quantity}"
+    },
+    "POL" : {
+        "desc": "",
+        "type": "automatic",
+        "rack_expr": "AUTO",
+    }, 
+    "LDR" : {
+        "desc": "",
+        "type": "automatic",
+        "rack_expr": "AUTO",
+    }
+}
+
+variables = {
+    "SITE"   : {
+        "desc": "Unique descriptor of the radar",
+        "rack_expr": "${NOD}"
+    },
+    "ELANGLE": {
+        "desc": "Elevation angle",
+        "type": "",
+        "rack_expr": "${where:elangle|%05.2f}"
+    },
+    "GEOM": {
+        "desc": "Geometry",
+        "type": "",
+        "rack_expr": "${where:nbins}x${where:nrays}x${where:rscale}"
+    },
+    "POL" : {
+        "desc": "",
+        "type": "automatic",
+        "rack_expr": "AUTO",
+    }, 
+    "LDR" : {
+        "desc": "",
+        "type": "automatic",
+        "rack_expr": "AUTO",
+    }
+}
+
+"""
+    "TIMESTAMP": {
+        "desc": "",
+        "type": "",
+        "rack_expr": "${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}"
+    },
+"""
 
 
 
@@ -238,8 +318,17 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     # DEBUG
     #sfmt = SmartFormatter()
+
+    var_map = [(k,v['rack_expr']) for (k,v) in variables.items()]
+    print (var_map)
     
-    fmt = list(variables.values())
+    (keys, values) = zip(*var_map)
+    print (values)
+    fmt = values # list(variables.values())
+    #fmt = list(variables.values())
+
+
+
     fmt = SEPARATOR.join(fmt)
     shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
 
@@ -275,10 +364,13 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
                 if m:
                     logger.debug(m)
                 m = metadata[dataset_id] = dict()
-                m['QUANTITY'] = list()
+                m['QUANTITY'] = list()1309779919
 
-            for i in ['TASK', 'START', 'END']:
+            for i in ['NOMINAL', 'START', 'END']:
                 info[i] = dt.datetime.strptime(info[i], TIMEFORMAT)
+
+            info['START_REL'] = dt.datetime.strptime(str(info['START'] - info['NOMINAL']), "%H:%M:%S")
+            info['END_REL']   = dt.datetime.strptime(str(info['END']   - info['NOMINAL']), "%H:%M:%S")
 
             #print(sfmt.format("Time: {TASK|%Y-%m-%d %H %M}\n", **info))
                     
@@ -301,7 +393,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     
             
     # Results
-    outdirs = set()
+    outdirs  = set()
     outfile_current=''
     outfile = sys.stdout
     STDOUT = (file_syntax == '-')
@@ -329,8 +421,16 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
                 log.info(f"outdir: {outdir}")
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
                 outdirs.add(outdir)
+                # RETHINK outfiles = set()
                 # logger.info(f'outdir = {outdir}')
             outfile = rack.formatter.smart_format(file_syntax, info) #file_syntax.format(**info)
+            if outfile != outfile_current:
+                log.info(f"outfile: {outfile}")
+            #if outfile not in outfiles:
+                # to stg
+                # RETHINK reset
+            #    outfile.add(outfile)
+                # Note: reseted for each new dir (but not when revisiting dir... hmm...)
             outfile = open(f'{outdir}/{outfile}', 'a')
             # Todo: smarter file open/close
             
@@ -374,7 +474,7 @@ def run(args):
         json.dump(variables, sys.stdout, indent=4)
         print()
         keys=list(variables_fixed.keys())
-        print(f"Reserved (automatic) variables: {keys}")
+        log.info(f"Note: reserved (automatic) variables: {keys}")
         # for (k,v) in variables.items():
         #    print ('\t{"'+k+'":"'+v+'"}')
 
