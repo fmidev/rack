@@ -1,5 +1,7 @@
 import re, os
-from datetime import datetime
+#from datetime import datetime
+# datetime.timezone.utc
+import datetime as dt
 
 def smart_format(template: str, data: dict) -> str:
     """
@@ -15,6 +17,20 @@ def smart_format(template: str, data: dict) -> str:
         """Apply a single filter string to value."""
         filt = filt.strip()
 
+        # Revised (and -> or, and first priority)
+        if hasattr(value, "strftime") or filt.startswith("%"):
+
+            if "%s" in filt:
+                # compute epoch seconds respecting tzinfo
+                if value.tzinfo is None:
+                    # assume naive datetime is UTC
+                    epoch_seconds = int((value - dt.datetime(1970, 1, 1)).total_seconds())
+                else:
+                    epoch_seconds = int(value.timestamp())
+                filt = filt.replace("%s", str(epoch_seconds))
+            
+            return value.strftime(filt) # , dt.timezone.utc)
+        
         # --- named filter with argument (e.g. strftime:%Y-%m-%d) ---
         if ":" in filt:
             name, arg = filt.split(":", 1)
@@ -27,8 +43,8 @@ def smart_format(template: str, data: dict) -> str:
             return value  # ignore unknowns
 
         # --- datetime auto-detect ---
-        if hasattr(value, "strftime") and filt.startswith("%"):
-            return value.strftime(filt)
+        #if hasattr(value, "strftime") and filt.startswith("%"):
+        #    return value.strftime(filt)
 
         # --- numeric format (.2f, e, etc.) ---
         if filt and filt[0] in ".0123456789eEfFgG":
@@ -82,8 +98,9 @@ def smart_format(template: str, data: dict) -> str:
 
     return re.sub(r"\{([^{}]+)\}", repl, template)
 
-
-
+def detect_filter(value:str) -> tuple:
+    return value.split('|', 1)
+    #(key, filters) = value.split("|",1)
 
 
 if __name__ == "__main__":
@@ -91,7 +108,7 @@ if __name__ == "__main__":
         "Mika": 1,
         "name": "Ada",
         "value": -3.1415926,
-        "time": datetime(2025, 11, 3, 14, 25),
+        "time": dt.datetime(2025, 11, 3, 14, 25),
         "path": "/home/ada/data/results.txt",
         "seq": [1, 2, 3, 4],
     }

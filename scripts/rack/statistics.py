@@ -14,6 +14,7 @@ import pathlib #Path
 import argparse
 import json
 import subprocess
+import datetime as dt
 
 import rack.base
 #import rack.log
@@ -47,7 +48,7 @@ def build_parser():
         '-D', "--OUTDIR",
         type=str,
         metavar="<dir_syntax>",
-        default='./statistics/{SITE}/{MINUTE}min/dataset{DATASET}',
+        default='./statistics/{SITE}/{TIME|%M}min/dataset{DATASET}',
         help="String syntax for output directories. See --list-variables and --variables",
     )
 
@@ -55,7 +56,7 @@ def build_parser():
         '-F', "--OUTFILE",
         type=str,
         metavar="<filename_syntax>",
-        default='{TIMESTAMP}_{ELANGLE}_{PRF}_{GEOM}',
+        default='{SITECODE}_{POL}_{PRF}.txt',
         help="String syntax for output files. See --list-variables and --variables",
     )
 
@@ -63,7 +64,7 @@ def build_parser():
         '-L', "--LINE",
         type=str,
         metavar="<syntax>",
-        default='{TIMESTAMP} {TIMESTAMP_START} {ELANGLE} # {QUANTITY}',
+        default='{TIME} {TIME_START|%H:%M:%S} {ELANGLE} # {QUANTITY}',
         help="Syntax for output lines. See --list-variables and --variables",
     )
 
@@ -120,7 +121,7 @@ def build_parser():
 my_dict = dict()
 
 
-import datetime as dt
+
 """
 t = dt.datetime.now()
 dt.datetime.strftime(t, "%m %Y")
@@ -167,27 +168,27 @@ variables_fixed = {
         "type": "string",
         "rack_expr": "${NOD}-${WMO}"
     },
-    "NOMINAL": {
+    "TIME": {
         "desc": "Nominal time of measurement",
         "type": "datetime",
         "rack_expr": "${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}"
     },
-    "START": {
+    "TIME_START": {
         "desc": "Start time of scan",
         "type": "datetime",
         "rack_expr": "${what:startdate|%Y-%m-%d}T${what:starttime|%H:%M:%S}"
     },
-    "END": {
+    "TIME_END": {
         "desc": "End time of scan",
         "type": "datetime",
         "rack_expr": "${what:enddate|%Y-%m-%d}T${what:endtime|%H:%M:%S}"
     },
-    "START_REL": {
+    "TIME_START_REL": {
         "desc": "Difference between start time and nominal time",
         "type": "datetime",
         "rack_expr": "AUTOMATIC",
     },
-    "END_REL": {
+    "TIME_END_REL": {
         "desc": "Difference between end time and nominal time",
         "type": "datetime",
         "rack_expr": "AUTOMATIC",
@@ -256,56 +257,6 @@ variables = {
 
 
 
-def create_gnuplot_script(files: list,settings=dict()) -> str:
-
-    log = logger.getChild("create_gnuplot_script")
-    
-    conf = {
-        "datafile": "separator whitespace",
-        "xdata": "time",
-        "timefmt": '"%Y-%m-%dT%H:%M:%S"', # must match with above TIMESTAMP
-        "format": 'x "%H:%M"',
-        "grid": "",
-        "title": '"Measured data (actual timestamp)"',
-        "xlabel": '"Time"',
-        "ylabel": '"Value"',
-    }
-    conf.update(settings)
-
-    SEPARATOR='_'
-    split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
-    distinct_indices = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) > 1]
-    shared_indices   = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) == 1]
-
-
-    # Take a "random" filename and pick common parts
-    suffix = pathlib.Path(files[0]).suffix
-    print( shared_indices)
-    # split_name = pathlib.Path(files[0]).stem
-    #split_name = pathlib.Path(files[0]).stem.replace('/', SEPARATOR).split(SEPARATOR)
-    split_name = files[0].replace('/', SEPARATOR).split(SEPARATOR)
-    title = " ".join([split_name[i] for i in shared_indices])
-    conf['title'] = f'"{title}"'
-
-    log.debug("add configuration")
-    prog = [f"set {k} {v}" for (k,v) in conf.items()]
-
-    log.debug("adding input files")
-    files.reverse()
-    prog.append('plot \\')
-    while files:
-        f = files.pop()
-        #split_name = pathlib.Path(f).stem.split(SEPARATOR)
-        split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
-        title =  " ".join([split_name[i] for i in distinct_indices])
-        plotline = "  '{infile}' using 2:3 with linespoints title '{title}'".format(infile=f, title=title)
-        if (files):
-            plotline += ',\\'
-        prog.append(plotline)
-    
-    return prog # "\n".join(confs)+'\n'+",\n".join(plots)
-
-
 
 def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
@@ -320,10 +271,10 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     #sfmt = SmartFormatter()
 
     var_map = [(k,v['rack_expr']) for (k,v) in variables.items()]
-    print (var_map)
+    #log.debug(var_map)
     
     (keys, values) = zip(*var_map)
-    print (values)
+    # log.debug(values)
     fmt = values # list(variables.values())
     #fmt = list(variables.values())
 
@@ -356,7 +307,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             info = dict(zip(variables.keys(), i.split(SEPARATOR)))
             # logger.info(info)
             
-            dataset_id = "{SITECODE}-{START}".format(**info)
+            dataset_id = "{SITECODE}-{TIME_START}".format(**info)
             
             if dataset_id not in metadata:
                 # Start new sweep
@@ -366,12 +317,35 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
                 m = metadata[dataset_id] = dict()
                 m['QUANTITY'] = list()
 
-            for i in ['NOMINAL', 'START', 'END']:
-                info[i] = dt.datetime.strptime(info[i], TIMEFORMAT)
+            for i in ['TIME', 'TIME_START', 'TIME_END']:
+                # Note: force UTC
+                info[i] = dt.datetime.strptime(info[i], TIMEFORMAT).replace(tzinfo=dt.timezone.utc)
 
-            info['START_REL'] = dt.datetime.strptime(str(info['START'] - info['NOMINAL']), "%H:%M:%S")
-            info['END_REL']   = dt.datetime.strptime(str(info['END']   - info['NOMINAL']), "%H:%M:%S")
+            # Kludge (conversion through string) and fragile (format not fixed)?
+            # 
+            # info['TIME_START_REL'] = dt.datetime.strptime(str(info['TIME_START'] - info['TIME']), "%H:%M:%S")
+            # info['TIME_END_REL']   = dt.datetime.strptime(str(info['TIME_END']   - info['TIME']), "%H:%M:%S")
 
+            # Better: dt.datetime.fromtimestamp(21020102, dt.UTC)
+            time = info['TIME'].timestamp()
+            time_start = info['TIME_START'].timestamp()
+            time_end   = info['TIME_END'].timestamp()
+            #print (time_start - time)
+            #print (time_end - time)
+            info['TIME_START_REL'] = dt.datetime.fromtimestamp(time_start - time, dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
+            info['TIME_END_REL']   = dt.datetime.fromtimestamp(time_end   - time, dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
+
+            """
+            time = dt.datetime.fromtimestamp(0)
+            print ('normi', time, time.timestamp(), time.strftime('%s'))
+            time = dt.datetime.fromtimestamp(0, dt.timezone.utc)
+            print ('hormi', time, time.timestamp(), time.strftime('%s'))
+            time = dt.datetime.strptime('1970-01-01 00:00 UTC', "%Y-%m-%d %H:%M %Z")
+            print ('normi', time, time.timestamp(), time.strftime('%s'))
+            time = dt.datetime.fromtimestamp(0, dt.timezone.utc)
+            print (time, time.timestamp(), time.strftime('%s'))
+            """
+            
             #print(sfmt.format("Time: {TASK|%Y-%m-%d %H %M}\n", **info))
                     
             # Special handling for some properties
@@ -385,12 +359,13 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
         
 
 def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:str):
-
-    log = logger.getChild("write_metadata")
-    #
-    log.info(f"outdir_syntax:  {dir_syntax}")
-    log.info(f"outfile_syntax: {file_syntax}")
+    """
+    Write extracted metadata to file or standard output '-'.
+    """
     
+    log = logger.getChild("write_metadata")
+    log.info(f"outdir_syntax:  {dir_syntax}")
+    log.info(f"outfile_syntax: {file_syntax}")    
             
     # Results
     outdirs  = set()
@@ -400,6 +375,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     
     for dataset,info in my_dict.items():
 
+        # Automatic additional attributes
         if 'LDR' in info['QUANTITY']:
             info['POL'] = 'LDR'
         elif set(info['QUANTITY']).intersection({'ZDR','RHOHV','KDP','PHIDP'}):
@@ -407,8 +383,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         else:
             info['POL'] = 'SINGLE'
 
-        # Reduce to single value, if both are same
-        # str -> set -> str
+        # Reduce to single value, if both are same: str -> set -> str
         info['PRF'] = '-'.join(set(info['PRF'].split('-')))
 
         # list -> str
@@ -442,6 +417,61 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
 
         if (not STDOUT):
             outfile.close()
+
+
+
+def create_gnuplot_script(files: list, settings=dict()) -> str:
+
+    log = logger.getChild("create_gnuplot_script")
+    
+    conf = {
+        "terminal": "png size 600,400",
+        "output": '"out.png"',
+        "datafile": "separator whitespace",
+        "xdata": "time",
+#        "timefmt": '"%Y-%m-%dT%H:%M:%S"', # must match with above TIMESTAMP
+        "timefmt": '"%s"', # must match with above TIMESTAMP
+#        "format": 'x "%s"',
+        "format": 'x "%H:%M"',
+        "grid": "",
+        "title": '"Measured data (actual timestamp)"',
+        "xlabel": '"Time"',
+        "ylabel": '"Value"',
+    }
+    conf.update(settings)
+
+    SEPARATOR='_'
+    split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
+    distinct_indices = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) > 1]
+    shared_indices   = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) == 1]
+
+
+    # Take a "random" filename and pick common parts
+    suffix = pathlib.Path(files[0]).suffix
+    # log.debug(shared_indices)
+    # split_name = pathlib.Path(files[0]).stem
+    #split_name = pathlib.Path(files[0]).stem.replace('/', SEPARATOR).split(SEPARATOR)
+    split_name = files[0].replace('/', SEPARATOR).split(SEPARATOR)
+    title = " ".join([split_name[i] for i in shared_indices])
+    conf['title'] = f'"{title}"'
+
+    log.debug("add configuration")
+    prog = [f"set {k} {v}" for (k,v) in conf.items()]
+
+    log.debug("adding input files")
+    files.reverse()
+    prog.append('plot \\')
+    while files:
+        f = files.pop()
+        #split_name = pathlib.Path(f).stem.split(SEPARATOR)
+        split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
+        title =  " ".join([split_name[i] for i in distinct_indices])
+        plotline = "  '{infile}' using 2:3 with linespoints title '{title}'".format(infile=f, title=title)
+        if (files):
+            plotline += ',\\'
+        prog.append(plotline)
+    
+    return prog # "\n".join(confs)+'\n'+",\n".join(plots)
 
 
         
@@ -500,12 +530,14 @@ def run(args):
         if args.gnuplot == 'exec':
             log.info("running?")
             print("\n".join(lines))
+        elif args.gnuplot == '-':
+            for i in lines:
+                print(i)
         else:
             with open(args.gnuplot, 'w') as f:
                 for i in lines:
                     f.write(i)
                     f.write('\n')
-            pass
         exit(0)
 
 
