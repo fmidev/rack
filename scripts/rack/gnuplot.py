@@ -24,7 +24,11 @@ class GnuPlot:
 
 
 class GnuPlotCommand(rack.command.Command):
+
+    IMPLICIT_KEYS = {"format", "file"}  # skip key
+    
     QUOTED_KEYS = {"output", "timefmt", "format", "file", "title"}  # automatic quoting
+
     TUPLE_JOIN_KEYS = {"size"}  # join tuples/lists with commas
 
     def _quote_if_needed(self, key: str, val: Any) -> str:
@@ -56,7 +60,9 @@ class GnuPlotCommand(rack.command.Command):
         # keyword arguments (gnuplot-style: no "--")
         for key, val in self.options.items():
             formatted = self._format_arg(val, key)
-            parts.append(str(key))
+            key=str(key)
+            if not key in self.IMPLICIT_KEYS:
+                parts.append(str(key))
             parts.append(formatted)
 
         return " ".join(parts)
@@ -66,6 +72,12 @@ class GnuPlotCommandSequence(rack.command.CommandSequence):
     def add(self, name: str, *args, **options):
         self.commands.append(GnuPlotCommand(name, *args, **options))
 
+    def set(self, *args, **options):
+        self.commands.append(GnuPlotCommand("set", *args, **options))
+
+    def plot(self, *args, **options):
+        self.commands.append(GnuPlotCommand("plot", *args, **options))
+
 
 def main():
 
@@ -73,17 +85,17 @@ def main():
     #cmds = CommandSequence()
     cmds = GnuPlotCommandSequence()
     # cmds.add("set", "terminal", GnuPlot.PNG, "size", (600, 400))
-    cmds.add("set", "terminal", GnuPlot.PNG, size=(600, 400))
-    cmds.add("set", "output", file="out.png")
-    cmds.add("set", "datafile", "separator", GnuPlot.WHITESPACE)
-    cmds.add("set", "xdata", "time")
-    cmds.add("set", "timefmt", format="%s")
-    cmds.add("set", "format", "x", format="%H:%M")
+    cmds.set("terminal", GnuPlot.PNG, size=(600, 400))
+    cmds.set("output", file="out.png")
+    cmds.set("datafile", "separator", GnuPlot.WHITESPACE)
+    cmds.set("xdata", "time")
+    cmds.set("timefmt", format="%s")
+    cmds.set("format", "x", format="%H:%M")
         
-    cmds.add("set", "grid")
-    cmds.add("plot", "sin(x)", title="Sine", with_="lines", linewidth=2)
+    cmds.set("grid")
+    cmds.plot("plot", "sin(x)", title="Sine", with_="lines", linewidth=2)
     
-    cmds.add("plot", file="foo.txt", title="Sine", with_="lines", linewidth=2)
+    cmds.plot(file="foo.txt", title="Sine", with_="lines", linewidth=2)
     print(cmds.to_string())
 
 
