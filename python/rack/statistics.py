@@ -17,14 +17,13 @@ import subprocess
 import datetime as dt
 
 import rack.base
-#import rack.log
+import rack.log
 import rack.config
+import rack.stringlet
 
-# from rack.log import logger
-# from rack.formatter import SmartFormatter
-from rack.formatter import smart_format
-#import rack.gnuplot as gp # GnuPlotCommand, GnuPlotCommandSequence
+# from rack.formatter import smart_format
 import rack.gnuplot  # GnuPlotCommand, GnuPlotCommandSequence
+
 
 # Here we go!
 #logger.name = pathlib.Path(__file__).name
@@ -107,7 +106,7 @@ def build_parser():
 
 
     rack.config.add_parameters(parser)
-    rack.base.add_parameters_logging(parser)
+    rack.log.add_parameters(parser)
 
     return parser
 
@@ -277,10 +276,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     
     (keys, values) = zip(*var_map)
     # log.debug(values)
-    fmt = values # list(variables.values())
-    #fmt = list(variables.values())
-
-
+    fmt = values 
+    # fmt = list(variables.values())
 
     fmt = SEPARATOR.join(fmt)
     shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
@@ -323,10 +320,6 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
                 # Note: force UTC
                 info[i] = dt.datetime.strptime(info[i], TIMEFORMAT).replace(tzinfo=dt.timezone.utc)
 
-            # Kludge (conversion through string) and fragile (format not fixed)?
-            # 
-            # info['TIME_START_REL'] = dt.datetime.strptime(str(info['TIME_START'] - info['TIME']), "%H:%M:%S")
-            # info['TIME_END_REL']   = dt.datetime.strptime(str(info['TIME_END']   - info['TIME']), "%H:%M:%S")
 
             # Better: dt.datetime.fromtimestamp(21020102, dt.UTC)
             time = info['TIME'].timestamp()
@@ -337,16 +330,6 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             info['TIME_START_REL'] = dt.datetime.fromtimestamp(time_start - time, dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
             info['TIME_END_REL']   = dt.datetime.fromtimestamp(time_end   - time, dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
 
-            """
-            time = dt.datetime.fromtimestamp(0)
-            print ('normi', time, time.timestamp(), time.strftime('%s'))
-            time = dt.datetime.fromtimestamp(0, dt.timezone.utc)
-            print ('hormi', time, time.timestamp(), time.strftime('%s'))
-            time = dt.datetime.strptime('1970-01-01 00:00 UTC', "%Y-%m-%d %H:%M %Z")
-            print ('normi', time, time.timestamp(), time.strftime('%s'))
-            time = dt.datetime.fromtimestamp(0, dt.timezone.utc)
-            print (time, time.timestamp(), time.strftime('%s'))
-            """
             
             #print(sfmt.format("Time: {TASK|%Y-%m-%d %H %M}\n", **info))
                     
@@ -376,7 +359,10 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     STDOUT = (file_syntax == '-')
 
     line_tokens = rack.stringlet.parse_template(line_syntax)
+    file_tokens = rack.stringlet.parse_template(file_syntax)
+    dir_tokens  = rack.stringlet.parse_template(dir_syntax)
 
+    
     
     for dataset,info in my_dict.items():
 
@@ -394,35 +380,44 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         # list -> str
         info['QUANTITY'] = '-'.join(info['QUANTITY'])
 
-        if (not STDOUT):
-            #outdir = dir_syntax.format(**info)
-            outdir = rack.formatter.smart_format(dir_syntax, info)
+
+        # line = line_syntax.format(**info).strip()
+        # line = rack.formatter.smart_format(line_syntax, info).strip()
+        line = rack.stringlet.tokens_tostring(line_tokens, info).strip() 
+        
+        if (STDOUT):
+            print (line, file = outfile) # print adds newline
+        else:
+            #outdir = rack.formatter.smart_format(dir_syntax, info)
+            outdir = rack.stringlet.tokens_tostring(dir_tokens, info)
             if outdir not in outdirs:
                 log.info(f"outdir: {outdir}")
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
                 outdirs.add(outdir)
                 # RETHINK outfiles = set()
                 # logger.info(f'outdir = {outdir}')
-            outfile = rack.formatter.smart_format(file_syntax, info) #file_syntax.format(**info)
+
+            # outfile = rack.formatter.smart_format(file_syntax, info)  
+            outfile = rack.stringlet.tokens_tostring(file_tokens, info)
+            # outfile = f'{outdir}/{outfile}'
             if outfile != outfile_current:
                 log.info(f"outfile: {outfile}")
-            #if outfile not in outfiles:
-                # to stg
-                # RETHINK reset
-            #    outfile.add(outfile)
-                # Note: reseted for each new dir (but not when revisiting dir... hmm...)
-            outfile = open(f'{outdir}/{outfile}', 'a')
+
+            file_path = pathlib.Path(f'{outdir}/{outfile}')
+            is_new = not file_path.exists()                    
+            with file_path.open("a", encoding="utf-8") as f:
+                if is_new:
+                    print (f'# {line_syntax}', file = f)
+                    #f.write("# time  value  comment\n")  # header
+                #f.write("2025-11-03T12:00  42.5  # sample data\n") 
+                print (line, file = f)
+            # outfile = open(f'{outdir}/{outfile}', 'a')
             # Todo: smarter file open/close
             
         log.debug(info)
         
-        # line = line_syntax.format(**info).strip()
-        # line = rack.formatter.smart_format(line_syntax, info).strip()
-        line = rack.stringlet.tokens_tostring(line_tokens, info).strip() 
-        print (line, file = outfile) # print adds newline
-
-        if (not STDOUT):
-            outfile.close()
+        #if (not STDOUT):
+        #    outfile.close()
 
 
 
@@ -517,7 +512,7 @@ def run(args):
     log = logger.getChild("run")
  
     # Handle --log_level <level>, --debug, --verbose
-    rack.base.handle_parameters_logging(args)
+    rack.log.handle_parameters(args)
 
     # This happens only through API call of run(args)
     if args.config:

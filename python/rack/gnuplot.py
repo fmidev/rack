@@ -131,7 +131,7 @@ class GnuPlot:
             Each item can be a string (expression) or a dict with 'expr' or 'file' key and options.
             Global options apply to the entire plot command.
             """
-            
+
             segments = []
 
             def build_segment(expr: str, **opts):
@@ -170,7 +170,7 @@ class GnuPlot:
                 else:
                     raise TypeError("Each plot item must be a string or dict with 'expr'")
             
-            return GnuPlotCommand("plot", ", ".join(segments))
+            return GnuPlotCommand("plot", ",\\\n     ".join(segments))
 
         @staticmethod
         def replot(**opts) -> GnuPlotCommand:
