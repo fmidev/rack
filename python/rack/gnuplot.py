@@ -70,8 +70,28 @@ class GnuPlot:
             return GnuPlotCommand("set", "output", filename)
 
         @staticmethod
-        def xdata(mode: str) -> GnuPlotCommand:
-            return GnuPlotCommand("set", "xdata", mode)
+        def datafile(text: str, **opts) -> GnuPlotCommand:
+            return GnuPlotCommand("set", datafile=text, **opts)
+
+        @staticmethod
+        def grid(arg:str, **opts) -> GnuPlotCommand:
+            return GnuPlotCommand("set", "grid", **opts)
+
+        @staticmethod
+        def xdata(arg: str, **opts) -> GnuPlotCommand:
+            return GnuPlotCommand("set", xdata=arg, **opts)
+
+        @staticmethod
+        def xlabel(arg: str, **opts) -> GnuPlotCommand:
+            return GnuPlotCommand("set", xlabel=arg, **opts)
+
+        @staticmethod
+        def ylabel(arg: str, **opts) -> GnuPlotCommand:
+            return GnuPlotCommand("set", ylabel=arg, **opts)
+
+        #@staticmethod
+        #def xdata(mode: str) -> GnuPlotCommand:
+        #    return GnuPlotCommand("set", "xdata", mode)
 
         @staticmethod
         def timefmt(fmt: str) -> GnuPlotCommand:
@@ -79,7 +99,8 @@ class GnuPlot:
 
         @staticmethod
         def format_x(fmt: str) -> GnuPlotCommand:
-            return GnuPlotCommand("set", "format", "x", fmt)
+            return GnuPlotCommand("set", "format x", fmt)
+            #return GnuPlotCommand("set", "format", "x", fmt)
 
         @staticmethod
         def title(text: str) -> GnuPlotCommand:
