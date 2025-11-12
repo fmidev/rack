@@ -33,6 +33,9 @@ class CommandSequence:
     def add(self, cmd: Command):
         self.commands.append(cmd)
 
+    def to_list(self) -> list:
+        return [cmd.to_string() for cmd in self.commands]
+
     def to_string(self, joiner="\n") -> str:
         return joiner.join(cmd.to_string() for cmd in self.commands)
 

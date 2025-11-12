@@ -427,7 +427,7 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
     log = logger.getChild("create_gnuplot_script")
     
     conf = {
-        "terminal": "png size 600,400",
+        "terminal": "png size 800,600",
         "output": '"out.png"',
         "datafile": "separator whitespace",
         "xdata": "time",
@@ -441,6 +441,7 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
         "title": '"Measured data (actual timestamp)"',
         "xlabel": '"Time"',
         "ylabel": '"Value"',
+        #"using": '2:3',
     }
     conf.update(settings)
 
@@ -454,36 +455,18 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
     suffix = pathlib.Path(files[0]).suffix
     # log.debug(shared_indices)
     # split_name = pathlib.Path(files[0]).stem
-    #split_name = pathlib.Path(files[0]).stem.replace('/', SEPARATOR).split(SEPARATOR)
+    # split_name = pathlib.Path(files[0]).stem.replace('/', SEPARATOR).split(SEPARATOR)
     split_name = files[0].replace('/', SEPARATOR).split(SEPARATOR)
     title = " ".join([split_name[i] for i in shared_indices])
     conf['title'] = f'"{title}"'
 
     log.debug("add configuration")
-    prog = [f"set {k} {v}" for (k,v) in conf.items()]
-
+    # prog = [f"set {k} {v}" for (k,v) in conf.items()]
 
     cmds = rack.gnuplot.GnuPlotCommandSequence()
-    Cmd = rack.gnuplot.GnuPlotCommand
+    # Cmd = rack.gnuplot.GnuPlotCommand
     GP = rack.gnuplot.GnuPlot
     
-    #Cmd("set", "title", f'"{title}"')
-    """
-    cmds.add(GnuPlot.set.terminal(GnuPlot.Terminal.PNG, size=(800, 600)))
-    cmds.add(GnuPlot.set.output("plot_output.png"))
-    # titles and labels
-    cmds.add(GnuPlot.set.title("Combined Sine and Cosine"))
-    cmds.add(GnuPlot.set.label("t=0", at=(0, 0)))
-    # multiplot layout
-    for c in GnuPlot.set.multiplot(2, 1):
-        cmds.add(c)
-    # xdata and format
-    cmds.add(GnuPlot.set.xdata("time"))
-    cmds.add(GnuPlot.set.timefmt("%s"))
-    cmds.add(GnuPlot.set.format_x("%H:%M"))
-    """
-    
-    # rack.gnuplot.GnuPlot.set.terminal
     # cmds = GnuPlotCommandSequence()
     # cmds.add(rack.gnuplot.GnuPlot.set.terminal(rack.gnuplot.GnuPlot.Terminal.PNG, size=(800, 600)))
     # cmds.add(GnuPlot.set.output("plot_output.png"))
@@ -492,52 +475,33 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
         # cmds.add(Cmd(k,v))
         func = getattr(GP.set, k)   # resolves GnuPlot.set.format_x
         cmds.add(func(v))
-        #cmds.add(GP.Set.__getattr__(k)(v.strip('"')))
-        """
-        if k == 'terminal':
-            cmds.add(GP.set.terminal(v.split()[0].upper(), size=tuple(map(int, v.split()[2].split(',')))))
-        elif k == 'output':
-            cmds.add(GP.set.output(v.strip('"')))
-        else:
-            cmds.add(Cmd(k,v))
-            #pass
-            #cmds.add(GP.set.__getattr__(k)(v.strip('"')))
-        """
 
-
-    # cmds.to_string(";\n")
-    # cmds.add(gp.GnuPlot.set.terminal(gp.GnuPlot.Terminal.PNG, size=(800, 600)))
 
     plots = []
-    #plots = [
-    #    {"expr": "sin(x)", "title": "Sine", "with_": "lines"},
-    #    {"expr": "cos(x)", "title": "Cosine", "with_": "lines"}]
    
     log.debug("adding input files")
     files.reverse()
-    prog.append('plot \\')
+    # prog.append('plot \\')
     while files:
         f = files.pop()
         #split_name = pathlib.Path(f).stem.split(SEPARATOR)
         split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
         title =  " ".join([split_name[i] for i in distinct_indices])
-
         plotline = "  '{infile}' using 2:3 with linespoints title '{title}'".format(infile=f, title=title)
         if (files):
             plotline += ',\\'
-        prog.append(plotline)
-        plots.append({"file": f, "title": title, "with_": "lines"})
+        # prog.append(plotline)
+        plots.append({"file": f, "using": "2:3", "with_": "lines", "title": title})
 
-    print(plots)
-    cmds.add(GP.plot.plot( *plots
-        #{"expr": "sin(x)", "title": "Sine", "with_": "lines"},
-        #{"expr": "cos(x)", "title": "Cosine", "with_": "lines"}
-    ))
+    # print(plots)
+    cmds.add(GP.plot.plot( *plots ))
+    #{"expr": "sin(x)", "title": "Sine", "with_": "lines"},
+    #{"expr": "cos(x)", "title": "Cosine", "with_": "lines"}
     # cmds.to_script("example_plot.plt")
     print("Generated GnuPlot script:\n")
-    print(cmds.to_string(";\n"))
-    return prog # "\n".join(confs)+'\n'+",\n".join(plots)
-
+    print(cmds.to_string("\n"))
+    #return prog # "\n".join(confs)+'\n'+",\n".join(plots)
+    return cmds.to_list()
 
         
 def run(args):
