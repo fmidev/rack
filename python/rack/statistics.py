@@ -526,7 +526,7 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
         if (files):
             plotline += ',\\'
         prog.append(plotline)
-        plots.append({"expr": f, "title": title, "with_": "lines"})
+        plots.append({"file": f, "title": title, "with_": "lines"})
 
     print(plots)
     cmds.add(GP.plot.plot( *plots

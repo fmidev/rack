@@ -124,8 +124,14 @@ class GnuPlot:
 
     # --- Plot commands ---
     class Plot:
+
         @staticmethod
         def plot(*items: Union[str, dict], **global_opts) -> GnuPlotCommand:
+            """Create a plot command with multiple items.
+            Each item can be a string (expression) or a dict with 'expr' or 'file' key and options.
+            Global options apply to the entire plot command.
+            """
+            
             segments = []
 
             def build_segment(expr: str, **opts):
@@ -142,10 +148,23 @@ class GnuPlot:
 
             # Multiple plot dicts
             for item in items:
+                """ 
                 if isinstance(item, dict) and "expr" in item:
                     expr = item["expr"]
                     opts = {k: v for k, v in item.items() if k != "expr"}
                     segments.append(build_segment(expr, **opts))
+                """
+                if isinstance(item, dict):
+                    if "expr" in item:
+                        src = item["expr"]                      # unquoted
+                    elif "file" in item:
+                        src = f'"{item["file"]}"'               # quoted
+                    else:
+                        raise ValueError("Each plot item must include either 'expr' or 'file'")
+
+                    opts = {k: v for k, v in item.items() if k not in ("expr", "file")}
+                    segments.append(build_segment(src, **opts))
+
                 elif isinstance(item, str):
                     segments.append(item)
                 else:
