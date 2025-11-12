@@ -104,6 +104,14 @@ def build_parser():
         help="Write applicable simple gnuplot script to a file",
     )
 
+    parser.add_argument(
+        "--gnuplot_columns",
+        type=str,
+        metavar="<col1,col2>",
+        default=None,
+        help="Columns to use for gnuplot (e.g., '2:3')",
+    )
+
 
     rack.config.add_parameters(parser)
     rack.log.add_parameters(parser)
@@ -421,7 +429,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
 
 
 
-def create_gnuplot_script(files: list, settings=dict()) -> str:
+def create_gnuplot_script(files: list, settings=dict(), selector=(1,2)) -> str:
 
     log = logger.getChild("create_gnuplot_script")
     
@@ -443,6 +451,8 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
         #"using": '2:3',
     }
     conf.update(settings)
+
+    #vars = get_vars(tokens)
 
     SEPARATOR='_'
     split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
@@ -481,24 +491,23 @@ def create_gnuplot_script(files: list, settings=dict()) -> str:
     log.debug("adding input files")
     files.reverse()
     # prog.append('plot \\')
+    #
+    selector = ":".join([str(i) for i in selector])
+    #selector = ":".join(selector)
     while files:
         f = files.pop()
         #split_name = pathlib.Path(f).stem.split(SEPARATOR)
         split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
         title =  " ".join([split_name[i] for i in distinct_indices])
-        plotline = "  '{infile}' using 2:3 with linespoints title '{title}'".format(infile=f, title=title)
-        if (files):
-            plotline += ',\\'
+        #plotline = "  '{infile}' using 2:3 with linespoints title '{title}'".format(infile=f, title=title)
+        #if (files):
+        #    plotline += ',\\'
         # prog.append(plotline)
-        plots.append({"file": f, "using": "2:3", "with_": "lines", "title": title})
+        plots.append({"file": f, "using": selector, "with_": "lines", "title": title})
 
-    # print(plots)
     cmds.add(GP.plot.plot( *plots ))
-    #{"expr": "sin(x)", "title": "Sine", "with_": "lines"},
-    #{"expr": "cos(x)", "title": "Cosine", "with_": "lines"}
-    # cmds.to_script("example_plot.plt")
-    print("Generated GnuPlot script:\n")
-    print(cmds.to_string("\n"))
+    #print("Generated GnuPlot script:\n")
+    #print(cmds.to_string("\n"))
     #return prog # "\n".join(confs)+'\n'+",\n".join(plots)
     return cmds.to_list()
 
@@ -554,7 +563,25 @@ def run(args):
         exit(0)
 
     if args.gnuplot:
-        lines = create_gnuplot_script(args.INFILE)
+        conf = dict()
+    
+        cols = (2,3)  # default
+        if args.gnuplot_columns:
+            cols = args.gnuplot_columns.split(',')
+            if len(cols) == 2:
+                cols = (int(cols[0]), int(cols[1]))
+            else:
+                log.error("Invalid --gnuplot_columns syntax, expected '<col1,col2>'")
+                exit(1)
+            if args.LINE: 
+                vars = rack.stringlet.get_vars(rack.stringlet.parse_template(args.LINE))
+                log.info(f"VARS: {vars} ")
+                var0 = vars[0]
+                var1 = vars[1]
+            #conf['using'] = cols
+
+        lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
+        log.info(f"wrote GnuPlot script: {args.gnuplot}")
         if args.gnuplot == 'exec':
             log.info("running?")
             print("\n".join(lines))

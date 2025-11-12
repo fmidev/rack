@@ -112,6 +112,11 @@ def parse_template(template: str):
         tokens.append(Literal(template[pos:]))
     return tokens
 
+def get_vars(tokens):
+    """Extract variable keys from token list."""
+    keys = [k for k in tokens if isinstance(k, Stringlet)]
+    return keys  
+
 
 # --- formatter ---
 def render_template(template: str, data: dict):
@@ -162,8 +167,12 @@ def main():
     
     logger.info(f"TEMPLATE: {args.template}")
     logger.info(f"TOKENS:  {tokens} ")
+    vars = get_vars(tokens)
+    logger.info(f"VARS: {vars} ") 
     rendered = render_template(args.template, data)
     logger.info(f"RENDERED: {rendered} ")
+
+
 
 
 if __name__ == "__main__":
