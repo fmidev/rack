@@ -6,7 +6,7 @@ def test():
 import pathlib # Path
 import logging
 logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
-#logger = logging.getLogger(pathlib.Path(__file__).stem)
+# logger = logging.getLogger(pathlib.Path(__file__).stem)
 logger = logging.getLogger("rack") 
 logger.setLevel(logging.INFO)
 
@@ -26,15 +26,11 @@ dir (logging)
 """
 
 # re-consider rack.log.py...
-def add_parameters_logging(parser, path_prefix=None):
+def add_parameters_logging_OLD(parser, path_prefix=None):
     """ Creates registry of supported options of this script
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
     """
-    # 
-    #parser.add_argument(
-    #    "--log",
-    #    help="Set log verbosity level")
-
+    
     parser.add_argument(
         "-l", "--log_level",
         help="verbosity level for python wrapper and Rack cmd")
@@ -51,7 +47,7 @@ def add_parameters_logging(parser, path_prefix=None):
 
 
 # re-consider rack.log.py...    
-def handle_parameters_logging(args):
+def handle_parameters_logging_OLD(args):
     """Handle  args.debug, args.verbose args.log_level
 
     """

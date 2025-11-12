@@ -374,6 +374,9 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     outfile_current=''
     outfile = sys.stdout
     STDOUT = (file_syntax == '-')
+
+    line_tokens = rack.stringlet.parse_template(line_syntax)
+
     
     for dataset,info in my_dict.items():
 
@@ -413,8 +416,9 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
             
         log.debug(info)
         
-        #line = line_syntax.format(**info).strip()
-        line = rack.formatter.smart_format(line_syntax, info).strip()
+        # line = line_syntax.format(**info).strip()
+        # line = rack.formatter.smart_format(line_syntax, info).strip()
+        line = rack.stringlet.tokens_tostring(line_tokens, info).strip() 
         print (line, file = outfile) # print adds newline
 
         if (not STDOUT):
