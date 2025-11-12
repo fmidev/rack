@@ -29,6 +29,10 @@ class GnuPlotCommand(rack.command.Command):
     
     QUOTED_KEYS = {"output", "timefmt", "format", "file", "title"}  # automatic quoting
 
+    MAPPED_KEYS = {
+        "with_style": "with"
+    }
+
     TUPLE_JOIN_KEYS = {"size"}  # join tuples/lists with commas
 
     def _quote_if_needed(self, key: str, val: Any) -> str:
@@ -46,7 +50,7 @@ class GnuPlotCommand(rack.command.Command):
             if key_hint in self.TUPLE_JOIN_KEYS:
                 return joined
             else:
-                return f'({joined}){key_hint}!!'
+                return f'({joined}){key_hint} FIX! '
         return self._quote_if_needed(key_hint or "", val)
 
     
@@ -59,6 +63,8 @@ class GnuPlotCommand(rack.command.Command):
 
         # keyword arguments (gnuplot-style: no "--")
         for key, val in self.options.items():
+            if key in self.MAPPED_KEYS:
+                key = self.MAPPED_KEYS[key]
             formatted = self._format_arg(val, key)
             key=str(key)
             if not key in self.IMPLICIT_KEYS:
@@ -93,9 +99,10 @@ def main():
     cmds.set("format", "x", format="%H:%M")
         
     cmds.set("grid")
-    cmds.plot("plot", "sin(x)", title="Sine", with_="lines", linewidth=2)
+    cmds.plot("sin(x)", title="Sine", with_style="lines", linewidth=2)
+    cmds.plot("cos(x)", title="Sine", with_style="dots", linewidth=3)
     
-    cmds.plot(file="foo.txt", title="Sine", with_="lines", linewidth=2)
+    cmds.plot(file="foo.txt", title="Toine", with_style="lines", linewidth=2)
     print(cmds.to_string())
 
 
