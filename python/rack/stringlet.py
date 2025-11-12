@@ -39,7 +39,7 @@ class Literal(Token):
 
 
 # --- variable object ---
-class Stringlet(Token):
+class Var(Token):
     def __init__(self, key, filters=None):
         self.key = key
         self.filters = filters or []
@@ -95,7 +95,7 @@ class Stringlet(Token):
 
 # --- tokenizer ---
 def parse_template(template: str):
-    """Split template into tokens (Literals and Stringlets."""
+    """Split template into tokens (Literals and Vars."""
     tokens = []
     pos = 0
     for m in re.finditer(r"\{([^{}]+)\}", template):
@@ -105,7 +105,7 @@ def parse_template(template: str):
         expr = m.group(1)
         parts = [p.strip() for p in expr.split("|")]
         key, filters = parts[0], parts[1:]
-        tokens.append(Stringlet(key, filters))
+        tokens.append(Var(key, filters))
         pos = m.end()
     # trailing literal
     if pos < len(template):
@@ -113,8 +113,13 @@ def parse_template(template: str):
     return tokens
 
 def get_vars(tokens):
-    """Extract variable keys from token list."""
-    keys = [k for k in tokens if isinstance(k, Stringlet)]
+    """Extract variables (key,filters) from token list."""
+    keys = [k for k in tokens if isinstance(k, Var)]
+    return keys  
+
+def get_var_keys(tokens: list):
+    """Extract variable keys (without filters) from token list."""
+    keys = [v.key for v in get_vars(tokens)]
     return keys  
 
 

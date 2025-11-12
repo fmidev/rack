@@ -569,17 +569,27 @@ def run(args):
         if args.gnuplot_columns:
             cols = args.gnuplot_columns.split(',')
             if len(cols) == 2:
-                cols = (int(cols[0]), int(cols[1]))
+                #cols = (int(cols[0]), int(cols[1]))
+                col1 = int(cols[0])
+                col2 = int(cols[1])
+                pass
             else:
                 log.error("Invalid --gnuplot_columns syntax, expected '<col1,col2>'")
                 exit(1)
-            if args.LINE: 
+            if args.LINE and (col1 == 0 or col2 == 0): 
                 vars = rack.stringlet.get_vars(rack.stringlet.parse_template(args.LINE))
                 log.info(f"VARS: {vars} ")
-                var0 = vars[0]
-                var1 = vars[1]
-            #conf['using'] = cols
-
+                var_keys = [v.key for v in vars]
+                cols_final = []
+                for i in cols:
+                    if int(i) > 0:
+                        cols_final.append(int(i))
+                    else:
+                        cols_final.append(var_keys.index(var_keys[-i]) + 1 )
+                log.info(f"VARS keys: {var_keys} ")
+                cols = tuple(cols_final)
+                log.info(f"Using columns: {cols} ")
+                
         lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
         log.info(f"wrote GnuPlot script: {args.gnuplot}")
         if args.gnuplot == 'exec':
