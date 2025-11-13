@@ -436,6 +436,58 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         #if (not STDOUT):
         #    outfile.close()
 
+# Heavy but handy 
+def derive_gnuplot_columns(args, conf: dict) -> tuple:
+    
+    log = logger.getChild("derive_gnuplot_columns")
+
+    cols = (2,3)  # default
+    
+    if args.gnuplot_columns:
+    
+        cols = args.gnuplot_columns.split(',')
+    
+        if len(cols) != 2:
+            log.error("Invalid --gnuplot_columns syntax, expected '<col1,col2>'")
+            exit(1)
+
+        if args.LINE: 
+
+            # Split line syntax and get column indices
+            tokens = rack.stringlet.parse_template(args.LINE)
+            
+            # Resolve to indices
+            cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
+        
+            var_tokens = rack.stringlet.get_vars(tokens)
+            log.info(f"VARS: {var_tokens} ")
+            #var_keys = rack.stringlet.get_var_keys(tokens)
+            #log.info(f"VARS keys: {var_keys} ")
+            log.warning(f"Using columns: {cols} ")
+            # format_var = ['ydata', 'xdata'] # reversed, for pop
+            format_var = 'x' # reversed, for pop
+            for i in cols:
+                var = var_tokens[i-1]  # 1-based
+                if var.filters and (var.key in variables):
+                    filter = var.filters[0]
+                    log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")
+                    var_conf = variables[var.key]
+                    type_ = var_conf.get('type','string')
+                    if type_ == 'datetime':
+                        conf["timefmt"] = filter  # input format  (time)
+                        conf[f"format_{format_var}"] = "%H:%M" # output format (x-axis)
+                    #
+                    #log.warning(f"SUGGEST  conf format-{i} -> datetime '{var.filters[0]}' ")
+                        
+                log.info(f"col[{i}]: '{var.key}'")
+                format_var = 'y'  # next/remaining are y vars
+
+            log.warning(f"experimental auto conf: '{conf}' ")
+            
+
+    return tuple(cols)
+
+
 
 
 def create_gnuplot_script(files: list, settings=dict(), selector=(1,2)) -> str:
@@ -535,7 +587,7 @@ def run(args):
     # This happens only through API call of run(args)
     if args.config:
         log.debug("reading config file {args.config}")
-        var_tokens(args).update(rack.config.read(args.config))
+        vars(args).update(rack.config.read(args.config))
 
     if args.variables:
         if type(args.variables) is str:
@@ -573,48 +625,9 @@ def run(args):
         exit(0)
 
     if args.gnuplot:
-        conf = dict()
     
-        cols = (2,3)  # default
-        if args.gnuplot_columns:
-            cols = args.gnuplot_columns.split(',')
-            if len(cols) != 2:
-                log.error("Invalid --gnuplot_columns syntax, expected '<col1,col2>'")
-                exit(1)
-
-            if args.LINE: 
-
-                # Split line syntax and get column indices
-                tokens = rack.stringlet.parse_template(args.LINE)
-                
-                # Resolve to indices
-                cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
-            
-                var_tokens = rack.stringlet.get_vars(tokens)
-                log.info(f"VARS: {var_tokens} ")
-                #var_keys = rack.stringlet.get_var_keys(tokens)
-                #log.info(f"VARS keys: {var_keys} ")
-                log.warning(f"Using columns: {cols} ")
-                # format_var = ['ydata', 'xdata'] # reversed, for pop
-                format_var = 'x' # reversed, for pop
-                for i in cols:
-                    var = var_tokens[i-1]  # 1-based
-                    if var.filters and (var.key in variables):
-                        filter = var.filters[0]
-                        log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")
-                        var_conf = variables[var.key]
-                        type_ = var_conf.get('type','string')
-                        if type_ == 'datetime':
-                            conf["timefmt"] = filter  # input format  (time)
-                            conf[f"format_{format_var}"] = "%H:%M" # output format (x-axis)
-                        #
-                        #log.warning(f"SUGGEST  conf format-{i} -> datetime '{var.filters[0]}' ")
-                            
-                    log.info(f"col[{i}]: '{var.key}'")
-                    format_var = 'y'  # next/remaining are y vars
-
-                log.warning(f"experimental auto conf: '{conf}' ")
-                
+        conf = dict()
+        cols = derive_gnuplot_columns(args, conf)
 
         lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
         log.info(f"wrote GnuPlot script: {args.gnuplot}")
