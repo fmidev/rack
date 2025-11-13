@@ -20,6 +20,8 @@ import rack.base
 import rack.log
 import rack.config
 import rack.stringlet
+import rack.files  # SmartFileManager
+
 
 # from rack.formatter import smart_format
 import rack.gnuplot  # GnuPlotCommand, GnuPlotCommandSequence
@@ -371,6 +373,9 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     dir_tokens  = rack.stringlet.parse_template(dir_syntax)
 
     
+    def write_header(file_path):
+        return f"# {line_syntax}"
+    fileManager = rack.files.SmartFileManager(write_header)
     
     for dataset,info in my_dict.items():
 
@@ -411,6 +416,9 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
             if outfile != outfile_current:
                 log.info(f"outfile: {outfile}")
 
+            fileManager.write(f'{outdir}/{outfile}', f'{line}\n')
+
+            """
             file_path = pathlib.Path(f'{outdir}/{outfile}')
             is_new = not file_path.exists()                    
             with file_path.open("a", encoding="utf-8") as f:
@@ -421,6 +429,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
                 print (line, file = f)
             # outfile = open(f'{outdir}/{outfile}', 'a')
             # Todo: smarter file open/close
+            """
             
         log.debug(info)
         
@@ -568,28 +577,24 @@ def run(args):
         cols = (2,3)  # default
         if args.gnuplot_columns:
             cols = args.gnuplot_columns.split(',')
-            if len(cols) == 2:
-                #cols = (int(cols[0]), int(cols[1]))
-                col1 = int(cols[0])
-                col2 = int(cols[1])
-                pass
-            else:
+            if len(cols) != 2:
                 log.error("Invalid --gnuplot_columns syntax, expected '<col1,col2>'")
                 exit(1)
-            if args.LINE and (col1 == 0 or col2 == 0): 
-                vars = rack.stringlet.get_vars(rack.stringlet.parse_template(args.LINE))
-                log.info(f"VARS: {vars} ")
-                var_keys = [v.key for v in vars]
-                cols_final = []
-                for i in cols:
-                    if int(i) > 0:
-                        cols_final.append(int(i))
-                    else:
-                        cols_final.append(var_keys.index(var_keys[-i]) + 1 )
-                log.info(f"VARS keys: {var_keys} ")
-                cols = tuple(cols_final)
-                log.info(f"Using columns: {cols} ")
+
+            if args.LINE: 
+
+                # Split line syntax and get column indices
+                tokens = rack.stringlet.parse_template(args.LINE)
                 
+                # Resolve to indices
+                cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
+            
+                vars = rack.stringlet.get_vars(tokens)
+                log.info(f"VARS: {vars} ")
+                var_keys = rack.stringlet.get_var_keys(tokens)
+                log.info(f"VARS keys: {var_keys} ")
+                log.warning(f"Using columns: {cols} ")
+
         lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
         log.info(f"wrote GnuPlot script: {args.gnuplot}")
         if args.gnuplot == 'exec':

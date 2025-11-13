@@ -122,6 +122,37 @@ def get_var_keys(tokens: list):
     keys = [v.key for v in get_vars(tokens)]
     return keys  
 
+def get_index(key: str, tokens: list, offset: int = 0) -> int:
+    """
+    Resolve a column specifier (name or number) to a Var index.
+
+    key:  "humidity" or "3"
+    tokens: list of Literal / Var objects
+    offset: optional offset to add to the result, if spec was a string index
+
+    Returns integer index (1-based, like column numbering),
+    or raises KeyError / ValueError if not found.
+    """
+    # First, collect Vars only
+    vars_only = get_vars(tokens) #[t for t in tokens if isinstance(t, Var)]
+
+    # Try numeric spec (1-based)
+    r = range(0, len(vars_only))
+
+    if key.isdigit():
+        idx = int(key)
+        if r.start < idx <= r.stop:
+            return idx
+        raise ValueError(f"Column index {idx} out of range ({r})")
+        #raise ValueError(f"Column index {idx} out of range (1..{len(vars_only)})")  
+
+    # Try name lookup
+    for i, var in enumerate(vars_only, start=0):
+        if var.key == key:
+            return i+offset #
+
+    raise KeyError(f"No column named '{key}' found")
+
 
 # --- formatter ---
 def render_template(template: str, data: dict):
