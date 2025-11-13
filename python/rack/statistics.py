@@ -77,14 +77,14 @@ def build_parser():
         type=str,
         metavar="<file>.json",
         default=None,
-        help="Mapping of program variables. To see it, issue --list-variables",
+        help="Read declaration of (additional) global variables, display with: --export-variables",
     )
 
     parser.add_argument(
-        "--list-variables",
-        dest='list_variables',
+        "--export-variables",
+        #dest='list_variables',
         action='store_true',
-        help="List available variable mappings"
+        help="List available global variables"
         #(SITE, TIMESTAMP,...) to syntax containing odim variables (${NOD}, ${what:date},...) ""
     )
 
@@ -94,7 +94,7 @@ def build_parser():
         type=bool,
         #metavar="<file>.json",
         default=True,
-        help="Write to text files"
+        help="Write to text files. If false, dry-run - just extract metadata."
     )
 
     
@@ -535,7 +535,7 @@ def run(args):
     # This happens only through API call of run(args)
     if args.config:
         log.debug("reading config file {args.config}")
-        vars(args).update(rack.config.read(args.config))
+        var_tokens(args).update(rack.config.read(args.config))
 
     if args.variables:
         if type(args.variables) is str:
@@ -546,11 +546,12 @@ def run(args):
     variables.update(variables_fixed)
     #logger.warning(variables)
             
-    if args.list_variables:
+    if args.export_variables:
         json.dump(variables, sys.stdout, indent=4)
         print()
         keys=list(variables_fixed.keys())
         log.info(f"Note: reserved (automatic) variables: {keys}")
+        exit (0) # OK?
         # for (k,v) in variables.items():
         #    print ('\t{"'+k+'":"'+v+'"}')
 
@@ -589,15 +590,15 @@ def run(args):
                 # Resolve to indices
                 cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
             
-                vars = rack.stringlet.get_vars(tokens)
-                log.info(f"VARS: {vars} ")
+                var_tokens = rack.stringlet.get_vars(tokens)
+                log.info(f"VARS: {var_tokens} ")
                 #var_keys = rack.stringlet.get_var_keys(tokens)
                 #log.info(f"VARS keys: {var_keys} ")
                 log.warning(f"Using columns: {cols} ")
                 # format_var = ['ydata', 'xdata'] # reversed, for pop
                 format_var = 'x' # reversed, for pop
                 for i in cols:
-                    var = vars[i-1]  # 1-based
+                    var = var_tokens[i-1]  # 1-based
                     if var.filters and (var.key in variables):
                         filter = var.filters[0]
                         log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")

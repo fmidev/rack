@@ -61,8 +61,12 @@ def write(filename, conf:dict, exclude=[]):
             continue
         conf_copy[k] = v
 
-    with open(filename, "w") as f:
-        json.dump(conf_copy, f, indent=4)
+    if (filename == "-") or (filename.lower() == "stdout"):
+        json.dump(conf_copy, sys.stdout, indent=4)
+        sys.stdout.write("\n")
+    else:
+        with open(filename, "w") as f:
+            json.dump(conf_copy, f, indent=4)
 
 
 
