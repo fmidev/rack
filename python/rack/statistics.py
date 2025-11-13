@@ -591,9 +591,29 @@ def run(args):
             
                 vars = rack.stringlet.get_vars(tokens)
                 log.info(f"VARS: {vars} ")
-                var_keys = rack.stringlet.get_var_keys(tokens)
-                log.info(f"VARS keys: {var_keys} ")
+                #var_keys = rack.stringlet.get_var_keys(tokens)
+                #log.info(f"VARS keys: {var_keys} ")
                 log.warning(f"Using columns: {cols} ")
+                # format_var = ['ydata', 'xdata'] # reversed, for pop
+                format_var = 'x' # reversed, for pop
+                for i in cols:
+                    var = vars[i-1]  # 1-based
+                    if var.filters and (var.key in variables):
+                        filter = var.filters[0]
+                        log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")
+                        var_conf = variables[var.key]
+                        type_ = var_conf.get('type','string')
+                        if type_ == 'datetime':
+                            conf["timefmt"] = filter  # input format  (time)
+                            conf[f"format_{format_var}"] = "%H:%M" # output format (x-axis)
+                        #
+                        #log.warning(f"SUGGEST  conf format-{i} -> datetime '{var.filters[0]}' ")
+                            
+                    log.info(f"col[{i}]: '{var.key}'")
+                    format_var = 'y'  # next/remaining are y vars
+
+                log.warning(f"experimental auto conf: '{conf}' ")
+                
 
         lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
         log.info(f"wrote GnuPlot script: {args.gnuplot}")
