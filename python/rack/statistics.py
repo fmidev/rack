@@ -245,6 +245,16 @@ variables_fixed = {
         "desc": "",
         "type": "automatic",
         "rack_expr": "AUTO",
+    },
+    "DATASET": {
+        "desc": "index in 'dataset<i>' group ",
+        "type": "string",
+        "rack_expr": "${dataset}"
+    },
+    "DATA": {
+        "desc": "index in 'data<i>' group ",
+        "type": "string",
+        "rack_expr": "${data}"
     }
 }
 
@@ -530,37 +540,29 @@ def create_gnuplot_script(files: list, settings=dict(), selector=(1,2)) -> str:
     }
     conf.update(settings)
 
-    #vars = get_vars(tokens)
 
     SEPARATOR='_'
+   
+    suffix = pathlib.Path(files[0]).suffix
+   
+    # .removesuffix(suffix) 
     split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
     distinct_indices = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) > 1]
     shared_indices   = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) == 1]
 
 
     # Take a "random" filename and pick common parts
-    suffix = pathlib.Path(files[0]).suffix
-    # log.debug(shared_indices)
-    # split_name = pathlib.Path(files[0]).stem
-    # split_name = pathlib.Path(files[0]).stem.replace('/', SEPARATOR).split(SEPARATOR)
     split_name = files[0].replace('/', SEPARATOR).split(SEPARATOR)
     title = " ".join([split_name[i] for i in shared_indices])
     conf['title'] = f'"{title}"'
 
     log.debug("add configuration")
-    # prog = [f"set {k} {v}" for (k,v) in conf.items()]
 
     cmds = rack.gnuplot.GnuPlotCommandSequence()
-    # Cmd = rack.gnuplot.GnuPlotCommand
-    GP = rack.gnuplot.GnuPlot
     
-    # cmds = GnuPlotCommandSequence()
-    # cmds.add(rack.gnuplot.GnuPlot.set.terminal(rack.gnuplot.GnuPlot.Terminal.PNG, size=(800, 600)))
-    # cmds.add(GnuPlot.set.output("plot_output.png"))
-
     for (k,v) in conf.items():
         # cmds.add(Cmd(k,v))
-        func = getattr(GP.set, k)   # resolves GnuPlot.set.format_x
+        func = getattr(rack.gnuplot.GnuPlot.set, k)   # resolves GnuPlot.set.format_x
         cmds.add(func(v))
 
 
@@ -574,19 +576,12 @@ def create_gnuplot_script(files: list, settings=dict(), selector=(1,2)) -> str:
     #selector = ":".join(selector)
     while files:
         f = files.pop()
-        #split_name = pathlib.Path(f).stem.split(SEPARATOR)
         split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
-        title =  " ".join([split_name[i] for i in distinct_indices])
-        #plotline = "  '{infile}' using 2:3 with linespoints title '{title}'".format(infile=f, title=title)
-        #if (files):
-        #    plotline += ',\\'
-        # prog.append(plotline)
+        title =  " ".join([split_name[i] for i in distinct_indices]).removesuffix(suffix)
         plots.append({"file": f, "using": selector, "with_": "lines", "title": title})
 
-    cmds.add(GP.plot.plot( *plots ))
-    #print("Generated GnuPlot script:\n")
+    cmds.add(rack.gnuplot.GnuPlot.plot.plot( *plots ))
     #print(cmds.to_string("\n"))
-    #return prog # "\n".join(confs)+'\n'+",\n".join(plots)
     return cmds.to_list()
 
         
@@ -671,19 +666,15 @@ def run(args):
         log.info(f"Running GnuPlot with script:\n{input}")
 
         if args.gnuplot:
-            result = subprocess.run(
-                ["gnuplot"],
-                input=input,
-                text=True,
-                capture_output=True
-            )
+            result = subprocess.run(["gnuplot"], input=input, text=True, capture_output=True)
 
-            print("STDOUT:", result.stdout)
-            print("STDERR:", result.stderr)
+            if result.returncode != 0:
+                log.error("GnuPlot execution failed")
+                print("STDOUT:", result.stdout)
+                print("STDERR:", result.stderr)
+                exit(1)
 
-            #cmd = ['gnuplot', '-e', "; ".join(lines)]
-            #log.info(f"cmd: {cmd}")
-
+            
             #result = subprocess.run(cmd, stdout=subprocess.PIPE)
             #result = result.stdout.decode('utf-8')
             log.info(f"ran GnuPlot, output: {args.gnuplot_output}")

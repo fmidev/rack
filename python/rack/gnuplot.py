@@ -1,6 +1,9 @@
 from typing import Any, List, Union
+import os
 
 import rack.command
+import rack.log
+logger = rack.log.logger.getChild(os.path.splitext(os.path.basename(__file__))[0])
 
 
 
@@ -41,9 +44,47 @@ class GnuPlotCommandSequence(rack.command.CommandSequence):
         with open(filename, "w", encoding="utf-8") as f:
             f.write(self.to_string("\n") + "\n")
 
+    def create_script(self, files: list, settings=dict(), colums=(1,2)):
 
+        log = logger.getChild("create_gnuplot_script")
+        
+        # Default configuration for gnuplot
 
+        conf = {
+            "terminal": "png size 800,600",
+            "output": None,
+            "datafile": "separator whitespace",
+            "xdata": None,
+            "timefmt": None,
+            "format_x": None,
+            "grid": None,
+            "xlabel": None,
+            "ylabel": None,
+            "title": None,
+            #"using": '2:3',
+        }
 
+        conf.update(settings)
+
+        for (k,v) in conf.items():
+            if not v is None:
+                func = getattr(GnuPlot.set, k)   # resolves GnuPlot.set.format_x
+                self.add(func(v))
+
+        SEPARATOR='_'
+        log.debug("adding input files")
+        plots = []
+        files.reverse()
+        colums = ":".join([str(i) for i in colums])
+        #selector = ":".join(selector)
+        while files:
+            f = files.pop()
+            split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
+            title =  " ".join([split_name[i] for i in distinct_indices])
+            plots.append({"file": f, "using": colums, "with_": "lines", "title": title})
+
+        self.add(GnuPlotCommand.plot.plot( *plots ))
+        # log.debug("created gnuplot script with %d plot items", len(plots))
 
 # --- Static Namespace Layer (for autocompletion) ---
 class GnuPlot:
