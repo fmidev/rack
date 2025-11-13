@@ -44,9 +44,10 @@ class GnuPlotCommandSequence(rack.command.CommandSequence):
         with open(filename, "w", encoding="utf-8") as f:
             f.write(self.to_string("\n") + "\n")
 
+    # see also: create_gnuplot_script in rack/statistics.py
     def create_script(self, files: list, settings=dict(), colums=(1,2)):
 
-        log = logger.getChild("create_gnuplot_script")
+        log = logger.getChild("create_script")
         
         # Default configuration for gnuplot
 

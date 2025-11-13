@@ -56,6 +56,10 @@ class SmartFileManager:
                 logger.debug(f"Closing file {f.name}")
                 f.close()
 
+    def get_filenames(self):
+        """Return list of currently open file paths."""
+        return list(self._files.keys()) 
+
     def __del__(self):
         # auto cleanup on program exit
         self.close()

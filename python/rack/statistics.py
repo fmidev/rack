@@ -300,7 +300,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     log = logger.getChild("extract_metadata")
     #
-    log.debug("start")
+    log.info("start")
 
     global TIMEFORMAT
     SEPARATOR='_'
@@ -321,7 +321,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     # Main loop 1: traverse HDF5 files
     for INFILE in INFILES:
-        log.info(f'reading {INFILE}')
+        log.debug(f'reading {INFILE}') # rack echoes it, so skip here
         
         # Todo: better cmd creator
         cmd = ['rack', INFILE ]
@@ -347,7 +347,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             
             if dataset_id not in metadata:
                 # Start new sweep
-                log.info(f"dataset: {dataset_id}")
+                log.debug(f"dataset: {dataset_id}")
                 if m:
                     logger.debug(m)
                 m = metadata[dataset_id] = dict()
@@ -386,12 +386,14 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     """
     
     log = logger.getChild("write_metadata")
+
+    log.info("start")
     log.info(f"outdir_syntax:  {dir_syntax}")
     log.info(f"outfile_syntax: {file_syntax}")    
             
     # Results
     outdirs  = set()
-    outfile_current=''
+    # outfile_current=''
     outfile = sys.stdout
     STDOUT = (file_syntax == '-')
 
@@ -431,37 +433,28 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
             #outdir = rack.formatter.smart_format(dir_syntax, info)
             outdir = rack.stringlet.tokens_tostring(dir_tokens, info)
             if outdir not in outdirs:
-                log.info(f"outdir: {outdir}")
+                log.debug(f"ensuring outdir: {outdir}")
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
                 outdirs.add(outdir)
-                # RETHINK outfiles = set()
-                # logger.info(f'outdir = {outdir}')
 
             # outfile = rack.formatter.smart_format(file_syntax, info)  
             outfile = rack.stringlet.tokens_tostring(file_tokens, info)
-            # outfile = f'{outdir}/{outfile}'
-            if outfile != outfile_current:
-                log.info(f"outfile: {outfile}")
 
             fileManager.write(f'{outdir}/{outfile}', f'{line}\n')
 
-            """
-            file_path = pathlib.Path(f'{outdir}/{outfile}')
-            is_new = not file_path.exists()                    
-            with file_path.open("a", encoding="utf-8") as f:
-                if is_new:
-                    print (f'# {line_syntax}', file = f)
-                    #f.write("# time  value  comment\n")  # header
-                #f.write("2025-11-03T12:00  42.5  # sample data\n") 
-                print (line, file = f)
-            # outfile = open(f'{outdir}/{outfile}', 'a')
-            # Todo: smarter file open/close
-            """
             
         log.debug(info)
-        
-        #if (not STDOUT):
-        #    outfile.close()
+
+    open_files = fileManager.get_filenames()        
+    if (open_files):
+        n = len(open_files)
+        log.info(f"Wrote to {n} files") # : {open_files[0]} ... {open_files[n-1]}")
+        log.info(f"First file: {open_files[0]}")
+        log.info(f"Last file:  {open_files[n-1]}")
+        if log.getEffectiveLevel() <= rack.log.logging.DEBUG:
+            for f in open_files:
+                log.debug(f" - {f}")    
+        fileManager.close() # Actually redundant here, but for clarity
 
 # Heavy but handy 
 def derive_gnuplot_columns(args, conf: dict) -> tuple:
