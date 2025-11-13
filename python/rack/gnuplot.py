@@ -103,6 +103,10 @@ class GnuPlot:
             #return GnuPlotCommand("set", "format", "x", fmt)
 
         @staticmethod
+        def format_y(fmt: str) -> GnuPlotCommand:
+            return GnuPlotCommand("set", "format y", fmt)
+
+        @staticmethod
         def title(text: str) -> GnuPlotCommand:
             return GnuPlotCommand("set", title=text)
 
