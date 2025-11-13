@@ -667,11 +667,25 @@ def run(args):
                 for i in lines:
                     print(i, file=f)
         
+        input=";\n  ".join(lines)
+        log.info(f"Running GnuPlot with script:\n{input}")
+
         if args.gnuplot:
-            cmd = ['gnuplot', '-e', "; ".join(lines)]
-            log.info(f"cmd: {cmd}")
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            result = result.stdout.decode('utf-8')
+            result = subprocess.run(
+                ["gnuplot"],
+                input=input,
+                text=True,
+                capture_output=True
+            )
+
+            print("STDOUT:", result.stdout)
+            print("STDERR:", result.stderr)
+
+            #cmd = ['gnuplot', '-e', "; ".join(lines)]
+            #log.info(f"cmd: {cmd}")
+
+            #result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            #result = result.stdout.decode('utf-8')
             log.info(f"ran GnuPlot, output: {args.gnuplot_output}")
 
         exit(0)
