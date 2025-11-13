@@ -44,7 +44,7 @@ fi
 if [ "$PYTHON_DIR" != '' ]; then
     mkdir -v --parents ${PYTHON_DIR}/rack/
     # including __init__.py
-    for i in ../scripts/rack/*.py; do
+    for i in ../python/rack/*.py; do
 	TARGET=${i##*/}
 	cp -vu $i ${PYTHON_DIR}/rack/
     done
