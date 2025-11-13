@@ -99,19 +99,36 @@ def build_parser():
 
     
     parser.add_argument(
-        "--gnuplot",
+        "--gnuplot-script",
         type=str,
-        metavar="<file>",
+        metavar="<file>.gnu",
         default=None,
         help="Write applicable simple gnuplot script to a file",
     )
 
     parser.add_argument(
-        "--gnuplot_columns",
+        "--gnuplot-output",
+        type=str,
+        metavar="<file>[.png|.svg]",
+        default=None,
+        help="Set gnuplot output file name (overrides default 'out.png')",
+    )
+
+    parser.add_argument(
+        "--gnuplot",
+        type=str,
+        metavar="<file>",
+        default=None,
+        help="Create and run gnuplot script, creating a graphics/image file",
+    )
+
+
+    parser.add_argument(
+        "--gnuplot-columns",
         type=str,
         metavar="<col1,col2>",
         default=None,
-        help="Columns to use for gnuplot (e.g., '2:3')",
+        help="Columns to plot (e.g., '2:3' or 'TIME:ELANGLE')",
     )
 
 
@@ -625,25 +642,41 @@ def run(args):
         exit(0)
 
     if args.gnuplot:
-    
-        conf = dict()
+        args.gnuplot_output = args.gnuplot # _output or args.gnuplot.replace('.gnu', '.png')
+        # args.gnuplot_execute = True ?
+
+    if args.gnuplot or args.gnuplot_script:    
+        
+        # More defaults here!
+        conf = {
+            "output": f'"{args.gnuplot_output or "out.png"}"',
+        }
+        
         cols = derive_gnuplot_columns(args, conf)
 
         lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
+
         log.info(f"wrote GnuPlot script: {args.gnuplot}")
-        if args.gnuplot == 'exec':
-            log.info("running?")
-            print("\n".join(lines))
-        elif args.gnuplot == '-':
+        if not args.gnuplot_script:
+            pass
+        elif args.gnuplot_script == '-':
             for i in lines:
                 print(i)
         else:
-            with open(args.gnuplot, 'w') as f:
+            with open(args.gnuplot_script, 'w') as f:
                 for i in lines:
-                    f.write(i)
-                    f.write('\n')
+                    print(i, file=f)
+        
+        if args.gnuplot:
+            cmd = ['gnuplot', '-e', "; ".join(lines)]
+            log.info(f"cmd: {cmd}")
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+            result = result.stdout.decode('utf-8')
+            log.info(f"ran GnuPlot, output: {args.gnuplot_output}")
+
         exit(0)
 
+        
 
     extract_metadata(args.INFILE, variables, my_dict)
 
