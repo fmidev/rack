@@ -8,6 +8,7 @@ Utility for collecting metadata simply using directories and text files.
 """
 
 
+import re
 import sys
 import os # mkdirs()
 import pathlib #Path
@@ -498,10 +499,10 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
             cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
         
             var_tokens = rack.stringlet.get_vars(tokens)
-            log.info(f"VARS: {var_tokens} ")
+            log.debug(f"Variable stringlet: {var_tokens} ")
             # var_keys = rack.stringlet.get_var_keys(tokens)
             # log.info(f"VARS keys: {var_keys} ")
-            log.warning(f"Using columns: {cols} ")
+            log.debug(f"Using columns: {cols} ")
             # format_var = ['ydata', 'xdata'] # reversed, for pop
             format_var = 'x' # reversed, for pop
             for i in cols:
@@ -509,7 +510,7 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
                 cols_result.append((i, var.key))
                 if var.filters and (var.key in variables):
                     filter = var.filters[0]
-                    log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")
+                    # log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")
                     var_conf = variables[var.key]
                     type_ = var_conf.get('type','string')
                     if type_ == 'datetime':
@@ -517,11 +518,12 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
                         conf[f"format_{format_var}"] = "%H:%M" # output format (x-axis)
                     #
                     #log.warning(f"SUGGEST  conf format-{i} -> datetime '{var.filters[0]}' ")
-                        
-                log.info(f"col[{i}]: '{var.key}'")
+                    log.info(f"{format_var}: column {i}: '{var.key}'")
+                else:        
+                    log.info(f"{format_var}: column {i}: '{var.key}'-> filter='{filter}'")
                 format_var = 'y'  # next/remaining are y vars
 
-            log.warning(f"experimental auto conf: '{conf}' ")
+            log.debug(f"experimental auto conf: '{conf}' ")
             
     return cols_result
     #return tuple(cols)
@@ -557,8 +559,11 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
    
     suffix = pathlib.Path(files[0]).suffix
    
-    # .removesuffix(suffix) 
-    split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
+    # Automagically derive distinct and shared parts of filenames for titles!
+    # re.split(f'[/|{SEP}]', tiedosto.strip())
+    # split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
+    # Split file paths by standard directory separator '/' and filename segment separator SEPARATOR
+    split_names = [re.split(f'[/|{SEPARATOR}]', f) for f in files]
     distinct_indices = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) > 1]
     shared_indices   = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) == 1]
 
@@ -671,19 +676,19 @@ def run(args):
             with open(args.gnuplot_script, 'w') as f:
                 for i in lines:
                     print(i, file=f)
-        
 
         if args.gnuplot:
             script=";\n  ".join(lines)
-            log.info(f"Running GnuPlot with script:\n{script}")
+            log.info(f"Executing 'gnuplot', output: {args.gnuplot_output}")
+            log.debug(f"GnuPlot script:\n{script}")
             result = subprocess.run(["gnuplot"], input=script, text=True, capture_output=True)
 
             if result.returncode != 0:
-                log.error("GnuPlot execution failed")
+                log.error("execution of 'gnuplot' failed")
                 print("STDOUT:", result.stdout)
                 print("STDERR:", result.stderr)
                 exit(1)
-            log.info(f"GnuPlot output: {args.gnuplot_output}")
+            #log.info(f"GnuPlot output: {args.gnuplot_output}")
 
         exit(0)
 

@@ -2,17 +2,29 @@
 
 Rack comes with a set of Python scripts packed as a module [rack](./rack).
 
+General design principles and goals:
+- Simple instruction set: to provide a minimal, simple set of parameters for a user 
+- User-friendly hands-on usage: the user is not expected to know command line options of Rack, and especially not the order in which they should be given.
+- Consistency: the scripts in this module share many common options, for example. 
+
 ## Contents
 
-- [`rack.composer`](rack/composer.py) - utility for extracting metadata from ODIM-HDF5 files, esp. for monitoring incoming data
+- [`rack.composer`](rack/composer.py) - utility for compositing data
 - [`rack.statistics`](rack/statistics.py) - utility for extracting metadata from ODIM-HDF5 files, esp. for monitoring incoming data
 
 
 ### Statistics
 
+Usage of this program - [`rack.statistics.py`](rack/statistics.py) consists typically of two steps
+1. Collection of statistics - option `--ccc`
+2. Illustration collect of statistics - option `--ccc`
+
+In the collection stage, this script invokes `rack` repeatedly as a subprocess.
+Similarly, in the illustration stage, `gnuplot` is invoked.
+
 ## Examples
 
-In the following examples, `$SCR` equals to the absolute path of `rack/scripts`. Further, `$PYTHONPATH` is assumed to contain it.
+In the following examples, `$SCR` equals to the absolute path of `rack/python`. Further, `$PYTHONPATH` is assumed to contain it.
 ```bash
 # Daywise file of for sweep (identified by dataset<N>):
 python3 $SRC/rack/statistics.py  --OUTDIR './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --OUTFILE '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
@@ -24,6 +36,20 @@ Produces:
 ```
 Test
 ```
+
+It is useful to define data row syntax as a environment variable (like `$LINE`) because collection and illustration stage rely on a same order of data variables.
+```bash
+
+LINE='{TIME_START|%Y-%m-%dT%H:%M} {TIME_START_REL|%s} {ELANGLE} {TIME_END_REL|%s}  # {QUANTITY}'
+
+python3 $SRC/rack/statistics.py --LINE "$LINE"  --OUTFILE '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
+python3 $SRC/rack/statistics.py --gnuplot-columns TIME_START_REL,ELANGLE --LINE "$LINE" --gnuplot fin.png  statistics/fi???/??min/*.txt
+
+gnuplot fin.png 
+```
+
+![Example](docs/cover/rack-cover.png)
+
 
 
 test.py
