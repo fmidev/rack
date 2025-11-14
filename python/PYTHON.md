@@ -24,13 +24,14 @@ Similarly, in the illustration stage, `gnuplot` is invoked.
 
 ## Examples
 
-In the following examples, `$SCR` equals to the absolute path of `rack/python`. Further, `$PYTHONPATH` is assumed to contain it.
+In the following examples, it is assumed that environment variable `$PYTHONPATH` contains the directory under which the modules are localed.
+.
 ```bash
 # Daywise file of for sweep (identified by dataset<N>):
-python3 $SRC/rack/statistics.py  --OUTDIR './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --OUTFILE '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
+python3 -m rack.statistics  --OUTDIR './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --OUTFILE '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
 
 # Files for each volume, separated by polarization modes and pulse repetition modes:
-python3 $SRC/rack/statistics.py  --OUTDIR './stats1/{SITE}'  --OUTFILE '{TIMESTAMP}_{POL}_{PRF}.txt' 
+python3 -m rack.statistics  --OUTDIR './stats1/{SITE}'  --OUTFILE '{TIMESTAMP}_{POL}_{PRF}.txt' 
 ```
 Produces:
 ```
@@ -42,8 +43,8 @@ It is useful to define data row syntax as a environment variable (like `$LINE`) 
 
 LINE='{TIME_START|%Y-%m-%dT%H:%M} {TIME_START_REL|%s} {ELANGLE} {TIME_END_REL|%s}  # {QUANTITY}'
 
-python3 $SRC/rack/statistics.py --LINE "$LINE"  --OUTFILE '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
-python3 $SRC/rack/statistics.py --gnuplot-columns TIME_START_REL,ELANGLE --LINE "$LINE" --gnuplot fin.png  statistics/fi???/??min/*.txt
+python3 -m rack.statistics --LINE "$LINE"  --OUTFILE '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
+python3 -m rack.statistics --gnuplot-columns TIME_START_REL,ELANGLE --LINE "$LINE" --gnuplot fin.png  statistics/fi???/??min/*.txt
 
 gnuplot fin.png 
 ```
