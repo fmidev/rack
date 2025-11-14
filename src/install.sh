@@ -51,7 +51,7 @@ if [ "$PYTHON_DIR" != '' ]; then
     PYTHONPATH_STRIP=${PYTHONPATH//"${PYTHON_DIR}"/}
     if [ "$PYTHONPATH_STRIP" == "$PYTHONPATH" ]; then
 	echo "Consider setting:"
-	echo "export PYTHONPATH='$PYTHONPATH:${PYTHON_DIR}'"
+	echo "export PYTHONPATH='${PYTHONPATH:+$PYTHONPATH:}${PYTHON_DIR}'"
     fi
     #$PYTHONPATH
 fi

@@ -12,7 +12,7 @@ logger = rack.log.logger.getChild(os.path.splitext(os.path.basename(__file__))[0
 class GnuPlotCommand(rack.command.Command):
     """GnuPlot-specific command, inherits from Command."""
     
-    QUOTED_KEYS = {"output", "file", "timefmt", "format", "title", "label"}
+    QUOTED_KEYS = {"output", "file", "timefmt", "format", "title", "label", "xlabel", "ylabel"}
     
     @staticmethod
     def static_fmt(val: Any, key: str = "") -> str:

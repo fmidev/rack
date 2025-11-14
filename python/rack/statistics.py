@@ -51,7 +51,8 @@ def build_parser():
         '-D', "--OUTDIR",
         type=str,
         metavar="<dir_syntax>",
-        default='./statistics/{SITE}/{TIME|%M}min/dataset{DATASET}',
+        #default='./statistics/{SITE}/{TIME|%M}min/dataset{DATASET}',
+        default='./statistics/{SITE}/{TIME|%M}min',
         help="String syntax for output directories. See --list-variables and --variables",
     )
 
@@ -310,13 +311,16 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     var_map = [(k,v['rack_expr']) for (k,v) in variables.items()]
     #log.debug(var_map)
-    
+    log.info(var_map)
+
     (keys, values) = zip(*var_map)
     # log.debug(values)
-    fmt = values 
+    fmt = values
     # fmt = list(variables.values())
 
     fmt = SEPARATOR.join(fmt)
+    log.info(f"fmt = {fmt}")
+
     shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
 
     # Main loop 1: traverse HDF5 files
@@ -353,9 +357,18 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
                 m = metadata[dataset_id] = dict()
                 m['QUANTITY'] = list()
 
-            for i in ['TIME', 'TIME_START', 'TIME_END']:
-                # Note: force UTC
-                info[i] = dt.datetime.strptime(info[i], TIMEFORMAT).replace(tzinfo=dt.timezone.utc)
+            # Parse datetime fields. Sensitive - if one fails, skip entire entry
+            try:
+                for i in ['TIME', 'TIME_START', 'TIME_END']:
+                    # Note:  force UTC
+                    info[i] = dt.datetime.strptime(info[i], TIMEFORMAT).replace(tzinfo=dt.timezone.utc)
+            except Exception as e:
+                log.error(f"Skipping {INFILE} – failed to parse datetime for {i}: '{info[i]}'")
+                # remove incomplete entry
+                metadata.pop(dataset_id)
+                m = None
+                continue
+                #raise e 
 
 
             # Better: dt.datetime.fromtimestamp(21020102, dt.UTC)
@@ -403,10 +416,12 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
 
     
     def write_header(file_path):
+        # Write metadata variable keys (and not file path) 
         return f"# {line_syntax}"
     fileManager = rack.files.SmartFileManager(write_header)
     
-    for dataset,info in my_dict.items():
+    for info in my_dict.values():
+        #for dataset,info in my_dict.items():
 
         # Automatic additional attributes
         if 'LDR' in info['QUANTITY']:
@@ -422,22 +437,17 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         # list -> str
         info['QUANTITY'] = '-'.join(info['QUANTITY'])
 
-
-        # line = line_syntax.format(**info).strip()
-        # line = rack.formatter.smart_format(line_syntax, info).strip()
         line = rack.stringlet.tokens_tostring(line_tokens, info).strip() 
         
         if (STDOUT):
             print (line, file = outfile) # print adds newline
         else:
-            #outdir = rack.formatter.smart_format(dir_syntax, info)
             outdir = rack.stringlet.tokens_tostring(dir_tokens, info)
             if outdir not in outdirs:
                 log.debug(f"ensuring outdir: {outdir}")
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
                 outdirs.add(outdir)
 
-            # outfile = rack.formatter.smart_format(file_syntax, info)  
             outfile = rack.stringlet.tokens_tostring(file_tokens, info)
 
             fileManager.write(f'{outdir}/{outfile}', f'{line}\n')
@@ -457,37 +467,46 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         fileManager.close() # Actually redundant here, but for clarity
 
 # Heavy but handy 
-def derive_gnuplot_columns(args, conf: dict) -> tuple:
+def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tuple:
     
     log = logger.getChild("derive_gnuplot_columns")
 
-    cols = (2,3)  # default
+    #cols_result = {2:"TIME",3:"VALUE"}  # default
+    #cols = (2,3)  # default
+
+    if not col_indices:
+
+        # log.info("No --gnuplot_columns given, trying to derive from --LINE syntax")
+        # Default columns: assume second col is some kiond of time, third is value (ELANGLE)
+        return [(2,"TIME"), (3,"VALUE")] 
     
-    if args.gnuplot_columns:
+    else:
     
-        cols = args.gnuplot_columns.split(',')
+        cols_result = [] #dict() # {2:"TIME",3:"VALUE"} 
+        cols = col_indices.split(',')
     
         if len(cols) != 2:
             log.error("Invalid --gnuplot_columns syntax, expected '<col1,col2>'")
             exit(1)
 
-        if args.LINE: 
+        if line_syntax: 
 
             # Split line syntax and get column indices
-            tokens = rack.stringlet.parse_template(args.LINE)
+            tokens = rack.stringlet.parse_template(line_syntax)
             
             # Resolve to indices
             cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
         
             var_tokens = rack.stringlet.get_vars(tokens)
             log.info(f"VARS: {var_tokens} ")
-            #var_keys = rack.stringlet.get_var_keys(tokens)
-            #log.info(f"VARS keys: {var_keys} ")
+            # var_keys = rack.stringlet.get_var_keys(tokens)
+            # log.info(f"VARS keys: {var_keys} ")
             log.warning(f"Using columns: {cols} ")
             # format_var = ['ydata', 'xdata'] # reversed, for pop
             format_var = 'x' # reversed, for pop
             for i in cols:
                 var = var_tokens[i-1]  # 1-based
+                cols_result.append((i, var.key))
                 if var.filters and (var.key in variables):
                     filter = var.filters[0]
                     log.warning(f"SUGGEST  conf format-{i} -> '{filter}' ")
@@ -504,13 +523,13 @@ def derive_gnuplot_columns(args, conf: dict) -> tuple:
 
             log.warning(f"experimental auto conf: '{conf}' ")
             
-
-    return tuple(cols)
-
-
+    return cols_result
+    #return tuple(cols)
 
 
-def create_gnuplot_script(files: list, settings=dict(), selector=(1,2)) -> str:
+
+
+def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
 
     log = logger.getChild("create_gnuplot_script")
     
@@ -563,15 +582,12 @@ def create_gnuplot_script(files: list, settings=dict(), selector=(1,2)) -> str:
    
     log.debug("adding input files")
     files.reverse()
-    # prog.append('plot \\')
-    #
-    selector = ":".join([str(i) for i in selector])
-    #selector = ":".join(selector)
+    columns = ":".join([str(i) for i in columns])
     while files:
         f = files.pop()
         split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
         title =  " ".join([split_name[i] for i in distinct_indices]).removesuffix(suffix)
-        plots.append({"file": f, "using": selector, "with_": "lines", "title": title})
+        plots.append({"file": f, "using": columns, "with_": "lines", "title": title})
 
     cmds.add(rack.gnuplot.GnuPlot.plot.plot( *plots ))
     #print(cmds.to_string("\n"))
@@ -612,12 +628,6 @@ def run(args):
         # for (k,v) in variables.items():
         #    print ('\t{"'+k+'":"'+v+'"}')
 
-        
-    # Again?
-    #if args.config:
-    #    vars(args).update(rack.config.read(args.config))
-            
-    #rack.config.handle_parameters(args)
     if args.export_config:
         conf = vars(args)
         conf['variables'] = variables
@@ -628,6 +638,8 @@ def run(args):
         log.warning("No inputs?")
         # print help
         exit(0)
+
+        # debug mode: Check if files exist? (esp. for gnuplot)
 
     if args.gnuplot:
         args.gnuplot_output = args.gnuplot # _output or args.gnuplot.replace('.gnu', '.png')
@@ -640,37 +652,38 @@ def run(args):
             "output": f'"{args.gnuplot_output or "out.png"}"',
         }
         
-        cols = derive_gnuplot_columns(args, conf)
+        cols = derive_gnuplot_columns(args.gnuplot_columns, args.LINE, conf)
+        col_indices, col_labels = zip(*cols)
+        log.info(f"Using gnuplot columns: {col_indices} with labels {col_labels}")
+        conf["xlabel"] = col_labels[0].replace('_',' ')
+        conf["ylabel"] = col_labels[1].replace('_',' ')
+        cols = col_indices
 
-        lines = create_gnuplot_script(args.INFILE, conf, selector=cols)
+        lines = create_gnuplot_script(args.INFILE, conf, columns=cols)
 
-        log.info(f"wrote GnuPlot script: {args.gnuplot}")
         if not args.gnuplot_script:
             pass
         elif args.gnuplot_script == '-':
             for i in lines:
                 print(i)
         else:
+            log.info(f"writing GnuPlot script: {args.gnuplot_script}")
             with open(args.gnuplot_script, 'w') as f:
                 for i in lines:
                     print(i, file=f)
         
-        input=";\n  ".join(lines)
-        log.info(f"Running GnuPlot with script:\n{input}")
 
         if args.gnuplot:
-            result = subprocess.run(["gnuplot"], input=input, text=True, capture_output=True)
+            script=";\n  ".join(lines)
+            log.info(f"Running GnuPlot with script:\n{script}")
+            result = subprocess.run(["gnuplot"], input=script, text=True, capture_output=True)
 
             if result.returncode != 0:
                 log.error("GnuPlot execution failed")
                 print("STDOUT:", result.stdout)
                 print("STDERR:", result.stderr)
                 exit(1)
-
-            
-            #result = subprocess.run(cmd, stdout=subprocess.PIPE)
-            #result = result.stdout.decode('utf-8')
-            log.info(f"ran GnuPlot, output: {args.gnuplot_output}")
+            log.info(f"GnuPlot output: {args.gnuplot_output}")
 
         exit(0)
 
