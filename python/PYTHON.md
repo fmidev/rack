@@ -48,7 +48,7 @@ python3 $SRC/rack/statistics.py --gnuplot-columns TIME_START_REL,ELANGLE --LINE 
 gnuplot fin.png 
 ```
 
-![Example](docs/cover/rack-cover.png)
+![Visualisation of three radars](stats-kiira.png)
 
 
 
