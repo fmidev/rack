@@ -535,6 +535,92 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
     return cols_result
     #return tuple(cols)
 
+class TitleMagic:
+    """ Automagically derive distinct and shared parts of filenames for titles.
+    Split file paths by standard directory separator '/' and filename segment separator SEPARATOR
+    A list of lists: each sublist contains parts of one filename
+    """
+    distinct_indices = []
+    shared_indices   = []
+    shared_keys = []
+    SEPARATOR='_'
+
+    def __init__(self, files: list, separator: str = '_'):
+        # Automagically derive distinct and shared parts of filenames for titles.
+        # Split file paths by standard directory separator '/' and filename segment separator SEPARATOR
+        # A list of lists: each sublist contains parts of one filename
+        self.SEPARATOR=separator
+        split_names = [self.split_filepath(f) for f in files]   
+        # split_names = [re.split(f'[/|{self.SEPARATOR}]', f) for f in files]
+        # x contains now e.g. [['data-acc', '201703061200', 'radar.polar.fiuta.h5'], [...], ...]
+        # x = list(zip(*split_names))  
+        # log.warning(x)
+        for i,values in enumerate(zip(*split_names)):
+            # log.warning(f"i={i} values={values} set={set(values)} len={len(set(values))}")
+            if len(set(values)) == 1:  # all same
+                self.shared_indices.append(i)
+                self.shared_keys.append(values[0])
+            else:
+                self.distinct_indices.append(i)
+
+    def split_filepath(self, filepath: str) -> list:
+        """ Split filepath into parts by '/' and SEPARATOR """
+        # re.split(f'[/|{self.SEPARATOR}]', f)
+        return filepath.replace('/',self.SEPARATOR).split(self.SEPARATOR)
+
+    def get_title(self) -> str:
+        return " ".join(self.shared_keys)
+
+    def get_distinct_keys(self, filepath: str) -> list:
+        keys = self.split_filepath(filepath) 
+        return [keys[i] for i in self.distinct_indices]
+        
+
+
+    def get_plot_title(self, filepath_keys: list) -> str:
+        
+        if not type(filepath_keys) is list:
+            filepath_keys = self.split_filepath(str(filepath_keys))
+        
+        return " ".join(filepath_keys) #.removesuffix(suffix)
+        
+
+    def get_line_style(self, filepath_keys:list, default: str = "lines") -> str:
+        
+        if not type(filepath_keys) is list:
+            filepath_keys = self.split_filepath(str(filepath_keys))
+
+        linestyle_dict = {
+            #'dashed': 'dashed',
+            'DUAL-POL': 'linespoints',
+            #'points': 'points',
+            'SINGLE': 'lines lw 4',
+        }
+
+        for k in filepath_keys:
+            if k in linestyle_dict:
+                return linestyle_dict[k]    
+
+        return default
+
+    def get_color(self, filepath_keys:list, default: str = "") -> str:
+        
+        if not type(filepath_keys) is list:
+            filepath_keys = self.split_filepath(str(filepath_keys))
+
+        color_dict = {
+            #'dashed': 'dashed',
+            'fiika': 'lt rgb "red"',
+            'fikor': 'lt rgb "brown"',        
+            'fiuta': 'lt rgb "blue"'
+            }
+
+        for k in filepath_keys:
+            if k in color_dict:
+                return color_dict[k]    
+
+        return default
+
 
 
 
@@ -566,29 +652,9 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
    
     suffix = pathlib.Path(files[0]).suffix
    
-    # Automagically derive distinct and shared parts of filenames for titles.
-    # Split file paths by standard directory separator '/' and filename segment separator SEPARATOR
-    # A list of lists: each sublist contains parts of one filename
-    split_names = [re.split(f'[/|{SEPARATOR}]', f) for f in files]
-    # x contains now e.g. [['data-acc', '201703061200', 'radar.polar.fiuta.h5'], [...], ...]
-    # x = list(zip(*split_names))  
-    # log.warning(x)
-    distinct_indices = []
-    shared_indices   = []
-    shared_keys = []
-    for i,values in enumerate(zip(*split_names)):
-        # log.warning(f"i={i} values={values} set={set(values)} len={len(set(values))}")
-        if len(set(values)) == 1:  # all same
-            shared_indices.append(i)
-            shared_keys.append(values[0])
-        else:
-            distinct_indices.append(i)
-    # log.debug(f"distinct_indices: {distinct_indices}")
-    # log.debug(f"shared_indices:   {shared_indices}")
-    log.info(f"generating title form shared_keys: {shared_keys}")
-    title = " ".join(shared_keys)
-    conf['title'] = f'"{title}"'
-
+    tm = TitleMagic(files, separator=SEPARATOR)
+    conf['title'] = tm.get_title()
+    
     log.debug("add configuration")
 
     cmds = rack.gnuplot.GnuPlotCommandSequence()
@@ -598,7 +664,6 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
         func = getattr(rack.gnuplot.GnuPlot.set, k)   # resolves GnuPlot.set.format_x
         cmds.add(func(v))
 
-
     plots = []
    
     log.debug("adding input files")
@@ -606,10 +671,12 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     columns = ":".join([str(i) for i in columns])
     while files:
         f = files.pop()
-        split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
-        distinct_keys = [split_name[i] for i in distinct_indices]
-        title =  " ".join(distinct_keys).removesuffix(suffix)
-        plots.append({"file": f, "using": columns, "with_": "lines", "title": title})
+        filepath_keys = tm.get_distinct_keys(f) 
+        plot_title = tm.get_plot_title(filepath_keys).removesuffix(suffix)
+        plot_style = tm.get_line_style(filepath_keys, default="lines")
+        plot_style = plot_style + " " + tm.get_color(filepath_keys, default="")
+        # log.debug(f"file: {f} title: '{plot_title}' style: '{plot_style}' columns: {columns}")
+        plots.append({"file": f, "using": columns, "with_": plot_style, "title": plot_title})
 
     cmds.add(rack.gnuplot.GnuPlot.plot.plot( *plots ))
     #print(cmds.to_string("\n"))
