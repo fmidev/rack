@@ -93,86 +93,106 @@ class Var(Token):
         return str(self.apply_filters(value))
 
 
-# --- tokenizer ---
-def parse_template(template: str):
-    """Split template into tokens (Literals and Vars."""
+
+class Stringlet:
+    
     tokens = []
-    pos = 0
-    for m in re.finditer(r"\{([^{}]+)\}", template):
-        # literal text before the match
-        if m.start() > pos:
-            tokens.append(Literal(template[pos:m.start()]))
-        expr = m.group(1)
-        parts = [p.strip() for p in expr.split("|")]
-        key, filters = parts[0], parts[1:]
-        tokens.append(Var(key, filters))
-        pos = m.end()
-    # trailing literal
-    if pos < len(template):
-        tokens.append(Literal(template[pos:]))
-    return tokens
 
-def get_vars(tokens):
-    """Extract variables (key,filters) from token list."""
-    keys = [k for k in tokens if isinstance(k, Var)]
-    return keys  
-
-def get_var_keys(tokens: list):
-    """Extract variable keys (without filters) from token list."""
-    keys = [v.key for v in get_vars(tokens)]
-    return keys  
-
-def get_index(key: str, tokens: list, offset: int = 0) -> int:
-    """
-    Resolve a column specifier (name or number) to a Var index.
-
-    key:  "humidity" or "3"
-    tokens: list of Literal / Var objects
-    offset: optional offset to add to the result, if spec was a string index
-
-    Returns integer index (1-based, like column numbering),
-    or raises KeyError / ValueError if not found.
-    """
-    # First, collect Vars only
-    vars_only = get_vars(tokens) #[t for t in tokens if isinstance(t, Var)]
-
-    # Try numeric spec (1-based)
-    r = range(0, len(vars_only))
-
-    if key.isdigit():
-        idx = int(key)
-        if r.start < idx <= r.stop:
-            return idx
-        raise ValueError(f"Column index {idx} out of range ({r})")
-        #raise ValueError(f"Column index {idx} out of range (1..{len(vars_only)})")  
-
-    # Try name lookup
-    for i, var in enumerate(vars_only, start=0):
-        if var.key == key:
-            return i+offset #
-
-    raise KeyError(f"No column named '{key}' found")
-
-
-# --- formatter ---
-def render_template(template: str, data: dict):
-    """Render parsed template using given data."""
-    return tokens_tostring(parse_template(template), data)
-
-def tokens_tostring(tokens: list, data: dict):
-    """Render parsed template using given data."""
-    return "".join(t.resolve(data) for t in tokens)
-
-
-    """
-    parts = []
-    for t in parse_template(template):
-        if isinstance(t, Stringlet):
-            parts.append(t.resolve(data))
+    def __init__(self, template: str = ""):
+        if template:
+            self.parse_template(template)
         else:
-            parts.append(t)
-    return "".join(parts)
-    """ 
+            self.tokens = []
+    
+    def __repr__(self):
+        return f"Stringlet({self.tokens!r})"
+    
+    def __str__(self):
+        return "".join(str(t) for t in self.tokens)
+
+    def string(self, data: dict=None) -> str:
+        """Render parsed template using given data."""
+        if not self.tokens:
+            return ""
+        elif data is None:
+            return self.__str__()
+        else:
+            return "".join(t.resolve(data) for t in self.tokens)
+
+
+    # --- tokenizer ---
+    def parse_template(self, template: str):
+        """Split template into tokens (Literals and Vars."""
+        self.tokens = []
+        pos = 0
+        for m in re.finditer(r"\{([^{}]+)\}", template):
+            # literal text before the match
+            if m.start() > pos:
+                self.tokens.append(Literal(template[pos:m.start()]))
+            expr = m.group(1)
+            parts = [p.strip() for p in expr.split("|")]
+            key, filters = parts[0], parts[1:]
+            self.tokens.append(Var(key, filters))
+            pos = m.end()
+        # trailing literal
+        if pos < len(template):
+            self.tokens.append(Literal(template[pos:]))
+        return self.tokens
+
+    def get_vars(self):
+        """Extract variables (key,filters) from token list."""
+        keys = [k for k in self.tokens if isinstance(k, Var)]
+        return keys  
+
+    def get_var_keys(self): #tokens: list):
+        """Extract variable keys (without filters) from token list."""
+        keys = [v.key for v in self.get_vars(self.tokens)]
+        return keys  
+
+    def get_index(self, key: str, offset: int = 0) -> int:
+        """
+        Resolve a column specifier (name or number) to a Var index.
+
+        key:  "humidity" or "3"
+        tokens: list of Literal / Var objects
+        offset: optional offset to add to the result, if spec was a string index
+
+        Returns integer index (1-based, like column numbering),
+        or raises KeyError / ValueError if not found.
+        """
+        # First, collect Vars only
+        vars_only = self.get_vars() #[t for t in tokens if isinstance(t, Var)]
+
+        # Try numeric spec (1-based)
+        r = range(0, len(vars_only))
+
+        if key.isdigit():
+            idx = int(key)
+            if r.start < idx <= r.stop:
+                return idx
+            raise ValueError(f"Column index {idx} out of range ({r})")
+            #raise ValueError(f"Column index {idx} out of range (1..{len(vars_only)})")  
+
+        # Try name lookup
+        for i, var in enumerate(vars_only, start=0):
+            if var.key == key:
+                return i+offset #
+
+        raise KeyError(f"No column named '{key}' found")
+
+
+
+
+
+    # --- formatter ---
+def render_template(template: str, data: dict) -> str:
+    """Render parsed template using given data."""
+    stringlet = Stringlet()
+    tokens = stringlet.parse_template(template) 
+    return stringlet.tokens_tostring(data)
+    #return tokens_tostring(parse_template(template), data)
+
+
 
 def main():
 
@@ -199,11 +219,12 @@ def main():
         "text": "hello world",
     }
 
-    tokens = parse_template(args.template)
+    stringlet = Stringlet()
+    tokens = stringlet.parse_template(args.template)
     
     logger.info(f"TEMPLATE: {args.template}")
     logger.info(f"TOKENS:  {tokens} ")
-    vars = get_vars(tokens)
+    vars = stringlet.get_vars(tokens)
     logger.info(f"VARS: {vars} ") 
     rendered = render_template(args.template, data)
     logger.info(f"RENDERED: {rendered} ")

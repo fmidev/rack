@@ -148,7 +148,7 @@ def build_parser():
 #    return defaultdict(nested_dict)
 # my_dict = nested_dict()
 
-my_dict = dict()
+my_stats = dict()
 
 
 
@@ -401,7 +401,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     
     log = logger.getChild("write_metadata")
 
-    log.info("start")
+    log.debug("start")
     log.info(f"outdir_syntax:  {dir_syntax}")
     log.info(f"outfile_syntax: {file_syntax}")    
             
@@ -411,9 +411,11 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     outfile = sys.stdout
     STDOUT = (file_syntax == '-')
 
-    line_tokens = rack.stringlet.parse_template(line_syntax)
-    file_tokens = rack.stringlet.parse_template(file_syntax)
-    dir_tokens  = rack.stringlet.parse_template(dir_syntax)
+    line_tokens = rack.stringlet.Stringlet(line_syntax)
+    file_tokens = rack.stringlet.Stringlet(file_syntax)
+    dir_tokens  = rack.stringlet.Stringlet(dir_syntax)
+
+    log.warning(f"line_tokens: {line_tokens}")
 
     
     def write_header(file_path):
@@ -421,8 +423,8 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         return f"# {line_syntax}"
     fileManager = rack.files.SmartFileManager(write_header)
     
-    for info in my_dict.values():
-        #for dataset,info in my_dict.items():
+    for info in my_stats.values():
+        # for dataset,info in my_dict.items():
 
         # Automatic additional attributes
         if 'LDR' in info['QUANTITY']:
@@ -433,28 +435,32 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
             info['POL'] = 'SINGLE'
 
         # Reduce to single value, if both are same: str -> set -> str
-        info['PRF'] = '-'.join(set(info['PRF'].split('-')))
+        prf = [int(i) for i in set(info['PRF'].split('-'))]
+        prf.sort()
+        prf = [str(i) for i in prf]
+        info['PRF'] = '-'.join(prf)
 
         # list -> str
         info['QUANTITY'] = '-'.join(info['QUANTITY'])
 
-        line = rack.stringlet.tokens_tostring(line_tokens, info).strip() 
+        line = line_tokens.string(info).strip()
+        # line = rack.stringlet.string(line_tokens, info).strip() 
         
         if (STDOUT):
             print (line, file = outfile) # print adds newline
         else:
-            outdir = rack.stringlet.tokens_tostring(dir_tokens, info)
+            outdir = dir_tokens.string(info) #rack.stringlet.string(dir_tokens, info)
             if outdir not in outdirs:
                 log.debug(f"ensuring outdir: {outdir}")
                 os.makedirs(outdir,exist_ok=True) # mode=0o777
                 outdirs.add(outdir)
 
-            outfile = rack.stringlet.tokens_tostring(file_tokens, info)
-
+            # outfile = rack.stringlet.string(file_tokens, info)
+            outfile = file_tokens.string(info) #rack.stringlet.string(file_tokens, info) 
             fileManager.write(f'{outdir}/{outfile}', f'{line}\n')
-
             
         log.debug(info)
+
 
     open_files = fileManager.get_filenames()        
     if (open_files):
@@ -466,6 +472,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
             for f in open_files:
                 log.debug(f" - {f}")    
         fileManager.close() # Actually redundant here, but for clarity
+
 
 # Heavy but handy 
 def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tuple:
@@ -493,12 +500,12 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
         if line_syntax: 
 
             # Split line syntax and get column indices
-            tokens = rack.stringlet.parse_template(line_syntax)
+            tokens = rack.stringlet.Stringlet(line_syntax)
             
             # Resolve to indices
-            cols = [rack.stringlet.get_index(i, tokens, +1) for i in cols]
+            cols = [tokens.get_index(i, +1) for i in cols]
         
-            var_tokens = rack.stringlet.get_vars(tokens)
+            var_tokens = tokens.get_vars()
             log.debug(f"Variable stringlet: {var_tokens} ")
             # var_keys = rack.stringlet.get_var_keys(tokens)
             # log.info(f"VARS keys: {var_keys} ")
@@ -559,18 +566,27 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
    
     suffix = pathlib.Path(files[0]).suffix
    
-    # Automagically derive distinct and shared parts of filenames for titles!
-    # re.split(f'[/|{SEP}]', tiedosto.strip())
-    # split_names = [f.replace('/',SEPARATOR).split(SEPARATOR) for f in files]
+    # Automagically derive distinct and shared parts of filenames for titles.
     # Split file paths by standard directory separator '/' and filename segment separator SEPARATOR
+    # A list of lists: each sublist contains parts of one filename
     split_names = [re.split(f'[/|{SEPARATOR}]', f) for f in files]
-    distinct_indices = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) > 1]
-    shared_indices   = [i for i,values in enumerate(zip(*split_names)) if len(set(values)) == 1]
-
-
-    # Take a "random" filename and pick common parts
-    split_name = files[0].replace('/', SEPARATOR).split(SEPARATOR)
-    title = " ".join([split_name[i] for i in shared_indices])
+    # x contains now e.g. [['data-acc', '201703061200', 'radar.polar.fiuta.h5'], [...], ...]
+    # x = list(zip(*split_names))  
+    # log.warning(x)
+    distinct_indices = []
+    shared_indices   = []
+    shared_keys = []
+    for i,values in enumerate(zip(*split_names)):
+        # log.warning(f"i={i} values={values} set={set(values)} len={len(set(values))}")
+        if len(set(values)) == 1:  # all same
+            shared_indices.append(i)
+            shared_keys.append(values[0])
+        else:
+            distinct_indices.append(i)
+    # log.debug(f"distinct_indices: {distinct_indices}")
+    # log.debug(f"shared_indices:   {shared_indices}")
+    log.info(f"generating title form shared_keys: {shared_keys}")
+    title = " ".join(shared_keys)
     conf['title'] = f'"{title}"'
 
     log.debug("add configuration")
@@ -591,7 +607,8 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     while files:
         f = files.pop()
         split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
-        title =  " ".join([split_name[i] for i in distinct_indices]).removesuffix(suffix)
+        distinct_keys = [split_name[i] for i in distinct_indices]
+        title =  " ".join(distinct_keys).removesuffix(suffix)
         plots.append({"file": f, "using": columns, "with_": "lines", "title": title})
 
     cmds.add(rack.gnuplot.GnuPlot.plot.plot( *plots ))
@@ -646,6 +663,10 @@ def run(args):
 
         # debug mode: Check if files exist? (esp. for gnuplot)
 
+    if args.LINE:
+        args.LINE.replace(r'\t','\t')  #  
+
+
     if args.gnuplot:
         args.gnuplot_output = args.gnuplot # _output or args.gnuplot.replace('.gnu', '.png')
         # args.gnuplot_execute = True ?
@@ -694,10 +715,10 @@ def run(args):
 
         
 
-    extract_metadata(args.INFILE, variables, my_dict)
+    extract_metadata(args.INFILE, variables, my_stats)
 
     if args.write:
-        write_metadata(my_dict, args.OUTDIR, args.OUTFILE, args.LINE)
+        write_metadata(my_stats, args.OUTDIR, args.OUTFILE, args.LINE)
 
 
     
