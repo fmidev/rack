@@ -28,22 +28,22 @@ In the following examples, it is assumed that environment variable `$PYTHONPATH`
 .
 ```bash
 # Daywise file of for sweep (identified by dataset<N>):
-python3 -m rack.statistics  --OUTDIR './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --OUTFILE '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
+python3 -m rack.statistics  --outdir_syntax './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --outfile_syntax '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
 
 # Files for each volume, separated by polarization modes and pulse repetition modes:
-python3 -m rack.statistics  --OUTDIR './stats1/{SITE}'  --OUTFILE '{TIMESTAMP}_{POL}_{PRF}.txt' 
+python3 -m rack.statistics  --outdir_syntax './stats1/{SITE}'  --outfile_syntax '{TIMESTAMP}_{POL}_{PRF}.txt' 
 ```
 Produces:
 ```
 Test
 ```
 
-It is useful to define data row syntax as a environment variable (like `$LINE`) because collection and illustration stage rely on a same order of data variables.
+It is useful to define data row syntax as a environment variable (like `$line_syntax`) because collection and illustration stage rely on a same order of data variables.
 ```bash
 
 LINE='{TIME_START|%Y-%m-%dT%H:%M} {TIME_START_REL|%s} {ELANGLE} {TIME_END_REL|%s}  # {QUANTITY}'
 
-python3 -m rack.statistics --LINE "$LINE"  --OUTFILE '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
+python3 -m rack.statistics --line_syntax "$LINE"  --outfile_syntax '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
 python3 -m rack.statistics --gnuplot-columns TIME_START_REL,ELANGLE --LINE "$LINE" --gnuplot fin.png  statistics/fi???/??min/*.txt
 
 gnuplot fin.png 

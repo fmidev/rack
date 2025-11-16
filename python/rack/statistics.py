@@ -49,28 +49,28 @@ def build_parser():
 
     
     parser.add_argument(
-        '-D', "--OUTDIR",
+        '-D', "--outdir-syntax",
         type=str,
-        metavar="<dir_syntax>",
+        metavar="<syntax>",
         #default='./statistics/{SITE}/{TIME|%M}min/dataset{DATASET}',
         default='./statistics/{SITE}/{TIME|%M}min',
-        help="String syntax for output directories. See --list-variables and --variables",
+        help="String syntax for output directories. See --export-variables and --variables",
     )
 
     parser.add_argument(
-        '-F', "--OUTFILE",
+        '-F', "--outfile-syntax",
         type=str,
-        metavar="<filename_syntax>",
+        metavar="<syntax>",
         default='{SITECODE}_{POL}_{PRF}.txt',
-        help="String syntax for output files. See --list-variables and --variables",
+        help="String syntax for output files. See --export-variables and --variables",
     )
 
     parser.add_argument(
-        '-L', "--LINE",
+        '-L', "--line-syntax",
         type=str,
         metavar="<syntax>",
         default='{TIME} {TIME_START|%H:%M:%S} {ELANGLE} # {QUANTITY}',
-        help="Syntax for output lines. See --list-variables and --variables",
+        help="Syntax for output lines. See --export-variables and --variables",
     )
 
 
@@ -170,33 +170,27 @@ dt.datetime.strptime("2025-10-09","%Y-%m-%d")
 TIMEFORMAT='%Y-%m-%dT%H:%M:%S'
 
 # This are used and handled by the system
-"""
-variables_fixed = {
-    'SITECODE' : "${NOD}-${WMO}",
-    'TASK':  '${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}',
-    'START': '${what:startdate|%Y-%m-%d}T${what:starttime|%H:%M:%S}',
-    'END':   '${what:enddate|%Y-%m-%d}T${what:endtime|%H:%M:%S}',
-    'FILE':  "${inputBasename}",
-    'PRF'    : '${how:lowprf}-${how:highprf}',
-    'QUANTITY':'${what:quantity}',
-    #    'NOW':   "",
-}
-
-variables = {
-    'SITE'   : '${NOD}',
-    'TIMESTAMP': '${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}',
-    'ELANGLE': '${where:elangle|%05.2f}',
-    'GEOM'   : '${where:nbins}x${where:nrays}x${where:rscale}',
-    'POL' : 'AUTO', # UNSET
-    'LDR' : 'AUTO', # UNSET
-}
-"""
 
 variables_fixed = {
     "SITECODE" : {
         "desc": "Unique descriptor of the radar",
         "type": "string",
         "rack_expr": "${NOD}-${WMO}"
+    },
+    "SITE" : {
+        "desc": "Radar identifier NOD (5-letter)",
+        "type": "string",
+        "rack_expr": "${NOD}"
+    },
+    "COUNTRY" : {
+        "desc": "Country prefix (2-letter) of NOD code",
+        "type": "string",
+        "rack_expr": "${NOD|0:2}"
+    },
+    "SITE3" : {
+        "desc": "National radar identifier (3-letter, omitting 2-letter COUNTRY prefix)",
+        "type": "string",
+        "rack_expr": "${NOD|2:3}"
     },
     "TIME": {
         "desc": "Nominal time of measurement",
@@ -228,25 +222,20 @@ variables_fixed = {
         "type": "",
         "rack_expr": "${inputBasename}"
     },
-    "PRF" : {
-        "desc": "Pulse repetition frequency",
-        #"type": "",
-        "rack_expr": "${how:lowprf}-${how:highprf}"
-    },
     "QUANTITY": {
         "desc": "Quantity",
         "type": "list",
         "rack_expr": "${what:quantity}"
     },
     "POL" : {
-        "desc": "",
+        "desc": "Polarization mode ('SINGLE'|'DUAL-POL|'LDR')",
         "type": "automatic",
-        "rack_expr": "AUTO",
+        "rack_expr": "AUTOMATIC",
     }, 
-    "LDR" : {
-        "desc": "",
-        "type": "automatic",
-        "rack_expr": "AUTO",
+    "PRF" : {
+        "desc": "Pulse repetition frequency",
+        #"type": "",
+        "rack_expr": "${how:lowprf}-${how:highprf}"
     },
     "DATASET": {
         "desc": "index in 'dataset<i>' group ",
@@ -278,13 +267,7 @@ variables = {
     "POL" : {
         "desc": "",
         "type": "automatic",
-        "rack_expr": "AUTO",
     }, 
-    "LDR" : {
-        "desc": "",
-        "type": "automatic",
-        "rack_expr": "AUTO",
-    }
 }
 
 """
@@ -310,7 +293,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     # DEBUG
     #sfmt = SmartFormatter()
 
-    var_map = [(k,v['rack_expr']) for (k,v) in variables.items()]
+    var_map = [(k,v.get('rack_expr','AUTO')) for (k,v) in variables.items()]
     #log.debug(var_map)
     log.info(var_map)
 
@@ -339,7 +322,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
         # Note: several lines, for each data<N> group!
 
         m = None
-        for i in result.split(): # split by NEWLINE
+        for i in result.split(): # split by NEWline_syntax
 
             # Rejoin
             line = i.split(SEPARATOR)
@@ -484,9 +467,10 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
 
     if not col_indices:
 
-        # log.info("No --gnuplot_columns given, trying to derive from --LINE syntax")
+        # log.info("No --gnuplot_columns given, trying to derive from --line_syntax syntax")
         # Default columns: assume second col is some kiond of time, third is value (ELANGLE)
-        return [(2,"TIME"), (3,"VALUE")] 
+        # return [(2,"TIME"), (3,"VALUE")] 
+        return [(2,3), ("TIME","VALUE")] 
     
     else:
     
@@ -532,8 +516,8 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
 
             log.debug(f"experimental auto conf: '{conf}' ")
             
-    return cols_result
-    #return tuple(cols)
+    return zip(*cols_result)
+    
 
 class TitleMagic:
     """ Automagically derive distinct and shared parts of filenames for titles.
@@ -571,9 +555,13 @@ class TitleMagic:
     def get_title(self) -> str:
         return " ".join(self.shared_keys)
 
-    def get_distinct_keys(self, filepath: str) -> list:
-        keys = self.split_filepath(filepath) 
-        return [keys[i] for i in self.distinct_indices]
+    def get_distinct_keys(self, filepath_keys: list) -> list:
+        
+        if not type(filepath_keys) is list:
+            filepath_keys = self.split_filepath(str(filepath_keys))
+        
+        #keys = self.split_filepath(filepath) 
+        return [filepath_keys[i] for i in self.distinct_indices]
         
 
 
@@ -603,10 +591,16 @@ class TitleMagic:
 
         return default
 
+    # site_syntax = re.compile(r'fiika|fikor|fiuta')
+    site_syntax = re.compile(r'^(de|dk|ee|fi|no|se)([a-z]{3})$')
+
     def get_color(self, filepath_keys:list, default: str = "") -> str:
         
+        log = logger.getChild("TitleMagic.get_color")
+
         if not type(filepath_keys) is list:
             filepath_keys = self.split_filepath(str(filepath_keys))
+
 
         color_dict = {
             #'dashed': 'dashed',
@@ -614,6 +608,27 @@ class TitleMagic:
             'fikor': 'lt rgb "brown"',        
             'fiuta': 'lt rgb "blue"'
             }
+
+        color_dict_nms = {
+            #'dashed': 'dashed',
+            'dk': 'lt rgb "brown"',
+            'ee': 'lt rgb "black"',
+            'fi': 'lt rgb "blue"',
+            'no': 'lt rgb "red"',        
+            'se': 'lt rgb "green"',
+        }
+
+        for k in filepath_keys:
+            m =  self.site_syntax.match(k)
+            if m:
+                log.info(f"matched site code: {m.group(0)}")        
+                nms_code  = m.group(1)
+                if nms_code in color_dict_nms:
+                    return color_dict_nms[nms_code] 
+                site_code = m.group(0)
+                if site_code in color_dict:
+                    return color_dict[site_code]    
+
 
         for k in filepath_keys:
             if k in color_dict:
@@ -664,21 +679,21 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
         func = getattr(rack.gnuplot.GnuPlot.set, k)   # resolves GnuPlot.set.format_x
         cmds.add(func(v))
 
-    plots = []
    
-    log.debug("adding input files")
-    files.reverse()
     columns = ":".join([str(i) for i in columns])
-    while files:
-        f = files.pop()
-        filepath_keys = tm.get_distinct_keys(f) 
-        plot_title = tm.get_plot_title(filepath_keys).removesuffix(suffix)
-        plot_style = tm.get_line_style(filepath_keys, default="lines")
-        plot_style = plot_style + " " + tm.get_color(filepath_keys, default="")
+    log.debug(f"using columns: {columns}")
+    plots = []
+    log.debug("add plot command for each input file")
+    for f in files:    
+        filepath_keys = tm.split_filepath(f)
+        distinct_keys = tm.get_distinct_keys(filepath_keys) 
+        plot_title = tm.get_plot_title(distinct_keys).removesuffix(suffix)
+        plot_style = tm.get_line_style(distinct_keys, default="lines")
+        plot_style = plot_style + " " + tm.get_color(distinct_keys, default="")
         # log.debug(f"file: {f} title: '{plot_title}' style: '{plot_style}' columns: {columns}")
         plots.append({"file": f, "using": columns, "with_": plot_style, "title": plot_title})
 
-    cmds.add(rack.gnuplot.GnuPlot.plot.plot( *plots ))
+    cmds.add(rack.gnuplot.GnuPlot.plot.plot(*plots))
     #print(cmds.to_string("\n"))
     return cmds.to_list()
 
@@ -730,8 +745,8 @@ def run(args):
 
         # debug mode: Check if files exist? (esp. for gnuplot)
 
-    if args.LINE:
-        args.LINE.replace(r'\t','\t')  #  
+    if args.line_syntax:
+        args.line_syntax.replace(r'\t','\t')  #  
 
 
     if args.gnuplot:
@@ -745,14 +760,14 @@ def run(args):
             "output": f'"{args.gnuplot_output or "out.png"}"',
         }
         
-        cols = derive_gnuplot_columns(args.gnuplot_columns, args.LINE, conf)
-        col_indices, col_labels = zip(*cols)
+        col_indices, col_labels = derive_gnuplot_columns(args.gnuplot_columns, args.line_syntax, conf)
+        # = zip(*cols)
         log.info(f"Using gnuplot columns: {col_indices} with labels {col_labels}")
         conf["xlabel"] = col_labels[0].replace('_',' ')
         conf["ylabel"] = col_labels[1].replace('_',' ')
-        cols = col_indices
+        #cols = col_indices
 
-        lines = create_gnuplot_script(args.INFILE, conf, columns=cols)
+        lines = create_gnuplot_script(args.INFILE, conf, columns=col_indices)
 
         if not args.gnuplot_script:
             pass
@@ -785,7 +800,7 @@ def run(args):
     extract_metadata(args.INFILE, variables, my_stats)
 
     if args.write:
-        write_metadata(my_stats, args.OUTDIR, args.OUTFILE, args.LINE)
+        write_metadata(my_stats, args.outdir_syntax, args.outfile_syntax, args.line_syntax)
 
 
     
