@@ -233,9 +233,18 @@ variables_fixed = {
         "rack_expr": "AUTOMATIC",
     }, 
     "PRF" : {
+        "desc": "Pulse repetition mode (1PRF or 2PRF)",
+    },
+    "PRF_LO" : {
         "desc": "Pulse repetition frequency",
-        #"type": "",
-        "rack_expr": "${how:lowprf}-${how:highprf}"
+        "rack_expr": "${how:lowprf}"
+    },
+    "PRF_HI" : {
+        "desc": "Pulse repetition frequency (higher)",
+        "rack_expr": "${how:highprf}"
+    },
+    "PRFS" : {
+        "desc": "All the pulse repetition frequencies",
     },
     "DATASET": {
         "desc": "index in 'dataset<i>' group ",
@@ -270,13 +279,6 @@ variables = {
     }, 
 }
 
-"""
-    "TIMESTAMP": {
-        "desc": "",
-        "type": "",
-        "rack_expr": "${what:date|%Y-%m-%d}T${what:time|%H:%M:%S}"
-    },
-"""
 
 
 
@@ -371,7 +373,18 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             QUANTITY = info.pop('QUANTITY')
             m.update(info)            
             m['QUANTITY'].append(QUANTITY)
-            
+
+            # Reduce to single value, if both are same: str -> set -> str
+            prfs = set()
+            for i in ["PRF_LO", "PRF_HI"]:
+                prf = m.get(i, "")
+                if (prf):
+                    prfs.add(int(prf))
+
+            prfs = list(prfs)
+            prfs.sort()
+            m['PRF'] = f"{len(prfs)}PRF"            
+            m['PRFS'] = prfs
             log.debug(m)
 
     log.debug("end")
@@ -416,30 +429,9 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
             info['POL'] = '2POL'
         else:
             info['POL'] = '1POL'
-
-        # Reduce to single value, if both are same: str -> set -> str
-        # prf = set(info['PRF'].split('-')) # [i for i in set(info['PRF'].split('-'))]
-        prf = info['PRF']
-        if (prf != '-'):
-            prf = set(prf.split('-')) # [i for i in set(info['PRF'].split('-'))]
-            #log.warning(f"prf = {prf}")
-            prf = [int(i) for i in prf]
-            prf.sort()
-            prf = [str(i) for i in prf]
-            if len(prf) == 1:
-                info['PRF'] = '1PRF'
-            elif len(prf) == 2:
-                info['PRF'] = '2PRF'
-            else:
-                info['PRF'] = 'xPRF'
-
-            info['PRFS'] = '-'.join(prf)
-        else:
-            info['PRF']  = "?PRF"
-            info['PRFS'] = "0"
-
+            
         # list -> str
-        info['QUANTITY'] = '-'.join(info['QUANTITY'])
+        # info['QUANTITY'] = '-'.join(info['QUANTITY'])
 
         line = line_tokens.string(info).strip()
         # line = rack.stringlet.string(line_tokens, info).strip() 
@@ -720,7 +712,7 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
             k = distinct_keys[1]
             if k not in linetype_keys:
                 linetype_keys.append(k)
-                log.info(f"added linetype key: {k}")   
+                log.debug(f"added linetype key: {k}")   
             linetype = "with linespoints linetype " + str(linetype_keys.index(k)+1)
 
 
@@ -729,10 +721,11 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
             k = distinct_keys[0]
             if k not in linecolor_keys:
                 linecolor_keys.append(k)
-                log.info(f"added linecolor key: {k}")
+                log.debug(f"added linecolor key: {k}")
             linecolor = "linecolor " + str(linecolor_keys.index(k)+1)
 
-        plot_title = tm.get_plot_title(distinct_keys).removesuffix(suffix)
+        plot_title = tm.get_plot_title(distinct_keys)  # only after 3.9: removesuffix(suffix)
+        plot_title = re.sub(f'\.{suffix}$', '', plot_title)
         #plot_style = tm.get_line_style(distinct_keys, default="lines")
         #plot_style = plot_style + " " + tm.get_color(distinct_keys, default="")
         #plot_style = f"{tm.get_line_style(distinct_keys, default='lines')} {linetype} {linecolor}".strip()

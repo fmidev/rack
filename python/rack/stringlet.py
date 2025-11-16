@@ -49,6 +49,13 @@ class Var(Token):
         return f"{self.key}{self.filters!r}"
 
     def apply_filters(self, value):
+
+        if (type(value) in {list,set}):
+            return ",".join(str(v) for v in value)
+        #if (type(value) is set):
+        #    return ",".join(value)
+
+
         """Apply chained filters to the value (same logic as before)."""
         for filt in self.filters:
             if not filt:
