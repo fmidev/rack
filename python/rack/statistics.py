@@ -487,7 +487,8 @@ def derive_gnuplot_columns(col_indices:str, line_syntax: str, conf: dict) -> tup
             tokens = rack.stringlet.Stringlet(line_syntax)
             
             # Resolve to indices
-            cols = [tokens.get_index(i, +1) for i in cols]
+            #cols = [tokens.get_index(i, +1) for i in cols]
+            cols = [tokens.get_index(i)+1 for i in cols]
         
             var_tokens = tokens.get_vars()
             log.debug(f"Variable stringlet: {var_tokens} ")
@@ -667,6 +668,7 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
    
     suffix = pathlib.Path(files[0]).suffix
    
+    # TODO: use outdir_syntax and outfile_syntax to derive title, line styles, colors, ...
     tm = TitleMagic(files, separator=SEPARATOR)
     conf['title'] = tm.get_title()
     
