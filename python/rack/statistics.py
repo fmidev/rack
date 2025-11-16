@@ -413,15 +413,30 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
         if 'LDR' in info['QUANTITY']:
             info['POL'] = 'LDR'
         elif set(info['QUANTITY']).intersection({'ZDR','RHOHV','KDP','PHIDP'}):
-            info['POL'] = 'DUAL-POL'
+            info['POL'] = '2POL'
         else:
-            info['POL'] = 'SINGLE'
+            info['POL'] = '1POL'
 
         # Reduce to single value, if both are same: str -> set -> str
-        prf = [int(i) for i in set(info['PRF'].split('-'))]
-        prf.sort()
-        prf = [str(i) for i in prf]
-        info['PRF'] = '-'.join(prf)
+        # prf = set(info['PRF'].split('-')) # [i for i in set(info['PRF'].split('-'))]
+        prf = info['PRF']
+        if (prf != '-'):
+            prf = set(prf.split('-')) # [i for i in set(info['PRF'].split('-'))]
+            #log.warning(f"prf = {prf}")
+            prf = [int(i) for i in prf]
+            prf.sort()
+            prf = [str(i) for i in prf]
+            if len(prf) == 1:
+                info['PRF'] = '1PRF'
+            elif len(prf) == 2:
+                info['PRF'] = '2PRF'
+            else:
+                info['PRF'] = 'xPRF'
+
+            info['PRFS'] = '-'.join(prf)
+        else:
+            info['PRF']  = "?PRF"
+            info['PRFS'] = "0"
 
         # list -> str
         info['QUANTITY'] = '-'.join(info['QUANTITY'])
@@ -531,12 +546,14 @@ class TitleMagic:
     SEPARATOR='_'
 
     def __init__(self, files: list, separator: str = '_'):
+
+        global logger
+        log = logger.getChild("TitleMagic")
         # Automagically derive distinct and shared parts of filenames for titles.
         # Split file paths by standard directory separator '/' and filename segment separator SEPARATOR
         # A list of lists: each sublist contains parts of one filename
         self.SEPARATOR=separator
         split_names = [self.split_filepath(f) for f in files]   
-        # split_names = [re.split(f'[/|{self.SEPARATOR}]', f) for f in files]
         # x contains now e.g. [['data-acc', '201703061200', 'radar.polar.fiuta.h5'], [...], ...]
         # x = list(zip(*split_names))  
         # log.warning(x)
@@ -547,6 +564,10 @@ class TitleMagic:
                 self.shared_keys.append(values[0])
             else:
                 self.distinct_indices.append(i)
+
+        log.info(f"distinct indices: {self.distinct_indices}")
+        log.info(f"shared indices:   {self.shared_indices}")
+        log.info(f"shared keys:      {self.shared_keys}")   
 
     def split_filepath(self, filepath: str) -> list:
         """ Split filepath into parts by '/' and SEPARATOR """
@@ -659,6 +680,7 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
         "title": '"Measured data (actual timestamp)"',
         "xlabel": '"Time"',
         "ylabel": '"Value"',
+        "key": "inside left top",
         #"using": '2:3',
     }
     conf.update(settings)
@@ -681,6 +703,9 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
         func = getattr(rack.gnuplot.GnuPlot.set, k)   # resolves GnuPlot.set.format_x
         cmds.add(func(v))
 
+    linetype_keys = []
+    linecolor_keys = []
+
    
     columns = ":".join([str(i) for i in columns])
     log.debug(f"using columns: {columns}")
@@ -689,14 +714,35 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     for f in files:    
         filepath_keys = tm.split_filepath(f)
         distinct_keys = tm.get_distinct_keys(filepath_keys) 
+   
+        linetype = "with lines"
+        if len(distinct_keys) >= 2:
+            k = distinct_keys[1]
+            if k not in linetype_keys:
+                linetype_keys.append(k)
+                log.info(f"added linetype key: {k}")   
+            linetype = "with linespoints linetype " + str(linetype_keys.index(k)+1)
+
+
+        linecolor = ""
+        if len (distinct_keys) >= 1:
+            k = distinct_keys[0]
+            if k not in linecolor_keys:
+                linecolor_keys.append(k)
+                log.info(f"added linecolor key: {k}")
+            linecolor = "linecolor " + str(linecolor_keys.index(k)+1)
+
         plot_title = tm.get_plot_title(distinct_keys).removesuffix(suffix)
-        plot_style = tm.get_line_style(distinct_keys, default="lines")
-        plot_style = plot_style + " " + tm.get_color(distinct_keys, default="")
+        #plot_style = tm.get_line_style(distinct_keys, default="lines")
+        #plot_style = plot_style + " " + tm.get_color(distinct_keys, default="")
+        #plot_style = f"{tm.get_line_style(distinct_keys, default='lines')} {linetype} {linecolor}".strip()
+        plot_style = f"{linetype} lw 3 {linecolor}".strip()
         # log.debug(f"file: {f} title: '{plot_title}' style: '{plot_style}' columns: {columns}")
-        plots.append({"file": f, "using": columns, "with_": plot_style, "title": plot_title})
+        #plots.append({"file": f, "using": columns, "with_": plot_style, "title": plot_title})
+        plots.append({"file": f, "using": columns, "style": plot_style, "title": plot_title})
 
     cmds.add(rack.gnuplot.GnuPlot.plot.plot(*plots))
-    #print(cmds.to_string("\n"))
+    # print(cmds.to_string("\n"))
     return cmds.to_list()
 
         
@@ -736,7 +782,7 @@ def run(args):
 
     if args.export_config:
         conf = vars(args)
-        conf['variables'] = variables
+        # conf['variables'] = variables
         rack.config.write(args.export_config, conf)
         exit (0) # OK?
     

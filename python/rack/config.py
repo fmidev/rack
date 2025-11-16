@@ -55,10 +55,18 @@ def write(filename, conf:dict, exclude=[]):
     conf_copy = {}
 
     for k,v in conf.items():
-        if k in {'config', 'export_config'}:
+        
+        if k in {'config'}:
             continue
+
+        if k.startswith('export_'): # command
+            continue
+
         if v is None:
             continue
+        
+        
+
         conf_copy[k] = v
 
     if (filename == "-") or (filename.lower() == "stdout"):

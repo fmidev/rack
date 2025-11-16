@@ -157,6 +157,10 @@ class GnuPlot:
             return GnuPlotCommand("set", label=text, **opts)
 
         @staticmethod
+        def key(text: str, **opts) -> GnuPlotCommand:
+            return GnuPlotCommand("set", key=text, **opts)
+
+        @staticmethod
         def multiplot(rows: int, cols: int, title: str = None) -> List[GnuPlotCommand]:
             cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
             if title:
@@ -184,7 +188,8 @@ class GnuPlot:
                 opts = {('with' if k == 'with_' else k): v for k, v in opts.items()}
                 parts = [expr]
                 for k, v in opts.items():
-                    parts.append(str(k))
+                    if k != "style":    
+                        parts.append(str(k))
                     parts.append(GnuPlotCommand.static_fmt(v, k))
                 return " ".join(parts)
 
