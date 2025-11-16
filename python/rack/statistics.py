@@ -725,7 +725,6 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
             linecolor = "linecolor " + str(linecolor_keys.index(k)+1)
 
         plot_title = tm.get_plot_title(distinct_keys)  # only after 3.9: removesuffix(suffix)
-        plot_title = re.sub(f'\.{suffix}$', '', plot_title)
         #plot_style = tm.get_line_style(distinct_keys, default="lines")
         #plot_style = plot_style + " " + tm.get_color(distinct_keys, default="")
         #plot_style = f"{tm.get_line_style(distinct_keys, default='lines')} {linetype} {linecolor}".strip()
@@ -826,6 +825,7 @@ def run(args):
             log.info(f"Executing 'gnuplot', output: {args.gnuplot_output}")
             log.debug(f"GnuPlot script:\n{script}")
             result = subprocess.run(["gnuplot"], input=script, text=True, capture_output=True)
+            #result = subprocess.run(["gnuplot"], input=script)
 
             if result.returncode != 0:
                 log.error("execution of 'gnuplot' failed")
