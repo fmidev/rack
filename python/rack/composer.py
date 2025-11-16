@@ -15,11 +15,16 @@ import re # GEOCONF filename-KEY extraction
 
 from types import SimpleNamespace
 
-import logging
-logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
-logger = logging.getLogger("rack.py") # change to __NAME__ etc
-logger.setLevel(logging.INFO)
+#import logging
+#logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
+#logger = logging.getLogger("rack.py") # change to __NAME__ etc
+#logger.setLevel(logging.INFO)
 
+import rack.command
+import rack.log
+
+logger = rack.log.logger.getChild(Path(__file__).stem)
+# logger.setLevel(logging.INFO)
 
 # Global
 default_tiledir  = 'tiles/'
@@ -324,7 +329,8 @@ def append_geoconf(cmdList:list, conf:dict):
     # consider argument-less options: val is None
     for (key,confkey) in geo_dict.items():
         if (confkey in conf):
-            cmdList.append("--{key} '{val}'".format(key=key, val=arg2str(conf[confkey])))
+            cmdList.add(rack.command.Command(f"--{key}", arg2str(conf[confkey])))
+            #cmdList.append("--{key} '{val}'".format(key=key, val=arg2str(conf[confkey])))
 
 
 
@@ -412,7 +418,7 @@ def handle_tilepath_defaults(dirpath, filepath) -> (str, str):
     else:
         if type(filepath) == list:
             if (len(filepath) > 1):
-                raise Exception('Multiple outputs not supported by SCHEME=TILE: ', filepath)
+                raise Exception(f'Multiple outputs not supported by SCHEME=TILE: ', filepath)
             filepath = filepath[0]
         filepath = Path(filepath)
         tiledir = str(filepath.parent)
@@ -439,11 +445,16 @@ def compose_command(args):
         args (argparse.Namespace): Parsed arguments from `build_parser()`
     """
 
+    global logger
+
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
 
 
-    cmdList = ['rack']
+    #cmdList = ['rack']
+    cmdList = rack.command.CommandSequence()
+    #cmdList.add("rack")
+    cmdList.add(rack.command.Command("rack"))
 
     if (args.debug):
         args.log_level = logging.DEBUG
@@ -477,6 +488,7 @@ def compose_command(args):
     # "MAIN"
     logger.warning(f"Geoconf: {args.GEOCONF}")
 
+    # TODO: also Seq
     cmdRoutine = []
     # Outputs
 
@@ -511,7 +523,8 @@ def compose_command(args):
         print(dirpath,filepath)
         args.OUTDIR  = dirpath # .removesuffix('/')
         #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-        cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
+        #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
+        cmdList.add(rack.command.Command("--outputPrefix", args.OUTDIR))
         cmdRoutine.append(f"--cCreateTile -o '{args.OUTFILE}'")
     elif (args.SCHEME == 'TILED'):
 
@@ -558,10 +571,14 @@ def compose_command(args):
             if (args.INDIR == 'AUTO'):
                 args.INDIR = extract_prefix(args.INFILE, shortPaths)
             if (args.INDIR):
-                cmdList.append(f'--inputPrefix "{args.INDIR}"')
+                cmdList.add(rack.command.Command("--inputPrefix", args.INDIR))
+                #cmdList.append(f'--inputPrefix "{args.INDIR}"')
             cmdRoutine = " ".join(cmdRoutine).replace("'",'"')
-            cmdList.append(f"--script '{cmdRoutine}'")
-            cmdList.extend(shortPaths)
+            # cmdList.append(f"--script '{cmdRoutine}'")
+            cmdList.add(rack.command.Command("--script", f"'{cmdRoutine}'"))
+            for p in shortPaths:
+                cmdList.add(rack.command.Command(p))
+            # cmdList.extend(shortPaths)
             #print (shortPaths)
 
     if (args.OUTFILE):
@@ -571,8 +588,13 @@ def compose_command(args):
             #print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
             
         if (args.SITE):
-            args.OUTFILE  = expand_string(args.OUTFILE, "SITE", args.SITE)
+            if (args.SCHEME != 'TILE'):
+                args.OUTFILE  = expand_string(args.OUTFILE, "SITE", args.SITE)
             #print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
+
+        if (args.GEOCONF):
+            args.OUTFILE = expand_string(args.OUTFILE, "GEOCONF", args.GEOCONF)
+            
 
         # Probably makes little sense in oper. use
         if (args.TIMESTAMP):
@@ -589,13 +611,17 @@ def compose_command(args):
             cmdList.append("--cExtract DATA,WEIGHT")
             append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
 
-    return args.newline.join(cmdList)
-    #print (cmd)
-    #print ("\n\n")
 
+    # return args.newline.join(cmdList)
+    # logger.warning(cmdList.to_string())
+    # for cmd in cmdList.commands:
+    #    logger.warning(cmd.to_string())
+    # return cmdList.to_string()
+    return cmdList
+  
 def exec_command(args):
-    cmd = compose_cmd(args)
-    os.system(cmd)
+    cmdList = compose_command(args)
+    os.system(cmdList)  # subprocess!
     
 def main():
 
@@ -614,13 +640,13 @@ def main():
         export_defaults_to_json(parser, args, args.export_config)
         sys.exit(0)
 
-    cmd = compose_command(args)
+    cmdList = compose_command(args)
 
     if args.print:
-        print(cmd)
+        print(cmdList.to_string(" \\\n"))
 
     if (args.exec):
-        os.system(cmd)
+        os.system(cmdList.to_string(" "))
 
     
 
