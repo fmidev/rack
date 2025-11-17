@@ -22,6 +22,7 @@ import rack.log
 import rack.config
 import rack.stringlet
 import rack.files  # SmartFileManager
+import rack.time  # rounding
 
 
 # from rack.formatter import smart_format
@@ -152,21 +153,6 @@ my_stats = dict()
 
 
 
-"""
-t = dt.datetime.now()
-dt.datetime.strftime(t, "%m %Y")
-dt.datetime.strptime("2025-10-09","%Y-%m-%d")
-"""
-
-
-"""
-    TASK
-    START
-    END
-    FILE
-    NOW
-"""
-
 TIMEFORMAT='%Y-%m-%dT%H:%M:%S'
 
 # This are used and handled by the system
@@ -210,12 +196,22 @@ variables_fixed = {
     "TIME_START_REL": {
         "desc": "Difference between start time and nominal time",
         "type": "datetime",
-        "rack_expr": "AUTOMATIC",
+    #    "rack_expr": "AUTOMATIC",
     },
     "TIME_END_REL": {
         "desc": "Difference between end time and nominal time",
         "type": "datetime",
-        "rack_expr": "AUTOMATIC",
+    #    "rack_expr": "AUTOMATIC",
+    },
+    "TIME_START_MOD30": {
+        "desc": "Start time truncated to 30 minutes",
+        "type": "datetime",
+    #    "rack_expr": "AUTOMATIC",
+    },
+    "TIME_END_MOD30": {
+        "desc": "End time truncated to 30 minutes",
+        "type": "datetime",
+    #   "rack_expr": "AUTOMATIC",
     },
     "FILE": {
         "desc": "Filename without directory and extension",
@@ -358,14 +354,17 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
 
             # Better: dt.datetime.fromtimestamp(21020102, dt.UTC)
-            time = info['TIME'].timestamp()
-            time_start = info['TIME_START'].timestamp()
-            time_end   = info['TIME_END'].timestamp()
-            #print (time_start - time)
-            #print (time_end - time)
-            info['TIME_START_REL'] = dt.datetime.fromtimestamp(time_start - time, dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
-            info['TIME_END_REL']   = dt.datetime.fromtimestamp(time_end   - time, dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
-
+            # Note: MOD could be also in settings?
+            time       = info['TIME']#.timestamp()
+            time_start = info['TIME_START']#.timestamp()
+            time_end   = info['TIME_END']#.timestamp()
+            info['TIME_START_MOD30'] = rack.time.datetime_mod(time,       1800) # int(30*60)
+            info['TIME_START_MOD30'] = rack.time.datetime_mod(time_start, 1800) # int(30*60)
+            info['TIME_END_MOD30']   = rack.time.datetime_mod(time_end,   1800)
+            info['TIME_START_REL']   = dt.datetime.fromtimestamp(time_start.timestamp() - time.timestamp(), dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
+            info['TIME_END_REL']     = dt.datetime.fromtimestamp(time_end.timestamp()   - time.timestamp(), dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
+            #info['TIME_START_MOD30'] = rack.time.datetime_floor(time_start, 30, "%M")
+            #info['TIME_END_MOD30']   = rack.time.datetime_floor(time_end,   30, "%M")
             
             #print(sfmt.format("Time: {TASK|%Y-%m-%d %H %M}\n", **info))
                     

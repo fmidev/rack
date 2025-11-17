@@ -73,6 +73,13 @@ def datetime_ceil(t: dt.datetime, s, fmt=""):
     ceiled = ((seconds + step - 1) // step) * step
     return t.replace(hour=0, minute=0, second=0, microsecond=0) + dt.timedelta(seconds=ceiled)
 
+def datetime_mod(t: dt.datetime, s, fmt=""):
+    step = parse_step(s, fmt)
+    seconds = t.hour*3600 + t.minute*60 + t.second
+    newsec = (seconds // step) * step
+    return t.replace(hour=0, minute=0, second=0, microsecond=0) + dt.timedelta(seconds=(seconds-newsec))
+
+
 # def truncate_datetime(t: dt.datetime, s, fmt="", mode="floor"):
 def datetime_truncate(t: dt.datetime, mode, s, fmt=""):
     """
@@ -94,9 +101,6 @@ def datetime_truncate(t: dt.datetime, mode, s, fmt=""):
     #log.warning(mode)
 
     if mode == "floor":
-        #t2 = datetime_floor(t, s, fmt)
-        #log.warning(f"{t} {mode} -> {t2}")
-        #return t2
         return datetime_floor(t, s, fmt)
 
     if mode == "round":
@@ -104,6 +108,9 @@ def datetime_truncate(t: dt.datetime, mode, s, fmt=""):
 
     if mode == "ceil":
         return datetime_ceil(t, s, fmt)
+
+    if mode == "mod":
+        return datetime_mod(t, s, fmt)
 
     raise ValueError(f"Unknown mode '{mode}' — expected floor, round, ceil or callable")
 
