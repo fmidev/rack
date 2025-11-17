@@ -39,10 +39,10 @@ For filtering data in directories, we use a keyword $LABEL which may refer to a 
 
 Then one can issue
 ```bash
-# NICK=dksam
-python3.12 -m rack.statistics --config nordic-stat1.json radar-baltrad-receiver/zmq-mirror/${NICK}*2025111704*.h5
-python3.12 -m rack.statistics --config nordic-stat1.json --gnuplot out/$NICK.png statistics/$LABEL*/??min/2025*.txt
-# display out/$NICK.png
+# LABEL=dksam
+python3.12 -m rack.statistics --config nordic-stat1.json radar-baltrad-receiver/zmq-mirror/${LABEL}*2025111704*.h5
+python3.12 -m rack.statistics --config nordic-stat1.json --gnuplot nordic/stat1/${LABEL}.png snordic/stat1/${LABEL}*/??min/2025*.txt
+# display out/${LABEL}.png
 ``` 
 
 ```bash
