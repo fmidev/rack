@@ -88,6 +88,7 @@ class Var(Token):
                     # mod.split(':')
                     # create new rounded time object
                     value = rack.time.datetime_truncate(value, *filt.split(':'))
+                    continue
                     """
                     if (len(mod) == 1):
                         value = rack.time.datetime_floor(value, mod[0])

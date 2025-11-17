@@ -1,5 +1,9 @@
 
+import pathlib
 import datetime as dt
+
+import rack.log
+logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
 def parse_step(s, fmt="") -> int:
     """
@@ -80,12 +84,19 @@ def datetime_truncate(t: dt.datetime, mode, s, fmt=""):
       - "ceil"
       - a callable(t, s, fmt)
     """
+
+    log = logger.getChild("datetime_truncate")
+
     if callable(mode):
         return mode(t, s, fmt)
 
     mode = mode.lower()
+    #log.warning(mode)
 
     if mode == "floor":
+        #t2 = datetime_floor(t, s, fmt)
+        #log.warning(f"{t} {mode} -> {t2}")
+        #return t2
         return datetime_floor(t, s, fmt)
 
     if mode == "round":

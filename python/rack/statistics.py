@@ -34,7 +34,7 @@ logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
 def build_parser():
 
-    log = logger.getChild("parser")
+    log = logger.getChild("build_parser")
     log.debug("parsing")
     
     """ Creates registry of supported options of this script
