@@ -319,9 +319,12 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
 		if (object == "SCAN"){
-			mout.revised<LOG_WARNING>("moving /how attributes to /dataset../how attributes");
+			mout.revised<LOG_WARNING>("moving rooted /how-attributes to /dataset<N>/how-attributes");
 
-			for (const char * key: { "lowprf", "highprf", "NI", "astart", "rpm", "nsampleH", "nsampleV", "how:scan_index"}){
+			for (const char * key: {
+					"lowprf", "highprf", "NI", "astart", "rpm", "nsampleH", "nsampleV", "how:scan_index",
+					"startazT", "stopazT", "startelA", "stopelA"
+			}){
 
 				if (srcTmp[ODIMPathElem::HOW].data.attributes.hasKey(key)){
 
@@ -355,6 +358,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			if (sourceNew == sourceOld){
 				mout.ok<LOG_DEBUG>("Unchanged input src '", sourceNew, "' -> update (append) volume");
 				appendPolarH5(srcTmp, ctx.polarInputHi5);
+				mout.revised<LOG_WARNING>("ensuring PVOL (instead of SCAN)");
+				ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"] = "PVOL";
 			}
 			else {
 				mout.ok<LOG_NOTICE>("New input src '", sourceNew, "' (previous '", sourceOld, "') -> replace previous with new");

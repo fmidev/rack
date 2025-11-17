@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(15,4)
+#define RACK_VERSION drain::Version<>(15,4,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -50,6 +50,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - format (text dump) ${path} ${dataset} ${data}
  *  Version 15.4
  *  - File list (.lst, .vol) read; appends program directly (with .lst)
+ *  Version 15.4.1
+ *  - File list bug fix (SCAN->PVOL)
  *
  *  Version 14
  *  Version 14.0.0 (beta)
