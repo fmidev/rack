@@ -8,16 +8,23 @@ from abc import ABC, abstractmethod
 import rack.log
 logger = rack.log.logger.getChild(os.path.splitext(os.path.basename(__file__))[0])
 
+import rack.time
 
+"""
 # --- helper: our safe UTC-aware strftime ---
-def utc_strftime(dtobj, fmt):
+def utc_strftime(dtobj, fmt:str):
+
     if "%s" in fmt:
+        # "Prefilter": pick %s, and change it/them to numeric value (unix seconds).
         if dtobj.tzinfo is None:
             epoch_seconds = int((dtobj - dt.datetime(1970, 1, 1)).total_seconds())
         else:
             epoch_seconds = int(dtobj.timestamp())
         fmt = fmt.replace("%s", str(epoch_seconds))
     return dtobj.strftime(fmt)
+
+
+"""
 
 # --- shared abstract base class ---
 class Token(ABC):
@@ -51,25 +58,44 @@ class Var(Token):
     def apply_filters(self, value):
 
         if (type(value) in {list,set}):
+            # Todo: add "filter", with separator and braces
             return ",".join(str(v) for v in value)
-        #if (type(value) is set):
-        #    return ",".join(value)
+            # if (type(value) is set):
+            #    return ",".join(value)
 
 
         """Apply chained filters to the value (same logic as before)."""
         for filt in self.filters:
+
             if not filt:
                 continue
 
-            if ":" in filt:
+            """
+            if ":" in filt: # is this ever used?
                 name, arg = filt.split(":", 1)
                 if name == "strftime" and hasattr(value, "strftime"):
                     value = utc_strftime(value, arg)
                     continue
+            """
 
-            if hasattr(value, "strftime") and filt.startswith("%"):
-                value = utc_strftime(value, filt)
-                continue
+            if hasattr(value, "strftime"):
+                if filt.startswith("%"):
+                    value = rack.time.utc_strftime(value, filt)
+                    continue
+                elif filt.startswith("floor:") or filt.startswith("round:") or filt.startswith("ceil:"):
+                    # mod = filt.removeprefix("mod:")
+                    # mod = filt.split(':') #.removeprefix("mod:")
+                    # mod.split(':')
+                    # create new rounded time object
+                    value = rack.time.datetime_truncate(value, *filt.split(':'))
+                    """
+                    if (len(mod) == 1):
+                        value = rack.time.datetime_floor(value, mod[0])
+                    elif (len(mod) == 2):
+                        value = rack.time.datetime_floor(value, mod[0], mod[1])
+                    """
+
+
 
             if filt[0] in ".0123456789eEfFgG":
                 try:
@@ -81,9 +107,11 @@ class Var(Token):
             if filt == "upper" and isinstance(value, str):
                 value = value.upper()
                 continue
+            
             if filt == "lower" and isinstance(value, str):
                 value = value.lower()
                 continue
+            
             if filt == "abs":
                 try:
                     value = abs(value)
@@ -93,6 +121,7 @@ class Var(Token):
             if filt == "basename" and isinstance(value, str):
                 value = os.path.basename(value)
                 continue
+
         return value
 
     def resolve(self, data):
