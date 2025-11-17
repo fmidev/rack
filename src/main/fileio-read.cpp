@@ -339,6 +339,10 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 						}
 					}
 				}
+
+				if (srcTmp[ODIMPathElem::HOW].data.attributes.hasKey(key)){
+					srcTmp[ODIMPathElem::HOW].data.attributes.erase(key);
+				}
 			}
 		}
 
