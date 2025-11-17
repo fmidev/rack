@@ -22,10 +22,29 @@ Usage of this program - [`rack.statistics.py`](rack/statistics.py) consists typi
 In the collection stage, this script invokes `rack` repeatedly as a subprocess.
 Similarly, in the illustration stage, `gnuplot` is invoked.
 
-## Examples
+#### Examples
 
 In the following examples, it is assumed that environment variable `$PYTHONPATH` contains the directory under which the modules are localed.
-.
+
+Convenience: instead of defining syntaxes at command line, with `--outdir_syntax`, `--outfile_syntax`, and `--row_syntax`, it is handy to put them in a shared conf file, say `nordic-stat1.json` as follows: 
+```json
+{
+    "outdir_syntax":  "statistics/{SITE}/{TIME|%M}min",
+    "outfile_syntax": "{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt",
+    "line_syntax":    "{TIME_START|%Y-%m-%dT%H:%M} {TIME_START_REL|%s} {ELANGLE} {TIME_END_REL|%s} # {DATASET}/{DATA} {QUANTITY} {PRFS} {PRF}",
+    "gnuplot_columns": "TIME_START_REL,ELANGLE"
+}
+```
+For filtering data in directories, we use a keyword $LABEL which may refer to a single radar (like `fikor`)
+
+Then one can issue
+```bash
+# NICK=dksam
+python3.12 -m rack.statistics --config nordic-stat1.json radar-baltrad-receiver/zmq-mirror/${NICK}*2025111704*.h5
+python3.12 -m rack.statistics --config nordic-stat1.json --gnuplot out/$NICK.png statistics/$LABEL*/??min/2025*.txt
+# display out/$NICK.png
+``` 
+
 ```bash
 # Daywise file of for sweep (identified by dataset<N>):
 python3 -m rack.statistics  --outdir_syntax './stats1/{SITE}/{MINUTE}min/dataset{DATASET}'  --outfile_syntax '{MONTH}{DAY}_{POL}_{ELANGLE}_{PRF}_{GEOM}.txt' data-acc/201703061200_radar.polar.fiuta.h5
