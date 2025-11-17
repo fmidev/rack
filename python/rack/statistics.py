@@ -724,7 +724,7 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
                 log.debug(f"added linecolor key: {k}")
             linecolor = "linecolor " + str(linecolor_keys.index(k)+1)
 
-        plot_title = tm.get_plot_title(distinct_keys)  # only after 3.9: removesuffix(suffix)
+        plot_title = tm.get_plot_title(distinct_keys).removesuffix(suffix)  # only after 3.9: removesuffix(suffix)
         #plot_style = tm.get_line_style(distinct_keys, default="lines")
         #plot_style = plot_style + " " + tm.get_color(distinct_keys, default="")
         #plot_style = f"{tm.get_line_style(distinct_keys, default='lines')} {linetype} {linecolor}".strip()
