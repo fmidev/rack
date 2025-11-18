@@ -8,8 +8,8 @@ USE_GEOTIFF=YES
 # Change to acrual Rack version?
 # VERSION=$(shell fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
 # export VERSION=$(fgrep __RACK_VERSION__ src/main/rack.h | cut -d' ' -f 3 | tr -d '"')
-VERSION=$(shell rack --version | head -1)
-
+# VERSION=$(shell rack --version | head -1)
+VERSION=$(shell fgrep RACK_VERSION src/main/rack.h | tr '(,)' '|.|' | cut -d'|' -f 2)
 
 
 help:
