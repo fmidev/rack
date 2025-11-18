@@ -426,7 +426,7 @@ def write_metadata(metadata:dict, dir_syntax:str, file_syntax:str, line_syntax:s
     for info in my_stats.values():
         # for dataset,info in my_dict.items():
 
-        # Automatic additional attributes
+        # Finalise automatic attributes
         if 'LDR' in info['QUANTITY']:
             info['POL'] = 'LDR'
         elif set(info['QUANTITY']).intersection({'ZDR','RHOHV','KDP','PHIDP'}):
