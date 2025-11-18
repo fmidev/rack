@@ -16,17 +16,17 @@ General design principles and goals:
 ### Statistics
 
 Usage of this program - [`rack.statistics.py`](rack/statistics.py) consists typically of two steps
-1. Collection of statistics - option `--ccc`
-2. Illustration collect of statistics - option `--ccc`
+1. Collecting of statistics from ODIM-HDF5 files
+2. Illustrating the statistics
 
 In the collection stage, this script invokes `rack` repeatedly as a subprocess.
 Similarly, in the illustration stage, `gnuplot` is invoked.
 
 #### Examples
 
-In the following examples, it is assumed that environment variable `$PYTHONPATH` contains the directory under which the modules are localed.
+In the following examples, it is assumed that environment variable `$PYTHONPATH` contains the directory under which the modules are located.
 
-Convenience: instead of defining syntaxes at command line, with `--outdir_syntax`, `--outfile_syntax`, and `--row_syntax`, it is handy to put them in a shared conf file, say `nordic-stat1.json` as follows: 
+Convenience: instead of defining syntaxa at command line with `--outdir_syntax`, `--outfile_syntax`, and `--row_syntax`, it is handy to put them in a shared configuration file, say `nordic-stat1.json` as follows: 
 ```json
 {
     "outdir_syntax":  "statistics/{SITE}/{TIME|%M}min",
@@ -62,7 +62,7 @@ It is useful to define data row syntax as a environment variable (like `$line_sy
 
 LINE='{TIME_START|%Y-%m-%dT%H:%M} {TIME_START_REL|%s} {ELANGLE} {TIME_END_REL|%s}  # {QUANTITY}'
 
-python3 -m rack.statistics --line_syntax "$LINE"  --outfile_syntax '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
+python3 -m rack.statistics --line-syntax "$LINE"  --outfile_syntax '{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt'   data-kiira/201708121?00_radar.polar.fi???.h5
 python3 -m rack.statistics --gnuplot-columns TIME_START_REL,ELANGLE --LINE "$LINE" --gnuplot fin.png  statistics/fi???/??min/*.txt
 
 gnuplot fin.png 

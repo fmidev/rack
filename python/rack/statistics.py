@@ -228,19 +228,24 @@ variables_fixed = {
         "type": "automatic",
         "rack_expr": "AUTOMATIC",
     }, 
-    "PRF" : {
-        "desc": "Pulse repetition mode (1PRF or 2PRF)",
-    },
     "PRF_LO" : {
-        "desc": "Pulse repetition frequency",
+        "desc": "Pulse repetition frequency (lower)",
         "rack_expr": "${how:lowprf}"
     },
     "PRF_HI" : {
         "desc": "Pulse repetition frequency (higher)",
         "rack_expr": "${how:highprf}"
     },
-    "PRFS" : {
+    "PRF_MODE" : {
+        "desc": "Pulse repetition mode (1PRF, 2PRF, ...)",
+    },
+    "PRF" : {
         "desc": "All the pulse repetition frequencies",
+        "rack_expr": "${how:prf}"
+    },
+    "RANGE": {
+        "desc": "rstart + rscale*nbins",
+        "rack_expr": "${where:rstart}+${where:rscale}*${where:nbins}"
     },
     "DATASET": {
         "desc": "index in 'dataset<i>' group ",
@@ -375,15 +380,15 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
             # Reduce to single value, if both are same: str -> set -> str
             prfs = set()
-            for i in ["PRF_LO", "PRF_HI"]:
+            for i in ["PRF", "PRF_LO", "PRF_HI"]:
                 prf = m.get(i, "")
                 if (prf):
                     prfs.add(int(prf))
 
             prfs = list(prfs)
             prfs.sort()
-            m['PRF'] = f"{len(prfs)}PRF"            
-            m['PRFS'] = prfs
+            m['PRF_MODE'] = f"{len(prfs)}PRF"            
+            m['PRF'] = prfs
             log.debug(m)
 
     log.debug("end")
