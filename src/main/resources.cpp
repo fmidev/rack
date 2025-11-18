@@ -71,8 +71,8 @@ void RackContext::resolveFilePath(const std::string & prefix, const std::string 
 		finalFilePath = filePath;
 	}
 	else if (filePath.at(0) == '/'){
-		mout.revised<LOG_NOTICE>("file path starts with '/' – omitting prefix '", prefix, "'");
-		mout.advice("append '/' to prefix if you meant '", prefix, filePath, "'");
+		mout.revised<LOG_DEBUG>("file path starts with '/' – omitting prefix '", prefix, "'");
+		mout.advice<LOG_DEBUG>("append '/' to prefix if you meant '", prefix, filePath, "'");
 		/*
 		size_t l = prefix.length();
 		if (prefix.at(l-1) == '/'){
@@ -83,7 +83,7 @@ void RackContext::resolveFilePath(const std::string & prefix, const std::string 
 		finalFilePath = filePath;
 	}
 	else if (filePath.substr(0,2) == "./"){
-		mout.revised<LOG_NOTICE>("file path starts with './' – omitting prefix '", prefix, "'");
+		mout.revised<LOG_DEBUG>("file path starts with './' – omitting prefix '", prefix, "'");
 		finalFilePath = filePath;
 	}
 	else {

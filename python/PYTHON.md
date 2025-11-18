@@ -1,5 +1,7 @@
 # Python3 utilities for Rack
 
+*Experimental*
+
 Rack comes with a set of Python scripts packed as a module [rack](./rack).
 
 General design principles and goals:
