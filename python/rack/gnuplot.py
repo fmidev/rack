@@ -45,7 +45,7 @@ class GnuPlotCommandSequence(rack.command.CommandSequence):
             f.write(self.to_string("\n") + "\n")
 
     # see also: create_gnuplot_script in rack/statistics.py
-    def create_script(self, files: list, settings=dict(), colums=(1,2)):
+    def create_scriptFOO(self, files: list, settings=dict(), colums=(1,2)):
 
         log = logger.getChild("create_script")
         
@@ -81,7 +81,7 @@ class GnuPlotCommandSequence(rack.command.CommandSequence):
         while files:
             f = files.pop()
             split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
-            title =  " ".join([split_name[i] for i in distinct_indices])
+            # DEFUNCT title =  " ".join([split_name[i] for i in distinct_indices])
             plots.append({"file": f, "using": colums, "with_": "lines", "title": title})
 
         self.add(GnuPlotCommand.plot.plot( *plots ))

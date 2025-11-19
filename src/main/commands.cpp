@@ -1696,6 +1696,44 @@ public:
 
 			const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
 
+			drain::Output pyDump("dump.py");
+			char separator = 0;
+			pyDump << "def " << value << '(';
+			for (const auto & entry: m){
+				pyDump << entry.first << ':';
+				const std::type_info & t = entry.second.getType();
+				if (drain::Type::call<drain::typeIsInteger>(t)){
+					pyDump << "int";
+				}
+				else if (drain::Type::call<drain::typeIsFloat>(t)){
+					pyDump << "float";
+				}
+				else if (t == typeid(bool)){
+					pyDump << "boolean";
+				}
+				else {
+					pyDump << "str = ";
+					pyDump << '"';
+					if (!entry.second.empty()){
+						pyDump << entry.second;
+					}
+					pyDump << '"';
+					continue;
+				}
+				// JSONvalueOut?
+				if (!entry.second.empty()){
+					pyDump << '=' << entry.second;
+				}
+				if (separator)
+					pyDump << separator;
+				else {
+					separator = entry.second.getInputSeparator();
+				}
+
+			}
+			pyDump << ")\n pass";
+
+
 			drain::JSONtree jsonRoot;
 
 			drain::JSONtree & json = jsonRoot[value];

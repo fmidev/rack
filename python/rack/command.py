@@ -15,6 +15,9 @@ class Command:
         Default: just convert to string. Override in subclasses."""
         return str(val)
 
+    def fmt_key(self, key: str) -> str:
+        return key
+
     def to_string(self) -> str:
         parts = [self.name]
         for a in self.args:
@@ -23,6 +26,19 @@ class Command:
             parts.append(str(k))
             parts.append(self.fmt(v, k))
         return " ".join(parts)
+    
+    def to_tuple(self, separator=None) -> tuple:
+        args = []
+        args.extend(self.args)
+        for k, v in self.kwargs.items():
+            args.append(f"{k}={v}")
+        if (args):
+            if type(separator) is str:
+                return (self.name, separator.join(args))
+            else:
+                return (self.name, args)
+        else:
+            return (self.name, )
 
 
 class CommandSequence:
@@ -35,6 +51,15 @@ class CommandSequence:
 
     def to_list(self) -> list:
         return [cmd.to_string() for cmd in self.commands]
+    
+    def to_token_list(self, separator=None) -> list:
+        cmds = []
+        for cmd in self.commands:
+            cmds.extend(cmd.to_tuple(separator))
+        return cmds
+            
+        #return [cmd.to_string() for cmd in self.commands]
+
 
     def to_string(self, joiner="\n") -> str:
         return joiner.join(cmd.to_string() for cmd in self.commands)

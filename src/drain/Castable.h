@@ -734,7 +734,7 @@ public:
 	 *   is a string.
 	 */
 	inline
-	char getInputSeparator(){
+	char getInputSeparator() const {
 		return inputSeparator;
 	}
 
@@ -744,7 +744,7 @@ public:
 	 *   is a string.
 	 */
 	inline
-	char getOutputSeparator(){
+	char getOutputSeparator() const {
 		return outputSeparator;
 	}
 
