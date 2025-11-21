@@ -15,16 +15,19 @@ import re # GEOCONF filename-KEY extraction
 
 from types import SimpleNamespace
 
-#import logging
+import logging
 #logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
 #logger = logging.getLogger("rack.py") # change to __NAME__ etc
 #logger.setLevel(logging.INFO)
 
-import rack.command
+#import rack.command
+import rack.prog
 import rack.log
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
+
+reg = rack.prog.Register
 
 # Global
 default_tiledir  = 'tiles/'
@@ -310,7 +313,7 @@ def read_geoconf(args): #, parser):
             # Adopt keyword "reduced" from filepath.
             args.GEOCONF = m.group(1)
     else:
-        Exception('--GEOCONF: could not extract KEY from filename: ', key)
+        Exception('--GEOCONF: could not extract KEY from filename: ')
 
     
     geoconf = load_config(filepath)
@@ -329,7 +332,8 @@ def append_geoconf(cmdList:list, conf:dict):
     # consider argument-less options: val is None
     for (key,confkey) in geo_dict.items():
         if (confkey in conf):
-            cmdList.add(rack.command.Command(f"--{key}", arg2str(conf[confkey])))
+            cmdList.add(rack.prog.Command(f"--{key}", arg2str(conf[confkey])))
+            #cmdList.add(
             #cmdList.append("--{key} '{val}'".format(key=key, val=arg2str(conf[confkey])))
 
 
@@ -347,7 +351,8 @@ def append_outputs(cmdList:list, output_basename:str, formats: list, output_pref
         if output_prefix:
             #output_prefix = str(output_prefix) + '/'
             output_prefix += '/'
-            cmdList.append(f"--outputPrefix {output_prefix}")
+            cmdList.add(rack.prog.Command(f"--outputPrefix {output_prefix}"))
+            # cmdList.append(f"--outputPrefix {output_prefix}")
             output_basename = output_basename.removeprefix(output_prefix)
             
 
@@ -362,15 +367,17 @@ def append_outputs(cmdList:list, output_basename:str, formats: list, output_pref
     fmts.extend(formats)
     if 'h5' in fmts:
         fmts.remove('h5')
-        cmdList.append(f"--outputFile {output_basename}.h5")
+        #cmdList.append(f"--outputFile {output_basename}.h5")
+        cmdList.add("--outputFile", f"{output_basename}.h5")
 
     if 'tif' in fmts:
         fmts.remove('tif')
-        cmdList.append(f"--outputConf tif:tile=512 -o {output_basename}.tif")
+        cmdList.add(f"--outputConf tif:tile=512 -o {output_basename}.tif")
 
     if 'png' in fmts:
         fmts.remove('png')
-        cmdList.append(f"--palette default -o {output_basename}.png")
+        cmdList.add(f"--palette", "default")
+        cmdList.add(f"-o", "{output_basename}.png")
 
     
     if (fmts):
@@ -412,7 +419,7 @@ def expand_string(inputSet, key, values):
     
     
 
-def handle_tilepath_defaults(dirpath, filepath) -> (str, str):
+def handle_tilepath_defaults(dirpath, filepath) -> tuple:
     if not filepath:
         filepath = default_tilename
     else:
@@ -452,9 +459,9 @@ def compose_command(args):
 
 
     #cmdList = ['rack']
-    cmdList = rack.command.CommandSequence()
+    cmdList = rack.prog.CommandSequence()
     #cmdList.add("rack")
-    cmdList.add(rack.command.Command("rack"))
+    cmdList.add(rack.prog.Command("rack"))
 
     if (args.debug):
         args.log_level = logging.DEBUG
@@ -467,6 +474,8 @@ def compose_command(args):
         else:
             logger.setLevel(int(args.log_level))
         cmdList.append(f"--verbose '{args.log_level}'")
+        cmdList.add()
+
    
     # Example usage
     #if args.debug:
@@ -524,7 +533,7 @@ def compose_command(args):
         args.OUTDIR  = dirpath # .removesuffix('/')
         #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
         #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
-        cmdList.add(rack.command.Command("--outputPrefix", args.OUTDIR))
+        cmdList.add(rack.prog.Command("--outputPrefix", args.OUTDIR))
         cmdRoutine.append(f"--cCreateTile -o '{args.OUTFILE}'")
     elif (args.SCHEME == 'TILED'):
 
@@ -571,13 +580,13 @@ def compose_command(args):
             if (args.INDIR == 'AUTO'):
                 args.INDIR = extract_prefix(args.INFILE, shortPaths)
             if (args.INDIR):
-                cmdList.add(rack.command.Command("--inputPrefix", args.INDIR))
+                cmdList.add(rack.prog.Command("--inputPrefix", args.INDIR))
                 #cmdList.append(f'--inputPrefix "{args.INDIR}"')
             cmdRoutine = " ".join(cmdRoutine).replace("'",'"')
             # cmdList.append(f"--script '{cmdRoutine}'")
-            cmdList.add(rack.command.Command("--script", f"'{cmdRoutine}'"))
+            cmdList.add(rack.prog.Command("--script", f"'{cmdRoutine}'"))
             for p in shortPaths:
-                cmdList.add(rack.command.Command(p))
+                cmdList.add(rack.prog.Command(p))
             # cmdList.extend(shortPaths)
             #print (shortPaths)
 
@@ -608,7 +617,8 @@ def compose_command(args):
         args.OUTFILE = args.OUTFILE.pop() # set
             
         if (args.SCHEME != 'TILE'):
-            cmdList.append("--cExtract DATA,WEIGHT")
+            #cmdList.append("--cExtract DATA,WEIGHT")
+            cmdList.add(rack.prog.Command("--cExtract DATA,WEIGHT"))
             append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
 
 

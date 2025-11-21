@@ -1,9 +1,13 @@
+
+import inspect # 
+
 from typing import Any, List, Dict, Union
 
 # --- Base classes (generic command structure) ---
 from typing import Any, List, Dict
 
 class Command:
+
     """Base class for any command-like DSL."""
     def __init__(self, name: str, *args, **kwargs):
         self.name = name
@@ -15,8 +19,8 @@ class Command:
         Default: just convert to string. Override in subclasses."""
         return str(val)
 
-    def fmt_key(self, key: str) -> str:
-        return key
+    #def fmt_key(self, key: str) -> str:
+    #    return key
 
     def to_string(self) -> str:
         parts = [self.name]
@@ -41,8 +45,33 @@ class Command:
             return (self.name, )
 
 
+class Registry:
+
+    # ---- Extensions
+    def _is_default(func, name, value):
+        sig = inspect.signature(func)
+        param = sig.parameters[name]
+        return ( param.default is not inspect._empty and value == param.default )
+
+    def _make_cmd(self, local_vars):
+        # Detect caller function automatically
+        caller_name = inspect.stack()[1].function
+        func = getattr(self, caller_name)
+
+        # Extract only explicit arguments
+        explicit = {
+            k: v
+            for k, v in local_vars.items()
+            if k != "self" and not Registry._is_default(func, k, v)
+        }
+
+        return Command(caller_name, explicit)
+    
+
+
+
 class CommandSequence:
-    """Base class for a sequence of commands."""
+    """Base class for a sequence of commands - 'programs'."""
     def __init__(self):
         self.commands: List[Command] = []
 
@@ -66,7 +95,6 @@ class CommandSequence:
 
 
 
-# --- GnuPlot-specific layer ---
 
 def main():
 

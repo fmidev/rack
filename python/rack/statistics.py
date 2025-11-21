@@ -750,6 +750,22 @@ def run(args):
     
     log = logger.getChild("run")
  
+    import rack.myprogram
+    r = rack.myprogram.MyProgram()
+
+    cmd = r.sample(i=(2, 7), iStep=1)
+    print(cmd.__str__)
+    print(cmd)
+    
+    
+    #r = rack.myprogram.MyProgram()
+    #c= r.sample(iStep=1, i=(2,7))
+    #print(c.to_string()) 
+    #print(c) 
+
+    #sample(self, iStep: int=10, jStep: int=0, i: tuple=(-1,1), j: tuple=(-1,1),
+    #                 commentChar: str="#", skipVoid: bool=False, handleVoid=None):
+
     # Handle --log_level <level>, --debug, --verbose
     rack.log.handle_parameters(args)
 

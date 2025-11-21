@@ -60,7 +60,7 @@ const SimpleFormatter & PythonSerializer::getFormatter(Serializer::objType t) co
 		static const SimpleSerializer::char_map_t fmts = {
 				{Serializer::PAIR,"(,)"},
 				{Serializer::TUPLE,"(,)"},
-				{Serializer::LIST,"[,]"},
+				{Serializer::LIST, "[,]"},
 				{Serializer::SET,"{,}"},
 				{Serializer::MAP,"{,}"},
 				{Serializer::MAP_PAIR,":"},

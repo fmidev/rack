@@ -49,6 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Input.h>
 #include <drain/util/Output.h>
 #include <drain/util/Proj6.h>
+#include <drain/util/PythonSerializer.h>
 #include <drain/util/TreeUtils.h>
 
 #include <drain/image/Image.h>
@@ -1696,42 +1697,63 @@ public:
 
 			const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
 
-			drain::Output pyDump("dump.py");
+			drain::PythonSerializer pyser;
+
+			//drain::Output pyDump("dump.py");
+			std::ostream & pyDump = std::cout; //("dump.py");
 			char separator = 0;
 			pyDump << "def " << value << '(';
+			//m.getKeyList();
 			for (const auto & entry: m){
+
+				if (separator)
+					pyDump << separator << ' ';
+				else {
+					separator = m.separator;
+				}
+
+				// String -> plain
 				pyDump << entry.first << ':';
 				const std::type_info & t = entry.second.getType();
-				if (drain::Type::call<drain::typeIsInteger>(t)){
+				if (entry.second.getElementCount() > 1){
+					pyDump << "list";
+				}
+				else if (t == typeid(bool)){
+					pyDump << "boolean";
+				}
+				else if (drain::Type::call<drain::typeIsInteger>(t)){
 					pyDump << "int";
 				}
 				else if (drain::Type::call<drain::typeIsFloat>(t)){
 					pyDump << "float";
 				}
-				else if (t == typeid(bool)){
-					pyDump << "boolean";
-				}
 				else {
-					pyDump << "str = ";
-					pyDump << '"';
-					if (!entry.second.empty()){
-						pyDump << entry.second;
-					}
-					pyDump << '"';
-					continue;
+					pyDump << "str";
+						// pyDump << entry.second;
+
 				}
 				// JSONvalueOut?
 				if (!entry.second.empty()){
-					pyDump << '=' << entry.second;
-				}
-				if (separator)
-					pyDump << separator;
-				else {
-					separator = entry.second.getInputSeparator();
+					pyDump << '=';
+					if (entry.second.getElementCount() > 1){
+						// std::list<std::string> l;
+						std::list<double> l;
+						entry.second.toSequence(l);
+						pyser.iterableToStream(pyDump, l, drain::Serializer::LIST);
+					}
+					else if (t == typeid(bool)){
+						pyser.boolToStream(pyDump, entry.second);
+					}
+					else if (entry.second.isString()){ // why not type?
+						pyser.stringToStream(pyDump, entry.second.toStr().c_str());
+					}
+					else {
+						pyser.toStream(pyDump, entry.second);
+					}
 				}
 
 			}
-			pyDump << ")\n pass";
+			pyDump << "):\n\tpass\n";
 
 
 			drain::JSONtree jsonRoot;
