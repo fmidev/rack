@@ -198,10 +198,12 @@ public:
 
 	// Type specific handlers
 
+	virtual
 	void floatToStream(std::ostream & ostr, double x) const {
 		ostr << x;
 	}
 
+	virtual
 	void intToStream(std::ostream & ostr, int x) const {
 		ostr << x;
 	}

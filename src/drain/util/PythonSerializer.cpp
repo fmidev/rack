@@ -33,6 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+
 const SimpleFormatter & PythonSerializer::getFormatter(Serializer::objType t) const{
 
 	if (t == Serializer::NONE){ // applies also to "first separator"

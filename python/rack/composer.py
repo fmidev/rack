@@ -458,6 +458,10 @@ def compose_command(args):
         args = argparse.Namespace(**args)
 
 
+    cmdReg = rack.prog.Register()
+
+    
+
     #cmdList = ['rack']
     cmdList = rack.prog.CommandSequence()
     #cmdList.add("rack")

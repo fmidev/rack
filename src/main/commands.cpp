@@ -51,6 +51,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Proj6.h>
 #include <drain/util/PythonSerializer.h>
 #include <drain/util/TreeUtils.h>
+#include <drain/util/PythonUtils.h>
 
 #include <drain/image/Image.h>
 #include <drain/image/TreeSVG.h>
@@ -1644,8 +1645,50 @@ public:
 
 };
 
-// static drain::CommandEntry<CmdHelpExample> cmdHelpExample("helpExample", 0);
 
+
+
+class CmdPython : public drain::BasicCommand {
+public:
+
+	CmdPython() : drain::BasicCommand(__FUNCTION__, "Export command interfaces to Python. Compatible with rack.prog module."){
+		getParameters().link("file", filename="dump.py");
+		//getParameters().link("key", key="all");
+		getParameters().link("count", counter);
+	};
+
+	CmdPython(const CmdPython & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	};
+
+	virtual
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		drain::CommandBank & cmdBank = drain::getCommandBank();
+
+		// cmdBank.sections;
+		drain::PythonConverter python;
+		python.content="return self._make_cmd(locals())";
+		python.counter = counter;
+
+		drain::Output output(filename);
+
+		python.exportImports({"rack.prog"}, output);
+		python.exportCommands("Rack(rack.prog.Register)", cmdBank, output);
+
+		// const drain::Command & command = cmdBank.get(key);
+
+
+	}
+
+	std::string filename;
+	// std::string key;
+	int counter = 100;
+
+};
 
 /// Explain..
 /**
@@ -1660,7 +1703,7 @@ public:
 class CmdJSON : public drain::SimpleCommand<std::string> { // drain::BasicCommand {
 public:
 
-	CmdJSON() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump to JSON.", "property", "", ""){
+	CmdJSON() : drain::SimpleCommand<std::string>(__FUNCTION__, "Export a command to JSON.", "property", "", ""){
 	};
 
 	virtual
@@ -1697,63 +1740,6 @@ public:
 
 			const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
 
-			drain::PythonSerializer pyser;
-
-			//drain::Output pyDump("dump.py");
-			std::ostream & pyDump = std::cout; //("dump.py");
-			char separator = 0;
-			pyDump << "def " << value << '(';
-			//m.getKeyList();
-			for (const auto & entry: m){
-
-				if (separator)
-					pyDump << separator << ' ';
-				else {
-					separator = m.separator;
-				}
-
-				// String -> plain
-				pyDump << entry.first << ':';
-				const std::type_info & t = entry.second.getType();
-				if (entry.second.getElementCount() > 1){
-					pyDump << "list";
-				}
-				else if (t == typeid(bool)){
-					pyDump << "boolean";
-				}
-				else if (drain::Type::call<drain::typeIsInteger>(t)){
-					pyDump << "int";
-				}
-				else if (drain::Type::call<drain::typeIsFloat>(t)){
-					pyDump << "float";
-				}
-				else {
-					pyDump << "str";
-						// pyDump << entry.second;
-
-				}
-				// JSONvalueOut?
-				if (!entry.second.empty()){
-					pyDump << '=';
-					if (entry.second.getElementCount() > 1){
-						// std::list<std::string> l;
-						std::list<double> l;
-						entry.second.toSequence(l);
-						pyser.iterableToStream(pyDump, l, drain::Serializer::LIST);
-					}
-					else if (t == typeid(bool)){
-						pyser.boolToStream(pyDump, entry.second);
-					}
-					else if (entry.second.isString()){ // why not type?
-						pyser.stringToStream(pyDump, entry.second.toStr().c_str());
-					}
-					else {
-						pyser.toStream(pyDump, entry.second);
-					}
-				}
-
-			}
-			pyDump << "):\n\tpass\n";
 
 
 			drain::JSONtree jsonRoot;
@@ -2688,7 +2674,10 @@ MainModule::MainModule(){ //
 
 	install<CmdDumpMap>();
 
+	// Export
 	install<CmdJSON>();
+	install<CmdPython>();
+
 	install<CmdKeep>();
 
 	install<CmdODIM>("odim");

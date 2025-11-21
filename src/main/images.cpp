@@ -1263,7 +1263,10 @@ public:
 class CmdPlot : public drain::SimpleCommand<std::string> {
 public:
 
-	CmdPlot() : drain::SimpleCommand<std::string>(__FUNCTION__, "Plot", "i,j,...", "0,0"){
+	CmdPlot() : drain::SimpleCommand<std::string>(__FUNCTION__, "Plot", "i,j", "0,0", "<i>,<j>,..."){
+		// consider
+		// drain::image::ImagePlot plot;
+		//getParameters.copyStruct(plot.getParameters(), plot.value, value);
 	};
 
 	void exec() const {

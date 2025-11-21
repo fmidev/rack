@@ -29,64 +29,61 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <cmath>  // for NaN
 
-#include "Serializer.h"
+//#include "PythonSerializer.h"
 
-#ifndef DRAIN_PYTHON_SERIALIZER
-#define DRAIN_PYTHON_SERIALIZER
+#ifndef DRAIN_PYTHON_UTILS
+#define DRAIN_PYTHON_UTILS
+
+//#include <drain/prog/Command.h>
+#include <drain/prog/CommandBank.h>
 
 namespace drain {
 
 
-struct PythonSerializer : public SimpleSerializer {
 
-	/// If true, switch between " and ' inside strings. Else, escape with BACKSLASH.
-	bool TOGGLE_QUOTES = true;
 
-	/// Surround strings with this quote.
-	char stringQuote = SINGLE_QUOTE;
+class PythonConverter {
 
+public:
+
+	static
+	const std::string TRIPLE_HYPHEN;
+
+	// Whitespace
+	std::string indentStr = std::string(4, ' ');
+
+	// std::string content = "pass";
+	std::string content = "return self._make_cmd(locals())";
+
+	mutable
+	int counter = 100;
+
+	template <class T>
+	void exportImports(const std::initializer_list<T> & container, std::ostream & ostr=std::cout) const;
+
+	void exportCommands(const std::string &name, const drain::CommandBank & commandBank, std::ostream & ostr=std::cout, int indentLevel=0) const;
+
+	void exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr=std::cout, int indentLevel=1) const;
+
+
+	// template <class T>
+	// void indent(std::ostream & ostr, const T & whiteSpace, int indent=0) const {
 	inline
-	PythonSerializer(char stringQuote = SINGLE_QUOTE) :stringQuote(stringQuote){
-	}
-
-	virtual inline
-	~PythonSerializer(){}
-
-
-	virtual inline
-	void boolToStream(std::ostream & ostr, bool x)  const override {
-		if (x)
-			ostr << "True";
-		else
-			ostr << "False";
-	}
-
-	virtual inline
-	void nullToStream(std::ostream & ostr)  const override {
-		ostr << "None";
-	}
-
-	virtual inline
-	void floatToStream(std::ostream & ostr, double x) const override {
-		if (std::isnan(x)){
-			nullToStream(ostr);
-		}
-		else {
-			// consider formatting?
-			ostr << x;
+	void indent(std::ostream & ostr, int indentLevel=0) const {
+		for (int i=0; i<indentLevel; ++i){
+			ostr << this->indentStr;
 		}
 	}
-
-
-protected:
-
-	virtual
-	const SimpleFormatter & getFormatter(Serializer::objType t) const override;
-
 
 };
+
+template <class T>
+void PythonConverter::exportImports(const std::initializer_list<T> & container, std::ostream & ostr) const {
+	for (const auto & entry: container){
+		ostr << "import " << entry << '\n';
+	}
+}
 
 
 }

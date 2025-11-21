@@ -33,12 +33,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(15,4,1)
+#define RACK_VERSION drain::Version<>(16)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
 
 /**
+ *  Version 16
+ *  - Python UI export (experimental)
+ *
  *  Version 15
  *  - SVG alignment complete: gTitle, gGroupTitle, gLayout, gAnchor, gAlign
  *  Version 15.1

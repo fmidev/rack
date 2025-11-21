@@ -113,7 +113,7 @@ class CartesianProj : public drain::SimpleCommand<>{ // public drain::BasicComma
 
 public:
 
-	CartesianProj() : drain::SimpleCommand<>(__FUNCTION__, "Set projection", "<EPSG-code>|<projstr>", "", "Proj.4 syntax"){
+	CartesianProj() : drain::SimpleCommand<>(__FUNCTION__, "Set projection", "projection", "", "<EPSG-code>|<projstr> Proj.4 syntax"){
 		getParameters().separator = 0;
 	};
 

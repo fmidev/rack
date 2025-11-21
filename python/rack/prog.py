@@ -21,12 +21,53 @@ class Command:
         self.name = name
         self.args = args  # dict of explicitly given args
 
+    """Base class for any command-like DSL."""
+    def OLD__init__(self, name: str, *args, **kwargs):
+        self.name = name
+        self.args = list(args)
+        self.kwargs = kwargs
+
+    def fmt(self, val: Any, key: str = "") -> str:
+        """Format a single argument or option for output.
+        Default: just convert to string. Override in subclasses."""
+        return str(val)
+
     def __str__(self):
         # Format "i=2:7,iStep=1"
         parts = []
         for k, v in self.args.items():
             parts.append(f"{k}={self._encode_value(v)}")
         return f"{self.name} {self.PRIMARY_SEP.join(parts)}"
+
+    def to_string_default(self):
+        return self.__str__()
+
+    def to_string(self) -> str:
+        parts = [self.name]
+        for a in self.args:
+            parts.append(self.fmt(a))
+        logger.warning(parts)
+        # Deactivated...
+        # for k, v in self.kwargs.items():
+        #    parts.append(str(k))
+        #    parts.append(self.fmt(v, k))
+        return " ".join(parts)
+    
+    def to_tuple(self, separator=None) -> tuple:
+        args = []
+        args.extend(self.args)
+        for k, v in self.kwargs.items():
+            args.append(f"{k}={v}")
+        if (args):
+            if type(separator) is str:
+                return (self.name, separator.join(args))
+            else:
+                return (self.name, args)
+        else:
+            return (self.name, )
+
+    def to_tuple(self):
+        return self.__str__()
 
     def _encode_value(self,v):
         """Format tuple as 'a:b', leave scalars untouched."""
@@ -62,15 +103,19 @@ class Register:
 
 
 class CommandSequence:
+
+    CmdClass = Command
+
     """Base class for a sequence of commands - 'programs'."""
-    def __init__(self):
+    def __init__(self, cmdClass=Command):
+        self.CmdClass = cmdClass
         self.commands: List[Command] = []
 
-    def add(self, cmd: Command, args=None):
-        if type(cmd) == Command:
+    def add(self, cmd: Command, args={}):
+        if type(cmd) == self.CmdClass:
             self.commands.append(cmd)
         elif type(cmd) == str:
-            self.commands.append(Command(str, args))
+            self.commands.append(self.CmdClass(str, args))
         else:
             raise ValueError(f"Unsupported arg type for cmd='{cmd}':", + type(cmd))
 
@@ -80,7 +125,8 @@ class CommandSequence:
     def to_token_list(self, separator=None) -> list:
         cmds = []
         for cmd in self.commands:
-            cmds.extend(cmd.to_tuple(separator))
+            cmds.append(cmd) #separator))
+            # cmds.extend(cmd.to_tuple()) #separator))
         return cmds
             
         #return [cmd.to_string() for cmd in self.commands]
@@ -96,6 +142,7 @@ class CommandSequence:
 
 def main():
 
+    
     class MyRegister(Register):
 
         def sample(
@@ -117,7 +164,12 @@ def main():
     cmd.PRIMARY_SEP='|'
     cmd.SECONDARY_SEP='/'
     print(cmd)   # assuming MyCommand.__str__ formats tuples as "a:b" and joins with commas
-    
+    prog = CommandSequence(Command)
+    prog.add(cmd)
+    print(prog.to_string())
+    print(prog)
+    print(prog.to_list())
+    print(prog.to_token_list())
 
 
 
