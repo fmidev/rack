@@ -12,20 +12,39 @@ logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
 class Command:
 
-    PRIMARY_SEP = ","
+    PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
 
     #def __init__(self, name, args):
 
-    def __init__(self, name, args={}):
+    def FOO__init__(self, name, args={}):
         self.name = name
-        self.args = args  # dict of explicitly given args
+        self.expl_args = args  # dict of explicitly given args
 
-    """Base class for any command-like DSL."""
-    def OLD__init__(self, name: str, *args, **kwargs):
+    def __init__(self, name, args={}, explicit_args={}):
         self.name = name
-        self.args = list(args)
-        self.kwargs = kwargs
+        self.default_args = args
+        self.expl_args = explicit_args  # dict of explicitly given args
+
+    def setArgs(self, *args, **kwargs):
+        logger.warning(f"  args: {args}")
+        logger.warning(f"kwargs: {kwargs}")
+
+        if args:
+            for k,v in zip(self.expl_args.keys(), args):
+                self.expl_args[k] = v
+
+        self.expl_args.update(kwargs)
+        #self.args = {}
+        #self.args.update(args)
+        
+        #self.expl_args = (kwargs)
+
+    def setSeparators(self, primary:str=",", secondary:str=":"):
+        self.PRIMARY_SEP   = primary
+        self.SECONDARY_SEP = secondary
+        if (primary == secondary):
+            logger.error(f"setSeparators illegal equality primary:{primary} == secondary:{secondary}")
 
     def fmt(self, val: Any, key: str = "") -> str:
         """Format a single argument or option for output.
@@ -33,41 +52,42 @@ class Command:
         return str(val)
 
     def __str__(self):
-        # Format "i=2:7,iStep=1"
-        parts = []
-        for k, v in self.args.items():
-            parts.append(f"{k}={self._encode_value(v)}")
-        return f"{self.name} {self.PRIMARY_SEP.join(parts)}"
+        return " ".join(self.to_tuple("'"))
+        #name = self.get_prefixed_name()
+        #args = []
+        #for k, v in self.args.items():
+        #    args.append(f"{k}={self._encode_value(v)}")
+        #return f"{name} {self.PRIMARY_SEP.join(args)}"
 
-    def to_string_default(self):
-        return self.__str__()
-
-    def to_string(self) -> str:
-        parts = [self.name]
-        for a in self.args:
-            parts.append(self.fmt(a))
-        logger.warning(parts)
-        # Deactivated...
-        # for k, v in self.kwargs.items():
-        #    parts.append(str(k))
-        #    parts.append(self.fmt(v, k))
-        return " ".join(parts)
-    
-    def to_tuple(self, separator=None) -> tuple:
-        args = []
-        args.extend(self.args)
-        for k, v in self.kwargs.items():
-            args.append(f"{k}={v}")
-        if (args):
-            if type(separator) is str:
-                return (self.name, separator.join(args))
-            else:
-                return (self.name, args)
+    def get_prefixed_name(self) -> str:
+        l = len(self.name)
+        if l==0:
+            # Default command (--inputFile ...) works like this - needs no key.
+            return ""
+        elif l==1:
+            return f"-{self.name}"
         else:
-            return (self.name, )
+            return f"--{self.name}"
 
-    def to_tuple(self):
-        return self.__str__()
+    
+        
+    def to_tuple(self, quote:str="") -> tuple:
+        """Returns a singleton or a double token"""    
+        
+        name = self.get_prefixed_name()
+        if name:
+            result = [name]
+        else:
+            result = []
+        
+        if self.expl_args:
+            args = []
+            for k, v in self.expl_args.items():
+                args.append(f"{k}={self._encode_value(v)}")
+                #args.append(f"{k}={quote}{self._encode_value(v)}{quote}")
+            result.append(quote+self.PRIMARY_SEP.join(args)+quote)
+
+        return tuple(result)
 
     def _encode_value(self,v):
         """Format tuple as 'a:b', leave scalars untouched."""
@@ -80,25 +100,56 @@ class Command:
 
 class Register:
 
+    def __init__(self, cmdSequence=None):
+        """ Create instance of a command Register.
+
+        If a commandSequence is give, every call adds a command to it. 
+        """
+        self.cmdSequence = cmdSequence
+
     def _is_default(func, name, value):
         sig = inspect.signature(func)
         param = sig.parameters[name]
         return ( param.default is not inspect._empty and value == param.default )
 
 
-    def _make_cmd(self, local_vars):
+    def make_cmd(self, local_vars, separator:str=""):
+        """ Creates a command. The name will be the caller function
+        
+        Each explicitly given argument will be stored if its value differs from the default one.
+        """
         # Detect caller function automatically
         caller_name = inspect.stack()[1].function
         func = getattr(self, caller_name)
 
         # Extract only explicit arguments
+        """
         explicit = {
             k: v
             for k, v in local_vars.items()
             if k != "self" and not Register._is_default(func, k, v)
         }
+        """
 
-        return Command(caller_name, explicit)
+        args = {}
+        explicit = {}
+
+        for k, v in local_vars.items():
+            if k != "self":
+                args[k]=v
+                if not Register._is_default(func, k, v):
+                    explicit[k]=v
+
+
+        cmd = Command(caller_name, args=args, explicit_args=explicit)
+        if (separator):
+            cmd.setSeparators(separator)
+        if self.cmdSequence:
+            self.cmdSequence.add(cmd)
+            # return ?
+
+        return cmd
+        #return Command(caller_name, explicit)
     
 
 
@@ -107,33 +158,51 @@ class CommandSequence:
     CmdClass = Command
 
     """Base class for a sequence of commands - 'programs'."""
-    def __init__(self, cmdClass=Command):
+    def __init__(self, cmdClass=Command, programName:str=""):
         self.CmdClass = cmdClass
         self.commands: List[Command] = []
+        self.programName = programName
 
     def add(self, cmd: Command, args={}):
         if type(cmd) == self.CmdClass:
             self.commands.append(cmd)
         elif type(cmd) == str:
-            self.commands.append(self.CmdClass(str, args))
+            # logger.warning(f"adding string: {cmd}")
+            self.commands.append(Command(str(cmd).strip(" \t-"), args))
         else:
             raise ValueError(f"Unsupported arg type for cmd='{cmd}':", + type(cmd))
 
     def to_list(self) -> list:
-        return [cmd.to_string() for cmd in self.commands]
-    
-    def to_token_list(self, separator=None) -> list:
-        cmds = []
+        """Produces a list suited to be joined with newline char, for example"""
+        if self.programName:
+            result = [self.programName]
+        else:
+            result = []
         for cmd in self.commands:
-            cmds.append(cmd) #separator))
-            # cmds.extend(cmd.to_tuple()) #separator))
-        return cmds
+            result.append(str(cmd))
+        return result
+        #return [str(cmd) for cmd in self.commands]
+        #return [cmd.to_string() for cmd in self.commands]
+    
+    def to_token_list(self) -> list:
+        """Produces a list compatible with subprocess calls"""
+        if self.programName:
+            result = [self.programName]
+        else:
+            result = []
+        for cmd in self.commands:
+            result.extend(cmd.to_tuple()) 
+        return result
             
         #return [cmd.to_string() for cmd in self.commands]
 
 
-    def to_string(self, joiner="\n") -> str:
-        return joiner.join(cmd.to_string() for cmd in self.commands)
+    def to_string(self, joiner:str=" ", quote:str="") -> str:
+        """
+        
+        Joiner can also be '\\\n\t' for example.
+        """
+        return joiner.join(self.to_list())
 
 
 

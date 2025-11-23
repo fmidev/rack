@@ -41,12 +41,42 @@ const std::string PythonConverter::TRIPLE_HYPHEN = "\"\"\"";
 void PythonConverter::exportCommands(const std::string &name, const drain::CommandBank & commandBank, std::ostream & ostr, int indentLevel) const {
 
 	indent(ostr, indentLevel);
-	ostr << "class " << name << ':' << '\n';
+	ostr << "class " << name << ':' << '\n' << '\n';
+
+	indent(ostr, indentLevel+1);
+	ostr << "# defaultCmdKey="<< commandBank.defaultCmdKey << "\n";
+
+	indent(ostr, indentLevel+1);
+	ostr << "# execFileCmd=" << commandBank.execFileCmd << "\n";
+
+	indent(ostr, indentLevel+1);
+	ostr << "# commandBank.scriptCmd="<< commandBank.scriptCmd << "\n";
 
 	// int i = 10;
 	for (const auto & entry: commandBank.getMap()){
+		const std::string & key = entry.first;
 		const drain::Command & command = entry.second->getSource();
-		exportCommand(entry.first, command, ostr, indentLevel+1);
+
+		if (key == commandBank.defaultCmdKey){
+			indent(ostr, indentLevel+1);
+			ostr << "# TODO: key == commandBank.defaultCmdKey...\n";
+			// exportCommand(key, command, ostr, indentLevel+1);
+		}
+		else if (command.getName() == commandBank.execFileCmd){
+			indent(ostr, indentLevel+1);
+			ostr << "# NOTE: key == commandBank.execFileCmd TODO...\n";
+			// exportCommand(key, command, ostr, indentLevel+1);
+		}
+		else if (command.getName() == commandBank.scriptCmd){
+			indent(ostr, indentLevel+1);
+			ostr << "# NOTE: key == commandBank.scriptCmd  TODO SCRIPT QUOTE check...\n";
+			// exportCommand(key, command, ostr, indentLevel+1);
+		}
+		else {
+			//exportCommand(key, command, ostr, indentLevel+1);
+		}
+		exportCommand(key, command, ostr, indentLevel+1);
+
 		ostr << '\n';
 		--counter;
 		if (counter==0){
@@ -71,13 +101,12 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 
 	indent(ostr, indentLevel);
 	ostr << "def " << name << '(';
+	ostr << "self";
 
-	ostr << "self ";
 	char separator = ',';
 
 	drain::ReferenceMap::keylist_t keys = params.getKeyList();
-	//for (const auto & entry: m){
-	// bool DEFAULTS = false;
+
 	for (const auto & key: keys){
 
 		const Reference & param = params[key];
@@ -159,8 +188,29 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 	indent(ostr, indentLevel+1);
 	ostr << TRIPLE_HYPHEN << '\n';
 
-	indent(ostr, indentLevel+1);
-	ostr << content;
+	if ((params.size()>1) && (params.separator != ',')){
+		indent(ostr, indentLevel+1);
+		ostr << "# note: separator '" << params.separator << "'\n";
+
+		indent(ostr, indentLevel+1);
+		ostr << "cmd = self.make_cmd(locals())\n";
+		indent(ostr, indentLevel+1);
+		ostr << "cmd.setSeparators('"<< params.separator << "', ',')\n";
+		indent(ostr, indentLevel+1);
+		ostr << "return cmd\n";
+	}
+	else {
+		indent(ostr, indentLevel+1);
+		ostr << "return self.make_cmd(locals())";
+	}
+	ostr << '\n'; // needed
+	/*
+	for (const std::string & line: content){
+		indent(ostr, indentLevel+1);
+		ostr << line;
+		ostr << '\n'; // needed
+	}
+	*/
 	ostr << '\n';
 	//ostr << "pass\n";
 }

@@ -1,6 +1,10 @@
 import rack.prog
 class Rack(rack.prog.Register):
-    def aAltitude(self ,
+
+    # defaultCmdKey=inputFile
+    # execFileCmd=CmdExecFile
+    # commandBank.scriptCmd=CmdScript
+    def aAltitude(self,
         functor:str='',
         aboveSeaLevel:bool=True,
         bias:float=0):
@@ -11,9 +15,10 @@ class Rack(rack.prog.Register):
         aboveSeaLevel:true
         bias:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aAttenuation(self ,
+
+    def aAttenuation(self,
         reflHalfWidth:float=3,
         c:float=1.12e-07,
         p:float=0.62,
@@ -28,9 +33,10 @@ class Rack(rack.prog.Register):
         c2:0
         p2:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aBiomet(self ,
+
+    def aBiomet(self,
         reflMax:float=-10,
         maxAltitude:int=500,
         reflDev:float=5,
@@ -43,9 +49,10 @@ class Rack(rack.prog.Register):
         reflDev:5
         devAltitude:1000
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aBird(self ,
+
+    def aBird(self,
         dbzPeak:list=[-20,0],
         vradDevMin:float=1,
         rhoHVmax:list=[0.99,0.891],
@@ -62,9 +69,10 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aCCor(self ,
+
+    def aCCor(self,
         threshold:list=[10,30],
         mask:bool=False):
         """ Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.
@@ -73,9 +81,10 @@ class Rack(rack.prog.Register):
         threshold:10:30
         mask:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aChaff(self ,
+
+    def aChaff(self,
         dbzPeak:list=[5,15],
         vradDevMax:float=5,
         rhoHVmax:list=[0.5,0.4],
@@ -92,9 +101,10 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aClutter(self ,
+
+    def aClutter(self,
         decay:float=0.5,
         gamma:float=1,
         quantity:str='CLUTTER',
@@ -107,9 +117,10 @@ class Rack(rack.prog.Register):
         quantity:CLUTTER
         file:cluttermaps/cluttermap-${NOD}-${quantity}.h5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aDamper(self ,
+
+    def aDamper(self,
         threshold:float=0.5,
         undetectThreshold:float=0.1,
         minValue:float=None):
@@ -120,27 +131,30 @@ class Rack(rack.prog.Register):
         undetectThreshold:0.1
         minValue:null
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aDefault(self ,
+
+    def aDefault(self,
         probability:float=0.8):
         """ Marks the data values as unclassified, with high probability
 
         --- Parameters ---
         probability:0.8
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aDefaultQuality(self ,
+
+    def aDefaultQuality(self,
         threshold:float=0.8):
         """ Quality index value below which also CLASS information will be updated.
 
         --- Parameters ---
         threshold:0.8
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aDopplerNoise(self ,
+
+    def aDopplerNoise(self,
         speedDevThreshold:float=3,
         windowWidth:float=1500,
         windowHeight:float=3):
@@ -151,9 +165,10 @@ class Rack(rack.prog.Register):
         windowWidth:1500
         windowHeight:3
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aEmitter(self ,
+
+    def aEmitter(self,
         lengthMin:float=5,
         thicknessMax:float=5,
         sensitivity:float=0.5):
@@ -164,9 +179,10 @@ class Rack(rack.prog.Register):
         thicknessMax:5
         sensitivity:0.5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aGapFill(self ,
+
+    def aGapFill(self,
         width:int=1500,
         height:float=5,
         qualityThreshold:float=0.1):
@@ -177,9 +193,10 @@ class Rack(rack.prog.Register):
         height:5
         qualityThreshold:0.1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aGapFillRec(self ,
+
+    def aGapFillRec(self,
         width:int=1500,
         height:float=5,
         loops:int=3):
@@ -190,9 +207,10 @@ class Rack(rack.prog.Register):
         height:5
         loops:3
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aHydroClassBased(self ,
+
+    def aHydroClassBased(self,
         nonMet:float=0.5,
         NOMET:int=1):
         """ Sets probabilities of non-meteorological echoes based on precomputed hydrometeor CLASS.
@@ -201,9 +219,10 @@ class Rack(rack.prog.Register):
         nonMet:0.5
         NOMET:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aInsect(self ,
+
+    def aInsect(self,
         dbzMax:list=[-5,5],
         vradDevMax:float=5,
         rhoHVmax:list=[0.99,0.792],
@@ -220,9 +239,10 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aJamming(self ,
+
+    def aJamming(self,
         smoothnessThreshold:float=5,
         distanceMin:float=80,
         refit:bool=True):
@@ -233,9 +253,10 @@ class Rack(rack.prog.Register):
         distanceMin:80
         refit:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aNonMet(self ,
+
+    def aNonMet(self,
         threshold:list=[0.7,0.8],
         medianWindow:list=[0,0],
         medianPos:float=0):
@@ -246,9 +267,10 @@ class Rack(rack.prog.Register):
         medianWindow:0:0
         medianPos:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aNonMet2(self ,
+
+    def aNonMet2(self,
         threshold:list=[0.75,0.95],
         medianWindow:list=[0,0],
         medianPos:float=0):
@@ -259,9 +281,10 @@ class Rack(rack.prog.Register):
         medianWindow:0:0
         medianPos:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aPrecip(self ,
+
+    def aPrecip(self,
         probMax:float=0.5,
         dbz:float=20,
         dbzSpan:float=10):
@@ -272,16 +295,18 @@ class Rack(rack.prog.Register):
         dbz:20
         dbzSpan:10
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aQualityCombiner(self ):
+
+    def aQualityCombiner(self):
         """ Combines detection probabilities to overall quality field QIND (and CLASS).
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aRemover(self ,
+
+    def aRemover(self,
         threshold:float=0.5,
         replace:str='nodata',
         clearQuality:bool=True):
@@ -292,9 +317,10 @@ class Rack(rack.prog.Register):
         replace:nodata
         clearQuality:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aShip(self ,
+
+    def aShip(self,
         reflMin:float=25,
         reflDev:float=15,
         windowWidth:int=1500,
@@ -307,9 +333,10 @@ class Rack(rack.prog.Register):
         windowWidth:1500
         windowHeight:3
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aSpeckle(self ,
+
+    def aSpeckle(self,
         threshold:float=-20,
         area:int=16,
         invertPolar:bool=False):
@@ -320,9 +347,10 @@ class Rack(rack.prog.Register):
         area:16
         invertPolar:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aSun(self ,
+
+    def aSun(self,
         beamWidth:float=1,
         sensitivity:float=0.95):
         """ Draw the sun beam
@@ -331,9 +359,10 @@ class Rack(rack.prog.Register):
         beamWidth:1
         sensitivity:0.95
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aTest(self ,
+
+    def aTest(self,
         value:float=0,
         prob:float=1,
         i:list=[200,230],
@@ -346,9 +375,10 @@ class Rack(rack.prog.Register):
         i:200:230
         j:240:300
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aTime(self ,
+
+    def aTime(self,
         time:str='NOMINAL',
         decayPast:float=1,
         decayFuture:float=-1):
@@ -359,43 +389,48 @@ class Rack(rack.prog.Register):
         decayPast:1
         decayFuture:-1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def aUniversal(self ,
+
+    def aUniversal(self,
         unversal:bool=True):
         """ Toggle the support for universal ie. Dataset-wide quality indices.
 
         --- Parameters ---
         unversal:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def append(self ,
+
+    def append(self,
         path:str=''):
         """ Append inputs/products (empty=overwrite).
 
         --- Parameters ---
         path:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cAdd(self ):
+
+    def cAdd(self):
         """ Adds the current product to the composite.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cAddWeighted(self ,
+
+    def cAddWeighted(self,
         weight:float=1):
         """ Adds the current product to the composite applying weight.
 
         --- Parameters ---
         weight:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cBBox(self ,
+
+    def cBBox(self,
         llLon:float=0,
         llLat:float=0,
         urLon:float=0,
@@ -408,25 +443,28 @@ class Rack(rack.prog.Register):
         urLon:0
         urLat:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cBBoxReset(self ):
+
+    def cBBoxReset(self):
         """ Resets the bounding box (to be set again according to the next radar data).
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cBBoxTest(self ,
+
+    def cBBoxTest(self,
         mode:int=0):
         """ Tests whether the radar range is inside the composite.
 
         --- Parameters ---
         mode:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cBBoxTile(self ,
+
+    def cBBoxTile(self,
         llLon:float=0,
         llLat:float=0,
         urLon:float=0,
@@ -439,57 +477,64 @@ class Rack(rack.prog.Register):
         urLon:0
         urLat:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cCreate(self ):
+
+    def cCreate(self):
         """ Maps the current polar product to a Cartesian product.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cCreateLookup(self ):
+
+    def cCreateLookup(self):
         """ Creates lookup objects
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cCreateSun(self ,
+
+    def cCreateSun(self,
         timestamp:str='200507271845'):
         """ Cartesian sun shine field.
 
         --- Parameters ---
         timestamp:200507271845
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cCreateTile(self ):
+
+    def cCreateTile(self):
         """ Maps the current polar product to a tile to be used in compositing.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cDecayTime(self ,
+
+    def cDecayTime(self,
         time:int=0):
         """ Delay half-time in minutes. 0=no decay
 
         --- Parameters ---
         time:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cDefaultQuality(self ,
+
+    def cDefaultQuality(self,
         weight:float=0.75):
         """ Set default quality (for data without quality field)
 
         --- Parameters ---
         weight:0.75
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cExtract(self ,
+
+    def cExtract(self,
         channels:str='DATA,WEIGHT',
         bbox:str=''):
         """ Extract (export) data from the internal accumulation array
@@ -498,9 +543,14 @@ class Rack(rack.prog.Register):
         channels:DATA,WEIGHT
         bbox:
         """
-        return self._make_cmd(locals())
+        # note: separator ':'
+        cmd = self.make_cmd(locals())
+        cmd.setSeparators(':', ',')
+        return cmd
 
-    def cGrid(self ,
+
+
+    def cGrid(self,
         lonSpacing:int=1,
         latSpacing:int=1,
         width:float=1,
@@ -513,25 +563,28 @@ class Rack(rack.prog.Register):
         width:1
         intensity:0.5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cInit(self ):
+
+    def cInit(self):
         """ Allocate memory to --cSize, applying --target and --select, if set.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cMethod(self ,
+
+    def cMethod(self,
         method:str='MAXIMUM'):
         """ Method in accumulating values on a composite.
 
         --- Parameters ---
         method:MAXIMUM
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cOpticalFlow(self ,
+
+    def cOpticalFlow(self,
         width:list=[5,5],
         resize:float=0,
         threshold:float=None,
@@ -546,9 +599,10 @@ class Rack(rack.prog.Register):
         spread:false
         smooth:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cPlot(self ,
+
+    def cPlot(self,
         lon:float=0,
         lat:float=0,
         x:float=0,
@@ -561,43 +615,48 @@ class Rack(rack.prog.Register):
         x:0
         w:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cPlotFile(self ,
+
+    def cPlotFile(self,
         file:str=''):
         """ Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.
 
         --- Parameters ---
         file:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cProj(self ,
+
+    def cProj(self,
         projection:str=''):
         """ Set projection
 
         --- Parameters ---
         projection:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cRange(self ,
+
+    def cRange(self,
         range:int=250000):
         """ Force a range for single-radar cartesian products (0=use-metadata).
 
         --- Parameters ---
         range:250000
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cReset(self ):
+
+    def cReset(self):
         """ Clears the current Cartesian product.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cSize(self ,
+
+    def cSize(self,
         width:int=400,
         height:int=0):
         """ Set size of the compositing array. Does not allocate memory.
@@ -606,9 +665,10 @@ class Rack(rack.prog.Register):
         width:400
         height:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cSpread(self ,
+
+    def cSpread(self,
         horz:float=10,
         vert:float=0,
         loops:int=0):
@@ -619,48 +679,54 @@ class Rack(rack.prog.Register):
         vert:0
         loops:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cTime(self ,
+
+    def cTime(self,
         time:str='201412091845'):
         """ Modify the time of the current composite. See --cTimeDecay 
 
         --- Parameters ---
         time:201412091845
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def cTimeDecay(self ,
+
+    def cTimeDecay(self,
         weight:float=1):
         """ Weight (0.9...1.0) of delay, per minute. 1.0=no decay. See --cTime and --cDecayTime
 
         --- Parameters ---
         weight:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def checkType(self ):
+
+    def checkType(self):
         """ Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def completeODIM(self ):
+
+    def completeODIM(self):
         """ Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def convert(self ):
+
+    def convert(self):
         """ Convert --select:ed data to scaling and markers set by --encoding
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def createDefaultQuality(self ,
+
+    def createDefaultQuality(self,
         data:float=None,
         undetect:float=None,
         nodata:float=None):
@@ -671,25 +737,28 @@ class Rack(rack.prog.Register):
         undetect:null
         nodata:null
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def debug(self ):
+
+    def debug(self):
         """ Set verbosity to LOG_DEBUG
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def delete(self ,
+
+    def delete(self,
         selector:str='path,quantity,elangle,count,order,prf,timespan'):
         """ Deletes selected parts of h5 structure.
 
         --- Parameters ---
         selector:path,quantity,elangle,count,order,prf,timespan
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def dumpMap(self ,
+
+    def dumpMap(self,
         filter:str='',
         filename:str=''):
         """ Dump variable map, filtered by keys, to std or file.
@@ -698,86 +767,101 @@ class Rack(rack.prog.Register):
         filter:
         filename:
         """
-        return self._make_cmd(locals())
+        # note: separator ':'
+        cmd = self.make_cmd(locals())
+        cmd.setSeparators(':', ',')
+        return cmd
 
-    def echo(self ,
+
+
+    def echo(self,
         format:str=''):
         """ For testing. Dumps a formatted string to stdout.
 
         --- Parameters ---
         format:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def encoding(self ,
+
+    def encoding(self,
         encoding:str=''):
         """ Sets encodings parameters for polar and Cartesian products, including composites.
 
         --- Parameters ---
         encoding:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def errorFlags(self ,
+
+    def errorFlags(self,
         flags:str=''):
         """ Status of last select.
 
         --- Parameters ---
         flags:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def execFile(self ,
+
+    # NOTE: key == commandBank.execFileCmd TODO...
+    def execFile(self,
         filename:str=''):
         """ Execute commands from a file.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def execScript(self ):
+
+    def execScript(self):
         """ Execute script.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def expandVariables(self ):
+
+    def expandVariables(self):
         """ Toggle variable expansions on/off
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def format(self ,
+
+    def format(self,
         syntax:str=''):
         """ Set format for data dumps (see --sample or --outputFile)
 
         --- Parameters ---
         syntax:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def formatFile(self ,
+
+    def formatFile(self,
         filename:str=''):
         """ Read format for metadata dump from a file
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def formatOut(self ,
+
+    def formatOut(self,
         filename:str=''):
         """ Dumps the formatted std::string to a file or stdout.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def freezingLevel(self ,
+
+    def freezingLevel(self,
         height:float=None,
         thickness:float=0.1):
         """ Freezing level modelled simply as its height and thickness.
@@ -786,9 +870,10 @@ class Rack(rack.prog.Register):
         height:null
         thickness:0.1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gAlign(self ,
+
+    def gAlign(self,
         position:str='',
         anchor:str='',
         anchorHorz:str='',
@@ -801,9 +886,10 @@ class Rack(rack.prog.Register):
         anchorHorz:
         anchorVert:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gAlignTest(self ,
+
+    def gAlignTest(self,
         name:str='',
         panel:str='playGround1'):
         """ SVG test product
@@ -812,9 +898,10 @@ class Rack(rack.prog.Register):
         name:
         panel:playGround1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gDebug(self ,
+
+    def gDebug(self,
         name:str='',
         panel:str='playGround1'):
         """ SVG test product
@@ -823,45 +910,50 @@ class Rack(rack.prog.Register):
         name:
         panel:playGround1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gFontSizes(self ,
+
+    def gFontSizes(self,
         value:str=''):
         """ Adjust font sizes in CSS style section.
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gGroupId(self ,
+
+    def gGroupId(self,
         syntax:str=''):
         """ Set grouping criterion based on variables
 
         --- Parameters ---
         syntax:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gGroupTitle(self ,
+
+    def gGroupTitle(self,
         syntax:str=''):
         """ Set titles, supporting variables
 
         --- Parameters ---
         syntax:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gInclude(self ,
+
+    def gInclude(self,
         include:str='["NONE"|"PNG"|"SVG"|"TXT"|"ALL"|"NEXT"|"SKIP"|"ON"|"OFF"|"UNKNOWN"]'):
         """ Select images to include in SVG panel
 
         --- Parameters ---
         include:["NONE"|"PNG"|"SVG"|"TXT"|"ALL"|"NEXT"|"SKIP"|"ON"|"OFF"|"UNKNOWN"]
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gLayout(self ,
+
+    def gLayout(self,
         orientation:str='HORZ',
         direction:str='INCR'):
         """ Set main panel alignment
@@ -870,45 +962,50 @@ class Rack(rack.prog.Register):
         orientation:HORZ
         direction:INCR
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gLinkImage(self ,
+
+    def gLinkImage(self,
         value:str=''):
         """ SVG test product
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gPanel(self ,
+
+    def gPanel(self,
         layout:str='TECH'):
         """ SVG test product
 
         --- Parameters ---
         layout:TECH
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gPanelFoo(self ,
+
+    def gPanelFoo(self,
         layout:str=''):
         """ SVG test product
 
         --- Parameters ---
         layout:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gPanelTest(self ,
+
+    def gPanelTest(self,
         layout:str=''):
         """ SVG test product
 
         --- Parameters ---
         layout:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gPolarGrid(self ,
+
+    def gPolarGrid(self,
         distance:list=[1,0,0],
         azimuth:list=[1,0,0]):
         """ Draw polar sectors and rings
@@ -917,52 +1014,58 @@ class Rack(rack.prog.Register):
         distance:1:0:0
         azimuth:1:0:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gPolarScope(self ):
+
+    def gPolarScope(self):
         """ Draw circle, typically transparent, on the radar range
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gPolarSector(self ,
+
+    def gPolarSector(self,
         value:str=''):
         """ Select (and draw) sector using natural coordinates or indices
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gStyle(self ,
+
+    def gStyle(self,
         value:str=''):
         """ Add or modify CSS entry
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gTitle(self ,
+
+    def gTitle(self,
         title:str='AUTO'):
         """ Set main title
 
         --- Parameters ---
         title:AUTO
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def gTitleHeights(self ,
+
+    def gTitleHeights(self,
         value:str=''):
         """ Set title box heights and adjust font sizes. See --gFontSizes
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def geoTiff(self ,
+
+    def geoTiff(self,
         tile:list=[256,256],
         compression:str=''):
         """ GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=<width>:<height>,compression=LZW
@@ -971,36 +1074,40 @@ class Rack(rack.prog.Register):
         tile:256:256
         compression:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def getMyH5(self ,
+
+    def getMyH5(self,
         value:str=''):
         """ Dump H5 sources
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def help(self ,
+
+    def help(self,
         key:str=''):
         """ Display help.
 
         --- Parameters ---
         key:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def helpExample(self ,
+
+    def helpExample(self,
         keyword:str=''):
         """ Dump example of use and exit.
 
         --- Parameters ---
         keyword:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def histogram(self ,
+
+    def histogram(self,
         count:int=0,
         range:list=[0,0],
         filename:str='',
@@ -1015,9 +1122,10 @@ class Rack(rack.prog.Register):
         attribute:histogram
         commentChar:#
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iAdd(self ,
+
+    def iAdd(self,
         scale:float=1,
         bias:float=0,
         LIMIT:bool=False):
@@ -1028,18 +1136,20 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iAverage(self ,
+
+    def iAverage(self,
         width:list=[1,0]):
         """ Window averaging with optional weighting support.
 
         --- Parameters ---
         width:1:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iBlender(self ,
+
+    def iBlender(self,
         width:list=[5,0],
         spreader:str='avg',
         mix:str='max',
@@ -1054,9 +1164,10 @@ class Rack(rack.prog.Register):
         loops:1
         expansionCoeff:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iCatenate(self ,
+
+    def iCatenate(self,
         scale:float=1,
         offset:float=0):
         """ Catenates images
@@ -1065,9 +1176,10 @@ class Rack(rack.prog.Register):
         scale:1
         offset:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iCopy(self ,
+
+    def iCopy(self,
         dstView:str='',
         scale:float=1,
         bias:float=0,
@@ -1080,9 +1192,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iCrop(self ,
+
+    def iCrop(self,
         width:int=0,
         height:int=0,
         i:int=0,
@@ -1095,18 +1208,20 @@ class Rack(rack.prog.Register):
         i:0
         j:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iDistance(self ,
+
+    def iDistance(self,
         functor:str=''):
         """ Computes the distance of pixel vectors. Post-scaling with desired functor.
 
         --- Parameters ---
         functor:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iDistanceTransform(self ,
+
+    def iDistanceTransform(self,
         width:list=[10,10],
         height:list=[None,None],
         topology:str='16-CONNECTED'):
@@ -1117,9 +1232,10 @@ class Rack(rack.prog.Register):
         height:null:null
         topology:16-CONNECTED
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iDistanceTransformExp(self ,
+
+    def iDistanceTransformExp(self,
         width:list=[10,10],
         height:list=[None,None],
         topology:str='16-CONNECTED'):
@@ -1130,9 +1246,10 @@ class Rack(rack.prog.Register):
         height:null:null
         topology:16-CONNECTED
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iDistanceTransformFill(self ,
+
+    def iDistanceTransformFill(self,
         width:list=[12.3,12.3],
         height:list=[None,None],
         topology:str='16-CONNECTED',
@@ -1145,9 +1262,10 @@ class Rack(rack.prog.Register):
         topology:16-CONNECTED
         alphaThreshold:0:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iDistanceTransformFillExp(self ,
+
+    def iDistanceTransformFillExp(self,
         width:list=[12,12],
         height:list=[None,None],
         topology:str='16-CONNECTED',
@@ -1160,9 +1278,10 @@ class Rack(rack.prog.Register):
         topology:16-CONNECTED
         alphaThreshold:0:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iDiv(self ,
+
+    def iDiv(self,
         scale:float=1,
         bias:float=0,
         LIMIT:bool=False):
@@ -1173,9 +1292,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFloodFill(self ,
+
+    def iFloodFill(self,
         location:list=[0,0],
         intensity:list=[1,65536],
         value:float=1):
@@ -1186,18 +1306,20 @@ class Rack(rack.prog.Register):
         intensity:1:65536
         value:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFlowAverage(self ,
+
+    def iFlowAverage(self,
         width:list=[1,1]):
         """ Window average that preserves the magnitude
 
         --- Parameters ---
         width:1:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFuzzyBell(self ,
+
+    def iFuzzyBell(self,
         location:float=0,
         width:float=1,
         scale:float=1,
@@ -1212,9 +1334,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFuzzyBell2(self ,
+
+    def iFuzzyBell2(self,
         location:float=0,
         width:float=1,
         scale:float=1,
@@ -1229,9 +1352,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFuzzyStep(self ,
+
+    def iFuzzyStep(self,
         position:list=[-1,1],
         scale:float=1,
         bias:float=0,
@@ -1244,9 +1368,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFuzzyStepsoid(self ,
+
+    def iFuzzyStepsoid(self,
         location:float=0,
         width:float=1,
         scale:float=1,
@@ -1261,9 +1386,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFuzzyTriangle(self ,
+
+    def iFuzzyTriangle(self,
         position:list=[-1,1],
         peakPos:float=0,
         scale:float=1,
@@ -1278,9 +1404,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iFuzzyTwinPeaks(self ,
+
+    def iFuzzyTwinPeaks(self,
         location:float=0,
         width:float=1,
         scale:float=1,
@@ -1295,9 +1422,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iGamma(self ,
+
+    def iGamma(self,
         gamma:float=1,
         LIMIT:bool=False):
         """ Gamma correction for brightness.
@@ -1306,9 +1434,10 @@ class Rack(rack.prog.Register):
         gamma:1
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iGaussianAverage(self ,
+
+    def iGaussianAverage(self,
         width:list=[1,0],
         radius:float=0.5):
         """ Gaussian blur implemented as quick Wx1 and 1xH filtering.
@@ -1317,9 +1446,10 @@ class Rack(rack.prog.Register):
         width:1:0
         radius:0.5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iGradient(self ,
+
+    def iGradient(self,
         radius:int=1,
         LIMIT:bool=True):
         """ Computes horizontal and vertical derivatives: df/di and df/dj.
@@ -1328,9 +1458,10 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iGradientHorz(self ,
+
+    def iGradientHorz(self,
         radius:int=1,
         LIMIT:bool=True):
         """ Horizontal intensity difference
@@ -1339,9 +1470,10 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iGradientVert(self ,
+
+    def iGradientVert(self,
         radius:int=1,
         LIMIT:bool=True):
         """ Vertical intensity difference
@@ -1350,9 +1482,10 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iGray(self ,
+
+    def iGray(self,
         coeff:str='1.0',
         normalize:bool=True):
         """ Convert multi-channel image to single. Post-scaling with desired functor.
@@ -1361,9 +1494,10 @@ class Rack(rack.prog.Register):
         coeff:1.0
         normalize:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iHighBoost(self ,
+
+    def iHighBoost(self,
         width:int=3,
         height:int=3,
         coeff:float=0.5):
@@ -1374,9 +1508,10 @@ class Rack(rack.prog.Register):
         height:3
         coeff:0.5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iHighPass(self ,
+
+    def iHighPass(self,
         width:int=1,
         height:int=1,
         scale:float=1,
@@ -1391,9 +1526,10 @@ class Rack(rack.prog.Register):
         offset:0
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iImpulseAvg(self ,
+
+    def iImpulseAvg(self,
         decay:list=[0.75,0.75,0.75,0.75],
         extendHorz:int=0,
         extendVert:int=0,
@@ -1406,9 +1542,10 @@ class Rack(rack.prog.Register):
         extendVert:0
         weightThreshold:0.05
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iLaplace(self ,
+
+    def iLaplace(self,
         radius:int=1,
         LIMIT:bool=True):
         """ Second intensity derivatives, (df/di)^2 and (df/dj)^2
@@ -1417,9 +1554,10 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iLaplaceHorz(self ,
+
+    def iLaplaceHorz(self,
         radius:int=1,
         LIMIT:bool=True):
         """ Second horizontal differential
@@ -1428,9 +1566,10 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iLaplaceVert(self ,
+
+    def iLaplaceVert(self,
         radius:int=1,
         LIMIT:bool=True):
         """ Second vertical differential
@@ -1439,18 +1578,20 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMagnitude(self ,
+
+    def iMagnitude(self,
         functor:str=''):
         """ Computes the magnitude of a pixel vector. Post-scaling with desired functor.
 
         --- Parameters ---
         functor:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMarginStat(self ,
+
+    def iMarginStat(self,
         mode:str='horz',
         stat:str='asmdvNX',
         medianPos:float=0.5):
@@ -1461,16 +1602,18 @@ class Rack(rack.prog.Register):
         stat:asmdvNX
         medianPos:0.5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMax(self ):
+
+    def iMax(self):
         """ Maximum of two values.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMedian(self ,
+
+    def iMedian(self,
         width:list=[1,1],
         percentage:float=0.5,
         bins:int=256):
@@ -1481,16 +1624,18 @@ class Rack(rack.prog.Register):
         percentage:0.5
         bins:256
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMin(self ):
+
+    def iMin(self):
         """ Minimum of two values.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMix(self ,
+
+    def iMix(self,
         coeff:float=0.5,
         scale:float=1,
         bias:float=0,
@@ -1503,9 +1648,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMul(self ,
+
+    def iMul(self,
         scale:float=1,
         bias:float=0,
         LIMIT:bool=False):
@@ -1516,9 +1662,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iMultiThreshold(self ,
+
+    def iMultiThreshold(self,
         range:list=[0,1],
         min:float=0,
         max:float=1):
@@ -1529,43 +1676,48 @@ class Rack(rack.prog.Register):
         min:0
         max:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iNegate(self ):
+
+    def iNegate(self):
         """ Invert values (unsigned char or unsigned short int)
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iPhysical(self ,
+
+    def iPhysical(self,
         physical:bool=False):
         """ Flag. Handle intensities as physical quantities instead of storage typed values.
 
         --- Parameters ---
         physical:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iProduct(self ,
+
+    def iProduct(self,
         functor:str=''):
         """ Computes the dot product of pixel vectors. Post-scaling with desired functor.
 
         --- Parameters ---
         functor:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iQualityMixer(self ,
+
+    def iQualityMixer(self,
         coeff:float=0.5):
         """ Weighted blending of two images.
 
         --- Parameters ---
         coeff:0.5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iQualityOverride(self ,
+
+    def iQualityOverride(self,
         advantage:float=1,
         decay:float=1):
         """ Compares two images, preserving pixels having higher alpha value. Src alpha is pre-multiplied with advantage.
@@ -1574,9 +1726,10 @@ class Rack(rack.prog.Register):
         advantage:1
         decay:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iQualityThreshold(self ,
+
+    def iQualityThreshold(self,
         threshold:float=0,
         replace:float=None):
         """ Threshold data with quality
@@ -1585,9 +1738,10 @@ class Rack(rack.prog.Register):
         threshold:0
         replace:null
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iQuantizator(self ,
+
+    def iQuantizator(self,
         bits:int=4,
         LIMIT:bool=False):
         """ Quantize to n bits. (For integer images)
@@ -1596,9 +1750,10 @@ class Rack(rack.prog.Register):
         bits:4
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iRemap(self ,
+
+    def iRemap(self,
         fromValue:float=0,
         toValue:float=0,
         LIMIT:bool=False):
@@ -1609,9 +1764,10 @@ class Rack(rack.prog.Register):
         toValue:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iRescale(self ,
+
+    def iRescale(self,
         scale:float=1,
         bias:float=0,
         LIMIT:bool=False):
@@ -1622,9 +1778,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iResize(self ,
+
+    def iResize(self,
         width:int=0,
         height:int=0,
         interpolation:str='n',
@@ -1637,27 +1794,30 @@ class Rack(rack.prog.Register):
         interpolation:n
         scale:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iRunLengthHorz(self ,
+
+    def iRunLengthHorz(self,
         threshold:float=0):
         """ Computes lengths of segments of intensity above threshold.
 
         --- Parameters ---
         threshold:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iRunLengthVert(self ,
+
+    def iRunLengthVert(self,
         threshold:float=0):
         """ Computes lengths of segments of intensity above threshold.
 
         --- Parameters ---
         threshold:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iSegmentArea(self ,
+
+    def iSegmentArea(self,
         intensity:list=[1,1.79769e+308],
         functor:str=''):
         """ Computes segment sizes.
@@ -1666,9 +1826,10 @@ class Rack(rack.prog.Register):
         intensity:1:1.79769e+308
         functor:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iSegmentStats(self ,
+
+    def iSegmentStats(self,
         statistics:str='d',
         intensity:list=[1,255],
         functor:str=''):
@@ -1679,9 +1840,10 @@ class Rack(rack.prog.Register):
         intensity:1:255
         functor:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iSub(self ,
+
+    def iSub(self,
         scale:float=1,
         bias:float=0,
         LIMIT:bool=False):
@@ -1692,9 +1854,10 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iSuperProber(self ,
+
+    def iSuperProber(self,
         threshold:int=128,
         filename:str='',
         debug:int=0):
@@ -1705,9 +1868,10 @@ class Rack(rack.prog.Register):
         filename:
         debug:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iThreshold(self ,
+
+    def iThreshold(self,
         threshold:float=0.5,
         replace:float=0,
         LIMIT:bool=False):
@@ -1718,9 +1882,10 @@ class Rack(rack.prog.Register):
         replace:0
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iThresholdBinary(self ,
+
+    def iThresholdBinary(self,
         threshold:list=[0.5,0.5],
         replace:list=[0,1],
         LIMIT:bool=False):
@@ -1731,16 +1896,18 @@ class Rack(rack.prog.Register):
         replace:0:1
         LIMIT:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iTranspose(self ):
+
+    def iTranspose(self):
         """ Flips image matrix around its corner.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def iWindowHistogram(self ,
+
+    def iWindowHistogram(self,
         width:list=[1,1],
         valueFunc:str='a',
         percentage:float=0.5,
@@ -1753,23 +1920,26 @@ class Rack(rack.prog.Register):
         percentage:0.5
         bins:256
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def image(self ):
+
+    def image(self):
         """ Copies data to a separate image object. Encoding can be changed with --target .
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def imageAlpha(self ):
+
+    def imageAlpha(self):
         """ Adds a transparency channel. Implies additional image, creates one if needed. See --encoding
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def imageBox(self ,
+
+    def imageBox(self,
         i:list=[0,0],
         j:list=[0,0],
         value:str='0'):
@@ -1780,36 +1950,40 @@ class Rack(rack.prog.Register):
         j:0:0
         value:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def imageFlatten(self ,
+
+    def imageFlatten(self,
         bgcolor:str='0'):
         """ Removes a alpha (transparency) channel. Adds a new background of given color.
 
         --- Parameters ---
         bgcolor:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def imagePhysical(self ,
+
+    def imagePhysical(self,
         physical:bool=False):
         """ Flag. Handle intensities as physical quantities instead of storage typed values.
 
         --- Parameters ---
         physical:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def imageQuality(self ,
+
+    def imageQuality(self,
         groups:str='dataset:data'):
         """ Applied parent groups for quality: dataset:data
 
         --- Parameters ---
         groups:dataset:data
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def imageTransp(self ,
+
+    def imageTransp(self,
         ftor:str='',
         undetect:float=0,
         nodata:float=1):
@@ -1820,81 +1994,91 @@ class Rack(rack.prog.Register):
         undetect:0
         nodata:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def inputFile(self ,
+
+    # TODO: key == commandBank.defaultCmdKey...
+    def inputFile(self,
         filename:str=''):
         """ Read HDF5, text or image file
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def inputFilter(self ,
+
+    def inputFilter(self,
         ATTRIBUTES:str='3'):
         """ Partial file read. You probably search for --inputSelect
 
         --- Parameters ---
         ATTRIBUTES:3
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def inputPalette(self ,
+
+    def inputPalette(self,
         filename:str=''):
         """ Load palette.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def inputPrefix(self ,
+
+    def inputPrefix(self,
         value:str=''):
         """ Path prefix for input files.
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def inputSelect(self ,
+
+    def inputSelect(self,
         value:str=''):
         """ Selector for input data.
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def jSON(self ,
+
+    def jSON(self,
         property:str=''):
         """ Export a command to JSON.
 
         --- Parameters ---
         property:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def keep(self ,
+
+    def keep(self,
         selector:str='path,quantity,elangle,count,order,prf,timespan'):
         """ Keeps selected part of data structure, deletes rest.
 
         --- Parameters ---
         selector:path,quantity,elangle,count,order,prf,timespan
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def legendOut(self ,
+
+    def legendOut(self,
         filename:str=''):
         """ Save palette as TXT, JSON, SVG or SLD.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def log(self ,
+
+    def log(self,
         file:str='',
         level:str='',
         timing:bool=False,
@@ -1907,9 +2091,10 @@ class Rack(rack.prog.Register):
         timing:false
         vt100:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def move(self ,
+
+    def move(self,
         src:str='',
         dst:str=''):
         """ Rename or move data groups and attributes.
@@ -1918,97 +2103,108 @@ class Rack(rack.prog.Register):
         src:
         dst:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def odim(self ,
+
+    def odim(self,
         version:str='2.4'):
         """ Set ODIM version (experimental)
 
         --- Parameters ---
         version:2.4
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def outputConf(self ,
+
+    def outputConf(self,
         value:str='<format>:<key>=value>,conf...'):
         """ Format (h5|tif|png|tre|dot) specific configurations
 
         --- Parameters ---
         value:<format>:<key>=value>,conf...
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def outputFile(self ,
+
+    def outputFile(self,
         filename:str=''):
         """ Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def outputPalette(self ,
+
+    def outputPalette(self,
         filename:str=''):
         """ Save palette as TXT, JSON, SVG or SLD.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def outputPrefix(self ,
+
+    def outputPrefix(self,
         value:str=''):
         """ Path prefix for output files.
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def outputRawImages(self ,
+
+    def outputRawImages(self,
         filename:str=''):
         """ Output datasets to png files named filename[NN].ext.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def outputTree(self ,
+
+    def outputTree(self,
         filename:str=''):
         """ Output data as simple tree structure.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pAdd(self ):
+
+    def pAdd(self):
         """ Add polar data to accumulation array.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pAddWeighted(self ,
+
+    def pAddWeighted(self,
         weight:float=1):
         """ Adds the current product to the composite applying weight.
 
         --- Parameters ---
         weight:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pBeamAltitude(self ,
+
+    def pBeamAltitude(self,
         aboveSeaLevel:bool=True):
         """ Computes the altitude at each bin
 
         --- Parameters ---
         aboveSeaLevel:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pBiomet(self ,
+
+    def pBiomet(self,
         reflMax:float=-10,
         maxAltitude:int=500,
         reflDev:float=5,
@@ -2021,9 +2217,10 @@ class Rack(rack.prog.Register):
         reflDev:5
         devAltitude:1000
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pBird(self ,
+
+    def pBird(self,
         dbzPeak:list=[-20,0],
         vradDevMin:float=1,
         rhoHVmax:list=[0.99,0.891],
@@ -2040,9 +2237,10 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pCappi(self ,
+
+    def pCappi(self,
         altitude:float=1000,
         aboveSeaLevel:bool=True,
         beamWidth:float=1,
@@ -2059,9 +2257,10 @@ class Rack(rack.prog.Register):
         accumulationMethod:WAVG:1:8:-40
         height:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pClutter(self ,
+
+    def pClutter(self,
         decay:float=0.5,
         gamma:float=1,
         quantity:str='CLUTTER',
@@ -2074,9 +2273,10 @@ class Rack(rack.prog.Register):
         quantity:CLUTTER
         file:cluttermaps/cluttermap-${NOD}-${quantity}.h5
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pConv(self ,
+
+    def pConv(self,
         maxEchoThreshold:float=25,
         cellDiameter:float=3,
         echoTopThreshold:float=2,
@@ -2093,9 +2293,10 @@ class Rack(rack.prog.Register):
         smoothAzm:0
         smoothRad:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerAvg(self ,
+
+    def pDopplerAvg(self,
         width:float=1500,
         height:float=3,
         threshold:float=0.5,
@@ -2110,9 +2311,10 @@ class Rack(rack.prog.Register):
         compensate:false
         relativeScale:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerAvgExp(self ,
+
+    def pDopplerAvgExp(self,
         decay:list=[0.75,0.75,0.75,0.75],
         horzExtension:int=0,
         vertExtension:int=0):
@@ -2123,9 +2325,10 @@ class Rack(rack.prog.Register):
         horzExtension:0
         vertExtension:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerCrawler(self ,
+
+    def pDopplerCrawler(self,
         nyquist:float=100,
         threshold:float=0.9):
         """ Creates virtual 
@@ -2134,9 +2337,10 @@ class Rack(rack.prog.Register):
         nyquist:100
         threshold:0.9
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerDev(self ,
+
+    def pDopplerDev(self,
         width:float=1500,
         height:float=3,
         threshold:float=0.5,
@@ -2151,18 +2355,20 @@ class Rack(rack.prog.Register):
         compensate:false
         relativeScale:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerDiff(self ,
+
+    def pDopplerDiff(self,
         dMax:float=0):
         """ Azimuthal difference of VRAD
 
         --- Parameters ---
         dMax:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerDiffPlotter(self ,
+
+    def pDopplerDiffPlotter(self,
         azm:list=[0,0],
         range:list=[0,0],
         ray:list=[0,0],
@@ -2175,9 +2381,10 @@ class Rack(rack.prog.Register):
         ray:0:0
         bin:0:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerEccentricity(self ,
+
+    def pDopplerEccentricity(self,
         width:float=1500,
         height:float=3,
         threshold:float=0.5,
@@ -2190,9 +2397,10 @@ class Rack(rack.prog.Register):
         threshold:0.5
         compensate:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerInversion(self ,
+
+    def pDopplerInversion(self,
         width:int=500,
         height:float=3,
         altitudeWeight:str=''):
@@ -2203,9 +2411,10 @@ class Rack(rack.prog.Register):
         height:3
         altitudeWeight:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerReproject(self ,
+
+    def pDopplerReproject(self,
         nyquist:float=100,
         match:int=0,
         quantity:str='VRAD'):
@@ -2216,9 +2425,10 @@ class Rack(rack.prog.Register):
         match:0
         quantity:VRAD
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDopplerSampler(self ,
+
+    def pDopplerSampler(self,
         azm:list=[0,0],
         range:list=[0,0],
         ray:list=[0,0],
@@ -2231,9 +2441,10 @@ class Rack(rack.prog.Register):
         ray:0:0
         bin:0:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pDrawing(self ,
+
+    def pDrawing(self,
         shape:str='direction',
         p1:float=0,
         p2:float=0,
@@ -2250,9 +2461,10 @@ class Rack(rack.prog.Register):
         p4:0
         marker:255
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pEchoTop(self ,
+
+    def pEchoTop(self,
         threshold:float=20,
         reference:list=[-50,15000],
         undetectValue:float=-32,
@@ -2271,9 +2483,10 @@ class Rack(rack.prog.Register):
         avgWindow:0:0
         EXTENDED:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pEchoTopOpOld(self ,
+
+    def pEchoTopOpOld(self,
         minDBZ:float=20,
         dbzReference:float=-50,
         altitudeReference:float=15000,
@@ -2286,27 +2499,30 @@ class Rack(rack.prog.Register):
         altitudeReference:15000
         aboveSeaLevel:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pExtract(self ,
+
+    def pExtract(self,
         channels:str='dw'):
         """ Extract polar-coordinate data that has been accumulated.
 
         --- Parameters ---
         channels:dw
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pFunctor(self ,
+
+    def pFunctor(self,
         ftor:str=''):
         """ Maps values using a function
 
         --- Parameters ---
         ftor:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pMaxEcho(self ,
+
+    def pMaxEcho(self,
         altitude:list=[1000,9000],
         accumulationMethod:str='MAXIMUM'):
         """ Computes maximum dBZ inside altitude range
@@ -2315,18 +2531,20 @@ class Rack(rack.prog.Register):
         altitude:1000:9000
         accumulationMethod:MAXIMUM
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pOutputQuantity(self ,
+
+    def pOutputQuantity(self,
         productCmd:str=''):
         """ Return default outout quantity
 
         --- Parameters ---
         productCmd:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pPlot(self ,
+
+    def pPlot(self,
         lon:float=0,
         lat:float=0,
         value:float=0,
@@ -2339,18 +2557,20 @@ class Rack(rack.prog.Register):
         value:0
         weight:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pPlotFile(self ,
+
+    def pPlotFile(self,
         file:str=''):
         """ Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.
 
         --- Parameters ---
         file:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pPolarSlidingAvg(self ,
+
+    def pPolarSlidingAvg(self,
         width:float=1500,
         height:float=3,
         threshold:float=0.5,
@@ -2363,9 +2583,10 @@ class Rack(rack.prog.Register):
         threshold:0.5
         invertPolar:false
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pPseudoRhi(self ,
+
+    def pPseudoRhi(self,
         az_angle:float=0,
         xsize:int=500,
         ysize:int=250,
@@ -2384,16 +2605,18 @@ class Rack(rack.prog.Register):
         beamWidth:0.25
         beamPowerThreshold:0.01
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pRainRate(self ):
+
+    def pRainRate(self):
         """ Estimates precipitation rate [mm/h] from reflectance [dBZ].
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pRainRateDP(self ,
+
+    def pRainRateDP(self,
         dbz:list=[30,50],
         zdr:list=[0.15,0.25],
         rhohv:float=0.85,
@@ -2406,18 +2629,20 @@ class Rack(rack.prog.Register):
         rhohv:0.85
         kdp:0.25:0.35
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pSite(self ,
+
+    def pSite(self,
         location:list=[25.2,60.1]):
         """ Set radar size location of the accumulated data. Also size etc., if --encoding set.
 
         --- Parameters ---
         location:25.2:60.1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pSunShine(self ,
+
+    def pSunShine(self,
         timestamp:str='200527071845',
         quantity:str='SUNSHINE'):
         """ Computes the sun position
@@ -2426,9 +2651,10 @@ class Rack(rack.prog.Register):
         timestamp:200527071845
         quantity:SUNSHINE
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pSweep(self ,
+
+    def pSweep(self,
         quantity:str='DBZH',
         index:int=0):
         """ Return a single sweep
@@ -2437,9 +2663,10 @@ class Rack(rack.prog.Register):
         quantity:DBZH
         index:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pVerticalProfile(self ,
+
+    def pVerticalProfile(self,
         range:list=[10,100],
         height:list=[0,10000],
         levels:int=100,
@@ -2454,18 +2681,20 @@ class Rack(rack.prog.Register):
         azm:0:359.99
         azSlots:1
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def palette(self ,
+
+    def palette(self,
         filename:str=''):
         """ Load and apply palette.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def paletteConf(self ,
+
+    def paletteConf(self,
         key:str='list',
         code:str='',
         lenient:bool=True):
@@ -2476,85 +2705,94 @@ class Rack(rack.prog.Register):
         code:
         lenient:true
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def paletteDefault(self ):
+
+    def paletteDefault(self):
         """ Apply default palette matching the quantity of current data.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def paletteIn(self ,
+
+    def paletteIn(self,
         filename:str=''):
         """ Load palette.
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def paletteOut(self ,
+
+    def paletteOut(self,
         params:str=''):
         """ Deprecating command
 
         --- Parameters ---
         params:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def paletteRefine(self ,
+
+    def paletteRefine(self,
         count:int=0):
         """ Refine colors
 
         --- Parameters ---
         count:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def pause(self ,
+
+    def pause(self,
         seconds:str='random'):
         """ Pause for n or random seconds
 
         --- Parameters ---
         seconds:random
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def plot(self ,
+
+    def plot(self,
         i,j:str='0,0'):
         """ Plot
 
         --- Parameters ---
         i,j:0,0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def precipKDP(self ,
-        a:float=6.95326e-310,
+
+    def precipKDP(self,
+        a:float=6.95277e-310,
         b:float=0):
         """ Precip rate from KDP
 
         --- Parameters ---
-        a:6.95326e-310
+        a:6.95277e-310
         b:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def precipKDPZDR(self ,
-        a:float=6.95326e-310,
+
+    def precipKDPZDR(self,
+        a:float=6.95277e-310,
         b:float=0,
-        c:float=6.10797e-310):
+        c:float=6.25344e-310):
         """ Precipitation rate from KDP and ZDR
 
         --- Parameters ---
-        a:6.95326e-310
+        a:6.95277e-310
         b:0
-        c:6.10797e-310
+        c:6.25344e-310
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def precipZZDR(self ,
+
+    def precipZZDR(self,
         a:float=0.0122,
         b:float=0.82,
         c:float=-2.28):
@@ -2565,9 +2803,10 @@ class Rack(rack.prog.Register):
         b:0.82
         c:-2.28
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def precipZrain(self ,
+
+    def precipZrain(self,
         a:float=200,
         b:float=1.6):
         """ Precipitation rate from Z (reflectivity)
@@ -2576,9 +2815,10 @@ class Rack(rack.prog.Register):
         a:200
         b:1.6
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def precipZsnow(self ,
+
+    def precipZsnow(self,
         a:float=223,
         b:float=1.53):
         """ Precipitation rate from Z (reflectivity)
@@ -2587,20 +2827,22 @@ class Rack(rack.prog.Register):
         a:223
         b:1.53
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def python(self ,
+
+    def python(self,
         file:str='dump.py',
-        count:int=100):
+        count:int=0):
         """ Export command interfaces to Python. Compatible with rack.prog module.
 
         --- Parameters ---
         file:dump.py
-        count:100
+        count:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def quantityConf(self ,
+
+    def quantityConf(self,
         quantity:str='',
         encoding:str='',
         zero:str=''):
@@ -2611,16 +2853,22 @@ class Rack(rack.prog.Register):
         encoding:
         zero:
         """
-        return self._make_cmd(locals())
+        # note: separator ':'
+        cmd = self.make_cmd(locals())
+        cmd.setSeparators(':', ',')
+        return cmd
 
-    def restart(self ):
+
+
+    def restart(self):
         """ Debug
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def sample(self ,
+
+    def sample(self,
         iStep:int=10,
         jStep:int=0,
         i:list=[-1,1],
@@ -2639,97 +2887,109 @@ class Rack(rack.prog.Register):
         skipVoid:false
         handleVoid:null
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def script(self ,
+
+    # NOTE: key == commandBank.scriptCmd  TODO SCRIPT QUOTE check...
+    def script(self,
         script:str=''):
         """ Define script.
 
         --- Parameters ---
         script:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def select(self ,
+
+    def select(self,
         selector:str='path,quantity,elangle,count,order,prf,timespan'):
         """ Data selector for the next computation
 
         --- Parameters ---
         selector:path,quantity,elangle,count,order,prf,timespan
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def selectObject(self ,
+
+    def selectObject(self,
         flags:str='INPUT|POLAR|CARTESIAN'):
         """ Select input object for the next operation
 
         --- Parameters ---
         flags:INPUT|POLAR|CARTESIAN
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def selectQuantity(self ,
+
+    def selectQuantity(self,
         quantities:str=''):
         """ Like --select quantity=... 
 
         --- Parameters ---
         quantities:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def set(self ,
+
+    def set(self,
         assignment:str=''):
         """ Set general-purpose variables
 
         --- Parameters ---
         assignment:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def setODIM(self ,
+
+    def setODIM(self,
         assignment:str=''):
         """ Set data properties (ODIM). Works also directly: --/<path>:<key>[=<value>]. See --completeODIM
 
         --- Parameters ---
         assignment:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def status(self ):
+
+    def status(self):
         """ Dump information on current images.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def stopOnError(self ,
+
+    def stopOnError(self,
         flags:str=''):
         """ Stop on given error condition(s).
 
         --- Parameters ---
         flags:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def store(self ,
+
+    def store(self,
         level:str='0'):
         """ Request additional (debugging) outputs
 
         --- Parameters ---
         level:0
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def target(self ,
+
+    def target(self,
         encoding:str=''):
         """ Sets encodings parameters for polar and Cartesian products, including composites.
 
         --- Parameters ---
         encoding:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def testAreaSelector(self ,
+
+    def testAreaSelector(self,
         distance:list=[0,250],
         azimuth:list=[0,360]):
         """ Polar area (sector, annulus) selector
@@ -2738,50 +2998,56 @@ class Rack(rack.prog.Register):
         distance:0:250
         azimuth:0:360
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def testSelect(self ):
+
+    def testSelect(self):
         """ Test...
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def testTree(self ,
+
+    def testTree(self,
         value:str=''):
         """ Dump XML track
 
         --- Parameters ---
         value:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def undetectWeight(self ,
+
+    def undetectWeight(self,
         weight:float=0.75):
         """ Set the relative weight of data values assigned 'undetect'.
 
         --- Parameters ---
         weight:0.75
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def updateVariables(self ):
+
+    def updateVariables(self):
         """ Force calling DataTools::updateInternalAttributes(ctx.getHi5(Hdf5Context::CURRENT))
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def validate(self ,
+
+    def validate(self,
         filename:str=''):
         """ Read CVS file 
 
         --- Parameters ---
         filename:
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def verbose(self ,
+
+    def verbose(self,
         level:str='NOTE',
         imageLevel:str='WARNING'):
         """ Set verbosity level
@@ -2790,12 +3056,14 @@ class Rack(rack.prog.Register):
         level:NOTE
         imageLevel:WARNING
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
 
-    def version(self ):
+
+    def version(self):
         """ Displays software version and quits.
 
         --- Parameters ---
         """
-        return self._make_cmd(locals())
+        return self.make_cmd(locals())
+
 

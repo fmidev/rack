@@ -1671,7 +1671,7 @@ public:
 
 		// cmdBank.sections;
 		drain::PythonConverter python;
-		python.content="return self._make_cmd(locals())";
+		python.content= {"return self.make_cmd(locals())"};
 		python.counter = counter;
 
 		drain::Output output(filename);
@@ -1686,7 +1686,7 @@ public:
 
 	std::string filename;
 	// std::string key;
-	int counter = 100;
+	int counter = 0;
 
 };
 

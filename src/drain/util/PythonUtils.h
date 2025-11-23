@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PYTHON_UTILS
 #define DRAIN_PYTHON_UTILS
 
+#include <list>
 //#include <drain/prog/Command.h>
 #include <drain/prog/CommandBank.h>
 
@@ -54,7 +55,7 @@ public:
 	std::string indentStr = std::string(4, ' ');
 
 	// std::string content = "pass";
-	std::string content = "return self._make_cmd(locals())";
+	std::list<std::string> content = {"return self._make_cmd(locals())"};
 
 	mutable
 	int counter = 100;
