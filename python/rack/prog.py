@@ -32,9 +32,8 @@ class Command:
     def set_args(self, *args, **kwargs):
         """ Set ordered arguments and keyword arguments.
         """
-
-        logger.warning(f"  args: {args}")
-        logger.warning(f"kwargs: {kwargs}")
+        #logger.warning(f"  args: {args}")
+        #logger.warning(f"kwargs: {kwargs}")
 
         keys = self.args.keys()
 
