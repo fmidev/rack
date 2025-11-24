@@ -19,11 +19,28 @@ class Command:
     def __init__(self, name, args={}, explicit_args={}):
         """This defines the command parameter list, including default values.
         """
-        self.name = name
+        
+        self.name = name.strip(" -\t\n")
+        
+        self.expl_indices = 0
+
+        if type(args) == str:
+            args = args.strip().split(self.PRIMARY_SEP) # note: default value in PRIMARY_SEP
+            
+
+        if (type(args) == list):
+            self.expl_indices = len(args)
+            args = dict(enumerate(args)) #{k,v for enumerate(args)}
+
+        if self.name == 'verbose':
+            logger.debug("enchanced logging")
+            logger.setLevel("DEBUG")
+            logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
+
         self.args = args.copy()
         self.args.update(explicit_args)
         # Explicit argument indices given by the last set_args()
-        self.expl_indices = 0
+        
         # Explicit argument keys given by the last set_args()
         self.expl_keys = explicit_args.keys()  # dict of explicitly given args
         # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
@@ -36,6 +53,10 @@ class Command:
         #logger.warning(f"kwargs: {kwargs}")
 
         keys = self.args.keys()
+
+        if self.name == 'verbose':
+            logger.warning("enchances logging")
+            logger.setLevel("DEBUG")
 
         # 1. assign ordered args
         assigned_keys = []
@@ -66,6 +87,11 @@ class Command:
  
     def set_separators(self, primary:str=",", secondary:str=":"):
         self.PRIMARY_SEP   = primary
+        if secondary is None:
+            for c in (',', ':'):
+                if primary != c:
+                    secondary = c
+                    break
         self.SECONDARY_SEP = secondary
         if (primary == secondary):
             logger.error(f"setSeparators illegal equality primary:{primary} == secondary:{secondary}")
@@ -79,11 +105,6 @@ class Command:
 
     def __str__(self):
         return " ".join(self.to_tuple("'"))
-        # name = self.get_prefixed_name()
-        # args = []
-        # for k, v in self.args.items():
-        #    args.append(f"{k}={self._encode_value(v)}")
-        # return f"{name} {self.PRIMARY_SEP.join(args)}"
 
     def get_prefixed_name(self) -> str:
         l = len(self.name)
@@ -96,11 +117,19 @@ class Command:
             return f"--{self.name}"
 
     
-    # TODO: ALL vs EXPLICIT
-    def to_tuple(self, quote:str="") -> tuple:
-        """Returns a singleton or a double token"""    
+    
+    def to_tuple(self, quote:str="") -> tuple: # , prefixed=True
+        """Returns a singleton or a double token
         
+        This is the 'official' rendering of a command - other formatting uses the tuple as input.
+
+        Within command arguments, only 'explicit' ones - having non-default values - will be returned.
+        However, if all the argument values are defaults, the first one will be shown. 
+        """    
+        
+        #if prefixed:
         name = self.get_prefixed_name()
+
         if name: # and not self.implicit:
             result = [name]
         else:
@@ -116,12 +145,17 @@ class Command:
                 args.append(self._encode_value(self.args[k]))
             else:
                 args.append(f"{k}={self._encode_value(self.args[k])}")
-        #if self.expl_keys:
-        #    for k, v in self.expl_args.items():
-        #        args.append(f"{k}={self._encode_value(v)}")
-        #    result.append(quote+self.PRIMARY_SEP.join(args)+quote)
-        if args:
-            result.append(quote + self.PRIMARY_SEP.join(args) + quote)
+        
+        if self.args:
+            # Notice: args may be empty, then append an empty string.
+            # If all the arguments have default values (args is empty), display still an empty arg.
+            if args:
+                args = self.PRIMARY_SEP.join(args)
+            else:
+                # "modal argument": use first parameter value.
+                args = self.args[keys[0]] 
+            # result.append(quote + self.PRIMARY_SEP.join(args) + quote)
+            result.append(f"{quote}{args}{quote}")
 
         return tuple(result)
 
@@ -133,7 +167,8 @@ class Command:
 
     def _encode_value(self,v):
         """Format tuple as 'a:b', leave scalars untouched."""
-        if isinstance(v, tuple) and len(v) == 2:
+        #if isinstance(v, tuple) and len(v) == 2:
+        if isinstance(v, tuple):
             return f"{v[0]}{self.SECONDARY_SEP}{v[1]}"  #extend for >2
         return v
 
@@ -174,16 +209,19 @@ class Register:
         """
 
         args = {}
-        explicit = {}
+        explicit_args = {}
 
+        if caller_name == "verbose":
+            logger.warning(f"MAKE_CMD: locals: {local_vars}")
+        
         for k, v in local_vars.items():
             if k != "self":
                 args[k]=v
                 if not Register._is_default(func, k, v):
-                    explicit[k]=v
+                    explicit_args[k]=v
 
 
-        cmd = Command(caller_name, args=args, explicit_args=explicit)
+        cmd = Command(caller_name, args=args, explicit_args=explicit_args)
         if (separator):
             cmd.set_separators(separator)
         if self.cmdSequence:
@@ -209,17 +247,24 @@ class CommandSequence:
     #    logger.warning(f"adding args={cmd_args}")
 
     def add(self, cmd: Command, cmd_args:dict={}):
-        if type(cmd) == self.CmdClass:
+        t = type(cmd) 
+        if t == self.CmdClass:
             self.commands.append(cmd)
-        elif type(cmd) == str:
+            if cmd_args:
+                logger.warning(f"Parameter override for {cmd.name}: {cmd_args} (vs. {cmd.args})")
+        elif t in {str,list}:
             logger.warning(f"adding string: {cmd} args={cmd_args}")
             # check if without --, so explicit (inputFile?)
             # Notice: this _defines_ a command, so further param keys will raise warnings/errors.
+            # TODO: handling coud take place in Command(...)
+            self.commands.append(Command(cmd, cmd_args))
+            """
             if type(cmd_args) == str:
                 cmd_args = cmd_args.strip().split(',')
             if type(cmd_args) == list:
                 cmd_args = dict(enumerate(cmd_args))
             self.commands.append(Command(str(cmd).strip(" \t-"), explicit_args=cmd_args))
+            """
         else:
             raise TypeError(f"Unsupported arg type for cmd='{cmd}':", + type(cmd))
 

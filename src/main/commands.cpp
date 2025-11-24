@@ -2332,57 +2332,19 @@ public:
 
 	CmdStore() : drain::SimpleCommand<std::string>(__FUNCTION__, "Request additional (debugging) outputs",
 			"level", "0", drain::sprinter(drain::EnumDict<ProductConf::OutputDataVerbosity>::dict).str() ){ // drain::sprinter(outputFlagger.getDict().getContainer(), drain::Command::cmdArgLayout).str()
-		// drain::EnumDict<ProductConf::OutputDataVerbosity>::dict
-		//"Set how intermediate and final outputs are stored. See --append"){
-		// getParameters().link("intermediate", ProductBase::outputDataVerbosity = 0, "store intermediate images");
-		// getParameters().link("append",  ctx.appendResults = "", "|data|dataset");
-		// getParameters().link("append",  append, "|data|dataset (deprecated)");  // Keys()
-		// getParameters().link("test", value, drain::sprinter(outputFlagger.getDict().getContainer()).str());
-
 	};
-
-	/*
-	CmdStore(const CmdStore & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
-	};
-	*/
-
-
-	//int outputDataVerbosity;
-	//std::string append;
 
 	virtual
 	void exec() const {
-
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		// NEW
-		// mout.attention("current:  ", ctx.outputDataVerbosityNEW);
-		// mout.attention("setting:  ", value);
 		ctx.outputDataVerbosity.set(value);
-		// ctx.outputDataVerbosity = ctx.outputDataVerbosityNEW; // deprecated
-
-		// mout.attention("new value: ", value, " -> ", ctx.outputDataVerbosityNEW);
-		// OLD
-		// ctx.outputDataVerbosity = value;
-
-
-		// DetectorOp::STORE = (ProductBase::outputDataVerbosity>0);
-		//DetectorOp::STORE = ctx.outputDataVerbosity;
-		/*
-		if (!append.empty()){
-			ctx.appendResults.set(append);
-			mout.warn("option 'append' is deprecating, use --append <path> instead." );
-		}
-		*/
 	};
 
 };
 
 
-//class CmdQuantityConf : public drain::SimpleCommand<> {//public drain::BasicCommand {
-class CmdQuantityConf : public drain::BasicCommand {
+class CmdQuantityConf : public drain::BasicCommand { // public drain::SimpleCommand<>
 
 public:
 
@@ -2553,10 +2515,12 @@ struct VerboseCmd : public drain::BasicCommand {
 
 	inline
 	void exec() const {
+
 		RackContext & ctx = getContext<RackContext>();
+		// drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
+
 		ctx.log.setVerbosity(level); // NEW
 		drain::getLog().setVerbosity(level);
-		// drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 		hi5::getLogH5().setVerbosity(level);
 		drain::image::getImgLog().setVerbosity(imageLevel);
 		/*
@@ -2569,8 +2533,6 @@ struct VerboseCmd : public drain::BasicCommand {
 
 	std::string level;
 	std::string imageLevel;
-	//int level;
-	//int imageLevel;
 
 };
 
