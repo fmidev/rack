@@ -15,30 +15,50 @@ class Command:
     PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
 
-    #def __init__(self, name, args):
-
-    def FOO__init__(self, name, args={}):
-        self.name = name
-        self.expl_args = args  # dict of explicitly given args
 
     def __init__(self, name, args={}, explicit_args={}):
+        """This defines the command parameter list, including default values.
+        
+        
+        """
         self.name = name
-        self.default_args = args
-        self.expl_args = explicit_args  # dict of explicitly given args
+        self.default_args = args.copy()
+        self.default_args.update(explicit_args)
+        self.expl_indices = 0
+        self.expl_keys = explicit_args.keys()  # dict of explicitly given args
+        #self.expl_args = explicit_args  # dict of explicitly given args
 
-    def setArgs(self, *args, **kwargs):
+    def set_args(self, *args, **kwargs):
+        # Set arguments (ordered arguments and keyword arguments).
+
         logger.warning(f"  args: {args}")
         logger.warning(f"kwargs: {kwargs}")
 
-        if args:
-            for k,v in zip(self.expl_args.keys(), args):
-                self.expl_args[k] = v
+        keys = self.default_args.keys()
 
-        self.expl_args.update(kwargs)
-        #self.args = {}
-        #self.args.update(args)
+        # 1. assign ordered args
+        if args:
+            if len(args) > len(self.default_args):
+                raise KeyError(f"Too many arguments {args} for {keys}")
+            for k,v in zip(keys, args):
+                self.default_args[k] = v
+            self.expl_indices = len(args)
+
+        # 2. assign keyword args
+        self.expl_keys = [] 
+        for (k,v) in kwargs.items():
+            if k in keys: 
+                self.default_args[k] = v
+                self.expl_keys.append(k)
+            else:
+                keys = list(keys)
+                raise ValueError(f"Unknown argument keyword {k}, use: {keys})")
+           # self.default_args.update(kwargs)
         
-        #self.expl_args = (kwargs)
+        # self.expl_args.update(kwargs)
+        # self.args = {}
+        # self.args.update(args)
+        # self.expl_args = (kwargs)
 
     def setSeparators(self, primary:str=",", secondary:str=":"):
         self.PRIMARY_SEP   = primary
@@ -53,11 +73,11 @@ class Command:
 
     def __str__(self):
         return " ".join(self.to_tuple("'"))
-        #name = self.get_prefixed_name()
-        #args = []
-        #for k, v in self.args.items():
+        # name = self.get_prefixed_name()
+        # args = []
+        # for k, v in self.args.items():
         #    args.append(f"{k}={self._encode_value(v)}")
-        #return f"{name} {self.PRIMARY_SEP.join(args)}"
+        # return f"{name} {self.PRIMARY_SEP.join(args)}"
 
     def get_prefixed_name(self) -> str:
         l = len(self.name)
@@ -70,7 +90,7 @@ class Command:
             return f"--{self.name}"
 
     
-        
+    # TODO: ALL vs EXPLICIT
     def to_tuple(self, quote:str="") -> tuple:
         """Returns a singleton or a double token"""    
         
@@ -79,13 +99,20 @@ class Command:
             result = [name]
         else:
             result = []
-        
-        if self.expl_args:
-            args = []
-            for k, v in self.expl_args.items():
-                args.append(f"{k}={self._encode_value(v)}")
-                #args.append(f"{k}={quote}{self._encode_value(v)}{quote}")
-            result.append(quote+self.PRIMARY_SEP.join(args)+quote)
+
+        args = []
+        keys = list(self.default_args.keys())
+        for i in range(0,self.expl_indices):
+            args.append(str(self._encode_value(self.default_args[keys[i]])))
+
+        for k in self.expl_keys:
+            args.append(f"{k}={self._encode_value(self.default_args[k])}")
+        #if self.expl_keys:
+        #    for k, v in self.expl_args.items():
+        #        args.append(f"{k}={self._encode_value(v)}")
+        #    result.append(quote+self.PRIMARY_SEP.join(args)+quote)
+        if args:
+            result.append(quote + self.PRIMARY_SEP.join(args) + quote)
 
         return tuple(result)
 
