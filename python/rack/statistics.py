@@ -750,13 +750,11 @@ def run(args):
     
     log = logger.getChild("run")
  
-    import rack.myprogram
-    r = rack.myprogram.MyProgram()
-
-    cmd = r.sample(i=(2, 7), iStep=1)
-    print(cmd.__str__)
-    print(cmd)
-    
+    # import rack.myprogram
+    # r = rack.myprogram.MyProgram()
+    # cmd = r.sample(i=(2, 7), iStep=1)
+    # print(cmd.__str__)
+    # print(cmd)
     
     #r = rack.myprogram.MyProgram()
     #c= r.sample(iStep=1, i=(2,7))
