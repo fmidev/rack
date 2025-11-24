@@ -130,13 +130,17 @@ class Command:
         #if prefixed:
         name = self.get_prefixed_name()
 
-        if name: # and not self.implicit:
+        if name and not self.implicit:
             result = [name]
         else:
             result = []
 
-        args = []
         keys = list(self.args.keys())
+        args = []
+
+        if self.implicit and (len(keys) == 1):
+            return ( str(self._encode_value(self.args[keys[0]])), )
+
         for i in range(0,self.expl_indices):
             args.append(str(self._encode_value(self.args[keys[i]])))
 
@@ -155,7 +159,10 @@ class Command:
                 # "modal argument": use first parameter value.
                 args = self.args[keys[0]] 
             # result.append(quote + self.PRIMARY_SEP.join(args) + quote)
-            result.append(f"{quote}{args}{quote}")
+            args = f"{quote}{args}{quote}"
+            #if self.implicit:
+            #    return (args,)
+            result.append(args)
 
         return tuple(result)
 
