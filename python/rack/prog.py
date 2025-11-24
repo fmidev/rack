@@ -112,7 +112,10 @@ class Command:
             args.append(str(self._encode_value(self.args[keys[i]])))
 
         for k in self.expl_keys:
-            args.append(f"{k}={self._encode_value(self.args[k])}")
+            if type(k) == int:
+                args.append(self._encode_value(self.args[k]))
+            else:
+                args.append(f"{k}={self._encode_value(self.args[k])}")
         #if self.expl_keys:
         #    for k, v in self.expl_args.items():
         #        args.append(f"{k}={self._encode_value(v)}")
@@ -202,14 +205,23 @@ class CommandSequence:
         self.commands: List[Command] = []
         self.programName = programName
 
-    def add(self, cmd: Command, args={}):
+    #def check(self, cmd_args:dict={}):
+    #    logger.warning(f"adding args={cmd_args}")
+
+    def add(self, cmd: Command, cmd_args:dict={}):
         if type(cmd) == self.CmdClass:
             self.commands.append(cmd)
         elif type(cmd) == str:
-            # logger.warning(f"adding string: {cmd}")
-            self.commands.append(Command(str(cmd).strip(" \t-"), args))
+            logger.warning(f"adding string: {cmd} args={cmd_args}")
+            # check if without --, so explicit (inputFile?)
+            # Notice: this _defines_ a command, so further param keys will raise warnings/errors.
+            if type(cmd_args) == str:
+                cmd_args = cmd_args.strip().split(',')
+            if type(cmd_args) == list:
+                cmd_args = dict(enumerate(cmd_args))
+            self.commands.append(Command(str(cmd).strip(" \t-"), explicit_args=cmd_args))
         else:
-            raise ValueError(f"Unsupported arg type for cmd='{cmd}':", + type(cmd))
+            raise TypeError(f"Unsupported arg type for cmd='{cmd}':", + type(cmd))
 
     def to_list(self) -> list:
         """Produces a list suited to be joined with newline char, for example"""

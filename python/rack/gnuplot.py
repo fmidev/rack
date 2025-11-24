@@ -82,6 +82,7 @@ class GnuPlotCommandSequence(rack.command.CommandSequence):
             f = files.pop()
             split_name = f.replace('/',SEPARATOR).split(SEPARATOR)
             # DEFUNCT title =  " ".join([split_name[i] for i in distinct_indices])
+            title = "FOO"
             plots.append({"file": f, "using": colums, "with_": "lines", "title": title})
 
         self.add(GnuPlotCommand.plot.plot( *plots ))
