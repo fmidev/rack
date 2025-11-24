@@ -18,58 +18,65 @@ class Command:
 
     def __init__(self, name, args={}, explicit_args={}):
         """This defines the command parameter list, including default values.
-        
-        
         """
         self.name = name
-        self.default_args = args.copy()
-        self.default_args.update(explicit_args)
+        self.args = args.copy()
+        self.args.update(explicit_args)
+        # Explicit argument indices given by the last set_args()
         self.expl_indices = 0
+        # Explicit argument keys given by the last set_args()
         self.expl_keys = explicit_args.keys()  # dict of explicitly given args
-        #self.expl_args = explicit_args  # dict of explicitly given args
+        # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
+        self.implicit = False
 
     def set_args(self, *args, **kwargs):
-        # Set arguments (ordered arguments and keyword arguments).
+        """ Set ordered arguments and keyword arguments.
+        """
 
         logger.warning(f"  args: {args}")
         logger.warning(f"kwargs: {kwargs}")
 
-        keys = self.default_args.keys()
+        keys = self.args.keys()
 
         # 1. assign ordered args
+        assigned_keys = []
         if args:
-            if len(args) > len(self.default_args):
-                raise KeyError(f"Too many arguments {args} for {keys}")
+            if len(args) > len(self.args):
+                keys = list(keys)
+                raise KeyError(f"Too many arguments ({args}) for {keys}")
             for k,v in zip(keys, args):
-                self.default_args[k] = v
+                self.args[k] = v
+                assigned_keys.append(k)
             self.expl_indices = len(args)
 
         # 2. assign keyword args
         self.expl_keys = [] 
         for (k,v) in kwargs.items():
             if k in keys: 
-                self.default_args[k] = v
+                if k in assigned_keys:
+                    logger.warning(f"overriding ordered arg ({self.args[k]}) with keyword arg ({k}={v})")
+                self.args[k] = v
                 self.expl_keys.append(k)
+                
             else:
                 keys = list(keys)
                 raise ValueError(f"Unknown argument keyword {k}, use: {keys})")
-           # self.default_args.update(kwargs)
         
-        # self.expl_args.update(kwargs)
-        # self.args = {}
-        # self.args.update(args)
-        # self.expl_args = (kwargs)
 
-    def setSeparators(self, primary:str=",", secondary:str=":"):
+        
+ 
+    def set_separators(self, primary:str=",", secondary:str=":"):
         self.PRIMARY_SEP   = primary
         self.SECONDARY_SEP = secondary
         if (primary == secondary):
             logger.error(f"setSeparators illegal equality primary:{primary} == secondary:{secondary}")
 
-    def fmt(self, val: Any, key: str = "") -> str:
-        """Format a single argument or option for output.
-        Default: just convert to string. Override in subclasses."""
-        return str(val)
+    def set_implicit(self, value:bool = True):
+        """If a command is implict, its name (keyword) will not be displayed on command line. 
+        
+        Typical for input file args.
+        """
+        self.implicit = value
 
     def __str__(self):
         return " ".join(self.to_tuple("'"))
@@ -95,18 +102,18 @@ class Command:
         """Returns a singleton or a double token"""    
         
         name = self.get_prefixed_name()
-        if name:
+        if name: # and not self.implicit:
             result = [name]
         else:
             result = []
 
         args = []
-        keys = list(self.default_args.keys())
+        keys = list(self.args.keys())
         for i in range(0,self.expl_indices):
-            args.append(str(self._encode_value(self.default_args[keys[i]])))
+            args.append(str(self._encode_value(self.args[keys[i]])))
 
         for k in self.expl_keys:
-            args.append(f"{k}={self._encode_value(self.default_args[k])}")
+            args.append(f"{k}={self._encode_value(self.args[k])}")
         #if self.expl_keys:
         #    for k, v in self.expl_args.items():
         #        args.append(f"{k}={self._encode_value(v)}")
@@ -115,6 +122,12 @@ class Command:
             result.append(quote + self.PRIMARY_SEP.join(args) + quote)
 
         return tuple(result)
+
+    # This and next related?
+    def fmt(self, val: Any, key: str = "") -> str:
+        """Format a single argument or option for output.
+        Default: just convert to string. Override in subclasses."""
+        return str(val)
 
     def _encode_value(self,v):
         """Format tuple as 'a:b', leave scalars untouched."""
@@ -170,7 +183,7 @@ class Register:
 
         cmd = Command(caller_name, args=args, explicit_args=explicit)
         if (separator):
-            cmd.setSeparators(separator)
+            cmd.set_separators(separator)
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
             # return ?

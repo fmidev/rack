@@ -57,6 +57,7 @@ void PythonConverter::exportCommands(const std::string &name, const drain::Comma
 		const std::string & key = entry.first;
 		const drain::Command & command = entry.second->getSource();
 
+		const bool IMPLICIT = (key == commandBank.defaultCmdKey);
 		if (key == commandBank.defaultCmdKey){
 			indent(ostr, indentLevel+1);
 			ostr << "# TODO: key == commandBank.defaultCmdKey...\n";
@@ -75,7 +76,7 @@ void PythonConverter::exportCommands(const std::string &name, const drain::Comma
 		else {
 			//exportCommand(key, command, ostr, indentLevel+1);
 		}
-		exportCommand(key, command, ostr, indentLevel+1);
+		exportCommand(key, command, ostr, indentLevel+1, IMPLICIT);
 
 		ostr << '\n';
 		--counter;
@@ -88,7 +89,7 @@ void PythonConverter::exportCommands(const std::string &name, const drain::Comma
 
 }
 
-void PythonConverter::exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr, int indentLevel) const {
+void PythonConverter::exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr, int indentLevel, bool implicit) const {
 
 	const drain::ReferenceMap & params = command.getParameters();
 	const drain::ReferenceMap::unitmap_t & u = params.getUnitMap();
@@ -96,8 +97,7 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 	drain::PythonSerializer pyser;
 	// drain::Output pyDump(filename);
 	// std::ostream & pyDump = std::cout; //("dump.py");
-
-	//  Signature:
+	// Signature:
 
 	indent(ostr, indentLevel);
 	ostr << "def " << name << '(';
@@ -188,22 +188,27 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 	indent(ostr, indentLevel+1);
 	ostr << TRIPLE_HYPHEN << '\n';
 
+	indent(ostr, indentLevel+1);
+	ostr << "cmd = self.make_cmd(locals())\n";
+	if (implicit){
+		indent(ostr, indentLevel+1);
+		ostr << "cmd.set_implicit()\n";
+	}
 	if ((params.size()>1) && (params.separator != ',')){
 		indent(ostr, indentLevel+1);
 		ostr << "# note: separator '" << params.separator << "'\n";
 
 		indent(ostr, indentLevel+1);
-		ostr << "cmd = self.make_cmd(locals())\n";
-		indent(ostr, indentLevel+1);
-		ostr << "cmd.setSeparators('"<< params.separator << "', ',')\n";
+		ostr << "cmd.set_separators('"<< params.separator << "', ',')\n";
 		indent(ostr, indentLevel+1);
 		ostr << "return cmd\n";
 	}
-	else {
-		indent(ostr, indentLevel+1);
-		ostr << "return self.make_cmd(locals())";
-	}
-	ostr << '\n'; // needed
+	//else {
+	indent(ostr, indentLevel+1);
+	ostr << "return cmd\n";
+	// ostr << "return self.make_cmd(locals())";
+	// }
+	// ostr << '\n'; // needed
 	/*
 	for (const std::string & line: content){
 		indent(ostr, indentLevel+1);

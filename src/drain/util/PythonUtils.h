@@ -65,7 +65,7 @@ public:
 
 	void exportCommands(const std::string &name, const drain::CommandBank & commandBank, std::ostream & ostr=std::cout, int indentLevel=0) const;
 
-	void exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr=std::cout, int indentLevel=1) const;
+	void exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr=std::cout, int indentLevel=1, bool implicit=false) const;
 
 
 	// template <class T>

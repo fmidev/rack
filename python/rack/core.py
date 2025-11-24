@@ -15,7 +15,8 @@ class Rack(rack.prog.Register):
         aboveSeaLevel:true
         bias:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aAttenuation(self,
@@ -33,7 +34,8 @@ class Rack(rack.prog.Register):
         c2:0
         p2:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aBiomet(self,
@@ -49,7 +51,8 @@ class Rack(rack.prog.Register):
         reflDev:5
         devAltitude:1000
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aBird(self,
@@ -69,7 +72,8 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aCCor(self,
@@ -81,7 +85,8 @@ class Rack(rack.prog.Register):
         threshold:10:30
         mask:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aChaff(self,
@@ -101,7 +106,8 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aClutter(self,
@@ -117,7 +123,8 @@ class Rack(rack.prog.Register):
         quantity:CLUTTER
         file:cluttermaps/cluttermap-${NOD}-${quantity}.h5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aDamper(self,
@@ -131,7 +138,8 @@ class Rack(rack.prog.Register):
         undetectThreshold:0.1
         minValue:null
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aDefault(self,
@@ -141,7 +149,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         probability:0.8
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aDefaultQuality(self,
@@ -151,7 +160,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         threshold:0.8
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aDopplerNoise(self,
@@ -165,7 +175,8 @@ class Rack(rack.prog.Register):
         windowWidth:1500
         windowHeight:3
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aEmitter(self,
@@ -179,7 +190,8 @@ class Rack(rack.prog.Register):
         thicknessMax:5
         sensitivity:0.5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aGapFill(self,
@@ -193,7 +205,8 @@ class Rack(rack.prog.Register):
         height:5
         qualityThreshold:0.1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aGapFillRec(self,
@@ -207,7 +220,8 @@ class Rack(rack.prog.Register):
         height:5
         loops:3
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aHydroClassBased(self,
@@ -219,7 +233,8 @@ class Rack(rack.prog.Register):
         nonMet:0.5
         NOMET:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aInsect(self,
@@ -239,7 +254,8 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aJamming(self,
@@ -253,7 +269,8 @@ class Rack(rack.prog.Register):
         distanceMin:80
         refit:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aNonMet(self,
@@ -267,7 +284,8 @@ class Rack(rack.prog.Register):
         medianWindow:0:0
         medianPos:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aNonMet2(self,
@@ -281,7 +299,8 @@ class Rack(rack.prog.Register):
         medianWindow:0:0
         medianPos:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aPrecip(self,
@@ -295,7 +314,8 @@ class Rack(rack.prog.Register):
         dbz:20
         dbzSpan:10
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aQualityCombiner(self):
@@ -303,7 +323,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aRemover(self,
@@ -317,7 +338,8 @@ class Rack(rack.prog.Register):
         replace:nodata
         clearQuality:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aShip(self,
@@ -333,7 +355,8 @@ class Rack(rack.prog.Register):
         windowWidth:1500
         windowHeight:3
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aSpeckle(self,
@@ -347,7 +370,8 @@ class Rack(rack.prog.Register):
         area:16
         invertPolar:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aSun(self,
@@ -359,7 +383,8 @@ class Rack(rack.prog.Register):
         beamWidth:1
         sensitivity:0.95
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aTest(self,
@@ -375,7 +400,8 @@ class Rack(rack.prog.Register):
         i:200:230
         j:240:300
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aTime(self,
@@ -389,7 +415,8 @@ class Rack(rack.prog.Register):
         decayPast:1
         decayFuture:-1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def aUniversal(self,
@@ -399,7 +426,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         unversal:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def append(self,
@@ -409,7 +437,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         path:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cAdd(self):
@@ -417,7 +446,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cAddWeighted(self,
@@ -427,7 +457,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         weight:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cBBox(self,
@@ -443,7 +474,8 @@ class Rack(rack.prog.Register):
         urLon:0
         urLat:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cBBoxReset(self):
@@ -451,7 +483,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cBBoxTest(self,
@@ -461,7 +494,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         mode:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cBBoxTile(self,
@@ -477,7 +511,8 @@ class Rack(rack.prog.Register):
         urLon:0
         urLat:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cCreate(self):
@@ -485,7 +520,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cCreateLookup(self):
@@ -493,7 +529,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cCreateSun(self,
@@ -503,7 +540,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         timestamp:200507271845
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cCreateTile(self):
@@ -511,7 +549,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cDecayTime(self,
@@ -521,7 +560,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         time:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cDefaultQuality(self,
@@ -531,7 +571,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         weight:0.75
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cExtract(self,
@@ -543,11 +584,11 @@ class Rack(rack.prog.Register):
         channels:DATA,WEIGHT
         bbox:
         """
-        # note: separator ':'
         cmd = self.make_cmd(locals())
-        cmd.setSeparators(':', ',')
+        # note: separator ':'
+        cmd.set_separators(':', ',')
         return cmd
-
+        return cmd
 
 
     def cGrid(self,
@@ -563,7 +604,8 @@ class Rack(rack.prog.Register):
         width:1
         intensity:0.5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cInit(self):
@@ -571,7 +613,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cMethod(self,
@@ -581,7 +624,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         method:MAXIMUM
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cOpticalFlow(self,
@@ -599,7 +643,8 @@ class Rack(rack.prog.Register):
         spread:false
         smooth:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cPlot(self,
@@ -615,7 +660,8 @@ class Rack(rack.prog.Register):
         x:0
         w:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cPlotFile(self,
@@ -625,7 +671,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         file:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cProj(self,
@@ -635,7 +682,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         projection:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cRange(self,
@@ -645,7 +693,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         range:250000
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cReset(self):
@@ -653,7 +702,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cSize(self,
@@ -665,7 +715,8 @@ class Rack(rack.prog.Register):
         width:400
         height:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cSpread(self,
@@ -679,7 +730,8 @@ class Rack(rack.prog.Register):
         vert:0
         loops:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cTime(self,
@@ -689,7 +741,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         time:201412091845
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def cTimeDecay(self,
@@ -699,7 +752,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         weight:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def checkType(self):
@@ -707,7 +761,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def completeODIM(self):
@@ -715,7 +770,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def convert(self):
@@ -723,7 +779,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def createDefaultQuality(self,
@@ -737,7 +794,8 @@ class Rack(rack.prog.Register):
         undetect:null
         nodata:null
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def debug(self):
@@ -745,7 +803,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def delete(self,
@@ -755,7 +814,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         selector:path,quantity,elangle,count,order,prf,timespan
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def dumpMap(self,
@@ -767,11 +827,11 @@ class Rack(rack.prog.Register):
         filter:
         filename:
         """
-        # note: separator ':'
         cmd = self.make_cmd(locals())
-        cmd.setSeparators(':', ',')
+        # note: separator ':'
+        cmd.set_separators(':', ',')
         return cmd
-
+        return cmd
 
 
     def echo(self,
@@ -781,7 +841,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         format:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def encoding(self,
@@ -791,7 +852,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         encoding:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def errorFlags(self,
@@ -801,7 +863,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         flags:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     # NOTE: key == commandBank.execFileCmd TODO...
@@ -812,7 +875,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def execScript(self):
@@ -820,7 +884,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def expandVariables(self):
@@ -828,7 +893,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def format(self,
@@ -838,7 +904,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         syntax:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def formatFile(self,
@@ -848,7 +915,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def formatOut(self,
@@ -858,7 +926,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def freezingLevel(self,
@@ -870,7 +939,8 @@ class Rack(rack.prog.Register):
         height:null
         thickness:0.1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gAlign(self,
@@ -886,7 +956,8 @@ class Rack(rack.prog.Register):
         anchorHorz:
         anchorVert:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gAlignTest(self,
@@ -898,7 +969,8 @@ class Rack(rack.prog.Register):
         name:
         panel:playGround1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gDebug(self,
@@ -910,7 +982,8 @@ class Rack(rack.prog.Register):
         name:
         panel:playGround1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gFontSizes(self,
@@ -920,7 +993,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gGroupId(self,
@@ -930,7 +1004,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         syntax:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gGroupTitle(self,
@@ -940,7 +1015,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         syntax:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gInclude(self,
@@ -950,7 +1026,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         include:["NONE"|"PNG"|"SVG"|"TXT"|"ALL"|"NEXT"|"SKIP"|"ON"|"OFF"|"UNKNOWN"]
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gLayout(self,
@@ -962,7 +1039,8 @@ class Rack(rack.prog.Register):
         orientation:HORZ
         direction:INCR
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gLinkImage(self,
@@ -972,7 +1050,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gPanel(self,
@@ -982,7 +1061,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         layout:TECH
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gPanelFoo(self,
@@ -992,7 +1072,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         layout:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gPanelTest(self,
@@ -1002,7 +1083,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         layout:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gPolarGrid(self,
@@ -1014,7 +1096,8 @@ class Rack(rack.prog.Register):
         distance:1:0:0
         azimuth:1:0:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gPolarScope(self):
@@ -1022,7 +1105,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gPolarSector(self,
@@ -1032,7 +1116,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gStyle(self,
@@ -1042,7 +1127,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gTitle(self,
@@ -1052,7 +1138,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         title:AUTO
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def gTitleHeights(self,
@@ -1062,7 +1149,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def geoTiff(self,
@@ -1074,7 +1162,8 @@ class Rack(rack.prog.Register):
         tile:256:256
         compression:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def getMyH5(self,
@@ -1084,7 +1173,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def help(self,
@@ -1094,7 +1184,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         key:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def helpExample(self,
@@ -1104,7 +1195,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         keyword:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def histogram(self,
@@ -1122,7 +1214,8 @@ class Rack(rack.prog.Register):
         attribute:histogram
         commentChar:#
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iAdd(self,
@@ -1136,7 +1229,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iAverage(self,
@@ -1146,7 +1240,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         width:1:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iBlender(self,
@@ -1164,7 +1259,8 @@ class Rack(rack.prog.Register):
         loops:1
         expansionCoeff:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iCatenate(self,
@@ -1176,7 +1272,8 @@ class Rack(rack.prog.Register):
         scale:1
         offset:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iCopy(self,
@@ -1192,7 +1289,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iCrop(self,
@@ -1208,7 +1306,8 @@ class Rack(rack.prog.Register):
         i:0
         j:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iDistance(self,
@@ -1218,7 +1317,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         functor:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iDistanceTransform(self,
@@ -1232,7 +1332,8 @@ class Rack(rack.prog.Register):
         height:null:null
         topology:16-CONNECTED
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iDistanceTransformExp(self,
@@ -1246,7 +1347,8 @@ class Rack(rack.prog.Register):
         height:null:null
         topology:16-CONNECTED
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iDistanceTransformFill(self,
@@ -1262,7 +1364,8 @@ class Rack(rack.prog.Register):
         topology:16-CONNECTED
         alphaThreshold:0:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iDistanceTransformFillExp(self,
@@ -1278,7 +1381,8 @@ class Rack(rack.prog.Register):
         topology:16-CONNECTED
         alphaThreshold:0:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iDiv(self,
@@ -1292,7 +1396,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFloodFill(self,
@@ -1306,7 +1411,8 @@ class Rack(rack.prog.Register):
         intensity:1:65536
         value:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFlowAverage(self,
@@ -1316,7 +1422,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         width:1:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFuzzyBell(self,
@@ -1334,7 +1441,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFuzzyBell2(self,
@@ -1352,7 +1460,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFuzzyStep(self,
@@ -1368,7 +1477,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFuzzyStepsoid(self,
@@ -1386,7 +1496,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFuzzyTriangle(self,
@@ -1404,7 +1515,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iFuzzyTwinPeaks(self,
@@ -1422,7 +1534,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iGamma(self,
@@ -1434,7 +1547,8 @@ class Rack(rack.prog.Register):
         gamma:1
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iGaussianAverage(self,
@@ -1446,7 +1560,8 @@ class Rack(rack.prog.Register):
         width:1:0
         radius:0.5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iGradient(self,
@@ -1458,7 +1573,8 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iGradientHorz(self,
@@ -1470,7 +1586,8 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iGradientVert(self,
@@ -1482,7 +1599,8 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iGray(self,
@@ -1494,7 +1612,8 @@ class Rack(rack.prog.Register):
         coeff:1.0
         normalize:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iHighBoost(self,
@@ -1508,7 +1627,8 @@ class Rack(rack.prog.Register):
         height:3
         coeff:0.5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iHighPass(self,
@@ -1526,7 +1646,8 @@ class Rack(rack.prog.Register):
         offset:0
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iImpulseAvg(self,
@@ -1542,7 +1663,8 @@ class Rack(rack.prog.Register):
         extendVert:0
         weightThreshold:0.05
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iLaplace(self,
@@ -1554,7 +1676,8 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iLaplaceHorz(self,
@@ -1566,7 +1689,8 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iLaplaceVert(self,
@@ -1578,7 +1702,8 @@ class Rack(rack.prog.Register):
         radius:1
         LIMIT:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMagnitude(self,
@@ -1588,7 +1713,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         functor:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMarginStat(self,
@@ -1602,7 +1728,8 @@ class Rack(rack.prog.Register):
         stat:asmdvNX
         medianPos:0.5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMax(self):
@@ -1610,7 +1737,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMedian(self,
@@ -1624,7 +1752,8 @@ class Rack(rack.prog.Register):
         percentage:0.5
         bins:256
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMin(self):
@@ -1632,7 +1761,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMix(self,
@@ -1648,7 +1778,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMul(self,
@@ -1662,7 +1793,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iMultiThreshold(self,
@@ -1676,7 +1808,8 @@ class Rack(rack.prog.Register):
         min:0
         max:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iNegate(self):
@@ -1684,7 +1817,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iPhysical(self,
@@ -1694,7 +1828,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         physical:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iProduct(self,
@@ -1704,7 +1839,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         functor:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iQualityMixer(self,
@@ -1714,7 +1850,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         coeff:0.5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iQualityOverride(self,
@@ -1726,7 +1863,8 @@ class Rack(rack.prog.Register):
         advantage:1
         decay:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iQualityThreshold(self,
@@ -1738,7 +1876,8 @@ class Rack(rack.prog.Register):
         threshold:0
         replace:null
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iQuantizator(self,
@@ -1750,7 +1889,8 @@ class Rack(rack.prog.Register):
         bits:4
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iRemap(self,
@@ -1764,7 +1904,8 @@ class Rack(rack.prog.Register):
         toValue:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iRescale(self,
@@ -1778,7 +1919,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iResize(self,
@@ -1794,7 +1936,8 @@ class Rack(rack.prog.Register):
         interpolation:n
         scale:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iRunLengthHorz(self,
@@ -1804,7 +1947,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         threshold:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iRunLengthVert(self,
@@ -1814,7 +1958,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         threshold:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iSegmentArea(self,
@@ -1826,7 +1971,8 @@ class Rack(rack.prog.Register):
         intensity:1:1.79769e+308
         functor:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iSegmentStats(self,
@@ -1840,7 +1986,8 @@ class Rack(rack.prog.Register):
         intensity:1:255
         functor:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iSub(self,
@@ -1854,7 +2001,8 @@ class Rack(rack.prog.Register):
         bias:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iSuperProber(self,
@@ -1868,7 +2016,8 @@ class Rack(rack.prog.Register):
         filename:
         debug:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iThreshold(self,
@@ -1882,7 +2031,8 @@ class Rack(rack.prog.Register):
         replace:0
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iThresholdBinary(self,
@@ -1896,7 +2046,8 @@ class Rack(rack.prog.Register):
         replace:0:1
         LIMIT:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iTranspose(self):
@@ -1904,7 +2055,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def iWindowHistogram(self,
@@ -1920,7 +2072,8 @@ class Rack(rack.prog.Register):
         percentage:0.5
         bins:256
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def image(self):
@@ -1928,7 +2081,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def imageAlpha(self):
@@ -1936,7 +2090,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def imageBox(self,
@@ -1950,7 +2105,8 @@ class Rack(rack.prog.Register):
         j:0:0
         value:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def imageFlatten(self,
@@ -1960,7 +2116,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         bgcolor:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def imagePhysical(self,
@@ -1970,7 +2127,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         physical:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def imageQuality(self,
@@ -1980,7 +2138,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         groups:dataset:data
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def imageTransp(self,
@@ -1994,7 +2153,8 @@ class Rack(rack.prog.Register):
         undetect:0
         nodata:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     # TODO: key == commandBank.defaultCmdKey...
@@ -2005,7 +2165,9 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        cmd.set_implicit()
+        return cmd
 
 
     def inputFilter(self,
@@ -2015,7 +2177,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         ATTRIBUTES:3
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def inputPalette(self,
@@ -2025,7 +2188,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def inputPrefix(self,
@@ -2035,7 +2199,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def inputSelect(self,
@@ -2045,7 +2210,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def jSON(self,
@@ -2055,7 +2221,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         property:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def keep(self,
@@ -2065,7 +2232,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         selector:path,quantity,elangle,count,order,prf,timespan
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def legendOut(self,
@@ -2075,7 +2243,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def log(self,
@@ -2091,7 +2260,8 @@ class Rack(rack.prog.Register):
         timing:false
         vt100:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def move(self,
@@ -2103,7 +2273,8 @@ class Rack(rack.prog.Register):
         src:
         dst:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def odim(self,
@@ -2113,7 +2284,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         version:2.4
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def outputConf(self,
@@ -2123,7 +2295,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:<format>:<key>=value>,conf...
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def outputFile(self,
@@ -2133,7 +2306,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def outputPalette(self,
@@ -2143,7 +2317,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def outputPrefix(self,
@@ -2153,7 +2328,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def outputRawImages(self,
@@ -2163,7 +2339,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def outputTree(self,
@@ -2173,7 +2350,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pAdd(self):
@@ -2181,7 +2359,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pAddWeighted(self,
@@ -2191,7 +2370,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         weight:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pBeamAltitude(self,
@@ -2201,7 +2381,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         aboveSeaLevel:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pBiomet(self,
@@ -2217,7 +2398,8 @@ class Rack(rack.prog.Register):
         reflDev:5
         devAltitude:1000
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pBird(self,
@@ -2237,7 +2419,8 @@ class Rack(rack.prog.Register):
         window:2500:5
         gamma:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pCappi(self,
@@ -2257,7 +2440,8 @@ class Rack(rack.prog.Register):
         accumulationMethod:WAVG:1:8:-40
         height:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pClutter(self,
@@ -2273,7 +2457,8 @@ class Rack(rack.prog.Register):
         quantity:CLUTTER
         file:cluttermaps/cluttermap-${NOD}-${quantity}.h5
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pConv(self,
@@ -2293,7 +2478,8 @@ class Rack(rack.prog.Register):
         smoothAzm:0
         smoothRad:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerAvg(self,
@@ -2311,7 +2497,8 @@ class Rack(rack.prog.Register):
         compensate:false
         relativeScale:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerAvgExp(self,
@@ -2325,7 +2512,8 @@ class Rack(rack.prog.Register):
         horzExtension:0
         vertExtension:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerCrawler(self,
@@ -2337,7 +2525,8 @@ class Rack(rack.prog.Register):
         nyquist:100
         threshold:0.9
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerDev(self,
@@ -2355,7 +2544,8 @@ class Rack(rack.prog.Register):
         compensate:false
         relativeScale:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerDiff(self,
@@ -2365,7 +2555,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         dMax:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerDiffPlotter(self,
@@ -2381,7 +2572,8 @@ class Rack(rack.prog.Register):
         ray:0:0
         bin:0:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerEccentricity(self,
@@ -2397,7 +2589,8 @@ class Rack(rack.prog.Register):
         threshold:0.5
         compensate:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerInversion(self,
@@ -2411,7 +2604,8 @@ class Rack(rack.prog.Register):
         height:3
         altitudeWeight:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerReproject(self,
@@ -2425,7 +2619,8 @@ class Rack(rack.prog.Register):
         match:0
         quantity:VRAD
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDopplerSampler(self,
@@ -2441,7 +2636,8 @@ class Rack(rack.prog.Register):
         ray:0:0
         bin:0:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pDrawing(self,
@@ -2461,7 +2657,8 @@ class Rack(rack.prog.Register):
         p4:0
         marker:255
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pEchoTop(self,
@@ -2483,7 +2680,8 @@ class Rack(rack.prog.Register):
         avgWindow:0:0
         EXTENDED:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pEchoTopOpOld(self,
@@ -2499,7 +2697,8 @@ class Rack(rack.prog.Register):
         altitudeReference:15000
         aboveSeaLevel:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pExtract(self,
@@ -2509,7 +2708,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         channels:dw
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pFunctor(self,
@@ -2519,7 +2719,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         ftor:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pMaxEcho(self,
@@ -2531,7 +2732,8 @@ class Rack(rack.prog.Register):
         altitude:1000:9000
         accumulationMethod:MAXIMUM
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pOutputQuantity(self,
@@ -2541,7 +2743,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         productCmd:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pPlot(self,
@@ -2557,7 +2760,8 @@ class Rack(rack.prog.Register):
         value:0
         weight:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pPlotFile(self,
@@ -2567,7 +2771,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         file:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pPolarSlidingAvg(self,
@@ -2583,7 +2788,8 @@ class Rack(rack.prog.Register):
         threshold:0.5
         invertPolar:false
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pPseudoRhi(self,
@@ -2605,7 +2811,8 @@ class Rack(rack.prog.Register):
         beamWidth:0.25
         beamPowerThreshold:0.01
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pRainRate(self):
@@ -2613,7 +2820,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pRainRateDP(self,
@@ -2629,7 +2837,8 @@ class Rack(rack.prog.Register):
         rhohv:0.85
         kdp:0.25:0.35
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pSite(self,
@@ -2639,7 +2848,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         location:25.2:60.1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pSunShine(self,
@@ -2651,7 +2861,8 @@ class Rack(rack.prog.Register):
         timestamp:200527071845
         quantity:SUNSHINE
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pSweep(self,
@@ -2663,7 +2874,8 @@ class Rack(rack.prog.Register):
         quantity:DBZH
         index:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pVerticalProfile(self,
@@ -2681,7 +2893,8 @@ class Rack(rack.prog.Register):
         azm:0:359.99
         azSlots:1
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def palette(self,
@@ -2691,7 +2904,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def paletteConf(self,
@@ -2705,7 +2919,8 @@ class Rack(rack.prog.Register):
         code:
         lenient:true
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def paletteDefault(self):
@@ -2713,7 +2928,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def paletteIn(self,
@@ -2723,7 +2939,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def paletteOut(self,
@@ -2733,7 +2950,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         params:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def paletteRefine(self,
@@ -2743,7 +2961,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         count:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def pause(self,
@@ -2753,7 +2972,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         seconds:random
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def plot(self,
@@ -2763,33 +2983,36 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         i,j:0,0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def precipKDP(self,
-        a:float=6.95277e-310,
+        a:float=6.95299e-310,
         b:float=0):
         """ Precip rate from KDP
 
         --- Parameters ---
-        a:6.95277e-310
+        a:6.95299e-310
         b:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def precipKDPZDR(self,
-        a:float=6.95277e-310,
+        a:float=6.95299e-310,
         b:float=0,
-        c:float=6.25344e-310):
+        c:float=6.10735e-310):
         """ Precipitation rate from KDP and ZDR
 
         --- Parameters ---
-        a:6.95277e-310
+        a:6.95299e-310
         b:0
-        c:6.25344e-310
+        c:6.10735e-310
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def precipZZDR(self,
@@ -2803,7 +3026,8 @@ class Rack(rack.prog.Register):
         b:0.82
         c:-2.28
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def precipZrain(self,
@@ -2815,7 +3039,8 @@ class Rack(rack.prog.Register):
         a:200
         b:1.6
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def precipZsnow(self,
@@ -2827,7 +3052,8 @@ class Rack(rack.prog.Register):
         a:223
         b:1.53
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def python(self,
@@ -2839,7 +3065,8 @@ class Rack(rack.prog.Register):
         file:dump.py
         count:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def quantityConf(self,
@@ -2853,11 +3080,11 @@ class Rack(rack.prog.Register):
         encoding:
         zero:
         """
-        # note: separator ':'
         cmd = self.make_cmd(locals())
-        cmd.setSeparators(':', ',')
+        # note: separator ':'
+        cmd.set_separators(':', ',')
         return cmd
-
+        return cmd
 
 
     def restart(self):
@@ -2865,7 +3092,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def sample(self,
@@ -2887,7 +3115,8 @@ class Rack(rack.prog.Register):
         skipVoid:false
         handleVoid:null
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     # NOTE: key == commandBank.scriptCmd  TODO SCRIPT QUOTE check...
@@ -2898,7 +3127,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         script:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def select(self,
@@ -2908,7 +3138,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         selector:path,quantity,elangle,count,order,prf,timespan
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def selectObject(self,
@@ -2918,7 +3149,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         flags:INPUT|POLAR|CARTESIAN
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def selectQuantity(self,
@@ -2928,7 +3160,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         quantities:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def set(self,
@@ -2938,7 +3171,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         assignment:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def setODIM(self,
@@ -2948,7 +3182,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         assignment:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def status(self):
@@ -2956,7 +3191,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def stopOnError(self,
@@ -2966,7 +3202,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         flags:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def store(self,
@@ -2976,7 +3213,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         level:0
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def target(self,
@@ -2986,7 +3224,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         encoding:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def testAreaSelector(self,
@@ -2998,7 +3237,8 @@ class Rack(rack.prog.Register):
         distance:0:250
         azimuth:0:360
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def testSelect(self):
@@ -3006,7 +3246,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def testTree(self,
@@ -3016,7 +3257,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         value:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def undetectWeight(self,
@@ -3026,7 +3268,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         weight:0.75
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def updateVariables(self):
@@ -3034,7 +3277,8 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def validate(self,
@@ -3044,7 +3288,8 @@ class Rack(rack.prog.Register):
         --- Parameters ---
         filename:
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def verbose(self,
@@ -3056,7 +3301,8 @@ class Rack(rack.prog.Register):
         level:NOTE
         imageLevel:WARNING
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
     def version(self):
@@ -3064,6 +3310,7 @@ class Rack(rack.prog.Register):
 
         --- Parameters ---
         """
-        return self.make_cmd(locals())
+        cmd = self.make_cmd(locals())
+        return cmd
 
 
