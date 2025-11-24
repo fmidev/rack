@@ -118,7 +118,7 @@ class Command:
 
     
     
-    def to_tuple(self, quote:str="") -> tuple: # , prefixed=True
+    def to_tuple(self, quote=None, compact=True) -> tuple: # , prefixed=True
         """Returns a singleton or a double token
         
         This is the 'official' rendering of a command - other formatting uses the tuple as input.
@@ -144,12 +144,21 @@ class Command:
         for i in range(0,self.expl_indices):
             args.append(str(self._encode_value(self.args[keys[i]])))
 
+        index = 0
         for k in self.expl_keys:
             if type(k) == int:
                 args.append(self._encode_value(self.args[k]))
             else:
-                args.append(f"{k}={self._encode_value(self.args[k])}")
+                if compact and (index == keys.index(k)):
+                    args.append(str(self._encode_value(self.args[k])))
+                else:
+                    args.append(f"{k}={self._encode_value(self.args[k])}")
+                    compact = False # cannot continue impicit keys for ordered
+            index += 1
         
+        if quote is None:
+            quote = CommandSequence.QUOTE
+
         if self.args:
             # Notice: args may be empty, then append an empty string.
             # If all the arguments have default values (args is empty), display still an empty arg.
@@ -244,14 +253,21 @@ class CommandSequence:
 
     CmdClass = Command
 
+    # For arguments. Helps in toggling within-argument quotes
+    QUOTE = "'"
+
     """Base class for a sequence of commands - 'programs'."""
-    def __init__(self, cmdClass=Command, programName:str=""):
+    def __init__(self, cmdClass=Command, programName:str="", quote="'"):
         self.CmdClass = cmdClass
         self.commands: List[Command] = []
         self.programName = programName
+        self.QUOTE = quote
 
-    #def check(self, cmd_args:dict={}):
-    #    logger.warning(f"adding args={cmd_args}")
+    def get_secondary_quote(self) -> str:
+        if self.QUOTE == '"':
+            return "'"
+        else:
+            return '"'
 
     def add(self, cmd: Command, cmd_args:dict={}):
         t = type(cmd) 
@@ -275,37 +291,55 @@ class CommandSequence:
         else:
             raise TypeError(f"Unsupported arg type for cmd='{cmd}':", + type(cmd))
 
-    def to_list(self) -> list:
+    def to_list(self, quote=None) -> list:
         """Produces a list suited to be joined with newline char, for example"""
+
         if self.programName:
             result = [self.programName]
         else:
             result = []
+
+        if quote is None:
+            quote = self.QUOTE
+
         for cmd in self.commands:
-            result.append(str(cmd))
+            # TODO: quote...
+            ##result.append(str(cmd))
+            result.append(" ".join(cmd.to_tuple(quote)))
         return result
         #return [str(cmd) for cmd in self.commands]
         #return [cmd.to_string() for cmd in self.commands]
     
-    def to_token_list(self) -> list:
-        """Produces a list compatible with subprocess calls"""
+    def to_token_list(self, quote="") -> list:
+        """Produces a list compatible with subprocess calls
+        
+            Notice that the default quote here is empty string, "".
+            Substituting None implies default quotes, CommandSequence.QUOTE.
+        """
+        
         if self.programName:
             result = [self.programName]
         else:
             result = []
+
+        if quote is None:
+            quote = self.QUOTE
+
         for cmd in self.commands:
-            result.extend(cmd.to_tuple()) 
+            result.extend(cmd.to_tuple(quote)) 
         return result
             
         #return [cmd.to_string() for cmd in self.commands]
 
 
-    def to_string(self, joiner:str=" ", quote:str="") -> str:
-        """
+    def to_string(self, joiner:str=" ", quote=None) -> str:
+        """ Compose a single string of commands.
+
+        Typically, this format is suited to command line use.
         
         Joiner can also be '\\\n\t' for example.
         """
-        return joiner.join(self.to_list())
+        return joiner.join(self.to_list(quote))
 
 
 
