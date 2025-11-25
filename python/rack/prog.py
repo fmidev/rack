@@ -36,23 +36,31 @@ class Command:
                 key =  self.KEY_FORMAT.format(key=key)
                 return self.PARAM_FORMAT.format(key=key,value=value)
 
+        """
+        def _get_key_lst(self, orig_key_list:list, key_list:list)->list:
+            result = []
+            for k in key_list:
+                if isinstance(k, (int, float)):
+                    k = orig_key_list[k]
+                result.append(k)
+        """
+        
         def get_param_lst(self, arg_dict={}, key_list=None)->list:
             """ Return a list of strings of key-value entries. By default, 
                 in this base class implementation, such entry 
                 is "key=value", or only the value if the key is numeric. 
             """
-            if key_list is None:
+            if key_list == None:
                 # Return all
                 return [self.fmt_param(v,k) for k,v in arg_dict.items()]
             else: # key_list can be empty.
-                orig_key_list = list(arg_dict.keys())
                 result = []
+                key_map = dict(enumerate(arg_dict.keys())) # list(arg_dict.keys())))
                 for k in key_list:
                     if isinstance(k, (int, float)):
-                        kk = orig_key_list[k]
+                        result.append(self.fmt_param(arg_dict[key_map[k]], None))
                     else:
-                        kk = k
-                    result.append(self.fmt_param(arg_dict[kk],k))
+                        result.append(self.fmt_param(arg_dict[k],k))                        
                 return result
 
         # fmt strings also for this?
@@ -80,7 +88,7 @@ class Command:
         if self.name == 'verbose':
             logger.debug("enchanced logging")
             logger.setLevel("DEBUG")
-            logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
+            #logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
 
         self.args = args.copy()
         self.args.update(explicit_args)
@@ -275,8 +283,8 @@ class Register:
         args = {}
         explicit_args = {}
 
-        if caller_name == "verbose":
-            logger.warning(f"MAKE_CMD: locals: {local_vars}")
+        #if caller_name == "verbose":
+            #logger.warning(f"MAKE_CMD: locals: {local_vars}")
         
         for k, v in local_vars.items():
             if k != "self":
