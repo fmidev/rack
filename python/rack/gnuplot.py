@@ -4,8 +4,8 @@ import os
 #import rack.command
 import rack.prog
 import rack.log
-logger = rack.log.logger.getChild(os.path.splitext(os.path.basename(__file__))[0])
-
+from pathlib import Path
+logger = rack.log.logger.getChild(Path(__file__).stem)
 
 
 # --- Base Layer (already familiar) ---

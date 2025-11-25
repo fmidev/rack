@@ -54,6 +54,9 @@ public:
 	// Whitespace
 	std::string indentStr = std::string(4, ' ');
 
+	static
+	const std::string & getType(const drain::Castable & c);
+
 	// std::string content = "pass";
 	std::list<std::string> content = {"return self._make_cmd(locals())"};
 
@@ -68,14 +71,37 @@ public:
 	void exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr=std::cout, int indentLevel=1, bool implicit=false) const;
 
 
-	// template <class T>
-	// void indent(std::ostream & ostr, const T & whiteSpace, int indent=0) const {
 	inline
 	void indent(std::ostream & ostr, int indentLevel=0) const {
 		for (int i=0; i<indentLevel; ++i){
 			ostr << this->indentStr;
 		}
 	}
+
+	template <typename ... TT>
+	void write(std::ostream & ostr, int indentLevel, TT... args) const {
+		indent(ostr, indentLevel);
+		flush(ostr, args...);
+	};
+
+	/** Writes a doc title - a string underlined with a hyphen.
+	 *
+	 */
+	void writeTitle(std::ostream & ostr, int indentLevel, const std::string & title) const;
+
+protected:
+
+	template <typename T, typename ... TT>
+	void flush(std::ostream & ostr, const T & arg, TT... args) const {
+		ostr << arg;
+		flush(ostr, args...);
+	};
+
+	inline
+	void flush(std::ostream & ostr) const {
+		ostr << '\n';
+	}
+
 
 };
 

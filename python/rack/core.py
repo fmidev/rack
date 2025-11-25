@@ -1,20 +1,29 @@
 import rack.prog
+
 class Rack(rack.prog.Register):
+    """ Rack automatic
+    """
 
     # defaultCmdKey=inputFile
     # execFileCmd=CmdExecFile
     # commandBank.scriptCmd=CmdScript
+
     def aAltitude(self,
         functor:str='',
         aboveSeaLevel:bool=True,
         bias:float=0):
         """ Weights altitude
 
-        --- Parameters ---
-        functor:
-        aboveSeaLevel:true
-        bias:0
+        Parameters
+        ----------
+        functor:str
+             Functor
+        aboveSeaLevel:bool
+            Reference is sea level, not radar site
+        bias:float
+            offset added to altitude
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -27,13 +36,20 @@ class Rack(rack.prog.Register):
         p2:float=0):
         """ Computes attenuation and converts it to probability
 
-        --- Parameters ---
-        reflHalfWidth:3
-        c:1.12e-07
-        p:0.62
-        c2:0
-        p2:0
+        Parameters
+        ----------
+        reflHalfWidth:float
+            dBZ limit of 50% quality
+        c:float
+            coeff
+        p:float
+            coeff
+        c2:float
+            coeff
+        p2:float
+            coeff
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -45,12 +61,18 @@ class Rack(rack.prog.Register):
         devAltitude:int=1000):
         """ Detects birds and insects.
 
-        --- Parameters ---
-        reflMax:-10
-        maxAltitude:500
-        reflDev:5
-        devAltitude:1000
+        Parameters
+        ----------
+        reflMax:float
+            dBZ
+        maxAltitude:int
+            m
+        reflDev:float
+            dBZ
+        devAltitude:int
+            m
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -64,14 +86,22 @@ class Rack(rack.prog.Register):
         gamma:float=1):
         """ Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.
 
-        --- Parameters ---
-        dbzPeak:-20:0
-        vradDevMin:1
-        rhoHVmax:0.99:0.891
-        zdrAbsMin:1
-        window:2500:5
-        gamma:1
+        Parameters
+        ----------
+        dbzPeak:list
+            Typical reflectivity (dBZ)
+        vradDevMin:float
+            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+        rhoHVmax:list
+            Fuzzy threshold of maximum rhoHV value
+        zdrAbsMin:float
+            Fuzzy threshold of absolute ZDR
+        window:list
+            beam-directional(m), azimuthal(deg)
+        gamma:float
+            Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -81,10 +111,14 @@ class Rack(rack.prog.Register):
         mask:bool=False):
         """ Detects clutter. Based on difference of DBZH and TH. At halfwidth PROB=0.5. Universal.
 
-        --- Parameters ---
-        threshold:10:30
-        mask:false
+        Parameters
+        ----------
+        threshold:list
+            dBZ range
+        mask:bool
+            Doppler-cleared only
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -98,14 +132,22 @@ class Rack(rack.prog.Register):
         gamma:float=1):
         """ Estimates chaff probability from DBZH, VRAD, RhoHV and ZDR.
 
-        --- Parameters ---
-        dbzPeak:5:15
-        vradDevMax:5
-        rhoHVmax:0.5:0.4
-        zdrAbsMin:0.5
-        window:2500:5
-        gamma:1
+        Parameters
+        ----------
+        dbzPeak:list
+            Typical reflectivity (DBZH)
+        vradDevMax:float
+            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+        rhoHVmax:list
+            Fuzzy threshold of maximum rhoHV value
+        zdrAbsMin:float
+            Fuzzy threshold of absolute ZDR
+        window:list
+            beam-directional(m), azimuthal(deg)
+        gamma:float
+            Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -117,12 +159,18 @@ class Rack(rack.prog.Register):
         file:str='cluttermaps/cluttermap-${NOD}-${quantity}.h5'):
         """ Reads a ground clutter map and scales it to sweeps.
 
-        --- Parameters ---
-        decay:0.5
-        gamma:1
-        quantity:CLUTTER
-        file:cluttermaps/cluttermap-${NOD}-${quantity}.h5
+        Parameters
+        ----------
+        decay:float
+            per 1000m
+        gamma:float
+            brightness
+        quantity:str
+            CLUTTER|OBSTACLE|...
+        file:str
+            path syntax
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -133,11 +181,16 @@ class Rack(rack.prog.Register):
         minValue:float=None):
         """ Removes anomalies with fuzzy deletion operator.
 
-        --- Parameters ---
-        threshold:0.5
-        undetectThreshold:0.1
-        minValue:null
+        Parameters
+        ----------
+        threshold:float
+            
+        undetectThreshold:float
+            
+        minValue:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -146,9 +199,12 @@ class Rack(rack.prog.Register):
         probability:float=0.8):
         """ Marks the data values as unclassified, with high probability
 
-        --- Parameters ---
-        probability:0.8
+        Parameters
+        ----------
+        probability:float
+            'resulting' probability
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -157,9 +213,12 @@ class Rack(rack.prog.Register):
         threshold:float=0.8):
         """ Quality index value below which also CLASS information will be updated.
 
-        --- Parameters ---
-        threshold:0.8
+        Parameters
+        ----------
+        threshold:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -170,11 +229,16 @@ class Rack(rack.prog.Register):
         windowHeight:float=3):
         """ Detects suspicious variance in Doppler speed (VRAD).
 
-        --- Parameters ---
-        speedDevThreshold:3
-        windowWidth:1500
-        windowHeight:3
+        Parameters
+        ----------
+        speedDevThreshold:float
+            Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)
+        windowWidth:float
+            window width, beam-directional (m)
+        windowHeight:float
+            window height, azimuthal (deg)
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -185,11 +249,16 @@ class Rack(rack.prog.Register):
         sensitivity:float=0.5):
         """ Detects electromagnetic interference segments by means of window medians.
 
-        --- Parameters ---
-        lengthMin:5
-        thicknessMax:5
-        sensitivity:0.5
+        Parameters
+        ----------
+        lengthMin:float
+            km
+        thicknessMax:float
+            deg
+        sensitivity:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -200,11 +269,16 @@ class Rack(rack.prog.Register):
         qualityThreshold:float=0.1):
         """ Removes low-quality data with gap fill based on distance transformation.
 
-        --- Parameters ---
-        width:1500
-        height:5
-        qualityThreshold:0.1
+        Parameters
+        ----------
+        width:int
+            meters
+        height:float
+            degrees
+        qualityThreshold:float
+            0.0...1.0
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -215,11 +289,16 @@ class Rack(rack.prog.Register):
         loops:int=3):
         """ Recursive, 'splinic' gap filler.
 
-        --- Parameters ---
-        width:1500
-        height:5
-        loops:3
+        Parameters
+        ----------
+        width:int
+            meters
+        height:float
+            degrees
+        loops:int
+            N
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -229,10 +308,14 @@ class Rack(rack.prog.Register):
         NOMET:int=1):
         """ Sets probabilities of non-meteorological echoes based on precomputed hydrometeor CLASS.
 
-        --- Parameters ---
-        nonMet:0.5
-        NOMET:1
+        Parameters
+        ----------
+        nonMet:float
+            
+        NOMET:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -246,14 +329,22 @@ class Rack(rack.prog.Register):
         gamma:float=1):
         """ Probability of insects, based on DBZH, VRAD, RhoHV and ZDR.
 
-        --- Parameters ---
-        dbzMax:-5:5
-        vradDevMax:5
-        rhoHVmax:0.99:0.792
-        zdrAbsMin:3
-        window:2500:5
-        gamma:1
+        Parameters
+        ----------
+        dbzMax:list
+            Max reflectivity
+        vradDevMax:float
+            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+        rhoHVmax:list
+            Fuzzy threshold of maximum rhoHV value
+        zdrAbsMin:float
+            Fuzzy threshold of absolute ZDR
+        window:list
+            beam-directional(m), azimuthal(deg)
+        gamma:float
+            Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -264,11 +355,16 @@ class Rack(rack.prog.Register):
         refit:bool=True):
         """ Detects broad lines caused by electromagnetic interference. Intensities should be smooth, increasing by distance.
 
-        --- Parameters ---
-        smoothnessThreshold:5
-        distanceMin:80
-        refit:true
+        Parameters
+        ----------
+        smoothnessThreshold:float
+            dBZ
+        distanceMin:float
+            km
+        refit:bool
+            true|false
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -279,11 +375,16 @@ class Rack(rack.prog.Register):
         medianPos:float=0):
         """ Detects clutter. Based on dual-pol parameter RhoHV . Optional post processing: morphological closing. Universal.
 
-        --- Parameters ---
-        threshold:0.7:0.8
-        medianWindow:0:0
-        medianPos:0
+        Parameters
+        ----------
+        threshold:list
+            0...1[:0...1]
+        medianWindow:list
+            metres,degrees
+        medianPos:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -294,11 +395,16 @@ class Rack(rack.prog.Register):
         medianPos:float=0):
         """ Estimates probability from DBZH, VRAD, RhoHV and ZDR.
 
-        --- Parameters ---
-        threshold:0.75:0.95
-        medianWindow:0:0
-        medianPos:0
+        Parameters
+        ----------
+        threshold:list
+            0...1[:0...1]
+        medianWindow:list
+            metres,degrees
+        medianPos:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -309,11 +415,16 @@ class Rack(rack.prog.Register):
         dbzSpan:float=10):
         """ Detects precipitation...
 
-        --- Parameters ---
-        probMax:0.5
-        dbz:20
-        dbzSpan:10
+        Parameters
+        ----------
+        probMax:float
+            probability
+        dbz:float
+            dBZ
+        dbzSpan:float
+            dBZ
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -321,8 +432,10 @@ class Rack(rack.prog.Register):
     def aQualityCombiner(self):
         """ Combines detection probabilities to overall quality field QIND (and CLASS).
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -333,11 +446,16 @@ class Rack(rack.prog.Register):
         clearQuality:bool=True):
         """ Simple anomaly removal operator.
 
-        --- Parameters ---
-        threshold:0.5
-        replace:nodata
-        clearQuality:true
+        Parameters
+        ----------
+        threshold:float
+            probability
+        replace:str
+            nodata|undetect|<physical_value>
+        clearQuality:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -349,12 +467,18 @@ class Rack(rack.prog.Register):
         windowHeight:float=3):
         """ Detects ships based on their high absolute reflectivity and local reflectivity difference.
 
-        --- Parameters ---
-        reflMin:25
-        reflDev:15
-        windowWidth:1500
-        windowHeight:3
+        Parameters
+        ----------
+        reflMin:float
+            dBZ
+        reflDev:float
+            dBZ
+        windowWidth:int
+            m
+        windowHeight:float
+            deg
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -365,11 +489,16 @@ class Rack(rack.prog.Register):
         invertPolar:bool=False):
         """ Detects speckle noise. Universal: uses DBZ data as input, applies to all data in a sweep group.
 
-        --- Parameters ---
-        threshold:-20
-        area:16
-        invertPolar:false
+        Parameters
+        ----------
+        threshold:float
+            dBZ
+        area:int
+            bins
+        invertPolar:bool
+            bins
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -379,10 +508,14 @@ class Rack(rack.prog.Register):
         sensitivity:float=0.95):
         """ Draw the sun beam
 
-        --- Parameters ---
-        beamWidth:1
-        sensitivity:0.95
+        Parameters
+        ----------
+        beamWidth:float
+            deg
+        sensitivity:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -394,12 +527,18 @@ class Rack(rack.prog.Register):
         j:list=[240,300]):
         """ Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob).
 
-        --- Parameters ---
-        value:0
-        prob:1
-        i:200:230
-        j:240:300
+        Parameters
+        ----------
+        value:float
+            value
+        prob:float
+            prob
+        i:list
+            coord range
+        j:list
+            coord range
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -410,11 +549,16 @@ class Rack(rack.prog.Register):
         decayFuture:float=-1):
         """ Created quality field based on measurement time for each beam.
 
-        --- Parameters ---
-        time:NOMINAL
-        decayPast:1
-        decayFuture:-1
+        Parameters
+        ----------
+        time:str
+            NOMINAL,NOW,<YYYYmmddMMHH>
+        decayPast:float
+            mins
+        decayFuture:float
+            mins
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -423,9 +567,12 @@ class Rack(rack.prog.Register):
         unversal:bool=True):
         """ Toggle the support for universal ie. Dataset-wide quality indices.
 
-        --- Parameters ---
-        unversal:true
+        Parameters
+        ----------
+        unversal:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -434,9 +581,12 @@ class Rack(rack.prog.Register):
         path:str=''):
         """ Append inputs/products (empty=overwrite).
 
-        --- Parameters ---
-        path:
+        Parameters
+        ----------
+        path:str
+            <empty>|dataset[n]|data[n]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -444,8 +594,10 @@ class Rack(rack.prog.Register):
     def cAdd(self):
         """ Adds the current product to the composite.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -454,9 +606,12 @@ class Rack(rack.prog.Register):
         weight:float=1):
         """ Adds the current product to the composite applying weight.
 
-        --- Parameters ---
-        weight:1
+        Parameters
+        ----------
+        weight:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -468,12 +623,18 @@ class Rack(rack.prog.Register):
         urLat:float=0):
         """ Bounding box of the Cartesian product.
 
-        --- Parameters ---
-        llLon:0
-        llLat:0
-        urLon:0
-        urLat:0
+        Parameters
+        ----------
+        llLon:float
+            deg|m
+        llLat:float
+            deg|m
+        urLon:float
+            deg|m
+        urLat:float
+            deg|m
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -481,8 +642,10 @@ class Rack(rack.prog.Register):
     def cBBoxReset(self):
         """ Resets the bounding box (to be set again according to the next radar data).
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -491,9 +654,12 @@ class Rack(rack.prog.Register):
         mode:int=0):
         """ Tests whether the radar range is inside the composite.
 
-        --- Parameters ---
-        mode:0
+        Parameters
+        ----------
+        mode:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -505,12 +671,18 @@ class Rack(rack.prog.Register):
         urLat:float=0):
         """ Redefines bbox and compositing array size for several radars, applying original projection and resolution. See --cSize, --cBBox, --cProj.
 
-        --- Parameters ---
-        llLon:0
-        llLat:0
-        urLon:0
-        urLat:0
+        Parameters
+        ----------
+        llLon:float
+            deg
+        llLat:float
+            deg
+        urLon:float
+            deg
+        urLat:float
+            deg
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -518,8 +690,10 @@ class Rack(rack.prog.Register):
     def cCreate(self):
         """ Maps the current polar product to a Cartesian product.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -527,8 +701,10 @@ class Rack(rack.prog.Register):
     def cCreateLookup(self):
         """ Creates lookup objects
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -537,9 +713,12 @@ class Rack(rack.prog.Register):
         timestamp:str='200507271845'):
         """ Cartesian sun shine field.
 
-        --- Parameters ---
-        timestamp:200507271845
+        Parameters
+        ----------
+        timestamp:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -547,8 +726,10 @@ class Rack(rack.prog.Register):
     def cCreateTile(self):
         """ Maps the current polar product to a tile to be used in compositing.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -557,9 +738,12 @@ class Rack(rack.prog.Register):
         time:int=0):
         """ Delay half-time in minutes. 0=no decay
 
-        --- Parameters ---
-        time:0
+        Parameters
+        ----------
+        time:int
+            minutes
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -568,9 +752,12 @@ class Rack(rack.prog.Register):
         weight:float=0.75):
         """ Set default quality (for data without quality field)
 
-        --- Parameters ---
-        weight:0.75
+        Parameters
+        ----------
+        weight:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -580,14 +767,17 @@ class Rack(rack.prog.Register):
         bbox:str=''):
         """ Extract (export) data from the internal accumulation array
 
-        --- Parameters ---
-        channels:DATA,WEIGHT
-        bbox:
+        Parameters
+        ----------
+        channels:str
+            DATA,WEIGHT,COUNT,DEVIATION
+        bbox:str
+            Optional cropping: ...:<LLx>,<LLy>,<URx>,<URy> or INPUT or OVERLAP
         """
+
         cmd = self.make_cmd(locals())
         # note: separator ':'
         cmd.set_separators(':', ',')
-        return cmd
         return cmd
 
 
@@ -598,12 +788,18 @@ class Rack(rack.prog.Register):
         intensity:float=0.5):
         """ Draw lat-lon grid onto a Cartesian product.
 
-        --- Parameters ---
-        lonSpacing:1
-        latSpacing:1
-        width:1
-        intensity:0.5
+        Parameters
+        ----------
+        lonSpacing:int
+            deg
+        latSpacing:int
+            deg
+        width:float
+            pix
+        intensity:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -611,8 +807,10 @@ class Rack(rack.prog.Register):
     def cInit(self):
         """ Allocate memory to --cSize, applying --target and --select, if set.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -621,9 +819,12 @@ class Rack(rack.prog.Register):
         method:str='MAXIMUM'):
         """ Method in accumulating values on a composite.
 
-        --- Parameters ---
-        method:MAXIMUM
+        Parameters
+        ----------
+        method:str
+            LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -636,13 +837,20 @@ class Rack(rack.prog.Register):
         smooth:bool=False):
         """ Optical flow computed based on differential accumulation layers.
 
-        --- Parameters ---
-        width:5:5
-        resize:0
-        threshold:null
-        spread:false
-        smooth:false
+        Parameters
+        ----------
+        width:list
+            
+        resize:float
+            0.0..1.0|pix
+        threshold:float
+            value
+        spread:bool
+            0|1
+        smooth:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -654,12 +862,18 @@ class Rack(rack.prog.Register):
         w:float=1):
         """ Add a single data point.
 
-        --- Parameters ---
-        lon:0
-        lat:0
-        x:0
-        w:1
+        Parameters
+        ----------
+        lon:float
+            longitude
+        lat:float
+            latitude
+        x:float
+            value
+        w:float
+            weight
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -668,9 +882,12 @@ class Rack(rack.prog.Register):
         file:str=''):
         """ Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.
 
-        --- Parameters ---
-        file:
+        Parameters
+        ----------
+        file:str
+            filename
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -679,9 +896,12 @@ class Rack(rack.prog.Register):
         projection:str=''):
         """ Set projection
 
-        --- Parameters ---
-        projection:
+        Parameters
+        ----------
+        projection:str
+            <EPSG-code>|<projstr> Proj.4 syntax
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -690,9 +910,12 @@ class Rack(rack.prog.Register):
         range:int=250000):
         """ Force a range for single-radar cartesian products (0=use-metadata).
 
-        --- Parameters ---
-        range:250000
+        Parameters
+        ----------
+        range:int
+            km
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -700,8 +923,10 @@ class Rack(rack.prog.Register):
     def cReset(self):
         """ Clears the current Cartesian product.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -711,10 +936,14 @@ class Rack(rack.prog.Register):
         height:int=0):
         """ Set size of the compositing array. Does not allocate memory.
 
-        --- Parameters ---
-        width:400
-        height:0
+        Parameters
+        ----------
+        width:int
+            pixels
+        height:int
+            pixels
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -725,11 +954,16 @@ class Rack(rack.prog.Register):
         loops:int=0):
         """ Set Spread of the compositing array. OBSOLETE. Use --iDistanceTransformFill(Exp) instead
 
-        --- Parameters ---
-        horz:10
-        vert:0
-        loops:0
+        Parameters
+        ----------
+        horz:float
+            pixels
+        vert:float
+            pixels
+        loops:int
+            N
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -738,9 +972,12 @@ class Rack(rack.prog.Register):
         time:str='201412091845'):
         """ Modify the time of the current composite. See --cTimeDecay 
 
-        --- Parameters ---
-        time:201412091845
+        Parameters
+        ----------
+        time:str
+            YYYYmmddHHMMSS
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -749,9 +986,12 @@ class Rack(rack.prog.Register):
         weight:float=1):
         """ Weight (0.9...1.0) of delay, per minute. 1.0=no decay. See --cTime and --cDecayTime
 
-        --- Parameters ---
-        weight:1
+        Parameters
+        ----------
+        weight:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -759,8 +999,10 @@ class Rack(rack.prog.Register):
     def checkType(self):
         """ Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -768,8 +1010,10 @@ class Rack(rack.prog.Register):
     def completeODIM(self):
         """ Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -777,8 +1021,10 @@ class Rack(rack.prog.Register):
     def convert(self):
         """ Convert --select:ed data to scaling and markers set by --encoding
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -789,11 +1035,16 @@ class Rack(rack.prog.Register):
         nodata:float=None):
         """ Creates default quality field. See --undetectWeight and --aDefault
 
-        --- Parameters ---
-        data:null
-        undetect:null
-        nodata:null
+        Parameters
+        ----------
+        data:float
+            0..1
+        undetect:float
+            0..1
+        nodata:float
+            0..1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -801,8 +1052,10 @@ class Rack(rack.prog.Register):
     def debug(self):
         """ Set verbosity to LOG_DEBUG
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -811,9 +1064,12 @@ class Rack(rack.prog.Register):
         selector:str='path,quantity,elangle,count,order,prf,timespan'):
         """ Deletes selected parts of h5 structure.
 
-        --- Parameters ---
-        selector:path,quantity,elangle,count,order,prf,timespan
+        Parameters
+        ----------
+        selector:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -823,14 +1079,17 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Dump variable map, filtered by keys, to std or file.
 
-        --- Parameters ---
-        filter:
-        filename:
+        Parameters
+        ----------
+        filter:str
+            regexp
+        filename:str
+            std::string
         """
+
         cmd = self.make_cmd(locals())
         # note: separator ':'
         cmd.set_separators(':', ',')
-        return cmd
         return cmd
 
 
@@ -838,9 +1097,12 @@ class Rack(rack.prog.Register):
         format:str=''):
         """ For testing. Dumps a formatted string to stdout.
 
-        --- Parameters ---
-        format:
+        Parameters
+        ----------
+        format:str
+            std::string
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -849,9 +1111,12 @@ class Rack(rack.prog.Register):
         encoding:str=''):
         """ Sets encodings parameters for polar and Cartesian products, including composites.
 
-        --- Parameters ---
-        encoding:
+        Parameters
+        ----------
+        encoding:str
+            type,gain,offset,undetect,nodata,rscale,nrays,nbins,quantity
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -860,9 +1125,12 @@ class Rack(rack.prog.Register):
         flags:str=''):
         """ Status of last select.
 
-        --- Parameters ---
-        flags:
+        Parameters
+        ----------
+        flags:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -872,9 +1140,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Execute commands from a file.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -882,8 +1153,10 @@ class Rack(rack.prog.Register):
     def execScript(self):
         """ Execute script.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -891,8 +1164,10 @@ class Rack(rack.prog.Register):
     def expandVariables(self):
         """ Toggle variable expansions on/off
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -901,9 +1176,12 @@ class Rack(rack.prog.Register):
         syntax:str=''):
         """ Set format for data dumps (see --sample or --outputFile)
 
-        --- Parameters ---
-        syntax:
+        Parameters
+        ----------
+        syntax:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -912,9 +1190,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Read format for metadata dump from a file
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            std::string
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -923,9 +1204,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Dumps the formatted std::string to a file or stdout.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            std::string
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -935,10 +1219,14 @@ class Rack(rack.prog.Register):
         thickness:float=0.1):
         """ Freezing level modelled simply as its height and thickness.
 
-        --- Parameters ---
-        height:null
-        thickness:0.1
+        Parameters
+        ----------
+        height:float
+            km
+        thickness:float
+            km
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -950,12 +1238,18 @@ class Rack(rack.prog.Register):
         anchorVert:str=''):
         """ Alignment of the next element
 
-        --- Parameters ---
-        position:
-        anchor:
-        anchorHorz:
-        anchorVert:
+        Parameters
+        ----------
+        position:str
+            INSIDE|OUTSIDE:LEFT|CENTER|RIGHT|HORZ_FILL|UNDEFINED_HORZ,INSIDE|OUTSIDE:TOP|MIDDLE|BOTTOM|VERT_FILL|UNDEFINED_VERT
+        anchor:str
+            <name>|<empty>|@NONE|@PREVIOUS|@NEXT|@COLLECTIVE_CURRENT|@COLLECTIVE_FINAL
+        anchorHorz:str
+            ...
+        anchorVert:str
+            ...
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -965,10 +1259,14 @@ class Rack(rack.prog.Register):
         panel:str='playGround1'):
         """ SVG test product
 
-        --- Parameters ---
-        name:
-        panel:playGround1
+        Parameters
+        ----------
+        name:str
+            label
+        panel:str
+            label
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -978,10 +1276,14 @@ class Rack(rack.prog.Register):
         panel:str='playGround1'):
         """ SVG test product
 
-        --- Parameters ---
-        name:
-        panel:playGround1
+        Parameters
+        ----------
+        name:str
+            label
+        panel:str
+            label
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -990,9 +1292,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Adjust font sizes in CSS style section.
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1001,9 +1306,12 @@ class Rack(rack.prog.Register):
         syntax:str=''):
         """ Set grouping criterion based on variables
 
-        --- Parameters ---
-        syntax:
+        Parameters
+        ----------
+        syntax:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1012,9 +1320,12 @@ class Rack(rack.prog.Register):
         syntax:str=''):
         """ Set titles, supporting variables
 
-        --- Parameters ---
-        syntax:
+        Parameters
+        ----------
+        syntax:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1023,9 +1334,12 @@ class Rack(rack.prog.Register):
         include:str='["NONE"|"PNG"|"SVG"|"TXT"|"ALL"|"NEXT"|"SKIP"|"ON"|"OFF"|"UNKNOWN"]'):
         """ Select images to include in SVG panel
 
-        --- Parameters ---
-        include:["NONE"|"PNG"|"SVG"|"TXT"|"ALL"|"NEXT"|"SKIP"|"ON"|"OFF"|"UNKNOWN"]
+        Parameters
+        ----------
+        include:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1035,10 +1349,14 @@ class Rack(rack.prog.Register):
         direction:str='INCR'):
         """ Set main panel alignment
 
-        --- Parameters ---
-        orientation:HORZ
-        direction:INCR
+        Parameters
+        ----------
+        orientation:str
+            HORZ|VERT
+        direction:str
+            INCR|DECR
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1047,9 +1365,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ SVG test product
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1058,9 +1379,12 @@ class Rack(rack.prog.Register):
         layout:str='TECH'):
         """ SVG test product
 
-        --- Parameters ---
-        layout:TECH
+        Parameters
+        ----------
+        layout:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1069,9 +1393,12 @@ class Rack(rack.prog.Register):
         layout:str=''):
         """ SVG test product
 
-        --- Parameters ---
-        layout:
+        Parameters
+        ----------
+        layout:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1080,9 +1407,12 @@ class Rack(rack.prog.Register):
         layout:str=''):
         """ SVG test product
 
-        --- Parameters ---
-        layout:
+        Parameters
+        ----------
+        layout:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1092,10 +1422,14 @@ class Rack(rack.prog.Register):
         azimuth:list=[1,0,0]):
         """ Draw polar sectors and rings
 
-        --- Parameters ---
-        distance:1:0:0
-        azimuth:1:0:0
+        Parameters
+        ----------
+        distance:list
+            step:start:end (metres)
+        azimuth:list
+            step:start:end (degrees)
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1103,8 +1437,10 @@ class Rack(rack.prog.Register):
     def gPolarScope(self):
         """ Draw circle, typically transparent, on the radar range
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1113,9 +1449,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Select (and draw) sector using natural coordinates or indices
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1124,9 +1463,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Add or modify CSS entry
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1135,9 +1477,12 @@ class Rack(rack.prog.Register):
         title:str='AUTO'):
         """ Set main title
 
-        --- Parameters ---
-        title:AUTO
+        Parameters
+        ----------
+        title:str
+            <empty>|<string>|'auto'
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1146,9 +1491,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Set title box heights and adjust font sizes. See --gFontSizes
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1158,10 +1506,14 @@ class Rack(rack.prog.Register):
         compression:str=''):
         """ GeoTIFF tile size. Deprecating?, use --outputConf tif:tile=<width>:<height>,compression=LZW
 
-        --- Parameters ---
-        tile:256:256
-        compression:
+        Parameters
+        ----------
+        tile:list
+            
+        compression:str
+            NONE=1,LZW=5,DEFLATE=32946,PACKBITS=32773
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1170,9 +1522,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Dump H5 sources
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1181,9 +1536,12 @@ class Rack(rack.prog.Register):
         key:str=''):
         """ Display help.
 
-        --- Parameters ---
-        key:
+        Parameters
+        ----------
+        key:str
+            command|sections
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1192,9 +1550,12 @@ class Rack(rack.prog.Register):
         keyword:str=''):
         """ Dump example of use and exit.
 
-        --- Parameters ---
-        keyword:
+        Parameters
+        ----------
+        keyword:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1207,13 +1568,20 @@ class Rack(rack.prog.Register):
         commentChar:str='#'):
         """ Histogram. Optionally --format using keys index,range,range.min,range.max,count,label
 
-        --- Parameters ---
-        count:0
-        range:0:0
-        filename:
-        attribute:histogram
-        commentChar:#
+        Parameters
+        ----------
+        count:int
+            
+        range:list
+            
+        filename:str
+            <filename>.txt|-
+        attribute:str
+            <attribute_key>
+        commentChar:str
+            Prefix for header and postfix for labels
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1224,11 +1592,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Adds values
 
-        --- Parameters ---
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1237,9 +1610,12 @@ class Rack(rack.prog.Register):
         width:list=[1,0]):
         """ Window averaging with optional weighting support.
 
-        --- Parameters ---
-        width:1:0
+        Parameters
+        ----------
+        width:list
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1252,13 +1628,20 @@ class Rack(rack.prog.Register):
         expansionCoeff:float=1):
         """ Smoothes image repeatedly, mixing original image with the result at each round.
 
-        --- Parameters ---
-        width:5:0
-        spreader:avg
-        mix:max
-        loops:1
-        expansionCoeff:1
+        Parameters
+        ----------
+        width:list
+            
+        spreader:str
+            "avg"="average""avgFlow"="flowAverage""avgGauss"="gaussianAverage""dist"="distanceTransform""distExp"="distanceTransformExp"
+        mix:str
+            max|<coeff>: (quality) max, (quality) blend
+        loops:int
+            number of repetitions
+        expansionCoeff:float
+            window enlargement
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1268,10 +1651,14 @@ class Rack(rack.prog.Register):
         offset:float=0):
         """ Catenates images
 
-        --- Parameters ---
-        scale:1
-        offset:0
+        Parameters
+        ----------
+        scale:float
+            
+        offset:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1283,12 +1670,18 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Copies current view to: f=full image, i=image channels, a=alpha channel(s), 0=1st, 1=2nd,...
 
-        --- Parameters ---
-        dstView:
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        dstView:str
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1300,12 +1693,18 @@ class Rack(rack.prog.Register):
         j:int=0):
         """ Crop image.
 
-        --- Parameters ---
-        width:0
-        height:0
-        i:0
-        j:0
+        Parameters
+        ----------
+        width:int
+            
+        height:int
+            
+        i:int
+            
+        j:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1314,9 +1713,12 @@ class Rack(rack.prog.Register):
         functor:str=''):
         """ Computes the distance of pixel vectors. Post-scaling with desired functor.
 
-        --- Parameters ---
-        functor:
+        Parameters
+        ----------
+        functor:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1327,11 +1729,16 @@ class Rack(rack.prog.Register):
         topology:str='16-CONNECTED'):
         """ Linearly decreasing intensities - applies decrements.
 
-        --- Parameters ---
-        width:10:10
-        height:null:null
-        topology:16-CONNECTED
+        Parameters
+        ----------
+        width:list
+            pix
+        height:list
+            pix
+        topology:str
+            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1342,11 +1749,16 @@ class Rack(rack.prog.Register):
         topology:str='16-CONNECTED'):
         """ Exponentially decreasing intensities. Set half-decay radii.
 
-        --- Parameters ---
-        width:10:10
-        height:null:null
-        topology:16-CONNECTED
+        Parameters
+        ----------
+        width:list
+            pix
+        height:list
+            pix
+        topology:str
+            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1358,12 +1770,18 @@ class Rack(rack.prog.Register):
         alphaThreshold:list=[0,0]):
         """ Spreads intensities linearly up to distance defined by alpha channel.
 
-        --- Parameters ---
-        width:12.3:12.3
-        height:null:null
-        topology:16-CONNECTED
-        alphaThreshold:0:0
+        Parameters
+        ----------
+        width:list
+            pix
+        height:list
+            pix
+        topology:str
+            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
+        alphaThreshold:list
+            0..1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1375,12 +1793,18 @@ class Rack(rack.prog.Register):
         alphaThreshold:list=[0,0]):
         """ Spreads intensities exponentially up to distance defined by alpha intensities.
 
-        --- Parameters ---
-        width:12:12
-        height:null:null
-        topology:16-CONNECTED
-        alphaThreshold:0:0
+        Parameters
+        ----------
+        width:list
+            pix
+        height:list
+            pix
+        topology:str
+            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
+        alphaThreshold:list
+            0..1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1391,11 +1815,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Rescales intensities linerarly
 
-        --- Parameters ---
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1406,11 +1835,16 @@ class Rack(rack.prog.Register):
         value:float=1):
         """ Fills an area starting at (i,j) having intensity in [min,max], with a value.
 
-        --- Parameters ---
-        location:0:0
-        intensity:1:65536
-        value:1
+        Parameters
+        ----------
+        location:list
+            i:j
+        intensity:list
+            min:max
+        value:float
+            intensity
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1419,9 +1853,12 @@ class Rack(rack.prog.Register):
         width:list=[1,1]):
         """ Window average that preserves the magnitude
 
-        --- Parameters ---
-        width:1:1
+        Parameters
+        ----------
+        width:list
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1434,13 +1871,20 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Fuzzy bell function.
 
-        --- Parameters ---
-        location:0
-        width:1
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        location:float
+            
+        width:float
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1453,13 +1897,20 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Fuzzy Gaussian-like bell function.
 
-        --- Parameters ---
-        location:0
-        width:1
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        location:float
+            
+        width:float
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1471,12 +1922,18 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Fuzzy step function.
 
-        --- Parameters ---
-        position:-1:1
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        position:list
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1489,13 +1946,20 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Fuzzy step function
 
-        --- Parameters ---
-        location:0
-        width:1
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        location:float
+            
+        width:float
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1508,13 +1972,20 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Fuzzy triangle function.
 
-        --- Parameters ---
-        position:-1:1
-        peakPos:0
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        position:list
+            
+        peakPos:float
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1527,13 +1998,20 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Fuzzy function of two peaks.
 
-        --- Parameters ---
-        location:0
-        width:1
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        location:float
+            
+        width:float
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1543,10 +2021,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Gamma correction for brightness.
 
-        --- Parameters ---
-        gamma:1
-        LIMIT:false
+        Parameters
+        ----------
+        gamma:float
+            0.0...
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1556,10 +2038,14 @@ class Rack(rack.prog.Register):
         radius:float=0.5):
         """ Gaussian blur implemented as quick Wx1 and 1xH filtering.
 
-        --- Parameters ---
-        width:1:0
-        radius:0.5
+        Parameters
+        ----------
+        width:list
+            
+        radius:float
+            distance, relative to width and height, where gaussian kernel obtains value 0.5.
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1569,10 +2055,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ Computes horizontal and vertical derivatives: df/di and df/dj.
 
-        --- Parameters ---
-        radius:1
-        LIMIT:true
+        Parameters
+        ----------
+        radius:int
+            pix
+        LIMIT:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1582,10 +2072,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ Horizontal intensity difference
 
-        --- Parameters ---
-        radius:1
-        LIMIT:true
+        Parameters
+        ----------
+        radius:int
+            pix
+        LIMIT:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1595,10 +2089,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ Vertical intensity difference
 
-        --- Parameters ---
-        radius:1
-        LIMIT:true
+        Parameters
+        ----------
+        radius:int
+            pix
+        LIMIT:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1608,10 +2106,14 @@ class Rack(rack.prog.Register):
         normalize:bool=True):
         """ Convert multi-channel image to single. Post-scaling with desired functor.
 
-        --- Parameters ---
-        coeff:1.0
-        normalize:true
+        Parameters
+        ----------
+        coeff:str
+            c[:c2:c3:...]
+        normalize:bool
+            true|false
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1622,11 +2124,16 @@ class Rack(rack.prog.Register):
         coeff:float=0.5):
         """ Mixture of original and high-pass filtered image
 
-        --- Parameters ---
-        width:3
-        height:3
-        coeff:0.5
+        Parameters
+        ----------
+        width:int
+            
+        height:int
+            
+        coeff:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1639,13 +2146,20 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ High-pass filter for recognizing details.
 
-        --- Parameters ---
-        width:1
-        height:1
-        scale:1
-        offset:0
-        LIMIT:true
+        Parameters
+        ----------
+        width:int
+            
+        height:int
+            
+        scale:float
+            
+        offset:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1657,12 +2171,18 @@ class Rack(rack.prog.Register):
         weightThreshold:float=0.05):
         """ Infinite-impulse response type spreading
 
-        --- Parameters ---
-        decay:0.75:0.75:0.75:0.75
-        extendHorz:0
-        extendVert:0
-        weightThreshold:0.05
+        Parameters
+        ----------
+        decay:list
+            
+        extendHorz:int
+            pix
+        extendVert:int
+            pix
+        weightThreshold:float
+            [0..1.0]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1672,10 +2192,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ Second intensity derivatives, (df/di)^2 and (df/dj)^2
 
-        --- Parameters ---
-        radius:1
-        LIMIT:true
+        Parameters
+        ----------
+        radius:int
+            pix
+        LIMIT:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1685,10 +2209,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ Second horizontal differential
 
-        --- Parameters ---
-        radius:1
-        LIMIT:true
+        Parameters
+        ----------
+        radius:int
+            pix
+        LIMIT:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1698,10 +2226,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=True):
         """ Second vertical differential
 
-        --- Parameters ---
-        radius:1
-        LIMIT:true
+        Parameters
+        ----------
+        radius:int
+            pix
+        LIMIT:bool
+            0|1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1710,9 +2242,12 @@ class Rack(rack.prog.Register):
         functor:str=''):
         """ Computes the magnitude of a pixel vector. Post-scaling with desired functor.
 
-        --- Parameters ---
-        functor:
+        Parameters
+        ----------
+        functor:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1723,11 +2258,16 @@ class Rack(rack.prog.Register):
         medianPos:float=0.5):
         """ Computes statistics on <horz> or <vert> lines: iAverage,sum,median,stdDev,variance,miN,maX
 
-        --- Parameters ---
-        mode:horz
-        stat:asmdvNX
-        medianPos:0.5
+        Parameters
+        ----------
+        mode:str
+            
+        stat:str
+            
+        medianPos:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1735,8 +2275,10 @@ class Rack(rack.prog.Register):
     def iMax(self):
         """ Maximum of two values.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1747,11 +2289,16 @@ class Rack(rack.prog.Register):
         bins:int=256):
         """ A pipeline implementation of window median.
 
-        --- Parameters ---
-        width:1:1
-        percentage:0.5
-        bins:256
+        Parameters
+        ----------
+        width:list
+            
+        percentage:float
+            
+        bins:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1759,8 +2306,10 @@ class Rack(rack.prog.Register):
     def iMin(self):
         """ Minimum of two values.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1772,12 +2321,18 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Rescales intensities linerarly
 
-        --- Parameters ---
-        coeff:0.5
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        coeff:float
+            
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1788,11 +2343,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Rescales intensities linerarly
 
-        --- Parameters ---
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1803,11 +2363,16 @@ class Rack(rack.prog.Register):
         max:float=1):
         """ Change values outside given range to target.min and target.max
 
-        --- Parameters ---
-        range:0:1
-        min:0
-        max:1
+        Parameters
+        ----------
+        range:list
+            accepted values [min:max]
+        min:float
+            value set below range.min
+        max:float
+            value set above range.max
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1815,8 +2380,10 @@ class Rack(rack.prog.Register):
     def iNegate(self):
         """ Invert values (unsigned char or unsigned short int)
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1825,9 +2392,12 @@ class Rack(rack.prog.Register):
         physical:bool=False):
         """ Flag. Handle intensities as physical quantities instead of storage typed values.
 
-        --- Parameters ---
-        physical:false
+        Parameters
+        ----------
+        physical:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1836,9 +2406,12 @@ class Rack(rack.prog.Register):
         functor:str=''):
         """ Computes the dot product of pixel vectors. Post-scaling with desired functor.
 
-        --- Parameters ---
-        functor:
+        Parameters
+        ----------
+        functor:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1847,9 +2420,12 @@ class Rack(rack.prog.Register):
         coeff:float=0.5):
         """ Weighted blending of two images.
 
-        --- Parameters ---
-        coeff:0.5
+        Parameters
+        ----------
+        coeff:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1859,10 +2435,14 @@ class Rack(rack.prog.Register):
         decay:float=1):
         """ Compares two images, preserving pixels having higher alpha value. Src alpha is pre-multiplied with advantage.
 
-        --- Parameters ---
-        advantage:1
-        decay:1
+        Parameters
+        ----------
+        advantage:float
+            0.8..1.2
+        decay:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1872,10 +2452,14 @@ class Rack(rack.prog.Register):
         replace:float=None):
         """ Threshold data with quality
 
-        --- Parameters ---
-        threshold:0
-        replace:null
+        Parameters
+        ----------
+        threshold:float
+            0.0...1.0
+        replace:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1885,10 +2469,14 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Quantize to n bits. (For integer images)
 
-        --- Parameters ---
-        bits:4
-        LIMIT:false
+        Parameters
+        ----------
+        bits:int
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1899,11 +2487,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Rescales intensities linerarly
 
-        --- Parameters ---
-        fromValue:0
-        toValue:0
-        LIMIT:false
+        Parameters
+        ----------
+        fromValue:float
+            
+        toValue:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1914,11 +2507,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Rescales values linerarly: y = scale*x + bias
 
-        --- Parameters ---
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1930,12 +2528,18 @@ class Rack(rack.prog.Register):
         scale:float=1):
         """ Resize geometry and scale intensities
 
-        --- Parameters ---
-        width:0
-        height:0
-        interpolation:n
-        scale:1
+        Parameters
+        ----------
+        width:int
+            pix
+        height:int
+            pix
+        interpolation:str
+            n=nearest,b=bilinear
+        scale:float
+            rescaling factor
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1944,9 +2548,12 @@ class Rack(rack.prog.Register):
         threshold:float=0):
         """ Computes lengths of segments of intensity above threshold.
 
-        --- Parameters ---
-        threshold:0
+        Parameters
+        ----------
+        threshold:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1955,9 +2562,12 @@ class Rack(rack.prog.Register):
         threshold:float=0):
         """ Computes lengths of segments of intensity above threshold.
 
-        --- Parameters ---
-        threshold:0
+        Parameters
+        ----------
+        threshold:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1967,10 +2577,14 @@ class Rack(rack.prog.Register):
         functor:str=''):
         """ Computes segment sizes.
 
-        --- Parameters ---
-        intensity:1:1.79769e+308
-        functor:
+        Parameters
+        ----------
+        intensity:list
+            min:max
+        functor:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1981,11 +2595,16 @@ class Rack(rack.prog.Register):
         functor:str=''):
         """ Segment statistics: area, mx, my, variance, slimness, horizontality, verticality, elongation
 
-        --- Parameters ---
-        statistics:d
-        intensity:1:255
-        functor:
+        Parameters
+        ----------
+        statistics:str
+            aAxXyYsSlhve
+        intensity:list
+            min:max
+        functor:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -1996,11 +2615,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Subtracts values
 
-        --- Parameters ---
-        scale:1
-        bias:0
-        LIMIT:false
+        Parameters
+        ----------
+        scale:float
+            
+        bias:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2011,11 +2635,16 @@ class Rack(rack.prog.Register):
         debug:int=0):
         """ Hierarchical segment prober
 
-        --- Parameters ---
-        threshold:128
-        filename:
-        debug:0
+        Parameters
+        ----------
+        threshold:int
+            min intensity
+        filename:str
+            
+        debug:int
+            Dump intermediate control images etc
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2026,11 +2655,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Resets values lower than a threshold
 
-        --- Parameters ---
-        threshold:0.5
-        replace:0
-        LIMIT:false
+        Parameters
+        ----------
+        threshold:float
+            
+        replace:float
+            
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2041,11 +2675,16 @@ class Rack(rack.prog.Register):
         LIMIT:bool=False):
         """ Resets values lower and higher than a threshold
 
-        --- Parameters ---
-        threshold:0.5:0.5
-        replace:0:1
-        LIMIT:false
+        Parameters
+        ----------
+        threshold:list
+            min[:max]
+        replace:list
+            min[:max]
+        LIMIT:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2053,8 +2692,10 @@ class Rack(rack.prog.Register):
     def iTranspose(self):
         """ Flips image matrix around its corner.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2066,12 +2707,18 @@ class Rack(rack.prog.Register):
         bins:int=256):
         """ A pipeline implementation of window histogram; valueFunc=[asmdvNX] (avg,sum,median,stddev,variance,miN,maX)
 
-        --- Parameters ---
-        width:1:1
-        valueFunc:a
-        percentage:0.5
-        bins:256
+        Parameters
+        ----------
+        width:list
+            
+        valueFunc:str
+            asmdvXN
+        percentage:float
+            
+        bins:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2079,8 +2726,10 @@ class Rack(rack.prog.Register):
     def image(self):
         """ Copies data to a separate image object. Encoding can be changed with --target .
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2088,8 +2737,10 @@ class Rack(rack.prog.Register):
     def imageAlpha(self):
         """ Adds a transparency channel. Implies additional image, creates one if needed. See --encoding
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2100,11 +2751,16 @@ class Rack(rack.prog.Register):
         value:str='0'):
         """ Set intensity at (i:i2,j:j2) to (f1,f2,f3,...).
 
-        --- Parameters ---
-        i:0:0
-        j:0:0
-        value:0
+        Parameters
+        ----------
+        i:list
+            i:i2
+        j:list
+            j:j2
+        value:str
+            <f1>[:f2:f3:alpha]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2113,9 +2769,12 @@ class Rack(rack.prog.Register):
         bgcolor:str='0'):
         """ Removes a alpha (transparency) channel. Adds a new background of given color.
 
-        --- Parameters ---
-        bgcolor:0
+        Parameters
+        ----------
+        bgcolor:str
+            <gray>|<red>,<green>,<blue>
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2124,9 +2783,12 @@ class Rack(rack.prog.Register):
         physical:bool=False):
         """ Flag. Handle intensities as physical quantities instead of storage typed values.
 
-        --- Parameters ---
-        physical:false
+        Parameters
+        ----------
+        physical:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2135,9 +2797,12 @@ class Rack(rack.prog.Register):
         groups:str='dataset:data'):
         """ Applied parent groups for quality: dataset:data
 
-        --- Parameters ---
-        groups:dataset:data
+        Parameters
+        ----------
+        groups:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2148,11 +2813,16 @@ class Rack(rack.prog.Register):
         nodata:float=1):
         """ Adds a transparency channel. Uses copied image, creating one if needed.
 
-        --- Parameters ---
-        ftor:
-        undetect:0
-        nodata:1
+        Parameters
+        ----------
+        ftor:str
+            min:max or Functor_p1_p2_p3_...
+        undetect:float
+            opacity of 'undetect' pixels
+        nodata:float
+            opacity of 'nodata' pixels
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2162,9 +2832,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Read HDF5, text or image file
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>.[h5|hdf5|png|pgm|ppm|txt]
         """
+
         cmd = self.make_cmd(locals())
         cmd.set_implicit()
         return cmd
@@ -2174,9 +2847,12 @@ class Rack(rack.prog.Register):
         ATTRIBUTES:str='3'):
         """ Partial file read. You probably search for --inputSelect
 
-        --- Parameters ---
-        ATTRIBUTES:3
+        Parameters
+        ----------
+        ATTRIBUTES:str
+            ATTRIBUTES=1,DATASETS=2,MARKED=4
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2185,9 +2861,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Load palette.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>.[txt|json]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2196,9 +2875,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Path prefix for input files.
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2207,9 +2889,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Selector for input data.
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2218,9 +2903,12 @@ class Rack(rack.prog.Register):
         property:str=''):
         """ Export a command to JSON.
 
-        --- Parameters ---
-        property:
+        Parameters
+        ----------
+        property:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2229,9 +2917,12 @@ class Rack(rack.prog.Register):
         selector:str='path,quantity,elangle,count,order,prf,timespan'):
         """ Keeps selected part of data structure, deletes rest.
 
-        --- Parameters ---
-        selector:path,quantity,elangle,count,order,prf,timespan
+        Parameters
+        ----------
+        selector:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2240,9 +2931,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Save palette as TXT, JSON, SVG or SLD.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2254,12 +2948,18 @@ class Rack(rack.prog.Register):
         vt100:bool=True):
         """ Redirect log to file. Status variables like ${ID}, ${PID} and ${CTX} supported.
 
-        --- Parameters ---
-        file:
-        level:
-        timing:false
-        vt100:true
+        Parameters
+        ----------
+        file:str
+            
+        level:str
+            
+        timing:bool
+            
+        vt100:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2269,10 +2969,14 @@ class Rack(rack.prog.Register):
         dst:str=''):
         """ Rename or move data groups and attributes.
 
-        --- Parameters ---
-        src:
-        dst:
+        Parameters
+        ----------
+        src:str
+            /group/group2[:attr]
+        dst:str
+            /group/group2[:attr]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2281,9 +2985,12 @@ class Rack(rack.prog.Register):
         version:str='2.4'):
         """ Set ODIM version (experimental)
 
-        --- Parameters ---
-        version:2.4
+        Parameters
+        ----------
+        version:str
+            ["2.2","2.3","2.4","RACK","KILOMETRES"]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2292,9 +2999,12 @@ class Rack(rack.prog.Register):
         value:str='<format>:<key>=value>,conf...'):
         """ Format (h5|tif|png|tre|dot) specific configurations
 
-        --- Parameters ---
-        value:<format>:<key>=value>,conf...
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2303,9 +3013,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Output data to HDF5, text, image or GraphViz file. See also: --image, --outputRawImages.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>.[h5|hdf5|png|pgm|txt|dat|mat|dot]|-
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2314,9 +3027,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Save palette as TXT, JSON, SVG or SLD.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2325,9 +3041,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Path prefix for output files.
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2336,9 +3055,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Output datasets to png files named filename[NN].ext.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            string
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2347,9 +3069,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Output data as simple tree structure.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>|-
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2357,8 +3082,10 @@ class Rack(rack.prog.Register):
     def pAdd(self):
         """ Add polar data to accumulation array.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2367,9 +3094,12 @@ class Rack(rack.prog.Register):
         weight:float=1):
         """ Adds the current product to the composite applying weight.
 
-        --- Parameters ---
-        weight:1
+        Parameters
+        ----------
+        weight:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2378,9 +3108,12 @@ class Rack(rack.prog.Register):
         aboveSeaLevel:bool=True):
         """ Computes the altitude at each bin
 
-        --- Parameters ---
-        aboveSeaLevel:true
+        Parameters
+        ----------
+        aboveSeaLevel:bool
+            false=radar site|true=sea level
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2392,12 +3125,18 @@ class Rack(rack.prog.Register):
         devAltitude:int=1000):
         """ Detects birds and insects.
 
-        --- Parameters ---
-        reflMax:-10
-        maxAltitude:500
-        reflDev:5
-        devAltitude:1000
+        Parameters
+        ----------
+        reflMax:float
+            dBZ
+        maxAltitude:int
+            m
+        reflDev:float
+            dBZ
+        devAltitude:int
+            m
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2411,14 +3150,22 @@ class Rack(rack.prog.Register):
         gamma:float=1):
         """ Estimates bird probability from DBZH, VRAD, RhoHV and ZDR.
 
-        --- Parameters ---
-        dbzPeak:-20:0
-        vradDevMin:1
-        rhoHVmax:0.99:0.891
-        zdrAbsMin:1
-        window:2500:5
-        gamma:1
+        Parameters
+        ----------
+        dbzPeak:list
+            Typical reflectivity (dBZ)
+        vradDevMin:float
+            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+        rhoHVmax:list
+            Fuzzy threshold of maximum rhoHV value
+        zdrAbsMin:float
+            Fuzzy threshold of absolute ZDR
+        window:list
+            beam-directional(m), azimuthal(deg)
+        gamma:float
+            Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2432,14 +3179,22 @@ class Rack(rack.prog.Register):
         height:bool=False):
         """ Constant-altitude planar position indicator
 
-        --- Parameters ---
-        altitude:1000
-        aboveSeaLevel:true
-        beamWidth:1
-        weightMin:-0.1
-        accumulationMethod:WAVG:1:8:-40
-        height:false
+        Parameters
+        ----------
+        altitude:float
+            metres
+        aboveSeaLevel:bool
+            
+        beamWidth:float
+            deg
+        weightMin:float
+            -0.1|0...1
+        accumulationMethod:str
+            string
+        height:bool
+            true|false
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2451,12 +3206,18 @@ class Rack(rack.prog.Register):
         file:str='cluttermaps/cluttermap-${NOD}-${quantity}.h5'):
         """ Reads a ground clutter map and scales it to sweeps.
 
-        --- Parameters ---
-        decay:0.5
-        gamma:1
-        quantity:CLUTTER
-        file:cluttermaps/cluttermap-${NOD}-${quantity}.h5
+        Parameters
+        ----------
+        decay:float
+            per 1000m
+        gamma:float
+            brightness
+        quantity:str
+            CLUTTER|OBSTACLE|...
+        file:str
+            path syntax
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2470,14 +3231,22 @@ class Rack(rack.prog.Register):
         smoothRad:float=0):
         """ Computes the probability of convection based on fuzzy cell intensity, area and height.
 
-        --- Parameters ---
-        maxEchoThreshold:25
-        cellDiameter:3
-        echoTopThreshold:2
-        echoTopDBZ:20
-        smoothAzm:0
-        smoothRad:0
+        Parameters
+        ----------
+        maxEchoThreshold:float
+            dBZ
+        cellDiameter:float
+            km
+        echoTopThreshold:float
+            km
+        echoTopDBZ:float
+            dBZ
+        smoothAzm:float
+            deg
+        smoothRad:float
+            km
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2490,13 +3259,20 @@ class Rack(rack.prog.Register):
         relativeScale:bool=False):
         """ Smoothens Doppler field, providing quality
 
-        --- Parameters ---
-        width:1500
-        height:3
-        threshold:0.5
-        compensate:false
-        relativeScale:false
+        Parameters
+        ----------
+        width:float
+            metres
+        height:float
+            deg
+        threshold:float
+            percentage
+        compensate:bool
+            cart/polar[0|1]
+        relativeScale:bool
+            false|true
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2507,11 +3283,16 @@ class Rack(rack.prog.Register):
         vertExtension:int=0):
         """ Doppler field smoother with exponential decay weighting
 
-        --- Parameters ---
-        decay:0.75:0.75:0.75:0.75
-        horzExtension:0
-        vertExtension:0
+        Parameters
+        ----------
+        decay:list
+            
+        horzExtension:int
+            pix
+        vertExtension:int
+            pix
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2521,10 +3302,14 @@ class Rack(rack.prog.Register):
         threshold:float=0.9):
         """ Creates virtual 
 
-        --- Parameters ---
-        nyquist:100
-        threshold:0.9
+        Parameters
+        ----------
+        nyquist:float
+            max-unamb-velocity
+        threshold:float
+            relative speed
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2537,13 +3322,20 @@ class Rack(rack.prog.Register):
         relativeScale:bool=True):
         """ Computes std.dev.[m/s] of Doppler field
 
-        --- Parameters ---
-        width:1500
-        height:3
-        threshold:0.5
-        compensate:false
-        relativeScale:true
+        Parameters
+        ----------
+        width:float
+            metres
+        height:float
+            deg
+        threshold:float
+            percentage
+        compensate:bool
+            cart/polar[0|1]
+        relativeScale:bool
+            true|false
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2552,9 +3344,12 @@ class Rack(rack.prog.Register):
         dMax:float=0):
         """ Azimuthal difference of VRAD
 
-        --- Parameters ---
-        dMax:0
+        Parameters
+        ----------
+        dMax:float
+            m/s
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2566,12 +3361,18 @@ class Rack(rack.prog.Register):
         bin:list=[0,0]):
         """ Plots differences in VRAD data as fucntion of azimuth
 
-        --- Parameters ---
-        azm:0:0
-        range:0:0
-        ray:0:0
-        bin:0:0
+        Parameters
+        ----------
+        azm:list
+            deg
+        range:list
+            km
+        ray:list
+            index
+        bin:list
+            index
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2583,12 +3384,18 @@ class Rack(rack.prog.Register):
         compensate:bool=False):
         """ Magnitude of mean unit circle mapped Doppler speeds
 
-        --- Parameters ---
-        width:1500
-        height:3
-        threshold:0.5
-        compensate:false
+        Parameters
+        ----------
+        width:float
+            metres
+        height:float
+            deg
+        threshold:float
+            percentage
+        compensate:bool
+            cart/polar[0|1]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2599,11 +3406,16 @@ class Rack(rack.prog.Register):
         altitudeWeight:str=''):
         """ Derives 2D wind (u,v) from aliased Doppler data.
 
-        --- Parameters ---
-        width:500
-        height:3
-        altitudeWeight:
+        Parameters
+        ----------
+        width:int
+            metres
+        height:float
+            degrees
+        altitudeWeight:str
+            Functor:a:b:c...
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2614,11 +3426,16 @@ class Rack(rack.prog.Register):
         quantity:str='VRAD'):
         """ Creates virtual 
 
-        --- Parameters ---
-        nyquist:100
-        match:0
-        quantity:VRAD
+        Parameters
+        ----------
+        nyquist:float
+            max-unamb-velocity
+        match:int
+            flag(aliased=1,nodata=2)
+        quantity:str
+            output-quantity
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2630,12 +3447,18 @@ class Rack(rack.prog.Register):
         bin:list=[0,0]):
         """ Projects Doppler speeds to unit circle. Window corners as (azm,range) or (ray,bin)
 
-        --- Parameters ---
-        azm:0:0
-        range:0:0
-        ray:0:0
-        bin:0:0
+        Parameters
+        ----------
+        azm:list
+            deg
+        range:list
+            km
+        ray:list
+            index
+        bin:list
+            index
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2649,14 +3472,22 @@ class Rack(rack.prog.Register):
         marker:int=255):
         """ Visualise a direction[azm,r,r2], range[r,r2], sector[azm,azm2,r,r2] or arc[azm,azm2,r].
 
-        --- Parameters ---
-        shape:direction
-        p1:0
-        p2:0
-        p3:0
-        p4:0
-        marker:255
+        Parameters
+        ----------
+        shape:str
+            [direction|range|sector|arc]
+        p1:float
+            
+        p2:float
+            
+        p3:float
+            
+        p4:float
+            
+        marker:int
+            intensity
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2671,15 +3502,24 @@ class Rack(rack.prog.Register):
         EXTENDED:bool=True):
         """ Estimates maximum altitude of given reflectivity
 
-        --- Parameters ---
-        threshold:20
-        reference:-50:15000
-        undetectValue:-32
-        weights:1:0.8:0.6:0.4:0.2
-        weightDecay:20
-        avgWindow:0:0
-        EXTENDED:true
+        Parameters
+        ----------
+        threshold:float
+            reflectivity limit (dB)
+        reference:list
+            'dry point' of low reflectivity and high altitude [dBZ:m]
+        undetectValue:float
+            reflectivity replacing 'undetect' [dBZ]
+        weights:list
+            weights for INTERPOLATION, INTERP_UNDET, EXTRAP_UP, EXTRAP_DOWN, CLEAR
+        weightDecay:float
+            radius from threshold in decreasing weight [dBZ]
+        avgWindow:list
+            optional reference window [metres,degrees]
+        EXTENDED:bool
+            store also DBZ_SLOPE and CLASS
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2691,12 +3531,18 @@ class Rack(rack.prog.Register):
         aboveSeaLevel:bool=True):
         """ Computes maximum (or minimum) altitude of echo.
 
-        --- Parameters ---
-        minDBZ:20
-        dbzReference:-50
-        altitudeReference:15000
-        aboveSeaLevel:true
+        Parameters
+        ----------
+        minDBZ:float
+            dBZ
+        dbzReference:float
+            dBZ
+        altitudeReference:float
+            metres
+        aboveSeaLevel:bool
+            false=radar site|true=sea level
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2705,9 +3551,12 @@ class Rack(rack.prog.Register):
         channels:str='dw'):
         """ Extract polar-coordinate data that has been accumulated.
 
-        --- Parameters ---
-        channels:dw
+        Parameters
+        ----------
+        channels:str
+            Layers: data,count,weight,std.deviation
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2716,9 +3565,12 @@ class Rack(rack.prog.Register):
         ftor:str=''):
         """ Maps values using a function
 
-        --- Parameters ---
-        ftor:
+        Parameters
+        ----------
+        ftor:str
+            Functor:a:b:c...
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2728,10 +3580,14 @@ class Rack(rack.prog.Register):
         accumulationMethod:str='MAXIMUM'):
         """ Computes maximum dBZ inside altitude range
 
-        --- Parameters ---
-        altitude:1000:9000
-        accumulationMethod:MAXIMUM
+        Parameters
+        ----------
+        altitude:list
+            metres
+        accumulationMethod:str
+            MAXIMUM|AVERAGE|WAVG:2:2|MAXW
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2740,9 +3596,12 @@ class Rack(rack.prog.Register):
         productCmd:str=''):
         """ Return default outout quantity
 
-        --- Parameters ---
-        productCmd:
+        Parameters
+        ----------
+        productCmd:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2754,12 +3613,18 @@ class Rack(rack.prog.Register):
         weight:float=1):
         """ Add a single data point.
 
-        --- Parameters ---
-        lon:0
-        lat:0
-        value:0
-        weight:1
+        Parameters
+        ----------
+        lon:float
+            longitude
+        lat:float
+            latitude
+        value:float
+            value
+        weight:float
+            weight
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2768,9 +3633,12 @@ class Rack(rack.prog.Register):
         file:str=''):
         """ Plot file containing rows '<lat> <lon> <value> [weight] (skipped...)'.
 
-        --- Parameters ---
-        file:
+        Parameters
+        ----------
+        file:str
+            filename
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2782,12 +3650,18 @@ class Rack(rack.prog.Register):
         invertPolar:bool=False):
         """ Smoothen polar data
 
-        --- Parameters ---
-        width:1500
-        height:3
-        threshold:0.5
-        invertPolar:false
+        Parameters
+        ----------
+        width:float
+            metres
+        height:float
+            deg
+        threshold:float
+            percentage
+        invertPolar:bool
+            cart/polar
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2802,15 +3676,24 @@ class Rack(rack.prog.Register):
         beamPowerThreshold:float=0.01):
         """ Computes vertical intersection in a volume in the beam direction.
 
-        --- Parameters ---
-        az_angle:0
-        xsize:500
-        ysize:250
-        range:1:250
-        height:0:10000
-        beamWidth:0.25
-        beamPowerThreshold:0.01
+        Parameters
+        ----------
+        az_angle:float
+            deg
+        xsize:int
+            pix
+        ysize:int
+            pix
+        range:list
+            km
+        height:list
+            m
+        beamWidth:float
+            deg
+        beamPowerThreshold:float
+            0..1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2818,8 +3701,10 @@ class Rack(rack.prog.Register):
     def pRainRate(self):
         """ Estimates precipitation rate [mm/h] from reflectance [dBZ].
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2831,12 +3716,18 @@ class Rack(rack.prog.Register):
         kdp:list=[0.25,0.35]):
         """ Precip. rate [mm/h] from dual-pol using fuzzy thresholds. Alg. by Brandon Hickman
 
-        --- Parameters ---
-        dbz:30:50
-        zdr:0.15:0.25
-        rhohv:0.85
-        kdp:0.25:0.35
+        Parameters
+        ----------
+        dbz:list
+            heavy:hail
+        zdr:list
+            heavy
+        rhohv:float
+            met
+        kdp:list
+            heavy
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2845,9 +3736,12 @@ class Rack(rack.prog.Register):
         location:list=[25.2,60.1]):
         """ Set radar size location of the accumulated data. Also size etc., if --encoding set.
 
-        --- Parameters ---
-        location:25.2:60.1
+        Parameters
+        ----------
+        location:list
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2857,10 +3751,14 @@ class Rack(rack.prog.Register):
         quantity:str='SUNSHINE'):
         """ Computes the sun position
 
-        --- Parameters ---
-        timestamp:200527071845
-        quantity:SUNSHINE
+        Parameters
+        ----------
+        timestamp:str
+            
+        quantity:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2870,10 +3768,14 @@ class Rack(rack.prog.Register):
         index:int=0):
         """ Return a single sweep
 
-        --- Parameters ---
-        quantity:DBZH
-        index:0
+        Parameters
+        ----------
+        quantity:str
+            
+        index:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2886,13 +3788,20 @@ class Rack(rack.prog.Register):
         azSlots:int=1):
         """ Computes vertical dBZ distribution in within range [minRange,maxRange] km.
 
-        --- Parameters ---
-        range:10:100
-        height:0:10000
-        levels:100
-        azm:0:359.99
-        azSlots:1
+        Parameters
+        ----------
+        range:list
+            km
+        height:list
+            m
+        levels:int
+            
+        azm:list
+            deg
+        azSlots:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2901,9 +3810,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Load and apply palette.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>.[txt|json]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2914,11 +3826,16 @@ class Rack(rack.prog.Register):
         lenient:bool=True):
         """ Check status of palette(s).
 
-        --- Parameters ---
-        key:list
-        code:
-        lenient:true
+        Parameters
+        ----------
+        key:str
+            
+        code:str
+            
+        lenient:bool
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2926,8 +3843,10 @@ class Rack(rack.prog.Register):
     def paletteDefault(self):
         """ Apply default palette matching the quantity of current data.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2936,9 +3855,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Load palette.
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>.[txt|json]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2947,9 +3869,12 @@ class Rack(rack.prog.Register):
         params:str=''):
         """ Deprecating command
 
-        --- Parameters ---
-        params:
+        Parameters
+        ----------
+        params:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2958,9 +3883,12 @@ class Rack(rack.prog.Register):
         count:int=0):
         """ Refine colors
 
-        --- Parameters ---
-        count:0
+        Parameters
+        ----------
+        count:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2969,9 +3897,12 @@ class Rack(rack.prog.Register):
         seconds:str='random'):
         """ Pause for n or random seconds
 
-        --- Parameters ---
-        seconds:random
+        Parameters
+        ----------
+        seconds:str
+            [<number>|random]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -2980,37 +3911,49 @@ class Rack(rack.prog.Register):
         i,j:str='0,0'):
         """ Plot
 
-        --- Parameters ---
-        i,j:0,0
+        Parameters
+        ----------
+        i,j:str
+            <i>,<j>,...
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
 
     def precipKDP(self,
-        a:float=6.95299e-310,
+        a:float=6.95309e-310,
         b:float=0):
         """ Precip rate from KDP
 
-        --- Parameters ---
-        a:6.95299e-310
-        b:0
+        Parameters
+        ----------
+        a:float
+            
+        b:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
 
     def precipKDPZDR(self,
-        a:float=6.95299e-310,
+        a:float=6.95309e-310,
         b:float=0,
-        c:float=6.10735e-310):
+        c:float=6.9197e-310):
         """ Precipitation rate from KDP and ZDR
 
-        --- Parameters ---
-        a:6.95299e-310
-        b:0
-        c:6.10735e-310
+        Parameters
+        ----------
+        a:float
+            
+        b:float
+            
+        c:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3021,11 +3964,16 @@ class Rack(rack.prog.Register):
         c:float=-2.28):
         """ Precipitation rate from Z and ZDR
 
-        --- Parameters ---
-        a:0.0122
-        b:0.82
-        c:-2.28
+        Parameters
+        ----------
+        a:float
+            
+        b:float
+            
+        c:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3035,10 +3983,14 @@ class Rack(rack.prog.Register):
         b:float=1.6):
         """ Precipitation rate from Z (reflectivity)
 
-        --- Parameters ---
-        a:200
-        b:1.6
+        Parameters
+        ----------
+        a:float
+            
+        b:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3048,10 +4000,14 @@ class Rack(rack.prog.Register):
         b:float=1.53):
         """ Precipitation rate from Z (reflectivity)
 
-        --- Parameters ---
-        a:223
-        b:1.53
+        Parameters
+        ----------
+        a:float
+            
+        b:float
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3061,10 +4017,14 @@ class Rack(rack.prog.Register):
         count:int=0):
         """ Export command interfaces to Python. Compatible with rack.prog module.
 
-        --- Parameters ---
-        file:dump.py
-        count:0
+        Parameters
+        ----------
+        file:str
+            
+        count:int
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3075,23 +4035,29 @@ class Rack(rack.prog.Register):
         zero:str=''):
         """ 1) list quantities, 2) set default type for a quantity, 3) set default scaling for (quantity,type) pair
 
-        --- Parameters ---
-        quantity:
-        encoding:
-        zero:
+        Parameters
+        ----------
+        quantity:str
+            quantity (DBZH,VRAD,...)
+        encoding:str
+            C,0,0,0,0
+        zero:str
+            number or NaN
         """
+
         cmd = self.make_cmd(locals())
         # note: separator ':'
         cmd.set_separators(':', ',')
-        return cmd
         return cmd
 
 
     def restart(self):
         """ Debug
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3106,27 +4072,40 @@ class Rack(rack.prog.Register):
         handleVoid:str='null'):
         """ Extract samples. See --format.
 
-        --- Parameters ---
-        iStep:10
-        jStep:0
-        i:-1:1
-        j:-1:1
-        commentChar:#
-        skipVoid:false
-        handleVoid:null
+        Parameters
+        ----------
+        iStep:int
+            horz coord step
+        jStep:int
+            vert coord step
+        i:list
+            horz index or range
+        j:list
+            vert index or range
+        commentChar:str
+            comment prefix (char or bytevalue)
+        skipVoid:bool
+            skip lines with invalid/missing values
+        handleVoid:str
+            skip or mark invalid values [skip|null|<number>]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
 
     # NOTE: key == commandBank.scriptCmd  TODO SCRIPT QUOTE check...
+
     def script(self,
         script:str=''):
         """ Define script.
 
-        --- Parameters ---
-        script:
+        Parameters
+        ----------
+        script:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3135,9 +4114,12 @@ class Rack(rack.prog.Register):
         selector:str='path,quantity,elangle,count,order,prf,timespan'):
         """ Data selector for the next computation
 
-        --- Parameters ---
-        selector:path,quantity,elangle,count,order,prf,timespan
+        Parameters
+        ----------
+        selector:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3146,9 +4128,12 @@ class Rack(rack.prog.Register):
         flags:str='INPUT|POLAR|CARTESIAN'):
         """ Select input object for the next operation
 
-        --- Parameters ---
-        flags:INPUT|POLAR|CARTESIAN
+        Parameters
+        ----------
+        flags:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3157,9 +4142,12 @@ class Rack(rack.prog.Register):
         quantities:str=''):
         """ Like --select quantity=... 
 
-        --- Parameters ---
-        quantities:
+        Parameters
+        ----------
+        quantities:str
+            quantity[,quantity2,...]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3168,9 +4156,12 @@ class Rack(rack.prog.Register):
         assignment:str=''):
         """ Set general-purpose variables
 
-        --- Parameters ---
-        assignment:
+        Parameters
+        ----------
+        assignment:str
+            key=value
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3179,9 +4170,12 @@ class Rack(rack.prog.Register):
         assignment:str=''):
         """ Set data properties (ODIM). Works also directly: --/<path>:<key>[=<value>]. See --completeODIM
 
-        --- Parameters ---
-        assignment:
+        Parameters
+        ----------
+        assignment:str
+            /<path>:<key>[=<value>]
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3189,8 +4183,10 @@ class Rack(rack.prog.Register):
     def status(self):
         """ Dump information on current images.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3199,9 +4195,12 @@ class Rack(rack.prog.Register):
         flags:str=''):
         """ Stop on given error condition(s).
 
-        --- Parameters ---
-        flags:
+        Parameters
+        ----------
+        flags:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3210,9 +4209,12 @@ class Rack(rack.prog.Register):
         level:str='0'):
         """ Request additional (debugging) outputs
 
-        --- Parameters ---
-        level:0
+        Parameters
+        ----------
+        level:str
+            DEFAULT=0,INTERMEDIATE=1,QUALITY=4,DEBUG=2
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3221,9 +4223,12 @@ class Rack(rack.prog.Register):
         encoding:str=''):
         """ Sets encodings parameters for polar and Cartesian products, including composites.
 
-        --- Parameters ---
-        encoding:
+        Parameters
+        ----------
+        encoding:str
+            type,gain,offset,undetect,nodata,rscale,nrays,nbins,quantity
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3233,10 +4238,14 @@ class Rack(rack.prog.Register):
         azimuth:list=[0,360]):
         """ Polar area (sector, annulus) selector
 
-        --- Parameters ---
-        distance:0:250
-        azimuth:0:360
+        Parameters
+        ----------
+        distance:list
+            
+        azimuth:list
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3244,8 +4253,10 @@ class Rack(rack.prog.Register):
     def testSelect(self):
         """ Test...
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3254,9 +4265,12 @@ class Rack(rack.prog.Register):
         value:str=''):
         """ Dump XML track
 
-        --- Parameters ---
-        value:
+        Parameters
+        ----------
+        value:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3265,9 +4279,12 @@ class Rack(rack.prog.Register):
         weight:float=0.75):
         """ Set the relative weight of data values assigned 'undetect'.
 
-        --- Parameters ---
-        weight:0.75
+        Parameters
+        ----------
+        weight:float
+            0...1
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3275,8 +4292,10 @@ class Rack(rack.prog.Register):
     def updateVariables(self):
         """ Force calling DataTools::updateInternalAttributes(ctx.getHi5(Hdf5Context::CURRENT))
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3285,9 +4304,12 @@ class Rack(rack.prog.Register):
         filename:str=''):
         """ Read CVS file 
 
-        --- Parameters ---
-        filename:
+        Parameters
+        ----------
+        filename:str
+            <filename>.cvs
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3297,10 +4319,14 @@ class Rack(rack.prog.Register):
         imageLevel:str='WARNING'):
         """ Set verbosity level
 
-        --- Parameters ---
-        level:NOTE
-        imageLevel:WARNING
+        Parameters
+        ----------
+        level:str
+            
+        imageLevel:str
+            
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 
@@ -3308,8 +4334,10 @@ class Rack(rack.prog.Register):
     def version(self):
         """ Displays software version and quits.
 
-        --- Parameters ---
+        Parameters
+        ----------
         """
+
         cmd = self.make_cmd(locals())
         return cmd
 

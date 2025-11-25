@@ -167,8 +167,7 @@ void Command::getRelatedCommands(std::ostream & ostr) const {
 	if (!relatedCommands.empty()){
 		ostr << "  See also: ";
 		char sep=0;
-		//for (const Command *cmd: relatedCommands){
-		for (const std::string &cmd: relatedCommands){
+		for (const std::string &cmd: relatedCommands){ // Todo: without hyphens?
 			if (sep)
 				ostr << sep;
 			else

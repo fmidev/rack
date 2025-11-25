@@ -36,21 +36,58 @@ namespace drain {
 
 const std::string PythonConverter::TRIPLE_HYPHEN = "\"\"\"";
 
+const std::string & PythonConverter::getType(const drain::Castable & arg){
+	const std::type_info & t = arg.getType();
+	if (!arg.isValid()){
+		static const std::string s("NoneType");
+		return s;
+	}
+	else if (arg.getElementCount() > 1){
+		static const std::string s("list");
+		return s;
+	}
+	else if (t == typeid(bool)){
+		static const std::string s("bool");
+		return s;
+	}
+	else if (drain::Type::call<drain::typeIsInteger>(t)){
+		static const std::string s("int");
+		return s;
+	}
+	else if (drain::Type::call<drain::typeIsFloat>(t)){
+		static const std::string s("float");
+		return s;
+	}
+	else {
+		static const std::string s("str");
+		return s;
+	}
+}
+
+
 //std::string PythonConverter::content="return self._make_cmd(locals())";
+void PythonConverter::writeTitle(std::ostream & ostr, int indentLevel, const std::string & title) const {
+	indent(ostr, indentLevel);
+	ostr << title << '\n';
+	indent(ostr, indentLevel);
+	ostr << std::string(title.size(), '-') << '\n';
+};
 
 void PythonConverter::exportCommands(const std::string &name, const drain::CommandBank & commandBank, std::ostream & ostr, int indentLevel) const {
 
-	indent(ostr, indentLevel);
-	ostr << "class " << name << ':' << '\n' << '\n';
+	ostr << '\n';
 
-	indent(ostr, indentLevel+1);
-	ostr << "# defaultCmdKey="<< commandBank.defaultCmdKey << "\n";
+	write(ostr, indentLevel, "class ", name, ':');
 
-	indent(ostr, indentLevel+1);
-	ostr << "# execFileCmd=" << commandBank.execFileCmd << "\n";
+	++indentLevel;
 
-	indent(ostr, indentLevel+1);
-	ostr << "# commandBank.scriptCmd="<< commandBank.scriptCmd << "\n";
+	write(ostr, indentLevel, TRIPLE_HYPHEN, ' ', "Rack automatic");
+	write(ostr, indentLevel, TRIPLE_HYPHEN, '\n');
+
+	write(ostr, indentLevel, "# defaultCmdKey=", commandBank.defaultCmdKey);
+	write(ostr, indentLevel, "# execFileCmd=", commandBank.execFileCmd);
+	write(ostr, indentLevel, "# commandBank.scriptCmd=", commandBank.scriptCmd);
+	ostr << '\n';
 
 	// int i = 10;
 	for (const auto & entry: commandBank.getMap()){
@@ -59,24 +96,21 @@ void PythonConverter::exportCommands(const std::string &name, const drain::Comma
 
 		const bool IMPLICIT = (key == commandBank.defaultCmdKey);
 		if (key == commandBank.defaultCmdKey){
-			indent(ostr, indentLevel+1);
-			ostr << "# TODO: key == commandBank.defaultCmdKey...\n";
+			write(ostr, indentLevel, "# TODO: key == commandBank.defaultCmdKey...");
 			// exportCommand(key, command, ostr, indentLevel+1);
 		}
 		else if (command.getName() == commandBank.execFileCmd){
-			indent(ostr, indentLevel+1);
-			ostr << "# NOTE: key == commandBank.execFileCmd TODO...\n";
+			write(ostr, indentLevel, "# NOTE: key == commandBank.execFileCmd TODO...");
 			// exportCommand(key, command, ostr, indentLevel+1);
 		}
 		else if (command.getName() == commandBank.scriptCmd){
-			indent(ostr, indentLevel+1);
-			ostr << "# NOTE: key == commandBank.scriptCmd  TODO SCRIPT QUOTE check...\n";
+			write(ostr, indentLevel, "# NOTE: key == commandBank.scriptCmd  TODO SCRIPT QUOTE check...\n");
 			// exportCommand(key, command, ostr, indentLevel+1);
 		}
 		else {
 			//exportCommand(key, command, ostr, indentLevel+1);
 		}
-		exportCommand(key, command, ostr, indentLevel+1, IMPLICIT);
+		exportCommand(key, command, ostr, indentLevel, IMPLICIT);
 
 		ostr << '\n';
 		--counter;
@@ -92,7 +126,7 @@ void PythonConverter::exportCommands(const std::string &name, const drain::Comma
 void PythonConverter::exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr, int indentLevel, bool implicit) const {
 
 	const drain::ReferenceMap & params = command.getParameters();
-	const drain::ReferenceMap::unitmap_t & u = params.getUnitMap();
+	const drain::ReferenceMap::unitmap_t & umap = params.getUnitMap();
 
 	drain::PythonSerializer pyser;
 	// drain::Output pyDump(filename);
@@ -121,35 +155,17 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 
 		// String -> plain
 		ostr << key << ':';
-		const std::type_info & t = param.getType();
-		if (param.getElementCount() > 1){
-			ostr << "list";
-		}
-		else if (t == typeid(bool)){
-			ostr << "bool";
-		}
-		else if (drain::Type::call<drain::typeIsInteger>(t)){
-			ostr << "int";
-		}
-		else if (drain::Type::call<drain::typeIsFloat>(t)){
-			ostr << "float";
-		}
-		else {
-			ostr << "str";
-			// ostr << entry.second;
+		ostr << getType(param);
 
-		}
-		// JSONvalueOut?
 		if (param.isString()){
 			// Force default
 			ostr << '=';
-			// pyser.stringToStream(ostr, "");
 			pyser.stringToStream(ostr, param.toStr().c_str());
 		}
 		else if (!param.empty()){
 			ostr << '=';
+			const std::type_info & t = param.getType();
 			if (param.getElementCount() > 1){
-				// std::list<std::string> l;
 				std::list<double> l;
 				param.toSequence(l);
 				pyser.iterableToStream(ostr, l, drain::Serializer::LIST);
@@ -157,55 +173,51 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 			else if (t == typeid(bool)){
 				pyser.boolToStream(ostr, param);
 			}
-			/*
-			else if (param.isString()){ // why not type?
-				pyser.stringToStream(ostr, param.toStr().c_str());
-			}
-			*/
 			else if (drain::Type::call<drain::typeIsFloat>(t)){
 				pyser.floatToStream(ostr, param);
 			}
 			else {
 				pyser.toStream(ostr, param);
 			}
+
+			/*
+			else if (param.isString()){ // why not type?
+				pyser.stringToStream(ostr, param.toStr().c_str());
+			}
+			*/
 		}
 
 	}
-	ostr << "):\n";
+	ostr << "):\n";  // TODO: -> Command
 
-	indent(ostr, indentLevel+1);
-	ostr << TRIPLE_HYPHEN << ' ' << command.getDescription() << '\n';
+	write(ostr, indentLevel+1, TRIPLE_HYPHEN, ' ', command.getDescription());
 	ostr << '\n';
 
-	indent(ostr, indentLevel+1);
-	ostr << "--- Parameters ---\n";
+	writeTitle(ostr, indentLevel+1, "Parameters");
 	for (const auto & key: keys){
 		const Reference & param = params[key];
-		//for (const auto & entry: m){
-		indent(ostr, indentLevel+1);
-		ostr << key << ':' << param << '\n';
+		write(ostr, indentLevel+1, key, ':', getType(param));
+		drain::ReferenceMap::unitmap_t::const_iterator it = umap.find(key);
+		if (it != umap.end()){
+			write(ostr, indentLevel+2, it->second);
+		}
 	}
-	indent(ostr, indentLevel+1);
-	ostr << TRIPLE_HYPHEN << '\n';
+	write(ostr, indentLevel+1, TRIPLE_HYPHEN);
+	ostr << '\n'; // extra newline required in policy
 
-	indent(ostr, indentLevel+1);
-	ostr << "cmd = self.make_cmd(locals())\n";
+	write(ostr, indentLevel+1, "cmd = self.make_cmd(locals())");
 	if (implicit){
-		indent(ostr, indentLevel+1);
-		ostr << "cmd.set_implicit()\n";
+		write(ostr, indentLevel+1, "cmd.set_implicit()");
 	}
 	if ((params.size()>1) && (params.separator != ',')){
-		indent(ostr, indentLevel+1);
-		ostr << "# note: separator '" << params.separator << "'\n";
-
-		indent(ostr, indentLevel+1);
-		ostr << "cmd.set_separators('"<< params.separator << "', ',')\n";
-		indent(ostr, indentLevel+1);
-		ostr << "return cmd\n";
+		write(ostr, indentLevel+1, "# note: separator '", params.separator, "'");
+		write(ostr, indentLevel+1, "cmd.set_separators('", params.separator, "', ',')");
+		// write(ostr, indentLevel+1, "return cmd");
 	}
 	//else {
-	indent(ostr, indentLevel+1);
-	ostr << "return cmd\n";
+	write(ostr, indentLevel+1, "return cmd");
+	ostr << '\n';
+
 	// ostr << "return self.make_cmd(locals())";
 	// }
 	// ostr << '\n'; // needed
@@ -216,7 +228,6 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 		ostr << '\n'; // needed
 	}
 	*/
-	ostr << '\n';
 	//ostr << "pass\n";
 }
 
