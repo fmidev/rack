@@ -49,24 +49,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// Creates an instance of command class C.
-//  in section S of the global command registry.
-/**
- * \tparam C - command
- *
- */
-/*
-template <class C> //, char PREFIX=0, int SECTIONS=1>
-class CommandWrapper : public C {
-public:
-
-	/// Add a command to the shared command bank.
-	CommandWrapper(const std::string & name, char alias = 0){
-		getCommandBank().add<C>(name,alias); //.section = S;
-	}
-
-};
-*/
 
 
 
@@ -77,7 +59,7 @@ public:
  * \tparam SECTIONS - command sections flags
  */
 template <char PREFIX=0, class SECTION=GeneralSection>
-class CommandInstaller { //: public CMD {
+class CommandInstaller {
 public:
 
 	CommandBank & cmdBank;
@@ -137,23 +119,6 @@ public:
 		return install(cmdExt, name, alias);
 	}
 
-	// Deprecated method name - use plain install()
-	/*
-	template <class CMD>
-	Command & installExternal(CMD & cmdExt, const std::string & name, char alias = 0){
-		Command & cmd = cmdBank.addExternal(cmdExt, name,alias);// must give cmdExt, for copying
-		cmd.section |= getSection().index; // keep TRIGGER
-		return cmd;
-	}
-
-	// Deprecated method name - use plain install()
-	template <class CMD>
-	Command & installExternal(CMD & cmdExt, char alias = 0){
-		std::string name = cmdExt.getName();
-		CommandBank::deriveCmdName(name, PREFIX);
-		return installExternal(cmdExt, name, alias);
-	}
-	*/
 
 	/// Install to shared (global) CommandBank.
 	template <class CMD>
@@ -173,46 +138,6 @@ public:
 		return installShared<CMD>(name, alias);
 	}
 
-	/*
-	template <class ...CC>
-	static
-	//void linkRelatedCommands(const std::string & cmd, const CC & ... cmds){
-	void linkRelatedCommands(const Command & cmd, const CC & ... cmds){
-		std::string name = cmd.getName();
-		CommandBank::deriveCmdName(name, PREFIX);
-
-		// relatedCommands.insert(&cmd);
-		// linkRelatedCommands(cmds...);
-		linkRelatedCommands(name, cmds...);
-		// return *this;
-	};
-
-
-	template <class ...CC>
-	static // inline
-	void linkRelatedCommands(const std::string & name, const Command & cmd, const CC & ... cmds){
-		//cmd.linkRelatedCommands(name);
-		cmd.relatedCommands.insert(name);
-		linkRelatedCommands(name, cmds...);
-	}
-
-	static inline
-	void linkRelatedCommands(const std::string & name, const Command & cmd){
-		cmd.relatedCommands.insert(name);
-		// cmd.linkRelatedCommands(name);
-	}
-
-	// mutable
-	// std::set<const Command *> relatedCommands;
-
-	typedef std::set<const Command *> CmdSet;
-
-	template <class ...TT>
-	inline
-	void createCmdSet(CmdSet & set,const TT & ... cmds){
-		set.insert(cmds);
-	}
-		*/
 
 
 };
@@ -242,6 +167,7 @@ public:
 
 	};
 
+	/// Mark deprecating commands by installing them with this.
 	/**
 	 *  If CMD_NEW is given (ie. different from CMD), add it to recommended alternatives.
 	 */
@@ -261,6 +187,8 @@ public:
 		return cmd;
 	}
 
+
+	/// Mark deprecating commands by installing them with this.
 	/**
 	 *  If CMD_NEW is given (ie. different from CMD), add it to recommended alternatives.
 	 */
@@ -320,15 +248,13 @@ public:
 
 };
 
-}
+}  // drain::
 
 
 /// Usage: inside a Module:  DRAIN_CMD_INSTALL(Cmd, Verbose)('v');
 #define DRAIN_CMD_INSTALL(prefix, cmd) drain::Command & cmd = install<prefix##cmd>
 
 
-/* namespace drain */
+#endif
 
-#endif /* DRAINLET_H_ */
 
-// Rack

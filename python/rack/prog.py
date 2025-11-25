@@ -15,6 +15,51 @@ class Command:
     PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
 
+    class Formatter:
+
+        NAME_FORMAT='{name}'
+        KEY_FORMAT ='{key}'
+        VALUE_FORMAT='{value}'
+        PARAM_FORMAT='{key}={value}'
+
+        def fmt_name(self, name:str)->str :
+            return self.NAME_FORMAT.format(name=name)
+        
+        def fmt_param(self, value, key:str=None)->str :
+            """
+            Notice the order of parameters.
+            """
+            value = self.VALUE_FORMAT.format(value=value)
+            if (key is None) or (isinstance(key, (int, float))):
+                return value
+            else:
+                key =  self.KEY_FORMAT.format(key=key)
+                return self.PARAM_FORMAT.format(key=key,value=value)
+
+        def get_param_lst(self, arg_dict={}, key_list=None)->list:
+            """ Return a list of strings of key-value entries. By default, 
+                in this base class implementation, such entry 
+                is "key=value", or only the value if the key is numeric. 
+            """
+            if key_list is None:
+                # Return all
+                return [self.fmt_param(v,k) for k,v in arg_dict.items()]
+            else: # key_list can be empty.
+                orig_key_list = list(arg_dict.keys())
+                result = []
+                for k in key_list:
+                    if isinstance(k, (int, float)):
+                        kk = orig_key_list[k]
+                    else:
+                        kk = k
+                    result.append(self.fmt_param(arg_dict[kk],k))
+                return result
+
+        # fmt strings also for this?
+        def fmt_params(self, arg_dict={}, key_list=None)->str :
+            param_list = self.get_param_lst(arg_dict, key_list)
+            return ",".join(param_list)
+
 
     def __init__(self, name, args={}, explicit_args={}):
         """This defines the command parameter list, including default values.
@@ -117,6 +162,9 @@ class Command:
             return f"--{self.name}"
 
     
+    def to_test(self, fmt:Formatter, key_list:list=None) -> str:
+        #l = fmt.get_param_lst(self.args)
+        return fmt.fmt_params(self.args, key_list)
     
     def to_tuple(self, quote=None, compact=True) -> tuple: # , prefixed=True
         """Returns a singleton or a double token
