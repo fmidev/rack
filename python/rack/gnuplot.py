@@ -1,16 +1,168 @@
+#import os
+import inspect
 from typing import Any, List, Union
-import os
+from pathlib import Path
 
 #import rack.command
 import rack.prog
 import rack.log
-from pathlib import Path
 logger = rack.log.logger.getChild(Path(__file__).stem)
 
+class KeyWord():
+    def __init__(self, name:str, value=None):
+        self.name = name
+        if not value is None:
+            self.value = value
+
+
+class Terminal:
+    PNG = KeyWord("png")
+    SVG = KeyWord("svg")
+    #SVG = KeyWord("svg")
+
+
+
+class GnuPlotFormatter(rack.prog.Formatter):
+    
+    #def __init__(self, name_format='{name}', key_format='{key}', value_format='{value}', value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
+    #    super().__init__(name_format, key_format, value_format, value_assign, param_separator, params_format, cmd_assign, cmd_separator)
+
+    def __init__(self):
+        self.VALUE_ASSIGN=' '
+        self.VALUE_SEPARATOR=','
+        self.PARAM_SEPARATOR=' '
+        self.CMD_SEPARATOR=';\n'
+
+    def fmt_value(self, value:str) -> str :
+        if isinstance(value, KeyWord):
+            value=value.name
+        elif isinstance(value, str):
+            value=f'"{value}"'
+        return super().fmt_value(value)
+
+    def fmt_name_UNUSED(self, name:str) -> str :
+        l = len(name)
+        if l==0: # Default command (--inputFile ...) works like this - needs no key.
+            return ""
+        elif l==1:
+            return f"-{name}"
+        else:
+            return f"--{name}"
+        
+
+
+class GnuReg(rack.prog.Register):
+    """ Automatic Drain command set export
+    """
+
+    def make_set_cmd(self, locs):
+
+        # Detect caller function automatically
+        caller_name = inspect.stack()[1].function
+        # func = getattr(self, caller_name)
+        args = [KeyWord(caller_name)]
+
+        for k, v in locs.items():
+            if k == "self":
+                pass
+            elif k != "opts":
+                #(key,value) = (k,v)
+                logger.warning(f"detected: {k} = {v}")
+                args.append(v)
+
+        # cmd = GnuPlotSet(caller_name, value, locs["opts"])
+        if "opts" in locs:
+            cmd = rack.prog.Command("set", args, locs["opts"])
+        else:
+            cmd = rack.prog.Command("set", args)
+
+
+        if self.cmdSequence:
+            self.cmdSequence.add(cmd)
+        
+        return
+    
+    
+    def terminal(self, terminal_type: KeyWord=Terminal.PNG, **opts):
+        return self.make_set_cmd(locals())
+
+    def output(self, filename: str):
+        return self.make_set_cmd(locals())
+
+    def title(self, title: str):
+        return self.make_set_cmd(locals())
+
+    #def terminal(self, terminal_type: str, **opts) : #  GnuPlotCommand:
+    #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "terminal", terminal_type, **opts)
+    
+    #def output(self, filename: str) : #  GnuPlotCommand:
+    #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "output", filename)
+
+    
+    def datafile(self, text: str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", datafile=text, **opts)
+
+    
+    def grid(self, arg:str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "grid", **opts)
+
+    
+    def xdata(self, arg: str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xdata=arg, **opts)
+
+
+    
+    def xlabel(self, arg: str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xlabel=arg, **opts)
+
+    
+    def ylabel(self, arg: str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", ylabel=arg, **opts)
+
+    #
+    #def xdata(self, mode: str) : #  GnuPlotCommand:
+    #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "xdata", mode)
+
+    
+    def timefmt(self, fmt: str) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "timefmt", fmt)
+
+    
+    def format_x(self, fmt: str) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format x", fmt)
+        #return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format", "x", fmt)
+
+    
+    def format_y(self, fmt: str) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format y", fmt)
+
+    
+    #def title(self, text: str) : #  GnuPlotCommand:
+    #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", title=text)
+
+    
+    def label(text: str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", label=text, **opts)
+
+    
+    def key(text: str, **opts) : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", key=text, **opts)
+
+    
+    def multiplot(rows: int, cols: int, title: str = None) : #  List[GnuPlotCommand]:
+        #cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
+        #if title:
+        #    cmds.append(GnuPlotCommand("set", "title", title))
+        return self.make_set_cmd(locals()) #  cmds
+
+    
+    def unset_multiplot() : #  GnuPlotCommand:
+        return self.make_set_cmd(locals()) #  GnuPlotCommand("unset", "multiplot")
 
 # --- Base Layer (already familiar) ---
 
-class GnuPlotCommand(rack.command.Command):
+#class GnuPlotCommand(rack.command.Command):
+class GnuPlotCommand(rack.prog.Command):
     """GnuPlot-specific command, inherits from Command."""
     
     QUOTED_KEYS = {"output", "file", "timefmt", "format", "title", "label", "xlabel", "ylabel"}
@@ -32,18 +184,20 @@ class GnuPlotCommand(rack.command.Command):
         return self.static_fmt(val, key)
 
 
-
-class GnuPlotCommandSequence(rack.command.CommandSequence):
+class GnuPlotCommandSequence(rack.prog.CommandSequence):
+#class GnuPlotCommandSequence(rack.command.CommandSequence):
     """Sequence of GnuPlotCommands."""
     
-    def add(self, cmd: GnuPlotCommand):
+
+    def addOld(self, cmd: GnuPlotCommand):
         if not isinstance(cmd, GnuPlotCommand):
             raise TypeError("Only GnuPlotCommand instances allowed")
         super().add(cmd)
 
     def to_script(self, filename: str):
         with open(filename, "w", encoding="utf-8") as f:
-            f.write(self.to_string("\n") + "\n")
+            #f.write(self.to_string("\n") + "\n")
+            f.write(self.to_string() + "\n")
 
     # see also: create_gnuplot_script in rack/statistics.py
     def create_scriptFOO(self, files: list, settings=dict(), colums=(1,2)):
@@ -239,53 +393,51 @@ class GnuPlot:
 def main():
 
     
-    cmds = GnuPlotCommandSequence()
-    cmds.add(GnuPlot.set.terminal(GnuPlot.Terminal.PNG, size=(800, 600)))
-    cmds.add(GnuPlot.set.output("plot_output.png"))
+    prog = GnuPlotCommandSequence()
 
+    reg = GnuReg(prog)
+    #reg.terminal(GnuPlot.Terminal.PNG, size=(800, 600))
+    reg.terminal(Terminal.PNG, size=(800, 600))
+    reg.output("my-file.png")
+    reg.title("Combined Sine and Cosine")
+    #reg.set("terminal", GnuPlot.Terminal.PNG, size=(800, 600))
+
+
+    #prog.add(GnuPlot.set.terminal(GnuPlot.Terminal.PNG, size=(800, 600)))
+    #prog.add(GnuPlot.set.output("plot_output.png"))
+
+    """
 
     # titles and labels
-    cmds.add(GnuPlot.set.title("Combined Sine and Cosine"))
-    cmds.add(GnuPlot.set.label("t=0", at=(0, 0)))
+    prog.add(GnuPlot.set.title("Combined Sine and Cosine"))
+    prog.add(GnuPlot.set.label("t=0", at=(0, 0)))
 
     # multiplot layout
     for c in GnuPlot.set.multiplot(2, 1):
-        cmds.add(c)
+        prog.add(c)
 
     # xdata and format
-    cmds.add(GnuPlot.set.xdata("time"))
-    cmds.add(GnuPlot.set.timefmt("%s"))
-    cmds.add(GnuPlot.set.format_x("%H:%M"))
+    prog.add(GnuPlot.set.xdata("time"))
+    prog.add(GnuPlot.set.timefmt("%s"))
+    prog.add(GnuPlot.set.format_x("%H:%M"))
 
     # multiple plots in one line
-    cmds.add(GnuPlot.plot.plot(
+    prog.add(GnuPlot.plot.plot(
         {"expr": "sin(x)", "title": "Sine", "with_": "lines"},
         {"expr": "cos(x)", "title": "Cosine", "with_": "linespoints"}
     ))
+    """
 
     #unset multiplot
-    cmds.add(GnuPlot.set.unset_multiplot())
+    #prog.add(GnuPlot.set.unset_multiplot())
 
-    """
-    cmds.add(GnuPlot.set.datafile_separator(GnuPlot.Datafile.WHITESPACE))
-    cmds.add(GnuPlot.set.xdata("time"))
-    cmds.add(GnuPlot.set.timefmt("%s"))
-    cmds.add(GnuPlot.set.format_x("%H:%M"))
-    
-    # Add plot command
-    #cmds.add(GnuPlot.plot.plot("sin(x)", title="Sine", with_="lines", linewidth=2))
-    cmds.add(GnuPlot.plot.plot(expr="cos(x)", title="Cosine", with_="lines", linewidth=2))
-    cmds.add(GnuPlot.plot.plot(
-      {"expr": "sin(x)", "title": "Sine", "with_": "lines"},
-      {"expr": "cos(x)", "title": "Cosine", "with_": "lines"}
-    ))
-    """
   
     # Save to file
-    cmds.to_script("example_plot.plt")
+    #prog.to_script("example_plot.plt")
+    fmt = GnuPlotFormatter()
 
     print("Generated GnuPlot script:\n")
-    print(cmds.to_string(";\n"))
+    print(prog.to_string(fmt))  # ";\n"
 
 
 

@@ -1,7 +1,7 @@
 import rack.prog
 
 class Rack(rack.prog.Register):
-    """ Rack automatic
+    """ Automatic Drain command set export
     """
 
     # defaultCmdKey=inputFile
@@ -17,11 +17,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         functor:str
-             Functor
+           Functor
         aboveSeaLevel:bool
-            Reference is sea level, not radar site
+          Reference is sea level, not radar site
         bias:float
-            offset added to altitude
+          offset added to altitude
         """
 
         cmd = self.make_cmd(locals())
@@ -39,15 +39,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         reflHalfWidth:float
-            dBZ limit of 50% quality
+          dBZ limit of 50% quality
         c:float
-            coeff
+          coeff
         p:float
-            coeff
+          coeff
         c2:float
-            coeff
+          coeff
         p2:float
-            coeff
+          coeff
         """
 
         cmd = self.make_cmd(locals())
@@ -64,13 +64,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         reflMax:float
-            dBZ
+          dBZ
         maxAltitude:int
-            m
+          m
         reflDev:float
-            dBZ
+          dBZ
         devAltitude:int
-            m
+          m
         """
 
         cmd = self.make_cmd(locals())
@@ -89,17 +89,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dbzPeak:list
-            Typical reflectivity (dBZ)
+          Typical reflectivity (dBZ)
         vradDevMin:float
-            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+          Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
         rhoHVmax:list
-            Fuzzy threshold of maximum rhoHV value
+          Fuzzy threshold of maximum rhoHV value
         zdrAbsMin:float
-            Fuzzy threshold of absolute ZDR
+          Fuzzy threshold of absolute ZDR
         window:list
-            beam-directional(m), azimuthal(deg)
+          beam-directional(m), azimuthal(deg)
         gamma:float
-            Contrast adjustment, dark=0.0 < 1.0 < brighter 
+          Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
 
         cmd = self.make_cmd(locals())
@@ -114,9 +114,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:list
-            dBZ range
+          dBZ range
         mask:bool
-            Doppler-cleared only
+          Doppler-cleared only
         """
 
         cmd = self.make_cmd(locals())
@@ -135,17 +135,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dbzPeak:list
-            Typical reflectivity (DBZH)
+          Typical reflectivity (DBZH)
         vradDevMax:float
-            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+          Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
         rhoHVmax:list
-            Fuzzy threshold of maximum rhoHV value
+          Fuzzy threshold of maximum rhoHV value
         zdrAbsMin:float
-            Fuzzy threshold of absolute ZDR
+          Fuzzy threshold of absolute ZDR
         window:list
-            beam-directional(m), azimuthal(deg)
+          beam-directional(m), azimuthal(deg)
         gamma:float
-            Contrast adjustment, dark=0.0 < 1.0 < brighter 
+          Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
 
         cmd = self.make_cmd(locals())
@@ -162,13 +162,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         decay:float
-            per 1000m
+          per 1000m
         gamma:float
-            brightness
+          brightness
         quantity:str
-            CLUTTER|OBSTACLE|...
+          CLUTTER|OBSTACLE|...
         file:str
-            path syntax
+          path syntax
         """
 
         cmd = self.make_cmd(locals())
@@ -184,11 +184,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            
+          
         undetectThreshold:float
-            
+          
         minValue:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -202,7 +202,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         probability:float
-            'resulting' probability
+          'resulting' probability
         """
 
         cmd = self.make_cmd(locals())
@@ -216,7 +216,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -232,11 +232,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         speedDevThreshold:float
-            Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)
+          Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)
         windowWidth:float
-            window width, beam-directional (m)
+          window width, beam-directional (m)
         windowHeight:float
-            window height, azimuthal (deg)
+          window height, azimuthal (deg)
         """
 
         cmd = self.make_cmd(locals())
@@ -252,11 +252,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         lengthMin:float
-            km
+          km
         thicknessMax:float
-            deg
+          deg
         sensitivity:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -272,11 +272,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            meters
+          meters
         height:float
-            degrees
+          degrees
         qualityThreshold:float
-            0.0...1.0
+          0.0...1.0
         """
 
         cmd = self.make_cmd(locals())
@@ -292,11 +292,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            meters
+          meters
         height:float
-            degrees
+          degrees
         loops:int
-            N
+          N
         """
 
         cmd = self.make_cmd(locals())
@@ -311,9 +311,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         nonMet:float
-            
+          
         NOMET:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -332,17 +332,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dbzMax:list
-            Max reflectivity
+          Max reflectivity
         vradDevMax:float
-            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+          Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
         rhoHVmax:list
-            Fuzzy threshold of maximum rhoHV value
+          Fuzzy threshold of maximum rhoHV value
         zdrAbsMin:float
-            Fuzzy threshold of absolute ZDR
+          Fuzzy threshold of absolute ZDR
         window:list
-            beam-directional(m), azimuthal(deg)
+          beam-directional(m), azimuthal(deg)
         gamma:float
-            Contrast adjustment, dark=0.0 < 1.0 < brighter 
+          Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
 
         cmd = self.make_cmd(locals())
@@ -358,11 +358,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         smoothnessThreshold:float
-            dBZ
+          dBZ
         distanceMin:float
-            km
+          km
         refit:bool
-            true|false
+          true|false
         """
 
         cmd = self.make_cmd(locals())
@@ -378,11 +378,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:list
-            0...1[:0...1]
+          0...1[:0...1]
         medianWindow:list
-            metres,degrees
+          metres,degrees
         medianPos:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -398,11 +398,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:list
-            0...1[:0...1]
+          0...1[:0...1]
         medianWindow:list
-            metres,degrees
+          metres,degrees
         medianPos:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -418,11 +418,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         probMax:float
-            probability
+          probability
         dbz:float
-            dBZ
+          dBZ
         dbzSpan:float
-            dBZ
+          dBZ
         """
 
         cmd = self.make_cmd(locals())
@@ -432,8 +432,6 @@ class Rack(rack.prog.Register):
     def aQualityCombiner(self):
         """ Combines detection probabilities to overall quality field QIND (and CLASS).
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -449,11 +447,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            probability
+          probability
         replace:str
-            nodata|undetect|<physical_value>
+          nodata|undetect|<physical_value>
         clearQuality:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -470,13 +468,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         reflMin:float
-            dBZ
+          dBZ
         reflDev:float
-            dBZ
+          dBZ
         windowWidth:int
-            m
+          m
         windowHeight:float
-            deg
+          deg
         """
 
         cmd = self.make_cmd(locals())
@@ -492,11 +490,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            dBZ
+          dBZ
         area:int
-            bins
+          bins
         invertPolar:bool
-            bins
+          bins
         """
 
         cmd = self.make_cmd(locals())
@@ -511,9 +509,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         beamWidth:float
-            deg
+          deg
         sensitivity:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -530,13 +528,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:float
-            value
+          value
         prob:float
-            prob
+          prob
         i:list
-            coord range
+          coord range
         j:list
-            coord range
+          coord range
         """
 
         cmd = self.make_cmd(locals())
@@ -552,11 +550,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         time:str
-            NOMINAL,NOW,<YYYYmmddMMHH>
+          NOMINAL,NOW,<YYYYmmddMMHH>
         decayPast:float
-            mins
+          mins
         decayFuture:float
-            mins
+          mins
         """
 
         cmd = self.make_cmd(locals())
@@ -570,7 +568,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         unversal:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -584,7 +582,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         path:str
-            <empty>|dataset[n]|data[n]
+          <empty>|dataset[n]|data[n]
         """
 
         cmd = self.make_cmd(locals())
@@ -594,8 +592,6 @@ class Rack(rack.prog.Register):
     def cAdd(self):
         """ Adds the current product to the composite.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -609,7 +605,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         weight:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -626,13 +622,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         llLon:float
-            deg|m
+          deg|m
         llLat:float
-            deg|m
+          deg|m
         urLon:float
-            deg|m
+          deg|m
         urLat:float
-            deg|m
+          deg|m
         """
 
         cmd = self.make_cmd(locals())
@@ -642,8 +638,6 @@ class Rack(rack.prog.Register):
     def cBBoxReset(self):
         """ Resets the bounding box (to be set again according to the next radar data).
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -657,7 +651,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         mode:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -674,13 +668,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         llLon:float
-            deg
+          deg
         llLat:float
-            deg
+          deg
         urLon:float
-            deg
+          deg
         urLat:float
-            deg
+          deg
         """
 
         cmd = self.make_cmd(locals())
@@ -690,8 +684,6 @@ class Rack(rack.prog.Register):
     def cCreate(self):
         """ Maps the current polar product to a Cartesian product.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -701,8 +693,6 @@ class Rack(rack.prog.Register):
     def cCreateLookup(self):
         """ Creates lookup objects
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -716,7 +706,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         timestamp:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -726,8 +716,6 @@ class Rack(rack.prog.Register):
     def cCreateTile(self):
         """ Maps the current polar product to a tile to be used in compositing.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -741,7 +729,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         time:int
-            minutes
+          minutes
         """
 
         cmd = self.make_cmd(locals())
@@ -755,7 +743,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         weight:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -770,9 +758,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         channels:str
-            DATA,WEIGHT,COUNT,DEVIATION
+          DATA,WEIGHT,COUNT,DEVIATION
         bbox:str
-            Optional cropping: ...:<LLx>,<LLy>,<URx>,<URy> or INPUT or OVERLAP
+          Optional cropping: ...:<LLx>,<LLy>,<URx>,<URy> or INPUT or OVERLAP
         """
 
         cmd = self.make_cmd(locals())
@@ -791,13 +779,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         lonSpacing:int
-            deg
+          deg
         latSpacing:int
-            deg
+          deg
         width:float
-            pix
+          pix
         intensity:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -807,8 +795,6 @@ class Rack(rack.prog.Register):
     def cInit(self):
         """ Allocate memory to --cSize, applying --target and --select, if set.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -822,7 +808,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         method:str
-            LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias
+          LATEST|MAXIMUM|MAXW|AVERAGE|WAVG,p,r,bias
         """
 
         cmd = self.make_cmd(locals())
@@ -840,15 +826,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         resize:float
-            0.0..1.0|pix
+          0.0..1.0|pix
         threshold:float
-            value
+          value
         spread:bool
-            0|1
+          0|1
         smooth:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -865,13 +851,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         lon:float
-            longitude
+          longitude
         lat:float
-            latitude
+          latitude
         x:float
-            value
+          value
         w:float
-            weight
+          weight
         """
 
         cmd = self.make_cmd(locals())
@@ -885,7 +871,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         file:str
-            filename
+          filename
         """
 
         cmd = self.make_cmd(locals())
@@ -899,7 +885,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         projection:str
-            <EPSG-code>|<projstr> Proj.4 syntax
+          <EPSG-code>|<projstr> Proj.4 syntax
         """
 
         cmd = self.make_cmd(locals())
@@ -913,7 +899,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         range:int
-            km
+          km
         """
 
         cmd = self.make_cmd(locals())
@@ -923,8 +909,6 @@ class Rack(rack.prog.Register):
     def cReset(self):
         """ Clears the current Cartesian product.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -939,9 +923,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            pixels
+          pixels
         height:int
-            pixels
+          pixels
         """
 
         cmd = self.make_cmd(locals())
@@ -957,11 +941,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         horz:float
-            pixels
+          pixels
         vert:float
-            pixels
+          pixels
         loops:int
-            N
+          N
         """
 
         cmd = self.make_cmd(locals())
@@ -975,7 +959,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         time:str
-            YYYYmmddHHMMSS
+          YYYYmmddHHMMSS
         """
 
         cmd = self.make_cmd(locals())
@@ -989,7 +973,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         weight:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -999,8 +983,6 @@ class Rack(rack.prog.Register):
     def checkType(self):
         """ Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1010,8 +992,6 @@ class Rack(rack.prog.Register):
     def completeODIM(self):
         """ Ensures ODIM types, for example after reading image data and setting attributes in command line std::strings.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1021,8 +1001,6 @@ class Rack(rack.prog.Register):
     def convert(self):
         """ Convert --select:ed data to scaling and markers set by --encoding
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1038,11 +1016,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         data:float
-            0..1
+          0..1
         undetect:float
-            0..1
+          0..1
         nodata:float
-            0..1
+          0..1
         """
 
         cmd = self.make_cmd(locals())
@@ -1052,8 +1030,6 @@ class Rack(rack.prog.Register):
     def debug(self):
         """ Set verbosity to LOG_DEBUG
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1067,7 +1043,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         selector:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1082,9 +1058,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filter:str
-            regexp
+          regexp
         filename:str
-            std::string
+          std::string
         """
 
         cmd = self.make_cmd(locals())
@@ -1100,7 +1076,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         format:str
-            std::string
+          std::string
         """
 
         cmd = self.make_cmd(locals())
@@ -1114,7 +1090,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         encoding:str
-            type,gain,offset,undetect,nodata,rscale,nrays,nbins,quantity
+          type,gain,offset,undetect,nodata,rscale,nrays,nbins,quantity
         """
 
         cmd = self.make_cmd(locals())
@@ -1128,7 +1104,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         flags:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1143,7 +1119,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1153,8 +1129,6 @@ class Rack(rack.prog.Register):
     def execScript(self):
         """ Execute script.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1164,8 +1138,6 @@ class Rack(rack.prog.Register):
     def expandVariables(self):
         """ Toggle variable expansions on/off
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1179,7 +1151,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         syntax:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1193,7 +1165,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            std::string
+          std::string
         """
 
         cmd = self.make_cmd(locals())
@@ -1207,7 +1179,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            std::string
+          std::string
         """
 
         cmd = self.make_cmd(locals())
@@ -1222,9 +1194,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         height:float
-            km
+          km
         thickness:float
-            km
+          km
         """
 
         cmd = self.make_cmd(locals())
@@ -1241,13 +1213,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         position:str
-            INSIDE|OUTSIDE:LEFT|CENTER|RIGHT|HORZ_FILL|UNDEFINED_HORZ,INSIDE|OUTSIDE:TOP|MIDDLE|BOTTOM|VERT_FILL|UNDEFINED_VERT
+          INSIDE|OUTSIDE:LEFT|CENTER|RIGHT|HORZ_FILL|UNDEFINED_HORZ,INSIDE|OUTSIDE:TOP|MIDDLE|BOTTOM|VERT_FILL|UNDEFINED_VERT
         anchor:str
-            <name>|<empty>|@NONE|@PREVIOUS|@NEXT|@COLLECTIVE_CURRENT|@COLLECTIVE_FINAL
+          <name>|<empty>|@NONE|@PREVIOUS|@NEXT|@COLLECTIVE_CURRENT|@COLLECTIVE_FINAL
         anchorHorz:str
-            ...
+          ...
         anchorVert:str
-            ...
+          ...
         """
 
         cmd = self.make_cmd(locals())
@@ -1262,9 +1234,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         name:str
-            label
+          label
         panel:str
-            label
+          label
         """
 
         cmd = self.make_cmd(locals())
@@ -1279,9 +1251,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         name:str
-            label
+          label
         panel:str
-            label
+          label
         """
 
         cmd = self.make_cmd(locals())
@@ -1295,7 +1267,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1309,7 +1281,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         syntax:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1323,7 +1295,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         syntax:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1337,7 +1309,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         include:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1352,9 +1324,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         orientation:str
-            HORZ|VERT
+          HORZ|VERT
         direction:str
-            INCR|DECR
+          INCR|DECR
         """
 
         cmd = self.make_cmd(locals())
@@ -1368,7 +1340,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1382,7 +1354,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         layout:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1396,7 +1368,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         layout:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1410,7 +1382,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         layout:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1425,9 +1397,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         distance:list
-            step:start:end (metres)
+          step:start:end (metres)
         azimuth:list
-            step:start:end (degrees)
+          step:start:end (degrees)
         """
 
         cmd = self.make_cmd(locals())
@@ -1437,8 +1409,6 @@ class Rack(rack.prog.Register):
     def gPolarScope(self):
         """ Draw circle, typically transparent, on the radar range
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -1452,7 +1422,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1466,7 +1436,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1480,7 +1450,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         title:str
-            <empty>|<string>|'auto'
+          <empty>|<string>|'auto'
         """
 
         cmd = self.make_cmd(locals())
@@ -1494,7 +1464,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1509,9 +1479,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         tile:list
-            
+          
         compression:str
-            NONE=1,LZW=5,DEFLATE=32946,PACKBITS=32773
+          NONE=1,LZW=5,DEFLATE=32946,PACKBITS=32773
         """
 
         cmd = self.make_cmd(locals())
@@ -1525,7 +1495,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1539,7 +1509,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         key:str
-            command|sections
+          command|sections
         """
 
         cmd = self.make_cmd(locals())
@@ -1553,7 +1523,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         keyword:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1571,15 +1541,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         count:int
-            
+          
         range:list
-            
+          
         filename:str
-            <filename>.txt|-
+          <filename>.txt|-
         attribute:str
-            <attribute_key>
+          <attribute_key>
         commentChar:str
-            Prefix for header and postfix for labels
+          Prefix for header and postfix for labels
         """
 
         cmd = self.make_cmd(locals())
@@ -1595,11 +1565,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1613,7 +1583,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1631,15 +1601,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         spreader:str
-            "avg"="average""avgFlow"="flowAverage""avgGauss"="gaussianAverage""dist"="distanceTransform""distExp"="distanceTransformExp"
+          "avg"="average""avgFlow"="flowAverage""avgGauss"="gaussianAverage""dist"="distanceTransform""distExp"="distanceTransformExp"
         mix:str
-            max|<coeff>: (quality) max, (quality) blend
+          max|<coeff>: (quality) max, (quality) blend
         loops:int
-            number of repetitions
+          number of repetitions
         expansionCoeff:float
-            window enlargement
+          window enlargement
         """
 
         cmd = self.make_cmd(locals())
@@ -1654,9 +1624,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         scale:float
-            
+          
         offset:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1673,13 +1643,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dstView:str
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1696,13 +1666,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            
+          
         height:int
-            
+          
         i:int
-            
+          
         j:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1716,7 +1686,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         functor:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1732,11 +1702,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            pix
+          pix
         height:list
-            pix
+          pix
         topology:str
-            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
+          ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
         """
 
         cmd = self.make_cmd(locals())
@@ -1752,11 +1722,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            pix
+          pix
         height:list
-            pix
+          pix
         topology:str
-            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
+          ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
         """
 
         cmd = self.make_cmd(locals())
@@ -1773,13 +1743,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            pix
+          pix
         height:list
-            pix
+          pix
         topology:str
-            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
+          ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
         alphaThreshold:list
-            0..1
+          0..1
         """
 
         cmd = self.make_cmd(locals())
@@ -1796,13 +1766,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            pix
+          pix
         height:list
-            pix
+          pix
         topology:str
-            ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
+          ["CONN_UNSET","4-CONNECTED","8-CONNECTED","16-CONNECTED"]
         alphaThreshold:list
-            0..1
+          0..1
         """
 
         cmd = self.make_cmd(locals())
@@ -1818,11 +1788,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1838,11 +1808,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         location:list
-            i:j
+          i:j
         intensity:list
-            min:max
+          min:max
         value:float
-            intensity
+          intensity
         """
 
         cmd = self.make_cmd(locals())
@@ -1856,7 +1826,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1874,15 +1844,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         location:float
-            
+          
         width:float
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1900,15 +1870,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         location:float
-            
+          
         width:float
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1925,13 +1895,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         position:list
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1949,15 +1919,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         location:float
-            
+          
         width:float
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -1975,15 +1945,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         position:list
-            
+          
         peakPos:float
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2001,15 +1971,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         location:float
-            
+          
         width:float
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2024,9 +1994,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         gamma:float
-            0.0...
+          0.0...
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2041,9 +2011,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         radius:float
-            distance, relative to width and height, where gaussian kernel obtains value 0.5.
+          distance, relative to width and height, where gaussian kernel obtains value 0.5.
         """
 
         cmd = self.make_cmd(locals())
@@ -2058,9 +2028,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         radius:int
-            pix
+          pix
         LIMIT:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -2075,9 +2045,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         radius:int
-            pix
+          pix
         LIMIT:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -2092,9 +2062,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         radius:int
-            pix
+          pix
         LIMIT:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -2109,9 +2079,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         coeff:str
-            c[:c2:c3:...]
+          c[:c2:c3:...]
         normalize:bool
-            true|false
+          true|false
         """
 
         cmd = self.make_cmd(locals())
@@ -2127,11 +2097,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            
+          
         height:int
-            
+          
         coeff:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2149,15 +2119,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            
+          
         height:int
-            
+          
         scale:float
-            
+          
         offset:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2174,13 +2144,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         decay:list
-            
+          
         extendHorz:int
-            pix
+          pix
         extendVert:int
-            pix
+          pix
         weightThreshold:float
-            [0..1.0]
+          [0..1.0]
         """
 
         cmd = self.make_cmd(locals())
@@ -2195,9 +2165,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         radius:int
-            pix
+          pix
         LIMIT:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -2212,9 +2182,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         radius:int
-            pix
+          pix
         LIMIT:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -2229,9 +2199,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         radius:int
-            pix
+          pix
         LIMIT:bool
-            0|1
+          0|1
         """
 
         cmd = self.make_cmd(locals())
@@ -2245,7 +2215,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         functor:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2261,11 +2231,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         mode:str
-            
+          
         stat:str
-            
+          
         medianPos:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2275,8 +2245,6 @@ class Rack(rack.prog.Register):
     def iMax(self):
         """ Maximum of two values.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -2292,11 +2260,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         percentage:float
-            
+          
         bins:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2306,8 +2274,6 @@ class Rack(rack.prog.Register):
     def iMin(self):
         """ Minimum of two values.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -2324,13 +2290,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         coeff:float
-            
+          
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2346,11 +2312,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2366,11 +2332,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         range:list
-            accepted values [min:max]
+          accepted values [min:max]
         min:float
-            value set below range.min
+          value set below range.min
         max:float
-            value set above range.max
+          value set above range.max
         """
 
         cmd = self.make_cmd(locals())
@@ -2380,8 +2346,6 @@ class Rack(rack.prog.Register):
     def iNegate(self):
         """ Invert values (unsigned char or unsigned short int)
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -2395,7 +2359,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         physical:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2409,7 +2373,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         functor:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2423,7 +2387,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         coeff:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2438,9 +2402,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         advantage:float
-            0.8..1.2
+          0.8..1.2
         decay:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -2455,9 +2419,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            0.0...1.0
+          0.0...1.0
         replace:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2472,9 +2436,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         bits:int
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2490,11 +2454,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         fromValue:float
-            
+          
         toValue:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2510,11 +2474,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2531,13 +2495,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            pix
+          pix
         height:int
-            pix
+          pix
         interpolation:str
-            n=nearest,b=bilinear
+          n=nearest,b=bilinear
         scale:float
-            rescaling factor
+          rescaling factor
         """
 
         cmd = self.make_cmd(locals())
@@ -2551,7 +2515,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2565,7 +2529,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2580,9 +2544,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         intensity:list
-            min:max
+          min:max
         functor:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2598,11 +2562,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         statistics:str
-            aAxXyYsSlhve
+          aAxXyYsSlhve
         intensity:list
-            min:max
+          min:max
         functor:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2618,11 +2582,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         scale:float
-            
+          
         bias:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2638,11 +2602,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:int
-            min intensity
+          min intensity
         filename:str
-            
+          
         debug:int
-            Dump intermediate control images etc
+          Dump intermediate control images etc
         """
 
         cmd = self.make_cmd(locals())
@@ -2658,11 +2622,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            
+          
         replace:float
-            
+          
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2678,11 +2642,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:list
-            min[:max]
+          min[:max]
         replace:list
-            min[:max]
+          min[:max]
         LIMIT:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2692,8 +2656,6 @@ class Rack(rack.prog.Register):
     def iTranspose(self):
         """ Flips image matrix around its corner.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -2710,13 +2672,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:list
-            
+          
         valueFunc:str
-            asmdvXN
+          asmdvXN
         percentage:float
-            
+          
         bins:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2726,8 +2688,6 @@ class Rack(rack.prog.Register):
     def image(self):
         """ Copies data to a separate image object. Encoding can be changed with --target .
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -2737,8 +2697,6 @@ class Rack(rack.prog.Register):
     def imageAlpha(self):
         """ Adds a transparency channel. Implies additional image, creates one if needed. See --encoding
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -2754,11 +2712,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         i:list
-            i:i2
+          i:i2
         j:list
-            j:j2
+          j:j2
         value:str
-            <f1>[:f2:f3:alpha]
+          <f1>[:f2:f3:alpha]
         """
 
         cmd = self.make_cmd(locals())
@@ -2772,7 +2730,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         bgcolor:str
-            <gray>|<red>,<green>,<blue>
+          <gray>|<red>,<green>,<blue>
         """
 
         cmd = self.make_cmd(locals())
@@ -2786,7 +2744,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         physical:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2800,7 +2758,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         groups:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2816,11 +2774,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         ftor:str
-            min:max or Functor_p1_p2_p3_...
+          min:max or Functor_p1_p2_p3_...
         undetect:float
-            opacity of 'undetect' pixels
+          opacity of 'undetect' pixels
         nodata:float
-            opacity of 'nodata' pixels
+          opacity of 'nodata' pixels
         """
 
         cmd = self.make_cmd(locals())
@@ -2835,7 +2793,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>.[h5|hdf5|png|pgm|ppm|txt]
+          <filename>.[h5|hdf5|png|pgm|ppm|txt]
         """
 
         cmd = self.make_cmd(locals())
@@ -2850,7 +2808,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         ATTRIBUTES:str
-            ATTRIBUTES=1,DATASETS=2,MARKED=4
+          ATTRIBUTES=1,DATASETS=2,MARKED=4
         """
 
         cmd = self.make_cmd(locals())
@@ -2864,7 +2822,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>.[txt|json]
+          <filename>.[txt|json]
         """
 
         cmd = self.make_cmd(locals())
@@ -2878,7 +2836,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2892,7 +2850,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2906,7 +2864,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         property:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2920,7 +2878,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         selector:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2934,7 +2892,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2951,13 +2909,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         file:str
-            
+          
         level:str
-            
+          
         timing:bool
-            
+          
         vt100:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -2972,9 +2930,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         src:str
-            /group/group2[:attr]
+          /group/group2[:attr]
         dst:str
-            /group/group2[:attr]
+          /group/group2[:attr]
         """
 
         cmd = self.make_cmd(locals())
@@ -2988,7 +2946,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         version:str
-            ["2.2","2.3","2.4","RACK","KILOMETRES"]
+          ["2.2","2.3","2.4","RACK","KILOMETRES"]
         """
 
         cmd = self.make_cmd(locals())
@@ -3002,7 +2960,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3016,7 +2974,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>.[h5|hdf5|png|pgm|txt|dat|mat|dot]|-
+          <filename>.[h5|hdf5|png|pgm|txt|dat|mat|dot]|-
         """
 
         cmd = self.make_cmd(locals())
@@ -3030,7 +2988,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3044,7 +3002,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3058,7 +3016,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            string
+          string
         """
 
         cmd = self.make_cmd(locals())
@@ -3072,7 +3030,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>|-
+          <filename>|-
         """
 
         cmd = self.make_cmd(locals())
@@ -3082,8 +3040,6 @@ class Rack(rack.prog.Register):
     def pAdd(self):
         """ Add polar data to accumulation array.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -3097,7 +3053,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         weight:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -3111,7 +3067,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         aboveSeaLevel:bool
-            false=radar site|true=sea level
+          false=radar site|true=sea level
         """
 
         cmd = self.make_cmd(locals())
@@ -3128,13 +3084,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         reflMax:float
-            dBZ
+          dBZ
         maxAltitude:int
-            m
+          m
         reflDev:float
-            dBZ
+          dBZ
         devAltitude:int
-            m
+          m
         """
 
         cmd = self.make_cmd(locals())
@@ -3153,17 +3109,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dbzPeak:list
-            Typical reflectivity (dBZ)
+          Typical reflectivity (dBZ)
         vradDevMin:float
-            Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
+          Fuzzy threshold of Doppler speed (VRAD) deviation (m/s)
         rhoHVmax:list
-            Fuzzy threshold of maximum rhoHV value
+          Fuzzy threshold of maximum rhoHV value
         zdrAbsMin:float
-            Fuzzy threshold of absolute ZDR
+          Fuzzy threshold of absolute ZDR
         window:list
-            beam-directional(m), azimuthal(deg)
+          beam-directional(m), azimuthal(deg)
         gamma:float
-            Contrast adjustment, dark=0.0 < 1.0 < brighter 
+          Contrast adjustment, dark=0.0 < 1.0 < brighter 
         """
 
         cmd = self.make_cmd(locals())
@@ -3182,17 +3138,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         altitude:float
-            metres
+          metres
         aboveSeaLevel:bool
-            
+          
         beamWidth:float
-            deg
+          deg
         weightMin:float
-            -0.1|0...1
+          -0.1|0...1
         accumulationMethod:str
-            string
+          string
         height:bool
-            true|false
+          true|false
         """
 
         cmd = self.make_cmd(locals())
@@ -3209,13 +3165,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         decay:float
-            per 1000m
+          per 1000m
         gamma:float
-            brightness
+          brightness
         quantity:str
-            CLUTTER|OBSTACLE|...
+          CLUTTER|OBSTACLE|...
         file:str
-            path syntax
+          path syntax
         """
 
         cmd = self.make_cmd(locals())
@@ -3234,17 +3190,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         maxEchoThreshold:float
-            dBZ
+          dBZ
         cellDiameter:float
-            km
+          km
         echoTopThreshold:float
-            km
+          km
         echoTopDBZ:float
-            dBZ
+          dBZ
         smoothAzm:float
-            deg
+          deg
         smoothRad:float
-            km
+          km
         """
 
         cmd = self.make_cmd(locals())
@@ -3262,15 +3218,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:float
-            metres
+          metres
         height:float
-            deg
+          deg
         threshold:float
-            percentage
+          percentage
         compensate:bool
-            cart/polar[0|1]
+          cart/polar[0|1]
         relativeScale:bool
-            false|true
+          false|true
         """
 
         cmd = self.make_cmd(locals())
@@ -3286,11 +3242,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         decay:list
-            
+          
         horzExtension:int
-            pix
+          pix
         vertExtension:int
-            pix
+          pix
         """
 
         cmd = self.make_cmd(locals())
@@ -3305,9 +3261,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         nyquist:float
-            max-unamb-velocity
+          max-unamb-velocity
         threshold:float
-            relative speed
+          relative speed
         """
 
         cmd = self.make_cmd(locals())
@@ -3325,15 +3281,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:float
-            metres
+          metres
         height:float
-            deg
+          deg
         threshold:float
-            percentage
+          percentage
         compensate:bool
-            cart/polar[0|1]
+          cart/polar[0|1]
         relativeScale:bool
-            true|false
+          true|false
         """
 
         cmd = self.make_cmd(locals())
@@ -3347,7 +3303,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dMax:float
-            m/s
+          m/s
         """
 
         cmd = self.make_cmd(locals())
@@ -3364,13 +3320,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         azm:list
-            deg
+          deg
         range:list
-            km
+          km
         ray:list
-            index
+          index
         bin:list
-            index
+          index
         """
 
         cmd = self.make_cmd(locals())
@@ -3387,13 +3343,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:float
-            metres
+          metres
         height:float
-            deg
+          deg
         threshold:float
-            percentage
+          percentage
         compensate:bool
-            cart/polar[0|1]
+          cart/polar[0|1]
         """
 
         cmd = self.make_cmd(locals())
@@ -3409,11 +3365,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:int
-            metres
+          metres
         height:float
-            degrees
+          degrees
         altitudeWeight:str
-            Functor:a:b:c...
+          Functor:a:b:c...
         """
 
         cmd = self.make_cmd(locals())
@@ -3429,11 +3385,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         nyquist:float
-            max-unamb-velocity
+          max-unamb-velocity
         match:int
-            flag(aliased=1,nodata=2)
+          flag(aliased=1,nodata=2)
         quantity:str
-            output-quantity
+          output-quantity
         """
 
         cmd = self.make_cmd(locals())
@@ -3450,13 +3406,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         azm:list
-            deg
+          deg
         range:list
-            km
+          km
         ray:list
-            index
+          index
         bin:list
-            index
+          index
         """
 
         cmd = self.make_cmd(locals())
@@ -3475,17 +3431,17 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         shape:str
-            [direction|range|sector|arc]
+          [direction|range|sector|arc]
         p1:float
-            
+          
         p2:float
-            
+          
         p3:float
-            
+          
         p4:float
-            
+          
         marker:int
-            intensity
+          intensity
         """
 
         cmd = self.make_cmd(locals())
@@ -3505,19 +3461,19 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         threshold:float
-            reflectivity limit (dB)
+          reflectivity limit (dB)
         reference:list
-            'dry point' of low reflectivity and high altitude [dBZ:m]
+          'dry point' of low reflectivity and high altitude [dBZ:m]
         undetectValue:float
-            reflectivity replacing 'undetect' [dBZ]
+          reflectivity replacing 'undetect' [dBZ]
         weights:list
-            weights for INTERPOLATION, INTERP_UNDET, EXTRAP_UP, EXTRAP_DOWN, CLEAR
+          weights for INTERPOLATION, INTERP_UNDET, EXTRAP_UP, EXTRAP_DOWN, CLEAR
         weightDecay:float
-            radius from threshold in decreasing weight [dBZ]
+          radius from threshold in decreasing weight [dBZ]
         avgWindow:list
-            optional reference window [metres,degrees]
+          optional reference window [metres,degrees]
         EXTENDED:bool
-            store also DBZ_SLOPE and CLASS
+          store also DBZ_SLOPE and CLASS
         """
 
         cmd = self.make_cmd(locals())
@@ -3534,13 +3490,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         minDBZ:float
-            dBZ
+          dBZ
         dbzReference:float
-            dBZ
+          dBZ
         altitudeReference:float
-            metres
+          metres
         aboveSeaLevel:bool
-            false=radar site|true=sea level
+          false=radar site|true=sea level
         """
 
         cmd = self.make_cmd(locals())
@@ -3554,7 +3510,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         channels:str
-            Layers: data,count,weight,std.deviation
+          Layers: data,count,weight,std.deviation
         """
 
         cmd = self.make_cmd(locals())
@@ -3568,7 +3524,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         ftor:str
-            Functor:a:b:c...
+          Functor:a:b:c...
         """
 
         cmd = self.make_cmd(locals())
@@ -3583,9 +3539,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         altitude:list
-            metres
+          metres
         accumulationMethod:str
-            MAXIMUM|AVERAGE|WAVG:2:2|MAXW
+          MAXIMUM|AVERAGE|WAVG:2:2|MAXW
         """
 
         cmd = self.make_cmd(locals())
@@ -3599,7 +3555,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         productCmd:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3616,13 +3572,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         lon:float
-            longitude
+          longitude
         lat:float
-            latitude
+          latitude
         value:float
-            value
+          value
         weight:float
-            weight
+          weight
         """
 
         cmd = self.make_cmd(locals())
@@ -3636,7 +3592,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         file:str
-            filename
+          filename
         """
 
         cmd = self.make_cmd(locals())
@@ -3653,13 +3609,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         width:float
-            metres
+          metres
         height:float
-            deg
+          deg
         threshold:float
-            percentage
+          percentage
         invertPolar:bool
-            cart/polar
+          cart/polar
         """
 
         cmd = self.make_cmd(locals())
@@ -3679,19 +3635,19 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         az_angle:float
-            deg
+          deg
         xsize:int
-            pix
+          pix
         ysize:int
-            pix
+          pix
         range:list
-            km
+          km
         height:list
-            m
+          m
         beamWidth:float
-            deg
+          deg
         beamPowerThreshold:float
-            0..1
+          0..1
         """
 
         cmd = self.make_cmd(locals())
@@ -3701,8 +3657,6 @@ class Rack(rack.prog.Register):
     def pRainRate(self):
         """ Estimates precipitation rate [mm/h] from reflectance [dBZ].
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -3719,13 +3673,13 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         dbz:list
-            heavy:hail
+          heavy:hail
         zdr:list
-            heavy
+          heavy
         rhohv:float
-            met
+          met
         kdp:list
-            heavy
+          heavy
         """
 
         cmd = self.make_cmd(locals())
@@ -3739,7 +3693,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         location:list
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3754,9 +3708,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         timestamp:str
-            
+          
         quantity:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3771,9 +3725,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         quantity:str
-            
+          
         index:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3791,15 +3745,15 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         range:list
-            km
+          km
         height:list
-            m
+          m
         levels:int
-            
+          
         azm:list
-            deg
+          deg
         azSlots:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3813,7 +3767,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>.[txt|json]
+          <filename>.[txt|json]
         """
 
         cmd = self.make_cmd(locals())
@@ -3829,11 +3783,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         key:str
-            
+          
         code:str
-            
+          
         lenient:bool
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3843,8 +3797,6 @@ class Rack(rack.prog.Register):
     def paletteDefault(self):
         """ Apply default palette matching the quantity of current data.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -3858,7 +3810,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>.[txt|json]
+          <filename>.[txt|json]
         """
 
         cmd = self.make_cmd(locals())
@@ -3872,7 +3824,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         params:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3886,7 +3838,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         count:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3900,7 +3852,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         seconds:str
-            [<number>|random]
+          [<number>|random]
         """
 
         cmd = self.make_cmd(locals())
@@ -3914,7 +3866,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         i,j:str
-            <i>,<j>,...
+          <i>,<j>,...
         """
 
         cmd = self.make_cmd(locals())
@@ -3922,16 +3874,16 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95309e-310,
+        a:float=6.95298e-310,
         b:float=0):
         """ Precip rate from KDP
 
         Parameters
         ----------
         a:float
-            
+          
         b:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3939,19 +3891,19 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95309e-310,
+        a:float=6.95298e-310,
         b:float=0,
-        c:float=6.9197e-310):
+        c:float=6.83759e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
         ----------
         a:float
-            
+          
         b:float
-            
+          
         c:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3967,11 +3919,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         a:float
-            
+          
         b:float
-            
+          
         c:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -3986,9 +3938,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         a:float
-            
+          
         b:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4003,9 +3955,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         a:float
-            
+          
         b:float
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4020,9 +3972,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         file:str
-            
+          
         count:int
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4038,11 +3990,11 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         quantity:str
-            quantity (DBZH,VRAD,...)
+          quantity (DBZH,VRAD,...)
         encoding:str
-            C,0,0,0,0
+          C,0,0,0,0
         zero:str
-            number or NaN
+          number or NaN
         """
 
         cmd = self.make_cmd(locals())
@@ -4054,8 +4006,6 @@ class Rack(rack.prog.Register):
     def restart(self):
         """ Debug
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -4075,19 +4025,19 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         iStep:int
-            horz coord step
+          horz coord step
         jStep:int
-            vert coord step
+          vert coord step
         i:list
-            horz index or range
+          horz index or range
         j:list
-            vert index or range
+          vert index or range
         commentChar:str
-            comment prefix (char or bytevalue)
+          comment prefix (char or bytevalue)
         skipVoid:bool
-            skip lines with invalid/missing values
+          skip lines with invalid/missing values
         handleVoid:str
-            skip or mark invalid values [skip|null|<number>]
+          skip or mark invalid values [skip|null|<number>]
         """
 
         cmd = self.make_cmd(locals())
@@ -4103,7 +4053,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         script:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4117,7 +4067,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         selector:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4131,7 +4081,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         flags:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4145,7 +4095,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         quantities:str
-            quantity[,quantity2,...]
+          quantity[,quantity2,...]
         """
 
         cmd = self.make_cmd(locals())
@@ -4159,7 +4109,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         assignment:str
-            key=value
+          key=value
         """
 
         cmd = self.make_cmd(locals())
@@ -4173,7 +4123,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         assignment:str
-            /<path>:<key>[=<value>]
+          /<path>:<key>[=<value>]
         """
 
         cmd = self.make_cmd(locals())
@@ -4183,8 +4133,6 @@ class Rack(rack.prog.Register):
     def status(self):
         """ Dump information on current images.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -4198,7 +4146,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         flags:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4212,7 +4160,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         level:str
-            DEFAULT=0,INTERMEDIATE=1,QUALITY=4,DEBUG=2
+          DEFAULT=0,INTERMEDIATE=1,QUALITY=4,DEBUG=2
         """
 
         cmd = self.make_cmd(locals())
@@ -4226,7 +4174,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         encoding:str
-            type,gain,offset,undetect,nodata,rscale,nrays,nbins,quantity
+          type,gain,offset,undetect,nodata,rscale,nrays,nbins,quantity
         """
 
         cmd = self.make_cmd(locals())
@@ -4241,9 +4189,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         distance:list
-            
+          
         azimuth:list
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4253,8 +4201,6 @@ class Rack(rack.prog.Register):
     def testSelect(self):
         """ Test...
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -4268,7 +4214,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         value:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4282,7 +4228,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         weight:float
-            0...1
+          0...1
         """
 
         cmd = self.make_cmd(locals())
@@ -4292,8 +4238,6 @@ class Rack(rack.prog.Register):
     def updateVariables(self):
         """ Force calling DataTools::updateInternalAttributes(ctx.getHi5(Hdf5Context::CURRENT))
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
@@ -4307,7 +4251,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         filename:str
-            <filename>.cvs
+          <filename>.cvs
         """
 
         cmd = self.make_cmd(locals())
@@ -4322,9 +4266,9 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         level:str
-            
+          
         imageLevel:str
-            
+          
         """
 
         cmd = self.make_cmd(locals())
@@ -4334,8 +4278,6 @@ class Rack(rack.prog.Register):
     def version(self):
         """ Displays software version and quits.
 
-        Parameters
-        ----------
         """
 
         cmd = self.make_cmd(locals())
