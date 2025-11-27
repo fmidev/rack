@@ -447,18 +447,17 @@ public:
 		this->title = title;
 	};
 
+	/// Get the name of this program (command set)
+	inline
+	const std::string & getTitle() const {
+		return this->title;
+	};
 
 	FlagResolver::ivalue_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
-	// Flagger2<int>::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
+		// Flagger2<int>::value_t addSection(const FlagResolver::dict_t::key_t & title, const FlagResolver::dict_t::value_t index=0){
 		return FlagResolver::addEntry(sections, title, index);
 	}
 
-	/*
-	CommandSection(const std::string & title) : title(title), index(drain::Flagger::getFreeBit(drain::getCommandBank().sections)){
-		std::cerr << __FUNCTION__ << ":installing " << title << '(' << index << ')' << std::endl;
-		drain::getCommandBank().sections.add(title, index);
-	}
-	*/
 
 	FlagResolver::dict_t sections;
 

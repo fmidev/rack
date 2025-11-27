@@ -71,6 +71,7 @@ public:
 	void exportCommand(const std::string & name, const drain::Command & command, std::ostream & ostr=std::cout, int indentLevel=1, bool implicit=false) const;
 
 
+	/** Writes a doc title - a string underlined with a hyphen.
 	inline
 	void indent(std::ostream & ostr, int indentLevel=0) const {
 		for (int i=0; i<indentLevel; ++i){
@@ -84,10 +85,8 @@ public:
 		flush(ostr, args...);
 	};
 
-	/** Writes a doc title - a string underlined with a hyphen.
-	 *
-	 */
 	void writeTitle(std::ostream & ostr, int indentLevel, const std::string & title) const;
+
 
 protected:
 
@@ -102,6 +101,8 @@ protected:
 		ostr << '\n';
 	}
 
+	 *
+	 */
 
 };
 
@@ -111,6 +112,70 @@ void PythonConverter::exportImports(const std::initializer_list<T> & container, 
 		ostr << "import " << entry << '\n';
 	}
 }
+
+class PythonIndent {
+
+public:
+
+	std::ostream & ostr = std::cout;
+	int indentLevel = 0;
+	std::string indentStr = "    ";
+
+	PythonIndent(std::ostream & ostr=std::cout, int indentLevel=0, std::string indentStr="    ") : ostr(ostr), indentLevel(indentLevel), indentStr(indentStr) {
+	};
+
+	inline
+	void setIndent(int indentLevel){
+		if (indentLevel < 0)
+			indentLevel = 0;
+		this->indentLevel = indentLevel;
+	}
+
+	inline
+	void operator ++(){
+		++this->indentLevel;
+	}
+
+	inline
+	void operator --(){
+		--this->indentLevel;
+		if (this->indentLevel < 0)
+			this->indentLevel = 0;
+	}
+
+	inline
+	void indent() const {
+		for (int i=0; i<this->indentLevel; ++i){
+			ostr << this->indentStr;
+		}
+	}
+
+	template <typename ... TT>
+	void write(TT... args) const {
+		this->indent();
+		this->flush(args...);
+	};
+
+	/** Writes a doc title - a string underlined with a hyphen.
+	 *
+	 */
+	void writeTitle(const std::string & title) const;
+
+
+protected:
+
+	template <typename T, typename ... TT>
+	void flush(const T & arg, TT... args) const {
+		this->ostr << arg;
+		this->flush(args...);
+	};
+
+	inline
+	void flush() const {
+		this->ostr << '\n';
+	}
+
+};
 
 
 }

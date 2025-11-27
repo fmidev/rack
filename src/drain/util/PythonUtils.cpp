@@ -36,63 +36,12 @@ namespace drain {
 
 const std::string PythonConverter::TRIPLE_HYPHEN = "\"\"\"";
 
-class PythonIndent {
 
-public:
-
-	std::ostream & ostr = std::cout;
-	int indentLevel = 0;
-	std::string indentStr = "    ";
-
-	PythonIndent(std::ostream & ostr=std::cout, int indentLevel=0, std::string indentStr="    ") : ostr(ostr), indentLevel(indentLevel), indentStr(indentStr) {
-	};
-
-	inline
-	void setIndent(int indentLevel){
-		if (indentLevel < 0)
-			indentLevel = 0;
-		this->indentLevel = indentLevel;
-	}
-
-	inline
-	void operator ++(){
-		++this->indentLevel;
-	}
-
-	inline
-	void operator --(){
-		--this->indentLevel;
-		if (this->indentLevel < 0)
-			this->indentLevel = 0;
-	}
-
-	inline
-	void indent() const {
-		for (int i=0; i<this->indentLevel; ++i){
-			ostr << this->indentStr;
-		}
-	}
-
-	template <typename ... TT>
-	void write(TT... args) const {
-		this->indent();
-		this->flush(args...);
-	};
-
-
-protected:
-
-	template <typename T, typename ... TT>
-	void flush(const T & arg, TT... args) const {
-		this->ostr << arg;
-		this->flush(args...);
-	};
-
-	inline
-	void flush() const {
-		this->ostr << '\n';
-	}
-
+//std::string PythonConverter::content="return self._make_cmd(locals())";
+void PythonIndent::writeTitle(const std::string & title) const {
+	//PythonIndent indent(ostr, indentLevel);
+	write(title);
+	write(std::string(title.size(), '-'));
 };
 
 const std::string & PythonConverter::getType(const drain::Castable & arg){
@@ -124,13 +73,6 @@ const std::string & PythonConverter::getType(const drain::Castable & arg){
 }
 
 
-//std::string PythonConverter::content="return self._make_cmd(locals())";
-void PythonConverter::writeTitle(std::ostream & ostr, int indentLevel, const std::string & title) const {
-
-	PythonIndent indent(ostr, indentLevel);
-	indent.write(title);
-	indent.write(std::string(title.size(), '-'));
-};
 
 void PythonConverter::exportCommands(const std::string &name, const drain::CommandBank & commandBank, std::ostream & ostr, int indentLevel) const {
 
@@ -142,7 +84,10 @@ void PythonConverter::exportCommands(const std::string &name, const drain::Comma
 
 	++indent;
 
-	indent.write(TRIPLE_HYPHEN, ' ', "Automatic Drain command set export");
+	indent.write(TRIPLE_HYPHEN, ' ', commandBank.getTitle());
+	ostr << '\n'; 	// todo version?
+
+	indent.write("Automatic command set export");
 	indent.write(TRIPLE_HYPHEN, '\n');
 
 	indent.write( "# defaultCmdKey=", commandBank.defaultCmdKey);
@@ -256,7 +201,7 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 	ostr << '\n';
 
 	if (!keys.empty()){
-		writeTitle(ostr, indentLevel+1, "Parameters");
+		indent.writeTitle("Parameters");
 		const drain::ReferenceMap::unitmap_t & umap = params.getUnitMap();
 
 		for (const auto & key: keys){
@@ -268,6 +213,15 @@ void PythonConverter::exportCommand(const std::string & name, const drain::Comma
 			}
 		}
 	}
+
+	/*
+	if (!command.relatedCommands.empty()){
+		indent.indent();
+		command.getRelatedCommands(ostr);
+	}
+	*/
+
+	ostr << '\n';
 	indent.write(TRIPLE_HYPHEN);
 	ostr << '\n'; // extra newline required in policy
 

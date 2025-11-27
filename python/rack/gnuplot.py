@@ -92,29 +92,18 @@ class GnuReg(rack.prog.Register):
     def title(self, title: str):
         return self.make_set_cmd(locals())
 
-    #def terminal(self, terminal_type: str, **opts) : #  GnuPlotCommand:
-    #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "terminal", terminal_type, **opts)
-    
-    #def output(self, filename: str) : #  GnuPlotCommand:
-    #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "output", filename)
-
     
     def datafile(self, text: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", datafile=text, **opts)
-
     
     def grid(self, arg:str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "grid", **opts)
-
     
     def xdata(self, arg: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xdata=arg, **opts)
-
-
     
     def xlabel(self, arg: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xlabel=arg, **opts)
-
     
     def ylabel(self, arg: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", ylabel=arg, **opts)
@@ -141,22 +130,22 @@ class GnuReg(rack.prog.Register):
     #    return self.make_set_cmd(locals()) #  GnuPlotCommand("set", title=text)
 
     
-    def label(text: str, **opts) : #  GnuPlotCommand:
+    def label(self, text: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", label=text, **opts)
 
     
-    def key(text: str, **opts) : #  GnuPlotCommand:
+    def key(self, text: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", key=text, **opts)
 
     
-    def multiplot(rows: int, cols: int, title: str = None) : #  List[GnuPlotCommand]:
+    def multiplot(self, rows: int, cols: int, title: str = None) : #  List[GnuPlotCommand]:
         #cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
         #if title:
         #    cmds.append(GnuPlotCommand("set", "title", title))
         return self.make_set_cmd(locals()) #  cmds
 
     
-    def unset_multiplot() : #  GnuPlotCommand:
+    def unset_multiplot(self) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("unset", "multiplot")
 
 # --- Base Layer (already familiar) ---
@@ -402,7 +391,7 @@ def main():
     reg.title("Combined Sine and Cosine")
     #reg.set("terminal", GnuPlot.Terminal.PNG, size=(800, 600))
 
-
+    reg.label("t=0", at=(0,0))
     #prog.add(GnuPlot.set.terminal(GnuPlot.Terminal.PNG, size=(800, 600)))
     #prog.add(GnuPlot.set.output("plot_output.png"))
 

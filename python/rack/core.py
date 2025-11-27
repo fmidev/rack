@@ -1,7 +1,7 @@
 import rack.prog
 
 class Rack(rack.prog.Register):
-    """ Automatic Drain command set export
+    """ Automatic 'Rack - a radar data processing program' command set export
     """
 
     # defaultCmdKey=inputFile
@@ -3874,7 +3874,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95298e-310,
+        a:float=6.95284e-310,
         b:float=0):
         """ Precip rate from KDP
 
@@ -3891,9 +3891,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95298e-310,
+        a:float=6.95284e-310,
         b:float=0,
-        c:float=6.83759e-310):
+        c:float=6.18999e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
