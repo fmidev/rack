@@ -91,12 +91,16 @@ class Command:
         """
         
         self.name = name.strip(" -\t\n")
-        #logger.warning(self.name)
-        logger.warning(args)
+        if self.name == 'verbose':
+            logger.debug("enchanced logging")
+            logger.setLevel("DEBUG")
+            #logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
+            #logger.warning(f"command: args={args}")
         
         self.ordered_args_count = 0
 
         if type(args) == str:
+            # split to list
             args = args.strip().split(self.PRIMARY_SEP) # note: default value in PRIMARY_SEP
             
         #if type(args) == list):
@@ -104,14 +108,10 @@ class Command:
             self.ordered_args_count = len(args)
             args = dict(enumerate(args)) #{k,v for enumerate(args)}
 
-
-
-        if self.name == 'verbose':
-            logger.debug("enchanced logging")
-            logger.setLevel("DEBUG")
-            #logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
+        # At this point, args should be a dict
 
         self.args = args.copy()
+
 
         if (explicit_args):
             self.args.update(explicit_args)
@@ -450,6 +450,12 @@ class CommandSequence:
             Notice that the default quote here is empty string, "".
             Substituting None implies default quotes, CommandSequence.QUOTE.
         """
+
+    def to_script(self, filename: str):
+        with open(filename, "w", encoding="utf-8") as f:
+            # TODO Formatter
+            f.write(self.to_string() + "\n")
+
 
 class RackFormatter(Formatter):
     

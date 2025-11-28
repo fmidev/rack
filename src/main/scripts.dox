@@ -90,5 +90,58 @@ Using such a file together with  \c --script yields compact command lines especi
 
 
 
+\subsection triggering Script triggering options
+
+
+ \dot
+  digraph example {
+
+      size="9,5";
+	  label = "Script triggering logic";
+ 	  rankdir=LR;
+      node [shape=record, fontsize=10];
+      edge [color=black, fontsize=10];
+    
+  headport="n";
+
+  IS_PENDING [shape="diamond", label="Is pending"];
+  
+  IS_TRIGGERING [shape="diamond", label="Is triggering"];
+
+  IS_DIRECT [shape="diamond", label="Is triggering"];
+ 
+  IS_TRIGGERING -> IS_DIRECT [label="Yes"]
+ 
+  IS_DIRECT -> TRIGGER [label="Yes"]
+ 
+ 
+  init [ label="<i>Initialisation | --cProj \n --cBBox \n --cSize \n --cMethod"];	
+   
+  filein [ label="<i>Read volume file" , color="forestgreen", URL="\ref fileiopage"];
+
+  create  [ label="<i>Creation of meteorological product", color="blue", URL="\ref productspage" ];
+  
+  add [ label="<i>Update composite | --cAdd \n --cAddWeighted "];
+  
+  isMore [shape="point", label=""];
+  
+  close [ label="<i>Extraction | --cExtract \n -o composite.h5"];
+    
+	
+	init:i -> filein:i;
+	filein:i -> create:i;
+	
+	
+	create -> add:i;
+    add:i -> isMore;
+    
+    isMore -> filein:i [label="repeat for each radar"];
+    isMore -> close:i [label=""];
+    
+}
+\enddot
+
+
+
 
 */
