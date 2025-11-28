@@ -8,18 +8,20 @@ import rack.prog
 import rack.log
 logger = rack.log.logger.getChild(Path(__file__).stem)
 
-class KeyWord():
+class Literal():
     def __init__(self, name:str, value=None):
         self.name = name
         if not value is None:
             self.value = value
+    
+    def __str__(self):
+        return self.name
 
-class Expr():
-    def __init__(self, name:str, value=None):
-        self.name = name
-        if not value is None:
-            self.value = value
+class KeyWord(Literal):
+    pass
 
+class Expr(Literal):
+    pass
 
 class Terminal:
     PNG = KeyWord("png")
@@ -151,13 +153,20 @@ class GnuReg(rack.prog.Register):
         opts = {}
 
         def __str__(self):
+            fmt = GnuPlotFormatter()
             opts = []
+            """
             if self.opts:
                 if 'style' in self.opts: # with ?
                     opts = [f"with={self.opts['style']}"]
+                if 'with' in self.opts: # with ?
+                    opts = [f"with={self.opts['with']}"]
                 for (k,v) in self.opts:
-                    opts.append(f"{k} {v}")
-            opts = " ".join(opts)
+                    opts.append(fmt.fmt_param(v,k))
+                    #opts.append(f"{k} {v}")
+            """
+            #opts = " ".join(opts)
+            opts =fmt.fmt_params(self.opts)
             return f"{self.src} {opts}"
 
         def __init__(self, expr=None, filename=None, style=None, **opts):
@@ -246,16 +255,18 @@ class GnuReg(rack.prog.Register):
 
                 opts = {k: v for k, v in item.items() if k not in ("expr", "file")}
                 segments.append(build_segment(src, **opts))
-
+            elif isinstance(item, self.plot_entry):
+                segments.append(item)
             elif isinstance(item, str):
-                segments.append(self.plot_entry(filename=item))
+                segments.append(self.plot_entry(item, style=style))
+                #segments.append(self.plot_entry(filename=item, style=style))
                 #segments.append(item)
             else:
                 raise TypeError("Each plot item must be a string or dict with 'expr'")
         
         #return rack.prog.Command("plot", ",\\\n     ".join(segments))
         #cmd = rack.prog.Command("plöt", ",\\\n     ".join(segments))
-        cmd = rack.prog.Command("plöt", segments, global_opts)
+        cmd = rack.prog.Command("plotMANY", segments) #  there are no super_global_opts 
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
         return cmd
@@ -330,6 +341,7 @@ class Style:
 
     LINES = KeyWord("lines")
     DOTS  = KeyWord("dots")
+    LINES_DOTS = KeyWord("linesdots")
 
 
 def main():
@@ -360,7 +372,13 @@ def main():
     reg.plot(expr="sin(x)", style=Style.LINES)
     reg.plot(filename="data.txt", style=Style.DOTS)
     reg.plot("sin(x)", "cos(x)", "tan(x)", style=Style.LINES)
+
+    e1 = reg.plot_entry(expr="random(x)", style=Style.LINES_DOTS)
+    reg.plot(e1)
+    e2 = reg.plot_entry(filename="my_file.dat", style=Style.DOTS)
     #reg.plot(["cos(x)"])
+    reg.plot(e2)
+    reg.plot(e1,e2)
 
 
     #reg.label("t=0", at=(0,0))
