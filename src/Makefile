@@ -29,6 +29,9 @@ configure:
 install:
 	./install.sh
 
+install-python:
+	./install-python.sh
+
 BASE_IMAGE=ubuntu20
 # BASE_IMAGE=alpine
 # BASE_IMAGE=ubuntu18
