@@ -41,7 +41,11 @@ if [ "${INSTALL_SCRIPTS}" == 'Y' ]; then
 fi
 
 #read -e  -i "$INSTALL_SCRIPTS" -p "  Install rack scripts as well? " INSTALL_SCRIPTS
-if [ "$PYTHON_DIR" != '' ]; then
+if [ "$PYTHON_DIR" != 'xxx' ]; then
+    echo "Python dir set: \$PYTHON_DIR=$PYTHON_DIR"
+    echo "To install Python utilities, run: install-python.sh"
+    exit 0
+else
     mkdir -v --parents ${PYTHON_DIR}/rack/
     # including __init__.py
     for i in ../python/rack/*.py; do
