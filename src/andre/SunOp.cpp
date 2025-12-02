@@ -34,7 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Geo.h>
 
 #include "SunOp.h"
-
 #include "radar/Geometry.h"
 #include "radar/Sun.h"
 
@@ -48,8 +47,6 @@ void SunOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	mout.debug("start" );
-	// mout.debug(*this );
-	// mout.debug2("=>odimIn: " , srcData.odim );
 
 	double sunAzm = 0.0;
 	double sunElev = 0.0;
@@ -63,16 +60,21 @@ void SunOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 
 	mout.info(" scale=" , scale , " (max=", dstProb.odim.getMax() , ')' );
 
-
 	double widthD = beamWidth * drain::DEG2RAD;
 	const drain::FuzzyBell<double> fuzzyPeak(0.0, widthD*widthD, scale); //dstProb.odim.getMax());
 
 	const size_t width  = dstProb.data.getWidth();
 	const size_t height = dstProb.data.getHeight();
 
+	// Elevation difference
 	double e = (srcData.odim.getElangleR() - sunElev);
+	if (e > 5.0){
+		mout.warn("Elevation difference (", srcData.odim.getElangleR(),"-", sunElev, ") = ", e," > 5.0");
+	}
+
 	e = 0.5*e*e; // Elevation difference has smaller effect than azimuthal
 	//e = 0.1*e; // Elevation difference has smaller effect than azimuthal
+
 
 	double a;
 
@@ -84,12 +86,9 @@ void SunOp::runDetector(const PlainData<PolarSrc> & srcData, PlainData<PolarDst>
 		}
 	}
 
-	//_createQualityField()
-
-
 
 }
 
 }  // rack::
 
-// Rack
+

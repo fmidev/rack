@@ -2787,7 +2787,7 @@ class Rack(rack.prog.Register):
 
     # TODO: key == commandBank.defaultCmdKey...
     def inputFile(self,
-        filename:str=''):
+        filename:str):
         """ Read HDF5, text or image file
 
         Parameters

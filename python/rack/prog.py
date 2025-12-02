@@ -88,6 +88,18 @@ class Command:
 
     def __init__(self, name, args=None, explicit_args={}):
         """This defines the command parameter list, including default values.
+
+        Works in two modes:
+        
+        Mode 1: args is a list of values and explicit_args is a dict
+        Mode 2: args is a dict and explicit_args is a list of keys
+        
+        Parameters
+        ----------
+
+        name - command name
+        args - either a dict or a list
+
         """
         
         self.name = name.strip(" -\t\n")
@@ -110,13 +122,18 @@ class Command:
 
         # At this point, args should be a dict
 
-        self.args = args.copy()
-
+        if args:
+            self.args = args.copy()
+        else:
+            self.args = {}
 
         if (explicit_args):
-            self.args.update(explicit_args)
-            # Explicit argument keys given by the last set_args()
-            self.expl_keys = explicit_args.keys()  # dict of explicitly given args
+            if isinstance(explicit_args, dict):
+                self.args.update(explicit_args)
+                # Explicit argument keys given by the last set_args()
+                self.expl_keys = explicit_args.keys()  # dict of explicitly given args
+            elif isinstance(explicit_args, (set, tuple, list)):
+                self.expl_keys = list(explicit_args)
         else:
             self.expl_keys = []
         # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
@@ -322,25 +339,17 @@ class Register:
         
         Each explicitly given argument will be stored if its value differs from the default one.
         """
-        # Detect caller function automatically
+        # Detect caller function. Then, myFunction(...) implies cmd name "myFunction"
         caller_name = inspect.stack()[1].function
         func = getattr(self, caller_name)
-
-        # Extract only explicit arguments
-        """
-        explicit = {
-            k: v
-            for k, v in local_vars.items()
-            if k != "self" and not Register._is_default(func, k, v)
-        }
-        """
+        #if caller_name == "verbose":
+            #logger.warning(f"MAKE_CMD: locals: {local_vars}")
 
         args = {}
         explicit_args = {}
 
-        #if caller_name == "verbose":
-            #logger.warning(f"MAKE_CMD: locals: {local_vars}")
         
+        # Extract only explicit arguments
         for k, v in local_vars.items():
             if k != "self":
                 args[k]=v
@@ -353,10 +362,8 @@ class Register:
             cmd.set_separators(separator)
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
-            # return ?
 
         return cmd
-        #return Command(caller_name, explicit)
     
 
 
@@ -388,7 +395,7 @@ class CommandSequence:
             if cmd_args:
                 logger.warning(f"Parameter override for {cmd.name}: {cmd_args} (vs. {cmd.args})")
         elif t in {str,list}:
-            logger.warning(f"adding string: {cmd} args={cmd_args}")
+            logger.warning(f"adding free command: {cmd} args={cmd_args}")
             # check if without --, so explicit (inputFile?)
             # Notice: this _defines_ a command, so further param keys will raise warnings/errors.
             # TODO: handling coud take place in Command(...)
@@ -406,6 +413,7 @@ class CommandSequence:
 
     
     def to_list(self, fmt:Formatter=Formatter()) -> list:
+        """Produces a list suited to be joined with newline char, for example. """
         
         if self.programName:
             result = [self.programName]
@@ -443,7 +451,6 @@ class CommandSequence:
         return fmt.CMD_SEPARATOR.join(self.to_list(fmt))
 
 
-        """Produces a list suited to be joined with newline char, for example"""
 
         """Produces a list compatible with subprocess calls
         
@@ -455,7 +462,20 @@ class CommandSequence:
         with open(filename, "w", encoding="utf-8") as f:
             # TODO Formatter
             f.write(self.to_string() + "\n")
+    
+    def to_debug(self, fmt:Formatter=Formatter()) -> list:
+        
+        if self.programName:
+            result = [self.programName]
+        else:
+            result = []
 
+        for cmd in self.commands:
+            # result.append((cmd.name, cmd.args, cmd.expl_keys))
+            result.append(f"{cmd.name}, {cmd.args}, {cmd.expl_keys}")
+            #result.append(cmd.to_string(fmt)) # quote 
+        
+        return "\n".join(result)
 
 class RackFormatter(Formatter):
     
@@ -534,8 +554,7 @@ def main():
             skipVoid: bool = False,
             handleVoid = None,
         ):
-            #return self._make_cmd(locals())
-            return self._make_cmd(locals())
+            return self.make_cmd(locals())
 
 
     reg = MyRegister()
@@ -543,15 +562,41 @@ def main():
     cmd.PRIMARY_SEP='|'
     cmd.SECONDARY_SEP='/'
     print(cmd)   # assuming MyCommand.__str__ formats tuples as "a:b" and joins with commas
+    
     prog = CommandSequence(Command)
     prog.add(cmd)
-    print(prog.to_string())
-    print(prog)
+
+    cmd = Command("unary")
+    prog.add(cmd)
+    cmd = Command("anon", "value", {"key": "value"})
+    prog.add(cmd)
+    cmd = Command("anon", ["first", "second", "third"])
+    prog.add(cmd)
+    cmd = Command("anon", ["first", "second", "third"])
+    cmd.set_args("a","b")
+    prog.add(cmd)
+
+    cmd = Command("normal", {"key": "value", "key2": "value2"} )
+    cmd.set_args(key2="b2")
+    prog.add(cmd)
+
+    #print(cmd)
+
+    #print(prog.to_string())
+    #print(prog)
     print(prog.to_list())
-    print(prog.to_token_list())
+    print(prog.to_list(fmt=Formatter(cmd_separator="\n")))
+    #print(prog.to_token_list())
 
+    def test(a:int=-1, b:str="?", *args, **kwargs):
+        print (f"a={a}, b={b} | {args} | {kwargs}")
 
-
+    test("Mika")
+    test("Mika","mäki", "the third")
+    test("Mika","mäki", key2="the value")
+    test("Mika", key2="the value")
+    test(b="the value")
+    test(b="the value", key3="thirdo")
 
 if __name__ == "__main__":
     main()

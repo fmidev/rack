@@ -17,6 +17,9 @@ class Literal():
     def __str__(self):
         return self.name
 
+    def __repr__(self):
+        return self.name
+
 class KeyWord(Literal):
     pass
 
@@ -379,6 +382,8 @@ def main():
     #reg.plot(["cos(x)"])
     reg.plot(e2)
     reg.plot(e1,e2)
+
+    print(prog.to_debug())
 
 
     #reg.label("t=0", at=(0,0))
