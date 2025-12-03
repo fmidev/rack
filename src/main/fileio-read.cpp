@@ -99,6 +99,8 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 
 		if (hi5::fileInfo.checkExtension(path.extension) || NO_EXTENSION){
 			if (NO_EXTENSION){
+				mout.warn(path.dir, '+', path.tail, '+', path.extension);
+				path.dir.debug(std::cerr);
 				mout.discouraged("No file extension! Assuming HDF5...");
 			}
 			readFileH5(fullFilename);
@@ -158,9 +160,9 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 
 	drain::VariableMap & vmap = ctx.getStatusMap();
 
-	vmap["inputFileBasename"] = path.basename;
+	vmap["inputFileBasename"] = path.tail;
 
-	path.basename.clear();
+	path.tail.clear();
 	vmap["inputDir"] = path.str();
 	//mout.note(path"ctx.getStatusMap() start" );
 

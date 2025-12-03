@@ -119,20 +119,24 @@ public:
 
 	typedef std::list< path_t > list_t;
 
+	// typedef Path<T,SEP,ALEAD,AREPEAT,ATRAIL> path_t;
+
+	// const PathSeparatorPolicy separator;
+	static
 	const PathSeparatorPolicy separator;
 
 	inline
-	Path() : separator(SEP, ALEAD, AREPEAT, ATRAIL){
+	Path(){ //  : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 	};
 
 	/// Copy constructor.
 	inline
-	Path(const path_t & p) : std::list<T>(p), separator(p.separator){
+	Path(const path_t & p) : std::list<T>(p){ // , separator(p.separator){
 	};
 
 	/// Secondary copy constructor. Handy for creating a parent path, for example.
 	inline
-	Path(typename path_t::const_iterator it, typename path_t::const_iterator it2) : separator(SEP, ALEAD, AREPEAT, ATRAIL) {
+	Path(typename path_t::const_iterator it, typename path_t::const_iterator it2){ //  : separator(SEP, ALEAD, AREPEAT, ATRAIL) {
 		while (it != it2){
 			append(*it);
 			++it;
@@ -143,7 +147,7 @@ public:
 	// All the elements are treated as paths.
 	template <typename ... TT>
 	inline
-	Path(const path_t & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){
+	Path(const path_t & arg, const TT &... args){ //  : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
 	};
 
@@ -151,7 +155,7 @@ public:
 	// All the elements are treated as paths.
 	template <typename ... TT>
 	inline
-	Path(const std::string & arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){
+	Path(const std::string & arg, const TT &... args){ // : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
 	};
 
@@ -159,7 +163,7 @@ public:
 	// All the elements are treated as paths.
 	template <typename ... TT>
 	inline
-	Path(const char * arg, const TT &... args) : separator(SEP, ALEAD, AREPEAT, ATRAIL){
+	Path(const char * arg, const TT &... args){ // : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
 	};
 
@@ -655,6 +659,9 @@ Path<T> & operator<<(Path<T> & path, const Path<T> & path2){
 }
 */
 
+
+template <class T, char SEP, bool ALEAD, bool AREPEAT, bool ATRAIL>
+const PathSeparatorPolicy Path<T,SEP,ALEAD,AREPEAT,ATRAIL>::separator(SEP, ALEAD, AREPEAT, ATRAIL);
 
 }
 

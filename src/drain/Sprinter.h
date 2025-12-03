@@ -191,7 +191,11 @@ std::ostream & operator<<(std::ostream & ostr, const SprinterLayout & layout){
 	return ostr;
 }
 
-
+/** Formatted printing of data structures (basic types, lists, trees)
+ *
+ *  \see drain::Serializer
+ *
+ */
 class Sprinter {
 
 public:

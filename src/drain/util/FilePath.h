@@ -79,10 +79,15 @@ public:
 	inline
 	void clear(){
 		this->dir.clear();
-		this->basename.clear();
+		this->tail.clear();
 		this->extension.clear();
 	}
 
+	inline
+	bool empty() const {
+		return (dir.empty() && tail.empty());
+		// extension may be non-empty - but that would be odd.
+	}
 	//void set(const std::string & s);
 
 	template<typename ...TT>
@@ -110,6 +115,12 @@ public:
 
 
 	inline
+	void append(const char *s){
+		append(std::string(s));
+	}
+
+
+	inline
 	void append(){};
 	/*
 	template<typename T>
@@ -122,7 +133,7 @@ public:
 	inline
 	bool operator==(const FilePath & p) const {
 
-		if (p.basename != basename)
+		if (p.tail != tail)
 			return false;
 
 		if (p.extension != extension)
@@ -136,7 +147,7 @@ public:
 
 
 	path_t dir;
-	std::string basename;
+	std::string tail;
 	std::string extension;
 
 	//bool isRooted
@@ -157,7 +168,7 @@ public:
 				ostr << dir.separator.character;
 		}
 
-		ostr << basename;
+		ostr << tail;
 
 		if (!extension.empty())
 			ostr << '.' << extension;
@@ -173,16 +184,26 @@ public:
 		return sstr.str();
 	}
 
+	virtual inline
+	operator std::string () const {
+		return str();
+	}
+
 	inline
 	FilePath & operator<<(const FilePath & path){
+		append(path);
+		/*
 		this->dir << path.dir;
-		if (!this->basename.empty())
-			std::cerr << __FILE__ << " warning: dropped:" << this->basename << '\n';
-		this->basename  = path.basename;
+		if (!this->tail.empty())
+			std::cerr << __FILE__ << " warning: dropped:" << this->tail << '\n';
+		this->tail  = path.tail;
 		this->extension = path.extension;
 		//this->insert(this->end(), path.begin(), path.end());
+		*/
 		return *this;
 	}
+
+	// Consider non-static method?
 
 	static inline
 	int mkdir(const std::string & dirpath, int flags = S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH){
@@ -193,6 +214,12 @@ public:
 	static
 	int mkdir(const FilePath::path_t & dirpath, int flags = S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
+	//
+	void debug(std::ostream & ostr = std::cout) const;
+
+protected:
+
+	void handleBasename(const std::string & basename);
 
 };
 

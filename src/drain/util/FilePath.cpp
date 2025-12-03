@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <iostream>
 #include <stdexcept>
-#include <sys/stat.h>
+//#include <sys/stat.h>
 
 #include "FilePath.h"
 
@@ -67,25 +67,71 @@ FilePath::FilePath(const std::string & s){
 }
 */
 
-FilePath::FilePath(const FilePath & p) : dir(p.dir), basename(p.basename), extension(p.extension){
+FilePath::FilePath(const FilePath & p) : dir(p.dir), tail(p.tail), extension(p.extension){
 }
 
+// FilePath & FilePath::operator<<(const FilePath & path){
+void FilePath::append(const FilePath & path){
 
+	this->dir << path.dir;
+	if (!(this->tail.empty() && this->extension.empty())){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.warn(" warning: appending path dropped the trailing filename ", this->tail, " (.",  this->extension,  ")");
+	}
+	this->tail  = path.tail;
+	this->extension = path.extension;
+	//this->insert(this->end(), path.begin(), path.end());
+	// return *this;
+}
 
+/*
 void FilePath::append(const FilePath & path){
 	this->dir.append(path.dir);
-	this->basename  = path.basename;
+	this->tail  = path.tail;
 	this->extension = path.extension;
+}
+*/
+
+
+void FilePath::handleBasename(const std::string & basename){
+
+	//if (!drain::StringTools::split2(result[3], this->tail, this->extension, '.')){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// mout.warn("check :", basename);
+
+	const size_t i = basename.find_last_of('.');
+	if (i == std::string::npos){
+		// mout.warn("appending (no period) :", basename);
+		this->dir.append(basename);
+	}
+	else {
+		if (i==0){
+			// So called hidden file, starting with '.'
+			this->tail = basename;
+		}
+		else {
+			// Split tail to basename and extension
+			this->tail.assign(basename,0,i);
+			if (i<(basename.size()-1)){
+				this->extension.assign(basename,i+1);
+			}
+			else {
+				mout.warn("filename (basename) ending with a period '.' :", basename);
+			}
+		}
+		// this->tail  = result[3];
+	}
 }
 
 
-//void FilePath::set(const std::string & s){
 void FilePath::append(const std::string & s){
 
-	drain::Logger mout(__FILE__, __FUNCTION__); //REPL __FILE__, __FUNCTION__);
+	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	//this->dir.clear();
-	this->basename.clear();
+	this->tail.clear();
 	this->extension.clear();
 
 	if (s.empty()){
@@ -93,44 +139,99 @@ void FilePath::append(const std::string & s){
 	}
 	else {
 
-		//static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
-		static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)$");
-		//static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)$");
+		/*  volume.h5
+		 *  /usr/local/rack
+		 *  /usr/local/rack.bin
+		 *  /usr/local/rack/
+		 *  /usr/local/rack/rack
+		 *  local/rack
+		 */
+
+		/*
+		static const char SEP = path_t::separator.character;
+		static const drain::StringBuilder<> sb("^((\\S*)", SEP, ")?([^", SEP, " ]+)(", SEP, "?)$");
+		static const RegExp pathRegExp(sb);
+		      1 leading part, ending with SEP
+		      2 leading part, without SEP
+		    1 3 tail (basename), not containing SEP
+		    2 4 trailing SEP or empty
+		 */
+		// static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)$");
+		// static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)\\.([[:alnum:]]+)$");
+		// static const RegExp pathRegExp("^((\\S*)/)?([^/ ]+)$");
 
 
+		static const char SEP = path_t::separator.character;
+		static const drain::StringBuilder<> sb("^((\\S*)", SEP, ")?([^", SEP, " ]+)?$");
+		static const RegExp pathRegExp(sb);
+		/*
+		 	  1 leading part ending with SEP
+		      2 trailing part, not containing SEP
+		 */
 		RegExp::result_t result;
 
 		if (!pathRegExp.execute(s, result)){
 
-			//mout.special("Result 1: ", sprinter(result));
-
-			//std::cerr << "Regepp: " << sprinter(result) << '\n';
-			// for (std::size_t i = 1; i < result.size(); ++i)
-			//   mout.warn('\t' , i , "  = \t'" , result[i] , "'" );
-
-			if (result.size() == 4){
-				// this->dir.assign(result[2]);  // excludes trailing separator '/'
-				// this->dir.set(result[2]);     // includes trailing separator '/'
+			/*
+			mout.warn("pathRegExp result, ",result.size(), " elements: ", sprinter(result));
+			for (std::size_t i = 1; i < result.size(); ++i)
+				mout.warn('\t' , i , "  = \t'" , result[i] , "'" );
+			*/
+			switch (result.size()) {
+			case 4:
+				// The last segment not containing SEP
 				this->dir.append(result[2]);
-				this->basename  = result[3];
+				this->handleBasename(result[3]);
+				break;
+			case 3:
+				// The segment until the last SEP
+				this->dir.append(result[2]);
+				break;
+			case 2:
+				this->handleBasename(result[1]);
+				// this->tail  = result[1];
+				break;
+			default:
+				mout.warn("Result: " ,	sprinter(result) );
+				mout.error("odd parsing results for file path: " , s );
 			}
-			else if (result.size() == 2){
-				this->basename  = result[1];
+
+			/*
+			if (result.size() == 5){ // does not end with separator (like '/')
+				//this->dir.append(result[2]);
+				if (result[4].empty()){
+					this->dir.append(result[2]);
+					this->tail  = result[3];
+				}
+				else {
+					this->dir.append(result[2], result[3]);
+				}
+			}
+			else if (result.size() == 3){
+				if (result[2].empty()){ // does not end with separator (like '/')
+					this->dir.append(result[1]);
+				}
+				else {
+					this->tail  = result[1];
+				}
 			}
 			else {
 				mout.warn("Result: " ,	sprinter(result) );
 				mout.error("odd parsing results for file path: " , s );
 			}
+			*/
 
 			//mout.special("Split: ", this->dir, '|', this->basename);
 
+			// Strip extension to dedicated member
+			/*
 			static const RegExp basenameRegExp("^(.+)\\.([[:alnum:]]+)$");
-			if (!basenameRegExp.execute(this->basename, result)){
+			if (!basenameRegExp.execute(this->tail, result)){
 
 				//mout.special("Result 2: ", sprinter(result));
 
 				if (result.size() == 3){
-					this->basename  = result[1];
+					this->tail  = result[1];
 					this->extension = result[2];
 				}
 				else {
@@ -140,6 +241,7 @@ void FilePath::append(const std::string & s){
 
 
 			}
+			*/
 
 
 		}
@@ -228,6 +330,26 @@ int FilePath::mkdir(const FilePath::path_t & dir, int flags){
 	}
 	*/
 
+}
+
+// const FilePath & filepath,
+void FilePath::debug(std::ostream & ostr) const {
+
+	ostr << "full path: " << this->str() << '\n';
+
+	ostr << "dir: \t'";
+	if (!this->dir.empty()){
+		if (this->dir.front().empty()){
+			ostr << '^'; //
+		}
+	}
+	ostr << this->dir << "' (" << this->dir.size() << " elements)\n";
+	ostr << "tail:\t'" <<  this->tail  << "'\n";
+	ostr << "ext: \t'" <<  this->extension << "'\n";
+	for (drain::FilePath::path_t::const_iterator it = this->dir.begin(); it != this->dir.end(); ++it){
+		ostr << "\t /" << *it  << '\n';
+	}
+	ostr << '\n';
 }
 
 } // drain::

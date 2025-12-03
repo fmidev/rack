@@ -39,6 +39,11 @@
 namespace drain {
 
 // consider formatter from T-inherited class: template <class F>
+
+/** A newer utility for formatted printing of data structures (basic types, lists, trees)
+ *
+ *  \see drain::Sprinter
+ */
 struct Serializer { // : public Formatter {
 
 public:
@@ -50,8 +55,8 @@ public:
 	virtual	inline
 	~Serializer(){};
 
-	static const char SINGLE_QUOTE; // = '\'';
-	static const char DOUBLE_QUOTE; // = '"';
+	static const char SINGLE_QUOTE; // '\'';
+	static const char DOUBLE_QUOTE; // '"';
 
 	typedef std::map<char, const char *> conv_map_t;
 

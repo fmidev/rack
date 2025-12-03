@@ -230,7 +230,7 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 			NodeSVG::toStream(output, svg);
 			drain::TreeUtils::dump(svg, std::cout);
 
-			filePath.basename = "dst";
+			filePath.tail = "dst";
 			mout.note("Writing: ", filePath);
 			ImageFile::write(superProber.control.markerImage, filePath.str());
 

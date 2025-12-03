@@ -448,7 +448,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath){
 
 	// For each image an own group is created to contain also title TEXT's etc.
-	const std::string name = drain::StringBuilder<'-'>(filepath.basename, filepath.extension);
+	const std::string name = drain::StringBuilder<'-'>(filepath.tail, filepath.extension);
 
 	drain::image::TreeSVG & alignFrame = getCurrentAlignedGroup(ctx);
 
@@ -464,9 +464,9 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 		drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
 
-		image->setId(filepath.basename); // unneeded, as TITLE also has it?
+		image->setId(filepath.tail); // unneeded, as TITLE also has it?
 		image->setUrl(filepath.str());
-		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.basename;
+		image[drain::image::svg::TITLE](drain::image::svg::TITLE) = filepath.tail;
 	}
 
 	imagePanel->addClass(PanelConfSVG::IMAGE_PANEL);

@@ -380,10 +380,10 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-	// drain::image::TreeSVG & svgGroup = ctx.getMainGroup();//  RackSVG::getMainGroup(ctx); // , path.basename  //  Note: repeatedly called for svg and png files?
-	// drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.basename  //  Note: repeatedly called for svg and png files?
+	// drain::image::TreeSVG & svgGroup = ctx.getMainGroup();//  RackSVG::getMainGroup(ctx); // , path.tail  //  Note: repeatedly called for svg and png files?
+	// drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.tail  //  Note: repeatedly called for svg and png files?
 
-	//track.data.set("id", STD_OUTPUT ? "stdout" : path.basename);
+	//track.data.set("id", STD_OUTPUT ? "stdout" : path.tail);
 	// std::list<std::string> keys = {"what:lon", "here"};
 
 	//if (h5FileExtension.test(value)){
@@ -405,7 +405,7 @@ void CmdOutputFile::exec() const {
 		/*
 		drain::image::TreeSVG & h5 = baseGroup["h5"](svg::TEXT);
 		h5->set("object", src.data.attributes["object"]);
-		h5->set("base", path.basename);
+		h5->set("base", path.tail);
 		*/
 	}
 	else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
@@ -485,7 +485,7 @@ void CmdOutputFile::exec() const {
 
 		drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx);
 
-		svgGroup->set("id", path.basename);
+		svgGroup->set("id", path.tail);
 		if (!ctx.outputPrefix.empty()){
 			svgGroup->set("data-outputPrefix", ctx.outputPrefix); // add "data:..."
 		}
@@ -595,12 +595,12 @@ void CmdOutputFile::exec() const {
 		}
 
 		H5HTMLextractor extractor;
-		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.basename));
+		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.tail));
 		extractor.setBaseDir(path.dir);
 		drain::TreeHTML & html = extractor.getHtml();
-		html[drain::Html::HEAD][drain::Html::TITLE](drain::Html::TITLE) = path.basename;
-		html[drain::Html::BODY]["header"](drain::Html::H1) = path.basename;
-		html->setId(path.basename); // currently more like comment.
+		html[drain::Html::HEAD][drain::Html::TITLE](drain::Html::TITLE) = path.tail;
+		html[drain::Html::BODY]["header"](drain::Html::H1) = path.tail;
+		html->setId(path.tail); // currently more like comment.
 
 		drain::TreeUtils::traverse(extractor, src);
 
@@ -868,7 +868,7 @@ public:
 		/// Split filename to dir+basename+extension.
 		drain::FilePath fp(ctx.outputPrefix + value);
 		mout.note("outputPrefix='" , ctx.outputPrefix , "'" );
-		mout.note("Writing multiple image files: " , fp.dir , ' ' , fp.basename , "???_*." , fp.extension );
+		mout.note("Writing multiple image files: " , fp.dir , ' ' , fp.tail , "???_*." , fp.extension );
 
 		std::string filenameOut;
 		int i=0; // Overall index (prefix)
@@ -899,7 +899,7 @@ public:
 			mout.debug3("constructing filename for : " , path );
 
 			std::stringstream sstr;
-			sstr << fp.dir << fp.basename;
+			sstr << fp.dir << fp.tail;
 			sstr.width(3);
 			sstr.fill('0');
 			sstr << ++i << '_';

@@ -418,7 +418,7 @@ void Palette::load(const std::string & filename, bool flexible){
 			}
 
 			drain::FilePath finalFilePath;
-			finalFilePath.basename = filePath.basename;
+			finalFilePath.tail = filePath.tail;
 			//for (drain::FilePath::path_t::list_t::const_iterator pit = paths.begin(); pit!=paths.end(); ++pit){
 			for (const drain::FilePath::path_t & p: paths){
 				//for (std::list<std::string>::const_iterator eit = extensions.begin(); eit!=extensions.end(); ++eit){
