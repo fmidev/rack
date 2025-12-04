@@ -131,7 +131,7 @@ class Command:
             if isinstance(explicit_args, dict):
                 self.args.update(explicit_args)
                 # Explicit argument keys given by the last set_args()
-                self.expl_keys = explicit_args.keys()  # dict of explicitly given args
+                self.expl_keys = list(explicit_args.keys())  # dict of explicitly given args
             elif isinstance(explicit_args, (set, tuple, list)):
                 self.expl_keys = list(explicit_args)
         else:

@@ -48,10 +48,10 @@ class GnuPlotFormatter(rack.prog.Formatter):
     #def __init__(self, name_format='{name}', key_format='{key}', value_format='{value}', value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
     #    super().__init__(name_format, key_format, value_format, value_assign, param_separator, params_format, cmd_assign, cmd_separator)
 
-    def __init__(self):
+    def __init__(self, param_separator=' '):
         self.VALUE_ASSIGN=' '
         self.VALUE_SEPARATOR=','
-        self.PARAM_SEPARATOR=' '
+        self.PARAM_SEPARATOR=param_separator
         self.CMD_SEPARATOR=';\n'
 
     def fmt_value(self, value:str) -> str :
@@ -64,7 +64,7 @@ class GnuPlotFormatter(rack.prog.Formatter):
         
 
 
-class GnuReg(rack.prog.Register):
+class Registry(rack.prog.Register):
     """ Automatic Drain command set export
     """
 
@@ -155,23 +155,6 @@ class GnuReg(rack.prog.Register):
         src=None
         opts = {}
 
-        def __str__(self):
-            fmt = GnuPlotFormatter()
-            opts = []
-            """
-            if self.opts:
-                if 'style' in self.opts: # with ?
-                    opts = [f"with={self.opts['style']}"]
-                if 'with' in self.opts: # with ?
-                    opts = [f"with={self.opts['with']}"]
-                for (k,v) in self.opts:
-                    opts.append(fmt.fmt_param(v,k))
-                    #opts.append(f"{k} {v}")
-            """
-            #opts = " ".join(opts)
-            opts =fmt.fmt_params(self.opts)
-            return f"{self.src} {opts}"
-
         def __init__(self, expr=None, filename=None, style=None, **opts):
             if expr and filename:
                 raise KeyError(f"both 'expr'={expr} and 'filename'={filename} assigned")
@@ -192,6 +175,14 @@ class GnuReg(rack.prog.Register):
             self.opts.update(opts)
             pass
 
+
+        def __str__(self):
+            fmt = GnuPlotFormatter()
+            src  = fmt.fmt_value(self.src) # Quote strings, but pass expressions as such
+            opts = fmt.fmt_params(self.opts)
+            return f"{src} {opts}"
+
+
         def is_set(self):
             return (self.src != None)
 
@@ -208,135 +199,39 @@ class GnuReg(rack.prog.Register):
         if (style):
             global_opts["with"] = style
 
-        entry = self.plot_entry(expr=expr, filename=filename, style=style, **global_opts)
-
-        logger.warning(items)
-        logger.warning(global_opts)
+        
+        #logger.warning(str(entry))
+        #logger.warning(items)
+        #logger.warning(global_opts)
         
         cmd = None
-        # Single string expression
-        if len(items) == 1 and isinstance(items[0], str):
-            cmd = rack.prog.Command("plot", [Expr(items[0])], **global_opts)
-            #return GnuPlotCommand("plot", items[0], **global_opts)
-
-        if (expr): #, Expr("toka")
-            cmd = rack.prog.Command("plot", [Expr(expr)], global_opts)
-
-        if (filename):
-            cmd = rack.prog.Command("plot", filename, global_opts)
-
-        if cmd:
-            if self.cmdSequence:
-                self.cmdSequence.add(cmd)
-            return cmd
-
-
-        def build_segment(expr: str, **opts):
-            opts = {('with' if k == 'with_' else k): v for k, v in opts.items()}
-            parts = [expr]
-            for k, v in opts.items():
-                if k != "style":    
-                    parts.append(str(k))
-                parts.append(rack.prog.Command(k, v))
-                #parts.append(GnuPlotCommand.static_fmt(v, k))
-            return " ".join(parts)
-
 
         # Multiple plot dicts
         segments = []
-        for item in items:
-
-            logger.info(f"item={item} ({type(item)})")
-            #if isinstance(item, dict):
-            if False:
-                if "expr" in item:
-                    src = item["expr"]                      # unquoted
-                elif "file" in item:
-                    src = f'"{item["file"]}"'               # quoted
-                else:
-                    raise ValueError("Each plot item must include either 'expr' or 'file'")
-
-                opts = {k: v for k, v in item.items() if k not in ("expr", "file")}
-                segments.append(build_segment(src, **opts))
-            elif isinstance(item, self.plot_entry):
-                segments.append(item)
-            elif isinstance(item, str):
-                segments.append(self.plot_entry(item, style=style))
-                #segments.append(self.plot_entry(filename=item, style=style))
-                #segments.append(item)
-            else:
-                raise TypeError("Each plot item must be a string or dict with 'expr'")
         
-        #return rack.prog.Command("plot", ",\\\n     ".join(segments))
-        #cmd = rack.prog.Command("plöt", ",\\\n     ".join(segments))
-        cmd = rack.prog.Command("plotMANY", segments) #  there are no super_global_opts 
+        entry = self.plot_entry(expr=expr, filename=filename, style=style, **global_opts)
+        if entry.is_set():
+            segments = [entry]
+            if items:
+                logger.error("Ambiguous parameters: both item list and a directly defined plot entry")
+        else:
+            for item in items:
+                #logger.info(f"item={item} ({type(item)})")
+                if isinstance(item, self.plot_entry):
+                    segments.append(item)
+                elif isinstance(item, str):
+                    segments.append(self.plot_entry(item, style=style))
+                else:
+                    raise TypeError("Each plot item must be a string or dict with 'expr'")
+        
+        cmd = rack.prog.Command("plot", segments) #  there are no super_global_opts 
+        #logger.warning("Coming up: ENTRIES!")
+        #logger.warning(cmd.args)
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
         return cmd
 
     
-# --- Static Namespace Layer (for autocompletion) ---
-class GnuPlot:
-    """Namespace for gnuplot DSL."""
-
-
-    # --- Plot commands ---
-    class Plot:
-
-        @staticmethod
-        def plot(*items: Union[str, dict], **global_opts):
-            """Create a plot command with multiple items.
-            Each item can be a string (expression) or a dict with 'expr' or 'file' key and options.
-            Global options apply to the entire plot command.
-            """
-
-            segments = []
-
-            def build_segment(expr: str, **opts):
-                opts = {('with' if k == 'with_' else k): v for k, v in opts.items()}
-                parts = [expr]
-                for k, v in opts.items():
-                    if k != "style":    
-                        parts.append(str(k))
-                    #parts.append(GnuPlotCommand.static_fmt(v, k))
-                return " ".join(parts)
-
-            # Single string expression
-            if len(items) == 1 and isinstance(items[0], str):
-                return None #GnuPlotCommand("plot", items[0], **global_opts)
-
-            # Multiple plot dicts
-            for item in items:
-                """ 
-                if isinstance(item, dict) and "expr" in item:
-                    expr = item["expr"]
-                    opts = {k: v for k, v in item.items() if k != "expr"}
-                    segments.append(build_segment(expr, **opts))
-                """
-                if isinstance(item, dict):
-                    if "expr" in item:
-                        src = item["expr"]                      # unquoted
-                    elif "file" in item:
-                        src = f'"{item["file"]}"'               # quoted
-                    else:
-                        raise ValueError("Each plot item must include either 'expr' or 'file'")
-
-                    opts = {k: v for k, v in item.items() if k not in ("expr", "file")}
-                    segments.append(build_segment(src, **opts))
-
-                elif isinstance(item, str):
-                    segments.append(item)
-                else:
-                    raise TypeError("Each plot item must be a string or dict with 'expr'")
-            
-            return None # GnuPlotCommand("plot", ",\\\n     ".join(segments))
-
-        
-    # Group under top-level for autocomplete: GnuPlot.set.output(...)
-    #set  = Set()
-    plot = Plot()
-
-# --- Example usage ---
 
 class Style:
     """ In gunplot, after "with" keyword
@@ -347,81 +242,67 @@ class Style:
     LINES_DOTS = KeyWord("linesdots")
 
 
+class ConfSequence(rack.prog.CommandSequence):
+    
+    def to_string(self, fmt = GnuPlotFormatter(param_separator=' ')):
+        return super().to_string(fmt)
+
+class PlotSequence(rack.prog.CommandSequence):
+    
+    def to_string(self, fmt = GnuPlotFormatter(param_separator=',')):
+        return super().to_string(fmt)
+
+
 def main():
 
     
-    prog = rack.prog.CommandSequence()
+    prog_conf = ConfSequence()
 
-    reg = GnuReg(prog)
+    conf = Registry(prog_conf)
     #reg.terminal(GnuPlot.Terminal.PNG, size=(800, 600))
-    reg.terminal(Terminal.PNG, size=(800, 600))
-    reg.output("my-file.png")
+    conf.terminal(Terminal.PNG, size=(800, 600))
+    conf.output("my-file.png")
     #reg.set("terminal", GnuPlot.Terminal.PNG, size=(800, 600))
 
-    reg.datafile(Datafile.SEPARATOR, Datafile.WHITESPACE)
+    conf.datafile(Datafile.SEPARATOR, Datafile.WHITESPACE)
     #reg.datafile(Datafile.SEPARATOR, char=Datafile.WHITESPACE)
-    reg.xdata(Data.TIME)
-    reg.timefmt("%s")
-    #reg.format_x(Format.X, "%H:%M")
-    reg.format_x("%H:%M")
-    reg.grid()
-    reg.title("statistics 00min 20140525-1200")
-    reg.xlabel("TIME START REL")
-    reg.ylabel("ELANGLE")
+    conf.xdata(Data.TIME)
+    conf.timefmt("%s")
+    # reg.format_x(Format.X, "%H:%M")
+    conf.format_x("%H:%M")
+    conf.grid()
+    conf.title("statistics 00min 20140525-1200")
+    conf.xlabel("TIME START REL")
+    conf.ylabel("ELANGLE")
 
-    reg.plot("sin(x)")
-    reg.plot("sin(x) with lines")
-    reg.plot(expr="sin(x)")
-    reg.plot(expr="sin(x)", style=Style.LINES)
-    reg.plot(filename="data.txt", style=Style.DOTS)
-    reg.plot("sin(x)", "cos(x)", "tan(x)", style=Style.LINES)
+    prog_plot = PlotSequence()
+    plot = Registry(prog_plot)
+    plot.plot("sin(x)")
+    plot.plot("sin(x) with lines")
+    plot.plot(expr="sin(x)")
+    plot.plot(expr="sin(x)", style=Style.LINES)
+    plot.plot(filename="data.txt", style=Style.DOTS)
+    plot.plot("sin(x)", "cos(x)", "tan(x)", style=Style.LINES)
 
-    e1 = reg.plot_entry(expr="random(x)", style=Style.LINES_DOTS)
-    reg.plot(e1)
-    e2 = reg.plot_entry(filename="my_file.dat", style=Style.DOTS)
+    e1 = plot.plot_entry(expr="random(x)", style=Style.LINES_DOTS)
+    plot.plot(e1)
+    e2 = plot.plot_entry(filename="my_file.dat", style=Style.DOTS, color="brown")
     #reg.plot(["cos(x)"])
-    reg.plot(e2)
-    reg.plot(e1,e2)
+    plot.plot(e2)
+    plot.plot(e1,e2)
 
-    print(prog.to_debug())
+    #print(prog_conf.to_debug())
+    #print ("# -----")
+    #print(prog_plot.to_debug())
 
-
-    #reg.label("t=0", at=(0,0))
-    #prog.add(GnuPlot.set.terminal(GnuPlot.Terminal.PNG, size=(800, 600)))
-    #prog.add(GnuPlot.set.output("plot_output.png"))
-
-    """
-
-    # titles and labels
-    prog.add(GnuPlot.set.title("Combined Sine and Cosine"))
-    prog.add(GnuPlot.set.label("t=0", at=(0, 0)))
-
-    # multiplot layout
-    for c in GnuPlot.set.multiplot(2, 1):
-        prog.add(c)
-
-    # xdata and format
-    prog.add(GnuPlot.set.xdata("time"))
-    prog.add(GnuPlot.set.timefmt("%s"))
-    prog.add(GnuPlot.set.format_x("%H:%M"))
-
-    # multiple plots in one line
-    prog.add(GnuPlot.plot.plot(
-        {"expr": "sin(x)", "title": "Sine", "with_": "lines"},
-        {"expr": "cos(x)", "title": "Cosine", "with_": "linespoints"}
-    ))
-    """
-
-    #unset multiplot
-    #prog.add(GnuPlot.set.unset_multiplot())
-
-  
     # Save to file
     #prog.to_script("example_plot.plt")
-    fmt = GnuPlotFormatter()
+    #fmt = GnuPlotFormatter()
 
     print("# Generated GnuPlot script:\n")
-    print(prog.to_string(fmt))  # ";\n"
+    print(prog_conf.to_string())  # ";\n"
+    #fmt.PARAM_SEPARATOR = ",\\\n\t"
+    print(prog_plot.to_string())  # ";\n"
 
 
 
