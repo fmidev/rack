@@ -12,17 +12,13 @@ import sys
 from pathlib import Path
 import os
 import re # GEOCONF filename-KEY extraction
+import logging
 
 from types import SimpleNamespace
 
-import logging
-#logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
-#logger = logging.getLogger("rack.py") # change to __NAME__ etc
-#logger.setLevel(logging.INFO)
-
-#import rack.command
-import rack.prog
 import rack.log
+import rack.prog
+import rack.core
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -199,6 +195,12 @@ def build_parser():
         "-p", "--print",
         action='store_true',
         help="print parsed command")
+
+    parser.add_argument(
+        "--test",
+        action='store_true',
+        help="run some tests")
+
 
     parser.add_argument(
         "-T", "--TIMESTAMP",
@@ -458,54 +460,56 @@ def compose_command(args):
         args = argparse.Namespace(**args)
 
 
-    cmdReg = rack.prog.Register()
+    #cmdReg = rack.prog.Register()
 
-    
+    # Rack command sequence, the "program" to be executed
+    prog = rack.prog.CommandSequence(programName='rack', quote="'")
 
-    #cmdList = ['rack']
-    cmdList = rack.prog.CommandSequence()
-    #cmdList.add("rack")
-    cmdList.add(rack.prog.Command("rack"))
+    # Command registry, "factory" for adding command to the program sequence.
+    Rack = rack.core.Rack(prog)
 
-    if (args.debug):
-        args.log_level = logging.DEBUG
-    elif (args.verbose):
-        args.log_level = logging.VERBOSE
-    
-    if (args.log_level):
-        if hasattr(logging, args.log_level):
-            logger.setLevel(getattr(logging, args.log_level))
-        else:
-            logger.setLevel(int(args.log_level))
-        cmdList.append(f"--verbose '{args.log_level}'")
-        cmdList.add()
-
-   
-    # Example usage
-    #if args.debug:
-    #    print("Debug mode enabled")
-
-    #assert hasattr(args, "rack") and hasattr(args, "version"), "Missing required arguments"
-    #print(f"Using {args.rack}:{args.version}")
+    verbosityKey = rack.log.handle_parameters(args)
+    Rack.verbose(level=verbosityKey)
 
     # Settings
     if args.GEOCONF:
         read_geoconf(args) #, parser)
-        # Save reduced value and refresh
-        #geoconf = args.GEOCONF
-        #args = parser.parse_args()
-        #args.GEOCONF = geoconf
         
+    # dict
     arg_vars = vars(args)
 
     # "MAIN"
     logger.warning(f"Geoconf: {args.GEOCONF}")
 
-    # TODO: also Seq
-    cmdRoutine = []
-    # Outputs
+    if args.SIZE:
+        Rack.cSize(args.SIZE)
 
-    append_geoconf(cmdList, arg_vars)
+    if args.PROJ:
+        Rack.cProj(args.PROJ)
+
+    if args.BBOX:
+        Rack.cBBox(args.BBOX)
+
+    if args.METHOD:
+        Rack.cMethod(args.METHOD)
+
+    fmt = rack.prog.RackFormatter()
+
+    script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
+    scriptBuilder = rack.core.Rack(script)
+    #Script.select("dataset1:5,elangle=0:15.0,prf=ANY")
+    #scmd = Script.pCappi(1500, aboveSeaLevel=True)
+    scriptBuilder.cAdd()
+    # Add it...
+    Rack.script(script.to_string(fmt))
+
+    print ("# Command line")
+    #fmt.VALUE_FORMAT = "'{value}'"
+    fmt = rack.prog.RackFormatter(params_format="'{params}'")
+    print(prog.to_string(fmt))
+    exit(0)
+
+    append_geoconf(prog, arg_vars)
     # print (cmdList)
     
     #print("🔧 Final configuration:")
@@ -636,7 +640,13 @@ def compose_command(args):
 def exec_command(args):
     cmdList = compose_command(args)
     os.system(cmdList)  # subprocess!
-    
+
+def test():
+    cmds = {
+        "INPUTS" 
+    }
+    compose_command("")
+
 def main():
 
     parser = build_parser()
@@ -652,6 +662,11 @@ def main():
     # Export template if user requests it
     if args.export_config:
         export_defaults_to_json(parser, args, args.export_config)
+        sys.exit(0)
+
+    if args.test:
+        logger.info("Running tests..")
+        test()
         sys.exit(0)
 
     cmdList = compose_command(args)
