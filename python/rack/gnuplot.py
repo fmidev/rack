@@ -62,6 +62,9 @@ class GnuPlotFormatter(rack.prog.Formatter):
         return super().fmt_value(value)
 
         
+class Mika:
+    def __init__(self, a=1, b="dko", **global_opts):
+        print(a, b)
 
 
 class Registry(rack.prog.Register):
@@ -187,6 +190,11 @@ class Registry(rack.prog.Register):
             return (self.src != None)
 
 
+    @rack.prog.copy_signature_from(Mika.__init__)
+    def mika(self, *plots, **plot_kwargs):
+        if plot_kwargs:
+            plots += (Mika(**plot_kwargs), )
+        return plots
 
     def plot(self, *items: Union[str, dict], expr=None, filename=None, style=None, **global_opts):
         """Create a plot command with multiple items.
@@ -199,6 +207,8 @@ class Registry(rack.prog.Register):
         if (style):
             global_opts["with"] = style
 
+        m = Mika(a=5, b="87")
+        self.mika(a=6, b="s")
         
         #logger.warning(str(entry))
         #logger.warning(items)

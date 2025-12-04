@@ -79,6 +79,35 @@ class Formatter:
         return self.PARAMS_FORMAT.format(params=params)
 
 
+import inspect
+from functools import wraps
+
+def copy_signature_from(source):
+    """Copy signature from another callable (except 'self' in methods)."""
+
+    def decorator(target):
+        sig = inspect.signature(source)
+        params = list(sig.parameters.values())
+        
+        # Remove 'self' if it exists in the source signature
+        if params and params[0].name == "self":
+            params = params[1:]
+        
+        # Add *args at beginning if target already has it
+        target_sig = inspect.signature(target)
+        new_params = list(target_sig.parameters.values())
+        
+        # Keep the original *args, but append the copied kwargs
+        new_params += params
+        #new_params.extend(params)
+        
+        new_sig = inspect.Signature(parameters=new_params)
+        # new_sig = inspect.Signature(new_params)
+        target.__signature__ = new_sig
+        
+        return target
+    return decorator
+
 
 class Command:
 
