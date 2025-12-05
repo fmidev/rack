@@ -326,10 +326,10 @@ def read_geoconf(args): #, parser):
             # Adopt keyword "reduced" from filepath.
             args.GEOCONF = m.group(1)
     else:
-        Exception('--GEOCONF: could not extract KEY from filename: ')
+        Exception(f'--GEOCONF: could not extract KEY from argument: {args.GEOCONF}')
 
     
-    logger.info(f"Reading geoconf: {args.GEOCONF}")
+    logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
     geoconf = load_config(filepath)
     vars(args).update(geoconf)
     return geoconf
@@ -532,6 +532,8 @@ def compose_command(args):
         read_geoconf(args) #, parser)
 
     handle_geo(args, progBuilder)
+
+   
     
     handle_select(args, scriptBuilder)
 

@@ -8,26 +8,45 @@ import rack.base
 
 logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
-class Formatter:
-
-    NAME_FORMAT='{name}'
+class ParamFormatter:
+    """Formatting key=value pairs"""
     KEY_FORMAT ='{key}'
     VALUE_FORMAT='{value}'
     VALUE_SEPARATOR=':'
     VALUE_ASSIGN='='
     PARAM_SEPARATOR=','
+
+    def __init__(self, key_format ='{key}', value_format='{value}', value_separator=':', 
+                 value_assign='=', param_separator=','):
+        self.KEY_FORMAT   = key_format
+        self.VALUE_FORMAT = value_format
+        self.VALUE_SEPARATOR = value_separator
+        self.VALUE_ASSIGN = value_assign
+        self.PARAM_SEPARATOR = param_separator
+
+
+class Formatter(ParamFormatter):
+
+    NAME_FORMAT='{name}'
+    #KEY_FORMAT ='{key}'
+    #VALUE_FORMAT='{value}'
+    #VALUE_SEPARATOR=':'
+    #VALUE_ASSIGN='='
+    #PARAM_SEPARATOR=','
     PARAMS_FORMAT='{params}'
     CMD_ASSIGN=' ' 
     CMD_SEPARATOR=' '
 
     def __init__(self, name_format='{name}', key_format ='{key}', value_format='{value}', value_separator=':', 
                  value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
+        super().__init__(key_format=key_format, value_format=value_format, value_separator=value_separator,
+                         value_assign=value_assign, param_separator=param_separator)
         self.NAME_FORMAT  = name_format
-        self.KEY_FORMAT   = key_format
-        self.VALUE_FORMAT = value_format
-        self.VALUE_SEPARATOR = value_separator
-        self.VALUE_ASSIGN = value_assign
-        self.PARAM_SEPARATOR = param_separator
+        #self.KEY_FORMAT   = key_format
+        #self.VALUE_FORMAT = value_format
+        #self.VALUE_SEPARATOR = value_separator
+        #self.VALUE_ASSIGN = value_assign
+        #self.PARAM_SEPARATOR = param_separator
         self.PARAMS_FORMAT   = params_format
         self.CMD_ASSIGN      = cmd_assign
         self.CMD_SEPARATOR   = cmd_separator
@@ -113,6 +132,7 @@ class Command:
 
     PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
+    
 
 
     def __init__(self, name, args=None, explicit_args={}):
@@ -167,6 +187,8 @@ class Command:
             self.expl_keys = []
         # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
         self.implicit = False
+        # ParamFormatter (if command specific)
+        self.fmt = None
 
     def set_args(self, *args, **kwargs):
         """ Set ordered arguments and keyword arguments.
@@ -208,6 +230,7 @@ class Command:
         
  
     def set_separators(self, primary:str=",", secondary:str=":"):
+        """Separators: primary for parameters and secondary for parameters of the parameters"""
         self.PRIMARY_SEP   = primary
         if secondary is None:
             for c in (',', ':'):
@@ -217,6 +240,8 @@ class Command:
         self.SECONDARY_SEP = secondary
         if (primary == secondary):
             logger.error(f"setSeparators illegal equality primary:{primary} == secondary:{secondary}")
+        self.fmt = ParamFormatter(value_separator=secondary, param_separator=primary)
+        logger.warning("assigning separators in a formatter ", self.name)
 
     def set_implicit(self, value:bool = True):
         """If a command is implict, its name (keyword) will not be displayed on command line. 
@@ -237,10 +262,15 @@ class Command:
 
 
     def get_args(self, fmt:Formatter=Formatter()) -> str:
+        
+        if self.fmt:
+            logger.warning(self.name, ": own format:", self.fmt)
+
         if self.args:
             key_list = list(range(0,self.ordered_args_count))
             key_list.extend(self.expl_keys)
             if len(key_list) == 0:
+                # Show at least one arg.
                 key_list = [0]
             return fmt.fmt_params(self.args, key_list)
         else:
@@ -371,7 +401,28 @@ class Register:
         # Detect caller function. Then, myFunction(...) implies cmd name "myFunction"
         caller_name = inspect.stack()[1].function
         func = getattr(self, caller_name)
-        #if caller_name == "verbose":
+        if caller_name == "cBBox":
+            for i in inspect.stack()[1]:
+                logger.error(i)
+            # for i in dir(func):
+            #    logger.warning(i) #, getattr(func, i))   
+            sig = inspect.signature(func)
+            # param = sig.parameters[name]     
+            logger.warning(sig.parameters)
+            typelist = [type(v) for v in local_vars.values()]
+            typelist = typelist[1:]
+            logger.warning(typelist)
+            typelist = [type(t.default) for t in sig.parameters.values()]
+            logger.warning(typelist)
+            for k,v in sig.parameters.items():
+                d = dir(v)
+                t = type(v._default)
+                logger.warning(f"{k}, '=', {v} ({t}) # {d}")
+                # logger.warning(f"{v2}")
+            # logger.error("\n".join(list(zip(inspect.stack()))))
+            logger.warning(len(local_vars))
+            logger.warning(local_vars)
+            exit (13)
             #logger.warning(f"MAKE_CMD: locals: {local_vars}")
 
         args = {}
