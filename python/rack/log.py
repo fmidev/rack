@@ -53,20 +53,19 @@ def handle_parameters(args):
     elif (args.verbose):
         args.log_level = str(logging.INFO)
     
-    
-    if args.log_level:
-        if args.log_level == "NOTE":
-            logger.setLevel(logging.INFO)
-            return args.log_level
-        if hasattr(logging, args.log_level):
-            logger.setLevel(getattr(logging, args.log_level))
-            return args.log_level
-        else:
-            level = int(args.log_level)
-            logger.setLevel(level)
-            return logging.getLevelName(level)
 
-    return logging.NOTSET
-    # logging.INFO
-    # handle, but otherwise, cmdList.append(f"--verbose '{args.log_level}'")
+    if not args.log_level:
+        args.log_level = logging.getLevelName(logger.getEffectiveLevel())
+
+    if args.log_level == "NOTE":
+        logger.setLevel(logging.INFO)
+        return args.log_level
+    if hasattr(logging, args.log_level):
+        logger.setLevel(getattr(logging, args.log_level))
+        return args.log_level
+    else:
+        level = int(args.log_level)
+        logger.setLevel(level)
+        return logging.getLevelName(level)
+
 

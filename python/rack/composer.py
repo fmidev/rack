@@ -63,18 +63,20 @@ def build_parser():
 
     parser.add_argument(
         "--BBOX",
-        default='6,51.3,49,70.2',
+        #default='6,51.3,49,70.2',
         metavar="<lonLL,latLL,lonUR,latUR>",
         help="Bounding box [cBBox]")  # FMI Scandinavia
 
     parser.add_argument(
         "--PROJ",
-        default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+        metavar="[<epsg>|<proj_str>]",
+        #default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
         help="")   # Same as epsg:4326
 
     parser.add_argument(
         "--SIZE",
-        default="800,800",
+        #default="800,800",
+        metavar="<width>[,<height>]",
         help="") 
 
     parser.add_argument(
@@ -97,13 +99,22 @@ def build_parser():
 
     parser.add_argument(
         "--QUANTITY",
-        default='DBZH',
-        help="Extracted quantity") 
+        default=None,
+        #default='DBZH',
+        metavar="<code>",
+        help="Same as --SELECT quantity=<code> , where code in DBZH, VRAD, HGHT") 
 
     parser.add_argument(
         "--DATASET",
-        default='',
-        help="Extracted quantity") 
+        default='', 
+        metavar="<index>[:<index2>]",
+        help="Same as --SELECT path=/dataset<index>") 
+
+    parser.add_argument(
+        "--PRF",
+        default=None, 
+        metavar="SINGLE|DOUBLE|ANY",
+        help="Same as --SELECT prf=<prf>") 
 
     parser.add_argument(
         "--PALETTE",
@@ -308,8 +319,8 @@ def read_geoconf(args): #, parser):
     
     m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', args.GEOCONF)
     if m:
-        # Nothing removed - plain key given?
         if args.GEOCONF == m.group(1):
+            # Nothing removed - plain key given.
             filepath = Path(f'geoconf/geoconf-{args.GEOCONF}.json')
         else:
             # Adopt keyword "reduced" from filepath.
@@ -318,9 +329,9 @@ def read_geoconf(args): #, parser):
         Exception('--GEOCONF: could not extract KEY from filename: ')
 
     
+    logger.info(f"Reading geoconf: {args.GEOCONF}")
     geoconf = load_config(filepath)
     vars(args).update(geoconf)
-    logger.warn(f"Geoconf: {args.GEOCONF}")
     return geoconf
     
     # parser.set_defaults(**geoconf)
@@ -328,7 +339,7 @@ def read_geoconf(args): #, parser):
     # print ("GEOCONF: ", args.GEOCONF, " = ", filepath)
 
     
-
+"""
 def append_geoconf(cmdList:list, conf:dict):
     geo_dict = {'cSize':'SIZE', 'cProj':'PROJ', 'cBBox':'BBOX', 'cMethod':'CMETHOD'}
     # consider argument-less options: val is None
@@ -337,7 +348,7 @@ def append_geoconf(cmdList:list, conf:dict):
             cmdList.add(rack.prog.Command(f"--{key}", arg2str(conf[confkey])))
             #cmdList.add(
             #cmdList.append("--{key} '{val}'".format(key=key, val=arg2str(conf[confkey])))
-
+"""
 
 
 def append_outputs(cmdList:list, output_basename:str, formats: list, output_prefix=None):
@@ -446,6 +457,47 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
             
     return (str(dirpath).removesuffix('/')+'/', filepath)
 
+def handle_geo(args, Rack: rack.core.Rack):
+
+    if args.SIZE:
+        Rack.cSize(args.SIZE)
+
+    if args.PROJ:
+        Rack.cProj(args.PROJ)
+
+    if args.BBOX:
+        Rack.cBBox(args.BBOX)
+
+    if args.METHOD:
+        Rack.cMethod(args.METHOD)
+
+def handle_prod(args, scriptBuilder: rack.core.Rack):
+     
+     if (args.PPROD):
+        (key,value) = args.PPROD.split(',',1)
+        cmd = getattr(scriptBuilder, key)
+        if value is None:
+            cmd()
+        else:
+            cmd(value)
+
+def handle_select(args, scriptBuilder: rack.core.Rack):
+ 
+    value = []
+    if args.SELECT:
+        value.append(args.SELECT)
+
+    if args.DATASET:
+        value.append(f"path=/dataset{args.DATASET}")
+
+    if args.QUANTITY:
+        value.append(f"quantity={args.QUANTITY}")
+
+    if args.PRF:
+        value.append(f"prf={args.PRF}")
+
+    scriptBuilder.select(",".join(value))
+
 
 def compose_command(args):
     """Main library entry point.
@@ -466,42 +518,64 @@ def compose_command(args):
     prog = rack.prog.CommandSequence(programName='rack', quote="'")
 
     # Command registry, "factory" for adding command to the program sequence.
-    Rack = rack.core.Rack(prog)
-
-    verbosityKey = rack.log.handle_parameters(args)
-    Rack.verbose(level=verbosityKey)
-
-    # Settings
-    if args.GEOCONF:
-        read_geoconf(args) #, parser)
-        
-    # dict
-    arg_vars = vars(args)
-
-    # "MAIN"
-    logger.warning(f"Geoconf: {args.GEOCONF}")
-
-    if args.SIZE:
-        Rack.cSize(args.SIZE)
-
-    if args.PROJ:
-        Rack.cProj(args.PROJ)
-
-    if args.BBOX:
-        Rack.cBBox(args.BBOX)
-
-    if args.METHOD:
-        Rack.cMethod(args.METHOD)
-
-    fmt = rack.prog.RackFormatter()
+    progBuilder = rack.core.Rack(prog)
 
     script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
     scriptBuilder = rack.core.Rack(script)
-    #Script.select("dataset1:5,elangle=0:15.0,prf=ANY")
-    #scmd = Script.pCappi(1500, aboveSeaLevel=True)
-    scriptBuilder.cAdd()
-    # Add it...
-    Rack.script(script.to_string(fmt))
+
+    verbosityKey = rack.log.handle_parameters(args)
+    progBuilder.verbose(level=verbosityKey)
+
+    # Settings
+    if args.GEOCONF:
+        # logger.info(f"Geoconf: {args.GEOCONF}")
+        read_geoconf(args) #, parser)
+
+    handle_geo(args, progBuilder)
+    
+    handle_select(args, scriptBuilder)
+
+    handle_prod(args, scriptBuilder)
+
+    # dict
+    arg_vars = vars(args)
+
+
+    """ Compositing
+    """
+    if args.SCHEME in ['TILE','TILED']:
+        if not args.GEOCONF:
+            # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
+            # print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
+            logger.note('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]')
+    
+    if (args.SCHEME == 'TILE'):
+        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
+        print(dirpath,filepath)
+        args.OUTDIR  = dirpath # .removesuffix('/')
+        #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+        #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
+        progBuilder.outputPrefix(args.OUTDIR)
+        scriptBuilder.cCreateTile()
+        scriptBuilder.outputFile(args.OUTFILE)
+    elif (args.SCHEME == 'TILED'):
+        (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
+        if not args.INDIR:
+            args.INDIR = dirpath # default_tiledir
+        args.INDIR = args.INDIR.removesuffix('/')
+        if not args.INFILE:
+            args.INFILE = filepath #default_tilename.replace('{GEOCONF}', args.GEOCONF)
+    else:
+        scriptBuilder.cAdd()
+
+
+    if not args.OUTFILE:
+        args.OUTFILE = 'out.h5'
+
+    print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
+
+    progBuilder.script(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
+
 
     print ("# Command line")
     #fmt.VALUE_FORMAT = "'{value}'"
@@ -519,45 +593,7 @@ def compose_command(args):
         logger.debug(f"  {key}: {value}")
 
 
-    #print (f"=== Full cmd for {timestamp}-{site} ===")
-    if (args.PPROD):
-        (key,value) = args.PPROD.split(',',1)
-        if value is None:
-            cmdRoutine.append(f"--{key}")
-        else:
-            cmdRoutine.append(f"--{key} '{value}'")
 
-    """ Compositing
-    """
-    if args.SCHEME in ['TILE','TILED']:
-        if not args.GEOCONF:
-            # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
-            # print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
-            logger.note('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]')
-    
-    if (args.SCHEME == 'TILE'):
-        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
-        print(dirpath,filepath)
-        args.OUTDIR  = dirpath # .removesuffix('/')
-        #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-        #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
-        cmdList.add(rack.prog.Command("--outputPrefix", args.OUTDIR))
-        cmdRoutine.append(f"--cCreateTile -o '{args.OUTFILE}'")
-    elif (args.SCHEME == 'TILED'):
-
-        (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
-        if not args.INDIR:
-            args.INDIR = dirpath # default_tiledir
-        args.INDIR = args.INDIR.removesuffix('/')
-        if not args.INFILE:
-            args.INFILE = filepath #default_tilename.replace('{GEOCONF}', args.GEOCONF)
-    else:
-        cmdRoutine.append("--cAdd")
-
-    if not args.OUTFILE:
-        args.OUTFILE = 'out.h5'
-
-    print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
     
     if (args.INFILE):
 

@@ -111,17 +111,23 @@ public:
  *
  */
 
-class CmdBaseSelective : public drain::SimpleCommand<std::string> {
+//class CmdBaseSelective : public drain::SimpleCommand<std::string> {
+class CmdBaseSelective : public drain::BasicCommand {
 
 protected:
 
 	CmdBaseSelective(const std::string & name, const std::string & description) :
-	//	drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters()).str()){
-		drain::SimpleCommand<>(name, description, "selector", DataSelector().getParameters().getKeys()){
+		drain::BasicCommand(name, description){
+		// drain::SimpleCommand<>(name, description, "selector", drain::sprinter(DataSelector().getParameters()).str()){
+		// drain::SimpleCommand<>(name, description, "selector", DataSelector().getParameters().getKeys()){
 		// TODO: "list out" the sub-parameter help. See --help select
+		getParameters().append(mySelector.getParameters());
 	};
 
-	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::SimpleCommand<std::string>(cmd){
+	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::BasicCommand(cmd){
+		getParameters().append(mySelector.getParameters());
+		//getParameters().updateFromCastableMap(cmd.getParameters());
+		setParameters(cmd.getParameters());
 	};
 
 
@@ -176,17 +182,16 @@ protected:
 	\see #rack::DataSelector (code)
 
 */
-class CmdSelect : public CmdBaseSelective { //drain::BasicCommand {
+
+/*
+class CmdSelect : public CmdBaseSelective {
 
 public:
 
 	CmdSelect() : CmdBaseSelective(__FUNCTION__, "Data selector for the next computation"){
-		//parameters.append(testSelector.getParameters());
-
 	};
 
 	CmdSelect(const CmdSelect & cmd) : CmdBaseSelective(cmd) {
-		// parameters.updateFromMap(cmd.getParameters());
 		setParameters(cmd.getParameters());
 	};
 
@@ -194,54 +199,23 @@ public:
 	virtual
 	void exec() const override {
 		RackContext & ctx = getContext<RackContext>();
-		//drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
 		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
 
-		// mout.warn("Select 0...");
 		mySelector.reset();
 
 		// mout.attention("Select...");
 		// consider "reset" as a special argument.
 		try {
 			mySelector.setParameters(value); // will alert early
-			// mout.special<LOG_NOTICE>("ctx.selector: ", ctx.superSelector.getQuantity());
-			// ctx.superSelector.getQuantitySelector();
 		}
 		catch (const std::exception & e) {
 			mout.error("syntax error in selection string: ", value);
 		}
 		mout.special<LOG_DEBUG>("ctx.selector: ", mySelector);
-		// mout.special<LOG_INFO>("ctx.selector, quantity: ", ctx.superSelector.getQuantitySelector());
-		// mout.special<LOG_INFO>("ctx.selector, quality: ",  ctx.superSelector.getQualitySelector());
 		ctx.select = value;
-		// mout.attention("Select END...");
-		//mout.warn("ctx.select=", ctx.select, "...");
 	}
 
-	// TODO: redesign command::Help to provide extra doc etc, not layout raw help.
-	/** Like:
-	 *   getHelpParameters() // those declared publicly
-	 */
-	/*
-	virtual
-	void help(std::ostream & ostr, bool DETAILED) const override {
 
-		ostr << "  " << getDescription() << '\n';
-
-		ostr << "  path: defines a path segment to be matched, with desired index ranges (example: dataset2:4/data3:8\n";
-		ostr << "  path: leading slash fixes matching at the root (example: /dataset:/data: ), otherwise the tail part is matched\n";
-		ostr << "  quantity: list of strings or regExps separated by semicolon ':', quality quantity by slash '/'";
-
-		for (const auto & entry: mySelector.getParameters()){
-			ostr << entry.first << ' ' << entry.second << '\n';
-		}
-
-		if (DETAILED){
-			getRelatedCommands(ostr);
-		}
-
-	};
-	*/
 
 	virtual
 	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
@@ -270,15 +244,77 @@ public:
 	};
 
 
-	/* This fails, because the keys are used as truth
-	virtual
-	drain::ReferenceMap & getParameters() const override{
-		return mySelector.getParameters();
-	}
-	*/
+
 
 };
+*/
 
+class CmdSelect : public CmdBaseSelective {
+
+public:
+
+	CmdSelect() : CmdBaseSelective(__FUNCTION__, "Data selector for the next computation"){
+	};
+
+	CmdSelect(const CmdSelect & cmd) : CmdBaseSelective(cmd) {
+		setParameters(cmd.getParameters());
+	};
+
+
+	virtual
+	void exec() const override {
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+
+		mySelector.reset();
+
+		// mout.attention("Select...");
+		// consider "reset" as a special argument.
+		const std::string & value = getLastParameters();
+		try {
+			// Reassign?
+			mySelector.setParameters(value); // will alert early
+		}
+		catch (const std::exception & e) {
+			mout.error("syntax error in selection string: ", value);
+		}
+		mout.special<LOG_DEBUG>("ctx.selector: ", mySelector);
+		ctx.select = value;
+	}
+
+
+	// Note: unneeded, if lastParam works
+	virtual
+	void parametersToStreamFOO(std::ostream & ostr, const std::string & indent= "  ") const { //override {
+
+		const drain::ReferenceMap & params = mySelector.getParameters();
+		const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
+
+		const std::map<std::string,std::string> & units = params.getUnitMap();
+
+		for (const std::string & key: keys){
+			ostr << indent << key << " (" << params.get(key, "") << ")";
+
+			std::map<std::string,std::string>::const_iterator uit = units.find(key);
+			if (uit != units.end()){
+				if (!uit->second.empty()){
+					ostr << ' ' << '[' << uit->second << ']';
+				}
+			}
+			ostr << '\n';
+		}
+	}
+
+	// Note: unneeded, if lastParam works
+	virtual inline
+	void parameterKeysToStreamFOO(std::ostream & ostr) const { // override {
+		Command::parameterKeysToStream(ostr, mySelector.getParameters().getKeyList(), ',');
+	};
+
+
+
+
+};
 
 
 /// Tool for selecting data for next command(s), based on paths, quantities and elevations.
@@ -787,6 +823,7 @@ public:
 		// Hi5Tree & dst = *ctx.currentHi5; // well, consider
 		Hi5Tree & dst =  ctx.getHi5(RackContext::CURRENT, RackContext::PRIVATE);
 
+		const std::string & value = getLastParameters();
 		if (value == "empty"){
 			handleEmptyGroups(ctx, dst, true); // true=delete
 			return;
@@ -914,6 +951,7 @@ public:
 		//hi5::Hi5Base::markExcluded(dst);
 
 		DataSelector selector;
+		const std::string & value = getLastParameters();
 		selector.setParameters(value);
 
 		//hi5::Hi5Base::writeText(dst, std::cerr);
@@ -1789,12 +1827,6 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
 
-		//std::string format = value;
-		// format = drain::StringTools::replace(format, "\\n", "\n");
-		// format = drain::StringTools::replace(format, "\\t", "\t");
-		// std::cout << format << std::endl;
-		// std::cout << ctx.getStatus() << std::endl;
-		//drain::StringMapper statusFormatter("[a-zA-Z0-9:_]+");
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(value+'\n', true);
 
@@ -1806,22 +1838,48 @@ public:
 };
 
 
+class CmdEncoding : public drain::BasicCommand {
+
+public:
+
+	inline
+	CmdEncoding() : drain::BasicCommand(__FUNCTION__,
+			"Sets encodings parameters for polar and Cartesian products, including composites."
+	) {
+		getParameters().append(encoding);
+	};
+
+	inline
+	CmdEncoding(const CmdEncoding & cmd) : drain::BasicCommand(cmd) {
+		getParameters().append(encoding);
+		setParameters(cmd.getParameters());
+	};
+
+
+	virtual
+	void exec() const override;
+
+protected:
+
+	mutable EncodingBag encoding;
+
+};
+
 
 /// Facility for validating and storing desired technical (non-meteorological) user parameters.
 /*
  *  Quick-checks values immediately.
  *  To consider: PolarODIM and CartesianODIM ?
  */
-class CmdEncoding : protected EncodingBag, public drain::SimpleCommand<> { //BasicCommand {
+class CmdEncodingOLD : protected EncodingBag, public drain::SimpleCommand<> { //BasicCommand {
 
 public:
 
 	inline
-	CmdEncoding() : drain::SimpleCommand<>(__FUNCTION__, // {  //drain::BasicCommand(__FUNCTION__,
+	CmdEncodingOLD() : drain::SimpleCommand<>(__FUNCTION__, // {  //drain::BasicCommand(__FUNCTION__,
 			"Sets encodings parameters for polar and Cartesian products, including composites.",
 			"encoding", "", EncodingBag().getKeys() // NOTE: latent-multiple-key case
 	) {
-		//assert( 1 ==0 );
 		getParameters().separator = 0;
 	};
 
@@ -1829,11 +1887,8 @@ public:
 	virtual
 	void exec() const override;
 
-
-
-
 };
-// extern drain::CommandEntry<CmdEncoding> cmdEncoding;
+
 
 
 void CmdEncoding::exec() const {
@@ -1844,6 +1899,8 @@ void CmdEncoding::exec() const {
 
 
 	try {
+
+		const std::string & value = getLastParameters();
 
 		EncodingBag enc;
 

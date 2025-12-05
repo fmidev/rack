@@ -25,7 +25,7 @@
 // #include <sstream>
 
 
-#include <filesystem>
+//#include <filesystem>
 #include <drain/Sprinter.h>
 
 #include "Zarr.h"
@@ -66,7 +66,8 @@ namespace drain {
 
 		if (!dirPath.empty()){
 			mout.info("Ensure path:", dirPath);
-			std::filesystem::create_directory(dirPath.str());
+			//std::filesystem::create_directory(dirPath.str());
+			FilePath::mkdir(dirPath);
 			output.open(FilePath(dirPath, ARRAY_PATH));
 		}
 		else {
@@ -75,16 +76,19 @@ namespace drain {
 		Sprinter::toStream(output, getJSON(), drain::Sprinter::jsonLayout);
 
 		const drain::FilePath chunkPath(dirPath,"c");
-		std::filesystem::create_directory(chunkPath.str());
+		drain::FilePath::mkdir(chunkPath);
+		// std::filesystem::create_directory(chunkPath.str());
 
 		std::vector<size_t> dim(2);
 		//drain::UniTuple<int,2> dim;
 		chunk_grid_shape.toSequence(dim);
-		for (int j = 0; j < dim[1]; ++j) {
-			for (int i = 0; i < dim[0]; ++i) {
-				std::string s = drain::StringBuilder<'.'>(i,j);
-				mout.note("Creating:", chunkPath, '/', s);
-				std::filesystem::create_directory(drain::FilePath(chunkPath, s).str());
+		for (size_t j = 0; j < dim[1]; ++j) {
+			for (size_t i = 0; i < dim[0]; ++i) {
+				// std::string s = drain::StringBuilder<'.'>(i,j);
+				const drain::FilePath dataPath(chunkPath, drain::StringBuilder<'.'>(i,j));
+				mout.note("Creating:", dataPath);
+				drain::FilePath::mkdir(dataPath);
+				//std::filesystem::create_directory(drain::FilePath(chunkPath, s).str());
 			}
 		}
 
