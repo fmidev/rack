@@ -102,7 +102,7 @@ def build_parser():
         default=None,
         #default='DBZH',
         metavar="<code>",
-        help="Same as --SELECT quantity=<code> , where code in DBZH, VRAD, HGHT") 
+        help="Same as --SELECT quantity=<code> , where code is DBZH, VRAD, HGHT") 
 
     parser.add_argument(
         "--DATASET",
@@ -132,6 +132,12 @@ def build_parser():
         default='',
         metavar="<empty>|TILE|TILED",
         help="Compositing scheme. For TILE, default OUTDIR={default_tiledir}, OUTFILE={default_tiledir}") 
+
+    parser.add_argument(
+        "--EXTRACT",
+        default='',
+        metavar="DATA,WEIGHT",
+        help="Comma separated list of fields to copy from compositing array") 
 
 
     #parser.add_argument("--loop", type=str, help="<file>.json Path to JSON config file")
@@ -241,17 +247,17 @@ def traverse_loop(loop, conf, inputList:list, routineList:list, outputList:list)
     if k == 'SITE':
         inputList.append()
 """
-
+"""
 class safe_dict(dict):
     def __missing__(self, key):
         return '{' + key + '}'
-
+"""
+        
 """
 Simplifies lists and dictionaries for command line use.
 Converts ['A','b',7] to A,b,7 .
 
 Strips chars '[', ']', '{', '}'  
-"""
 def arg2str(arg, separator=","):
     if (type(arg)==list) or (type(arg)==tuple):
         return separator.join([str(i) for i in arg])
@@ -259,6 +265,7 @@ def arg2str(arg, separator=","):
         return separator.join([f"{k}={v}" for (k,v) in arg.items()])
     else:
         return str(arg) #str(type(arg)) + 
+"""
 
     
 def get_defaults(parser):
@@ -272,7 +279,7 @@ def export_defaults_to_json(parser, args, filename="config_template.json"):
     defaults = get_defaults(parser)
     conf = {}
     for k,v in vars(args).items():
-        if k == 'export_config':
+        if k == 'export_config': # TODO: add set of commands skipped
             continue
         if v is None:
             continue
@@ -339,16 +346,6 @@ def read_geoconf(args): #, parser):
     # print ("GEOCONF: ", args.GEOCONF, " = ", filepath)
 
     
-"""
-def append_geoconf(cmdList:list, conf:dict):
-    geo_dict = {'cSize':'SIZE', 'cProj':'PROJ', 'cBBox':'BBOX', 'cMethod':'CMETHOD'}
-    # consider argument-less options: val is None
-    for (key,confkey) in geo_dict.items():
-        if (confkey in conf):
-            cmdList.add(rack.prog.Command(f"--{key}", arg2str(conf[confkey])))
-            #cmdList.add(
-            #cmdList.append("--{key} '{val}'".format(key=key, val=arg2str(conf[confkey])))
-"""
 
 
 def append_outputs(cmdList:list, output_basename:str, formats: list, output_prefix=None):
@@ -438,7 +435,8 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
     else:
         if type(filepath) == list:
             if (len(filepath) > 1):
-                raise Exception(f'Multiple outputs not supported by SCHEME=TILE: ', filepath)
+                #raise Exception(f'Multiple outputs not supported by SCHEME=TILE: ', filepath)
+                logger.warning(f'Multiple outputs not supported by SCHEME=TILE {filepath}')
             filepath = filepath[0]
         filepath = Path(filepath)
         tiledir = str(filepath.parent)
@@ -457,7 +455,7 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
             
     return (str(dirpath).removesuffix('/')+'/', filepath)
 
-def handle_geo(args, Rack: rack.core.Rack):
+def handle_geoconf(args, Rack: rack.core.Rack):
 
     if args.SIZE:
         Rack.cSize(args.SIZE)
@@ -496,8 +494,95 @@ def handle_select(args, scriptBuilder: rack.core.Rack):
     if args.PRF:
         value.append(f"prf={args.PRF}")
 
-    scriptBuilder.select(",".join(value))
+    args = ",".join(value)
+    if args:
+        scriptBuilder.select(",".join(value))
 
+def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core.Rack):
+    """ Compositing
+    """
+    if args.SCHEME in ['TILE','TILED']:
+        if not args.GEOCONF:
+            # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
+            # print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
+            logger.note('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]')
+    
+    if (args.SCHEME == 'TILE'):
+        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
+        #logger.debug(dirpath)
+        #logger.debug(filepath)
+        # args.OUTDIR  = dirpath # .removesuffix('/')
+        filepath = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+        #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
+        progBuilder.outputPrefix(dirpath)
+        scriptBuilder.cCreateTile()
+        scriptBuilder.outputFile(filepath)
+        if args.EXTRACT:
+            logger.warning(f"compositing SCHEME='TILE', discarding EXTRACT='{args.EXTRACT}' ")
+    else:
+        if (args.SCHEME == 'TILED'):
+            (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
+            if not args.INDIR:
+                args.INDIR = dirpath # default_tiledir
+            args.INDIR = args.INDIR.removesuffix('/') # ???
+            if not args.INFILE:
+                args.INFILE = filepath #default_tilename.replace('{GEOCONF}', args.GEOCONF)
+        if not args.EXTRACT:
+            args.EXTRACT = 'DATA,WEIGHT'
+        scriptBuilder.cAdd()
+
+
+def handle_infile(args, progBuilder: rack.core.Rack):
+    
+    logger.debug(f"INFILE {args.INFILE}")
+
+    if type(args.INFILE) == str:
+        args.INFILE = [ args.INFILE ]
+    #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+
+    """
+    # TODO: prevent looping if not TILE
+    if args.GEOCONF:
+        # Note: should not contain comma...?
+        args.INFILE  = expand_string(args.INFILE, "GEOCONF", args.GEOCONF)
+        print ("INFILE", args.INFILE)
+
+    if args.SITE:
+        args.INFILE  = expand_string(args.INFILE, "SITE", args.SITE)
+        print ("INFILE", args.INFILE)
+
+    # Probably makes little sense in oper. use
+    if args.TIMESTAMP:
+        args.INFILE  = expand_string(args.INFILE, "TIMESTAMP", args.TIMESTAMP)
+    """
+        
+    shortPaths=[]
+    if (args.INDIR == 'AUTO'):
+        args.INDIR = extract_prefix(args.INFILE, shortPaths)
+    
+    if args.INDIR:
+        progBuilder.inputPrefix(args.INDIR)
+
+    #cmdRoutine = " ".join(cmdRoutine).replace("'",'"')
+    args.INFILE = shortPaths
+    for i in args.INFILE:
+        progBuilder.inputFile(i)
+
+def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
+    #if args.OUTDIR:
+    #    progBuilder.outputPrefix(args.OUTDIR)
+
+    if args.SCHEME == 'TILE':
+        # scriptBuilder.outputFile(args.OUTFILE)
+        # print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
+        args.OUTFILE = None
+    else:
+        if not args.OUTFILE:
+            args.OUTFILE = 'out.h5'
+        if cmdBuilder:
+            cmdBuilder.outputFile(args.OUTFILE)
+        else:
+            logger.error("No cmdBuilder set")
 
 def compose_command(args):
     """Main library entry point.
@@ -523,157 +608,55 @@ def compose_command(args):
     script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
     scriptBuilder = rack.core.Rack(script)
 
+    # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
     progBuilder.verbose(level=verbosityKey)
 
-    # Settings
     if args.GEOCONF:
-        # logger.info(f"Geoconf: {args.GEOCONF}")
         read_geoconf(args) #, parser)
 
-    handle_geo(args, progBuilder)
-
-   
+    handle_geoconf(args, progBuilder)
     
     handle_select(args, scriptBuilder)
 
     handle_prod(args, scriptBuilder)
 
-    # dict
-    arg_vars = vars(args)
+    handle_cartesian(args, scriptBuilder, progBuilder)
+
+    # On the command line, reserve a slot for the script. 
+    scr = progBuilder.script()
+
+    # First call, for the script (SCHEME=TILE)
+    handle_outfile(args, scriptBuilder) 
+    # now scipt should have content...
+    scr.set_args(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
+    # progBuilder.script(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
+
+    handle_infile(args, progBuilder)
+
+    # handle_extract = 
+    if args.EXTRACT:
+        progBuilder.cExtract(args.EXTRACT)
+
+    # Second call, now for progBuilder
+    handle_outfile(args, progBuilder) 
+    
+    # if args.OUTFILE:
+    # handle_output_formats
+    # progBuilder.outputFile(args.OUTFILE)
 
 
-    """ Compositing
+    return prog
     """
-    if args.SCHEME in ['TILE','TILED']:
-        if not args.GEOCONF:
-            # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
-            # print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
-            logger.note('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]')
-    
-    if (args.SCHEME == 'TILE'):
-        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
-        print(dirpath,filepath)
-        args.OUTDIR  = dirpath # .removesuffix('/')
-        #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-        #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
-        progBuilder.outputPrefix(args.OUTDIR)
-        scriptBuilder.cCreateTile()
-        scriptBuilder.outputFile(args.OUTFILE)
-    elif (args.SCHEME == 'TILED'):
-        (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
-        if not args.INDIR:
-            args.INDIR = dirpath # default_tiledir
-        args.INDIR = args.INDIR.removesuffix('/')
-        if not args.INFILE:
-            args.INFILE = filepath #default_tilename.replace('{GEOCONF}', args.GEOCONF)
-    else:
-        scriptBuilder.cAdd()
-
-
-    if not args.OUTFILE:
-        args.OUTFILE = 'out.h5'
-
-    print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
-
-    progBuilder.script(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
-
-
-    print ("# Command line")
-    #fmt.VALUE_FORMAT = "'{value}'"
-    fmt = rack.prog.RackFormatter(params_format="'{params}'")
-    print(prog.to_string(fmt))
-    exit(0)
-
-    append_geoconf(prog, arg_vars)
-    # print (cmdList)
-    
-    #print("🔧 Final configuration:")
+    #arg_vars = vars(args)
     print(vars(args))
     logger.debug("🔧 Final configuration:")
     for key, value in vars(args).items():
         logger.debug(f"  {key}: {value}")
+    """
 
 
 
-    
-    if (args.INFILE):
-
-        print ("INFILE", type(args.INFILE), args.INFILE)
-        if type(args.INFILE) == str:
-            args.INFILE = [ args.INFILE ]
-        #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-
-        if (args.GEOCONF):
-            # Note: should not contain comma...?
-            args.INFILE  = expand_string(args.INFILE, "GEOCONF", args.GEOCONF)
-            print ("INFILE", args.INFILE)
-
-        if (args.SITE):
-            args.INFILE  = expand_string(args.INFILE, "SITE", args.SITE)
-            print ("INFILE", args.INFILE)
-
-        # Probably makes little sense in oper. use
-        if (args.TIMESTAMP):
-            args.INFILE  = expand_string(args.INFILE, "TIMESTAMP", args.TIMESTAMP)
-
-        
-        if len(args.INFILE)==1 :
-            cmdList.extend(args.INFILE) # list of 1 elem
-            cmdList.extend(cmdRoutine)
-        else:
-            shortPaths=[]
-            if (args.INDIR == 'AUTO'):
-                args.INDIR = extract_prefix(args.INFILE, shortPaths)
-            if (args.INDIR):
-                cmdList.add(rack.prog.Command("--inputPrefix", args.INDIR))
-                #cmdList.append(f'--inputPrefix "{args.INDIR}"')
-            cmdRoutine = " ".join(cmdRoutine).replace("'",'"')
-            # cmdList.append(f"--script '{cmdRoutine}'")
-            cmdList.add(rack.prog.Command("--script", f"'{cmdRoutine}'"))
-            for p in shortPaths:
-                cmdList.add(rack.prog.Command(p))
-            # cmdList.extend(shortPaths)
-            #print (shortPaths)
-
-    if (args.OUTFILE):
-
-        if type(args.OUTFILE) == str:
-            args.OUTFILE = [ args.OUTFILE ]
-            #print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
-            
-        if (args.SITE):
-            if (args.SCHEME != 'TILE'):
-                args.OUTFILE  = expand_string(args.OUTFILE, "SITE", args.SITE)
-            #print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
-
-        if (args.GEOCONF):
-            args.OUTFILE = expand_string(args.OUTFILE, "GEOCONF", args.GEOCONF)
-            
-
-        # Probably makes little sense in oper. use
-        if (args.TIMESTAMP):
-            args.OUTFILE  = expand_string(args.OUTFILE, "TIMESTAMP", args.TIMESTAMP)
-
-        #if (args.SCHEME == 'TILE') and (len(args.OUTFILE) > 1):
-        if len(args.OUTFILE) > 1:
-            #print(args.OUTFILE, file=sys.stderr)
-            raise Exception(f'Multiple outputs not supported : {args.OUTFILE}') # by SCHEME=TILE
-
-        args.OUTFILE = args.OUTFILE.pop() # set
-            
-        if (args.SCHEME != 'TILE'):
-            #cmdList.append("--cExtract DATA,WEIGHT")
-            cmdList.add(rack.prog.Command("--cExtract DATA,WEIGHT"))
-            append_outputs(cmdList, args.OUTFILE, args.FORMAT.split(','), args.OUTDIR) # None)
-
-
-    # return args.newline.join(cmdList)
-    # logger.warning(cmdList.to_string())
-    # for cmd in cmdList.commands:
-    #    logger.warning(cmd.to_string())
-    # return cmdList.to_string()
-    return cmdList
   
 def exec_command(args):
     cmdList = compose_command(args)
@@ -707,13 +690,19 @@ def main():
         test()
         sys.exit(0)
 
-    cmdList = compose_command(args)
+    prog = compose_command(args)
 
     if args.print:
-        print(cmdList.to_string(" \\\n"))
+        logger.info("# Command line:")
+        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        print(prog.to_string(fmt))
+        # print(cmdList.to_string(" \\\n"))
 
-    if (args.exec):
-        os.system(cmdList.to_string(" "))
+    if args.exec:
+        logger.info("# Executing...")
+        fmt = rack.prog.RackFormatter(params_format="'{params}'")
+        print(prog.to_string(fmt))
+        os.system(prog.to_string(fmt))
 
     
 

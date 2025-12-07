@@ -15,44 +15,16 @@ class ParamFormatter:
     VALUE_SEPARATOR=':'
     VALUE_ASSIGN='='
     PARAM_SEPARATOR=','
-
+    PARAMS_FORMAT='{params}'
+    
     def __init__(self, key_format ='{key}', value_format='{value}', value_separator=':', 
-                 value_assign='=', param_separator=','):
+                 value_assign='=', param_separator=',', params_format='{params}'):
         self.KEY_FORMAT   = key_format
         self.VALUE_FORMAT = value_format
         self.VALUE_SEPARATOR = value_separator
         self.VALUE_ASSIGN = value_assign
         self.PARAM_SEPARATOR = param_separator
-
-
-class Formatter(ParamFormatter):
-
-    NAME_FORMAT='{name}'
-    #KEY_FORMAT ='{key}'
-    #VALUE_FORMAT='{value}'
-    #VALUE_SEPARATOR=':'
-    #VALUE_ASSIGN='='
-    #PARAM_SEPARATOR=','
-    PARAMS_FORMAT='{params}'
-    CMD_ASSIGN=' ' 
-    CMD_SEPARATOR=' '
-
-    def __init__(self, name_format='{name}', key_format ='{key}', value_format='{value}', value_separator=':', 
-                 value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
-        super().__init__(key_format=key_format, value_format=value_format, value_separator=value_separator,
-                         value_assign=value_assign, param_separator=param_separator)
-        self.NAME_FORMAT  = name_format
-        #self.KEY_FORMAT   = key_format
-        #self.VALUE_FORMAT = value_format
-        #self.VALUE_SEPARATOR = value_separator
-        #self.VALUE_ASSIGN = value_assign
-        #self.PARAM_SEPARATOR = param_separator
-        self.PARAMS_FORMAT   = params_format
-        self.CMD_ASSIGN      = cmd_assign
-        self.CMD_SEPARATOR   = cmd_separator
-
-    def fmt_name(self, name:str)->str :
-        return self.NAME_FORMAT.format(name=name)
+        self.PARAMS_FORMAT = params_format
 
     def fmt_value(self, value:str)->str :
         if isinstance(value, (tuple,list)):
@@ -96,6 +68,39 @@ class Formatter(ParamFormatter):
         param_list = self.get_param_lst(arg_dict, key_list)
         params = self.PARAM_SEPARATOR.join(param_list)
         return self.PARAMS_FORMAT.format(params=params)
+
+class Formatter(ParamFormatter):
+
+    NAME_FORMAT='{name}'
+    #KEY_FORMAT ='{key}'
+    #VALUE_FORMAT='{value}'
+    #VALUE_SEPARATOR=':'
+    #VALUE_ASSIGN='='
+    #PARAM_SEPARATOR=','
+    #PARAMS_FORMAT='{params}'
+    CMD_ASSIGN=' ' 
+    CMD_SEPARATOR=' '
+
+    def __init__(self, name_format='{name}', key_format ='{key}', value_format='{value}', value_separator=':', 
+                 value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
+        
+        super().__init__(key_format=key_format, value_format=value_format, value_separator=value_separator,
+                         value_assign=value_assign, param_separator=param_separator, params_format=params_format)
+        
+        self.NAME_FORMAT  = name_format
+        #self.KEY_FORMAT   = key_format
+        #self.VALUE_FORMAT = value_format
+        #self.VALUE_SEPARATOR = value_separator
+        #self.VALUE_ASSIGN = value_assign
+        #self.PARAM_SEPARATOR = param_separator
+        #self.PARAMS_FORMAT   = params_format
+        self.CMD_ASSIGN      = cmd_assign
+        self.CMD_SEPARATOR   = cmd_separator
+
+    def fmt_name(self, name:str)->str :
+        return self.NAME_FORMAT.format(name=name)
+
+
 
 
 import inspect
@@ -241,7 +246,7 @@ class Command:
         if (primary == secondary):
             logger.error(f"setSeparators illegal equality primary:{primary} == secondary:{secondary}")
         self.fmt = ParamFormatter(value_separator=secondary, param_separator=primary)
-        logger.warning("assigning separators in a formatter ", self.name)
+        logger.warning(f"assigning separators in a formatter for {self.name}")
 
     def set_implicit(self, value:bool = True):
         """If a command is implict, its name (keyword) will not be displayed on command line. 
@@ -264,7 +269,8 @@ class Command:
     def get_args(self, fmt:Formatter=Formatter()) -> str:
         
         if self.fmt:
-            logger.warning(self.name, ": own format:", self.fmt)
+            logger.warning(f"{self.name}: own format: {self.fmt}")
+            fmt = self.fmt
 
         if self.args:
             key_list = list(range(0,self.ordered_args_count))
@@ -376,7 +382,7 @@ class Command:
         return v
 
 
-
+import numbers
 
 class Register:
 
@@ -393,53 +399,71 @@ class Register:
         return ( param.default is not inspect._empty and value == param.default )
 
 
-    def make_cmd(self, local_vars, separator:str=""):
+    def make_cmd(self, local_vars:dict, separator:str=""):
         """ Creates a command. The name will be the caller function
         
         Each explicitly given argument will be stored if its value differs from the default one.
         """
+        local_vars.pop('self')
+       
+
+        #typelist = [type(v) for v in local_vars.values()]
         # Detect caller function. Then, myFunction(...) implies cmd name "myFunction"
         caller_name = inspect.stack()[1].function
         func = getattr(self, caller_name)
-        if caller_name == "cBBox":
+        
+        # Function signature
+        sig = inspect.signature(func)
+        #numerics = [type(v.default) for v in sig.parameters.values()]
+        #logger.warning(f"{caller_name}: numerics {numerics}")
+        numerics = [isinstance(v.default, numbers.Number) for v in sig.parameters.values()]
+        logger.debug(f"{caller_name}: args numeric: {numerics}")
+
+
+        if caller_name == "xxcBBox":
             for i in inspect.stack()[1]:
                 logger.error(i)
             # for i in dir(func):
             #    logger.warning(i) #, getattr(func, i))   
-            sig = inspect.signature(func)
-            # param = sig.parameters[name]     
-            logger.warning(sig.parameters)
-            typelist = [type(v) for v in local_vars.values()]
-            typelist = typelist[1:]
-            logger.warning(typelist)
-            typelist = [type(t.default) for t in sig.parameters.values()]
-            logger.warning(typelist)
-            for k,v in sig.parameters.items():
-                d = dir(v)
-                t = type(v._default)
-                logger.warning(f"{k}, '=', {v} ({t}) # {d}")
-                # logger.warning(f"{v2}")
-            # logger.error("\n".join(list(zip(inspect.stack()))))
-            logger.warning(len(local_vars))
-            logger.warning(local_vars)
-            exit (13)
-            #logger.warning(f"MAKE_CMD: locals: {local_vars}")
-
+            # TODO: check if 1st arg could "cover" all the args.
+            # For example 1) len is 
+            # 1) len(arg0) == len(params)
+            # 2) type(arg0) in [list,tuple,set]
+            # 4) types of arg0[*] are all the same
+            # 5) types of N first params are all the same
+            # 3) type(params) = type(arg[0]..) match
+   
         args = {}
         explicit_args = {}
 
         
         # Extract only explicit arguments
-        for k, v in local_vars.items():
-            if k != "self":
-                args[k]=v
-                if not Register._is_default(func, k, v):
-                    explicit_args[k]=v
-
-
-        cmd = Command(caller_name, args=args, explicit_args=explicit_args)
+        FIRST=True
+        cmd = None
+        for k,v in local_vars.items():
+            #if k != "self":
+            args[k]=v
+            if not Register._is_default(func, k, v):
+                #logger.warning(f"{caller_name}: explicit {k}={v}")
+                if FIRST and (type(v) in (tuple,list,set)):
+                    # Expanding sequence arg to all args, if sizes match and all are numeric 
+                    arg_numerics = [isinstance(i, numbers.Number) for i in v]
+                    if (len(numerics) == len(arg_numerics)):
+                        similar_sig = {(t1==t2) for (t1,t2) in zip(numerics, arg_numerics)}
+                        if (True in similar_sig) and not (False in similar_sig): 
+                            logger.info(f"Expanding sequence to args : {caller_name} {v}")
+                            #cmd = Command(caller_name, args=v)
+                            args=v
+                            break
+                explicit_args[k]=v
+            FIRST=False
+        
+        if cmd == None:
+            cmd = Command(caller_name, args=args, explicit_args=explicit_args)
+        
         if (separator):
             cmd.set_separators(separator)
+
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
 
