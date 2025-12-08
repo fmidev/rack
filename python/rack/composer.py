@@ -209,8 +209,10 @@ def build_parser():
         help="verbosity level for python wrapper and Rack cmd")
 
     parser.add_argument(
-        "-p", "--print",
-        action='store_true',
+        "--print", "-p",   
+        metavar="<line_separator>",
+        default=None,
+        #action='store_true',
         help="print parsed command")
 
     parser.add_argument(
@@ -348,59 +350,12 @@ def read_geoconf(args): #, parser):
     
 
 
-def append_outputs(cmdList:list, output_basename:str, formats: list, output_prefix=None):
-
-    
-    if len(formats) > 1:
-        if not output_prefix:
-            output_prefix = str(Path(output_basename).parent)
-            #print ("prefix: ", type(output_prefix))
-            if (output_prefix == '.'):
-                output_prefix = None
-
-        if output_prefix:
-            #output_prefix = str(output_prefix) + '/'
-            output_prefix += '/'
-            cmdList.add(rack.prog.Command(f"--outputPrefix {output_prefix}"))
-            # cmdList.append(f"--outputPrefix {output_prefix}")
-            output_basename = output_basename.removeprefix(output_prefix)
-            
-
-    #cmdList.append(f"--echo {formats}")
-    if not formats:
-        fmt = output_basename.split('.').pop()
-        formats = [ fmt ]
-        output_basename.removesuffix(fmt)
-    
-    #file_suffix = 
-    fmts = [];
-    fmts.extend(formats)
-    if 'h5' in fmts:
-        fmts.remove('h5')
-        #cmdList.append(f"--outputFile {output_basename}.h5")
-        cmdList.add("--outputFile", f"{output_basename}.h5")
-
-    if 'tif' in fmts:
-        fmts.remove('tif')
-        cmdList.add(f"--outputConf tif:tile=512 -o {output_basename}.tif")
-
-    if 'png' in fmts:
-        fmts.remove('png')
-        cmdList.add(f"--palette", "default")
-        cmdList.add(f"-o", "{output_basename}.png")
-
-    
-    if (fmts):
-        raise Exception('Unhandled formats:', fmts)
-        
-    return cmdList
-            
 
 
-def extract_prefix(paths: list, shortPaths=None):
+def extract_prefix(paths: list, shortPaths=None) -> str:
     str_paths = [str(p) for p in paths]
     prefix = os.path.commonpath(str_paths)
-    if (prefix):
+    if prefix:
         prefix += '/'
         #if not (shortPaths is None):
         #    shortPaths.extend([str(p).removeprefix(prefix) for p in paths])
@@ -453,7 +408,7 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
     if not dirpath:
         dirpath = default_tiledir
             
-    return (str(dirpath).removesuffix('/')+'/', filepath)
+    return (str(dirpath).removesuffix('/')+'/', str(filepath))
 
 def handle_geoconf(args, Rack: rack.core.Rack):
 
@@ -587,6 +542,42 @@ def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
         else:
             logger.error("No cmdBuilder set")
 
+#def handle_outfiles(args, cmdBuilder: rack.core.Rack = None):
+def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
+    # Assumes prefix has been handled
+    
+    output_basename = args.OUTFILE
+    fmt = args.OUTFILE.split('.').pop()
+    logger.warning(f"format: {fmt}")
+    output_basename = output_basename.removesuffix(f".{fmt}")
+
+    if args.FORMAT:
+        formats = args.FORMAT.strip().split(',')
+    else:
+        formats = {fmt}
+
+    logger.warning(f"formats: {formats}")
+        
+    if 'h5' in formats:
+        cmdBuilder.outputFile(f"{output_basename}.h5")
+        formats.remove('h5')
+
+    if 'tif' in formats:
+        cmdBuilder.outputConf("tif:tile=512")
+        cmdBuilder.outputFile(f"{output_basename}.tif")
+        formats.remove('tif')
+
+    if 'png' in formats:
+        cmdBuilder.paletteDefault()
+        # transparency?
+        cmdBuilder.outputFile(f"{output_basename}.png")
+        formats.remove('png')
+    
+    if (formats):
+        raise Exception('Unhandled formats:', formats)
+        
+            
+
 def compose_command(args):
     """Main library entry point.
 
@@ -624,7 +615,16 @@ def compose_command(args):
         handle_select(args, scriptBuilder)
         handle_prod(args, scriptBuilder)
         scriptBuilder.cCreateTile()
-        handle_outfile(args, scriptBuilder)
+
+        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
+        #logger.debug(dirpath)
+        if dirpath:
+            progBuilder.outputPrefix(dirpath)
+        #logger.debug(filepath)
+        args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
+        
+        #scriptBuilder.outputFile(filepath)
+        handle_outfiles(args, scriptBuilder)
         progBuilder.script(script.to_string(scriptFmt))
         # prog   <- (inputPrefix) input(s)
         handle_infile(args, progBuilder)
@@ -640,7 +640,7 @@ def compose_command(args):
         # prog   <- @(inputPrefix) input(s)
         handle_infile(args, progBuilder)        
         # prog   <- (outputPrefix) output(s)
-        handle_outfile(args, progBuilder)
+        handle_outfiles(args, progBuilder)
         pass
     elif (args.SCHEME == ''):
         # prog   <- GEOCONF
@@ -655,7 +655,7 @@ def compose_command(args):
         # prog   <- (inputPrefix) input(s)
         handle_infile(args, progBuilder)        
         # prog   <- (outputPrefix) output(s)
-        handle_outfile(args, progBuilder)
+        handle_outfiles(args, progBuilder)
         pass
     else:
         # raise
@@ -735,9 +735,12 @@ def main():
 
     prog = compose_command(args)
 
-    if args.print:
+    if args.print != "":
+        args.print = args.print.replace(r'\t','\t')
+        args.print = args.print.replace(r'\n','\n')
         logger.info("# Command line:")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
         # print(cmdList.to_string(" \\\n"))
 
