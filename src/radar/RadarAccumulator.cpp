@@ -84,6 +84,8 @@ void RadarAccumulatorBase::extractFinally(const drain::image::Accumulator & accu
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	//dstODIM.product.clear();
+	//dstODIM.prodpar.clear();
 	drain::SmartMapTools::updateValues(dstODIM, srcODIM);
 
 	// if (dataCoder.qualityODIM.isSet()){

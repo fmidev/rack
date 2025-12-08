@@ -964,10 +964,15 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
+	// mout.warn(composite.odim);
+
+	drain::VariableMap & statusMap = ctx.getStatusMap();
+	//drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
+	//mout.warn(statusMap);
+
 	// NEW 2020/07
 	ctx.select.clear(); // CONSIDER STORING SELECT composites own selector?
 
-	drain::VariableMap & statusMap = ctx.getStatusMap();
 	//statusMap.updateFromMap(dstRoot.odim);
 	statusMap.updateFromMap(composite.nodeMap);
 	statusMap.updateFromMap(composite.odim);

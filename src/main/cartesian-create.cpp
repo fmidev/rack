@@ -136,9 +136,11 @@ void CompositeCreateTile::exec() const {
 		mout.debug("Cleared previous composite");
 	}
 
+	composite.odim.clear();
 	composite.odim.nodes.clear();
 	composite.odim.source.clear();
 	composite.nodeMap.clear();
+	// TODO: clear metadata
 
 	if (ctx.statusFlags){ // drain::Status::INPUT_ERROR
 		// mout.warn("errors: ", ctx.statusFlags);

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(16,3,1)
+#define RACK_VERSION drain::Version<>(16,4)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -51,6 +51,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Revised select and encoding (exposing true param list)
  *  Release 16.3.1
  *  - Quay.io refresh
+ *  Version 16.4
+ *  - cCreateTile: Fixed metadata update
  *
  *  Version 15
  *  - SVG alignment complete: gTitle, gGroupTitle, gLayout, gAnchor, gAlign
