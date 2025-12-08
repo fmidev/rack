@@ -457,6 +457,9 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
 
 def handle_geoconf(args, Rack: rack.core.Rack):
 
+    if args.GEOCONF:
+        read_geoconf(args) #, parser)
+
     if args.SIZE:
         Rack.cSize(args.SIZE)
 
@@ -607,19 +610,59 @@ def compose_command(args):
 
     script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
     scriptBuilder = rack.core.Rack(script)
+    scriptFmt = rack.prog.RackFormatter(params_format='"{params}"')
 
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
     progBuilder.verbose(level=verbosityKey)
 
-    if args.GEOCONF:
-        read_geoconf(args) #, parser)
-
     handle_geoconf(args, progBuilder)
-    
-    handle_select(args, scriptBuilder)
 
-    handle_prod(args, scriptBuilder)
+    if (args.SCHEME == 'TILE'):
+        # prog   <- GEOCONF
+        # script <- select, pprod, CreateTile,  @(outputPrefix) output(s)
+        handle_select(args, scriptBuilder)
+        handle_prod(args, scriptBuilder)
+        scriptBuilder.cCreateTile()
+        handle_outfile(args, scriptBuilder)
+        progBuilder.script(script.to_string(scriptFmt))
+        # prog   <- (inputPrefix) input(s)
+        handle_infile(args, progBuilder)
+        pass
+    elif (args.SCHEME == 'TILED'):
+        # prog   <- GEOCONF
+        # cInit
+        if args.BBOX and args.PROJ and args.SIZE:
+            progBuilder.cInit()
+        # script <- cAdd
+        scriptBuilder.cAdd()
+        progBuilder.script(script.to_string(scriptFmt))
+        # prog   <- @(inputPrefix) input(s)
+        handle_infile(args, progBuilder)        
+        # prog   <- (outputPrefix) output(s)
+        handle_outfile(args, progBuilder)
+        pass
+    elif (args.SCHEME == ''):
+        # prog   <- GEOCONF
+        # cInit
+        if args.BBOX and args.PROJ and args.SIZE:
+            progBuilder.cInit()
+        # script <- select, pprod, cAdd
+        handle_select(args, scriptBuilder)
+        handle_prod(args, scriptBuilder)
+        scriptBuilder.cAdd()
+        progBuilder.script(script.to_string(scriptFmt))
+        # prog   <- (inputPrefix) input(s)
+        handle_infile(args, progBuilder)        
+        # prog   <- (outputPrefix) output(s)
+        handle_outfile(args, progBuilder)
+        pass
+    else:
+        # raise
+        pass
+
+        
+    return prog
 
     handle_cartesian(args, scriptBuilder, progBuilder)
 
@@ -655,7 +698,7 @@ def compose_command(args):
         logger.debug(f"  {key}: {value}")
     """
 
-
+    
 
   
 def exec_command(args):
