@@ -29,6 +29,11 @@ reg = rack.prog.Register
 default_tiledir  = 'tiles/'
 default_tilename = '${what:date}${what:time}-GEOCONF={GEOCONF}_${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5'
 
+class scheme:
+    TILE  = "TILE"
+    TILED = "TILED"
+    DEFAULT = ""
+
 def build_parser():
     """ Creates registry of supported options of this script
     """
@@ -413,7 +418,13 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
 def handle_geoconf(args, Rack: rack.core.Rack):
 
     if args.GEOCONF:
-        read_geoconf(args) #, parser)
+        if type(args.GEOCONF) in (str, Path):
+            read_geoconf(args.GEOCONF) 
+        elif type(args.GEOCONF) == dict:
+            vars(args).update(args.GEOCONF)
+        else:
+            raise Exception(f'Unhandled type for GEOCONF: {type(args.GEOCONF)}')
+        
 
     if args.SIZE:
         Rack.cSize(args.SIZE)
@@ -496,23 +507,6 @@ def handle_infile(args, progBuilder: rack.core.Rack):
 
     if type(args.INFILE) == str:
         args.INFILE = [ args.INFILE ]
-    #args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-
-    """
-    # TODO: prevent looping if not TILE
-    if args.GEOCONF:
-        # Note: should not contain comma...?
-        args.INFILE  = expand_string(args.INFILE, "GEOCONF", args.GEOCONF)
-        print ("INFILE", args.INFILE)
-
-    if args.SITE:
-        args.INFILE  = expand_string(args.INFILE, "SITE", args.SITE)
-        print ("INFILE", args.INFILE)
-
-    # Probably makes little sense in oper. use
-    if args.TIMESTAMP:
-        args.INFILE  = expand_string(args.INFILE, "TIMESTAMP", args.TIMESTAMP)
-    """
         
     shortPaths=[]
     if (args.INDIR == 'AUTO'):
@@ -521,18 +515,14 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     if args.INDIR:
         progBuilder.inputPrefix(args.INDIR)
 
-    #cmdRoutine = " ".join(cmdRoutine).replace("'",'"')
     args.INFILE = shortPaths
     for i in args.INFILE:
         progBuilder.inputFile(i)
 
 def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
-    #if args.OUTDIR:
-    #    progBuilder.outputPrefix(args.OUTDIR)
+    """Light adjustments to args.OUTFILE"""
 
     if args.SCHEME == 'TILE':
-        # scriptBuilder.outputFile(args.OUTFILE)
-        # print ("OUTFILE", type(args.OUTFILE), args.OUTFILE)
         args.OUTFILE = None
     else:
         if not args.OUTFILE:
@@ -542,13 +532,12 @@ def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
         else:
             logger.error("No cmdBuilder set")
 
-#def handle_outfiles(args, cmdBuilder: rack.core.Rack = None):
 def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     # Assumes prefix has been handled
     
     output_basename = args.OUTFILE
     fmt = args.OUTFILE.split('.').pop()
-    logger.warning(f"format: {fmt}")
+    #logger.warning(f"format: {fmt}")
     output_basename = output_basename.removesuffix(f".{fmt}")
 
     if args.FORMAT:
@@ -556,7 +545,7 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     else:
         formats = {fmt}
 
-    logger.warning(f"formats: {formats}")
+    logger.debug(f"formats: {formats}")
         
     if 'h5' in formats:
         cmdBuilder.outputFile(f"{output_basename}.h5")
@@ -589,9 +578,6 @@ def compose_command(args):
 
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
-
-
-    #cmdReg = rack.prog.Register()
 
     # Rack command sequence, the "program" to be executed
     prog = rack.prog.CommandSequence(programName='rack', quote="'")
@@ -628,7 +614,6 @@ def compose_command(args):
         progBuilder.script(script.to_string(scriptFmt))
         # prog   <- (inputPrefix) input(s)
         handle_infile(args, progBuilder)
-        pass
     elif (args.SCHEME == 'TILED'):
         # prog   <- GEOCONF
         # cInit
@@ -641,7 +626,6 @@ def compose_command(args):
         handle_infile(args, progBuilder)        
         # prog   <- (outputPrefix) output(s)
         handle_outfiles(args, progBuilder)
-        pass
     elif (args.SCHEME == ''):
         # prog   <- GEOCONF
         # cInit
@@ -656,7 +640,6 @@ def compose_command(args):
         handle_infile(args, progBuilder)        
         # prog   <- (outputPrefix) output(s)
         handle_outfiles(args, progBuilder)
-        pass
     else:
         # raise
         pass
@@ -698,6 +681,8 @@ def compose_command(args):
         logger.debug(f"  {key}: {value}")
     """
 
+def get_fmt(cmd_separator=" ", **kwargs):
+    return rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=cmd_separator, **kwargs)
     
 
   

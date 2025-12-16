@@ -157,9 +157,9 @@ class Command:
         """
         
         self.name = name.strip(" -\t\n")
-        if self.name == 'verbose':
-            logger.debug("enchanced logging")
-            logger.setLevel("DEBUG")
+        #if self.name == 'verbose':
+            # logger.debug("enchanced logging")
+            # logger.setLevel("DEBUG")
             #logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
             #logger.warning(f"command: args={args}")
         
@@ -203,9 +203,9 @@ class Command:
 
         keys = self.args.keys()
 
-        if self.name == 'verbose':
-            logger.warning("enchances logging")
-            logger.setLevel("DEBUG")
+        #if self.name == 'verbose':
+        #    logger.warning("enchanced logging")
+        #    logger.setLevel("DEBUG")
 
         # 1. assign ordered args
         assigned_keys = []
@@ -311,76 +311,20 @@ class Command:
             return tuple()
     
 
-    def to_tuple_OLD(self, quote=None, compact=True) -> tuple: # , prefixed=True
-        """Returns a singleton or a double token
-        
-        This is the 'official' rendering of a command - other formatting uses the tuple as input.
-
-        Within command arguments, only 'explicit' ones - having non-default values - will be returned.
-        However, if all the argument values are defaults, the first one will be shown. 
-        """    
-        
-        #if prefixed:
-        name = self.get_prefixed_name()
-
-        if name and not self.implicit:
-            result = [name]
-        else:
-            result = []
-
-        keys = list(self.args.keys())
-        args = []
-
-        if self.implicit and (len(keys) == 1):
-            return ( str(self._encode_value(self.args[keys[0]])), )
-
-        for i in range(0,self.ordered_args_count):
-            args.append(str(self._encode_value(self.args[keys[i]])))
-
-        index = 0
-        for k in self.expl_keys:
-            if type(k) == int:
-                args.append(self._encode_value(self.args[k]))
-            else:
-                if compact and (index == keys.index(k)):
-                    args.append(str(self._encode_value(self.args[k])))
-                else:
-                    args.append(f"{k}={self._encode_value(self.args[k])}")
-                    compact = False # cannot continue impicit keys for ordered
-            index += 1
-        
-        if quote is None:
-            quote = CommandSequence.QUOTE
-
-        if self.args:
-            # Notice: args may be empty, then append an empty string.
-            # If all the arguments have default values (args is empty), display still an empty arg.
-            if args:
-                args = self.PRIMARY_SEP.join(args)
-            else:
-                # "modal argument": use first parameter value.
-                args = self.args[keys[0]] 
-            # result.append(quote + self.PRIMARY_SEP.join(args) + quote)
-            args = f"{quote}{args}{quote}"
-            #if self.implicit:
-            #    return (args,)
-            result.append(args)
-
-        return tuple(result)
-
     # This and next related?
     def fmt(self, val: Any, key: str = "") -> str:
         """Format a single argument or option for output.
         Default: just convert to string. Override in subclasses."""
         return str(val)
 
+    """
     def _encode_value(self,v):
-        """Format tuple as 'a:b', leave scalars untouched."""
+        # Format tuple as 'a:b', leave scalars untouched.
         #if isinstance(v, tuple) and len(v) == 2:
         if isinstance(v, tuple):
             return f"{v[0]}{self.SECONDARY_SEP}{v[1]}"  #extend for >2
         return v
-
+    """
 
 import numbers
 

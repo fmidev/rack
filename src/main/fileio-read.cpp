@@ -283,8 +283,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		if (ctx.appendResults.isRoot() || ctx.cartesianHi5.empty()){
 			// Move (replace)
 			ctx.cartesianHi5.swap(srcTmp);
-			//mout.note(ctx.cartesianHi5 );
-			mout.info("Swapped: " , ctx.cartesianHi5 );
+			// mout.info("Swapped: " , ctx.cartesianHi5 );
 		}
 		else if (ctx.appendResults.isIndexed()){
 			mout.note("Cartesian, append mode: " , ctx.appendResults );
