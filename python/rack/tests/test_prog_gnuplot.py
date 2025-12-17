@@ -151,21 +151,14 @@ class TestCommand(unittest.TestCase):
         #self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
 
     def test_plot_datafile(self):
-        """
-        Ensure that 'plot' command is formatted correctly.
-        """
-        cmd = self.conf.plot(filename="data.txt", style=gp.Style.DOTS)
-        expected_str = 'plot "data.txt" with dots'
-        self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
+        #cmd = self.conf.plot(filename="data.txt", style=gp.Style.DOTS)
+        self.check_plot_command('plot "data.txt" with dots', filename="data.txt", style=gp.Style.DOTS)
+        #self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
 
     def test_plot_multiple(self):
-        """
-        Ensure that 'plot' command is formatted correctly.
-        """
-        cmd = self.conf.plot("sin(x)", "cos(x)", "tan(x)", style=gp.Style.LINES)
-        expected_str = 'plot sin(x) with lines,cos(x) with lines,tan(x) with lines'
-        self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
-
+        self.check_plot_command('plot sin(x) with lines,cos(x) with lines,tan(x) with lines',
+                             "sin(x)", "cos(x)", "tan(x)", style=gp.Style.LINES)
+    
     # plot.plot("sin(x)", "cos(x)", "tan(x)", style=Style.LINES)
 
     def test_plot_entries(self):
