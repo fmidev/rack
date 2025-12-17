@@ -68,8 +68,10 @@ class Mika:
 
 
 class Registry(rack.prog.Register):
-    """ Automatic Drain command set export
+    """ Collection of GnuPlot 'set' and 'plot' commands.
     """
+
+    # Helper to create 'set' commands
 
     def make_set_cmd(self, locs: dict):
 
@@ -97,7 +99,8 @@ class Registry(rack.prog.Register):
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
         
-        return
+        #logger.warning(cmd.to_tuple())
+        return cmd
     
     
     def terminal(self, terminal_type: KeyWord=Terminal.PNG, **opts):
@@ -153,6 +156,8 @@ class Registry(rack.prog.Register):
         return self.make_set_cmd(locals()) #  GnuPlotCommand("unset", "multiplot")
 
 
+    # Plot command support
+
     class plot_entry():
 
         src=None
@@ -190,11 +195,11 @@ class Registry(rack.prog.Register):
             return (self.src != None)
 
 
-    @rack.prog.copy_signature_from(Mika.__init__)
-    def mika(self, *plots, **plot_kwargs):
-        if plot_kwargs:
-            plots += (Mika(**plot_kwargs), )
-        return plots
+    #@rack.prog.copy_signature_from(Mika.__init__)
+    #def mika(self, *plots, **plot_kwargs):
+    #    if plot_kwargs:
+    #        plots += (Mika(**plot_kwargs), )
+    #    return plots
 
     def plot(self, *items: Union[str, dict], expr=None, filename=None, style=None, **global_opts):
         """Create a plot command with multiple items.
@@ -207,8 +212,8 @@ class Registry(rack.prog.Register):
         if (style):
             global_opts["with"] = style
 
-        m = Mika(a=5, b="87")
-        self.mika(a=6, b="s")
+        #m = Mika(a=5, b="87")
+        #self.mika(a=6, b="s")
         
         #logger.warning(str(entry))
         #logger.warning(items)
@@ -219,6 +224,7 @@ class Registry(rack.prog.Register):
         # Multiple plot dicts
         segments = []
         
+        # Try to create a single entry from direct parameters
         entry = self.plot_entry(expr=expr, filename=filename, style=style, **global_opts)
         if entry.is_set():
             segments = [entry]
@@ -235,8 +241,6 @@ class Registry(rack.prog.Register):
                     raise TypeError("Each plot item must be a string or dict with 'expr'")
         
         cmd = rack.prog.Command("plot", segments) #  there are no super_global_opts 
-        #logger.warning("Coming up: ENTRIES!")
-        #logger.warning(cmd.args)
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
         return cmd
@@ -254,12 +258,20 @@ class Style:
 
 class ConfSequence(rack.prog.CommandSequence):
     
-    def to_string(self, fmt = GnuPlotFormatter(param_separator=' ')):
+    fmt = GnuPlotFormatter(param_separator=' ')
+
+    def to_string(self, fmt = None):
+        if not fmt:
+            fmt = self.fmt
         return super().to_string(fmt)
 
 class PlotSequence(rack.prog.CommandSequence):
     
-    def to_string(self, fmt = GnuPlotFormatter(param_separator=',')):
+    fmt = GnuPlotFormatter(param_separator=',')
+
+    def to_string(self, fmt = None):
+        if not fmt:
+            fmt = self.fmt
         return super().to_string(fmt)
 
 

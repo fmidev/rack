@@ -6,7 +6,10 @@ class TestCommand(unittest.TestCase):
 
     fmt = rack.prog.RackFormatter(params_format="'{params}'")
 
-    def test_command_empty_args_opts(self):
+    def test_command_plain(self):
+        """
+        Ensure leading double hyphen.        
+        """
         cmd = rack.prog.Command("help")
         expected_str = "--help"
         self.assertEqual(cmd.to_string(self.fmt), expected_str)
@@ -28,7 +31,7 @@ class TestCommand(unittest.TestCase):
 
     def test_command_single_arg(self):
         """
-        cmd = rack.prog.Command("select", "/dataset1:5,elangle=0:15.0,prf=ANY")
+        Plain argument appears as is?
         """
         cmd = rack.prog.Command("select", "/dataset1:5")
         expected_str = "--select '/dataset1:5'"
@@ -36,7 +39,7 @@ class TestCommand(unittest.TestCase):
 
     def test_command_multiple_args(self):
         """
-        cmd = rack.prog.Command("select", "/dataset1:5,elangle=0:15.0,prf=ANY")
+        Plain arguments are joined correctly?        
         """
         cmd = rack.prog.Command("select", ["/dataset1:5", "elangle=0:15.0", "prf=ANY"])
         expected_str = "--select '/dataset1:5,elangle=0:15.0,prf=ANY'"
@@ -44,12 +47,27 @@ class TestCommand(unittest.TestCase):
 
     def test_command_dict(self):
         """
+        All the dict arguments appear, in order. 
         """
         cmd = rack.prog.Command("select", {"quantity":'DBZH', "elangle":(0.5,10.0), "prf": "ANY" })
-        expected_str = "--select 'quantity=DBZH,elangle=0.5:10.0,prf=ANY'"
+        expected_str = "--select 'DBZH,0.5:10.0,ANY'" # Note colon separator for range
         self.assertEqual(cmd.to_string(self.fmt), expected_str)
 
+    def test_command_values_and_kwargs(self):
+        """
+        Plain argument first, then dict argument values in order?
+        """
+        cmd = rack.prog.Command("select", "/dataset1:5", {"quantity":'DBZH', "elangle":(0.5,10.0), "prf": "ANY" })
+        expected_str = "--select '/dataset1:5,DBZH,0.5:10.0,ANY'" # Note colon separator for range
+        self.assertEqual(cmd.to_string(self.fmt), expected_str)
 
+    def test_command_kwargs_and_keys(self):
+        """
+        Given a dict of arguments and a list of keys, only respective values appear, in that order.
+        """
+        cmd = rack.prog.Command("select", {"quantity":'DBZH', "elangle":(0.5,10.0), "prf": "ANY" }, ["elangle", "prf"])
+        expected_str = "--select 'elangle=0.5:10.0,prf=ANY'" # Note colon separator for range
+        self.assertEqual(cmd.to_string(self.fmt), expected_str)
 
     """
     def test_command_dict_explicit(self):

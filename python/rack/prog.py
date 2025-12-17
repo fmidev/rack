@@ -138,15 +138,19 @@ class Command:
     PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
     
+    #
 
-
-    def __init__(self, name, args=None, explicit_args={}):
+    # def __init__(self, name, args=None, specific_args={}):
+    def __init__(self, name, args=None, specific_args=None): #None
         """This defines the command parameter list, including default values.
 
         Works in two modes:
         
         Mode 1: args is a list of values and explicit_args is a dict
+            [value1, value2, ...], {key1: value1, key2: value2, ...}
+
         Mode 2: args is a dict and explicit_args is a list of keys
+            {key1: value1, key2: value2, ...}, [key1, key2, ...]
         
         Parameters
         ----------
@@ -160,35 +164,42 @@ class Command:
         #if self.name == 'verbose':
             # logger.debug("enchanced logging")
             # logger.setLevel("DEBUG")
-            #logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
-            #logger.warning(f"command: args={args}")
+            # logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
+            # logger.warning(f"command: args={args}")
         
         self.ordered_args_count = 0
 
-        if type(args) == str:
+        #if type(args) == str:
+        if not args:
+            args = {}
+
+        if isinstance(args, str):
             # split to list
             args = args.strip().split(self.PRIMARY_SEP) # note: default value in PRIMARY_SEP
             
-        #if type(args) == list):
         if isinstance(args, (tuple, list)):
             self.ordered_args_count = len(args)
             args = dict(enumerate(args)) #{k,v for enumerate(args)}
 
-        # At this point, args should be a dict
-
+        # At this point, args is a dict
+        self.args = {}
+        self.args.update(args)
+        """
         if args:
             self.args = args.copy()
         else:
             self.args = {}
+        """
 
-        if (explicit_args):
-            if isinstance(explicit_args, dict):
-                self.args.update(explicit_args)
+        if specific_args:
+            if isinstance(specific_args, dict):
+                self.args.update(specific_args)
                 # Explicit argument keys given by the last set_args()
-                self.expl_keys = list(explicit_args.keys())  # dict of explicitly given args
-            elif isinstance(explicit_args, (set, tuple, list)):
-                self.expl_keys = list(explicit_args)
+                self.expl_keys = list(specific_args.keys())  # dict of explicitly given args
+            elif isinstance(specific_args, (set, tuple, list)):
+                self.expl_keys = list(specific_args)
         else:
+
             self.expl_keys = []
         # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
         self.implicit = False
@@ -277,7 +288,8 @@ class Command:
             key_list.extend(self.expl_keys)
             if len(key_list) == 0:
                 # Show at least one arg.
-                key_list = [0]
+                # key_list = [0]
+                key_list = list(self.args.keys())
             return fmt.fmt_params(self.args, key_list)
         else:
             return None
@@ -403,7 +415,7 @@ class Register:
             FIRST=False
         
         if cmd == None:
-            cmd = Command(caller_name, args=args, explicit_args=explicit_args)
+            cmd = Command(caller_name, args=args, specific_args=explicit_args)
         
         if (separator):
             cmd.set_separators(separator)
