@@ -35,7 +35,7 @@ class Expr(Literal):
 class Terminal_OLD:
     PNG = KeyWord("png")
     SVG = KeyWord("svg")
-    #SVG = KeyWord("svg")
+    # SVG = KeyWord("svg")
 
 class Datafile:
     SEPARATOR  = KeyWord("separator") 
@@ -51,15 +51,13 @@ class Data:
 
 class GnuPlotFormatter(rack.prog.Formatter):
     
-    #def __init__(self, name_format='{name}', key_format='{key}', value_format='{value}', value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
-    #    super().__init__(name_format, key_format, value_format, value_assign, param_separator, params_format, cmd_assign, cmd_separator)
+    #def __init__(self, name_format='{name}', key_format ='{key}', value_format='{value}', value_separator=':', 
+    #             value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
 
-    def __init__(self, param_separator=' '):
-        self.VALUE_ASSIGN=' '
-        self.VALUE_SEPARATOR=','
-        self.PARAM_SEPARATOR=param_separator
-        self.CMD_SEPARATOR=';\n'
-
+    def __init__(self, value_separator=',', param_separator=' '):
+        super().__init__(cmd_separator=';\n', value_assign=' ', value_separator=value_separator, param_separator=param_separator)
+        #self.VALUE_ASSIGN=' '
+        
     def fmt_value(self, value:str) -> str :
         #if isinstance(value, (Enum,Expr)):
         #    value=value.name
@@ -101,21 +99,27 @@ class Key(Enum):
     """Gnuplot legend positioning keywords
     """
     INSIDE   = "inside"
+    OUTSIDE  = "outside"
     LEFT     = "left"
     RIGHT    = "right"
     TOP      = "top"
     BOTTOM   = "bottom"
+    BOXED    = "boxed"
+    BELOW    = "below"
+    ABOVE    = "above"  
+
+# Chat 
+class KeywordExpr:
+    def __init__(self, *parts: Enum):
+        self.parts = parts
+
+    def __str__(self):
+        return " ".join(p.value for p in self.parts)
+
+    @classmethod
+    def from_values(cls, enum_cls, values):
+        return cls(*(enum_cls(v) for v in values))
     
-    OUTSIDE      = "outside"
-    TOP_LEFT     = "top left"
-    TOP_RIGHT    = "top right"
-    BOTTOM_LEFT  = "bottom left"
-    BOTTOM_RIGHT = "bottom right"
-    BOXED        = "boxed"
-    BELOW        = "below"
-    ABOVE        = "above"  
-
-
 class Registry(rack.prog.Register):
     """ Collection of GnuPlot 'set' and 'plot' commands.
     """
@@ -206,6 +210,7 @@ class Registry(rack.prog.Register):
             position = [position.value]
 
         position = [Key(p).value for p in position]
+        position = Literal(' '.join(position))
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", key=text, **opts)
 
 
@@ -321,7 +326,7 @@ class Style(Enum):
 
 class ConfSequence(rack.prog.CommandSequence):
     
-    fmt = GnuPlotFormatter(param_separator=' ')
+    fmt = GnuPlotFormatter(param_separator=' ', value_separator=',')
 
     def to_string(self, fmt = None):
         if not fmt:

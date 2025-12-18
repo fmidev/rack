@@ -179,7 +179,7 @@ class TestGnuPlot(unittest.TestCase):
         }
 
         
-
+        # Todo: move this to setUp() ?
         for k,v in conf.items():
             func = getattr(self.reg, k)   # resolves Registry.terminal, Registry.output, ...
             # logger.warning(func.__name__)
@@ -291,9 +291,9 @@ if __name__ == "__main__":
     #print(cmd.to_string())
 
     # test_set_from_conf 
-    cmd = TestGnuPlot()
-    cmd.test_set_from_conf()
-
+    tester = TestGnuPlot()
+    # tester.te st_set_from_conf()
+    tester.check_set_command('set key outside top', tester.reg.key, [gp.Key.OUTSIDE, gp.Key.TOP])
 
 
     #unittest.main() 
