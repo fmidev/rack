@@ -430,6 +430,52 @@ class Register:
 
         return cmd
     
+    def import_commands(self, commands:Dict[str,Any], separator:str=""):
+        """ Creates multiple commands from a dictionary of command names and arguments.
+        """
+
+        for k,v in commands.items():
+
+            func = getattr(self, k)   # resolves Registry.terminal, Registry.output, ...
+            # logger.warning(func.__name__)
+            # logger.warning(dir(func))
+            
+            cmd = None
+            args_list = []
+            kwargs_dict = {}
+            
+            if isinstance(v, (list, tuple)):
+                logger.warning("type(v) = %s", type(v))
+                l = len(v)
+                if l > 0:
+                    last_elem = v[l-1]
+                    if isinstance(last_elem, dict):
+                        args_list = v[0:l-1]
+                        kwargs_dict = last_elem
+                    else:
+                        args_list = v
+                v = None
+
+            elif isinstance(v, set):
+                args_list = list(v)
+                v = None
+            elif isinstance(v, dict):
+                kwargs_dict = v
+                v = None
+            # else: v is a single value (e.g., str, int, bool, ...)
+
+            if not (v is None):
+                logger.warning(f"calling {func.__name__} with v={v} args={args_list}, kwargs={kwargs_dict}")
+                cmd = func(v, *args_list, **kwargs_dict)
+            else:
+                logger.warning("calling %s with args=%s, kwargs=%s", func.__name__, args_list, kwargs_dict)
+                cmd = func(*args_list, **kwargs_dict)
+            #logger.warning(cmd.to_string(gp.ConfSequence.fmt))
+
+            if self.cmdSequence:
+                self.cmdSequence.add(cmd)
+    
+
 
 
 class CommandSequence:

@@ -155,8 +155,13 @@ class TestGnuPlot(unittest.TestCase):
         self.check_set_command('set key outside top', self.reg.key, [gp.Key.OUTSIDE, gp.Key.TOP])
 
     def test_set_from_conf(self):
+        """
+        Ensure that Registry can create 'set' commands from a configuration dictionary.
+        If a value is a list and its last element is a dict, the dict is treated as keyword arguments.
+        Similarly, if a value is a set, its elements are treated as positional arguments.
+        """
 
-        conf = {
+        commands = {
             #"terminal": "png size 800,600",
             "terminal": [
                 "png", 
@@ -178,9 +183,13 @@ class TestGnuPlot(unittest.TestCase):
             # "using": '2:3',
         }
 
+        self.reg.import_commands(commands)
+
+        return True
+
         
         # Todo: move this to setUp() ?
-        for k,v in conf.items():
+        for k,v in commands.items():
             func = getattr(self.reg, k)   # resolves Registry.terminal, Registry.output, ...
             # logger.warning(func.__name__)
             # logger.warning(dir(func))
