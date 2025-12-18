@@ -32,6 +32,9 @@ install:
 install-python:
 	./install-python.sh
 
+test-python:
+	cd ../python && python3 -m unittest discover -s rack/tests -v
+
 BASE_IMAGE=ubuntu20
 # BASE_IMAGE=alpine
 # BASE_IMAGE=ubuntu18
@@ -79,7 +82,7 @@ docker-image-push: docker
 	docker push "quay.io/fmi/rack:${VERSION}"
 
 docker-clean:
-	docker system prune -f
+	echo docker system prune -f
 
 clean:
 	rm -fv Release/rack Release/*/*.o Release/drain/*/*.o 

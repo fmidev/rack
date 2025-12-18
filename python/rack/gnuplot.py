@@ -8,6 +8,10 @@ import rack.prog
 import rack.log
 logger = rack.log.logger.getChild(Path(__file__).stem)
 
+# NEW
+from enum import Enum
+
+# Todo: move to rack.prog modules
 class Literal():
     def __init__(self, name:str, value=None):
         self.name = name
@@ -20,13 +24,15 @@ class Literal():
     def __repr__(self):
         return self.name
 
-class KeyWord(Literal):
-    pass
+#class KeyWord(Literal):
+#    pass
 
 class Expr(Literal):
     pass
 
-class Terminal:
+
+"""
+class Terminal_OLD:
     PNG = KeyWord("png")
     SVG = KeyWord("svg")
     #SVG = KeyWord("svg")
@@ -41,7 +47,7 @@ class Format:
 
 class Data:
     TIME = KeyWord("time") 
-
+"""
 
 class GnuPlotFormatter(rack.prog.Formatter):
     
@@ -55,8 +61,16 @@ class GnuPlotFormatter(rack.prog.Formatter):
         self.CMD_SEPARATOR=';\n'
 
     def fmt_value(self, value:str) -> str :
-        if isinstance(value, (KeyWord,Expr)):
+        #if isinstance(value, (Enum,Expr)):
+        #    value=value.name
+        
+        if isinstance(value, Enum):
+            value=value.value
+        elif isinstance(value, Expr):
             value=value.name
+        # elif isinstance(value, KeyWord):
+        #    logger.warning("KeyWord deprecating...  value: %s", value.name)
+        #    value=value.name
         elif isinstance(value, str):
             value=f'"{value}"'
         return super().fmt_value(value)
@@ -65,6 +79,41 @@ class GnuPlotFormatter(rack.prog.Formatter):
 class Mika:
     def __init__(self, a=1, b="dko", **global_opts):
         print(a, b)
+
+
+class Terminal(Enum):
+    PNG = "png"
+    PDF = "pdf"
+    SVG = "svg"
+
+class Datafile(Enum):
+    SEPARATOR  = "separator" 
+    WHITESPACE = "whitespace" 
+
+class Format(Enum):
+    X = "x" 
+    Y = "y" 
+
+class Data(Enum):
+    TIME = "time"
+
+class Key(Enum):
+    """Gnuplot legend positioning keywords
+    """
+    INSIDE   = "inside"
+    LEFT     = "left"
+    RIGHT    = "right"
+    TOP      = "top"
+    BOTTOM   = "bottom"
+    
+    OUTSIDE      = "outside"
+    TOP_LEFT     = "top left"
+    TOP_RIGHT    = "top right"
+    BOTTOM_LEFT  = "bottom left"
+    BOTTOM_RIGHT = "bottom right"
+    BOXED        = "boxed"
+    BELOW        = "below"
+    ABOVE        = "above"  
 
 
 class Registry(rack.prog.Register):
@@ -80,7 +129,8 @@ class Registry(rack.prog.Register):
         # func = getattr(self, caller_name)
 
         # Initialize with caller name
-        args = [KeyWord(caller_name.replace('_',' '))]
+        #args = [KeyWord(caller_name.replace('_',' '))]
+        args = [Literal(caller_name.replace('_',' '))]
 
         for k, v in locs.items():
             if k == "self":
@@ -103,7 +153,8 @@ class Registry(rack.prog.Register):
         return cmd
     
     
-    def terminal(self, terminal_type: KeyWord=Terminal.PNG, **opts):
+    def terminal(self, terminal_type: Terminal | str = Terminal.PNG, **opts):
+        terminal_type = Terminal(terminal_type) 
         return self.make_set_cmd(locals())
 
     def output(self, filename: str):
@@ -113,14 +164,17 @@ class Registry(rack.prog.Register):
         return self.make_set_cmd(locals())
 
     
-    def datafile(self, key, value, **opts) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", datafile=text, **opts)
+    def datafile(self, key: Datafile|str, value: Datafile|str, **opts) :
+        key = Datafile(key)
+        value = Datafile(value)
+        return self.make_set_cmd(locals()) 
     
-    def grid(self, **opts) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "grid", **opts)
+    def grid(self, **opts) : 
+        return self.make_set_cmd(locals()) 
     
-    def xdata(self, mode: str, **opts) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xdata=arg, **opts)
+    def xdata(self, mode: Data|str, **opts) : 
+        mode = Data(mode)
+        return self.make_set_cmd(locals()) 
     
     def xlabel(self, label: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xlabel=arg, **opts)
@@ -133,16 +187,25 @@ class Registry(rack.prog.Register):
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "timefmt", fmt)
 
     def format_x(self, fmt: str) : #  GnuPlotCommand:
+        #fmt = Format(fmt)
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format x", fmt)
         #return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format", "x", fmt)
     
     def format_y(self, fmt: str) : #  GnuPlotCommand:
+        #fmt = Format(fmt)
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format y", fmt)
         
     def label(self, text: str, **opts) : #  GnuPlotCommand:
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", label=text, **opts)
     
-    def key(self, text: str, **opts) : #  GnuPlotCommand:
+    def key(self, position: Key|str, **opts) : #  GnuPlotCommand:
+        #def key(self, position, **opts) : #  GnuPlotCommand:
+        if isinstance(position, str):
+            position = position.strip().split(' ')
+        if isinstance(position, Enum):
+            position = [position.value]
+
+        position = [Key(p).value for p in position]
         return self.make_set_cmd(locals()) #  GnuPlotCommand("set", key=text, **opts)
 
 
@@ -247,13 +310,13 @@ class Registry(rack.prog.Register):
 
     
 
-class Style:
+class Style(Enum):
     """ In gunplot, after "with" keyword
     """
 
-    LINES = KeyWord("lines")
-    DOTS  = KeyWord("dots")
-    LINES_DOTS = KeyWord("linesdots")
+    LINES = "lines"
+    DOTS  = "dots"
+    LINES_DOTS = "linesdots"
 
 
 class ConfSequence(rack.prog.CommandSequence):

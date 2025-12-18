@@ -1,6 +1,7 @@
 import inspect
 import pathlib
 from typing import Any, List, Dict, Union
+from enum import Enum # For keywords, e.g. Literal
 
 #from collections import OrderedDict
 import rack.base
@@ -9,6 +10,7 @@ import rack.base
 logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
 class ParamFormatter:
+
     """Formatting key=value pairs"""
     KEY_FORMAT ='{key}'
     VALUE_FORMAT='{value}'
@@ -28,9 +30,12 @@ class ParamFormatter:
 
     def fmt_value(self, value:str)->str :
         if isinstance(value, (tuple,list)):
-        #if type(value) in (tuple,list):
+            # if type(value) in (tuple,list):
             value = [str(v) for v in value]
             value = self.VALUE_SEPARATOR.join(value)
+
+        if isinstance(value, Enum):
+            value=value.value
 
         return self.VALUE_FORMAT.format(value=value)
 
@@ -72,12 +77,12 @@ class ParamFormatter:
 class Formatter(ParamFormatter):
 
     NAME_FORMAT='{name}'
-    #KEY_FORMAT ='{key}'
-    #VALUE_FORMAT='{value}'
-    #VALUE_SEPARATOR=':'
-    #VALUE_ASSIGN='='
-    #PARAM_SEPARATOR=','
-    #PARAMS_FORMAT='{params}'
+    # KEY_FORMAT ='{key}'
+    # VALUE_FORMAT='{value}'
+    # VALUE_SEPARATOR=':'
+    # VALUE_ASSIGN='='
+    # PARAM_SEPARATOR=','
+    # PARAMS_FORMAT='{params}'
     CMD_ASSIGN=' ' 
     CMD_SEPARATOR=' '
 
@@ -88,12 +93,12 @@ class Formatter(ParamFormatter):
                          value_assign=value_assign, param_separator=param_separator, params_format=params_format)
         
         self.NAME_FORMAT  = name_format
-        #self.KEY_FORMAT   = key_format
-        #self.VALUE_FORMAT = value_format
-        #self.VALUE_SEPARATOR = value_separator
-        #self.VALUE_ASSIGN = value_assign
-        #self.PARAM_SEPARATOR = param_separator
-        #self.PARAMS_FORMAT   = params_format
+        # self.KEY_FORMAT   = key_format
+        # self.VALUE_FORMAT = value_format
+        # self.VALUE_SEPARATOR = value_separator
+        # self.VALUE_ASSIGN = value_assign
+        # self.PARAM_SEPARATOR = param_separator
+        # self.PARAMS_FORMAT   = params_format
         self.CMD_ASSIGN      = cmd_assign
         self.CMD_SEPARATOR   = cmd_separator
 

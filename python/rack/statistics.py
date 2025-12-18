@@ -692,12 +692,16 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     
     log.debug("add configuration")
 
-    cmds = rack.gnuplot.GnuPlotCommandSequence()
-    
+    #cmds = rack.gnuplot.GnuPlotCommandSequence()
+    prog_conf = rack.gnuplot.ConfSequence()
+    reg_conf = rack.gnuplot.Registry(prog_conf)
+
     for (k,v) in conf.items():
         # cmds.add(Cmd(k,v))
-        func = getattr(rack.gnuplot.GnuPlot.set, k)   # resolves GnuPlot.set.format_x
-        cmds.add(func(v))
+        # func = getattr(rack.gnuplot.GnuPlot.set, k)   # resolves GnuPlot.set.format_x
+        func = getattr(reg_conf, k)   # resolves Registry.format_x
+        # TODO func(v)
+        #  cmds.add(func(v))
 
     linetype_keys = []
     linecolor_keys = []
@@ -735,11 +739,19 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
         plot_style = f"{linetype} lw 3 {linecolor}".strip()
         # log.debug(f"file: {f} title: '{plot_title}' style: '{plot_style}' columns: {columns}")
         #plots.append({"file": f, "using": columns, "with_": plot_style, "title": plot_title})
-        plots.append({"file": f, "using": columns, "style": plot_style, "title": plot_title})
+        entry = rack.gnuplot.Registry.plot_entry(filename=f, using=columns, style=plot_style, title=plot_title)
+        plots.append(entry)
+        # plots.append({"file": f, "using": columns, "style": plot_style, "title": plot_title})
 
-    cmds.add(rack.gnuplot.GnuPlot.plot.plot(*plots))
+
+    prog_plot = rack.gnuplot.ConfSequence()
+    reg_plot  = rack.gnuplot.Registry(prog_plot)
+
+    reg_plot.plot(*plots)
+    # cmds.add(rack.gnuplot.GnuPlot.plot.plot(*plots))
     # print(cmds.to_string("\n"))
-    return cmds.to_list()
+    return (prog_conf, prog_plot)
+    #return cmds.to_list()
 
         
 def run(args):
@@ -825,18 +837,23 @@ def run(args):
         conf["ylabel"] = col_labels[1].replace('_',' ')
         #cols = col_indices
 
-        lines = create_gnuplot_script(args.INFILE, conf, columns=col_indices)
+        (settings, plots) = create_gnuplot_script(args.INFILE, conf, columns=col_indices)
 
         if not args.gnuplot_script:
             pass
         elif args.gnuplot_script == '-':
-            for i in lines:
+            settings.to_string()
+            for i in plots.to_list():
                 print(i)
         else:
             log.info(f"writing GnuPlot script: {args.gnuplot_script}")
             with open(args.gnuplot_script, 'w') as f:
-                for i in lines:
+                for i in settings.to_list():
                     print(i, file=f)
+                for i in plots.to_list():
+                    print(i, file=f)
+                #for i in lines:
+                #    print(i, file=f)
 
         if args.gnuplot:
             script=";\n  ".join(lines)
@@ -847,10 +864,10 @@ def run(args):
 
             if result.returncode != 0:
                 log.error("execution of 'gnuplot' failed")
-                print("STDOUT:", result.stdout)
-                print("STDERR:", result.stderr)
+                print("STDOUT: ", result.stdout)
+                print("STDERR: ", result.stderr)
                 exit(1)
-            #log.info(f"GnuPlot output: {args.gnuplot_output}")
+            # log.info(f"GnuPlot output: {args.gnuplot_output}")
 
         exit(0)
 
