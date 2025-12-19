@@ -187,8 +187,7 @@ class TestGnuPlot(unittest.TestCase):
 
         return True
 
-        
-        # Todo: move this to setUp() ?
+        """
         for k,v in commands.items():
             func = getattr(self.reg, k)   # resolves Registry.terminal, Registry.output, ...
             # logger.warning(func.__name__)
@@ -227,7 +226,7 @@ class TestGnuPlot(unittest.TestCase):
             logger.warning(cmd.to_string(gp.ConfSequence.fmt))
             # logger.warning(func(v))
             # cmds.add(func(v))
-
+        """
 
     # Test plot commands and their formatting
 
