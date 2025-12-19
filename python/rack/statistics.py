@@ -664,8 +664,8 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     conf = {
         "terminal": [
             "png", 
-            {"size": "800,600"}],
-        "output": '"out.png"',
+            {"size": "801,600"}],
+        "output": 'out.png',
         "datafile": ["separator", "whitespace"],
         "xdata": "time",
 #        "timefmt": '"%Y-%m-%dT%H:%M:%S"', # must match with above TIMESTAMP
@@ -694,15 +694,9 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     
     log.debug("add configuration")
 
-    #cmds = rack.gnuplot.GnuPlotCommandSequence()
     prog_conf = rack.gnuplot.ConfSequence()
     reg_conf = rack.gnuplot.Registry(prog_conf)
-
     reg_conf.import_commands(conf)
-
-    #for (k,v) in conf.items():
-    #    func = getattr(reg_conf, k)   # resolves Registry.format_x
-    #    func(v)
 
     linetype_keys = []
     linecolor_keys = []
@@ -712,18 +706,18 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     log.debug(f"using columns: {columns}")
     plots = []
     log.debug("add plot command for each input file")
-    for f in files:    
+    
+    for f in files:
         filepath_keys = tm.split_filepath(f)
         distinct_keys = tm.get_distinct_keys(filepath_keys) 
    
-        linetype = "with lines"
+        linetype = "lines"
         if len(distinct_keys) >= 2:
             k = distinct_keys[1]
             if k not in linetype_keys:
                 linetype_keys.append(k)
                 log.debug(f"added linetype key: {k}")   
-            linetype = "with linespoints linetype " + str(linetype_keys.index(k)+1)
-
+            linetype = "linespoints linetype " + str(linetype_keys.index(k)+1)
 
         linecolor = ""
         if len (distinct_keys) >= 1:
@@ -745,15 +739,12 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
         # plots.append({"file": f, "using": columns, "style": plot_style, "title": plot_title})
 
 
-    prog_plot = rack.gnuplot.ConfSequence()
+    prog_plot = rack.gnuplot.PlotSequence()
     reg_plot  = rack.gnuplot.Registry(prog_plot)
-
     reg_plot.plot(*plots)
-    # cmds.add(rack.gnuplot.GnuPlot.plot.plot(*plots))
-    # print(cmds.to_string("\n"))
-    return (prog_conf, prog_plot)
-    #return cmds.to_list()
 
+    return (prog_conf, prog_plot)
+    
         
 def run(args):
 
@@ -828,7 +819,7 @@ def run(args):
         
         # More defaults here!
         conf = {
-            "output": f'"{args.gnuplot_output or "out.png"}"',
+            "output": f'{args.gnuplot_output or "out.png"}',
         }
         
         col_indices, col_labels = derive_gnuplot_columns(args.gnuplot_columns, args.line_syntax, conf)

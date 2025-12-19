@@ -71,7 +71,10 @@ class GnuPlotFormatter(rack.prog.Formatter):
         #    value=value.name
         elif isinstance(value, str):
             value=f'"{value}"'
-        return super().fmt_value(value)
+        #return super().fmt_value(value)
+        else:
+            value = str(value)
+        return value
 
         
 class Mika:
@@ -180,30 +183,30 @@ class Registry(rack.prog.Register):
         mode = Data(mode)
         return self.make_set_cmd(locals()) 
     
-    def xlabel(self, label: str, **opts) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", xlabel=arg, **opts)
+    def xlabel(self, label: str, **opts) : 
+        return self.make_set_cmd(locals()) 
     
-    def ylabel(self, label: str, **opts) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", ylabel=arg, **opts)
+    def ylabel(self, label: str, **opts) : 
+        return self.make_set_cmd(locals()) 
 
     
-    def timefmt(self, fmt: str) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "timefmt", fmt)
+    def timefmt(self, fmt: str) : 
+        return self.make_set_cmd(locals()) 
 
-    def format_x(self, fmt: str) : #  GnuPlotCommand:
+    def format_x(self, fmt: str) : 
         #fmt = Format(fmt)
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format x", fmt)
-        #return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format", "x", fmt)
+        return self.make_set_cmd(locals()) 
+        #return self.make_set_cmd(locals()) 
     
-    def format_y(self, fmt: str) : #  GnuPlotCommand:
+    def format_y(self, fmt: str) : 
         #fmt = Format(fmt)
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", "format y", fmt)
+        return self.make_set_cmd(locals()) 
         
-    def label(self, text: str, **opts) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", label=text, **opts)
+    def label(self, text: str, **opts) : 
+        return self.make_set_cmd(locals()) 
     
-    def key(self, position: Key|str, **opts) : #  GnuPlotCommand:
-        #def key(self, position, **opts) : #  GnuPlotCommand:
+    def key(self, position: Key|str, **opts) : 
+        #def key(self, position, **opts) : 
         if isinstance(position, str):
             position = position.strip().split(' ')
         if isinstance(position, Enum):
@@ -211,17 +214,17 @@ class Registry(rack.prog.Register):
 
         position = [Key(p).value for p in position]
         position = Literal(' '.join(position))
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("set", key=text, **opts)
+        return self.make_set_cmd(locals()) 
 
 
-    def multiplot(self, rows: int, cols: int, title: str = None) : #  List[GnuPlotCommand]:
-        #cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
-        #if title:
+    def multiplot(self, rows: int, cols: int, title: str = None) : 
+        # cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
+        # if title:
         #    cmds.append(GnuPlotCommand("set", "title", title))
         return self.make_set_cmd(locals()) #  cmds
     
-    def unset_multiplot(self) : #  GnuPlotCommand:
-        return self.make_set_cmd(locals()) #  GnuPlotCommand("unset", "multiplot")
+    def unset_multiplot(self) : 
+        return self.make_set_cmd(locals()) 
 
 
     # Plot command support
@@ -335,7 +338,7 @@ class ConfSequence(rack.prog.CommandSequence):
 
 class PlotSequence(rack.prog.CommandSequence):
     
-    fmt = GnuPlotFormatter(param_separator=',')
+    fmt = GnuPlotFormatter(param_separator=',\n  ')
 
     def to_string(self, fmt = None):
         if not fmt:

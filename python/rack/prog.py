@@ -455,7 +455,6 @@ class Register:
                     else:
                         args_list = v
                 v = None
-
             elif isinstance(v, set):
                 args_list = list(v)
                 v = None
@@ -472,8 +471,8 @@ class Register:
                 cmd = func(*args_list, **kwargs_dict)
             #logger.warning(cmd.to_string(gp.ConfSequence.fmt))
 
-            if self.cmdSequence:
-                self.cmdSequence.add(cmd)
+            #if self.cmdSequence:
+            #    self.cmdSequence.add(cmd)
     
 
 
