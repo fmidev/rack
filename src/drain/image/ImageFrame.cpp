@@ -270,6 +270,7 @@ void ImageFrame::toStream(std::ostream & ostr) const {
 	std::string prefix;
 	StringTools::extractPrefix(sb, se, prefix, 2);
 	ostr << ' ' << '#' << prefix << '('<< sb << '-' <<  se << ')' << ' ' << std::dec;
+	ostr << ' ' << ((size_t)segmentEnd - (size_t)segmentBegin);
 	//ostr << ' ' << std::hex << (size_t) segmentBegin << ' ' << std::hex << (size_t) segmentEnd << ' ' << std::dec;
 
 }

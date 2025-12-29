@@ -127,7 +127,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 		return;
 	}
 
-	const PlainData<PolarSrc> & srcDataV    = srcSweep.getData("AMVV");
+	const PlainData<PolarSrc> & srcDataV = srcSweep.getData("AMVV");
 	if (srcDataV.data.isEmpty()){
 		mout.warn("AMVV input missing" );
 		return;
@@ -160,9 +160,13 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	if (dstData.data.isEmpty()){ // or !VRAD_OVERWRITE
 		ProductBase::applyODIM(dstData.odim, odim, true);
 		//qm.setQuantityDefaults(dstData, "VRAD", odim.type);
+		dstData.setEncoding(typeid(unsigned short));
 		setGeometry(srcDataU.odim, dstData);
 		dstData.odim.NI = odim.NI;
 		dstData.odim.setRange(-odim.NI, +odim.NI);
+		dstData.data.setScaling(dstData.odim.scaling);
+		///dstData.data.setType(dstData.odim.type);
+		// dstData.setEncoding(typeid(unsigned short));
 	}
 	const double minCode = dstData.data.getConf().getTypeMin<double>();
 	const double maxCode = dstData.data.getConf().getTypeMax<double>();
@@ -205,9 +209,12 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	bool ORIG_USABLE = true; // ORIG_UNDETECT && ORIG_NODATA
 
 	size_t address;
+	const size_t addressMax = dstData.data.getArea();
 
-	mout.warn("Main " , dstData    );
-	mout.note("Main " , dstQuality );
+	mout.note(DRAIN_LOG(srcDataU.data));
+	mout.note(DRAIN_LOG(srcDataV.data));
+	mout.note(DRAIN_LOG(dstData.data));
+	mout.note(DRAIN_LOG(dstQuality.data));
 
 	const size_t size_debug = dstData.data.getArea();
 
@@ -266,26 +273,32 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 				if ((vReproj > minCode) && (vReproj < maxCode)){ // continue processing
 
-					dstData.data.put(address, vReproj);
-					quality = 0.5 + 0.5*(unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y);
+					//?
+					if (address >= addressMax){
+						mout.error(address, " > max ", addressMax);
+					}
+					// dstData.data.put(address, vReproj);
 
+					quality = 0.5 + 0.5*(unitVReproj.x*unitVOrig.x + unitVReproj.y*unitVOrig.y);
+					dstQuality.data.put(address, dstQuality.odim.scaleInverse(quality) );
 					// if (((i+50)==j) && ((i&7)==0)){
 					//	std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
 					// }
-
-					dstQuality.data.put(address, dstQuality.odim.scaleInverse(quality) );
 				}
 				else {
+					//?
 					dstData.data.put(address, dstData.odim.undetect); // rand() & 0xffff); //
 					dstQuality.data.put(address, 0);
 				};
 
 				if (((i+50)==j) && ((i&7)==0)){
-					std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
+					// std::cerr << i << '\t' << unitVOrig << '\t' << unitVReproj << '\t' << quality << '\n';
+					mout.warn(i, '\t', unitVOrig, '\t', unitVReproj, '\t', quality);
 				}
 
 			}
 			else {
+				//?
 				dstData.data.put(address, dstData.odim.undetect);
 			}
 
@@ -293,7 +306,8 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	}
 	//@ dstDataVRAD.updateTree();
 
-	exit(13);
+	mout.experimental("FINISHED");
+	// exit(13);
 
 }
 
@@ -304,11 +318,13 @@ class DopplerSegmentProber : public drain::image::SegmentProber<double, double, 
 public:
 
 	inline
-	DopplerSegmentProber(const Channel &s, Channel &d) : drain::image::SegmentProber<double, double, drain::image::SegmentProberConf<double, double> >(s, d), relative_NI_threshold(0.9) {
+	DopplerSegmentProber(const Channel &s, Channel &d) : drain::image::SegmentProber<double, double, drain::image::SegmentProberConf<double, double> >(s, d),
+		relative_NI_threshold(0.9) {
 	}
 
 	inline
-	DopplerSegmentProber(Channel &d) : drain::image::SegmentProber<double, double, drain::image::SegmentProberConf<double, double> >(d, d), relative_NI_threshold(0.9) {
+	DopplerSegmentProber(Channel &d) : drain::image::SegmentProber<double, double, drain::image::SegmentProberConf<double, double> >(d, d),
+		relative_NI_threshold(0.9) {
 	}
 
 	/// Update srcOdim
@@ -344,7 +360,7 @@ protected:
 
 	/// NI divided by 2.
 	double NI_threshold = 0.0;
-	drain::typeLimiter<double>::value_t limit; //  = dstData.data.getLimiter<double>();
+	drain::typeLimiter<double>::value_t limit = nullptr; //  = dstData.data.getLimiter<double>();
 
 	/// Returns true, if value in location (i,j) is not \c nodata nor \c undetect .
 	/*

@@ -163,7 +163,9 @@ if [ $# == 0 ]; then
     for TILE in 256 0; do
 	for TYPE in C S f d; do
 	    BASENAME=test-geotiff-${TYPE}-${TILE}
-	    rack volume-double.h5 -Q DBZH --cProj 3067  --encoding $TYPE  -c --outputConf tif:tile=${TILE}x${TILE} -o ${BASENAME}.tif;
+	    cmd="rack volume-double.h5 -Q DBZH --cProj 3067  --encoding $TYPE  -c --outputConf tif:tile=${TILE}x${TILE} -o ${BASENAME}.tif"
+	    echo $cmd
+	    eval $cmd
 	    gdalinfo ${BASENAME}.tif | fgrep Band -A 3 > ${BASENAME}.gdal
 	    # test-geotiff-${TYPE}-${TILE}.txt
 	    diff --text {valid,.}/${BASENAME}.gdal
@@ -179,5 +181,5 @@ fi
 
 ls -ltr diff-????.lgeo
 
-ls -ltr test-geotiff-?-*.txt
+#ls -ltr test-geotiff-?-*.txt
 
