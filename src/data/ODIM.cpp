@@ -537,6 +537,90 @@ void ODIM::updateLenient(const ODIM & odim){
 
 }
 
+// Copied from ProductBase
+void ODIM::configureNEW(const ODIM & defaultODIM, bool useTypeDefaults){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	const bool QUANTITY_UNSET = quantity.empty();
+
+	if (QUANTITY_UNSET){
+		quantity = defaultODIM.quantity;
+		mout.info("copied quantity [" , quantity, "] from input" );
+	}
+
+	if  (!isSet()){
+
+		// If src data and product have same quantity and storage type, adapt same encoding
+		if ((defaultODIM.quantity == quantity) && (defaultODIM.type == type)){ // note: may still be empty
+			copyEncoding(defaultODIM);
+			// EncodingODIM srcBase(defaultODIM);
+			// updateFromMap(srcBase); // Does not copy geometry (rscale, nbins, etc).
+			// mout.info("same quantity=" , quantity , " and type, copied encoding: " , EncodingODIM(*this) );
+		}
+
+		//mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
+		//mout.warn("productODIM.update(srcODIM)" );
+		updateLenient(defaultODIM); // date, time, Nyquist(NI) - WARNING, some day setLenient may copy srcODIM encoding
+
+	}
+
+	if ((!isSet()) && useTypeDefaults){
+
+		//mout.warn("productODIM not set above?" );
+
+		if (!quantity.empty()){
+			mout.info("setting quantity defaults for " , quantity );
+			getQuantityMap().setQuantityDefaults(*this, quantity, type);
+			mout.info("setQuantityDefaults: quantity=", quantity , ", " , EncodingODIM(*this) );
+		}
+		else if (!type.empty()){
+			mout.warn("type [", type,"]set, but quantity unset?");
+			setTypeDefaults();
+			mout.info("setTypeDefaults: " , EncodingODIM(*this) );
+		}
+	}
+
+	/*
+	else if (!encoding.empty()){
+		mout.note(EncodingODIM(productODIM) );
+		mout.warn(" productODIM.scale set, tried to reset with: " , encoding );
+	}
+	*/
+
+	// mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
+	if (QUANTITY_UNSET && (defaultODIM.quantity == quantity)){
+		// xxx
+		if (isSet() && drain::Type::call<drain::typeIsSmallInt>(defaultODIM.type)){
+			if (defaultODIM.getMin() < getMin()){
+				mout.note("input [", defaultODIM.quantity , "] min=", defaultODIM.getMin() ,") lower than supported by target  (min=", getMin() , ")");
+			}
+			if (defaultODIM.getMax() > getMax()){
+				mout.note("input [", defaultODIM.quantity , "] max=", defaultODIM.getMax() ,") higher than supported by target (max=", getMax() , ")");
+			}
+		}
+	}
+
+	//ProductBase::setODIMspecials(productODIM);
+	setSpecials();
+
+}
+
+//ProductBase::setODIMspecials(productODIM);
+void ODIM::setSpecials(){
+
+	distinguishNodata("VRAD");
+	/*
+		if (dstODIM.distinguishNodata("VRAD")){
+			mout.note("setting nodata=" , dstODIM.nodata , " to distinguish undetect=", dstODIM.undetect );
+		}
+	 */
+
+	if (product == "SCAN"){// ??
+		product = "PPI";
+	}
+
+}
 
 }  // namespace rack
 

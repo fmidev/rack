@@ -46,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/DopplerWindowOp.h"
 #include "product/DopplerDevOp.h"
 #include "product/DopplerInversionOp.h"
+#include "product/DopplerReprojectOp.h"
 #include "product/DopplerSamplerOp.h"
 
 

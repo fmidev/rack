@@ -119,6 +119,10 @@ void ProductBase::help(std::ostream &ostr, bool showDescription) const {
  */
 void ProductBase::applyODIM(ODIM & productODIM, const ODIM & defaultODIM, bool useDefaults){
 
+
+	productODIM.configureNEW(defaultODIM, useDefaults);
+
+	/*
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	const bool QUANTITY_UNSET = productODIM.quantity.empty();
@@ -159,12 +163,10 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & defaultODIM, bool u
 		}
 	}
 
-	/*
-	else if (!encoding.empty()){
-		mout.note(EncodingODIM(productODIM) );
-		mout.warn(" productODIM.scale set, tried to reset with: " , encoding );
-	}
-	*/
+	// else if (!encoding.empty()){
+	// 	mout.note(EncodingODIM(productODIM) );
+	//	mout.warn(" productODIM.scale set, tried to reset with: " , encoding );
+	//}
 
 	// mout.toOStr() << "set quantity=" << productODIM.quantity << ", encoding: " << EncodingODIM(productODIM) << mout.endl;
 	if (QUANTITY_UNSET && (defaultODIM.quantity == productODIM.quantity)){
@@ -180,8 +182,9 @@ void ProductBase::applyODIM(ODIM & productODIM, const ODIM & defaultODIM, bool u
 	}
 
 	ProductBase::setODIMspecials(productODIM);
-
+	*/
 }
+
 
 // Moved to ODIM::
 /*
@@ -267,19 +270,20 @@ void ProductBase::setAllowedEncoding(const std::string & keys) {
 
 void ProductBase::setODIMspecials(ODIM & dstODIM){
 
-	//drain::Logger mout(__FILE__, __FUNCTION__);
+	// NEW 2025/12
+	dstODIM.setSpecials();
 
-	dstODIM.distinguishNodata("VRAD");
 	/*
+	//drain::Logger mout(__FILE__, __FUNCTION__);
+	// dstODIM.distinguishNodata("VRAD");
 	if (dstODIM.distinguishNodata("VRAD")){
-		mout.note("setting nodata=" , dstODIM.nodata , " to distinguish undetect=", dstODIM.undetect );
+		// mout.note("setting nodata=" , dstODIM.nodata , " to distinguish undetect=", dstODIM.undetect );
 	}
-	*/
 
 	if (dstODIM.product == "SCAN"){
 		dstODIM.product = "PPI";
 	}
-
+	*/
 }
 
 void ProductBase::setRackVersion(drain::VariableMap & how){

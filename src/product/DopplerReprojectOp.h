@@ -54,7 +54,8 @@ public:
 		parameters.link("quantity", odim.quantity = "VRAD", "output-quantity");
 
 		dataSelector.setMaxCount(1);
-		dataSelector.setQuantities("^(AMVU|AMVV|VRAD)$");
+		//dataSelector.setQuantities("^(AMVU|AMVV|VRAD)$");
+		dataSelector.setQuantities("AMVU:AMVV:VRAD");
 
 		//odim.quantity; // VRAD_C
 		odim.type = "S";

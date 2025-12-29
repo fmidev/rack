@@ -194,6 +194,12 @@ public:
 	// Number of images used in precipitation accumulation (lenient, not linked)
 	long ACCnum = 0;
 
+	// NEW - moved from ProductBase: applyODIM
+	void configureNEW(const ODIM & defaultODIM, bool useTypeDefaults=false);
+
+	// Moved/copied from ProductBase::setODIMspecials(productODIM);
+	void setSpecials();
+
 	/// Sets number of columns (nbins) and number of rows (nrays). Does not change resolution.
 	virtual inline
 	void setGeometry(size_t cols, size_t rows){

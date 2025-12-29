@@ -99,13 +99,22 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 
 	const QuantityMap & qm = getQuantityMap();
 	if (dstData.data.isEmpty()){ // or !VRAD_OVERWRITE
-		ProductBase::applyODIM(dstData.odim, odim, true);
-		//qm.setQuantityDefaults(dstData, "VRAD", odim.type);
-		dstData.setEncoding(typeid(unsigned short));
-		setGeometry(srcDataU.odim, dstData);
+
+		dstData.odim.configureNEW(odim, true);
+		// ProductBase::applyODIM(dstData.odim, odim, true);
+		// dstData.initialize(typeid(unsigned short), srcDataU.data.getGeometry());
+		// setGeometry(srcDataU.odim, dstData);
+
+		//dstData.initializeBest(typeid(unsigned short), srcDataU.data.getGeometry());
+		dstData.initializeBest(typeid(unsigned short));
+		//copyPolarGeometry()
+		dstData.setGeometry(srcDataU.odim);
+		dstData.setNyquist(odim.NI);
+		/*
 		dstData.odim.NI = odim.NI;
 		dstData.odim.setRange(-odim.NI, +odim.NI);
 		dstData.data.setScaling(dstData.odim.scaling);
+		*/
 		///dstData.data.setType(dstData.odim.type);
 		// dstData.setEncoding(typeid(unsigned short));
 	}
@@ -157,7 +166,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	mout.note(DRAIN_LOG(dstData.data));
 	mout.note(DRAIN_LOG(dstQuality.data));
 
-	const size_t size_debug = dstData.data.getArea();
+	// const size_t size_debug = dstData.data.getArea();
 
 	for (size_t j = 0; j < dstData.data.getHeight(); ++j) {
 

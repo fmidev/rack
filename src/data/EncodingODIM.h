@@ -92,7 +92,7 @@ public:
 	//typedef drain::EnumFlagger<drain::SingleFlagger<TiffCompliance> > tiffComplianceFlagger;
 	//typedef drain::EnumFlagger<drain::MultiFlagger<Adaption> > AdaptionFlagger;
 
-	int explicitSettings;
+	int explicitSettings = NONE;
 
 	/// Default constructor.
 	inline
@@ -126,12 +126,22 @@ public:
 		initFromImage(image);
 	};
 
+	inline
+	void copyEncoding(const EncodingODIM & odim){
+		// updateFromMap(odim); // risk: copies attribs also beyon ODIM?
+		type     = odim.type;
+		scaling.set(odim.scaling);
+		nodata   = odim.nodata;
+		undetect = odim.undetect;
+		explicitSettings = odim.explicitSettings;
+	}
 
 	inline
 	EncodingODIM & operator=(const EncodingODIM & odim) {
 		// std::cerr << "EncodingODIM & operator=" << std::endl;
-		updateFromMap(odim);
-		explicitSettings = odim.explicitSettings;
+		// updateFromMap(odim);
+		// explicitSettings = odim.explicitSettings;
+		copyEncoding(odim);
 		return *this;
 	}
 
@@ -151,9 +161,6 @@ public:
 	 */
 	std::string type;
 
-	/// data[n]/what (obligatory)
-	//double scale;
-	//double offset;
 	double nodata;
 	double undetect;
 

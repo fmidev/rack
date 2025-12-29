@@ -448,6 +448,55 @@ public:
 		setGeometry(geometry);
 	}
 
+	// NEW policy.
+	/// Terminal step in initialisation: set actual data storage type and resize.
+	inline
+	void initializeBest(){
+		setEncoding(odim.type);
+		setGeometry(odim.area);
+	}
+
+	/// Set storage type and other properties.
+	template <class ...T>
+	inline
+	void initializeBest(const std::type_info & type, const T & ...args){
+		odim.setType(type);
+		initializeBest(args...);
+	}
+
+	/// Set storage type and other properties.
+	template <class ...T>
+	inline
+	void initializeBest(const std::string & type, const T & ...args){
+		odim.setType(type);
+		initializeBest(args...);
+	}
+
+	/// Set width and height of the data array, and set other properties.
+	template <class ...T>
+	inline
+	void initializeBest(const drain::image::AreaGeometry & geometry, const T & ...args){
+		odim.area.set(geometry);
+		initializeBest(args...);
+	}
+
+	/// Set encoding and other properties.
+	template <class ...T>
+	inline
+	void initializeBest(const EncodingODIM & encoding, const T & ...args){
+		odim.updateFromMap(encoding); // importMap can NOT be used because non-EncodingODIM arg will have a larger map
+		odim.scaling.physRange.set(encoding.scaling.physRange);
+		initializeBest(args...);
+	}
+
+
+	// inline
+	void setNyquist(double nyquistSpeed){
+		odim.NI = nyquistSpeed;
+		odim.setRange(-odim.NI, +odim.NI);
+		data.setScaling(odim.scaling);
+	}
+
 
 	// Data array
 	image_t & data;
