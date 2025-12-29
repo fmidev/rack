@@ -137,6 +137,7 @@ protected:
 
 
 // for Testing
+/*
 class DopplerReprojectOp : public DopplerOp {
 public:
 
@@ -163,7 +164,7 @@ public:
 
 
 };
-
+*/
 
 // for Testing
 class DopplerCrawlerOp : public DopplerOp {

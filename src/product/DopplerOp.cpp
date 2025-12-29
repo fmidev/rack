@@ -112,7 +112,7 @@ void DopplerDiffOp::processData(const Data<PolarSrc> & srcData, Data<PolarDst> &
 }
 
 
-
+/*
 void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, DataSet<PolarDst> & dstProduct) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -181,12 +181,6 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	mout.info("srcV: " , srcDataV.data );
 	mout.info("dstD: " , dstData.data  );
 	mout.info("dstQ: " , dstQuality.data );
-	/*
-	mout.info("src [" , srcDataU.odim.quantity , "] " , EncodingODIM(srcDataU.odim) );
-	mout.info("src [" , srcDataV.odim.quantity , "] " , EncodingODIM(srcDataV.odim) );
-	mout.info("dst [" , dstData.odim.quantity , "]  " , EncodingODIM(dstData.odim) , ", [" , minCode , ',' , maxCode , ']' );
-	mout.info("dst [" , dstQuality.odim.quantity , "]" , EncodingODIM(dstQuality.odim) );
-	*/
 	// UNUSED const double srcNI2 = 2.0*srcDataVRAD.odim.getNyquist(); // 2.0*srcData.odim.NI;
 
 	/// Azimuth in radians
@@ -310,7 +304,7 @@ void DopplerReprojectOp::processDataSet(const DataSet<PolarSrc> & srcSweep, Data
 	// exit(13);
 
 }
-
+*/
 
 
 class DopplerSegmentProber : public drain::image::SegmentProber<double, double, drain::image::SegmentProberConf<double, double> > {
