@@ -130,7 +130,8 @@ drain::image::TreeSVG & RadarSVG::getGeoGroup(drain::image::TreeSVG & group){
 	TreeSVG & geoGroup = group[VECTOR_OVERLAY]; // (svg::GROUP);
 
 	//if (!group.hasChild(VECTOR_OVERLAY)){
-	if (geoGroup->isUndefined()){
+	if (!geoGroup->hasClass(VECTOR_OVERLAY)){
+		// if (geoGroup->isUndefined()){
 
 		using namespace drain::image;
 		geoGroup->setType(svg::GROUP);

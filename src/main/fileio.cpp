@@ -546,8 +546,14 @@ void CmdOutputFile::exec() const {
 
 
 		drain::TreePruner<drain::image::TreeSVG> textPruner;
+		// Remove all UNDEFINED elements (Todo: optional, through outputConf svg:xxx
+		textPruner.tagSelector[svg::UNDEFINED] = 0;
+		// Remove all G elements which have no children.
+		textPruner.tagSelector[svg::GROUP] = drain::XmlEmptiness::CHILDREN;
+		// Remove all TEXT elements which have neither children neither own text.
 		textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::TEXT | drain::XmlEmptiness::CHILDREN;
-		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT; // drain::XmlEmptiness::ALLdrain::XmlEmptiness::ALL;
+		// Remove all TSPAN elements which have no text
+		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT;
 		drain::TreeUtils::traverse(textPruner, ctx.svgTrack);
 
 		drain::Output ofstr(filepath);

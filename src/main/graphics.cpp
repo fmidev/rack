@@ -372,9 +372,9 @@ drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
 
 		// Parking lots!
 		adapterGroup[svg::IMAGE]->setType(svg::GROUP);
-		adapterGroup[svg::IMAGE]->addClass("RASTERS"); // set("data-debug", "IMAGEs");
-		adapterGroup[RadarSVG::VECTOR_OVERLAY]; // parking lot ->setType(svg::GROUP);
-		// adapterGroup[RadarSVG::VECTOR_OVERLAY]; //->set("data-debug", "VECTOR_OVERLAYs");
+		adapterGroup[svg::IMAGE]->addClass("RASTERS");
+		adapterGroup[RadarSVG::VECTOR_OVERLAY]->setType(svg::GROUP); // parking lot, so may be left empty
+		adapterGroup[RadarSVG::VECTOR_OVERLAY]->addClass(RadarSVG::VECTOR_OVERLAY);
 
 	}
 	return adapterGroup;
@@ -412,14 +412,6 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 	// Later, include perhaps here...
 	drain::image::TreeSVG & adapterGroup = getAdapterGroup(alignedGroup);
 
-	// TreeSVG & geoGroup =
-	// alignedGroup[RadarSVG::VECTOR_OVERLAY]; // reserve a parking lot? Maybe unneeded.
-	/*
-	adapterGroup[svg::IMAGE]->setType(svg::GROUP);
-	adapterGroup[svg::IMAGE]->addClass("RASTERS"); // set("data-debug", "IMAGEs");
-	adapterGroup[RadarSVG::VECTOR_OVERLAY]; // parking lot ->setType(svg::GROUP);
-	adapterGroup[RadarSVG::VECTOR_OVERLAY]; //->set("data-debug", "VECTOR_OVERLAYs");
-	*/
 	return adapterGroup;
 
 }

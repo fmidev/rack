@@ -68,7 +68,7 @@ function RUN_TEST(){
     cmd="${cmd/$DESC/$OUTFILE}"
     rack_cmd=${cmd//\\/\\$NEWLINE  }
     echo "${rack_cmd}" > $TMPDIR/$BASENAME.cmd
-    cmd=(`echo -e $cmd | tr -d '\\'`)
+    cmd=(`echo -e $cmd | tr -d '\\\'`)
     #cmd=${cmd//\\/}
     cmd="${cmd[*]}"
     echo "# $cmd"

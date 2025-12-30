@@ -39,10 +39,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "TreeUtilsXML.h"
 
-namespace drain {
-
-
-}  // drain::
 
 DRAIN_ENUM_DICT(drain::XmlEmptiness) = {
 		DRAIN_ENUM_ENTRY(drain::XmlEmptiness, CHILDREN),

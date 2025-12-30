@@ -257,6 +257,10 @@ public:
 	};
 
 	/// Return true, all the bits of argument \c x are set.
+	/**
+	 *  \param x - bits to be studied
+	 *  \return - true, if bits overlap fully - or argument x is zero.
+	 */
 	virtual inline
 	bool isSet(const storage_t & x) const override {
 		return ((this->value & x) == x);

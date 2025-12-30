@@ -90,6 +90,16 @@ enum XmlEmptiness {
 	ANY = 128,
 };
 
+/**
+ * Example:
+  \code
+     drain::TreePruner<drain::image::TreeSVG> textPruner;
+     Remove all TEXT elements which have neither children neither own text.
+     textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::TEXT | drain::XmlEmptiness::CHILDREN;
+     textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT;
+     textPruner.tagSelector[svg::UNDEFINED] = 0;
+  \endcode
+ */
 template <class T>
 class TreePruner : public drain::TreeVisitor<T> {
 
@@ -119,52 +129,50 @@ int TreePruner<T>::visitPostfix(T & tree, const typename  T::path_t & path){
 
 		T & current = tree(path);
 
-		std::list<typename T::path_elem_t> empties;
+		std::list<typename T::path_elem_t> elemsToDelete;
 
 		for (const auto & entry: current.getChildren()){
 
-			drain::EnumFlagger<drain::MultiFlagger<XmlEmptiness> > flagger;
-
 			const T & child = entry.second;
 
-			if (child.getChildren().empty())
-				flagger.add(CHILDREN);
-
-			if (child.data.getAttributes().empty())
-				flagger.add(ATTRIBUTES);
-
-			if (child.data.getText().empty())
-				flagger.add(TEXT);
-
+			// Is current tag type mentioned in selector?
 			typename tag_selector_t::const_iterator it = tagSelector.find(child->getNativeType());
 			if (it != tagSelector.end()){
+
 				// mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , ElemPrinter<typename T::node_data_t>(child).str());
-				// check rule
-				if (flagger.isSet(it->second)){
-					empties.push_back(entry.first);
+
+
+				if (it->second == 0){
+					// Unconditioned deletion of this tag type: the type is mentioned without selector value.
+					elemsToDelete.push_back(entry.first);
 				}
+				else {
+
+					drain::EnumFlagger<drain::MultiFlagger<XmlEmptiness> > emptiness;
+
+					if (child.getChildren().empty())
+						emptiness.add(CHILDREN);
+
+					if (child.data.getAttributes().empty())
+						emptiness.add(ATTRIBUTES);
+
+					if (child.data.getText().empty())
+						emptiness.add(TEXT);
+
+					// Note: checks rule if-ALL-set
+					if (emptiness.isSet(it->second)){
+						elemsToDelete.push_back(entry.first);
+					}
+					else if ((it->second & XmlEmptiness::ANY) && emptiness.isAnySet(it->second)){
+						elemsToDelete.push_back(entry.first);
+					}
+				}
+
 			}
 
-			/*
-			switch (entry.second->getType()){
-			case svg::TEXT:
-				if (entry.second.getChildren().empty() && entry.second->getText().empty()){
-					empties.push_back(entry.first);
-					// current.erase();
-				}
-				break;
-			case svg::TSPAN:
-				if (entry.second->getText().empty()){
-					empties.push_back(entry.first);
-				}
-				break;
-			default:
-				break;
-			}
-			*/
 		}
 
-		for (const typename T::path_elem_t & elem: empties){
+		for (const typename T::path_elem_t & elem: elemsToDelete){
 			// mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , ElemPrinter<typename T::node_data_t>(current[elem]).str());
 			current.erase(elem);
 		}
@@ -179,5 +187,5 @@ int TreePruner<T>::visitPostfix(T & tree, const typename  T::path_t & path){
 
 DRAIN_ENUM_DICT(drain::XmlEmptiness);
 
-#endif /* TREEXML_H_ */
+#endif // DRAIN_TREE_UTILS_XML
 

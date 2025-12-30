@@ -497,6 +497,10 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 	}
 	else {
 
+		if (isUndefined()){
+			drain::Logger(__FILE__, __FUNCTION__).warn("Undefined TAG type for ", getName(), "  ID=", getId(), " attr=", getAttributes());
+		}
+
 		if (mode==CLOSING_TAG){
 			ostr << "</";
 		}
@@ -505,7 +509,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 		}
 
 		if (getTag().empty()){
-			drain::Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("defaultTag for type=", getType(), " requested by for ID=", getId(), " attr=", getAttributes());
+			drain::Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("defaultTag for type=", getType(), " requested by ID=", getId(), " attr=", getAttributes());
 
 			ostr << "defaultTag"; // << ' ';  FIX! getDefaultTag?
 		}

@@ -944,6 +944,9 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 	TreeSVG & current = tree(path);
 
 	if (!current->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
+		if (current->isUndefined()){
+			current->setId(path);
+		}
 		return 0;
 	}
 
@@ -977,7 +980,7 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 
 
 	TreeSVG & debugSharedBase = current[svg::DESC](svg::DESC);
-	// debugSharedBase->addClass("SHARED"); // just a marker.
+	// debugSharedBase->addClass("SUPER_SHARED"); // just a marker.
 	// TreeSVG & debugShared = debugSharedBase["cmt"](svg::COMMENT);
 
 	if (mout.isLevel(LOG_DEBUG)){
