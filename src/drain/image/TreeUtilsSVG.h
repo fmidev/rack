@@ -99,13 +99,6 @@ struct CoordSpan {
 
 	void copyFrom(const BBoxSVG & bbox);
 
-	/*
-	inline
-	bool isUndefined(){
-		return std::isnan(pos) || std::isnan(span);
-	}
-	*/
-
 	inline
 	bool isDefined(){
 		return ! (std::isnan(pos) || std::isnan(span));
@@ -117,7 +110,16 @@ struct TreeUtilsSVG {
 
 public:
 
+	enum Roles {
+		MAIN,
+	};
 
+	/// Create a new entry, unless already defined.
+	/**
+	 *
+	 */
+	static
+	TreeSVG & ensureStyle(TreeSVG & root, const SelectorXML & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef);
 
 	/// Compute the bounding box recursively in objects of type IMAGE, RECT, POLYGON and G (group).
 	/**
@@ -167,7 +169,7 @@ public:
 	void superAlign(TreeSVG & node);
 
 
-	// TODO: templated
+	// Why templated, and not two separate?
 	template <AlignBase::Axis AX>
 	static
 	void realignObject(NodeSVG & node, const CoordSpan<AX> & span);
@@ -183,7 +185,8 @@ void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis
 template <>
 void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
 
-
+DRAIN_ENUM_DICT(TreeUtilsSVG::Roles);
+DRAIN_ENUM_OSTREAM(TreeUtilsSVG::Roles);
 
 class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
 
@@ -243,6 +246,44 @@ protected:
 	typedef std::map<std::string, unsigned short> variableStat_t;
 
 };
+
+
+/**
+ *
+ */
+class ClipperSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	static
+	const std::string CLIP;
+
+	/*
+	enum MyDataType {
+		FIRST,
+		SECOND
+	};
+	*/
+
+	inline
+	ClipperSVG(TreeSVG & root) : root(root) {
+	}
+
+	ClipperSVG(const ClipperSVG & clipper) : root(clipper.root) { // ???
+	}
+
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		// always continue
+		return 0;
+	}
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	TreeSVG & root;
+
+};
+
 
 // DRAIN_ENUM_DICT(MetaDataCollectorSVG::MetaDataType);
 

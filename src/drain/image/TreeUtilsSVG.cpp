@@ -58,6 +58,37 @@ const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
 };
 */
 
+DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
+		DRAIN_ENUM_ENTRY(drain::image::TreeUtilsSVG::Roles, MAIN),
+};
+
+/// Create a new entry, unless already defined.
+TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectorXML & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+
+	TreeSVG & style = root[svg::STYLE](svg::STYLE);
+
+	if (style->isUndefined()){
+		style->setType(svg::STYLE);
+	}
+
+	TreeSVG & styleEntry = style[selector];
+	if (styleEntry.empty()){
+		styleEntry = styleDef;
+		// styleEntry->setStyle(styleDef); WRONG (did not work)
+	}
+	return styleEntry;
+
+	/*
+	if (style.hasChild(selector)){
+		return style[selector];
+	}
+	else {
+		TreeSVG & styleEntry = style[selector];
+		styleEntry = styleDef;
+		return styleEntry;
+	}
+	*/
+}
 
 
 void TreeUtilsSVG::detectBox(drain::image::TreeSVG & group, bool debug){
@@ -1064,7 +1095,44 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 
 }
 
+const std::string ClipperSVG::CLIP("CLIPPED");
 
+int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//mout.experimental("check: ", path);
+
+	TreeSVG & t = tree(path);
+	if (t->hasClass(CLIP)){
+
+		mout.experimental("clipping elements under: ", path);
+
+		TreeSVG & defs = this->root[svg::DEFS](svg::DEFS);
+
+		const std::string & id = t->getId();
+		TreeSVG & clip = defs[id](svg::CLIP_PATH);
+		clip->setId(id,"Clipper");
+		// std::string url = drain::StringBuilder<>("url(#", clip->getId(), ")");
+		t->set("clip-path", drain::StringBuilder<>("url(#", clip->getId(), ")").str());
+		TreeSVG & rect = clip[svg::RECT](svg::RECT);
+		size_t w = t->getWidth();
+		if (w == 0){
+			mout.warn("zero width of clipped object/group, setting 250");
+			w = 450;
+		}
+		size_t h = t->getHeight();
+		if (h == 0){
+			mout.warn("zero height of clipped object/group, setting 250");
+			h = 450;
+		}
+		rect->setWidth(w);
+		rect->setHeight(h);
+
+	}
+
+	return 0;
+}
 
 /**
  *

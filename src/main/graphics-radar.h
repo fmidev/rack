@@ -89,7 +89,7 @@ public:
 	 *
 	 */
 	static
-	drain::image::TreeSVG & getGeoGroup(drain::image::TreeSVG & svgDoc);
+	drain::image::TreeSVG & getOverlayGroup(drain::image::TreeSVG & svgDoc);
 
 
 	// Projection of the latest radar input.

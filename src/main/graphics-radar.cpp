@@ -87,7 +87,9 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 		// mout.debug("initializing style");
 
 		style->setType(svg::STYLE);
+
 		// These could be
+
 		style[SelectorXMLcls("GRID")] = {
 				{"stroke", "white"},
 				{"stroke-width", 2.0},
@@ -95,6 +97,16 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 				//{"fill", "blue"}, // debug
 				//{"fill-opacity", 0.35},
 		};
+
+		/*
+		style[SelectorXMLcls("SECTOR")] = {
+				{"fill", "none"},
+				{"stroke", "green"},
+				{"stroke-width", 12.0},
+				{"opacity", 0.65}
+		};
+		*/
+
 
 		style[SelectorXMLcls(image::svg::TEXT, "GRID")] = {
 				{"text-anchor", "middle"},
@@ -122,30 +134,35 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 }
 
 
-drain::image::TreeSVG & RadarSVG::getGeoGroup(drain::image::TreeSVG & group){
+drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// static const std::string GEO_GROUP("geoGroup");
 
-	TreeSVG & geoGroup = group[VECTOR_OVERLAY]; // (svg::GROUP);
+	TreeSVG & overlayGroup = group[VECTOR_OVERLAY]; // (svg::GROUP);
 
 	//if (!group.hasChild(VECTOR_OVERLAY)){
-	if (!geoGroup->hasClass(VECTOR_OVERLAY)){
-		// if (geoGroup->isUndefined()){
+	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
+	if (overlayGroup->isUndefined()){
 
 		using namespace drain::image;
-		geoGroup->setType(svg::GROUP);
+		overlayGroup->setType(svg::GROUP);
 		//TreeSVG & geoGroup = group[VECTOR_OVERLAY](svg::GROUP);
-		geoGroup->addClass(StyleClasses::GRID);
-		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
+		overlayGroup->addClass(StyleClasses::GRID);
 
+		// geoGroup->addClass(LayoutSVG::INEFFECTIVE);
+		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
+		// geoGroup->addClass(LayoutSVG::FIXED);
+		/*
+		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
 		// Set defaults...
 		geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 		geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
+		*/
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
 	}
 
-	return geoGroup;
+	return overlayGroup;
 }
 
 void RadarSVG::updateRadarConf(const drain::VariableMap & where) {

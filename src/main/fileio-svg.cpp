@@ -287,7 +287,7 @@ public:
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str());
-					mout.advice("use: ", drain::sprinter(drain::EnumDict<Alignment<> >::dict.getKeys(), {"|"}).str());
+					// mout.advice("use: ", drain::sprinter(drain::EnumDict<Alignment<> >::dict.getKeys(), {"|"}).str()); // = HorzAlign + VertAlign
 					mout.error("could not determine axis from argument '", arg, "'");
 					break;
 				}
@@ -1199,7 +1199,7 @@ public:
 	int stepDegrees = 15;
 	*/
 
-	CmdPolarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	CmdPolarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings. Styles: HIGHLIGHT") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 		getParameters().link("distance", distanceMetres.tuple(), "step:start:end (metres)");
 		getParameters().link("azimuth", azimuthDegrees.tuple(), "step:start:end (degrees)");
 		//getParameters().link("radialStep", stepMetres, "metres");
@@ -1280,7 +1280,7 @@ public:
 			*/
 
 			drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
-			drain::image::TreeSVG & geoGroup = RadarSVG::getGeoGroup(group);
+			drain::image::TreeSVG & geoGroup = RadarSVG::getOverlayGroup(group);
 			RackSVG::consumeAlignRequest(ctx, geoGroup);
 
 
@@ -1354,6 +1354,7 @@ public:
 
 				drain::image::TreeSVG & g = geoGroup.addChild()(svg::GROUP);
 				g->addClass(RadarSVG::HIGHLIGHT);
+				g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
 
 				drain::image::TreeSVG & arcNode = g.addChild();
 				drain::svgPATH arcElem(arcNode);
@@ -1394,8 +1395,11 @@ class CmdPolarSector : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdPolarSector() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	CmdPolarSector() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 	};
+
+	// static
+	// const std::string SECTOR;
 
 
 	virtual inline
@@ -1427,7 +1431,7 @@ public:
 
 		}
 
-		std::cout << polarSector.getParameters() << std::endl;
+		// std::cout << polarSector.getParameters() << std::endl;
 
 		RadarSVG radarSVG;
 		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
@@ -1444,7 +1448,7 @@ public:
 			mout.error("Data in Polar coordinates - not supported"); // Cartesian not "found", ie not created this.
 		}
 		else {
-			mout.note("Cartesian");
+			mout.note(getName(), ": Cartesian");
 
 			const drain::VariableMap & where = srcCurr[ODIMPathElem::WHERE].data.attributes;
 
@@ -1454,56 +1458,27 @@ public:
 			radarSVG.updateCartesianConf(where);
 
 			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
-			drain::image::TreeSVG & geoGroup = RadarSVG::getGeoGroup(group);
-			RackSVG::consumeAlignRequest(ctx, geoGroup);
+			drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
+			RackSVG::consumeAlignRequest(ctx, overlayGroup);
 
+			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
+
+			drain::image::TreeSVG & curve = overlayGroup[getName()](drain::image::svg::PATH);
+			curve -> addClass(getName()); // SECTOR
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(getName()), { // SECTOR
+					{"fill", "none"},
+					{"stroke", "green"},
+					{"stroke-width", 12.0},
+					{"opacity", 0.65}
+			});
 			/*
-			// drain::image::GeoFrame geoFrame;
-			int epsg = where.get("epsg", 0); // non-standard
-			if (epsg){
-				mout.attention("EPSG found: ", epsg);
-				radarSVG.geoFrame.setProjectionEPSG(epsg);
-			}
-			else {
-				radarSVG.geoFrame.setProjection(where["projdef"]);
-			}
-			radarSVG.geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
-			radarSVG.geoFrame.setGeometry(where["xsize"], where["ysize"]);
-
-			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame);
-			mout.special("GeoFrame BBOX: ", radarSVG.geoFrame.getBoundingBoxNat());
-
-			radarSVG.radarProj.setProjectionDst(where.get("projdef", ""));
-			double radius = 250000.0;
-			drain::Rectangle<double> bbox;
-			radarSVG.radarProj.determineBoundingBoxM(radius, bbox); // M = "native"
-			// drain::Rectangle<double> bbox;
-			mout.special("BBOX (250km) of the last input:", bbox);
-
-			//
-			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
-			//RackSVG::get
-
-
-			// TODO: default group?
-			drain::image::TreeSVG & geoGroup = group["geoGroup"](drain::image::svg::GROUP);
-
-			// Set defaults...
-			geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
-			geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
-			// ... but override, if explicitly set.
-			RackSVG::consumeAlignRequest(ctx, geoGroup);
-			*/
-
-			geoGroup.addChild()->setComment(getName(), ' ', getParameters());
-
-			drain::image::TreeSVG & curve = geoGroup[getName()](drain::image::svg::PATH);
 			curve -> setStyle({
 				{"fill", "none"},
 				{"stroke", "green"},
 				{"stroke-width", 12.0},
 				{"opacity", 0.65}
-			});
+			})
+			*/
 
 			// TreeElemUtilsSVG.h
 			drain::svgPATH bezierElem(curve);
@@ -1539,12 +1514,19 @@ public:
 
 };
 
+// const std::string CmdPolarSector::SECTOR("SECTOR");
+
+
+
 
 class CmdPolarScope : public drain::BasicCommand {
 
 public:
 
-	CmdPolarScope() : drain::BasicCommand(__FUNCTION__, "Draw circle, typically transparent, on the radar range") {
+	// static
+	// const std::string SCOPE;
+
+	CmdPolarScope() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar range. Styles: GRID,HIGHLIGHT,CmdPolarScope") {
 	};
 
 
@@ -1584,17 +1566,27 @@ public:
 			radarSVG.updateCartesianConf(where);
 
 			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
-			drain::image::TreeSVG & geoGroup = RadarSVG::getGeoGroup(group);
-			RackSVG::consumeAlignRequest(ctx, geoGroup); // for scope???
+			drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
+			RackSVG::consumeAlignRequest(ctx, overlayGroup); // for scope???
 
-			geoGroup.addChild()->setComment(getName(), ' ', getParameters());
-			drain::image::TreeSVG & curve = geoGroup[getName()](drain::image::svg::PATH);
+			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
+			drain::image::TreeSVG & curve = overlayGroup[getName()](drain::image::svg::PATH);
+			/*
 			curve -> setStyle({
 				{"fill", "none"},
 				{"stroke", "cyan"},
 				{"stroke-width", 6.0},
 				{"opacity", 0.85}
 			});
+			*/
+			curve->addClass(getName());
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(getName()), {
+					{"fill", "none"},
+					{"stroke", "cyan"},
+					{"stroke-width", 6.0},
+					{"opacity", 0.85}
+			});
+
 
 			// TreeElemUtilsSVG.h
 			drain::svgPATH bezierElem(curve);

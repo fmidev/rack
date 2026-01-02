@@ -139,18 +139,11 @@ struct AnchorElem : public std::string {
 
 };
 
-}
+} // drain::
 
-}
-
-/*
-DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor);
-
-DRAIN_ENUM_OSTREAM(drain::image::AnchorElem::Anchor);
-*/
-
-
-namespace drain {
+// }
+//
+// namespace drain {
 
 DRAIN_ENUM_DICT(image::AnchorElem::Anchor);
 DRAIN_ENUM_OSTREAM(image::AnchorElem::Anchor);

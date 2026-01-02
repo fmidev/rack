@@ -67,7 +67,7 @@ struct svg {
 		STYLE=XML::STYLE,
 		STYLE_SELECT=XML::STYLE_SELECT,
 		SVG=10,
-		CIRCLE, DESC, GROUP, LINE, IMAGE, METADATA, PATH, POLYGON, RECT, TEXT, TITLE, TSPAN };
+		CIRCLE, CLIP_PATH, DEFS, DESC, GROUP, IMAGE, LINE, LINEAR_GRADIENT, MASK, METADATA, PATH, POLYGON, RECT, TEXT, TITLE, TSPAN };
 	// check CTEXT, maybe implement in XML
 
 };
@@ -154,7 +154,9 @@ public:
 	bool isAbstract() const {
 		return typeIs(
 				svg::tag_t::STYLE,
+				svg::tag_t::CLIP_PATH, // Semi-abstract..
 				svg::tag_t::DESC,
+				svg::tag_t::DEFS,
 				svg::tag_t::METADATA,
 				svg::tag_t::SCRIPT,
 				svg::tag_t::TITLE,
@@ -400,7 +402,7 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 */
 
 
-// Utility
+// Utility (move to utils?)
 class NodePrinter {
 
 public:
@@ -499,7 +501,6 @@ image::TreeSVG & image::TreeSVG::operator=(const std::string & arg){
 template <> // referring to Tree<NodeSVG>
 inline
 image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
-//image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 	return XML::xmlAssign(*this, l);
 }
 
@@ -508,10 +509,6 @@ template <>
 template <class T>
 image::TreeSVG & image::TreeSVG::operator=(const T & arg){
 	return XML::xmlAssign(*this, arg);
-	/*
-	data.set(arg); // what about TreeSVG & arg
-	return *this;
-	*/
 }
 
 /// Handy in setting the type.
@@ -524,13 +521,7 @@ image::TreeSVG & image::TreeSVG::operator=(const T & arg){
  */
 template <> // for T - Tree class
 template <> // for K - operator() argument
-// inline
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
-/*
-{
-		return XML::xmlSetType(*this, type);
-}
-*/
 
 
 /// Automatic conversion of element type (enum value) to a string.

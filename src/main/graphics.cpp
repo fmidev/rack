@@ -330,22 +330,37 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 	//using namespace drain::image;
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	static std::string MAIN("MAIN");
+
 	// Ensure STYLE elem and definitions
 	RackSVG::getStyle(ctx);
 	// ctx.getStyle();
 	// drain::image::TreeSVG & main = ctx.svgTrack[ctx.svgGroupNameSyntax]; <- this makes sense as well
 
+	if (ctx.svgTrack.hasChild(MAIN)){
+		return ctx.svgTrack[MAIN];
+	}
+	else {
+		ctx.svgTrack[svg::DEFS](svg::DEFS);
+
+		drain::image::TreeSVG & main = ctx.svgTrack[MAIN]; //drain::image::LayoutSVG::
+		main->setType(svg::GROUP);
+		main->addClass(MAIN); // TitleCreatorSVG::visitPostfix
+		main->addClass(LayoutSVG::ADAPTER);
+		return main;
+
+	}
+
+	/*
 	drain::image::TreeSVG & main = ctx.svgTrack["MAIN"]; //drain::image::LayoutSVG::
 	if (main->isUndefined()){
 		main->setType(svg::GROUP);
 		main->addClass("MAIN"); // TitleCreatorSVG::visitPostfix
 		main->addClass(LayoutSVG::ADAPTER);
-		// request translate upon file write:?
-		// mout.attention("Created MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
 	}
-	// mout.attention("Providing MAIN, ", PanelConfSVG::MAIN, ": ", main.data, " / ", main.data.getType());
-
 	return main;
+	*/
+
 
 }
 
@@ -371,10 +386,16 @@ drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group){
 		adapterGroup->transform.translate.set(0,0);
 
 		// Parking lots!
+		/*
+		drain::image::TreeSVG & defs = adapterGroup[svg::DEFS](svg::DEFS);
+		drain::image::TreeSVG & clip = defs[svg::CLIP_PATH](svg::CLIP_PATH);
+		clip -> setId(group->getId(), "Clipper");
+		*/
 		adapterGroup[svg::IMAGE]->setType(svg::GROUP);
 		adapterGroup[svg::IMAGE]->addClass("RASTERS");
-		adapterGroup[RadarSVG::VECTOR_OVERLAY]->setType(svg::GROUP); // parking lot, so may be left empty
+		// adapterGroup[RadarSVG::VECTOR_OVERLAY]->setType(svg::GROUP); // parking lot, so may be left empty
 		adapterGroup[RadarSVG::VECTOR_OVERLAY]->addClass(RadarSVG::VECTOR_OVERLAY);
+		adapterGroup[RadarSVG::VECTOR_OVERLAY]->addClass(drain::image::ClipperSVG::CLIP);
 
 	}
 	return adapterGroup;

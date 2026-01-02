@@ -556,6 +556,11 @@ void CmdOutputFile::exec() const {
 		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT;
 		drain::TreeUtils::traverse(textPruner, ctx.svgTrack);
 
+
+		drain::image::ClipperSVG clipper(ctx.svgTrack);
+		drain::TreeUtils::traverse(clipper, ctx.svgTrack);
+
+
 		drain::Output ofstr(filepath);
 
 		drain::image::NodeSVG::toStream(ofstr, ctx.svgTrack);
