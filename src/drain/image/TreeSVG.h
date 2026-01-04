@@ -153,6 +153,7 @@ public:
 	inline
 	bool isAbstract() const {
 		return typeIs(
+				svg::tag_t::UNDEFINED,
 				svg::tag_t::STYLE,
 				svg::tag_t::CLIP_PATH, // Semi-abstract..
 				svg::tag_t::DESC,

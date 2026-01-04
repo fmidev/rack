@@ -75,7 +75,7 @@ public:
 		COMPOUND,     // Internal elements are already aligned, bypass recursion.
 		FIXED,        // Absolute position - do not align.
 		INDEPENDENT,  // No anchoring allowed to this element, but collective bounding box is adjusted to include this element
-		INEFFECTIVE,  // The object is not included in updating the collective bounding box but can be used as anchor. \see INDEPENDENT
+		NEUTRAL,  // The object is not included in updating the collective bounding box but can be used as anchor. \see INDEPENDENT
 		//
 		CROP,         // minimize bbox covering all the included objects. \see GroupType::FIXED
 		// Future options

@@ -633,7 +633,7 @@ void TreeUtilsSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> 
 				"V:",  anchorSpanVert.pos, ',', anchorSpanVert.span);
 		*/
 
-		if (!node.hasClass(LayoutSVG::INEFFECTIVE)){
+		if (!node.hasClass(LayoutSVG::NEUTRAL)){
 			//compoundBBox.expand(node.getBoundingBox()); // this should be valid :-(
 			compoundBBox.expandHorz(anchorSpanHorz.pos);
 			compoundBBox.expandHorz(anchorSpanHorz.pos + anchorSpanHorz.span);

@@ -143,16 +143,16 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 	//if (!group.hasChild(VECTOR_OVERLAY)){
 	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
-	if (overlayGroup->isUndefined()){
+	if (overlayGroup->isUndefined()){ //  && overlayGroup.hasChildren()
 
 		using namespace drain::image;
 		overlayGroup->setType(svg::GROUP);
 		//TreeSVG & geoGroup = group[VECTOR_OVERLAY](svg::GROUP);
 		overlayGroup->addClass(StyleClasses::GRID);
 
-		// geoGroup->addClass(LayoutSVG::INEFFECTIVE);
+		// geoGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
-		// geoGroup->addClass(LayoutSVG::FIXED);
+		overlayGroup->addClass(LayoutSVG::FIXED);
 		/*
 		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
 		// Set defaults...

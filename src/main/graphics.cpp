@@ -593,7 +593,7 @@ drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePan
 	drain::image::TreeSVG & imageBorder = imagePanelGroup[PanelConfSVG::ElemClass::IMAGE_BORDER](svg::RECT); // +EXT!
 	imageBorder->addClass(PanelConfSVG::ElemClass::IMAGE_BORDER); // style
 	imageBorder->addClass(drain::image::LayoutSVG::INDEPENDENT);  // next object won't treat me as anchor (unless specifically called for)
-	imageBorder->addClass(drain::image::LayoutSVG::INEFFECTIVE);  // does not expand COMPOUND bbox
+	imageBorder->addClass(drain::image::LayoutSVG::NEUTRAL);  // does not expand COMPOUND bbox
 	imageBorder->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 	return imageBorder;
 }
@@ -640,7 +640,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const PanelConfSVG &conf, d
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	TreeSVG &mainHeader = group[PanelConfSVG::ElemClass::GENERAL](svg::TEXT);
-	mainHeader->addClass(LayoutSVG::INEFFECTIVE);
+	mainHeader->addClass(LayoutSVG::NEUTRAL);
 	mainHeader->addClass(elemClass); // also GENERAL?
 	mainHeader->setMyAlignAnchor(anchor);
 
@@ -659,7 +659,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const PanelConfSVG &conf, d
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG &timeHeader = group[PanelConfSVG::ElemClass::TIME](svg::TEXT);
 	timeHeader->addClass(elemClass, PanelConfSVG::ElemClass::TIME);
-	timeHeader->addClass(LayoutSVG::INEFFECTIVE);
+	timeHeader->addClass(LayoutSVG::NEUTRAL);
 	timeHeader->setMyAlignAnchor(anchor);
 	timeHeader["date"](svg::TSPAN);
 	timeHeader["date"]->addClass("date"); // PanelConfSVG::ElemClass::TIME);
@@ -669,7 +669,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const PanelConfSVG &conf, d
 
 	TreeSVG &locationHeader = group[PanelConfSVG::ElemClass::LOCATION](svg::TEXT);
 	locationHeader->addClass(elemClass, PanelConfSVG::ElemClass::LOCATION);
-	locationHeader->addClass(LayoutSVG::INEFFECTIVE); // testing LayoutSVG::INEFFECTIVE
+	locationHeader->addClass(LayoutSVG::NEUTRAL); // testing LayoutSVG::NEUTRAL
 	locationHeader->setMyAlignAnchor(anchor);
 	locationHeader["NOD"](svg::TSPAN);
 	locationHeader["NOD"]->addClass("NOD");

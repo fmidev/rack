@@ -48,7 +48,7 @@ DRAIN_ENUM_DICT(image::LayoutSVG::GroupType) = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FIXED),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INDEPENDENT),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INEFFECTIVE),
+		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, NEUTRAL),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
 };
 
