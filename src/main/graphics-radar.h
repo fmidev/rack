@@ -72,17 +72,19 @@ public:
 
 	enum StyleClasses {
 		VECTOR_OVERLAY, // this is more for group ID/name
+		HIGHLIGHT,      // CSS: activated on tool tip
+		// ^ rename VECTORS  VECTOR_GRAPHICS
 		GRID,           // CSS
-		HIGHLIGHT,      // CSS
 	};
 
-	/// Sets some CSS properties applicable in radar graphics.
+	/// Sets some CSS properties applicable in radar graphics (grids, sectors).
 	/**
-	 *  Creates a style element only if i does not exist already.
+	 *  Creates a style element only if it does not exist already.
 	 *
+	 *  More general style is obtained with RackSVG::getStyle().
 	 */
 	static
-	drain::image::TreeSVG & getStyle(drain::image::TreeSVG & svgDoc);
+	drain::image::TreeSVG & getOverlayStyle(drain::image::TreeSVG & svgDoc);
 
 	/// Get (create) group dedicated for layers drawn over radar data
 	/**

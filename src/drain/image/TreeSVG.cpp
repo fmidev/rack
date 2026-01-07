@@ -375,25 +375,30 @@ image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
 
 /// Automatic conversion of element type (enum value) to a string.
 /**
- *   Convenience
- */
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
-	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
-}
-
-/// Automatic conversion of element type (enum value) to a string.
-/**
  *  Convenience
  */
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
+	// return image::TreeSVG::addChild(EnumDict<image::svg::tag_t>::dict.getKey(type, false));
+	//return XML::xmlAddChild(*this, EnumDict<image::svg::tag_t>::dict.getKey(type, false));
+	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
+}
+
+
+/// Automatic conversion of element type (enum value) to a string.
+/**
+ *   Convenience
+ */
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
+	//return XML::xmlAddChild(*this, EnumDict<image::svg::tag_t>::dict.getKey(type, false));
 	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
 }
 
 
 }  // drain::
+
 
 

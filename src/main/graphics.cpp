@@ -81,7 +81,7 @@ namespace rack {
 /// Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)
 
 
-const std::string RackSVG::BACKGROUND_RECT = "bgRect";
+const std::string RackSVG::BACKGROUND_RECT = "BACKGROUND_RECT";
 
 drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
@@ -89,8 +89,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	TreeSVG & style = ctx.svgTrack[svg::STYLE];
-
+	TreeSVG & style = ctx.svgTrack[svg::STYLE]; // = main style section in the document
 
 	using namespace drain;
 
@@ -204,9 +203,35 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	}
 
+	mout.warn("Setting font sizes: ", ctx.svgPanelConf.fontSizes);
 	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
 	style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
 	style[SelectorXMLcls(PanelConfSVG::IMAGE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+
+	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-rauno", ctx.svgPanelConf.fontSizes[0]);
+	style[SelectorXMLcls("RAUNO1")] = {
+			{"stroke-linejoin", "round"},
+	};
+	style[SelectorXMLcls("RAUNO1")] ->set("font-rauno", ctx.svgPanelConf.fontSizes[0]);
+
+	// style[SelectorXMLcls("RAUNO3")] = {};
+	style[SelectorXMLcls("RAUNO3")] ->set("font-first", ctx.svgPanelConf.fontSizes[0]);
+	style["RAUNO4"]->set("key", 123);
+	mout.attention("RAUNO4 id=",  style["RAUNO4"]->getId());
+
+	// style[SelectorXMLcls("RAUNO3")];
+	// style[SelectorXMLcls("RAUNO3")] ->set("font-second", ctx.svgPanelConf.fontSizes[0]);
+
+	static int counter = 0;
+
+	drain::Output ofstr; //(basename+".svg");
+	std::string basename = drain::StringBuilder<>("debug",++counter);
+	ofstr.open(basename+".svg");
+	drain::image::NodeSVG::toStream(ofstr, style);
+
+	ofstr.open(basename+".foo");
+	drain::TreeUtils::dump(style, ofstr);
+	// drain::TreeUtils::dataDumper(style, ofstr.ofstr);
 
 	return style;
 }

@@ -622,11 +622,6 @@ public:
 			// ... but not copying src? (TreeUtils?)
 			// also dst->clear();
 			xmlAssignNode(dst.data, src);
-			/*
-			dst->setType(src->getType());
-			dst->setText(src->ctext); //CTXX
-			dst->getAttributes() = src->getAttributes();
-			*/
 		}
 
 		return dst;
@@ -639,16 +634,7 @@ public:
 	template <typename TX>
 	static inline
 	TX & xmlAssign(TX & dst, const typename TX::xml_node_t & src){
-
 		xmlAssignNode(dst.data, src);
-		/*
-		if (&src != &dst.data){
-			dst->clear(); NOW reset()
-			dst->getAttributes().importMap(src.getAttributes());
-			dst->setStyle(src.getStyle());
-			dst->setText(src.ctext);
-		}
-		*/
 		return dst;
 	}
 
@@ -667,11 +653,9 @@ public:
 			//if (!dst.typeIs(src.getNativeType())){
 			if (dst.getType() != src.getType()){
 				dst.reset(); // clear attributes, style, cstring and type.
-				// Warning! Dangerous situation. does not create links
+				// Warning: does not create links.
 				dst.setType(src.getType());
 			}
-			// dst.setType(src.getType()); // important: creates links!
-			// dst.handleType(src.getNativeType()); // NEW
 			dst.getAttributes().importMap(src.getAttributes());
 			dst.setStyle(src.getStyle());
 			// dst.setText(src.ctext); // wrong! set type to CTEXT
@@ -947,7 +931,13 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 				ostr << fill << "  " << entry.first << " {\n";
 				for (const auto & attr: entry.second->getAttributes()){
 					ostr << fill  << "    ";
-					ostr << attr.first << ':' << attr.second << ';';
+					if (attr.first == "id"){
+						StyleXML::commentToStream(ostr, "id=", attr.second);
+						// mout.suspicious("Style elem has id (", attr.second, ")");
+					}
+					else {
+						ostr << attr.first << ':' << attr.second << ';';
+					}
 					ostr << '\n';
 				}
 				ostr << fill << "  }\n";

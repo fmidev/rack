@@ -790,6 +790,16 @@ x	 *  \see clearData()
 	}
 	*/
 
+	/// Means for automatically setting something, for example the type of a node.
+	/**
+	 *  For example the default type of a node can be set based on the type of the host node.
+	 *
+	 *  Future option: also key (of type const key_t &) is considered
+	 */
+	inline
+	void initChild(tree_t & child){
+	}
+
 	/// Add a child node. If unordered and UNIQUE, reuse existing nodes.
 	/**
 	 *   Behaviour of this function varies as follows:
@@ -808,8 +818,10 @@ x	 *  \see clearData()
 			return *this;
 		}
 
-		if (EXCLUSIVE)
+		if (EXCLUSIVE){
+			// EXCLUSIVE = either data or children... so drop data now.
 			this->clearData();
+		}
 
 		#ifdef DRAIN_TREE_ORDERED
 		iterator it = children.find(key);
@@ -817,7 +829,10 @@ x	 *  \see clearData()
 			return it->second;
 		}
 		else {
-			return children.insert(children.begin(), pair_t(key, tree_t()))->second;
+			tree_t & child = children.insert(children.begin(), pair_t(key, tree_t()))->second;
+			initChild(child);
+			return child;
+			//return children.insert(children.begin(), pair_t(key, tree_t()))->second;
 		}
 		//return children[key];
 
@@ -834,7 +849,10 @@ x	 *  \see clearData()
 
 		// Add:
 		children.push_back(pair_t(key, tree_t()));
-		return children.back().second;
+		tree_t & child = children.back().second; //children.insert(children.begin(), pair_t(key, tree_t()))->second;
+		initChild(child);
+		return child;
+		//return children.back().second;
 
 		#endif
 	};
@@ -868,7 +886,10 @@ x	 *  \see clearData()
 
 		// Add:
 		children.push_front(pair_t(key, tree_t()));
-		return children.back().second;
+		tree_t & child = children.front().second; //children.insert(children.begin(), pair_t(key, tree_t()))->second;
+		initChild(child);
+		return child;
+		//return children.back().second;
 		#endif
 
 	};
@@ -893,7 +914,11 @@ x	 *  \see clearData()
 			return it->second;
 		}
 		else {
-			return children.insert(children.begin(), pair_t(key, tree_t()))->second;
+			tree_t & child = children.insert(children.begin(), pair_t(key, tree_t()))->second;
+			initChild(child);
+			return child;
+			//
+			// return children.insert(children.begin(), pair_t(key, tree_t()))->second;
 		}
 
 		#else
@@ -905,7 +930,10 @@ x	 *  \see clearData()
 		}
 		// if (EXCLUSIVE)	this->clearData();
 		children.push_back(pair_t(key, tree_t()));
-		return children.back().second;
+		tree_t & child = children.back().second; //children.insert(children.begin(), pair_t(key, tree_t()))->second;
+		initChild(child);
+		return child;
+		// return children.back().second;
 
 		#endif
 	};

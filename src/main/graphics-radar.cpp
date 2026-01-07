@@ -65,7 +65,7 @@ namespace rack {
 using namespace drain;
 
 
-drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
+drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc){
 
 	// Consider areas or frames: MAIN_FRAME, GROUP_FRAME, IMAGE_FRAME
 
@@ -73,13 +73,15 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 
 	using namespace drain::image;
 
-	if (!svgDoc.hasChild("GRID")){
-		// svgDoc.getChildren().push_front(TreeSVG::node_pair_t("GRID", TreeSVG()));
-		svgDoc.prependChild("GRID"); // test first
+	static
+	const std::string OVERLAY_STYLE = "OVERLAY_STYLE";
+
+	if (!svgDoc.hasChild(OVERLAY_STYLE)){
+		// Ensure element position at the beginning of the doc.
+		svgDoc.prependChild(OVERLAY_STYLE);
 	}
 
-
-	TreeSVG & style = svgDoc[StyleClasses::GRID];
+	TreeSVG & style = svgDoc[OVERLAY_STYLE];
 
 
 	if (style->isUndefined()){
@@ -106,7 +108,6 @@ drain::image::TreeSVG & RadarSVG::getStyle(drain::image::TreeSVG & svgDoc){
 				{"opacity", 0.65}
 		};
 		*/
-
 
 		style[SelectorXMLcls(image::svg::TEXT, "GRID")] = {
 				{"text-anchor", "middle"},
@@ -150,9 +151,9 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 		//TreeSVG & geoGroup = group[VECTOR_OVERLAY](svg::GROUP);
 		overlayGroup->addClass(StyleClasses::GRID);
 
-		// geoGroup->addClass(LayoutSVG::NEUTRAL);
+		overlayGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
-		overlayGroup->addClass(LayoutSVG::FIXED);
+		//overlayGroup->addClass(LayoutSVG::FIXED);
 		/*
 		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
 		// Set defaults...

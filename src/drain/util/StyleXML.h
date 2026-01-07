@@ -64,16 +64,29 @@ public:
 	static const SprinterLayout styleRecordLayoutActual;
 
 	/// Practical utility, helps in adding C++ code commenting...
-	template <class T>
+	template <class ...TT>
 	static inline
-	void commentToStream(std::ostream & ostr, const T & v){
-		ostr << "/* " << v << " */ ";
+	void commentToStream(std::ostream & ostr, const TT... args){
+		ostr << "/* ";
+		argsToStream(ostr, args...);
+		ostr << " */ ";
 	};
 
 	static
 	const std::string TEXT_ANCHOR;
 
 protected:
+
+	template <class T, class ...TT>
+	static inline
+	void argsToStream(std::ostream & ostr, const T & arg, const TT... args){
+		ostr << arg;
+		argsToStream(ostr, args...);
+	};
+
+	static inline
+	void argsToStream(std::ostream & ostr){
+	}
 
 };
 

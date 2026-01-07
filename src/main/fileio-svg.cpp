@@ -1232,7 +1232,7 @@ public:
 			return;
 		}
 
-		RadarSVG::getStyle(ctx.svgTrack);
+		RadarSVG::getOverlayStyle(ctx.svgTrack);
 
 		mout.note(getParameters());
 

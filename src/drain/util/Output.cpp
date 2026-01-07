@@ -70,6 +70,10 @@ void Output::open(const std::string & filename){
 	if (filename.empty())
 		throw std::runtime_error("drain::Output(...):  filename empty (use '-' for stdout)");
 
+	if (ofstr.is_open()){
+		ofstr.close();
+	}
+
 	if (filename == "-"){
 		// if (ofstr.isOpen...)
 		ofstr.close(); // close std?

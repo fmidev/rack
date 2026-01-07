@@ -536,6 +536,12 @@ template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const ;
 
 
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+
+
+
 template <>
 inline
 image::TreeSVG & image::TreeSVG::addChild(const image::TreeSVG::key_t & key){
@@ -543,9 +549,19 @@ image::TreeSVG & image::TreeSVG::addChild(const image::TreeSVG::key_t & key){
 }
 
 
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+
+/*
+template <>
+inline
+void image::TreeSVG::initChild(image::TreeSVG & child){
+	//typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
+	const typename image::svg::tag_t type = XML::xmlRetrieveDefaultType(this->data);
+	if (type){
+		child->setType(type);
+	}
+	//return XML::xmlAddChild(*this, key);
+}
+*/
 
 
 /*
