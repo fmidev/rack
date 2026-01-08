@@ -177,37 +177,14 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"fill", "white"},
 		};
 
-		/*
-		// These could be
-		style[SelectorXMLcls("GRID")] = {
-			{"stroke", "white"},
-			{"stroke-width", 1.0},
-			{"fill", "none"}, // debug
-			//{"fill", "blue"}, // debug
-			//{"fill-opacity", 0.35},
-		};
-
-		style[SelectorXMLcls(svg::TEXT, "GRID")] = {
-				{"text-anchor", "middle"},
-				{"font-size", ctx.svgPanelConf.fontSizes[1]},
-				// {"font-size", 20.0},
-				{"paint-order", "stroke"},
-				{"stroke", "black"},
-				{"stroke-opacity", "0.5"},
-				{"stroke-width", "0.3em"},
-				{"stroke-linejoin", "round"},
-				{"fill", "white"}, // debug
-				{"fill-opacity", "1"},
-		};
-		*/
-
 	}
 
-	mout.warn("Setting font sizes: ", ctx.svgPanelConf.fontSizes);
+	mout.debug("Setting font sizes: ", ctx.svgPanelConf.fontSizes);
 	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
 	style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
 	style[SelectorXMLcls(PanelConfSVG::IMAGE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
 
+	/*
 	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-rauno", ctx.svgPanelConf.fontSizes[0]);
 	style[SelectorXMLcls("RAUNO1")] = {
 			{"stroke-linejoin", "round"},
@@ -232,7 +209,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 	ofstr.open(basename+".foo");
 	drain::TreeUtils::dump(style, ofstr);
 	// drain::TreeUtils::dataDumper(style, ofstr.ofstr);
-
+	*/
 	return style;
 }
 // const drain::StatusFlags::value_t RackContext::BBOX_STATUS =   StatusFlags::add("BBOX");

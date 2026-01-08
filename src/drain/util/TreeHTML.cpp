@@ -197,42 +197,11 @@ bool NodeHTML::isExplicit() const {
 	);
 	*/
 
-	// std::cout << __FILE__ << '/' << __FUNCTION__ << this->getTag() << " explicit=" << (l.find(type) == l.end()) << '\n';
-
-	/// These tags can appear "empty", without child elements.
-	/*
-	static
-	const std::set<intval_t> l = {html::A, html::IMG};
-
-	// Not in the set, meaning: not allowed to be empty.
-	return (l.find(type) == l.end());
-	*/
 }
 
 
 const FileInfo NodeHTML::fileInfo("html");
 
-// Experimental
-/*
-template <>
-TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
-	if (key.empty()){
-		std::stringstream k("elem");
-		k.width(3);
-		k.fill('0');
-		k << getChildren().size();
-		return (*this)[k.str()];
-	}
-	else {
-		return (*this)[key];
-	}
-}
-*/
-/*
-	drain::Logger mout(__FILE__,__FUNCTION__);
-	mout.unimplemented("replace TreeHTML::addChild");
-	return *this;
- */
 
 
 }  // drain::

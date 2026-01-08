@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(16,6)
+#define RACK_VERSION drain::Version<>(16,7)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -57,6 +57,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fixed DopplerReproject memory bug
  *  Release 16.6
  *  - SVG graphics tuning: Polar-Grid/Sector/Scope
+ *  Release 16.7
+ *  - SVG graphics refactoring
  *
  *  Version 15
  *  - SVG alignment complete: gTitle, gGroupTitle, gLayout, gAnchor, gAlign

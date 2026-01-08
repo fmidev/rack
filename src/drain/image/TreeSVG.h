@@ -475,8 +475,6 @@ DRAIN_TYPENAME(image::NodeSVG);
 DRAIN_TYPENAME(image::svg::tag_t);
 
 
-template <>
-const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag_t>::xml_default_elems;
 
 /*
 template <>
@@ -541,27 +539,30 @@ template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
 
 
-
 template <>
 inline
-image::TreeSVG & image::TreeSVG::addChild(const image::TreeSVG::key_t & key){
-	return XML::xmlAddChild(*this, key);
+image::TreeSVG & image::TreeSVG::addChild(){
+	return XML::xmlAddChild(*this);
 }
 
 
 
-/*
+template <>
+const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag_t>::xml_default_elems;
+
+/// Specialization of default child elements in SVG. For example, \c TEXT has \c TSPAN elements, by default.
+/**
+ *   Relates to the above list of default elements.
+ */
 template <>
 inline
-void image::TreeSVG::initChild(image::TreeSVG & child){
-	//typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
+void image::TreeSVG::initChild(image::TreeSVG & child) const {
 	const typename image::svg::tag_t type = XML::xmlRetrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}
-	//return XML::xmlAddChild(*this, key);
 }
-*/
+
 
 
 /*

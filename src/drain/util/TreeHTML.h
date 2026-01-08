@@ -155,6 +155,11 @@ protected:
 
 
 
+inline
+std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
+	return node.nodeToStream(ostr);
+}
+
 
 // This is the way!
 template <> // for T (Tree class)
@@ -163,6 +168,47 @@ std::ostream & NodeXML<Html::tag_t>::docTypeToStream(std::ostream &ostr){
 		ostr << "<!DOCTYPE html>\n";
 		return ostr;
 }
+
+
+
+
+
+// Important TAG type initialisations for elements.
+template <>
+const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_default_elems;
+
+/// Specialization of default child elements in HTML. For example, \c UL has \c LI elements, by default.
+/**
+ *   Relates to the above list of default elements.
+ */
+template <>
+inline
+void TreeHTML::initChild(TreeHTML & child) const {
+	const typename Html::tag_t type = XML::xmlRetrieveDefaultType(this->data);
+	if (type){
+		child->setType(type);
+	}
+}
+
+
+// Preferred template specification
+template <>
+template <>
+inline
+TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
+	return XML::xmlSetType(*this, type);
+}
+
+// Preferred template specification
+template <>
+inline
+TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
+	//return XML::xmlAddChild(*this, key);
+	return XML::xmlAddChild(*this);
+}
+
+
+
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -204,61 +250,17 @@ std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 }
 */
 
-inline
-std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
-	return node.nodeToStream(ostr);
-}
-
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 	return NodeHTML::docToStream(ostr, tree);
 }
 
-/*
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
-	//ostr << "<!DOCTYPE html>\n";
-	//return drain::NodeXML<>::docToStream(ostr, tree);
-	drain::NodeHTML::toStream(ostr, tree);
-	return ostr;
-}
-*/
-
-
-
-// template <>
-// bool NodeXML<html::tag_t>::isSelfClosing() const;
-
-//template <>
-//bool NodeXML<html::tag_t>::isSingular() const;
 
 
 DRAIN_TYPENAME(NodeHTML);
 DRAIN_TYPENAME(Html);
 DRAIN_TYPENAME(Html::tag_t);
-
-
-// Important TAG type initialisations for elements.
-template <>
-const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_default_elems;
-
-// Preferred template specification
-template <>
-inline
-TreeHTML & TreeHTML::addChild(const TreeHTML::key_t & key){
-	return XML::xmlAddChild(*this, key);
-}
-
-
-// Preferred template specification
-template <>
-template <>
-inline
-TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
-	return XML::xmlSetType(*this, type);
-}
-
 
 
 }  // drain::

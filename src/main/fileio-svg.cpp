@@ -252,7 +252,7 @@ public:
 		}
 		ctx.anchorHorz = anchorHorz;
 		ctx.anchorVert = anchorVert;
-		mout.attention("new anchors: ", ctx.anchorHorz, 'x', ctx.anchorVert);
+		mout.attention("new anchors: (", ctx.anchorHorz, '+', ctx.anchorVert, ')');
 
 		// Position
 		if (!position.empty()){
@@ -260,15 +260,19 @@ public:
 			std::list<std::string> args;
 			drain::StringTools::split(position, args, ':');
 
+			//CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
+			CompleteAlignment<> align(AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS);
+
 			for (const std::string & arg: args){
 
 				std::list<std::string> keys;
 				drain::StringTools::split(arg, keys, '.');
 
-				CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
+				//CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
 
 				for (const std::string & key: keys){
 					align.set(key);
+					mout.warn("current align: ", align, " == topol=", align.topol, ", axis=", align.axis, ", pos=", align.pos);
 				}
 
 				switch (align.axis) {
@@ -283,6 +287,8 @@ public:
 					// ctx.alignVert(align);
 					break;
 				case AlignBase::Axis::UNDEFINED_AXIS:
+					// Ok, topology (INSIDE or OUTSIDE) was set
+					break;
 				default:
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str());
 					mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str());

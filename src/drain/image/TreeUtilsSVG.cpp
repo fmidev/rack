@@ -976,7 +976,7 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 
 	if (!current->typeIs(svg::GROUP, svg::SVG)){ // At least METADATA must be skipped...
 		if (current->isUndefined()){
-			mout.warn("Undefined element at: ", path);
+			mout.suspicious("Undefined element at '", path, "' setting id");
 			current->setId(path);
 		}
 		return 0;

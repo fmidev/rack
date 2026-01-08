@@ -233,6 +233,16 @@ DRAIN_TYPENAME(image::SLD::tag_t);
 template <>
 const NodeXML<image::SLD::tag_t>::xml_default_elem_map_t NodeXML<image::SLD::tag_t>::xml_default_elems;
 
+
+template <>
+inline
+void image::TreeSLD::initChild(image::TreeSLD & child) const {
+	const typename image::SLD::tag_t type = XML::xmlRetrieveDefaultType(this->data);
+	if (type){
+		child->setType(type);
+	}
+}
+
 /*
 template <>
 template <typename K, typename V>
@@ -306,8 +316,9 @@ image::TreeSLD & image::TreeSLD::operator()(const image::SLD::tag_t & type){
 
 template <>
 inline
-image::TreeSLD & image::TreeSLD::addChild(const image::TreeSLD::key_t & key){
-	return XML::xmlAddChild(*this, key);
+image::TreeSLD & image::TreeSLD::addChild(){ // const image::TreeSLD::key_t & key
+	// return XML::xmlAddChild(*this, key);
+	return XML::xmlAddChild(*this);
 }
 
 /*

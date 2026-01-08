@@ -765,19 +765,34 @@ public:
 	 */
 	template <typename T>
 	static
-	T & xmlAddChild(T & tree, const std::string & key){
+	T & xmlAddChild(T & tree){
 		typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
+		std::stringstream k; // ("elem");
+		k << "elem"; // number with 4 digits overwrites this?
+		k.width(3);  // consider static member prefix
+		k.fill('0');
+		k << tree.getChildren().size();
+		return tree[k.str()](type);
+	}
+
+	template <typename T>
+	static
+	T & xmlAddChild(T & tree, const std::string & key){
 
 		if (!key.empty()){
+			typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
 			return tree[key](type);
 		}
 		else {
+			return xmlAddChild(tree);
+			/*
 			std::stringstream k; // ("elem");
 			k << "elem"; // number with 4 digits overwrites this?
 			k.width(3);  // consider static member prefix
 			k.fill('0');
 			k << tree.getChildren().size();
 			return tree[k.str()](type);
+			*/
 		}
 	}
 

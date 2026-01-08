@@ -260,15 +260,20 @@ public:
 	typename container_t::iterator end(){ return children.end(); };
 
 
-	// REMOVE
+	/// True, if this tree type can either children or node data, but not both.
+	/**
+	 *  A JSON structure is implemented as an EXCLUSIVE tree: a node contains either a subtree or a value (FlexibleMap).
+	 *
+	 *   \see TreeExamples
+	 */
 	static inline
 	bool isExclusive(){
 		return EXCLUSIVE;
 	}
 
-	// REMOVE
+	/// True, if this tree type can contain children with a same key (path element).
 	static inline
-	bool isMulti(){
+	bool isMultiple(){
 		#ifdef DRAIN_TREE_MULTI
 		return true;
 		#else
@@ -276,6 +281,7 @@ public:
 		#endif
 	}
 
+	/// True, if the keys of the children of a node are stored in an ordered structure (that is, std::map).s
 	static inline
 	bool isOrdered(){
 		#ifdef DRAIN_TREE_ORDERED
@@ -720,7 +726,7 @@ x	 *  \see clearData()
 
 		#ifdef DRAIN_TREE_ORDERED  // map
 
-		if (!isMulti()){
+		if (!isMultiple()){
 			return (children.find(key) == children.end()) ? 0 : 1;
 		}
 		// no-break for OrderedMultipleTree
@@ -794,13 +800,24 @@ x	 *  \see clearData()
 	/**
 	 *  For example the default type of a node can be set based on the type of the host node.
 	 *
+	 *  \see TreeHTML::initChild()
+	 *
 	 *  Future option: also key (of type const key_t &) is considered
 	 */
 	inline
-	void initChild(tree_t & child){
+	void initChild(tree_t & child) const {
 	}
 
-	/// Add a child node. If unordered and UNIQUE, reuse existing nodes.
+	/// Add a child with an automatically generated key (path element).
+	/**
+	 *  For example, specialized methods may generate a key (path element) automatically.
+	 *  \see TreeHTML::addChild()
+	 */
+	tree_t & addChild(){ // NEW 2026
+		return addChild(key_t());
+	}
+
+	/// Add a child node. If UNORDERED and not MULTIPLE, reuse existing nodes.
 	/**
 	 *   Behaviour of this function varies as follows:
 	 *
@@ -810,11 +827,12 @@ x	 *  \see clearData()
 	 *
 	 *
 	 */
-	virtual
-	tree_t & addChild(const key_t & key = key_t()){ // Added default empty 2024/04
+	//virtual
+	//tree_t & addChild(const key_t & key = key_t()){ // Added default empty 2024/04
+	tree_t & addChild(const key_t & key){ // 2026/01 : explicit arg
 
 		if (key.empty()){ // Should be exceptional... Warning?
-			throw std::runtime_error(drain::StringBuilder<':'>(__FILE__,__FUNCTION__, " empty key (ADD static child counter based naming"));
+			throw std::runtime_error(drain::StringBuilder<':'>(__FILE__,__FUNCTION__, " empty key (ADD static child counter based naming)"));
 			return *this;
 		}
 
@@ -824,6 +842,7 @@ x	 *  \see clearData()
 		}
 
 		#ifdef DRAIN_TREE_ORDERED
+		// Always unique (non-multiple)
 		iterator it = children.find(key);
 		if (it != children.end()){
 			return it->second;
@@ -839,7 +858,7 @@ x	 *  \see clearData()
 		#else
 
 		// Try searching first
-		if (!isMulti()){
+		if (!isMultiple()){
 			for (auto & entry: children){
 				if (entry.first == key){
 					return entry.second;
@@ -857,9 +876,16 @@ x	 *  \see clearData()
 		#endif
 	};
 
+	///  Push in the front. This is only available for unordered trees.
+	inline
+ 	tree_t & prependChild(){
+		return prependChild(key_t());
+ 	}
+
 	// Push in the front. This is only available for ordered trees.
  	virtual
-	tree_t & prependChild(const key_t & key = key_t()){ // Added default empty 2024/04
+	tree_t & prependChild(const key_t & key){ // 2026/01 explicit arg
+ 	// tree_t & prependChild(const key_t & key = key_t()){ // Added default empty 2024/04
 
 		#ifdef DRAIN_TREE_ORDERED
 
@@ -872,11 +898,12 @@ x	 *  \see clearData()
 			return *this;
 		}
 
-		if (EXCLUSIVE)
+		if (EXCLUSIVE){
 			this->clearData();
+		}
 
 		// Try searching first. So, does not reposition (delete and prepend) if exists.
-		if (!isMulti()){
+		if (!isMultiple()){
 			for (auto & entry: children){
 				if (entry.first == key){
 					return entry.second;

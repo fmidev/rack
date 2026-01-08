@@ -453,29 +453,6 @@ struct TypeName< drain::UnorderedMultiTree<NodeXML<E>,EX,P> > {
 
 };
 
-/*  This could be it, unless already defined...
-template <class N, bool EX, class P>
-inline
-drain::UnorderedMultiTree<N,EX,P> & drain::UnorderedMultiTree<N,EX,P>::addChild(const drain::UnorderedMultiTree<N,EX,P>::key_t & key){
-	return XML::xmlAddChild(*this, key);
-}
-*/
-
-/* doesnt work
-template <class E, bool EX, class P>
-inline
-drain::UnorderedMultiTree<NodeXML<E>,EX,P> & drain::UnorderedMultiTree<NodeXML<E>,EX,P>::addChild(const std::string & key){
-	return XML::xmlAddChild(*this, key);
-}
-*/
-
-/*
-template <class N, bool EX, class P>
-template <typename K> // for K (path elem arg)
-const typename drain::UnorderedMultiTree<N,EX,P>::key_t & drain::UnorderedMultiTree<N,EX,P>::getKey(const K & key){
-	return drain::EnumDict<K>::dict.getKey(key, false);
-}
-*/
 
 
 
