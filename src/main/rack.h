@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(16,7)
+#define RACK_VERSION drain::Version<>(16,8)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -53,12 +53,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Quay.io refresh
  *  Version 16.4
  *  - cCreateTile: Fixed metadata update
- *  Release 16.5
+ *  Version 16.5
  *  - Fixed DopplerReproject memory bug
- *  Release 16.6
+ *  Version 16.6
  *  - SVG graphics tuning: Polar-Grid/Sector/Scope
- *  Release 16.7
+ *  Version 16.7
  *  - SVG graphics refactoring
+ *  Release 16.7.1
+ *  - SVG graphics gAlign INSIDE|OUTSIDE
+ *  Version 16.8
+ *  - Separated UtilsXML from XML
  *
  *  Version 15
  *  - SVG alignment complete: gTitle, gGroupTitle, gLayout, gAnchor, gAlign

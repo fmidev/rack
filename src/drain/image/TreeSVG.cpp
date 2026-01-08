@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
+#include "drain/util/UtilsXML.h"
 #include "TreeSVG.h"
 
 namespace drain {
@@ -121,7 +122,7 @@ DRAIN_ENUM_DICT(image::svg::tag_t) = {
 
 
 
-// Applied by XML::xmlAddChild()
+// Applied by UtilsXML::addChild()
 template <>
 const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::image::svg::tag_t>::xml_default_elems = {
 		{drain::image::svg::STYLE,  drain::image::svg::CTEXT},
@@ -367,7 +368,7 @@ bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
 template <> // for T - Tree class
 template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
-	return XML::xmlSetType(*this, type);
+	return UtilsXML::setType(*this, type);
 }
 
 /// Automatic conversion of element type (enum value) to a string.

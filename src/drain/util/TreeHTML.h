@@ -45,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "FileInfo.h"
 #include "ReferenceMap.h"
 #include "TreeXML.h"
+#include "UtilsXML.h"
 
 namespace drain {
 
@@ -60,6 +61,7 @@ class NodeHTML;
  	That is, the first template is NodeXML<html::tag_t> and not the complete NodeHTML
  */
 typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
+
 
 // typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
 
@@ -79,8 +81,21 @@ struct Html {
 
 };
 
+
+
+// template <>
+// const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict;
+
+DRAIN_ENUM_DICT(Html::tag_t);
+
+// Note: this specialization actually applies to all XML paths of default type, that is NodeXML<int> .
 template <>
-const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict;
+template <>
+inline
+void drain::NodeXML<>::path_t::appendElem(const Html::tag_t & type){
+	// void TreeHTML::path_t::appendElem(const Html::tag_t & type){
+	appendElem(EnumDict<Html::tag_t>::dict.getKey(type, false));
+}
 
 /**
  *  \tparam T - index type; may be enum.
@@ -184,7 +199,7 @@ const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_def
 template <>
 inline
 void TreeHTML::initChild(TreeHTML & child) const {
-	const typename Html::tag_t type = XML::xmlRetrieveDefaultType(this->data);
+	const typename Html::tag_t type = UtilsXML::retrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}
@@ -196,15 +211,14 @@ template <>
 template <>
 inline
 TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
-	return XML::xmlSetType(*this, type);
+	return UtilsXML::setType(*this, type);
 }
 
 // Preferred template specification
 template <>
 inline
 TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
-	//return XML::xmlAddChild(*this, key);
-	return XML::xmlAddChild(*this);
+	return UtilsXML::addChild(*this);
 }
 
 
@@ -223,7 +237,7 @@ template <>
 inline
 //TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
-	return XML::xmlAssign(*this, l);
+	return UtilsXML::assign(*this, l);
 }
 
 /// Create separate CTEXT element.
@@ -231,7 +245,7 @@ template <>
 template <>
 inline
 TreeHTML & TreeHTML::operator=(const std::string & arg){
-	XML::xmlAssignString(*this, arg);
+	UtilsXML::assignString(*this, arg);
 	return *this;
 }
 
@@ -240,7 +254,7 @@ template <>
 template <class T>
 inline
 TreeHTML & TreeHTML::operator=(const T & arg){
-	return XML::xmlAssign(*this, arg);
+	return UtilsXML::assign(*this, arg);
 }
 
 /*

@@ -278,12 +278,19 @@ public:
 
 	};
 
+	/// To be specialized in subclasses.
+	template <typename T2>
+	inline
+	void appendElem(const T2 & elem){
+		appendElem(elem_t(elem));
+	}
+
 	/// Returns true, if the path as only one element which is empty. An empty path is not a root.
 	//
 	/**
 	 *
 	 *
-	 *  \see hasRoot()
+	 *  \see hasRoot()s
 	 *  \see ODIMPath::isRoot()
 	 *
 	 *  Todo: also accept empty path as a root? Perhaps no, because appending creates a relative path.

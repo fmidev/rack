@@ -38,10 +38,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_SLD
 #define DRAIN_TREE_SLD
 
-#include "drain/util/EnumFlags.h"
+//#include "drain/util/EnumFlags.h"
 #include "drain/util/FileInfo.h"
-#include "drain/util/Frame.h"
+//#include "drain/util/Frame.h"
 #include "drain/util/TreeXML.h"
+#include "drain/util/UtilsXML.h"
 
 namespace drain {
 
@@ -237,7 +238,7 @@ const NodeXML<image::SLD::tag_t>::xml_default_elem_map_t NodeXML<image::SLD::tag
 template <>
 inline
 void image::TreeSLD::initChild(image::TreeSLD & child) const {
-	const typename image::SLD::tag_t type = XML::xmlRetrieveDefaultType(this->data);
+	const typename image::SLD::tag_t type = UtilsXML::retrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}
@@ -263,7 +264,7 @@ template <> // referring to Tree<NodeSLD>
 inline
 image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
 //image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
-	XML::xmlAssign(*this, l);
+	UtilsXML::assign(*this, l);
 	return *this;
 }
 
@@ -272,7 +273,7 @@ template <>
 template <class T>
 inline
 image::TreeSLD & image::TreeSLD::operator=(const T & arg){
-	XML::xmlAssign(*this, arg);
+	UtilsXML::assign(*this, arg);
 	return *this;
 }
 
@@ -280,7 +281,7 @@ template <>
 template <>
 inline
 image::TreeSLD & image::TreeSLD::operator=(const std::string & arg){
-	XML::xmlAssignString(*this, arg);
+	UtilsXML::assignString(*this, arg);
 	return *this;
 }
 
@@ -289,7 +290,7 @@ template <>
 template <>
 inline
 image::TreeSLD & image::TreeSLD::operator=(const char * arg){
-	XML::xmlAssignString(*this, arg);
+	UtilsXML::assignString(*this, arg);
 	return *this;
 }
 */
@@ -299,7 +300,7 @@ image::TreeSLD & image::TreeSLD::operator=(const char * arg){
 template <>
 template <>
 image::TreeSLD & image::TreeSLD::operator=(const char *arg){
-	return XML::xmlAssignString(*this, arg);
+	return UtilsXML::assignString(*this, arg);
 }
 */
 
@@ -311,14 +312,14 @@ template <>
 template <>
 inline
 image::TreeSLD & image::TreeSLD::operator()(const image::SLD::tag_t & type){
-		return XML::xmlSetType(*this, type);
+		return UtilsXML::setType(*this, type);
 }
 
 template <>
 inline
 image::TreeSLD & image::TreeSLD::addChild(){ // const image::TreeSLD::key_t & key
-	// return XML::xmlAddChild(*this, key);
-	return XML::xmlAddChild(*this);
+	// return UtilsXML::addChild(*this, key);
+	return UtilsXML::addChild(*this);
 }
 
 /*

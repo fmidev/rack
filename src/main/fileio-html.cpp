@@ -46,7 +46,7 @@ namespace rack {
 
 
 
-drain::TreeHTML & H5HTMLextractor::addTogglerScript(drain::TreeHTML & head, const std::string key){
+drain::TreeHTML & ExtractorH5toHTML::addTogglerScript(drain::TreeHTML & head, const std::string key){
 
 	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
 
@@ -70,25 +70,32 @@ drain::TreeHTML & H5HTMLextractor::addTogglerScript(drain::TreeHTML & head, cons
 	return script;
 }
 
-drain::TreeHTML & H5HTMLextractor::addTogglerStyle(drain::TreeHTML & head, const std::string key){
+drain::TreeHTML & ExtractorH5toHTML::addTogglerStyle(drain::TreeHTML & head, const std::string key){
 
 	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
 	drain::TreeHTML & style = head[key](drain::Html::STYLE);
-	// script->set("type", "text/javascript");
-	//style.addChild()
 	style[drain::Html::COMMENT](drain::Html::COMMENT) = "Original example: https://www.w3schools.com/howto/howto_js_treeview.asp";
 	style["ul, #myUL"] = "list-style-type: none;";
 	style["#myUL"]->set("margin:0; padding:0;");
 	style[".caret"]->set("cursor:pointer; user-select:none;");
 	style[".caret::before"]->set("content:\"\\25B6\"; color:black; display:inline-block; margin-right:6px;");
 	style[".caret-down::before"]->set("transform: rotate(90deg);");
+
 	style[".nested"]->set("display: none;");
 	style[".active"]->set("display: block;");
+	/*
+	style[".nested"] = {
+			{"display", "none"}
+	};
+	style[".active"] = {
+			{"display", "block"}
+	};
+	*/
 
 	return style;
 }
 
-drain::TreeHTML & H5HTMLextractor::getHtml(){
+drain::TreeHTML & ExtractorH5toHTML::getHtml(){
 
 	drain::Logger submout(__FILE__, __FUNCTION__);
 
@@ -142,7 +149,7 @@ drain::TreeHTML & H5HTMLextractor::getHtml(){
 };
 
 
-int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
+int ExtractorH5toHTML::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
 
 	drain::Logger submout(__FILE__, __FUNCTION__);
 
@@ -160,10 +167,12 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 
 	drain::TreeHTML & htmlDoc = getHtml();
 
-	drain::TreeHTML & body = htmlDoc["body"];
-	body["ul"](drain::Html::UL); // prevent nested class
+	drain::TreeHTML & body = htmlDoc[drain::Html::BODY];
+	body[drain::Html::UL](drain::Html::UL); // prevent nested class
 
 	drain::TreeHTML::path_t htmlPath;
+
+	static const std::string COMPLETED = "completed";
 
 	// Expand the path to html path UL->LI->UL-> by adding an element (LI) after each
 	for (const ODIMPathElem & e: odimPath){
@@ -172,13 +181,22 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 
 		const std::string & elemName = e.str();
 
-		htmlPath.appendElem("ul");
+		// htmlPath.appendElem("ul"); // drain::Html::UL);
+		htmlPath.appendElem(drain::Html::UL);
 		// submout.ok("checking path: ", htmlPath);
 
 		drain::TreeHTML & group = body(htmlPath); //(drain::Html::UL);
+		//
 		if (group->isUndefined()){
+			// if (group->id.empty()){
+			// group->getId();
+			// group->addClass(IS_SET);
 			group->setType(drain::Html::UL);
 			group->addClass("nested");
+			// submout.accept<LOG_NOTICE>("group (", htmlPath, ") set type =", group->getTag());
+		}
+		else {
+			// submout.reject<LOG_NOTICE>("group (", htmlPath, ") has type =", group->getTag());
 		}
 
 		if (e.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){  // what, where or how
@@ -195,14 +213,23 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 		else {
 			htmlPath.appendElem(elemName);
 			drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
-			if (item->isUndefined()){
+			if (item->hasClass(COMPLETED)){
+				submout.pending<LOG_NOTICE>("already exists: '", htmlPath, "' with id '", group->getId(), "' : ", group.data);
+				// if (!item->getId().empty()){
+				// submout.pending<LOG_NOTICE>("already exists: '", htmlPath, "' with id '", group->getId(), "' : ", group.data);
+			}
+			else {
+				//item->setId();
+				item->addClass(COMPLETED);
+				submout.accept<LOG_NOTICE>("populating '", htmlPath, "' of type ", group->getTag());
+				// if (item->isUndefined()){
 				item->setType(drain::Html::LI);
 				// item->set("name", estr);
 				if (e.is(ODIMPathElem::ARRAY)){
 
 					item->addClass("array");
 
-					drain::TreeHTML & img = item["img"](drain::NodeHTML::IMG);
+					drain::TreeHTML & img = item[drain::NodeHTML::IMG](drain::NodeHTML::IMG);
 					img->set("title", odimPath.str());
 
 					const drain::image::Image & image = t.data.image;
@@ -233,7 +260,9 @@ int H5HTMLextractor::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & o
 				}
 				else {
 					drain::TreeHTML & span = body(htmlPath)[elemName+"-span"]; // (drain::Html::SPAN);
-					if (span->isUndefined()){
+					if (!span->hasClass(COMPLETED)){
+						span->addClass(COMPLETED);
+						// if (span->isUndefined()){
 						span->setType(drain::Html::SPAN);
 						span->addClass("caret");
 						span = elemName+'/';

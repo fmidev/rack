@@ -458,18 +458,6 @@ public:
 		return child;
 	}
 
-	/*
-	inline
-	tree_t & ensureChild(const node_pair_t & entry){
-		if (hasChild(entry.first)){
-			return retrieveChild(entry.first);
-		}
-		else {
-			return (*this << entry);
-		}
-	}
-	*/
-
 
 	inline
 	operator const node_data_t &() const {
@@ -482,6 +470,7 @@ public:
 	};
 
 
+	/*
 	/// Child addressing operator
 	inline
 	tree_t & operator[](const key_t & key){
@@ -493,6 +482,7 @@ public:
 	const tree_t & operator[](const key_t & key) const {
 		return retrieveChild(key);
 	}
+	*/
 
 	/// NEW 2025 templated child addressing operator
 	/**
@@ -502,13 +492,7 @@ public:
 	template <class K>
 	inline
 	tree_t & operator[](const K & key){
-		/*
-		std::stringstream sstr;
-		sstr << key;
-		return retrieveChild(sstr.str());
-		*/
 		//return retrieveChild(getKey(key)); // 2025
-		// return retrieveChild(static_cast<key_t>(key)); // OLD
 		return retrieveChild(key); // OLD
 	}
 
@@ -516,13 +500,9 @@ public:
 	template <class K>
 	inline
 	const tree_t & operator[](const K & key) const {
-		/*
-		std::stringstream sstr;
-		sstr << key;
-		return retrieveChild(sstr.str());
-		*/
 		// return retrieveChild(getKey(key)); // 2025
-		return retrieveChild(static_cast<key_t>(key)); // OLD
+		// return retrieveChild(static_cast<key_t>(key)); // OLD
+		return retrieveChild(key); // OLD
 	}
 
 
@@ -689,17 +669,11 @@ x	 *  \see clearData()
 		return emptyNode;
 	}
 
-	/// Check if the tree structure is empty.
-	// Note: Current implementation does not check node (data). Could apply:
 	// Ambiguous?
+	/// Check if the tree node has empty data and no children.
 	virtual inline
 	bool empty() const {
-		// consider #ifdef DRAIN_TREE_SMART_DATA
-		// return (data.empty() && children.empty())
-		// #else
-		//  data == defaultNode.data?
 		return (data.empty() && !hasChildren());
-		// endif
 	};
 
 	inline
@@ -1173,7 +1147,7 @@ struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
 
     	static const std::string name = drain::StringBuilder<>(
     			tree_t::isOrdered()?"Ordered":"Unordered",
-    					tree_t::isMulti()?"Multi":"","Tree",
+    					tree_t::isMultiple()?"Multi":"","Tree",
     							tree_t::isExclusive()?"(Exclusive)":"",
     									'<', TypeName<typename tree_t::node_data_t>::str(), '>'); // recursion...
     											//'<', drain::Type::call<drain::simpleName>(typeid(typename tree_t::node_data_t)), '>');

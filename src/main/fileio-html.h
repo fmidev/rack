@@ -49,7 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-class H5HTMLextractor {
+class ExtractorH5toHTML {
 
 public:
 

@@ -564,7 +564,6 @@ public:
 	virtual
 	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const = 0;
 
-// ----------------- Static utilities for derived classes ----------------------
 
 
 	template <class TR>
@@ -609,10 +608,11 @@ public:
 		//<< key << '=' << '"' << value << '"'; // << ' ';
 	}
 
+	// ----------------- Static utilities for derived classes ----------------------
+
 	/// Assign another tree structure to another
 	/**
 	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
-	 */
 	template <typename T>
 	static inline
 	T & xmlAssign(T & dst, const T & src){
@@ -626,17 +626,19 @@ public:
 
 		return dst;
 	}
+	 */
+
 
 	/// Copy node data to tree
 	/**
 	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
-	 */
 	template <typename TX>
 	static inline
 	TX & xmlAssign(TX & dst, const typename TX::xml_node_t & src){
 		xmlAssignNode(dst.data, src);
 		return dst;
 	}
+	 */
 
 	/// Assign tree node (data) to another
 	/**
@@ -665,24 +667,23 @@ public:
 		return dst;
 	}
 
+
 	/// Assign property to a XML tree node
 	/**
 	 *  \tparam T - XML tree
-	 */
 	template <typename T, typename V>
 	static inline
 	T & xmlAssign(T & tree, const V & arg){
 		tree->set(arg);
 		return tree;
 	}
+	 */
 
 	/// Tree
 	/**
 	 *  \tparam TX - xml tree
-	 */
 	template <typename T>
 	static
-	//T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const char *> > l){
 	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
 
 		//switch (static_cast<intval_t>(tree->getType())){
@@ -705,6 +706,7 @@ public:
 
 		return tree;
 	};
+	 */
 
 	// UNDER CONSTRUCTION!
 	/// When assigning a string, create new element unless the element itself is of type CTEXT.
@@ -712,7 +714,7 @@ public:
 	 *   \return - text element (CTEXT): current or child element of the current element
 	 *
 	 *   Forward definition – type can be set only upon construction of a complete class
-	 */
+
 	template <typename TX>
 	static inline  // NOT YET as template specification of xmlAssign(...)
 	TX & xmlAssignString(TX & tree, const std::string & s){
@@ -744,25 +746,26 @@ public:
 			return child;
 		}
 	}
+	 */
+
 
 	///
 	/**
 	 *   Forward definition – type can be set only upon construction of a complete class
 	 *
-	 */
 	template <typename TX>
 	static inline
 	TX & xmlSetType(TX & tree, const typename TX::node_data_t::xml_tag_t & type){
 		tree->setType(type);
 		return tree;
 	}
+	 */
 
 
 	/**
 	 *
 	 *  TODO: add default type based on parent group? defaultChildMap TR->TD
 	 *
-	 */
 	template <typename T>
 	static
 	T & xmlAddChild(T & tree){
@@ -785,14 +788,6 @@ public:
 		}
 		else {
 			return xmlAddChild(tree);
-			/*
-			std::stringstream k; // ("elem");
-			k << "elem"; // number with 4 digits overwrites this?
-			k.width(3);  // consider static member prefix
-			k.fill('0');
-			k << tree.getChildren().size();
-			return tree[k.str()](type);
-			*/
 		}
 	}
 
@@ -808,8 +803,10 @@ public:
 			return static_cast<typename N::xml_tag_t>(0);
 		}
 	}
+	 */
 
 	/*
+	UNUSED!
 	template <typename T>
 	static
 	T & xmlGuessType(const typename T::node_data_t & parentNode, T & child){

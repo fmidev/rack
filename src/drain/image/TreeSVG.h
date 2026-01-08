@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Frame.h"
 #include "drain/util/SelectorXML.h"
 #include "drain/util/TreeXML.h"
+#include "drain/util/UtilsXML.h"
 #include "TransformSVG.h"
 
 namespace drain {
@@ -492,7 +493,7 @@ template <> // referring to Tree<NodeSVG>
 template <> // referring to tparam T
 inline
 image::TreeSVG & image::TreeSVG::operator=(const std::string & arg){
-	XML::xmlAssignString(*this, arg);
+	UtilsXML::assignString(*this, arg);
 	return *this;
 }
 
@@ -500,14 +501,14 @@ image::TreeSVG & image::TreeSVG::operator=(const std::string & arg){
 template <> // referring to Tree<NodeSVG>
 inline
 image::TreeSVG & image::TreeSVG::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
-	return XML::xmlAssign(*this, l);
+	return UtilsXML::assign(*this, l);
 }
 
 
 template <>
 template <class T>
 image::TreeSVG & image::TreeSVG::operator=(const T & arg){
-	return XML::xmlAssign(*this, arg);
+	return UtilsXML::assign(*this, arg);
 }
 
 /// Handy in setting the type.
@@ -542,7 +543,7 @@ bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
 template <>
 inline
 image::TreeSVG & image::TreeSVG::addChild(){
-	return XML::xmlAddChild(*this);
+	return UtilsXML::addChild(*this);
 }
 
 
@@ -557,7 +558,7 @@ const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag
 template <>
 inline
 void image::TreeSVG::initChild(image::TreeSVG & child) const {
-	const typename image::svg::tag_t type = XML::xmlRetrieveDefaultType(this->data);
+	const typename image::svg::tag_t type = UtilsXML::retrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}

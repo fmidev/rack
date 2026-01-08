@@ -31,9 +31,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FILE_GDAL_XML
 #define DRAIN_FILE_GDAL_XML
 
-#include "drain/util/Flags.h"
-#include "drain/util/TreeXML.h"
+// #include "drain/util/Flags.h"
 #include <drain/util/EnumFlags.h>
+#include "drain/util/TreeXML.h"
+#include "drain/util/UtilsXML.h"
 
 
 namespace drain
@@ -141,7 +142,7 @@ template <>
 template <>
 inline
 image::TreeGDAL & image::TreeGDAL::operator()(const image::GDAL::tag_t & type){
-	return XML::xmlSetType(*this, type);
+	return UtilsXML::setType(*this, type);
 	// this->data.setType(type);
 	// return *this;
 }

@@ -605,7 +605,7 @@ void CmdOutputFile::exec() const {
 			drain::TreeUtils::dump(src);
 		}
 
-		H5HTMLextractor extractor;
+		ExtractorH5toHTML extractor;
 		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.tail));
 		extractor.setBaseDir(path.dir);
 		drain::TreeHTML & html = extractor.getHtml();

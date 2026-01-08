@@ -81,9 +81,9 @@ const drain::EnumDict<Basehtml::tag_t>::dict_t & drain::EnumDict<Basehtml::tag_t
 }
 */
 
-
-template <>
-const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict = { // drain::EnumDict<Basehtml::tag_t>::getDict(); // maybe dangerous.
+// template <>
+// const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict
+DRAIN_ENUM_DICT(Html::tag_t) = { // drain::EnumDict<Basehtml::tag_t>::getDict(); // maybe dangerous.
 
 		{"undefined", drain::Html::UNDEFINED},
 		{"#comment", drain::Html::COMMENT},
