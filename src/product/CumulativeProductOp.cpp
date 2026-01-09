@@ -103,7 +103,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	//mout.warn("dstOdim " , dstData.odim );
 
 	setEncoding(srcData.odim, dstData);
-	mout.special("output encoding: ", ODIM(dstData.odim));
+	mout.debug("output encoding: ", ODIM(dstData.odim));
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
 	//dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);

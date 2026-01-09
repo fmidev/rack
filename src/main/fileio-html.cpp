@@ -31,11 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
-#include <drain/util/TreeXML.h>
+#include <drain/util/TreeElemUtilsHTML.h>
 #include <drain/util/TreeHTML.h>
+//#include <drain/util/TreeXML.h>
 
 #include <drain/image/FilePng.h>
-#include <drain/image/TreeUtilsSVG.h>
+// #include <drain/image/TreeUtilsSVG.h>
 
 #include "data/SourceODIM.h" // for NOD
 #include "fileio-html.h"  // ImageSection
@@ -172,75 +173,73 @@ int ExtractorH5toHTML::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t &
 
 	drain::TreeHTML::path_t htmlPath;
 
-	static const std::string COMPLETED = "completed";
+	// static const std::string COMPLETED = "completed";
 
 	// Expand the path to html path UL->LI->UL-> by adding an element (LI) after each
 	for (const ODIMPathElem & e: odimPath){
 
 		// submout.special(" elem ", e);
-
 		const std::string & elemName = e.str();
 
-		// htmlPath.appendElem("ul"); // drain::Html::UL);
+		drain::TreeHTML & current = body(htmlPath); //(drain::Html::UL);
+
+		if (!current.hasChild(drain::Html::UL)){
+			current[drain::Html::UL](drain::Html::UL)->addClass("nested");
+		}
 		htmlPath.appendElem(drain::Html::UL);
+
+		/* Tried this simple scheme but did not work...
+		if (!current.hasChild(elemName)){
+			current[elemName](drain::Html::UL)->addClass("nested");
+		}
+		htmlPath.appendElem(elemName);
+		*/
+
 		// submout.ok("checking path: ", htmlPath);
 
 		drain::TreeHTML & group = body(htmlPath); //(drain::Html::UL);
-		//
-		if (group->isUndefined()){
-			// if (group->id.empty()){
-			// group->getId();
-			// group->addClass(IS_SET);
-			group->setType(drain::Html::UL);
-			group->addClass("nested");
-			// submout.accept<LOG_NOTICE>("group (", htmlPath, ") set type =", group->getTag());
-		}
-		else {
-			// submout.reject<LOG_NOTICE>("group (", htmlPath, ") has type =", group->getTag());
-		}
+
 
 		if (e.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){  // what, where or how
+
 			// Attrib groups joins are joined together (instead of creating a separate table for each
-			drain::TreeHTML & table = group["attr"](drain::NodeHTML::TABLE);
+			drain::TreeHTML & table = group[drain::NodeHTML::TABLE](drain::NodeHTML::TABLE); // "attr"
 			for (const auto & attr: t.data.attributes){
-				drain::TreeHTML & tr = table[elemName + attr.first](drain::NodeHTML::TR);
+				drain::TreeHTML & tr = table[attr.first]; // AUTO: (drain::NodeHTML::TR);
 				tr->addClass(elemName); // what, where or how
 				tr["key"](drain::NodeHTML::TH) = elemName+':'+attr.first;
 				tr["value"](drain::NodeHTML::TD) = attr.second;
 			}
+
 			return 1; // = do  not traverse subtrees
+
 		}
 		else {
-			htmlPath.appendElem(elemName);
-			drain::TreeHTML & item = body(htmlPath); // (drain::NodeHTML::LI);
-			if (item->hasClass(COMPLETED)){
-				submout.pending<LOG_NOTICE>("already exists: '", htmlPath, "' with id '", group->getId(), "' : ", group.data);
-				// if (!item->getId().empty()){
-				// submout.pending<LOG_NOTICE>("already exists: '", htmlPath, "' with id '", group->getId(), "' : ", group.data);
+
+
+			if (group.hasChild(elemName)){
+				submout.pending<LOG_DEBUG>("already exists: '", htmlPath, '|', elemName, "': ", group.data); //, '|', elemName
 			}
 			else {
-				//item->setId();
-				item->addClass(COMPLETED);
-				submout.accept<LOG_NOTICE>("populating '", htmlPath, "' of type ", group->getTag());
-				// if (item->isUndefined()){
-				item->setType(drain::Html::LI);
-				// item->set("name", estr);
+
+				drain::TreeHTML & item = group[elemName](drain::Html::LI);
+
+				submout.accept<LOG_INFO>("populating '", htmlPath, '|', elemName, "' of type ", group->getTag());
+
 				if (e.is(ODIMPathElem::ARRAY)){
 
 					item->addClass("array");
 
-					drain::TreeHTML & img = item[drain::NodeHTML::IMG](drain::NodeHTML::IMG);
-					img->set("title", odimPath.str());
+					drain::StringBuilder<> filepath(odimPath.str(),'-',t.data.image.properties.get("what:quantity","unknown"),".png");
 
-					const drain::image::Image & image = t.data.image;
+					drain::FilePath relativePath(html->getId(), filepath.str()); // NOTE: str() needed, bug in dir detection...
+					// submout.accept<LOG_WARNING>("relative path1:", relativePath);
+					// drain::FilePath relativePath2(html->getId(), builder);
+					// submout.reject<LOG_WARNING>("relative path2:", relativePath2);
 
-					drain::StringBuilder<> builder(odimPath.str(),'-',image.properties.get("what:quantity","unknown"),".png");
-					const std::string & filename = builder;
-					// img->set("alt", filename);
-
-					drain::FilePath relativePath(html->getId(), filename);
-					submout.debug("relative path:", relativePath);
-					img->set("src", relativePath.str());
+					drain::NodeHTML::Elem<drain::Html::tag_t::IMG> imgElem(item[drain::NodeHTML::IMG]);
+					imgElem.title = odimPath.str();
+					imgElem.src = relativePath;
 
 					drain::FilePath fullPath(basedir, relativePath);
 					submout.debug("full path:", fullPath);
@@ -250,7 +249,7 @@ int ExtractorH5toHTML::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t &
 							submout.debug("ensuring dir: ", fullPath.dir);
 							drain::FilePath::mkdir(fullPath.dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 						}
-						drain::image::FilePng::write(image, fullPath.str());
+						drain::image::FilePng::write(t.data.image, fullPath.str());
 					}
 					catch (const std::exception & e) {
 						submout.warn("error(s): ", e.what());
@@ -259,29 +258,23 @@ int ExtractorH5toHTML::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t &
 
 				}
 				else {
-					drain::TreeHTML & span = body(htmlPath)[elemName+"-span"]; // (drain::Html::SPAN);
-					if (!span->hasClass(COMPLETED)){
-						span->addClass(COMPLETED);
-						// if (span->isUndefined()){
-						span->setType(drain::Html::SPAN);
-						span->addClass("caret");
-						span = elemName+'/';
-					}
-					// Mark elevation (elangle) or quantity
+					drain::TreeHTML & span = item[drain::Html::SPAN](drain::Html::SPAN); // (drain::Html::SPAN);
+					span->addClass("caret");
+					span->setText(elemName,'/');
+					// Mark elevation angle or quantity
 					if (e.is(ODIMPathElem::DATASET)){
 						const drain::VariableMap & v = t[ODIMPathElem::WHERE].data.attributes;
 						if (v.hasKey("elangle")){ // body(htmlPath)
-							drain::TreeHTML & info = span[elemName+"-elangle"](drain::Html::SPAN);
+							drain::TreeHTML & info = span["elangle"](drain::Html::SPAN); // elemName+
 							info->addClass("metadata");
-							info = v["elangle"];
+							info->setText(v["elangle"]);
 						}
 					}
 					else if (e.belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){
-						const drain::VariableMap & v = t[ODIMPathElem::WHAT].data.attributes;
-						//if (v.hasKey("quantity")){ body(htmlPath)
-						drain::TreeHTML & info = span[elemName+"-elangle"](drain::Html::SPAN);
+						drain::TreeHTML & info = span["quantity"](drain::Html::SPAN); // elemName+"-elangle"
 						info->addClass("metadata");
-						info = v.get("quantity", "unknown");
+						const drain::VariableMap & v = t[ODIMPathElem::WHAT].data.attributes;
+						info->setText(v.get("quantity", "unknown"));
 					}
 				}
 
@@ -292,6 +285,9 @@ int ExtractorH5toHTML::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t &
 				submout.attention("LI group existed=", (EXISTS?"yes":"no"), ", ", item.data, " at ", htmlPath);
 			}
 			*/
+
+			htmlPath.appendElem(elemName);
+
 		}
 
 

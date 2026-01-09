@@ -221,7 +221,13 @@ TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
 	return UtilsXML::addChild(*this);
 }
 
-
+// Preferred template specification
+template <>
+template <>
+inline
+bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
+	return TreeHTML::hasChild(EnumDict<Html::tag_t>::dict.getKey(type, false));
+}
 
 
 template <> // for T (Tree class)
