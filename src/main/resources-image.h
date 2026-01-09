@@ -101,6 +101,7 @@ struct PanelConfSVG {
 		IMAGE_PANEL,
 		IMAGE_BORDER, // RECT surrounding the image
 		SIDE_PANEL,
+		BORDER, // Overall image border
 		// SHARED_METADATA, // Something that should not be repeated in panels.
 		// --- unused ? ---
 		// TITLE,      // Default title

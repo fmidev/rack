@@ -110,8 +110,9 @@ class XML2 {
 */
 
 
-template <>
-const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict = {
+//template <>
+//const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict
+DRAIN_ENUM_DICT2(int,XML) = {
 		{"UNDEFINED", XML::UNDEFINED},
 		{"#ctext", XML::CTEXT},   // CTEXT     - the tag should never appear
 		{"#comment", XML::COMMENT},  // COMMMENT  - the tag should never appear

@@ -342,7 +342,8 @@ public:
 
 } // drain::
 
-#define DRAIN_ENUM_DICT(enumtype) template <> const drain::EnumDict<enumtype>::dict_t drain::EnumDict<enumtype>::dict
+#define DRAIN_ENUM_DICT(enumtype)        template <> const drain::EnumDict<enumtype>::dict_t drain::EnumDict<enumtype>::dict
+#define DRAIN_ENUM_DICT2(enumtype,owner) template <> const drain::EnumDict<enumtype,owner>::dict_t drain::EnumDict<enumtype,owner>::dict
 
 #define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}
 

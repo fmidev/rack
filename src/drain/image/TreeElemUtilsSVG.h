@@ -65,9 +65,9 @@ namespace drain {
 
 
 
-template <>
-template <>
-class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
+template <> template <>
+class DRAIN_SVG_ELEM_CLS(RECT){
+// class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
 public:
 
 	inline
@@ -89,9 +89,6 @@ template <>
 template <>
 class DRAIN_SVG_ELEM_CLS(CIRCLE){
 
-//template <>
-//template <>
-// class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::CIRCLE>{
 public:
 
 	NodeXML<image::svg::tag_t> & node;
@@ -119,9 +116,6 @@ template <>
 template <>
 class DRAIN_SVG_ELEM_CLS(POLYGON){
 
-// template <>
-// template <>
-// class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::POLYGON>{
 public:
 
 	inline

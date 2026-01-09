@@ -573,8 +573,10 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
  *
  */
 
-template <>
-const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict;
+DRAIN_ENUM_DICT2(int,XML);
+
+//template <>
+//const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict;
 
 
 template <class E, bool EX, class P>

@@ -48,6 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/FilePnm.h>
 #include <drain/image/FileGeoTIFF.h>
 #include <drain/image/TreeSVG.h>
+#include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/Image.h>
 #include <drain/imageops/ImageModifierPack.h>
@@ -541,6 +542,25 @@ void CmdOutputFile::exec() const {
 			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 			ctx.svgTrack->setViewBox(bb);
+
+			{
+				using namespace drain::image;
+				typedef svg::tag_t tag_t;
+				TreeSVG & subGroup = ctx.svgTrack["BORDER"];
+				NodeSVG::Elem<tag_t::RECT> frame(subGroup);
+				frame.width  = bb.width;
+				frame.height = bb.height;
+				frame.node.addClass("BORDER");
+				// frame.node.setStyle("fill", "none");
+				frame.node.setStyle({
+						{"fill", "none"},
+						// {"stroke", "red"},
+						//{"stroke-width", "1px"},
+				});
+
+			}
+
+
 			// mout.attention("View BBOX: ", bb);
 		}
 

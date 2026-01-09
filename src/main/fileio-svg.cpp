@@ -1890,7 +1890,7 @@ drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , doub
 	TreeSVG & title = subGroup[tag_t::TITLE](tag_t::TITLE);
 	title = name;
 
-	drain::image::NodeSVG::Elem<tag_t::RECT> rect(subGroup["rectangle"]);
+	NodeSVG::Elem<tag_t::RECT> rect(subGroup["rectangle"]);
 	rect.x = (::rand()&63); // + dx;
 	rect.y = (::rand()&63); // + dy;
 	rect.width  = (::rand()&255);

@@ -44,56 +44,7 @@ namespace drain {
 DRAIN_TYPENAME_DEF(image::NodeSVG);
 DRAIN_TYPENAME_DEF(image::svg::tag_t);
 
-/*
-const drain::EnumDict<image::svg::tag_t>::dict_t & getDict(){
-
-	static drain::EnumDict<image::svg::tag_t>::dict_t hidden;
-
-	if (hidden.empty()){
-		hidden =  {
-				{"UNDEFINED", drain::image::svg::UNDEFINED},
-				{"#", drain::image::svg::COMMENT},
-				{"script", drain::image::svg::SCRIPT},
-				{"style", drain::image::svg::STYLE},
-				{"style_select", drain::image::svg::STYLE_SELECT},
-				{"svg", drain::image::svg::SVG},
-				{"circle", drain::image::svg::CIRCLE},
-				{"desc", drain::image::svg::DESC},
-				{"g", drain::image::svg::GROUP},
-				{"image", drain::image::svg::IMAGE},
-				{"line", drain::image::svg::LINE},
-				{"metadata", drain::image::svg::METADATA},
-				{"polygon", drain::image::svg::POLYGON},
-				{"rect", drain::image::svg::RECT},
-				{"style", drain::image::svg::STYLE}, // raise?
-				{"text", drain::image::svg::TEXT},
-				{"title", drain::image::svg::TITLE},
-				{"tspan", drain::image::svg::TSPAN},
-		};
-	}
-
-	return hidden;
-
-}
-*/
-
-/*
-template <>
-const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict = drain::EnumDict<image::svg::tag_t>::getDict();
-*/
-
-// NEW (slower?)
-// template <>
-// const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict
 DRAIN_ENUM_DICT(image::svg::tag_t) = {
-		/*
-		{"UNDEFINED", XML::UNDEFINED},
-		{"COMMENT",   XML::COMMENT},
-		{"CTEXT",     XML::CTEXT},
-		{"SCRIPT",    XML::SCRIPT},
-		{"STYLE",     XML::STYLE},
-		{"STYLE_SELECT", XML::STYLE_SELECT},
-		*/
 		{"UNDEFINED", drain::image::svg::UNDEFINED},
 		{"#", drain::image::svg::COMMENT},
 		{"CTEXT", drain::image::svg::CTEXT},

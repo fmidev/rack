@@ -157,12 +157,20 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 		// Option: set stroke to make borders appear. Future option: borders OUTSIDE the image.
-		style[SelectorXMLcls(PanelConfSVG::IMAGE_BORDER)] = { // TODO: add leading '.' ?
+		style[SelectorXMLcls(PanelConfSVG::IMAGE_BORDER)] = {
 				{"fill", "none"},
 				{"stroke", "none"},
 				// {"stroke-opacity", 0.0},
 				{"stroke-width", 1.0},
 				// {"stroke-dasharray", {2,5,3}},
+		};
+
+		// Overall image border
+		style[SelectorXMLcls(PanelConfSVG::BORDER)] = {
+				{"fill", "none"},
+				{"stroke", "none"},
+				// {"stroke-opacity", 0.0},
+				{"stroke-width", 1.0},
 		};
 
 		style[SelectorXMLcls(svg::RECT,PanelConfSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?

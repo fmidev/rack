@@ -51,10 +51,12 @@ namespace drain {
 
 namespace image {
 
+/*
 class NodeSVG;
 
 typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 //typedef NodeXML<NodeSVG>::xml_tree_t TreeSVG;
+*/
 
 struct svg {
 
@@ -73,10 +75,16 @@ struct svg {
 
 };
 
+class NodeSVG;
+
+// typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<svg::tag_t>::path_t> TreeSVG;
+typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
+
+
 } // image::
 
 
-const drain::EnumDict<image::svg::tag_t>::dict_t & getDict();
+// const drain::EnumDict<image::svg::tag_t>::dict_t & getDict();
 
 
 // template <>
