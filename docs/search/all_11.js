@@ -39,7 +39,7 @@ var searchData=
   ['list_20help_20and_20cloning_20facilities_36',['Storage for commands, providing list, help and cloning facilities',['../classdrain_1_1CommandBank.html#autotoc_md19',1,'']]],
   ['list_20of_20image_20operators_37',['List of image operators',['../imagespage.html#imageOps',1,'']]],
   ['list_5ft_38',['list_t',['../classrack_1_1Quantity.html#a70ea9a4053bf1050a53eb0b35555a3fd',1,'rack::Quantity']]],
-  ['listfileextension_39',['listFileExtension',['../namespacerack.html#a9deab456f38866f2b8f39f99d9f67aaa',1,'rack']]],
+  ['listfileextension_39',['listFileExtension',['../namespacerack.html#aaade3b0a8d2f5a59bdbfeeb480758797',1,'rack']]],
   ['loadpalette_40',['loadPalette',['../classdrain_1_1image_1_1PaletteOp.html#aac8af38875098e4a28b7f86c87a58f47',1,'drain::image::PaletteOp']]],
   ['local_20empty_41',['local empty',['../classrack_1_1Hdf5Context.html#autotoc_md68',1,'local (empty)'],['../classrack_1_1Hdf5Context.html#autotoc_md65',1,'local (empty)']]],
   ['local_20if_20non_20empty_42',['local if non empty',['../classrack_1_1Hdf5Context.html#autotoc_md66',1,'local, if non-empty'],['../classrack_1_1Hdf5Context.html#autotoc_md63',1,'local, if non-empty']]],

@@ -1,5 +1,5 @@
 <map id="RemoverInstaller" name="RemoverInstaller">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,79,140,104"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="13,5,132,31"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C, deriving command name from the class name and prefixing if de..." alt="" coords="13,5,132,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,44,75,79,70,79,70,44"/>
 </map>

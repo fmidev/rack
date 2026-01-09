@@ -79,7 +79,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdrain_1_1Path-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Path&lt; T, SEP, ALEAD, AREPEAT, ATRAIL &gt; Class Template Reference</div></div>
@@ -191,6 +191,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPath</b> (const
 void&#160;</td><td class="memItemRight" valign="bottom"><b>appendElem</b> (const elem_t &amp;elem)</td></tr>
 <tr class="memdesc:a36ab788b0ba5358fae024495fbe9ade4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main method for adding elements. <br /></td></tr>
 <tr class="separator:a36ab788b0ba5358fae024495fbe9ade4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ccae963c4086c100501bc7cc290e14d" id="r_a8ccae963c4086c100501bc7cc290e14d"><td class="memTemplParams" colspan="2"><a id="a8ccae963c4086c100501bc7cc290e14d" name="a8ccae963c4086c100501bc7cc290e14d"></a>
+template&lt;typename T2 &gt; </td></tr>
+<tr class="memitem:a8ccae963c4086c100501bc7cc290e14d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>appendElem</b> (const T2 &amp;elem)</td></tr>
+<tr class="memdesc:a8ccae963c4086c100501bc7cc290e14d"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be specialized in subclasses. <br /></td></tr>
+<tr class="separator:a8ccae963c4086c100501bc7cc290e14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f782fea0a3f0646bd1e8f5af97e4ad" id="r_a77f782fea0a3f0646bd1e8f5af97e4ad"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a77f782fea0a3f0646bd1e8f5af97e4ad">isRoot</a> () const</td></tr>
 <tr class="memdesc:a77f782fea0a3f0646bd1e8f5af97e4ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if the path as only one element which is empty. An empty path is not a root.  <br /></td></tr>
 <tr class="separator:a77f782fea0a3f0646bd1e8f5af97e4ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,10 +264,10 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::stri
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
 <tr class="separator:aae05c220f052c204706dbb8a329b86d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
 <tr class="memitem:a790e1925b914d9c96a648750b3aae347" id="r_a790e1925b914d9c96a648750b3aae347"><td class="memItemLeft" align="right" valign="top"><a id="a790e1925b914d9c96a648750b3aae347" name="a790e1925b914d9c96a648750b3aae347"></a>
-const <a class="el" href="structdrain_1_1PathSeparatorPolicy.html">PathSeparatorPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
+static const <a class="el" href="structdrain_1_1PathSeparatorPolicy.html">PathSeparatorPolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
 <tr class="separator:a790e1925b914d9c96a648750b3aae347"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
@@ -415,7 +420,7 @@ template&lt;class T , char SEP = '/', bool ALEAD = true, bool AREPEAT = false, b
 </div><div class="memdoc">
 
 <p>Returns true, if the path as only one element which is empty. An empty path is not a root. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1Path.html#adb3cca8500b2ced21e1288c4efc4aa50" title="Returns true, if the path is not empty and the first element is empty.">hasRoot()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1Path.html#adb3cca8500b2ced21e1288c4efc4aa50" title="Returns true, if the path is not empty and the first element is empty.">hasRoot()</a>s </dd>
 <dd>
 ODIMPath::isRoot()</dd></dl>
 <p>Todo: also accept empty path as a root? Perhaps no, because appending creates a relative path. </p>

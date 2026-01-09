@@ -215,14 +215,6 @@ container_t::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end<
 <tr class="memitem:a506d28087dce1cb8836dc9799279e9ac" id="r_a506d28087dce1cb8836dc9799279e9ac"><td class="memItemLeft" align="right" valign="top"><a id="a506d28087dce1cb8836dc9799279e9ac" name="a506d28087dce1cb8836dc9799279e9ac"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator node_data_t &amp;</b> ()</td></tr>
 <tr class="separator:a506d28087dce1cb8836dc9799279e9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae431db3fddd72d86bc94f0a5455ee97c" id="r_ae431db3fddd72d86bc94f0a5455ee97c"><td class="memItemLeft" align="right" valign="top"><a id="ae431db3fddd72d86bc94f0a5455ee97c" name="ae431db3fddd72d86bc94f0a5455ee97c"></a>
-<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (const key_t &amp;key)</td></tr>
-<tr class="memdesc:ae431db3fddd72d86bc94f0a5455ee97c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Child addressing operator. <br /></td></tr>
-<tr class="separator:ae431db3fddd72d86bc94f0a5455ee97c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86bcdfc6143e7c644594882fec087a9e" id="r_a86bcdfc6143e7c644594882fec087a9e"><td class="memItemLeft" align="right" valign="top"><a id="a86bcdfc6143e7c644594882fec087a9e" name="a86bcdfc6143e7c644594882fec087a9e"></a>
-const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (const key_t &amp;key) const</td></tr>
-<tr class="memdesc:a86bcdfc6143e7c644594882fec087a9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Child addressing operator. <br /></td></tr>
-<tr class="separator:a86bcdfc6143e7c644594882fec087a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cc2f3512809bfa39f7bddec594be2f4" id="r_a0cc2f3512809bfa39f7bddec594be2f4"><td class="memTemplParams" colspan="2">template&lt;class K &gt; </td></tr>
 <tr class="memitem:a0cc2f3512809bfa39f7bddec594be2f4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a0cc2f3512809bfa39f7bddec594be2f4">operator[]</a> (const K &amp;key)</td></tr>
 <tr class="memdesc:a0cc2f3512809bfa39f7bddec594be2f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW 2025 templated child addressing operator.  <br /></td></tr>
@@ -269,7 +261,7 @@ const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;
 <tr class="separator:a47f00b880022a29d4000212fdd412ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dc9d7494d137f8725d90c21d037fe4a" id="r_a5dc9d7494d137f8725d90c21d037fe4a"><td class="memItemLeft" align="right" valign="top"><a id="a5dc9d7494d137f8725d90c21d037fe4a" name="a5dc9d7494d137f8725d90c21d037fe4a"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
-<tr class="memdesc:a5dc9d7494d137f8725d90c21d037fe4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the tree structure is empty. <br /></td></tr>
+<tr class="memdesc:a5dc9d7494d137f8725d90c21d037fe4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the tree node has empty data and no children. <br /></td></tr>
 <tr class="separator:a5dc9d7494d137f8725d90c21d037fe4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abae2ef4777ea28fa9acc234111dc84eb" id="r_abae2ef4777ea28fa9acc234111dc84eb"><td class="memItemLeft" align="right" valign="top"><a id="abae2ef4777ea28fa9acc234111dc84eb" name="abae2ef4777ea28fa9acc234111dc84eb"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasChildren</b> () const</td></tr>
@@ -287,9 +279,22 @@ template&lt;typename K &gt; </td></tr>
 <tr class="memitem:a65f43af37f0ed7b8ffe1efcbab9ba334" id="r_a65f43af37f0ed7b8ffe1efcbab9ba334"><td class="memItemLeft" align="right" valign="top"><a id="a65f43af37f0ed7b8ffe1efcbab9ba334" name="a65f43af37f0ed7b8ffe1efcbab9ba334"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasPath</b> (const path_t &amp;path) const</td></tr>
 <tr class="separator:a65f43af37f0ed7b8ffe1efcbab9ba334"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a096ce1ab7533a296351b535765aadd3a" id="r_a096ce1ab7533a296351b535765aadd3a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a096ce1ab7533a296351b535765aadd3a">addChild</a> (const key_t &amp;key=key_t())</td></tr>
-<tr class="memdesc:a096ce1ab7533a296351b535765aadd3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a child node. If unordered and UNIQUE, reuse existing nodes.  <br /></td></tr>
-<tr class="separator:a096ce1ab7533a296351b535765aadd3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14335bbd09b1792fc55e932f29c50b0d" id="r_a14335bbd09b1792fc55e932f29c50b0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a14335bbd09b1792fc55e932f29c50b0d">initChild</a> (<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;child) const</td></tr>
+<tr class="memdesc:a14335bbd09b1792fc55e932f29c50b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Means for automatically setting something, for example the type of a node.  <br /></td></tr>
+<tr class="separator:a14335bbd09b1792fc55e932f29c50b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae383497c2ee0d0637a9506d853b244bd" id="r_ae383497c2ee0d0637a9506d853b244bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ae383497c2ee0d0637a9506d853b244bd">addChild</a> ()</td></tr>
+<tr class="memdesc:ae383497c2ee0d0637a9506d853b244bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a child with an automatically generated key (path element).  <br /></td></tr>
+<tr class="separator:ae383497c2ee0d0637a9506d853b244bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fad966895ba460f1152f415eb2d82f1" id="r_a8fad966895ba460f1152f415eb2d82f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a8fad966895ba460f1152f415eb2d82f1">addChild</a> (const key_t &amp;key)</td></tr>
+<tr class="memdesc:a8fad966895ba460f1152f415eb2d82f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a child node. If UNORDERED and not MULTIPLE, reuse existing nodes.  <br /></td></tr>
+<tr class="separator:a8fad966895ba460f1152f415eb2d82f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f984a4a1a5f137fd5cfee5d42e1e34e" id="r_a2f984a4a1a5f137fd5cfee5d42e1e34e"><td class="memItemLeft" align="right" valign="top"><a id="a2f984a4a1a5f137fd5cfee5d42e1e34e" name="a2f984a4a1a5f137fd5cfee5d42e1e34e"></a>
+<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>prependChild</b> ()</td></tr>
+<tr class="memdesc:a2f984a4a1a5f137fd5cfee5d42e1e34e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Push in the front. This is only available for unordered trees. <br /></td></tr>
+<tr class="separator:a2f984a4a1a5f137fd5cfee5d42e1e34e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7423711efe4fd387450d87feb5545bfb" id="r_a7423711efe4fd387450d87feb5545bfb"><td class="memItemLeft" align="right" valign="top"><a id="a7423711efe4fd387450d87feb5545bfb" name="a7423711efe4fd387450d87feb5545bfb"></a>
+virtual <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>prependChild</b> (const key_t &amp;key)</td></tr>
+<tr class="separator:a7423711efe4fd387450d87feb5545bfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfb1a6c1c17c6c344605b489ac155a8e" id="r_adfb1a6c1c17c6c344605b489ac155a8e"><td class="memItemLeft" align="right" valign="top"><a id="adfb1a6c1c17c6c344605b489ac155a8e" name="adfb1a6c1c17c6c344605b489ac155a8e"></a>
 virtual <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieveChild</b> (const key_t &amp;key)</td></tr>
 <tr class="separator:adfb1a6c1c17c6c344605b489ac155a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -318,14 +323,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="e
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7f62b1a68eb97169aedcda208258ba84" id="r_a7f62b1a68eb97169aedcda208258ba84"><td class="memItemLeft" align="right" valign="top"><a id="a7f62b1a68eb97169aedcda208258ba84" name="a7f62b1a68eb97169aedcda208258ba84"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExclusive</b> ()</td></tr>
+<tr class="memitem:a7f62b1a68eb97169aedcda208258ba84" id="r_a7f62b1a68eb97169aedcda208258ba84"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a7f62b1a68eb97169aedcda208258ba84">isExclusive</a> ()</td></tr>
+<tr class="memdesc:a7f62b1a68eb97169aedcda208258ba84"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this tree type can either children or node data, but not both.  <br /></td></tr>
 <tr class="separator:a7f62b1a68eb97169aedcda208258ba84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d90046ff6d5add673806dce67701111" id="r_a0d90046ff6d5add673806dce67701111"><td class="memItemLeft" align="right" valign="top"><a id="a0d90046ff6d5add673806dce67701111" name="a0d90046ff6d5add673806dce67701111"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isMulti</b> ()</td></tr>
-<tr class="separator:a0d90046ff6d5add673806dce67701111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fff3d8384f317af0c4ccdb15b4ba2b8" id="r_a3fff3d8384f317af0c4ccdb15b4ba2b8"><td class="memItemLeft" align="right" valign="top"><a id="a3fff3d8384f317af0c4ccdb15b4ba2b8" name="a3fff3d8384f317af0c4ccdb15b4ba2b8"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isMultiple</b> ()</td></tr>
+<tr class="memdesc:a3fff3d8384f317af0c4ccdb15b4ba2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this tree type can contain children with a same key (path element). <br /></td></tr>
+<tr class="separator:a3fff3d8384f317af0c4ccdb15b4ba2b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef760f75eac06ce2710a8f0aa1e8c9e6" id="r_aef760f75eac06ce2710a8f0aa1e8c9e6"><td class="memItemLeft" align="right" valign="top"><a id="aef760f75eac06ce2710a8f0aa1e8c9e6" name="aef760f75eac06ce2710a8f0aa1e8c9e6"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOrdered</b> ()</td></tr>
+<tr class="memdesc:aef760f75eac06ce2710a8f0aa1e8c9e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if the keys of the children of a node are stored in an ordered structure (that is, std::map).s. <br /></td></tr>
 <tr class="separator:aef760f75eac06ce2710a8f0aa1e8c9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -372,9 +379,9 @@ class drain::DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</div><p>A templated class 
 </ul>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">T</td><td>- node type, containing user-designed data implementing <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204" title="Clear children and node data.">clear()</a>, size() and <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree structure is empty.">empty()</a> for future compatibility. </td></tr>
+    <tr><td class="paramname">T</td><td>- node type, containing user-designed data implementing <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204" title="Clear children and node data.">clear()</a>, size() and <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree node has empty data and no children.">empty()</a> for future compatibility. </td></tr>
     <tr><td class="paramname">EXCLUSIVE</td><td>- node can contains either data or children but not both (JSON-like convention) </td></tr>
-    <tr><td class="paramname">P</td><td>- applied path structure, like std::list – must implement <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree structure is empty.">empty()</a> both for path and keys (path elements)</td></tr>
+    <tr><td class="paramname">P</td><td>- applied path structure, like std::list – must implement <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree node has empty data and no children.">empty()</a> both for path and keys (path elements)</td></tr>
   </table>
   </dd>
 </dl>
@@ -382,7 +389,7 @@ class drain::DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</div><p>A templated class 
 <p>The nodes in a tree contain user defined data, the type of which is given as template T.</p>
 <p>Currenty, data Concept is requires the following methods:</p><ul>
 <li><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204" title="Clear children and node data.">clear()</a> – resetting the data to default initial (empty) value.</li>
-<li><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree structure is empty.">empty()</a> – returning true if the data is empty, or can be identified with empty.</li>
+<li><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a5dc9d7494d137f8725d90c21d037fe4a" title="Check if the tree node has empty data and no children.">empty()</a> – returning true if the data is empty, or can be identified with empty.</li>
 </ul>
 <p>A tree is EXCLUSIVE, if a node contains either data or children. For example, a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> tree is EXCLUSIVE and an <a class="el" href="classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;">XML</a> tree is not (a tag can containg attributes (data) and inner tages (children).</p>
 <p>Further, each type listed above has two variants:</p><ul>
@@ -433,8 +440,8 @@ data_t &amp; getData(const key_t &amp;) = 0;
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a096ce1ab7533a296351b535765aadd3a" name="a096ce1ab7533a296351b535765aadd3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a096ce1ab7533a296351b535765aadd3a">&#9670;&#160;</a></span>addChild()</h2>
+<a id="ae383497c2ee0d0637a9506d853b244bd" name="ae383497c2ee0d0637a9506d853b244bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae383497c2ee0d0637a9506d853b244bd">&#9670;&#160;</a></span>addChild() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -445,21 +452,51 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; addChild </td>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; addChild </td>
           <td>(</td>
-          <td class="paramtype">const key_t &amp;&#160;</td>
-          <td class="paramname"><em>key</em> = <code>key_t()</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Add a child node. If unordered and UNIQUE, reuse existing nodes. </p>
+<p>Add a child with an automatically generated key (path element). </p>
+<p>For example, specialized methods may generate a key (path element) automatically. </p><dl class="section see"><dt>See also</dt><dd>TreeHTML::addChild() </dd></dl>
+
+</div>
+</div>
+<a id="a8fad966895ba460f1152f415eb2d82f1" name="a8fad966895ba460f1152f415eb2d82f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fad966895ba460f1152f415eb2d82f1">&#9670;&#160;</a></span>addChild() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::string,'/'&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp; addChild </td>
+          <td>(</td>
+          <td class="paramtype">const key_t &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a child node. If UNORDERED and not MULTIPLE, reuse existing nodes. </p>
 <p>Behaviour of this function varies as follows:</p>
 <ul>
 <li>OrderedTree: return child named <code>key</code>, if exists</li>
@@ -814,6 +851,70 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a14335bbd09b1792fc55e932f29c50b0d" name="a14335bbd09b1792fc55e932f29c50b0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14335bbd09b1792fc55e932f29c50b0d">&#9670;&#160;</a></span>initChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::string,'/'&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initChild </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td>
+          <td class="paramname"><em>child</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Means for automatically setting something, for example the type of a node. </p>
+<p>For example the default type of a node can be set based on the type of the host node.</p>
+<dl class="section see"><dt>See also</dt><dd>TreeHTML::initChild()</dd></dl>
+<p>Future option: also key (of type const key_t &amp;) is considered </p>
+
+</div>
+</div>
+<a id="a7f62b1a68eb97169aedcda208258ba84" name="a7f62b1a68eb97169aedcda208258ba84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f62b1a68eb97169aedcda208258ba84">&#9670;&#160;</a></span>isExclusive()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::string,'/'&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool isExclusive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True, if this tree type can either children or node data, but not both. </p>
+<p>A <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> structure is implemented as an EXCLUSIVE tree: a node contains either a subtree or a value (FlexibleMap).</p>
+<dl class="section see"><dt>See also</dt><dd>TreeExamples </dd></dl>
 
 </div>
 </div>

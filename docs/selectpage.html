@@ -84,7 +84,18 @@ Selecting data</h1>
 <p>Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.  </p>
 <p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
 <p>In <b>Rack</b>, many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
-<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p>Remarks on the options:</p>
+<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;,&lt;timespan&gt;   (section: general)</div>
+<div class="line">  Data selector for the next computation</div>
+<div class="line">  - path () [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
+<div class="line">  - quantity () [DBZH|VRAD|RHOHV|...]</div>
+<div class="line">  - elangle (-90:90) [min[:max]]</div>
+<div class="line">  - count (4095)</div>
+<div class="line">  - order (DATA:MIN) [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
+<div class="line">  - prf (ANY) [[&quot;ANY&quot;,&quot;SINGLE&quot;,&quot;DOUBLE&quot;]]</div>
+<div class="line">  - timespan (0:0) [range from nominal time [seconds]]</div>
+<div class="line">  See also: selectObject,selectQuantity</div>
+<div class="line"> </div>
+</div><!-- fragment --><p>Remarks on the options:</p>
 <ul>
 <li><code>path</code> argument defines a path <em>segment</em> to be matched, with desired index ranges (example: <code>dataset2:4/data3</code>:8 )</li>
 <li>in <code>path</code> argument, a leading slash fixes the matching to the root (example: <code>/dataset</code>:/data: ), otherwise the tail part is matched</li>

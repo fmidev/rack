@@ -891,6 +891,7 @@ typedef std::map&lt; xml_tag_t, xml_tag_t &gt;&#160;</td><td class="memItemRight
 , <br />
 &#160;&#160;<b>TAB</b> = '\t'
 , <b>NEWLINE</b> = '\n'
+, <b>DEGREE</b> = 176
 <br />
  }</td></tr>
 <tr class="separator:a54a0e7143e7af445fad3522fe4b4904c inherit pub_types_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1006,44 +1007,10 @@ template&lt;class V &gt; </td></tr>
 <tr class="memitem:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlAttribToStream</b> (std::ostream &amp;ostr, const std::string &amp;key, const V &amp;value)</td></tr>
 <tr class="memdesc:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handy map for converting characters to <a class="el" href="classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;">XML</a> entities. Example: '&amp;' -&gt; "&amp;amp;". <br /></td></tr>
 <tr class="separator:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a234b76cab39d8102c138e9161dd93ba5 inherit pub_static_methods_classdrain_1_1XML" id="r_a234b76cab39d8102c138e9161dd93ba5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a234b76cab39d8102c138e9161dd93ba5 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a234b76cab39d8102c138e9161dd93ba5">xmlAssign</a> (T &amp;dst, const T &amp;src)</td></tr>
-<tr class="memdesc:a234b76cab39d8102c138e9161dd93ba5 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <br /></td></tr>
-<tr class="separator:a234b76cab39d8102c138e9161dd93ba5 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5f82f047b0f0650aa1ceb12239d1e1e inherit pub_static_methods_classdrain_1_1XML" id="r_ac5f82f047b0f0650aa1ceb12239d1e1e"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
-<tr class="memitem:ac5f82f047b0f0650aa1ceb12239d1e1e inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ac5f82f047b0f0650aa1ceb12239d1e1e">xmlAssign</a> (TX &amp;dst, const typename TX::xml_node_t &amp;src)</td></tr>
-<tr class="memdesc:ac5f82f047b0f0650aa1ceb12239d1e1e inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy node data to tree.  <br /></td></tr>
-<tr class="separator:ac5f82f047b0f0650aa1ceb12239d1e1e inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML" id="r_ab428b4617692c30283c5c7fd1a59e81d"><td class="memTemplParams" colspan="2">template&lt;typename N &gt; </td></tr>
 <tr class="memitem:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static N &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ab428b4617692c30283c5c7fd1a59e81d">xmlAssignNode</a> (N &amp;dst, const N &amp;src)</td></tr>
-<tr class="memdesc:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign tree node (data) to another.  <br /></td></tr>
+<tr class="memdesc:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <br /></td></tr>
 <tr class="separator:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af518bc3963db4b64715de13339e96db7 inherit pub_static_methods_classdrain_1_1XML" id="r_af518bc3963db4b64715de13339e96db7"><td class="memTemplParams" colspan="2">template&lt;typename T , typename V &gt; </td></tr>
-<tr class="memitem:af518bc3963db4b64715de13339e96db7 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#af518bc3963db4b64715de13339e96db7">xmlAssign</a> (T &amp;tree, const V &amp;arg)</td></tr>
-<tr class="memdesc:af518bc3963db4b64715de13339e96db7 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign property to a <a class="el" href="classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;">XML</a> tree node.  <br /></td></tr>
-<tr class="separator:af518bc3963db4b64715de13339e96db7 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af07ef429a9bcb6dfa0f6370768defda9 inherit pub_static_methods_classdrain_1_1XML" id="r_af07ef429a9bcb6dfa0f6370768defda9"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:af07ef429a9bcb6dfa0f6370768defda9 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#af07ef429a9bcb6dfa0f6370768defda9">xmlAssign</a> (T &amp;tree, std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; l)</td></tr>
-<tr class="memdesc:af07ef429a9bcb6dfa0f6370768defda9 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree.  <br /></td></tr>
-<tr class="separator:af07ef429a9bcb6dfa0f6370768defda9 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49d6972e772e1c988dbb8f8c5ceede99 inherit pub_static_methods_classdrain_1_1XML" id="r_a49d6972e772e1c988dbb8f8c5ceede99"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
-<tr class="memitem:a49d6972e772e1c988dbb8f8c5ceede99 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a49d6972e772e1c988dbb8f8c5ceede99">xmlAssignString</a> (TX &amp;tree, const std::string &amp;s)</td></tr>
-<tr class="memdesc:a49d6972e772e1c988dbb8f8c5ceede99 inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">When assigning a string, create new element unless the element itself is of type CTEXT.  <br /></td></tr>
-<tr class="separator:a49d6972e772e1c988dbb8f8c5ceede99 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11edf71d4665bb956c40887405e78d7a inherit pub_static_methods_classdrain_1_1XML" id="r_a11edf71d4665bb956c40887405e78d7a"><td class="memTemplParams" colspan="2">
-template&lt;typename TX &gt; </td></tr>
-<tr class="memitem:a11edf71d4665bb956c40887405e78d7a inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlAppendString</b> (TX &amp;tree, const std::string &amp;s)</td></tr>
-<tr class="separator:a11edf71d4665bb956c40887405e78d7a inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8053373244433a9288cbe744c3f7990c inherit pub_static_methods_classdrain_1_1XML" id="r_a8053373244433a9288cbe744c3f7990c"><td class="memTemplParams" colspan="2">template&lt;typename TX &gt; </td></tr>
-<tr class="memitem:a8053373244433a9288cbe744c3f7990c inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static TX &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a8053373244433a9288cbe744c3f7990c">xmlSetType</a> (TX &amp;tree, const typename TX::node_data_t::xml_tag_t &amp;type)</td></tr>
-<tr class="separator:a8053373244433a9288cbe744c3f7990c inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a7e721d46d41ed2318bcea19f3a656c inherit pub_static_methods_classdrain_1_1XML" id="r_a9a7e721d46d41ed2318bcea19f3a656c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9a7e721d46d41ed2318bcea19f3a656c inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#a9a7e721d46d41ed2318bcea19f3a656c">xmlAddChild</a> (T &amp;tree, const std::string &amp;key)</td></tr>
-<tr class="separator:a9a7e721d46d41ed2318bcea19f3a656c inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a87c1d5038c6993b8c95e11cbd27244 inherit pub_static_methods_classdrain_1_1XML" id="r_a2a87c1d5038c6993b8c95e11cbd27244"><td class="memTemplParams" colspan="2">
-template&lt;typename N &gt; </td></tr>
-<tr class="memitem:a2a87c1d5038c6993b8c95e11cbd27244 inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static N::xml_tag_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>xmlRetrieveDefaultType</b> (const N &amp;parentNode)</td></tr>
-<tr class="separator:a2a87c1d5038c6993b8c95e11cbd27244 inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classdrain_1_1NodeXML"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1NodeXML')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1NodeXML.html">NodeXML&lt; Html::tag_t &gt;</a></td></tr>
 <tr class="memitem:af8290260e476cbd4d1d87d105852cf48 inherit pub_attribs_classdrain_1_1NodeXML" id="r_af8290260e476cbd4d1d87d105852cf48"><td class="memItemLeft" align="right" valign="top">
 elem_t&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
@@ -1188,7 +1155,6 @@ static xmldoc_attrib_map_t&#160;</td><td class="memItemRight" valign="bottom"><b
 
 <p>Tell if this element should always have separate opening and closing tags even when empty, like &lt;STYLE&gt;&lt;/STYLE&gt; </p>
 <p>These elements MUST appear open, even when having no child elements. </p>
-<p>These tags can appear "empty", without child elements.</p>
 
 <p>Reimplemented from <a class="el" href="classdrain_1_1XML.html#a0ec58947d3d1505aa77e77018c2162f3">XML</a>.</p>
 

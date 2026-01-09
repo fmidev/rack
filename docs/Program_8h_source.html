@@ -117,125 +117,80 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// New design (2020)</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifndef PROGRAM_H_</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define PROGRAM_H_</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#ifndef DRAIN_PROGRAM_H_</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define DRAIN_PROGRAM_H_</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// #include &lt;iostream&gt;</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &lt;drain/Sprinter.h&gt;</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &quot;Command.h&quot;</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &quot;CommandSequence.h&quot;</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;Command.h&quot;</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedrain.html">drain</a> {</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00048" data-start="{" data-end="};">
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandSequence.html">   48</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1CommandSequence.html">CommandSequence</a> : <span class="keyword">public</span> std::list&lt;T&gt; {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">typedef</span> T entry_t;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">typedef</span> std::list&lt;T&gt; list_t;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// virtual consider</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">// typename list_t::value_type &amp; add(key, cmd) = 0;</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedrain.html">drain</a> {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">//class Program :  public CommandSequence&lt;std::pair&lt;std::string,Command *&gt; &gt; {</span></div>
+<div class="foldopen" id="foldopen00053" data-start="{" data-end="};">
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classdrain_1_1Program.html">   53</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1Program.html">Program</a> :  <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1CommandSequence.html">CommandSequence</a>&lt;std::pair&lt;std::string,Command *&gt; &gt;, <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1Contextual.html">Contextual</a> {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a>(){};</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandSequence.html#a9b3baad8c612d81b96e46f84d7e97580">   61</a></span>    <span class="keyword">operator</span> bool(){ <span class="keywordflow">return</span> !this-&gt;empty(); };</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>};</div>
-</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Program.html">Program</a> &amp;prog){</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Program copy ctor: ctx?\n&quot;</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    };</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keyword">inline</span></div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespacedrain.html#a48e62a54eb9bf4da1068ca228e0b3c35">   67</a></span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1CommandSequence.html">CommandSequence&lt;T&gt;</a> &amp; commands){</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">static</span> <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> layout(<span class="stringliteral">&quot;\n&quot;</span>, <span class="stringliteral">&quot;{,}&quot;</span>, <span class="stringliteral">&quot;=&quot;</span>, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <a class="code hl_function" href="classdrain_1_1Sprinter.html#a3137cf71c0eb3614a75757c718e523f5">Sprinter::sequenceToStream</a>(ostr, commands, layout);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a>(<a class="code hl_class" href="classdrain_1_1Context.html">Context</a> &amp; ctx){</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <a class="code hl_function" href="classdrain_1_1Contextual.html#af41241201748519c53340609cdf596a3">setExternalContext</a>(ctx);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    };</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; add(<span class="keyword">const</span> std::string &amp; key, <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; cmd);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">// Return</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    iterator add(<span class="keyword">const</span> std::string &amp; key, <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; cmd, iterator pos);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1Program.html#aa6b7bb009af6cd63f442559d3b8d1ab2">run</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>};</div>
 </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">//class ProgramVector : public std::vector&lt;Program&gt; {</span></div>
+<div class="foldopen" id="foldopen00083" data-start="{" data-end="};">
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classdrain_1_1ProgramVector.html">   83</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1ProgramVector.html">ProgramVector</a> : <span class="keyword">public</span> std::map&lt;int,Program&gt; {</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="foldopen" id="foldopen00085" data-start="{" data-end="};">
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classdrain_1_1Script.html">   85</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1Script.html">Script</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1CommandSequence.html">CommandSequence</a>&lt;std::pair&lt;std::string,std::string&gt; &gt; {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">typename</span> list_t::value_type &amp; add(<span class="keyword">const</span> std::string &amp; key, <span class="keyword">const</span> std::string &amp; params=<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>};</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a> &amp; <a class="code hl_function" href="classdrain_1_1ProgramVector.html#a5fb16bc1123189a0340086deb0bc2334">add</a>(<a class="code hl_class" href="classdrain_1_1Context.html">Context</a> &amp; ctx);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keywordtype">void</span> debug();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>};</div>
 </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">//class Program :  public CommandSequence&lt;std::pair&lt;std::string,Command *&gt; &gt; {</span></div>
-<div class="foldopen" id="foldopen00101" data-start="{" data-end="};">
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classdrain_1_1Program.html">  101</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1Program.html">Program</a> :  <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1CommandSequence.html">CommandSequence</a>&lt;std::pair&lt;std::string,Command *&gt; &gt;, <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1Contextual.html">Contextual</a> {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a>(){};</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Program.html">Program</a> &amp;prog){</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Program copy ctor: ctx?\n&quot;</span>;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    };</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a>(<a class="code hl_class" href="classdrain_1_1Context.html">Context</a> &amp; ctx){</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <a class="code hl_function" href="classdrain_1_1Contextual.html#af41241201748519c53340609cdf596a3">setExternalContext</a>(ctx);</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    };</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; add(<span class="keyword">const</span> std::string &amp; key, <a class="code hl_class" href="classdrain_1_1Command.html">Command</a> &amp; cmd);</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1Program.html#aa6b7bb009af6cd63f442559d3b8d1ab2">run</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>};</div>
-</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">//class ProgramVector : public std::vector&lt;Program&gt; {</span></div>
-<div class="foldopen" id="foldopen00128" data-start="{" data-end="};">
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classdrain_1_1ProgramVector.html">  128</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1ProgramVector.html">ProgramVector</a> : <span class="keyword">public</span> std::map&lt;int,Program&gt; {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <a class="code hl_class" href="classdrain_1_1Program.html">Program</a> &amp; <a class="code hl_function" href="classdrain_1_1ProgramVector.html#a5fb16bc1123189a0340086deb0bc2334">add</a>(<a class="code hl_class" href="classdrain_1_1Context.html">Context</a> &amp; ctx);</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="keywordtype">void</span> debug();</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>};</div>
-</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>} <span class="comment">/* namespace drain */</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">#endif </span><span class="comment">/* DRAINLET_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassdrain_1_1CommandSequence_html"><div class="ttname"><a href="classdrain_1_1CommandSequence.html">drain::CommandSequence</a></div><div class="ttdoc">A base class for Script and Program.</div><div class="ttdef"><b>Definition</b> Program.h:48</div></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>} <span class="comment">/* namespace drain */</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">#endif </span><span class="comment">/* DRAINLET_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassdrain_1_1CommandSequence_html"><div class="ttname"><a href="classdrain_1_1CommandSequence.html">drain::CommandSequence</a></div><div class="ttdoc">A base class for Script and Program.</div><div class="ttdef"><b>Definition</b> CommandSequence.h:48</div></div>
 <div class="ttc" id="aclassdrain_1_1Command_html"><div class="ttname"><a href="classdrain_1_1Command.html">drain::Command</a></div><div class="ttdoc">Base class for commands: typically actions taking parameters but also plain variable assignments and ...</div><div class="ttdef"><b>Definition</b> Command.h:55</div></div>
-<div class="ttc" id="aclassdrain_1_1Context_html"><div class="ttname"><a href="classdrain_1_1Context.html">drain::Context</a></div><div class="ttdef"><b>Definition</b> Context.h:57</div></div>
-<div class="ttc" id="aclassdrain_1_1Contextual_html"><div class="ttname"><a href="classdrain_1_1Contextual.html">drain::Contextual</a></div><div class="ttdef"><b>Definition</b> Context.h:246</div></div>
-<div class="ttc" id="aclassdrain_1_1Contextual_html_af41241201748519c53340609cdf596a3"><div class="ttname"><a href="classdrain_1_1Contextual.html#af41241201748519c53340609cdf596a3">drain::Contextual::setExternalContext</a></div><div class="ttdeci">void setExternalContext(Context &amp;ctx)</div><div class="ttdoc">Sets internal contextPtr to outside target.</div><div class="ttdef"><b>Definition</b> Context.h:275</div></div>
-<div class="ttc" id="aclassdrain_1_1ProgramVector_html"><div class="ttname"><a href="classdrain_1_1ProgramVector.html">drain::ProgramVector</a></div><div class="ttdoc">Structure for implementing threads in parallelized OpenMP for loop.</div><div class="ttdef"><b>Definition</b> Program.h:128</div></div>
-<div class="ttc" id="aclassdrain_1_1ProgramVector_html_a5fb16bc1123189a0340086deb0bc2334"><div class="ttname"><a href="classdrain_1_1ProgramVector.html#a5fb16bc1123189a0340086deb0bc2334">drain::ProgramVector::add</a></div><div class="ttdeci">Program &amp; add(Context &amp;ctx)</div><div class="ttdoc">Adds a new, empty program to thread vector.</div><div class="ttdef"><b>Definition</b> Program.cpp:82</div></div>
-<div class="ttc" id="aclassdrain_1_1Program_html"><div class="ttname"><a href="classdrain_1_1Program.html">drain::Program</a></div><div class="ttdoc">Sequence consisting of Command:s retrieved from a CommandBank.</div><div class="ttdef"><b>Definition</b> Program.h:101</div></div>
-<div class="ttc" id="aclassdrain_1_1Program_html_aa6b7bb009af6cd63f442559d3b8d1ab2"><div class="ttname"><a href="classdrain_1_1Program.html#aa6b7bb009af6cd63f442559d3b8d1ab2">drain::Program::run</a></div><div class="ttdeci">void run() const</div><div class="ttdoc">Main.</div><div class="ttdef"><b>Definition</b> Program.cpp:61</div></div>
-<div class="ttc" id="aclassdrain_1_1Script_html"><div class="ttname"><a href="classdrain_1_1Script.html">drain::Script</a></div><div class="ttdef"><b>Definition</b> Program.h:85</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_a3137cf71c0eb3614a75757c718e523f5"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a3137cf71c0eb3614a75757c718e523f5">drain::Sprinter::sequenceToStream</a></div><div class="ttdeci">static std::ostream &amp; sequenceToStream(std::ostream &amp;ostr, const T &amp;x, const SprinterLayout &amp;layout)</div><div class="ttdoc">Convenience: if sequence type (array, list, set, map) not given, assume array.</div><div class="ttdef"><b>Definition</b> Sprinter.h:321</div></div>
+<div class="ttc" id="aclassdrain_1_1Context_html"><div class="ttname"><a href="classdrain_1_1Context.html">drain::Context</a></div><div class="ttdef"><b>Definition</b> Context.h:58</div></div>
+<div class="ttc" id="aclassdrain_1_1Contextual_html"><div class="ttname"><a href="classdrain_1_1Contextual.html">drain::Contextual</a></div><div class="ttdef"><b>Definition</b> Context.h:249</div></div>
+<div class="ttc" id="aclassdrain_1_1Contextual_html_af41241201748519c53340609cdf596a3"><div class="ttname"><a href="classdrain_1_1Contextual.html#af41241201748519c53340609cdf596a3">drain::Contextual::setExternalContext</a></div><div class="ttdeci">void setExternalContext(Context &amp;ctx)</div><div class="ttdoc">Sets internal contextPtr to outside target.</div><div class="ttdef"><b>Definition</b> Context.h:278</div></div>
+<div class="ttc" id="aclassdrain_1_1ProgramVector_html"><div class="ttname"><a href="classdrain_1_1ProgramVector.html">drain::ProgramVector</a></div><div class="ttdoc">Structure for implementing threads in parallelized OpenMP for loop.</div><div class="ttdef"><b>Definition</b> Program.h:83</div></div>
+<div class="ttc" id="aclassdrain_1_1ProgramVector_html_a5fb16bc1123189a0340086deb0bc2334"><div class="ttname"><a href="classdrain_1_1ProgramVector.html#a5fb16bc1123189a0340086deb0bc2334">drain::ProgramVector::add</a></div><div class="ttdeci">Program &amp; add(Context &amp;ctx)</div><div class="ttdoc">Adds a new, empty program to thread vector.</div><div class="ttdef"><b>Definition</b> Program.cpp:96</div></div>
+<div class="ttc" id="aclassdrain_1_1Program_html"><div class="ttname"><a href="classdrain_1_1Program.html">drain::Program</a></div><div class="ttdoc">Sequence consisting of Command:s retrieved from a CommandBank.</div><div class="ttdef"><b>Definition</b> Program.h:53</div></div>
+<div class="ttc" id="aclassdrain_1_1Program_html_aa6b7bb009af6cd63f442559d3b8d1ab2"><div class="ttname"><a href="classdrain_1_1Program.html#aa6b7bb009af6cd63f442559d3b8d1ab2">drain::Program::run</a></div><div class="ttdeci">void run() const</div><div class="ttdoc">Main.</div><div class="ttdef"><b>Definition</b> Program.cpp:75</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
-<div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:137</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

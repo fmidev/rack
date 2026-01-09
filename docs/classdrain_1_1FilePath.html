@@ -81,6 +81,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdrain_1_1FilePath-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FilePath Class Reference</div></div>
 </div><!--header-->
@@ -128,6 +129,9 @@ template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204" id="r_ac8bb3912a3ce86b15842e79d0b421204"><td class="memItemLeft" align="right" valign="top"><a id="ac8bb3912a3ce86b15842e79d0b421204" name="ac8bb3912a3ce86b15842e79d0b421204"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr>
 <tr class="separator:ac8bb3912a3ce86b15842e79d0b421204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a481b8a81ec4de786dbadac46564b6301" id="r_a481b8a81ec4de786dbadac46564b6301"><td class="memTemplParams" colspan="2"><a id="a481b8a81ec4de786dbadac46564b6301" name="a481b8a81ec4de786dbadac46564b6301"></a>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:a481b8a81ec4de786dbadac46564b6301"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const TT &amp;... args)</td></tr>
@@ -144,6 +148,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const <a 
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const std::string &amp;s)</td></tr>
 <tr class="memdesc:a92efe8f216f542e174158bccc7a74725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts at least filename. If the string contains leading dir elements, \i append them to <code>this-&gt;dir</code> . <br /></td></tr>
 <tr class="separator:a92efe8f216f542e174158bccc7a74725"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aef2117c36825289c1c266061336d06" id="r_a5aef2117c36825289c1c266061336d06"><td class="memItemLeft" align="right" valign="top"><a id="a5aef2117c36825289c1c266061336d06" name="a5aef2117c36825289c1c266061336d06"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const char *s)</td></tr>
+<tr class="separator:a5aef2117c36825289c1c266061336d06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad680a12a996d3e8e592d522751bffba6" id="r_ad680a12a996d3e8e592d522751bffba6"><td class="memItemLeft" align="right" valign="top"><a id="ad680a12a996d3e8e592d522751bffba6" name="ad680a12a996d3e8e592d522751bffba6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> ()</td></tr>
 <tr class="separator:ad680a12a996d3e8e592d522751bffba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,9 +164,15 @@ virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="memitem:a9bb39f105e156b9211b189d47f120bdb" id="r_a9bb39f105e156b9211b189d47f120bdb"><td class="memItemLeft" align="right" valign="top"><a id="a9bb39f105e156b9211b189d47f120bdb" name="a9bb39f105e156b9211b189d47f120bdb"></a>
 virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> () const</td></tr>
 <tr class="separator:a9bb39f105e156b9211b189d47f120bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39b8f8db5c61291dd5ce51a4256c97c0" id="r_a39b8f8db5c61291dd5ce51a4256c97c0"><td class="memItemLeft" align="right" valign="top"><a id="a39b8f8db5c61291dd5ce51a4256c97c0" name="a39b8f8db5c61291dd5ce51a4256c97c0"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::string</b> () const</td></tr>
+<tr class="separator:a39b8f8db5c61291dd5ce51a4256c97c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c96d8e0a3c517c2143bce919af7da28" id="r_a3c96d8e0a3c517c2143bce919af7da28"><td class="memItemLeft" align="right" valign="top"><a id="a3c96d8e0a3c517c2143bce919af7da28" name="a3c96d8e0a3c517c2143bce919af7da28"></a>
 <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const <a class="el" href="classdrain_1_1FilePath.html">FilePath</a> &amp;path)</td></tr>
 <tr class="separator:a3c96d8e0a3c517c2143bce919af7da28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09160b97ed5987765168a82d557d1200" id="r_a09160b97ed5987765168a82d557d1200"><td class="memItemLeft" align="right" valign="top"><a id="a09160b97ed5987765168a82d557d1200" name="a09160b97ed5987765168a82d557d1200"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>debug</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
+<tr class="separator:a09160b97ed5987765168a82d557d1200"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -175,12 +188,18 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af0d5b8adaf17e81f24fbce2f306fa4b2" id="r_af0d5b8adaf17e81f24fbce2f306fa4b2"><td class="memItemLeft" align="right" valign="top"><a id="af0d5b8adaf17e81f24fbce2f306fa4b2" name="af0d5b8adaf17e81f24fbce2f306fa4b2"></a>
 <a class="el" href="classdrain_1_1Path.html">path_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dir</b></td></tr>
 <tr class="separator:af0d5b8adaf17e81f24fbce2f306fa4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe2cad0a50cbd9e30e5bf07ca92edfb5" id="r_abe2cad0a50cbd9e30e5bf07ca92edfb5"><td class="memItemLeft" align="right" valign="top"><a id="abe2cad0a50cbd9e30e5bf07ca92edfb5" name="abe2cad0a50cbd9e30e5bf07ca92edfb5"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>basename</b></td></tr>
-<tr class="separator:abe2cad0a50cbd9e30e5bf07ca92edfb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a980a4c19e74b79b485a9246312a9f893" id="r_a980a4c19e74b79b485a9246312a9f893"><td class="memItemLeft" align="right" valign="top"><a id="a980a4c19e74b79b485a9246312a9f893" name="a980a4c19e74b79b485a9246312a9f893"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>tail</b></td></tr>
+<tr class="separator:a980a4c19e74b79b485a9246312a9f893"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a110d0f63b1860324c40bae0391908f88" id="r_a110d0f63b1860324c40bae0391908f88"><td class="memItemLeft" align="right" valign="top"><a id="a110d0f63b1860324c40bae0391908f88" name="a110d0f63b1860324c40bae0391908f88"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>extension</b></td></tr>
 <tr class="separator:a110d0f63b1860324c40bae0391908f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a9edc4085814f3d17933718d842704dab" id="r_a9edc4085814f3d17933718d842704dab"><td class="memItemLeft" align="right" valign="top"><a id="a9edc4085814f3d17933718d842704dab" name="a9edc4085814f3d17933718d842704dab"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>handleBasename</b> (const std::string &amp;basename)</td></tr>
+<tr class="separator:a9edc4085814f3d17933718d842704dab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Extracts and stores directory path, base filename and extension. </p>

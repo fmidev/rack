@@ -129,9 +129,20 @@ Initialisation</h2>
 </ul>
 <h3><a class="anchor" id="csize"></a>
 Size</h3>
-<p>The size of the composite, in pixels, is set with <code>–cSize</code>. </p><div class="fragment"></div><!-- fragment --><h3><a class="anchor" id="cprojections"></a>
+<p>The size of the composite, in pixels, is set with <code>–cSize</code>. </p><div class="fragment"><div class="line">--cSize &lt;width&gt;,&lt;height&gt;   (section: cart)</div>
+<div class="line">  Set size of the compositing array. Does not allocate memory.</div>
+<div class="line">  - width (400) [pixels]</div>
+<div class="line">  - height (0) [pixels]</div>
+<div class="line">  See also: cBBox,cProj,cRange,cReset</div>
+<div class="line"> </div>
+</div><!-- fragment --><h3><a class="anchor" id="cprojections"></a>
 Projection</h3>
-<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax and additionally supports direct EPSG codes, <code>--cProj\</code> 3067 . </p><div class="fragment"></div><!-- fragment --><p>If the projection is not given, <b>Rack</b> uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.</p>
+<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax and additionally supports direct EPSG codes, <code>--cProj\</code> 3067 . </p><div class="fragment"><div class="line">--cProj &lt;projection&gt;   (section: cart)</div>
+<div class="line">  Set projection</div>
+<div class="line">  - projection () [&lt;EPSG-code&gt;|&lt;projstr&gt; Proj.4 syntax]</div>
+<div class="line">  See also: cBBox,cReset,cSize</div>
+<div class="line"> </div>
+</div><!-- fragment --><p>If the projection is not given, <b>Rack</b> uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.</p>
 <p>When writing GeoTIFF files, using EPSG codes is recommended because not all <b>Proj.4</b> project definition strings are supported by the GeoTIFF library. The following list produced as a part of release tests.</p>
 <div class="fragment"><div class="line">4326</div>
 <div class="line">+init=epsg:4326</div>
@@ -169,11 +180,23 @@ Projection</h3>
 </div><!-- fragment --><h3><a class="anchor" id="cbbox"></a>
 Bounding box</h3>
 <p>The geographical area – the bounding box – of the composite is set with <code>--cBBox</code> taking lower left and upper right points as arguments. The points can be always given in degrees. If the applied projection is metric, the coordinates can be given as meters. If the bounding box is not explictly given with <code>--cBBox</code> command, the corner points of the first radar input are used.</p>
-<div class="fragment"></div><!-- fragment --><p>Hint: look at additional attributes of prefix <code>where:BBOX</code> written in output files. These attributes display the coordinates of metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising composite products. (Write of additional non-standard attributes is controlled with the <code>--odim</code> command. )</p>
+<div class="fragment"><div class="line">--cBBox &lt;llLon&gt;,&lt;llLat&gt;,&lt;urLon&gt;,&lt;urLat&gt;   (section: cart)</div>
+<div class="line">  Bounding box of the Cartesian product.</div>
+<div class="line">  - llLon (0) [deg|m]</div>
+<div class="line">  - llLat (0) [deg|m]</div>
+<div class="line">  - urLon (0) [deg|m]</div>
+<div class="line">  - urLat (0) [deg|m]</div>
+<div class="line">  See also: cBBoxTest,cBBoxTile,cCreateTile,cProj,cReset,cSize</div>
+<div class="line"> </div>
+</div><!-- fragment --><p>Hint: look at additional attributes of prefix <code>where:BBOX</code> written in output files. These attributes display the coordinates of metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising composite products. (Write of additional non-standard attributes is controlled with the <code>--odim</code> command. )</p>
 <h3><a class="anchor" id="cinit"></a>
 Initialisation</h3>
 <p>Command <code>--cInit</code> creates an empty compositing array of desired size in the memory and stores the essential attributes listed above. The command is optional – initialisation is implicitly invoked when the first input is introduced with <code>--cAdd</code> or <code>--cAddWeighted</code> . However, explicit command is recommended, if the user wants to get an empty image (instead of an error) in case no inputs are available.</p>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
+<div class="fragment"><div class="line">--cInit    (section: cart)</div>
+<div class="line">  Allocate memory to --cSize, applying --target and --select, if set.</div>
+<div class="line">  See also: cReset</div>
+<div class="line"> </div>
+</div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
 Handling special codes</h2>
 <p>Radar data complying the ODIM standard applies special marker codes <code>undetect</code> and <code>nodata</code> . These codes have to be handled carefully in product generation and compositing. In <b>Rack</b> , pixel values with <code>nodata</code> are simply skipped; they are not accumulated in the composite array, for example.</p>
 <p>Handling of <code>undetect</code> can be tuned by the user with <code>--quantityConf</code> and <code>--undetectWeight</code> . The physical value or "virtual zero" replacing <code>undetect</code> codes is set using <code>--quantityConf</code> , <br  />
@@ -239,7 +262,13 @@ Direct compositing</h3>
 <p>The encoding is applied to the first field (like <code>DATA</code> ) listed; the remaining field (typically quality fields) use their default encodings. But if desired, encoding of each field can be set, for example as follows:</p>
 <p>For now, the old syntax is also supported: a string composed of single letters (<code>d</code> ), weight, (<code>w</code> ), deviation (std.dev., <code>s</code> ) and count of radars (<code>c</code> ).</p>
 <p>Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly <code></code> &lt;LLx&gt;,&lt;LLy&gt;,&lt;URx&gt;,&lt;URy&gt; or <code>DATA</code> (automatic bounding box) or <code>OVERLAP</code> (overlapping area).</p>
-<div class="fragment"></div><!-- fragment --><div class="image">
+<div class="fragment"><div class="line">--cExtract &lt;channels&gt;:&lt;bbox&gt;   (section: cart, separator: &#39;:&#39;)</div>
+<div class="line">  Extract (export) data from the internal accumulation array</div>
+<div class="line">  - channels (DATA,WEIGHT) [DATA,WEIGHT,COUNT,DEVIATION]</div>
+<div class="line">  - bbox () [Optional cropping: ...:&lt;LLx&gt;,&lt;LLy&gt;,&lt;URx&gt;,&lt;URy&gt; or INPUT or OVERLAP]</div>
+<div class="line">  See also: cAdd,cAddWeighted</div>
+<div class="line"> </div>
+</div><!-- fragment --><div class="image">
 <img src="composite-layers.png" alt=""/>
 <div class="caption">
 Layers extracted from the accumulation array: the composite, quality field, deviation and count of radars.</div></div>

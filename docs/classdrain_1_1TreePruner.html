@@ -84,6 +84,8 @@ $(function() {
   <div class="headertitle"><div class="title">TreePruner&lt; T &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="TreeUtilsXML_8h_source.html">TreeUtilsXML.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for TreePruner&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -126,7 +128,15 @@ Public Attributes</h2></td></tr>
 tag_selector_t&#160;</td><td class="memItemRight" valign="bottom"><b>tagSelector</b></td></tr>
 <tr class="separator:ae9756c79856a660d2b8ca5165346e665"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
+class drain::TreePruner&lt; T &gt;</div><p>Example: </p><div class="fragment"><div class="line"><a class="code hl_class" href="classdrain_1_1TreePruner.html">drain::TreePruner&lt;drain::image::TreeSVG&gt;</a> textPruner;</div>
+<div class="line">Remove all TEXT elements which have neither children neither own text.</div>
+<div class="line">textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::TEXT | drain::XmlEmptiness::CHILDREN;</div>
+<div class="line">textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT;</div>
+<div class="line">textPruner.tagSelector[svg::UNDEFINED] = 0;</div>
+<div class="ttc" id="aclassdrain_1_1TreePruner_html"><div class="ttname"><a href="classdrain_1_1TreePruner.html">drain::TreePruner</a></div><div class="ttdef"><b>Definition</b> TreeUtilsXML.h:104</div></div>
+</div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af46553cf7f5d32397bc21754d47dd684" name="af46553cf7f5d32397bc21754d47dd684"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af46553cf7f5d32397bc21754d47dd684">&#9670;&#160;</a></span>visitPostfix()</h2>
 

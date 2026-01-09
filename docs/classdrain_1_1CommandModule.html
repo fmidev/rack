@@ -100,7 +100,7 @@ Inheritance diagram for CommandModule&lt; PREFIX, SECTION &gt;:</div>
 <area shape="poly" title=" " alt="" coords="209,147,209,181,204,181,204,147"/>
 <area shape="rect" href="classrack_1_1ScienceModule.html" title=" " alt="" coords="293,181,435,207"/>
 <area shape="poly" title=" " alt="" coords="258,137,342,179,340,184,255,142"/>
-<area shape="rect" href="classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="103,5,310,45"/>
+<area shape="rect" href="classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C, deriving command name from the class name and prefixing if de..." alt="" coords="103,5,310,45"/>
 <area shape="poly" title=" " alt="" coords="209,59,209,93,204,93,204,59"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -110,7 +110,7 @@ Collaboration diagram for CommandModule&lt; PREFIX, SECTION &gt;:</div>
 <div class="center"><img src="classdrain_1_1CommandModule__coll__graph.png" border="0" usemap="#aCommandModule_3_01PREFIX_00_01SECTION_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aCommandModule_3_01PREFIX_00_01SECTION_01_4_coll__map" id="aCommandModule_3_01PREFIX_00_01SECTION_01_4_coll__map">
 <area shape="rect" title="Combines command installation and sectioning." alt="" coords="1336,187,1539,227"/>
-<area shape="rect" href="classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C." alt="" coords="1080,187,1287,227"/>
+<area shape="rect" href="classdrain_1_1CommandInstaller.html" title="Creates an instance of command class C, deriving command name from the class name and prefixing if de..." alt="" coords="1080,187,1287,227"/>
 <area shape="poly" title=" " alt="" coords="1300,204,1336,204,1336,209,1300,209"/>
 <area shape="rect" href="classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command." alt="" coords="844,194,967,219"/>
 <area shape="poly" title=" " alt="" coords="980,204,1080,204,1080,209,980,209"/>
@@ -151,9 +151,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:abcd0ddd15701abd1f1acd08c153eac89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab34def6eea5f2ba5e495c9e2b428aed8" id="r_ab34def6eea5f2ba5e495c9e2b428aed8"><td class="memTemplParams" colspan="2">template&lt;class CMD , class CMD_NEW  = CMD&gt; </td></tr>
 <tr class="memitem:ab34def6eea5f2ba5e495c9e2b428aed8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandModule.html#ab34def6eea5f2ba5e495c9e2b428aed8">installDeprecating</a> (const std::string &amp;name, char alias=0)</td></tr>
+<tr class="memdesc:ab34def6eea5f2ba5e495c9e2b428aed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark deprecating commands by installing them with this.  <br /></td></tr>
 <tr class="separator:ab34def6eea5f2ba5e495c9e2b428aed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcaf6b915e4bbb7b2b7ea274b4dabe05" id="r_afcaf6b915e4bbb7b2b7ea274b4dabe05"><td class="memTemplParams" colspan="2">template&lt;class CMD , class CMD_NEW  = CMD&gt; </td></tr>
 <tr class="memitem:afcaf6b915e4bbb7b2b7ea274b4dabe05"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandModule.html#afcaf6b915e4bbb7b2b7ea274b4dabe05">installDeprecating</a> (char alias=0)</td></tr>
+<tr class="memdesc:afcaf6b915e4bbb7b2b7ea274b4dabe05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark deprecating commands by installing them with this.  <br /></td></tr>
 <tr class="separator:afcaf6b915e4bbb7b2b7ea274b4dabe05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac903a24455b15c91fe17f70fc8b221f8" id="r_ac903a24455b15c91fe17f70fc8b221f8"><td class="memTemplParams" colspan="2">template&lt;class ... TT&gt; </td></tr>
 <tr class="memitem:ac903a24455b15c91fe17f70fc8b221f8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandModule.html#ac903a24455b15c91fe17f70fc8b221f8">linkRelatedCommands</a> (TT &amp;... cmds)</td></tr>
@@ -294,6 +296,8 @@ template&lt;class CMD , class CMD_NEW  = CMD&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Mark deprecating commands by installing them with this. </p>
 <p>If CMD_NEW is given (ie. different from CMD), add it to recommended alternatives. </p>
 
 </div>
@@ -335,6 +339,8 @@ template&lt;class CMD , class CMD_NEW  = CMD&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Mark deprecating commands by installing them with this. </p>
 <p>If CMD_NEW is given (ie. different from CMD), add it to recommended alternatives. </p>
 
 </div>

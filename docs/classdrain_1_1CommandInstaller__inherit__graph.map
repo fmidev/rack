@@ -1,5 +1,5 @@
 <map id="CommandInstaller&lt; PREFIX, SECTION &gt;" name="CommandInstaller&lt; PREFIX, SECTION &gt;">
-<area shape="rect" id="Node000001" title="Creates an instance of command class C." alt="" coords="5,319,212,359"/>
+<area shape="rect" id="Node000001" title="Creates an instance of command class C, deriving command name from the class name and prefixing if de..." alt="" coords="5,319,212,359"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="307,5,485,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,305,133,250,161,182,203,113,229,82,258,55,281,42,306,32,307,37,283,46,262,59,232,86,207,117,166,185,138,252,121,306"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1CommandModule.html" title=" " alt="" coords="310,69,482,109"/>

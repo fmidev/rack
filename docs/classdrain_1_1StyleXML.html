@@ -79,6 +79,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classdrain_1_1StyleXML-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">StyleXML Class Reference</div></div>
 </div><!--header-->
@@ -128,11 +129,11 @@ Collaboration diagram for StyleXML:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ab36a14736c2542327d52cd8bf2a8b6cb" id="r_ab36a14736c2542327d52cd8bf2a8b6cb"><td class="memTemplParams" colspan="2"><a id="ab36a14736c2542327d52cd8bf2a8b6cb" name="ab36a14736c2542327d52cd8bf2a8b6cb"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:ab36a14736c2542327d52cd8bf2a8b6cb"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>commentToStream</b> (std::ostream &amp;ostr, const T &amp;v)</td></tr>
-<tr class="memdesc:ab36a14736c2542327d52cd8bf2a8b6cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Practical utility, helps in adding C++ code commenting... <br /></td></tr>
-<tr class="separator:ab36a14736c2542327d52cd8bf2a8b6cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ca8c9ab9c6a71d081f46c5959885aac" id="r_a9ca8c9ab9c6a71d081f46c5959885aac"><td class="memTemplParams" colspan="2"><a id="a9ca8c9ab9c6a71d081f46c5959885aac" name="a9ca8c9ab9c6a71d081f46c5959885aac"></a>
+template&lt;class ... TT&gt; </td></tr>
+<tr class="memitem:a9ca8c9ab9c6a71d081f46c5959885aac"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>commentToStream</b> (std::ostream &amp;ostr, const TT... args)</td></tr>
+<tr class="memdesc:a9ca8c9ab9c6a71d081f46c5959885aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Practical utility, helps in adding C++ code commenting... <br /></td></tr>
+<tr class="separator:a9ca8c9ab9c6a71d081f46c5959885aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -148,6 +149,16 @@ static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLay
 <tr class="memitem:a4a9b1ddecfffd7cebf5653c780ae1602" id="r_a4a9b1ddecfffd7cebf5653c780ae1602"><td class="memItemLeft" align="right" valign="top"><a id="a4a9b1ddecfffd7cebf5653c780ae1602" name="a4a9b1ddecfffd7cebf5653c780ae1602"></a>
 static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>TEXT_ANCHOR</b></td></tr>
 <tr class="separator:a4a9b1ddecfffd7cebf5653c780ae1602"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a78f3be0637f5bde381ff8a8804526c89" id="r_a78f3be0637f5bde381ff8a8804526c89"><td class="memTemplParams" colspan="2"><a id="a78f3be0637f5bde381ff8a8804526c89" name="a78f3be0637f5bde381ff8a8804526c89"></a>
+template&lt;class T , class ... TT&gt; </td></tr>
+<tr class="memitem:a78f3be0637f5bde381ff8a8804526c89"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>argsToStream</b> (std::ostream &amp;ostr, const T &amp;arg, const TT... args)</td></tr>
+<tr class="separator:a78f3be0637f5bde381ff8a8804526c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06abce34350d04ce3507e25000aa6c76" id="r_a06abce34350d04ce3507e25000aa6c76"><td class="memItemLeft" align="right" valign="top"><a id="a06abce34350d04ce3507e25000aa6c76" name="a06abce34350d04ce3507e25000aa6c76"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>argsToStream</b> (std::ostream &amp;ostr)</td></tr>
+<tr class="separator:a06abce34350d04ce3507e25000aa6c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

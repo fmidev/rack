@@ -114,7 +114,7 @@ Inheritance diagram for ODIM:</div>
 <area shape="poly" title=" " alt="" coords="197,44,197,79,192,79,192,44"/>
 <area shape="rect" href="classrack_1_1EncodingBag.html" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="141,445,248,471"/>
 <area shape="poly" title=" " alt="" coords="197,411,197,445,192,445,192,411"/>
-<area shape="rect" href="classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="139,519,250,544"/>
+<area shape="rect" href="classrack_1_1CmdEncodingOLD.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="125,519,264,544"/>
 <area shape="poly" title=" " alt="" coords="197,484,197,519,192,519,192,484"/>
 <area shape="rect" href="classrack_1_1RhiODIM.html" title=" " alt="" coords="297,445,375,471"/>
 <area shape="poly" title=" " alt="" coords="354,411,342,446,337,444,349,409"/>
@@ -245,6 +245,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a76e42c954cb6c1559cd23843776df7af" id="r_a76e42c954cb6c1559cd23843776df7af"><td class="memItemLeft" align="right" valign="top"><a id="a76e42c954cb6c1559cd23843776df7af" name="a76e42c954cb6c1559cd23843776df7af"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ODIM</b> (<a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;image, const std::string &amp;<a class="el" href="classrack_1_1ODIM.html#ae2b0decb04be26b617d1c24f0deffd4f">quantity</a>=&quot;&quot;)</td></tr>
 <tr class="separator:a76e42c954cb6c1559cd23843776df7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a489f5e0e42b3884cc45d18ac57c53fbe" id="r_a489f5e0e42b3884cc45d18ac57c53fbe"><td class="memItemLeft" align="right" valign="top"><a id="a489f5e0e42b3884cc45d18ac57c53fbe" name="a489f5e0e42b3884cc45d18ac57c53fbe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>configureNEW</b> (const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;defaultODIM, bool useTypeDefaults=false)</td></tr>
+<tr class="separator:a489f5e0e42b3884cc45d18ac57c53fbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47e3136ba6355261d6cc5f282baea86d" id="r_a47e3136ba6355261d6cc5f282baea86d"><td class="memItemLeft" align="right" valign="top"><a id="a47e3136ba6355261d6cc5f282baea86d" name="a47e3136ba6355261d6cc5f282baea86d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSpecials</b> ()</td></tr>
+<tr class="separator:a47e3136ba6355261d6cc5f282baea86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63fbe98345e79eae037117caa3acb424" id="r_a63fbe98345e79eae037117caa3acb424"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIM.html#a63fbe98345e79eae037117caa3acb424">setGeometry</a> (size_t cols, size_t rows)</td></tr>
 <tr class="memdesc:a63fbe98345e79eae037117caa3acb424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets number of columns (nbins) and number of rows (nrays). Does not change resolution.  <br /></td></tr>
 <tr class="separator:a63fbe98345e79eae037117caa3acb424"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -299,10 +305,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>setTime</b> (const st
 &#160;</td><td class="memItemRight" valign="bottom"><b>EncodingODIM</b> (const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;odim)</td></tr>
 <tr class="memdesc:a0d9279a2c600f4c90f4cfb29f0a55b20 inherit pub_methods_classrack_1_1EncodingODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a0d9279a2c600f4c90f4cfb29f0a55b20 inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad195da28961863d11c861c8623d4c107 inherit pub_methods_classrack_1_1EncodingODIM" id="r_ad195da28961863d11c861c8623d4c107"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EncodingODIM.html#ad195da28961863d11c861c8623d4c107">EncodingODIM</a> (char <a class="el" href="classrack_1_1EncodingODIM.html#a75b160f574a0be26114bae2c7686a5e1">type</a>, double scale=1.0, double offset=NAN, double <a class="el" href="classrack_1_1EncodingODIM.html#ad38df0909e37434a27e97d27bc9ebe22">nodata</a>=NAN, double undetect=NAN, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;range={0, 0})</td></tr>
+<tr class="memitem:ad195da28961863d11c861c8623d4c107 inherit pub_methods_classrack_1_1EncodingODIM" id="r_ad195da28961863d11c861c8623d4c107"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EncodingODIM.html#ad195da28961863d11c861c8623d4c107">EncodingODIM</a> (char <a class="el" href="classrack_1_1EncodingODIM.html#a75b160f574a0be26114bae2c7686a5e1">type</a>, double scale=1.0, double offset=NAN, double nodata=NAN, double undetect=NAN, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;range={0, 0})</td></tr>
 <tr class="memdesc:ad195da28961863d11c861c8623d4c107 inherit pub_methods_classrack_1_1EncodingODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scale driven encoding for brace inits. RISK: group_t confusion?  <br /></td></tr>
 <tr class="separator:ad195da28961863d11c861c8623d4c107 inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fd025944f919c938f6422a4517c90a8 inherit pub_methods_classrack_1_1EncodingODIM" id="r_a7fd025944f919c938f6422a4517c90a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EncodingODIM.html#a7fd025944f919c938f6422a4517c90a8">EncodingODIM</a> (char <a class="el" href="classrack_1_1EncodingODIM.html#a75b160f574a0be26114bae2c7686a5e1">type</a>, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;range, double scale=0.0, double offset=NAN, double <a class="el" href="classrack_1_1EncodingODIM.html#ad38df0909e37434a27e97d27bc9ebe22">nodata</a>=NAN, double undetect=NAN)</td></tr>
+<tr class="memitem:a7fd025944f919c938f6422a4517c90a8 inherit pub_methods_classrack_1_1EncodingODIM" id="r_a7fd025944f919c938f6422a4517c90a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EncodingODIM.html#a7fd025944f919c938f6422a4517c90a8">EncodingODIM</a> (char <a class="el" href="classrack_1_1EncodingODIM.html#a75b160f574a0be26114bae2c7686a5e1">type</a>, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;range, double scale=0.0, double offset=NAN, double nodata=NAN, double undetect=NAN)</td></tr>
 <tr class="memdesc:a7fd025944f919c938f6422a4517c90a8 inherit pub_methods_classrack_1_1EncodingODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">Range-driven encoding for brace inits.  <br /></td></tr>
 <tr class="separator:a7fd025944f919c938f6422a4517c90a8 inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21f3810fbd3d1337389de8e75a283a54 inherit pub_methods_classrack_1_1EncodingODIM" id="r_a21f3810fbd3d1337389de8e75a283a54"><td class="memItemLeft" align="right" valign="top">
@@ -311,6 +317,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>setTime</b> (const st
 <tr class="memitem:a8b1db08be03b583599e64390f2fbedab inherit pub_methods_classrack_1_1EncodingODIM" id="r_a8b1db08be03b583599e64390f2fbedab"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>EncodingODIM</b> (<a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;image)</td></tr>
 <tr class="separator:a8b1db08be03b583599e64390f2fbedab inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d7d50dbf043d5dcf184619c2a8241f9 inherit pub_methods_classrack_1_1EncodingODIM" id="r_a1d7d50dbf043d5dcf184619c2a8241f9"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>copyEncoding</b> (const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;odim)</td></tr>
+<tr class="separator:a1d7d50dbf043d5dcf184619c2a8241f9 inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a485ef2aa268e48a061eef2013e7a9994 inherit pub_methods_classrack_1_1EncodingODIM" id="r_a485ef2aa268e48a061eef2013e7a9994"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;odim)</td></tr>
 <tr class="separator:a485ef2aa268e48a061eef2013e7a9994 inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -324,7 +333,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>setTime</b> (const st
 <a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setScaling</b> (double gain, double offset=NAN)</td></tr>
 <tr class="separator:a5e99e8f00b24783a42d11cd1f7303711 inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40daab4660942844b3a0f5481dd9982b inherit pub_methods_classrack_1_1EncodingODIM" id="r_a40daab4660942844b3a0f5481dd9982b"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setScaling</b> (double gain, double offset, double undetect, double <a class="el" href="classrack_1_1EncodingODIM.html#ad38df0909e37434a27e97d27bc9ebe22">nodata</a>)</td></tr>
+<a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>setScaling</b> (double gain, double offset, double undetect, double nodata)</td></tr>
 <tr class="separator:a40daab4660942844b3a0f5481dd9982b inherit pub_methods_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a479da8bc6c27c908ec0c5c460fb26a4a inherit pub_methods_classrack_1_1EncodingODIM" id="r_a479da8bc6c27c908ec0c5c460fb26a4a"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isSet</b> () const</td></tr>
@@ -620,14 +629,13 @@ const <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</
 <a class="el" href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ownScaling</b></td></tr>
 <tr class="separator:adb78644d3ef881f0249fd0c2292d6fbc inherit pub_attribs_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7610879bdcfeafe5f45676a7413d6981 inherit pub_attribs_classrack_1_1EncodingODIM" id="r_a7610879bdcfeafe5f45676a7413d6981"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>explicitSettings</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>explicitSettings</b> = NONE</td></tr>
 <tr class="separator:a7610879bdcfeafe5f45676a7413d6981 inherit pub_attribs_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75b160f574a0be26114bae2c7686a5e1 inherit pub_attribs_classrack_1_1EncodingODIM" id="r_a75b160f574a0be26114bae2c7686a5e1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EncodingODIM.html#a75b160f574a0be26114bae2c7686a5e1">type</a></td></tr>
 <tr class="memdesc:a75b160f574a0be26114bae2c7686a5e1 inherit pub_attribs_classrack_1_1EncodingODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is non-standard (not in <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a>), but a practical means of handling storage type of datasets.  <br /></td></tr>
 <tr class="separator:a75b160f574a0be26114bae2c7686a5e1 inherit pub_attribs_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad38df0909e37434a27e97d27bc9ebe22 inherit pub_attribs_classrack_1_1EncodingODIM" id="r_ad38df0909e37434a27e97d27bc9ebe22"><td class="memItemLeft" align="right" valign="top">
 double&#160;</td><td class="memItemRight" valign="bottom"><b>nodata</b></td></tr>
-<tr class="memdesc:ad38df0909e37434a27e97d27bc9ebe22 inherit pub_attribs_classrack_1_1EncodingODIM"><td class="mdescLeft">&#160;</td><td class="mdescRight">data[n]/what (obligatory) <br /></td></tr>
 <tr class="separator:ad38df0909e37434a27e97d27bc9ebe22 inherit pub_attribs_classrack_1_1EncodingODIM"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2dd20191d3e1814b15cb4b70c0db5e8e inherit pub_attribs_classrack_1_1EncodingODIM" id="r_a2dd20191d3e1814b15cb4b70c0db5e8e"><td class="memItemLeft" align="right" valign="top">
 double&#160;</td><td class="memItemRight" valign="bottom"><b>undetect</b></td></tr>

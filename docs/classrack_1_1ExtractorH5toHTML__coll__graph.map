@@ -1,0 +1,13 @@
+<map id="ExtractorH5toHTML" name="ExtractorH5toHTML">
+<area shape="rect" id="Node000001" title=" " alt="" coords="21,345,170,371"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1Path.html" title=" " alt="" coords="19,243,172,283"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,297,98,345,93,345,93,297"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,155,143,180"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="82,193,94,242,88,243,77,194"/>
+<area shape="rect" id="Node000004" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="167,155,319,180"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="215,190,127,245,124,240,212,185"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="167,80,319,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,120,246,154,241,154,241,120"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="171,5,315,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="246,45,246,80,241,80,241,45"/>
+</map>

@@ -1,7 +1,7 @@
 <map id="RadarSVG" name="RadarSVG">
-<area shape="rect" id="Node000001" title=" " alt="" coords="277,560,364,585"/>
+<area shape="rect" id="Node000001" title="Vector graphics for both composites and single radar data (polar coordinates)." alt="" coords="341,560,428,585"/>
 <area shape="rect" id="Node000002" href="$classrack_1_1RadarProj.html" title=" " alt="" coords="342,472,427,497"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="370,510,332,561,327,558,366,507"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="387,511,387,559,382,559,382,511"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1Proj6.html" title=" " alt="" coords="344,311,399,336"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="376,349,386,471,381,472,371,350"/>
 <area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1GeoFrame.html" title="Array with georeferencing support." alt="" coords="221,472,311,497"/>
@@ -12,7 +12,7 @@
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="374,149,374,208,369,208,369,149"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="286,5,457,45"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="374,59,374,95,369,95,369,59"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="270,510,278,535,288,547,301,558,298,562,285,551,273,537,265,512"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="284,507,312,534,355,558,352,562,308,538,281,510"/>
 <area shape="rect" id="Node000008" href="$structdrain_1_1Rectangle.html" title=" " alt="" coords="40,311,201,336"/>
 <area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="117,350,114,398,119,424,131,446,144,455,167,463,222,475,221,480,165,469,142,460,127,450,114,426,108,399,112,349"/>
 <area shape="rect" id="Node000009" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="5,159,140,184"/>
@@ -24,4 +24,6 @@
 <area shape="rect" id="Node000011" href="$structdrain_1_1Point2D.html" title=" " alt="" coords="107,208,254,233"/>
 <area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="169,246,130,312,125,309,165,244"/>
 <area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="182,141,183,207,178,208,177,141"/>
+<area shape="rect" id="Node000013" href="$structrack_1_1RadarSVG_1_1CubicBezierConf.html" title=" " alt="" coords="452,472,581,497"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="495,509,455,538,412,562,409,557,453,534,492,504"/>
 </map>

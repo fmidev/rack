@@ -81,6 +81,7 @@ $(function() {
 </li>
 <li class="level1"><a href="#embedCommands">Inserting commands directly</a><ul><li class="level2"><a href="#embedCommandsTXT">Commands as text files</a></li>
 <li class="level2"><a href="#embedCommandsJSON">Commands as JSON files</a></li>
+<li class="level2"><a href="#triggering">Script triggering options</a></li>
 </ul>
 </li>
 </ul>
@@ -149,8 +150,16 @@ Commands as JSON files</h2>
 <div class="line">    &quot;format&quot;: &quot;&quot;</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>In the above JSON code, layout style varies on purpose; a group can be set on a single line or several lines, with indentation. For <b>Rack</b>, parameters can be set as a single element (string or number) or as a group, as illustrated. Note that commands that have no parameters must still have a value (empty string <code>""</code> or empty group <code>{}</code> ).</p>
-<p>Hint: Remember that plain filenames are implicit <code>&ndash;inputFile &lt;file&gt;</code> commands; hence the file can also be a list of input files (in above line format only, so excluding JSON). Using such a file together with <code>--script</code> yields compact command lines especially in compositing. </p>
-</div></div><!-- contents -->
+<p>Hint: Remember that plain filenames are implicit <code>&ndash;inputFile &lt;file&gt;</code> commands; hence the file can also be a list of input files (in above line format only, so excluding JSON). Using such a file together with <code>--script</code> yields compact command lines especially in compositing.</p>
+<h2><a class="anchor" id="triggering"></a>
+Script triggering options</h2>
+<div class="dotgraph">
+<img src="dot_inline_dotgraph_10.png" alt="dot_inline_dotgraph_10.png" border="0" usemap="#dot_inline_dotgraph_10.map"/>
+<map name="dot_inline_dotgraph_10.map" id="dot_inline_dotgraph_10.map"><area shape="rect" href="fileiopage.html" title="&lt;i&gt;Read volume file" alt="" coords="177,38,265,70"/>
+<area shape="rect" href="productspage.html" title="&lt;i&gt;Creation of meteorological product" alt="" coords="324,6,491,37"/>
+</map>
+</div>
+ </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

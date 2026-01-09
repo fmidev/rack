@@ -1,6 +1,6 @@
 <map id="EncodingBag" name="EncodingBag">
 <area shape="rect" id="Node000001" title="Utility. Consider long names, and then addShortKeys()" alt="" coords="62,445,169,471"/>
-<area shape="rect" id="Node000008" href="$classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="60,519,171,544"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1CmdEncodingOLD.html" title="Facility for validating and storing desired technical (non&#45;meteorological) user parameters." alt="" coords="46,519,185,544"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="118,484,118,519,113,519,113,484"/>
 <area shape="rect" id="Node000002" href="$classrack_1_1PolarODIM.html" title="Metadata structure for single&#45;radar data (polar scans, volumes and products)." alt="" coords="70,372,161,397"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,411,118,445,113,445,113,411"/>

@@ -93,9 +93,10 @@ Adding and changing ODIM metadata</h2>
 <p>Metadata attributes in an HDF5 structure can be changed with <code>--setODIM</code> command.</p>
 <p>For convenience, this special command has also a shorthand – a direct assignment appended to <code>--</code> , for example <code>/dataset1/where</code>:rscale=500 .</p>
 <p>Modifies metadata (data attributes).  </p>
-<div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (Section: general)</div>
+<div class="fragment"><div class="line">--setODIM &lt;assignment&gt;   (section: general)</div>
 <div class="line">  Set data properties (ODIM). Works also directly: --/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]. See --completeODIM</div>
-<div class="line">    assignment= [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
+<div class="line">  - assignment () [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
+<div class="line"> </div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">assignment</td><td>- source path consisting of group path, attribute key and value</td></tr>
@@ -253,7 +254,7 @@ Data conversions</h1>
 <p>Volume data can be converted to desired scale and encoding with <code>--encoding</code> followed by <code>--convert</code> . If the input file contains several quantities, the target quantity can be selected with <code>--select</code> (<code>-s</code>) command:</p>
 <div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume-<span class="keywordtype">double</span>.h5 -Q DBZH --encoding C,0.5,-32 --convert  -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume-uint16.h5 -Q DBZH --encoding d --convert -Q VRAD --encoding C,0.025,-7.65506,0,255 --convert -o volume-<span class="keyword">new</span>.h5</div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdEncoding.html" title="Facility for validating and storing desired technical (non-meteorological) user parameters.">rack::CmdEncoding</a> (code) </dd>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdEncoding.html">rack::CmdEncoding</a> (code) </dd>
 <dd>
 <a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">rack::CmdSetODIM</a> (code)  </dd>
 <dd>

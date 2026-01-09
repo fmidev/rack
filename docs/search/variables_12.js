@@ -17,8 +17,9 @@ var searchData=
   ['srcweight_14',['srcWeight',['../classdrain_1_1image_1_1OpticalFlowCore.html#af0d0778105cd6d1c6f268e2fb9f7adcd',1,'drain::image::OpticalFlowCore']]],
   ['startpoint_15',['startPoint',['../classdrain_1_1image_1_1FloodFillOp.html#a64cf4b57af5f0bb52ddc2e872b126dc2',1,'drain::image::FloodFillOp']]],
   ['statusflags_16',['statusFlags',['../classdrain_1_1Context.html#a780e137a3091962bf3410a24551853c3',1,'drain::Context']]],
-  ['sumw_17',['sumW',['../classdrain_1_1image_1_1GaussianStripe.html#a8d336965ecaa81be27034abbcecc8fe1',1,'drain::image::GaussianStripe']]],
-  ['sumx_18',['sumX',['../classdrain_1_1image_1_1SegmentStatistics.html#ad3ef7df25aa5b94c8d11486b9db7acc6',1,'drain::image::SegmentStatistics']]],
-  ['sumxx_19',['sumXX',['../classdrain_1_1image_1_1SegmentStatistics.html#a444f7379d32b857842cb206aaeeea6e9',1,'drain::image::SegmentStatistics']]],
-  ['svg_20',['svg',['../classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833',1,'drain::image::NodeSVG']]]
+  ['stringquote_17',['stringQuote',['../structdrain_1_1PythonSerializer.html#a09c4bad7bea1c7e375578549516290d2',1,'drain::PythonSerializer']]],
+  ['sumw_18',['sumW',['../classdrain_1_1image_1_1GaussianStripe.html#a8d336965ecaa81be27034abbcecc8fe1',1,'drain::image::GaussianStripe']]],
+  ['sumx_19',['sumX',['../classdrain_1_1image_1_1SegmentStatistics.html#ad3ef7df25aa5b94c8d11486b9db7acc6',1,'drain::image::SegmentStatistics']]],
+  ['sumxx_20',['sumXX',['../classdrain_1_1image_1_1SegmentStatistics.html#a444f7379d32b857842cb206aaeeea6e9',1,'drain::image::SegmentStatistics']]],
+  ['svg_21',['svg',['../classdrain_1_1image_1_1NodeSVG.html#affee72ee32ad4718d953331edbc2f833',1,'drain::image::NodeSVG']]]
 ];
