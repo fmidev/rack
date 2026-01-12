@@ -190,13 +190,13 @@ RUN_TEST \\ --gTitle "''"  --gGroupTitle "'\${what:time|%H:%M} ${what:time|%H:%M
 #RUN_TEST \\   --script "'--cReset --cSize 300 -Q DBZH -c --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ --gTitle "'User defined title with timestamp: \${what:date|%Y/%m/%d} \${what:time|%H:%M}' "  --gGroupTitle "'NONE:\${what:date}-\${what:time}'"   \\   'data-kiira/201708121?00_radar.polar.fi{kor,ika}.h5' \\  -o user-title.svg 
 
 
-WRITE_DOC '<b>Changing style of graphic panels</b><p/>'
+WRITE_DOC '<b>Changing style of graphic panels</b> <p /> '
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\  --gLayout 'VERT' \\ --gTitle "'Larger font here...'"  --gGroupTitle "'...but smaller here, with still readable timestamp \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" --gTitleHeights "'40,20,15'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "User-defined_title_height"
+RUN_TEST \\  --gLayout 'VERT' \\ --gStyle ".BORDER='stroke:black;stroke-width:1px'" \\ --gTitle "'Larger font here...'"  --gGroupTitle "'...but smaller here, with still readable timestamp \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" --gTitleHeights "'40,20,15'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "User-defined_title_height"
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\ --gGroupTitle "'\${what:time}'"  \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN='fill:forestgreen'" --gStyle "rect.GROUP='fill:lightgreen'"  \\   --gStyle "text.MAIN='font-family:Times'"  --gStyle ".LOCATION='fill:brown'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "Multiple_styles"
+RUN_TEST \\ --gGroupId "'\${what:time}'"  \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN_TITLE='fill:forestgreen'" --gStyle "rect.GROUP_TITLE='fill:lightgreen'"  \\   --gStyle "text.MAIN='font-family:Times'"  --gStyle ".LOCATION='fill:brown'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "Multiple_styles"
 
 
 
@@ -213,7 +213,7 @@ WRITE_DOC '\b Background maps. External images can be linked with \c --gLinkImag
 #make -B gInclude.hlp
 #WRITE_DOC '\include gInclude.hlp'
 # use --gGroupId as soon as fixed 
-RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign 'HORZ_FILL:VERT_FILL'  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' -o 'Adding_background_maps'
+RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD} – \${PLC}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign 'HORZ_FILL:VERT_FILL'  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' -o 'Adding_background_maps'
 
 
 

@@ -620,10 +620,6 @@ void CmdOutputFile::exec() const {
 			}
 		}
 
-		if (mout.isDebug()){
-			mout.attention("Source data:");
-			drain::TreeUtils::dump(src);
-		}
 
 		ExtractorH5toHTML extractor;
 		//extractor.setBaseDir(drain::FilePath::path_t(path.dir, path.tail));
@@ -631,14 +627,19 @@ void CmdOutputFile::exec() const {
 		drain::TreeHTML & html = extractor.getHtml();
 		html[drain::Html::HEAD][drain::Html::TITLE](drain::Html::TITLE) = path.tail;
 		html[drain::Html::BODY]["header"](drain::Html::H1) = path.tail;
-		html->setId(path.tail); // currently more like comment.
+		html->setId(path.tail); // Needed in relativePath by ExtractorH5toHTML::visitPrefix().
 
 		drain::TreeUtils::traverse(extractor, src);
 
-		if (mout.isDebug(2)){
+		if (mout.isDebug(1)){
+			mout.attention("Source data:");
+			drain::TreeUtils::dump(src);
 			mout.attention("Selected HTML data:");
-			mout.warn(html.data);
+			// mout.warn(html.data);
 			drain::TreeUtils::dump(html);
+		}
+		else {
+			mout.hint("Run with --debug to see tree structures");
 		}
 
 		drain::Output outfile(path.str());
