@@ -601,39 +601,40 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>}</div>
 <div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span> </div>
 <div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span> </div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno"><a class="line" href="structdrain_1_1EnumDict.html#a64fd5a8f87def3c52c855d69584adb3a">  577</a></span><span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Dictionary.html">drain::EnumDict&lt;int,XML&gt;::dict_t</a> <a class="code hl_struct" href="structdrain_1_1EnumDict.html">drain::EnumDict&lt;int,XML&gt;::dict</a>;</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span> </div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span> </div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> E, <span class="keywordtype">bool</span> EX, <span class="keyword">class</span> P&gt;</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> UnorderedMultiTree&lt;<a class="code hl_class" href="classdrain_1_1NodeXML.html">NodeXML&lt;E&gt;</a>,EX,P&gt; &amp; tree){</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>    <span class="comment">// DOC def? TODO: preamble/prologToStream()</span></div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>    <a class="code hl_function" href="classdrain_1_1NodeXML.html#a093340011b130f567d96c8f6ae49ecfb">NodeXML&lt;E&gt;::docTypeToStream</a>(ostr); <span class="comment">// must be member, to support virtual?</span></div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <a class="code hl_function" href="classdrain_1_1NodeXML.html#aad6db868356986d70d032ff6fedba333">NodeXML&lt;E&gt;::toStream</a>(ostr, tree, <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>}</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span> </div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>DRAIN_ENUM_DICT2(<span class="keywordtype">int</span>,XML);</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span> </div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span><span class="comment">//template &lt;&gt;</span></div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span><span class="comment">//const drain::EnumDict&lt;int,XML&gt;::dict_t drain::EnumDict&lt;int,XML&gt;::dict;</span></div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span> </div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span> </div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> E, <span class="keywordtype">bool</span> EX, <span class="keyword">class</span> P&gt;</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> UnorderedMultiTree&lt;NodeXML&lt;E&gt;,EX,P&gt; &amp; tree){</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    <span class="comment">// DOC def? TODO: preamble/prologToStream()</span></div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    <a class="code hl_function" href="classdrain_1_1NodeXML.html#a093340011b130f567d96c8f6ae49ecfb">NodeXML&lt;E&gt;::docTypeToStream</a>(ostr); <span class="comment">// must be member, to support virtual?</span></div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    <a class="code hl_function" href="classdrain_1_1NodeXML.html#aad6db868356986d70d032ff6fedba333">NodeXML&lt;E&gt;::toStream</a>(ostr, tree, <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>}</div>
 <div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span> </div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span><span class="comment">inline</span></div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="comment">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const TreeXML &amp; t){</span></div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span><span class="comment">    // DOC def? TODO: preamble/prologToStream()</span></div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span><span class="comment">    TreeXML::node_data_t::docTypeToStream(ostr); // must be member, to support virtual?</span></div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span><span class="comment">    TreeXML::node_data_t::toStream(ostr, t, &quot;&quot;);</span></div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="comment">    return ostr;</span></div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="comment">}</span></div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span> </div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span> </div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span> </div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span> </div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span><span class="comment">inline</span></div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span><span class="comment">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const TreeXML &amp; t){</span></div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span><span class="comment">    // DOC def? TODO: preamble/prologToStream()</span></div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="comment">    TreeXML::node_data_t::docTypeToStream(ostr); // must be member, to support virtual?</span></div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span><span class="comment">    TreeXML::node_data_t::toStream(ostr, t, &quot;&quot;);</span></div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span><span class="comment">    return ostr;</span></div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span><span class="comment">}</span></div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span> </div>
 <div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span> </div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>}  <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span> </div>
 <div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span> </div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="preprocessor">#endif </span><span class="comment">/* TREEXML_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>}  <span class="comment">// drain::</span></div>
 <div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span> </div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span><span class="preprocessor">#endif </span><span class="comment">/* TREEXML_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition</b> Castable.h:76</div></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition</b> Dictionary.h:63</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_a2eeb21da3091f96a8c27c4470507e922"><div class="ttname"><a href="classdrain_1_1Logger.html#a2eeb21da3091f96a8c27c4470507e922">drain::Logger::warn</a></div><div class="ttdeci">Logger &amp; warn(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue.</div><div class="ttdef"><b>Definition</b> Log.h:431</div></div>
 <div class="ttc" id="aclassdrain_1_1Logger_html_add61c67aecbd42bf412bd8356c743097"><div class="ttname"><a href="classdrain_1_1Logger.html#add61c67aecbd42bf412bd8356c743097">drain::Logger::unimplemented</a></div><div class="ttdeci">Logger &amp; unimplemented(const TT &amp;... args)</div><div class="ttdoc">Feature to be done. Special type of Logger::note().</div><div class="ttdef"><b>Definition</b> Log.h:512</div></div>

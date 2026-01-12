@@ -13,10 +13,9 @@ var searchData=
   ['nodexml_10',['NodeXML',['../classdrain_1_1NodeXML.html',1,'drain']]],
   ['nodexml_3c_20gdal_3a_3atag_5ft_20_3e_11',['NodeXML&lt; GDAL::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
   ['nodexml_3c_20html_3a_3atag_5ft_20_3e_12',['NodeXML&lt; Html::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
-  ['nodexml_3c_20image_3a_3asvg_3a_3atag_5ft_20_3e_13',['NodeXML&lt; image::svg::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
-  ['nodexml_3c_20sld_3a_3atag_5ft_20_3e_14',['NodeXML&lt; SLD::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
-  ['nodexml_3c_20svg_3a_3atag_5ft_20_3e_15',['NodeXML&lt; svg::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
-  ['nonmet2op_16',['NonMet2Op',['../classrack_1_1NonMet2Op.html',1,'rack']]],
-  ['nonmetop_17',['NonMetOp',['../classrack_1_1NonMetOp.html',1,'rack']]],
-  ['notification_18',['Notification',['../structdrain_1_1Notification.html',1,'drain']]]
+  ['nodexml_3c_20sld_3a_3atag_5ft_20_3e_13',['NodeXML&lt; SLD::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
+  ['nodexml_3c_20svg_3a_3atag_5ft_20_3e_14',['NodeXML&lt; svg::tag_t &gt;',['../classdrain_1_1NodeXML.html',1,'drain']]],
+  ['nonmet2op_15',['NonMet2Op',['../classrack_1_1NonMet2Op.html',1,'rack']]],
+  ['nonmetop_16',['NonMetOp',['../classrack_1_1NonMetOp.html',1,'rack']]],
+  ['notification_17',['Notification',['../structdrain_1_1Notification.html',1,'drain']]]
 ];

@@ -165,8 +165,9 @@ SVG panel example: User-defined title.</div></div>
 <img src="group_titles_only.png" alt=""/>
 <div class="caption">
 SVG panel example: Group titles only.</div></div>
- <b>Changing style of graphic panels</b>A further example, usage of styles </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ <b>Changing style of graphic panels</b> A further example, usage of styles </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --gLayout VERT \</div>
+<div class="line">   --gStyle .BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1px&#39;</span> \</div>
 <div class="line">   --gTitle <span class="stringliteral">&#39;Larger font here...&#39;</span> --gGroupTitle <span class="stringliteral">&#39;...but smaller here, with still readable timestamp ${what:date|%A, %d %B %Y} at ${what:time|%H:%M} UTC&#39;</span> --gTitleHeights <span class="stringliteral">&#39;40,20,15&#39;</span> \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5 \</div>
@@ -176,8 +177,8 @@ SVG panel example: Group titles only.</div></div>
 <div class="caption">
 SVG panel example: User-defined title height.</div></div>
  A further example, usage of styles </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --gGroupTitle <span class="stringliteral">&#39;${what:time}&#39;</span> \</div>
-<div class="line">   --gStyle .IMAGE_BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1&#39;</span> --gStyle rect.MAIN=<span class="stringliteral">&#39;fill:forestgreen&#39;</span> --gStyle rect.GROUP=<span class="stringliteral">&#39;fill:lightgreen&#39;</span> \</div>
+<div class="line">   --gGroupId <span class="stringliteral">&#39;${what:time}&#39;</span> \</div>
+<div class="line">   --gStyle .IMAGE_BORDER=<span class="stringliteral">&#39;stroke:black;stroke-width:1&#39;</span> --gStyle rect.MAIN_TITLE=<span class="stringliteral">&#39;fill:forestgreen&#39;</span> --gStyle rect.GROUP_TITLE=<span class="stringliteral">&#39;fill:lightgreen&#39;</span> \</div>
 <div class="line">   --gStyle text.MAIN=<span class="stringliteral">&#39;font-family:Times&#39;</span> --gStyle .LOCATION=<span class="stringliteral">&#39;fill:brown&#39;</span> \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cSize 300 --cProj 3067 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5 \</div>
@@ -199,7 +200,7 @@ SVG panel example: Multiple styles.</div></div>
 SVG panel example: Metadata panel.</div></div>
  <b>Background</b> maps. External images can be linked with <code>--gLinkImage</code>. For example, maps can be included, aligning the following radar image on top of it with <code>--gAlign</code> <code>HORZ_FILL</code>,VERT_FILL . </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
-<div class="line">   --gGroupTitle <span class="stringliteral">&#39;${NOD}&#39;</span> \</div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;${NOD} – ${PLC}&#39;</span> \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign &#39;</span>HORZ_FILL:VERT_FILL<span class="stringliteral">&#39;  -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o adding_background_maps.svg</div>
 </div><!-- fragment --><div class="image">
 <img src="adding_background_maps.png" alt=""/>

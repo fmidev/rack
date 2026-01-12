@@ -37,7 +37,7 @@ var searchData=
   ['castable_34',['castable',['../classdrain_1_1Castable.html',1,'Castable'],['../classdrain_1_1Castable.html#a483ba604aa35a8c0e9370bc84b26b062',1,'drain::Castable::Castable(const Castable &amp;c)'],['../classdrain_1_1Castable.html#adc3aad5fcd44076857432cbc7f4dd2da',1,'drain::Castable::Castable(F &amp;p)']]],
   ['castableiterator_35',['CastableIterator',['../classdrain_1_1CastableIterator.html',1,'drain']]],
   ['castelement_36',['castElement',['../classdrain_1_1Castable.html#ad4181a8b5f9d2e5b180597376b85758f',1,'drain::Castable']]],
-  ['caster_37',['caster',['../classdrain_1_1Caster.html',1,'Caster'],['../classdrain_1_1Caster.html#ab19a8dd52e83ac4e956fea0835f2ef00',1,'drain::Caster::Caster()'],['../classdrain_1_1Caster.html#af04c271cfc8b6e9fbe16ab5b70915a45',1,'drain::Caster::Caster(const Caster &amp;c)'],['../classdrain_1_1image_1_1Encoding.html#a9ffd5a93a98f481dc194fbb707787ccf',1,'drain::image::Encoding::caster']]],
+  ['caster_37',['caster',['../classdrain_1_1Caster.html',1,'Caster'],['../classdrain_1_1image_1_1Encoding.html#a9ffd5a93a98f481dc194fbb707787ccf',1,'drain::image::Encoding::caster'],['../classdrain_1_1Caster.html#ab19a8dd52e83ac4e956fea0835f2ef00',1,'drain::Caster::Caster()'],['../classdrain_1_1Caster.html#af04c271cfc8b6e9fbe16ab5b70915a45',1,'drain::Caster::Caster(const Caster &amp;c)']]],
   ['caster_3a_3aget_3c_20std_3a_3astring_20_3e_38',['get&lt; std::string &gt;',['../namespacedrain.html#a8ecbe81d67d70e2501b41915022954f0',1,'drain']]],
   ['catenatorop_39',['CatenatorOp',['../classdrain_1_1image_1_1CatenatorOp.html',1,'drain::image']]],
   ['ccorop_40',['ccorop',['../classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a',1,'rack::CCorOp::CCorOp()'],['../classrack_1_1CCorOp.html',1,'CCorOp']]],
