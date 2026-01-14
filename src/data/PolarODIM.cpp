@@ -108,7 +108,7 @@ double PolarODIM::getMaxRange(bool warn) const {
 	if (!warn)
 		return rstart + rscale*static_cast<double>(area.width);
 	else {
-		drain::Logger mout("PolarODIM", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		if (area.width == 0){
 			mout.warn("nbins==0" );
 		}
@@ -119,6 +119,9 @@ double PolarODIM::getMaxRange(bool warn) const {
 		}
 		double r = rstart + rscale*static_cast<double>(area.width);
 		if (r == 0.0){
+			mout.note("using ", DRAIN_LOG(PolarODIM::defaultRange) );
+			r = static_cast<double>(PolarODIM::defaultRange);
+			/*
 			if (PolarODIM::defaultRange > 0){
 				r = PolarODIM::defaultRange;
 				mout.note("using defaultRange" , r );
@@ -127,6 +130,7 @@ double PolarODIM::getMaxRange(bool warn) const {
 				r = 250000.0;
 				mout.note("using range=" , r );
 			}
+			*/
 		}
 		return r;
 	}

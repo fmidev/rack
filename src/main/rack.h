@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(16,8,1)
+#define RACK_VERSION drain::Version<>(16,8,2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -65,6 +65,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Separated UtilsXML from XML
  *  Release 16.8.1
  *  - SVG overall image border (CSS class BORDER)
+ *  Release 16.8.2
+ *  - Separate map tools
  *
  *  Version 15
  *  - SVG alignment complete: gTitle, gGroupTitle, gLayout, gAnchor, gAlign

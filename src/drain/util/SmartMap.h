@@ -239,7 +239,7 @@ public:
 	template <bool STRICT=true>
 	void importEntries(const std::list<std::string> & entries, char assignmentSymbol='='){ //; //, bool updateOnly = false);
 		//SmartMapTools::setValues<T,STRICT>(*this, getKeyList(), entries, assignmentSymbol);
-		SmartMapTools::setValues<smap_t,STRICT>(*this, getKeyList(), entries, assignmentSymbol);
+		MapTools::setValues<smap_t,STRICT>(*this, getKeyList(), entries, assignmentSymbol);
 	}
 
 	/// Assign values from a map, overriding existing entries.
@@ -252,7 +252,7 @@ public:
 	void importMap(const std::map<std::string,S> & m){ //, bool updateOnly = false){ //, unsigned int criticality = LOG_ERR){
 		// SmartMapTools::setValues<map_t,S,STRICT>(*this, m);
 		// SmartMapTools::setValues(*this, m);
-		SmartMapTools::setValues<smap_t,S,STRICT>(*this, m);
+		MapTools::setValues<smap_t,S,STRICT>(*this, m);
 		 //new
 		//for (typename std::map<std::string,S>::const_iterator it = m.begin(); it != m.end(); ++it)
 		//	importEntry(it->first, it->second); //, updateOnly); //, criticality); // false);
@@ -288,7 +288,6 @@ public:
 	/**
 	 *  \par m - source of keys and values
 	 */
-	/// Convenience
 	template <class T2>
 	inline
 	void updateFromMap(const std::map<std::string,T2> & m){

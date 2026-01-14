@@ -29,27 +29,23 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef DATATOOLS_H_
-#define DATATOOLS_H_
+#ifndef RACK_DATATOOLS_H
+#define RACK_DATATOOLS_H
 
-#include <drain/image/CoordinatePolicy.h>
 #include <set>
 #include <list>
 #include <map>
 
 
 #include <drain/RegExp.h>
-
+#include <drain/image/CoordinatePolicy.h>
 #include <drain/util/BeanLike.h>
-
 #include <drain/util/ReferenceMap.h>
 
-//#include <drain/util/Variable.h>
 
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle
 
-//#include "DataSelector.h" // Range
 
 
 namespace rack {
@@ -104,14 +100,6 @@ public:
 	 */
 	static
 	void updateInternalAttributes(Hi5Tree & src);
-	/*
-	{
-		src.data.image.properties.clear();
-		src.data.image.setCoordinatePolicy(4,3,2,1);
-		updateInternalAttributes(src, drain::FlexVariableMap());
-		//updateInternalAttributes(src, drain::VariableMap());
-	}
-	*/
 
 	/// This \c const version does nothing, but is needed for Data:: #supdateTree3()
 	/**
@@ -127,6 +115,13 @@ public:
 	static
 	void updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy = drain::image::CoordinatePolicy(drain::image::EdgePolicy::LIMIT));
 	//void updateCoordinatePolicy(Hi5Tree & src, const CoordinatePolicy & policy = CoordinatePolicy(EdgePolicy::LIMIT));
+
+	/**
+	 *
+	 *  Future option: limit elevation angle range.
+	 */
+	static
+	int getMaxRange(const Hi5Tree & src, bool projected=true);
 
 	// static
 	// bool dataToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr);

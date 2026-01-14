@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "hi5/Hi5.h"
 #include "radar/Coordinates.h"
 
+#include "Data.h"
 #include "DataTools.h"
 #include "SourceODIM.h"
 
@@ -319,6 +320,35 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 	// if (src.hasChild(ODIMPathElem::ARRAY))
 	//   mout.warn("scaling3 " , src[ODIMPathElem::ARRAY].data.image.getScaling() );
 	// std::cerr << "### updateAttributes"
+}
+
+
+int DataTools::getMaxRange(const Hi5Tree & src, bool projected){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	double result = 0.0;
+
+	//if (src[ODIMPathElem::WHAT])
+	for (const auto & entry: src){
+		//const DataSet<PolarSrc> srcDataset(entry.second);
+		if (entry.first.is(ODIMPathElem::DATASET)){
+			// mout.warn("scan: ", entry.second.data.attributes);
+			// const PolarODIM polarODIM(entry.second.data.attributes);
+			const PolarODIM polarODIM(entry.second.data.image.getProperties());
+			double r = polarODIM.getMaxRange(true);
+			if (r == 0){
+				mout.warn("failed in detecting range, object=", polarODIM.object);
+				// entry.second.data.image.getProperties()
+			}
+			else {
+				mout.debug("scan: ", entry.first, " range=", r, "-> updating maxRange=", result);
+				result = std::max(result, r);
+			}
+		}
+	}
+
+	return result;
 }
 
 

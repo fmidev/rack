@@ -174,10 +174,11 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 	const double lon = where.get("lon", 0.0);
 	const double lat = where.get("lat", 0.0);
 
-	if ((lat != 0.0) && (lon != 0.0)){
+	if ((lon != 0.0) && (lat != 0.0)){
 		radarProj.setSiteLocationDeg(lon, lat);
 	}
 	else {
+		mout.fail<LOG_DEBUG+1>("could not set site location (", lon, ',', lat, ")");
 		// warn?
 	}
 
@@ -198,6 +199,17 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 		}
 	}
 
+	/*
+	int range =  where.get("rstart", 0.0) + where.get("rscale", 0.0)*where.get("nbins", 0.0);
+	if (range > 0){
+		maxRange = range;
+		mout.accept<LOG_WARNING>("setting maxRange=", maxRange);
+	}
+	else {
+		mout.fail<LOG_DEBUG+1>("could not set maxRange");
+		mout.fail<LOG_WARNING>(where);
+	}
+	*/
 	/*
 	// PolarODIM odim;
 	// rstart + rscale*static_cast<double>(area.width);

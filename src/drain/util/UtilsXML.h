@@ -173,7 +173,7 @@ public:
 			for (const auto & entry: l){
 				T & elem = tree[entry.first];
 				elem->setType(XML::STYLE_SELECT);
-				drain::SmartMapTools::setValues(elem->getAttributes(), entry.second, ';', ':', std::string(" \t\n"));
+				drain::MapTools::setValues(elem->getAttributes(), entry.second, ';', ':', std::string(" \t\n"));
 			}
 			break;
 		case XML::UNDEFINED:

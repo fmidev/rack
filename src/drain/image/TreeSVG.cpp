@@ -76,10 +76,10 @@ DRAIN_ENUM_DICT(image::svg::tag_t) = {
 // Applied by UtilsXML::addChild()
 template <>
 const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::image::svg::tag_t>::xml_default_elems = {
-		{drain::image::svg::STYLE,  drain::image::svg::CTEXT},
+		{drain::image::svg::STYLE, drain::image::svg::STYLE_SELECT}, // ??
+		// {drain::image::svg::STYLE,  drain::image::svg::CTEXT}, // ??
 		{drain::image::svg::SCRIPT, drain::image::svg::CTEXT},
 		//{drain::image::svg::SVG, drain::image::svg::GROUP},
-		{drain::image::svg::STYLE, drain::image::svg::STYLE_SELECT},
 };
 
 

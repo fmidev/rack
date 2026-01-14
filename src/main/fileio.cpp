@@ -197,7 +197,7 @@ public:
 				vmap.clear();
 				vmap["format"] = "vt100"; // keep as default
 				//vmap.importEntries<false>(p, '='); and others fail...
-				drain::SmartMapTools::setValues(vmap, params, ',', '=');
+				drain::MapTools::setValues(vmap, params, ',', '=');
 				// drain::Sprinter::toStream(std::cout, vmap, drain::Sprinter::pythonLayout);
 				// std::cout << '\n';
 				mout.info("    new values: ", drain::sprinter(vmap, layout));

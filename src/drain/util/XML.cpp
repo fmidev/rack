@@ -171,7 +171,7 @@ void XML::setText(const std::string & s) {
 		break;
 	case XML::STYLE_SELECT: // OK!
 		mout.debug("parsing text to CSS definition");
-		drain::SmartMapTools::setValues(getAttributes(), s, ';', ':', " \t\n");
+		MapTools::setValues(getAttributes(), s, ';', ':', " \t\n");
 		mout.special<LOG_DEBUG>(s, " -> ", getAttributes());
 		break;
 	case XML::UNDEFINED:

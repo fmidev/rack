@@ -861,7 +861,26 @@ public:
 			// Not recommended:
 			// style[cssSelector] = cssConf; // Assings string to CTEXT !? problem!
 			// drain::SmartMapTools::setValues(style[cssSelector+"MIKA"]->getAttributes(), cssConf, ';', ':');
+			// style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
+			mout.attention("New style: ", cssSelector, " = ", cssConf);
+			drain::XML::map_t m;
+			m.setValues(cssConf, ':', ';');
+			mout.accept<LOG_WARNING>("New m: ", m);
+			m.clear();
+			m.importEntries<true>(cssConf, ':', ';');
+			mout.accept<LOG_WARNING>("IMP m: ", m);
+			m.clear();
+			drain::MapTools::setValues(m, cssConf, ';', ':');
+			mout.accept<LOG_WARNING>("Now m: ", m);
+
+			style[cssSelector](svg::STYLE_SELECT);
 			style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
+
+
+			mout.attention("New style: ", cssSelector, " <- ", style[cssSelector]->getAttributes());
+
+			//style[cssSelector]->setStyle(cssConf); // TODO fix -> ->getAttributes().setValues(cssConf, ':', ';');
+
 			// style[cssSelector].data = {{"koe", "black"}};      // OK but parallel..
 			//drain::TreeUtils::dump(ctx.svgTrack);
 		}
@@ -1155,19 +1174,11 @@ public:
 
 
 namespace rack {
+
 /**
- *
-template <class T>
-struct Rectangle : public drain::UniTuple<T,4> {
 
-	Point2D<T> lowerLeft;
-	Point2D<T> upperRight;
-	// consider Range<T> x, Range<T> y,
+	Move to drain/utils/Range.h ?
 
-	/// Basic constructor
-	Rectangle(T x=0, T y=0, T x2=0, T y2=0) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2) {
-		this->set(x, y, x2, y2);
-	}
  */
 template <typename T>
 class SteppedRange : public drain::UniTuple<T,3> {
@@ -1179,73 +1190,38 @@ public:
 	range_t range;
 
 	SteppedRange(T step=1, T min=0, T max=0) : drain::UniTuple<T,3>(step, min, max),
-		step(this->next()), range(this->tuple(),1) {
+			step(this->next()), range(this->tuple(),1) {
 	}
 
 	SteppedRange(const SteppedRange & range) : drain::UniTuple<T,3>(range),
-		step(this->next()), range(this->tuple(),1) {
+			step(this->next()), range(this->tuple(),1) {
 	}
 
 };
 
-class CmdPolarGrid : public drain::BasicCommand {
+
+class CmdPolarBase {
 
 public:
 
-	SteppedRange<int> distanceMetres;// (50000.0, 0.0, 250000.0);
-	SteppedRange<int> azimuthDegrees; // (30, 0, 360);
-	// double is over
-	/*
-	drain::Range<int> rangeMetres = {0,250000};
-	// Major, minor?
-	int stepMetres = 25000;
+	static
+	drain::image::TreeSVG & prepareGeoGroup(RackContext & ctx, RadarSVG & radarSVG){
 
-	drain::Range<int> rangeDegrees = {0,360};
-	// Major, minor?
-	int stepDegrees = 15;
-	*/
-
-	CmdPolarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings. Styles: HIGHLIGHT") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
-		getParameters().link("distance", distanceMetres.tuple(), "step:start:end (metres)");
-		getParameters().link("azimuth", azimuthDegrees.tuple(), "step:start:end (degrees)");
-		//getParameters().link("radialStep", stepMetres, "metres");
-		// getParameters().link("radialRange", rangeMetres.tuple(), "metres");
-		//getParameters().link("azimuthalStep", stepDegrees, "degrees");
-		// getParameters().link("azimuthalRange", rangeDegrees.tuple(), "degrees");
-	};
-
-	// Copy constructor
-	CmdPolarGrid(const CmdPolarGrid & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
-	}
-
-
-
-
-	virtual
-	void exec() const override {
-
-		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-		// polarSector.reset();
-		// polarSector.setParameters(value);
 
 		const Hi5Tree & srcPolar = ctx.getHi5(RackContext::POLAR|RackContext::CURRENT); // , RackContext::CURRENT
 		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT); // this works well with -c (--cCreate)
 
 		if (srcPolar.empty()){
 			mout.warn("No polar data read, cannot focus on a specific radar");
-			return;
+			// return;
 		}
 
 		RadarSVG::getOverlayStyle(ctx.svgTrack);
 
-		mout.note(getParameters());
 
-		RadarSVG radarSVG;
 		const drain::VariableMap & wherePolar = srcPolar[ODIMPathElem::WHERE].data.attributes;
 
-		//radarSVG.radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
 		radarSVG.updateRadarConf(wherePolar); // lon, lat
 
 
@@ -1257,138 +1233,177 @@ public:
 		}
 
 		// TRUE
-		{
-			// mout.note("Cartesian");
-			// const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT | RackContext::CARTESIAN);
-			const Hi5Tree & srcCartesian = ctx.getHi5(RackContext::CARTESIAN);
 
-			if (!srcCartesian.empty()){ // HDF5 has been either loaded or extracted.
-				mout.note("Cartesian YES");
-				//mout.note(DRAIN_LOG(srcCartesion));
-				const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
-				radarSVG.updateRadarConf(whereCart);
-				radarSVG.updateCartesianConf(whereCart);
-			}
-			else {
-				Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
-				mout.note(DRAIN_LOG(composite));
-				composite.toStream(std::cerr);
-				// mout.error("Cartesian empty");
-				// composite.odim;
-				radarSVG.updateCartesianConf(composite);
-			}
+		// mout.note("Cartesian");
+		// const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT | RackContext::CARTESIAN);
+		const Hi5Tree & srcCartesian = ctx.getHi5(RackContext::CARTESIAN);
 
-
-			/*
+		if (!srcCartesian.empty()){ // HDF5 has been either loaded or extracted.
+			mout.note("Cartesian YES");
+			//mout.note(DRAIN_LOG(srcCartesion));
 			const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
 			radarSVG.updateRadarConf(whereCart);
 			radarSVG.updateCartesianConf(whereCart);
-			*/
+		}
+		else {
+			Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
+			mout.note(DRAIN_LOG(composite));
+			composite.toStream(std::cerr);
+			// mout.error("Cartesian empty");
+			// composite.odim;
+			radarSVG.updateCartesianConf(composite);
+		}
 
-			drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
-			drain::image::TreeSVG & geoGroup = RadarSVG::getOverlayGroup(group);
-			RackSVG::consumeAlignRequest(ctx, geoGroup);
 
 
-			const drain::Range<double> r(distanceMetres.range); // int -> double
-			if (r.min<0.0){
-				mout.error("negative start of radial range ", r.min, " [metres]");
+		/*
+			const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
+			radarSVG.updateRadarConf(whereCart);
+			radarSVG.updateCartesianConf(whereCart);
+		 */
+
+		drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
+		drain::image::TreeSVG & geoGroup = RadarSVG::getOverlayGroup(group);
+		RackSVG::consumeAlignRequest(ctx, geoGroup);
+
+		return geoGroup;
+
+	}
+
+
+
+};
+
+class CmdPolarGrid : public drain::BasicCommand, public CmdPolarBase {
+
+public:
+
+	SteppedRange<int> distanceMetres;// (50000.0, 0.0, 250000.0);
+	SteppedRange<int> azimuthDegrees; // (30, 0, 360);
+
+	CmdPolarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings. Styles: HIGHLIGHT") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+		getParameters().link("distance", distanceMetres.tuple(), "step:start:end (metres)");
+		getParameters().link("azimuth", azimuthDegrees.tuple(), "step:start:end (degrees)");
+	};
+
+	// Copy constructor
+	CmdPolarGrid(const CmdPolarGrid & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		//mout.note(getParameters());
+
+		// GENERAL?
+		RadarSVG radarSVG;
+
+		drain::image::TreeSVG & geoGroup = prepareGeoGroup(ctx, radarSVG);
+
+		const drain::Range<double> r(distanceMetres.range); // int -> double
+		if (r.min<0.0){
+			mout.error("negative start of radial range ", r.min, " [metres]");
+		}
+		if (r.max < r.min){
+			mout.error("illegal radial range ", r.tuple(), " [metres]");
+		}
+		int stepMetres = distanceMetres.step;
+		if (stepMetres == 0){
+			stepMetres = distanceMetres.range.span() / 5;
+			mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepMetres));
+		}
+
+		const drain::Range<double> a(azimuthDegrees.range);// int->double
+		if (a.min < -360.0){
+			mout.error("illegal start of azimuthal range ", a.min, " [degrees]");
+		}
+		if (a.max > +720.0){
+			mout.error("illegal start of azimuthal range ", a.min, " [degrees]");
+		}
+		if (a.max < a.min){
+			mout.error("illegal azimuthal range ", a.tuple(), " [degrees]");
+		}
+
+		int stepDegrees = azimuthDegrees.step;
+		if (stepDegrees == 0){
+			stepDegrees = 15;
+			mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepDegrees));
+		}
+
+		if (azimuthDegrees.range.span() % stepDegrees){
+			mout.warn(DRAIN_LOG(stepDegrees), "not multiple of  ", DRAIN_LOG(azimuthDegrees.range));
+		}
+
+
+		a.min *= drain::DEG2RAD;
+		a.max *= drain::DEG2RAD;
+
+
+
+		geoGroup.addChild()->setComment("Rays: ", distanceMetres.range.tuple());
+		double angleRad = 0.0;
+		for (int j=azimuthDegrees.range.min; j<=azimuthDegrees.range.max; j += azimuthDegrees.step){
+
+			angleRad = drain::DEG2RAD * static_cast<double>(j);
+
+			drain::image::TreeSVG & rayNode = geoGroup.addChild();
+			rayNode->addClass(RadarSVG::HIGHLIGHT);
+			rayNode[svg::TITLE](svg::TITLE)->setText(j, drain::XML::DEGREE); // degree sign "&#176;"
+
+			drain::svgPATH rayElem(rayNode);
+
+			radarSVG.moveTo(rayElem, distanceMetres.range.min, angleRad);
+
+			int step = 5000; // metres, note not: metres.step
+			for (int i=distanceMetres.range.min+distanceMetres.step; i<=distanceMetres.range.max; i += step){
+				i = std::min(i, distanceMetres.range.max);
+				radarSVG.lineTo(rayElem, static_cast<double>(i), angleRad);
 			}
-			if (r.max < r.min){
-				mout.error("illegal radial range ", r.tuple(), " [metres]");
-			}
-			int stepMetres = distanceMetres.step;
-			if (stepMetres == 0){
-				stepMetres = distanceMetres.range.span() / 5;
-				mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepMetres));
-			}
-
-			const drain::Range<double> a(azimuthDegrees.range);// int->double
-			if (a.min < -360.0){
-				mout.error("illegal start of azimuthal range ", a.min, " [degrees]");
-			}
-			if (a.max > +720.0){
-				mout.error("illegal start of azimuthal range ", a.min, " [degrees]");
-			}
-			if (a.max < a.min){
-				mout.error("illegal azimuthal range ", a.tuple(), " [degrees]");
-			}
-
-			int stepDegrees = azimuthDegrees.step;
-			if (stepDegrees == 0){
-				stepDegrees = 15;
-				mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepDegrees));
-			}
-
-			if (azimuthDegrees.range.span() % stepDegrees){
-				mout.warn(DRAIN_LOG(stepDegrees), "not multiple of  ", DRAIN_LOG(azimuthDegrees.range));
-			}
-
-
-			a.min *= drain::DEG2RAD;
-			a.max *= drain::DEG2RAD;
-
-
-
-			geoGroup.addChild()->setComment("Rays: ", distanceMetres.range.tuple());
-			double angleRad = 0.0;
-			for (int j=azimuthDegrees.range.min; j<=azimuthDegrees.range.max; j += azimuthDegrees.step){
-
-				angleRad = drain::DEG2RAD * static_cast<double>(j);
-
-				drain::image::TreeSVG & rayNode = geoGroup.addChild();
-				rayNode->addClass(RadarSVG::HIGHLIGHT);
-				rayNode[svg::TITLE](svg::TITLE)->setText(j, drain::XML::DEGREE); // degree sign "&#176;"
-
-				drain::svgPATH rayElem(rayNode);
-
-				radarSVG.moveTo(rayElem, distanceMetres.range.min, angleRad);
-
-				int step = 5000; // metres, note not: metres.step
-				for (int i=distanceMetres.range.min+distanceMetres.step; i<=distanceMetres.range.max; i += step){
-					i = std::min(i, distanceMetres.range.max);
-					radarSVG.lineTo(rayElem, static_cast<double>(i), angleRad);
-				}
-
-
-			}
-
-
-			geoGroup.addChild()->setComment("Circles/arcs: ", azimuthDegrees.range.tuple());
-
-			for (int i=distanceMetres.range.min + distanceMetres.step; i<=distanceMetres.range.max; i += distanceMetres.step){
-
-				drain::image::TreeSVG & g = geoGroup.addChild()(svg::GROUP);
-				g->addClass(RadarSVG::HIGHLIGHT);
-				g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
-
-				drain::image::TreeSVG & arcNode = g.addChild();
-				drain::svgPATH arcElem(arcNode);
-				radarSVG.moveTo(arcElem, i, a.min);
-				radarSVG.cubicBezierTo(arcElem, i, a.min, a.max);
-				// Tool tip
-				arcNode[svg::TITLE](svg::TITLE)->setText(i/1000, " kms");
-				// radarSVG.close(arcElem);
-
-				if (true){ // todo switch?
-					g.addChild()->setComment("Write kilometres");
-					double angleRad = drain::DEG2RAD * static_cast<double>(azimuthDegrees.range.min);
-					drain::Point2D<int> imgPoint;
-					int offset = distanceMetres.step/4;
-					drain::image::TreeSVG & text = g[svg::TEXT](svg::TEXT);
-					text->addClass(RadarSVG::GRID); // on top of image, background gray blur applied
-					text->addClass(RadarSVG::HIGHLIGHT);
-					radarSVG.convert(i + offset, angleRad, imgPoint);
-					text->setLocation(imgPoint);
-					text->setText(i/1000); // "km - ", imgPoint.tuple());
-				}
-
-
-			}
-
 
 
 		}
+
+
+		geoGroup.addChild()->setComment("Circles/arcs: ", azimuthDegrees.range.tuple());
+
+		for (int i=distanceMetres.range.min + distanceMetres.step; i<=distanceMetres.range.max; i += distanceMetres.step){
+
+			drain::image::TreeSVG & g = geoGroup.addChild()(svg::GROUP);
+			g->addClass(RadarSVG::HIGHLIGHT);
+			g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
+
+			drain::image::TreeSVG & arcNode = g.addChild();
+			drain::svgPATH arcElem(arcNode);
+			radarSVG.moveTo(arcElem, i, a.min);
+			radarSVG.cubicBezierTo(arcElem, i, a.min, a.max);
+			// Tool tip
+			arcNode[svg::TITLE](svg::TITLE)->setText(i/1000, " kms");
+			// radarSVG.close(arcElem);
+
+			if (true){ // todo switch?
+				g.addChild()->setComment("Write kilometres");
+				double angleRad = drain::DEG2RAD * static_cast<double>(azimuthDegrees.range.min);
+				drain::Point2D<int> imgPoint;
+				int offset = distanceMetres.step/4;
+				drain::image::TreeSVG & text = g[svg::TEXT](svg::TEXT);
+				text->addClass(RadarSVG::GRID); // on top of image, background gray blur applied
+				text->addClass(RadarSVG::HIGHLIGHT);
+				radarSVG.convert(i + offset, angleRad, imgPoint);
+				text->setLocation(imgPoint);
+				text->setText(i/1000); // "km - ", imgPoint.tuple());
+			}
+
+
+		}
+
+
+
+		// }
 
 	};
 
@@ -1397,7 +1412,7 @@ public:
 
 
 
-class CmdPolarSector : public drain::SimpleCommand<std::string> {
+class CmdPolarSector : public drain::SimpleCommand<std::string>, public CmdPolarBase {
 
 public:
 
@@ -1424,6 +1439,11 @@ public:
 
 		polarSector.setParameters(value);
 
+		RadarSVG radarSVG;
+
+		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+
+		/*
 		const Hi5Tree & srcPolar = ctx.getHi5(RackContext::POLAR|RackContext::CURRENT); // , RackContext::CURRENT
 		const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT);
 
@@ -1439,7 +1459,6 @@ public:
 
 		// std::cout << polarSector.getParameters() << std::endl;
 
-		RadarSVG radarSVG;
 		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
 
 		radarSVG.updateRadarConf(where); // lon, lat
@@ -1448,14 +1467,18 @@ public:
 		// RadarProj radarProj(srcPolar[ODIMPathElem::WHERE].data.attributes["lon"], srcPolar[ODIMPathElem::WHERE].data.attributes["lat"]);
 		// proj.setSiteLocationDeg();
 
+
 		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
 		if ((object == "SCAN") || (object == "PVOL")){
 			// mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
 			mout.error("Data in Polar coordinates - not supported"); // Cartesian not "found", ie not created this.
 		}
-		else {
+		else
+		*/
+		{
 			mout.note(getName(), ": Cartesian");
 
+			/*
 			const drain::VariableMap & where = srcCurr[ODIMPathElem::WHERE].data.attributes;
 
 			// const drain::Rectangle<double> bboxComposite(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
@@ -1466,6 +1489,7 @@ public:
 			drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx);
 			drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
 			RackSVG::consumeAlignRequest(ctx, overlayGroup);
+			*/
 
 			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
 
@@ -1484,7 +1508,7 @@ public:
 				{"stroke-width", 12.0},
 				{"opacity", 0.65}
 			})
-			*/
+			 */
 
 			// TreeElemUtilsSVG.h
 			drain::svgPATH bezierElem(curve);
@@ -1515,6 +1539,8 @@ public:
 
 	};
 
+protected:
+
 	mutable
 	PolarSector polarSector;
 
@@ -1523,8 +1549,14 @@ public:
 // const std::string CmdPolarSector::SECTOR("SECTOR");
 
 
-
-
+/**
+ *
+ *  circle=max RADAR_CIRCLE
+ *  dot=0.0    RADAR_DOT
+ *  label=${NOD}  RADAR_LABEL
+ *
+ *
+ */
 class CmdPolarScope : public drain::BasicCommand {
 
 public:
@@ -1552,6 +1584,14 @@ public:
 			return;
 		}
 
+		double maxRange = DataTools::getMaxRange(srcPolar);
+		if (maxRange > 0.0){
+			mout.accept<LOG_WARNING>("derived max range=", maxRange);
+		}
+		else {
+			maxRange = 200000.0;
+			mout.warn("Could not derive max range, guessing=", maxRange);
+		}
 
 		RadarSVG radarSVG;
 		const drain::VariableMap & where = srcPolar[ODIMPathElem::WHERE].data.attributes;
@@ -1577,15 +1617,8 @@ public:
 
 			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
 			drain::image::TreeSVG & curve = overlayGroup[getName()](drain::image::svg::PATH);
-			/*
-			curve -> setStyle({
-				{"fill", "none"},
-				{"stroke", "cyan"},
-				{"stroke-width", 6.0},
-				{"opacity", 0.85}
-			});
-			*/
 			curve->addClass(getName());
+
 			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(getName()), {
 					{"fill", "none"},
 					{"stroke", "cyan"},
@@ -1593,12 +1626,11 @@ public:
 					{"opacity", 0.85}
 			});
 
-
 			// TreeElemUtilsSVG.h
 			drain::svgPATH bezierElem(curve);
 
-			radarSVG.moveTo(bezierElem, 200000, 0.0);
-			radarSVG.cubicBezierTo(bezierElem, 200000, 0.0, 2.0*M_PI);
+			radarSVG.moveTo(bezierElem, maxRange, 0.0);
+			radarSVG.cubicBezierTo(bezierElem, maxRange, 0.0, 2.0*M_PI);
 
 		}
 
@@ -1709,7 +1741,7 @@ public:
 				NodeSVG::Elem<svg::RECT> test2(geoGroup["REKT"]);
 
 			}
-			*/
+			 */
 
 			// Circle as a polygon (to master projection)
 			// <polygon points="100,100 150,25 150,75 200,0" fill="none" stroke="black" />
@@ -1725,7 +1757,7 @@ public:
 			circle -> setStyle("stroke", "red");
 			circle -> setStyle("stroke-width", 5.1);
 			circle -> setStyle("opacity", 0.85);
-			*/
+			 */
 
 			DRAIN_SVG_ELEM_CLS(POLYGON) polygonElem(circle);
 
@@ -1776,7 +1808,7 @@ public:
 					// radarSVG.cubicBezierTo(bezierElem, imgPoint, radius, azimuthPrev, azimuth);
 					radarSVG.cubicBezierTo(bezierElem, radius, azimuthPrev, azimuth);
 				}
-				*/
+				 */
 
 				// azimuthPrev = azimuth;
 
@@ -1942,7 +1974,7 @@ operator const std::string &()(drain::image::AlignBase::Axis){
 	static const std::string s("sksk");
 	return s;
 }
-*/
+ */
 
 class CmdAlignTest : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
 
@@ -2017,7 +2049,7 @@ public:
 		return group;
 
 	}
-	*/
+	 */
 
 	// template <typename T>
 	// std::string static_cast<std::string>(drain::EnumDict<T>::){};

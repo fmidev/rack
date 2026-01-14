@@ -430,7 +430,7 @@ public:
 	inline
 	void setStyle(const StyleXML & s){
 		style.clear();
-		SmartMapTools::setValues(style, s);
+		MapTools::setValues(style, s);
 	}
 
 	void setStyle(const std::string & value){
@@ -443,7 +443,7 @@ public:
 			mout.reject<LOG_WARNING>("not setting style for STYLE elem: ", value); // , *this);
 		}
 		else {
-			SmartMapTools::setValues(style, value, ';', ':', "; \t\n"); // sep, equal, trim (also ';' ?)
+			MapTools::setValues(style, value, ';', ':', "; \t\n"); // sep, equal, trim (also ';' ?)
 		}
 	}
 

@@ -171,7 +171,7 @@ public:
 			drain::Logger mout(__FILE__, __FUNCTION__);
 			mout.suspicious("copying STYLE from node: ", node);
 		}
-		drain::SmartMapTools::setValues<map_t>(getAttributes(), node.getAttributes());
+		drain::MapTools::setValues<map_t>(getAttributes(), node.getAttributes());
 	}
 
 
