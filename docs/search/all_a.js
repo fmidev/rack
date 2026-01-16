@@ -62,7 +62,7 @@ var searchData=
   ['epsg_59',['epsg',['../classrack_1_1CartesianODIM.html#a05a1b13df1e62f3e4d3e3f8ef23e5e74',1,'rack::CartesianODIM']]],
   ['equatorial_60',['Equatorial',['../structrack_1_1Equatorial.html',1,'rack']]],
   ['erase_61',['erase',['../classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989',1,'drain::DRAIN_TREE_NAME']]],
-  ['error_62',['error',['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90',1,'drain::ReferenceMap::ERROR'],['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90',1,'drain::ReferenceMap2::ERROR'],['../classdrain_1_1Logger.html#ab55ebf7d0a7f176aac2e77e9c5cbc78b',1,'drain::Logger::error()']]],
+  ['error_62',['error',['../classdrain_1_1Logger.html#ab55ebf7d0a7f176aac2e77e9c5cbc78b',1,'drain::Logger::error()'],['../classdrain_1_1ReferenceMap.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90',1,'drain::ReferenceMap::ERROR'],['../classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1a2fd6f336d08340583bd620a7f5694c90',1,'drain::ReferenceMap2::ERROR']]],
   ['etafrombetah_63',['etaFromBetaH',['../classrack_1_1Geometry.html#a7589a7ef5eb06ff916487f1ff98c3302',1,'rack::Geometry']]],
   ['etafromgh_64',['etaFromGH',['../classrack_1_1Geometry.html#a96ba58a5e2477d34bbe35d0119757a35',1,'rack::Geometry']]],
   ['etop2window_65',['Etop2Window',['../classrack_1_1Etop2Window.html',1,'rack']]],

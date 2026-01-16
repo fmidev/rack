@@ -46,7 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Castable.h"
 #include "Reference.h"
 #include "Sprinter.h"
-#include "String.h"
+#include "StringTools.h"
 #include "Variable.h"
 
 #include "MapTools.h"

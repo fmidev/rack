@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
-#include <drain/String.h>
+#include <drain/StringTools.h>
 
 #include "IosFormat.h"
 #include "Time.h"

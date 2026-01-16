@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Caster.h"
 #include "Sprinter.h"
-#include "String.h"
+#include "StringTools.h"
 #include "UniTuple.h"
 
 

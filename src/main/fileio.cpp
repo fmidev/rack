@@ -313,7 +313,15 @@ public:
 
 };
 
-
+/** A "private" dictionary, distinguished with the 2nd template argument referring to the owner.
+ *
+ */
+template <>
+const drain::EnumDict<rack::ODIM::Version,CmdOutputFile>::dict_t drain::EnumDict<rack::ODIM::Version,CmdOutputFile>::dict = {
+		{"ODIM_H5/V2_2",  rack::ODIM::ODIM_2_2 },
+		{"ODIM_H5/V2_3",  rack::ODIM::ODIM_2_3 },
+		{"ODIM_H5/V2_4",  rack::ODIM::ODIM_2_4 },
+};
 
 void CmdOutputFile::exec() const {
 
@@ -397,10 +405,75 @@ void CmdOutputFile::exec() const {
 
 		//src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
 		drain::Variable & conventions = src.data.attributes["Conventions"];
+		// conventions = "";
+		// conventions.setSeparator(0);
+
+		for (const auto & entry: drain::EnumDict<rack::ODIM::Version,CmdOutputFile>::dict){
+			if (ODIM::versionFlagger.isSet(entry.second)){
+				conventions = entry.first;
+				break;
+			}
+		}
+
+		if (conventions.empty()){
+			conventions = "ODIM_H5/V2_3";
+			mout.warn("Unrecognized ODIM version: '", ODIM::versionFlagger, "' , setting: ", conventions);
+		}
+		else {
+			mout.revised<LOG_NOTICE>("setting: ", DRAIN_LOG(conventions));
+		}
+
+
+		// const std::string & v = drain::EnumDict<rack::ODIM::Version>::dict.getKey((rack::ODIM::Version)ODIM::versionFlagger.getValue());
+		// mout.revised<LOG_WARNING>("Simplifying ODIM version: ", ODIM::versionFlagger, " => ", v);
+
+		/*
 		std::string version;
 		drain::StringTools::replace(ODIM::versionFlagger, ".", "_", version);
-		//conventions.setInputSeparator('/');
-		conventions = std::string("ODIM_H5/") + version;
+
+		ODIM::VersionFlagger odimOnly = ODIM::versionFlagger;
+		odimOnly.unset();
+
+		mout.revised("Simplifying ODIM version: ", ODIM::versionFlagger);
+		*/
+
+		//conventions = "ODIM_H5/";
+
+		/*
+		for (const auto & entry: drain::EnumDict<rack::ODIM::Version>::dict){
+			if (static_cast<ODIM::VersionFlagger::storage_t>(entry.second) == ODIM::versionFlagger.getValue()){
+				conventions << entry.second;
+				break;
+			}
+		}
+
+		for (ODIM::Version v: {ODIM::Version::ODIM_2_4, ODIM::Version::ODIM_2_3, ODIM::Version::ODIM_2_2}){
+			if (ODIM::versionFlagger.isSet(v)){
+				conventions << "ODIM_H5/" << v;
+			}
+		}
+		*/
+
+
+
+		/*
+		if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_4)){
+			conventions << "2_4";
+		}
+		else if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_3)){
+			conventions << "V2_3";
+		}
+		else if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_2)){
+			conventions << "V2_2";
+		}
+		else {
+			mout.warn("Unrecognized ODIM version: ", ODIM::versionFlagger);
+			conventions = "ODIM_H5/ODIM_2_3";
+		}
+		*/
+
+		// mout.revised("Setting ODIM version: ", );
+		// conventions = std::string("ODIM_H5/") + version;
 
 		hi5::Writer::writeFile(filepath, src); //*ctx.currentHi5);
 		/*

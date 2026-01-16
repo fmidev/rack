@@ -1,13 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$structdrain_1_1ClonerBase.html" title=" " alt="" coords="5,45,140,70"/>
 <area shape="rect" id="Node000001" href="$structdrain_1_1Cloner.html" title="Wrapper for derived class S, returning base class T." alt="" coords="188,45,307,70"/>
-<area shape="poly" id="edge624_Node000000_Node000001" title=" " alt="" coords="153,55,188,55,188,60,153,60"/>
+<area shape="poly" id="edge626_Node000000_Node000001" title=" " alt="" coords="153,55,188,55,188,60,153,60"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="355,5,583,45"/>
-<area shape="poly" id="edge625_Node000001_Node000002" title=" " alt="" coords="320,44,354,39,355,44,320,50"/>
+<area shape="poly" id="edge627_Node000001_Node000002" title=" " alt="" coords="320,44,354,39,355,44,320,50"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1ImageOpCloner.html" title=" " alt="" coords="356,69,581,109"/>
-<area shape="poly" id="edge627_Node000001_Node000004" title=" " alt="" coords="321,65,356,70,355,76,320,70"/>
+<area shape="poly" id="edge629_Node000001_Node000004" title=" " alt="" coords="321,65,356,70,355,76,320,70"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1BinaryFunctorOpCloner.html" title=" " alt="" coords="631,13,841,38"/>
-<area shape="poly" id="edge626_Node000002_Node000003" title=" " alt="" coords="596,23,630,23,630,28,596,28"/>
+<area shape="poly" id="edge628_Node000002_Node000003" title=" " alt="" coords="596,23,630,23,630,28,596,28"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1UnaryFunctorOpCloner.html" title=" " alt="" coords="633,77,839,102"/>
-<area shape="poly" id="edge628_Node000004_Node000005" title=" " alt="" coords="595,87,633,87,633,92,595,92"/>
+<area shape="poly" id="edge630_Node000004_Node000005" title=" " alt="" coords="595,87,633,87,633,92,595,92"/>
 </map>

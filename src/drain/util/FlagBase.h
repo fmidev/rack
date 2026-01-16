@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <typeinfo>
 
 #include <drain/Log.h>
-#include <drain/String.h>
+#include <drain/StringTools.h>
 #include <drain/Type.h>
 
 #include "Dictionary.h"

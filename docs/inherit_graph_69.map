@@ -1,71 +1,71 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="5,519,163,544"/>
 <area shape="rect" id="Node000001" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="238,13,389,39"/>
-<area shape="poly" id="edge684_Node000000_Node000001" title=" " alt="" coords="82,505,84,420,89,364,99,302,114,237,137,173,168,113,209,59,225,46,243,36,246,41,228,50,213,63,172,115,142,175,119,239,104,303,94,364,89,421,87,505"/>
+<area shape="poly" id="edge686_Node000000_Node000001" title=" " alt="" coords="82,505,84,420,89,364,99,302,114,237,137,173,168,113,209,59,225,46,243,36,246,41,228,50,213,63,172,115,142,175,119,239,104,303,94,364,89,421,87,505"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="226,73,401,99"/>
-<area shape="poly" id="edge686_Node000000_Node000003" title=" " alt="" coords="83,505,89,430,107,328,123,273,145,219,173,167,209,121,227,107,249,96,251,101,230,111,213,125,177,170,149,221,128,275,112,330,94,431,88,505"/>
+<area shape="poly" id="edge688_Node000000_Node000003" title=" " alt="" coords="83,505,89,430,107,328,123,273,145,219,173,167,209,121,227,107,249,96,251,101,230,111,213,125,177,170,149,221,128,275,112,330,94,431,88,505"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="224,135,403,175"/>
-<area shape="poly" id="edge688_Node000000_Node000005" title=" " alt="" coords="85,505,96,443,117,361,133,317,153,273,178,232,209,195,239,173,242,178,212,199,183,235,158,275,138,319,122,362,101,444,91,506"/>
+<area shape="poly" id="edge690_Node000000_Node000005" title=" " alt="" coords="85,505,96,443,117,361,133,317,153,273,178,232,209,195,239,173,242,178,212,199,183,235,158,275,138,319,122,362,101,444,91,506"/>
 <area shape="rect" id="Node000007" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="216,209,411,249"/>
-<area shape="poly" id="edge690_Node000000_Node000007" title=" " alt="" coords="88,504,101,454,125,389,160,322,183,290,209,263,233,247,236,251,212,267,187,294,165,325,130,391,107,455,93,506"/>
+<area shape="poly" id="edge692_Node000000_Node000007" title=" " alt="" coords="88,504,101,454,125,389,160,322,183,290,209,263,233,247,236,251,212,267,187,294,165,325,130,391,107,455,93,506"/>
 <area shape="rect" id="Node000009" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="235,277,391,317"/>
-<area shape="poly" id="edge692_Node000000_Node000009" title=" " alt="" coords="92,504,109,465,134,417,167,369,209,327,234,312,236,317,212,331,171,372,138,420,113,467,97,506"/>
+<area shape="poly" id="edge694_Node000000_Node000009" title=" " alt="" coords="92,504,109,465,134,417,167,369,209,327,234,312,236,317,212,331,171,372,138,420,113,467,97,506"/>
 <area shape="rect" id="Node000010" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="211,341,416,367"/>
-<area shape="poly" id="edge693_Node000000_Node000010" title=" " alt="" coords="96,505,140,440,172,405,209,376,233,364,236,369,212,380,176,409,144,444,101,508"/>
+<area shape="poly" id="edge695_Node000000_Node000010" title=" " alt="" coords="96,505,140,440,172,405,209,376,233,364,236,369,212,380,176,409,144,444,101,508"/>
 <area shape="rect" id="Node000012" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="212,391,415,416"/>
-<area shape="poly" id="edge695_Node000000_Node000012" title=" " alt="" coords="104,507,150,465,179,443,210,425,239,414,241,419,212,430,182,448,153,469,108,511"/>
+<area shape="poly" id="edge697_Node000000_Node000012" title=" " alt="" coords="104,507,150,465,179,443,210,425,239,414,241,419,212,430,182,448,153,469,108,511"/>
 <area shape="rect" id="Node000014" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="213,440,414,465"/>
-<area shape="poly" id="edge697_Node000000_Node000014" title=" " alt="" coords="122,510,210,474,250,463,251,468,212,479,124,515"/>
+<area shape="poly" id="edge699_Node000000_Node000014" title=" " alt="" coords="122,510,210,474,250,463,251,468,212,479,124,515"/>
 <area shape="rect" id="Node000016" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="228,489,399,515"/>
-<area shape="poly" id="edge699_Node000000_Node000016" title=" " alt="" coords="176,517,228,510,228,516,177,522"/>
+<area shape="poly" id="edge701_Node000000_Node000016" title=" " alt="" coords="176,517,228,510,228,516,177,522"/>
 <area shape="rect" id="Node000018" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="220,539,407,579"/>
-<area shape="poly" id="edge701_Node000000_Node000018" title=" " alt="" coords="177,540,220,545,219,551,176,545"/>
+<area shape="poly" id="edge703_Node000000_Node000018" title=" " alt="" coords="177,540,220,545,219,551,176,545"/>
 <area shape="rect" id="Node000020" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="220,603,407,643"/>
-<area shape="poly" id="edge703_Node000000_Node000020" title=" " alt="" coords="123,548,212,589,245,601,243,606,210,594,120,553"/>
+<area shape="poly" id="edge705_Node000000_Node000020" title=" " alt="" coords="123,548,212,589,245,601,243,606,210,594,120,553"/>
 <area shape="rect" id="Node000022" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="232,667,395,707"/>
-<area shape="poly" id="edge705_Node000000_Node000022" title=" " alt="" coords="105,553,151,604,180,630,212,653,236,665,233,670,209,658,177,634,147,607,101,557"/>
+<area shape="poly" id="edge707_Node000000_Node000022" title=" " alt="" coords="105,553,151,604,180,630,212,653,236,665,233,670,209,658,177,634,147,607,101,557"/>
 <area shape="rect" id="Node000024" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="218,731,409,771"/>
-<area shape="poly" id="edge707_Node000000_Node000024" title=" " alt="" coords="98,556,115,592,140,636,173,680,212,717,232,729,229,733,209,721,169,683,136,639,111,595,93,558"/>
+<area shape="poly" id="edge709_Node000000_Node000024" title=" " alt="" coords="98,556,115,592,140,636,173,680,212,717,232,729,229,733,209,721,169,683,136,639,111,595,93,558"/>
 <area shape="rect" id="Node000026" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="213,796,413,821"/>
-<area shape="poly" id="edge709_Node000000_Node000026" title=" " alt="" coords="93,557,107,605,130,666,165,729,187,757,212,781,233,794,231,798,209,785,183,760,160,732,125,668,102,607,88,558"/>
+<area shape="poly" id="edge711_Node000000_Node000026" title=" " alt="" coords="93,557,107,605,130,666,165,729,187,757,212,781,233,794,231,798,209,785,183,760,160,732,125,668,102,607,88,558"/>
 <area shape="rect" id="Node000028" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="231,845,395,871"/>
-<area shape="poly" id="edge711_Node000000_Node000028" title=" " alt="" coords="91,558,102,615,123,689,139,728,159,766,183,800,212,831,232,843,230,848,209,835,179,804,154,768,134,730,118,691,96,616,86,558"/>
+<area shape="poly" id="edge713_Node000000_Node000028" title=" " alt="" coords="91,558,102,615,123,689,139,728,159,766,183,800,212,831,232,843,230,848,209,835,179,804,154,768,134,730,118,691,96,616,86,558"/>
 <area shape="rect" id="Node000030" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="227,895,399,920"/>
-<area shape="poly" id="edge713_Node000000_Node000030" title=" " alt="" coords="89,557,97,623,116,710,132,757,153,802,180,844,212,880,231,892,228,897,209,884,175,847,148,804,127,759,111,712,92,624,84,558"/>
+<area shape="poly" id="edge715_Node000000_Node000030" title=" " alt="" coords="89,557,97,623,116,710,132,757,153,802,180,844,212,880,231,892,228,897,209,884,175,847,148,804,127,759,111,712,92,624,84,558"/>
 <area shape="rect" id="Node000032" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="234,944,393,969"/>
-<area shape="poly" id="edge715_Node000000_Node000032" title=" " alt="" coords="88,557,93,631,110,732,126,785,147,838,176,887,212,929,235,944,232,948,209,933,172,890,142,840,121,787,105,733,87,632,83,558"/>
+<area shape="poly" id="edge717_Node000000_Node000032" title=" " alt="" coords="88,557,93,631,110,732,126,785,147,838,176,887,212,929,235,944,232,948,209,933,172,890,142,840,121,787,105,733,87,632,83,558"/>
 <area shape="rect" id="Node000034" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="234,993,393,1019"/>
-<area shape="poly" id="edge717_Node000000_Node000034" title=" " alt="" coords="87,558,89,639,94,694,104,753,119,814,142,874,172,930,212,979,235,993,232,998,209,983,168,933,137,876,114,816,98,754,89,694,83,640,82,558"/>
+<area shape="poly" id="edge719_Node000000_Node000034" title=" " alt="" coords="87,558,89,639,94,694,104,753,119,814,142,874,172,930,212,979,235,993,232,998,209,983,168,933,137,876,114,816,98,754,89,694,83,640,82,558"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1GlobalFlags.html" title="Flags using a global dictionary." alt="" coords="509,5,647,31"/>
-<area shape="poly" id="edge685_Node000001_Node000002" title=" " alt="" coords="402,21,509,17,509,23,402,26"/>
+<area shape="poly" id="edge687_Node000001_Node000002" title=" " alt="" coords="402,21,509,17,509,23,402,26"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="479,55,677,95"/>
-<area shape="poly" id="edge687_Node000003_Node000004" title=" " alt="" coords="414,79,479,77,479,82,415,85"/>
+<area shape="poly" id="edge689_Node000003_Node000004" title=" " alt="" coords="414,79,479,77,479,82,415,85"/>
 <area shape="rect" id="Node000006" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="485,120,671,175"/>
-<area shape="poly" id="edge689_Node000005_Node000006" title=" " alt="" coords="417,150,484,147,484,153,417,155"/>
+<area shape="poly" id="edge691_Node000005_Node000006" title=" " alt="" coords="417,150,484,147,484,153,417,155"/>
 <area shape="rect" id="Node000008" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="477,199,679,253"/>
-<area shape="poly" id="edge691_Node000007_Node000008" title=" " alt="" coords="424,225,477,224,477,230,425,230"/>
+<area shape="poly" id="edge693_Node000007_Node000008" title=" " alt="" coords="424,225,477,224,477,230,425,230"/>
 <area shape="rect" id="Node000011" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="464,278,692,318"/>
-<area shape="poly" id="edge694_Node000010_Node000011" title=" " alt="" coords="387,336,482,315,484,321,388,341"/>
+<area shape="poly" id="edge696_Node000010_Node000011" title=" " alt="" coords="387,336,482,315,484,321,388,341"/>
 <area shape="rect" id="Node000013" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="465,342,691,382"/>
-<area shape="poly" id="edge696_Node000012_Node000013" title=" " alt="" coords="408,386,465,377,465,382,409,391"/>
+<area shape="poly" id="edge698_Node000012_Node000013" title=" " alt="" coords="408,386,465,377,465,382,409,391"/>
 <area shape="rect" id="Node000015" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="466,406,690,446"/>
-<area shape="poly" id="edge698_Node000014_Node000015" title=" " alt="" coords="427,439,466,435,466,440,428,444"/>
+<area shape="poly" id="edge700_Node000014_Node000015" title=" " alt="" coords="427,439,466,435,466,440,428,444"/>
 <area shape="rect" id="Node000017" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="481,470,675,510"/>
-<area shape="poly" id="edge700_Node000016_Node000017" title=" " alt="" coords="413,495,481,492,481,497,413,500"/>
+<area shape="poly" id="edge702_Node000016_Node000017" title=" " alt="" coords="413,495,481,492,481,497,413,500"/>
 <area shape="rect" id="Node000019" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="481,535,675,589"/>
-<area shape="poly" id="edge702_Node000018_Node000019" title=" " alt="" coords="420,558,480,558,480,564,420,563"/>
+<area shape="poly" id="edge704_Node000018_Node000019" title=" " alt="" coords="420,558,480,558,480,564,420,563"/>
 <area shape="rect" id="Node000021" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="481,613,675,668"/>
-<area shape="poly" id="edge704_Node000020_Node000021" title=" " alt="" coords="420,628,481,632,480,637,420,633"/>
+<area shape="poly" id="edge706_Node000020_Node000021" title=" " alt="" coords="420,628,481,632,480,637,420,633"/>
 <area shape="rect" id="Node000023" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="493,692,663,747"/>
-<area shape="poly" id="edge706_Node000022_Node000023" title=" " alt="" coords="408,696,493,706,492,712,408,701"/>
+<area shape="poly" id="edge708_Node000022_Node000023" title=" " alt="" coords="408,696,493,706,492,712,408,701"/>
 <area shape="rect" id="Node000025" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="479,771,677,825"/>
-<area shape="poly" id="edge708_Node000024_Node000025" title=" " alt="" coords="423,768,479,778,478,783,422,773"/>
+<area shape="poly" id="edge710_Node000024_Node000025" title=" " alt="" coords="423,768,479,778,478,783,422,773"/>
 <area shape="rect" id="Node000027" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="467,850,689,890"/>
-<area shape="poly" id="edge710_Node000026_Node000027" title=" " alt="" coords="383,822,492,847,490,853,382,827"/>
+<area shape="poly" id="edge712_Node000026_Node000027" title=" " alt="" coords="383,822,492,847,490,853,382,827"/>
 <area shape="rect" id="Node000029" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="485,914,671,954"/>
-<area shape="poly" id="edge712_Node000028_Node000029" title=" " alt="" coords="390,872,417,879,465,899,502,911,500,916,463,905,415,885,388,877"/>
+<area shape="poly" id="edge714_Node000028_Node000029" title=" " alt="" coords="390,872,417,879,465,899,502,911,500,916,463,905,415,885,388,877"/>
 <area shape="rect" id="Node000031" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="481,978,675,1018"/>
-<area shape="poly" id="edge714_Node000030_Node000031" title=" " alt="" coords="399,922,417,929,442,946,465,964,494,975,492,980,463,968,439,951,415,934,397,927"/>
+<area shape="poly" id="edge716_Node000030_Node000031" title=" " alt="" coords="399,922,417,929,442,946,465,964,494,975,492,980,463,968,439,951,415,934,397,927"/>
 <area shape="rect" id="Node000033" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="487,1042,669,1082"/>
-<area shape="poly" id="edge716_Node000032_Node000033" title=" " alt="" coords="404,972,417,978,433,991,442,1004,451,1016,465,1028,490,1040,487,1044,463,1032,447,1020,438,1007,429,994,415,983,401,977"/>
+<area shape="poly" id="edge718_Node000032_Node000033" title=" " alt="" coords="404,972,417,978,433,991,442,1004,451,1016,465,1028,490,1040,487,1044,463,1032,447,1020,438,1007,429,994,415,983,401,977"/>
 </map>

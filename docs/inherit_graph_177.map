@@ -1,13 +1,13 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,104,180,129"/>
 <area shape="rect" id="Node000001" href="$classdrain_1_1image_1_1ClipperSVG.html" title=" " alt="" coords="270,5,365,31"/>
-<area shape="poly" id="edge779_Node000000_Node000001" title=" " alt="" coords="123,94,171,66,227,40,269,26,270,31,229,44,174,71,126,99"/>
+<area shape="poly" id="edge781_Node000000_Node000001" title=" " alt="" coords="123,94,171,66,227,40,269,26,270,31,229,44,174,71,126,99"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1MetaDataCollectorSVG.html" title=" " alt="" coords="232,55,403,80"/>
-<area shape="poly" id="edge780_Node000000_Node000002" title=" " alt="" coords="164,98,258,77,259,83,165,104"/>
+<area shape="poly" id="edge782_Node000000_Node000002" title=" " alt="" coords="164,98,258,77,259,83,165,104"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1RelativePathSetterSVG.html" title=" " alt="" coords="232,104,403,129"/>
-<area shape="poly" id="edge781_Node000000_Node000003" title=" " alt="" coords="194,114,232,114,232,119,194,119"/>
+<area shape="poly" id="edge783_Node000000_Node000003" title=" " alt="" coords="194,114,232,114,232,119,194,119"/>
 <area shape="rect" id="Node000004" href="$structrack_1_1CmdDebug_1_1NodeVisitor.html" title=" " alt="" coords="228,153,407,179"/>
-<area shape="poly" id="edge782_Node000000_Node000004" title=" " alt="" coords="165,130,259,151,258,156,164,135"/>
+<area shape="poly" id="edge784_Node000000_Node000004" title=" " alt="" coords="165,130,259,151,258,156,164,135"/>
 <area shape="rect" id="Node000005" href="$classrack_1_1TitleCreatorSVG.html" title="Formats titles from metadata. Invoked by drain::TreeUtils::traverse()" alt="" coords="254,203,381,228"/>
-<area shape="poly" id="edge783_Node000000_Node000005" title=" " alt="" coords="127,134,174,161,229,188,265,200,264,205,227,192,172,166,124,139"/>
+<area shape="poly" id="edge785_Node000000_Node000005" title=" " alt="" coords="127,134,174,161,229,188,265,200,264,205,227,192,172,166,124,139"/>
 </map>

@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include <drain/String.h>
+#include <drain/StringTools.h>
 #include <drain/Type.h>
 #include <drain/TypeUtils.h>
 

@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "Log.h"
 #include "Sprinter.h"
-#include "String.h"
+#include "StringTools.h"
 
 
 namespace drain {
@@ -235,16 +235,15 @@ public:
 	// Potential for allowed-keys-only policy (hidden/read-only entries)
 	template <class M, bool STRICT=true>
 	static
-	void setValues(M & dst, const std::list<std::string> & keys, const std::list<std::string> & entries, char assignmentSymbol='=') {
+	void setValues(M & dst, const std::list<std::string> & keys, const std::list<std::string> & entries, char assignmentChar='=') {
 
 		Logger mout(__FILE__, __FUNCTION__);
 
 
-		const std::string assignmentSymbols(1, assignmentSymbol);
+		// 2026: use char in split2
+		//const std::string assignmentSymbols(1, assignmentSymbol);
 
-		//const std::list<std::string> & keys = getKeyList();
 		std::list<std::string>::const_iterator kit = keys.begin();
-
 
 		bool acceptOrderedParams = true;
 
@@ -256,11 +255,12 @@ public:
 			//mout.warn(" entry: " , *pit );
 
 			// Check specific assignment, ie. check if the key=value is given explicitly.
-			if (assignmentSymbol){ // typically '='
+			if (assignmentChar){ // typically '='
 
 				std::string key, value;
 
-				if (StringTools::split2(entry, key, value, assignmentSymbols)){
+				//if (StringTools::split2(entry, key, value, assignmentSymbols)){
+				if (StringTools::split2(entry, key, value, assignmentChar)){
 
 					// mout.warn(" specified " ,  key , "=\t" , value );
 
@@ -343,7 +343,7 @@ public:
 	void setValues(M & dst, const std::string & values, char split=',', char equals='=', const std::string & trimChars = "") {
 		std::list<std::string> l;
 		drain::StringTools::split(values, l, split);
-		setValues(dst, l, equals, trimChars);
+		setValues<M,STRICT>(dst, l, equals, trimChars);
 	}
 
 	/**

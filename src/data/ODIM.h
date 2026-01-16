@@ -373,5 +373,8 @@ std::ostream & operator<<(std::ostream &ostr, const ODIM & odim){
 
 }  // namespace rack
 
+DRAIN_ENUM_DICT(rack::ODIM::Version);
+DRAIN_ENUM_OSTREAM(rack::ODIM::Version);
+
 
 #endif

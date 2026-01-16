@@ -114,6 +114,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>getQuantityMap
 <tr class="memitem:aade65581ca60dec3907925bc94cb3088" id="r_aade65581ca60dec3907925bc94cb3088"><td class="memItemLeft" align="right" valign="top"><a id="aade65581ca60dec3907925bc94cb3088" name="aade65581ca60dec3907925bc94cb3088"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordinatePolicy</b> (Hi5Tree &amp;src, const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a> &amp;policy=<a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>(drain::image::EdgePolicy::LIMIT))</td></tr>
 <tr class="separator:aade65581ca60dec3907925bc94cb3088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedeffcfbf1f5df54eee6e732bffd80bb" id="r_aedeffcfbf1f5df54eee6e732bffd80bb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#aedeffcfbf1f5df54eee6e732bffd80bb">getMaxRange</a> (const Hi5Tree &amp;src, bool projected=true)</td></tr>
+<tr class="separator:aedeffcfbf1f5df54eee6e732bffd80bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a23160d481d0055582b04d0125bd2a5" id="r_a6a23160d481d0055582b04d0125bd2a5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">markExcluded</a> (Hi5Tree &amp;src, bool exclude=true)</td></tr>
 <tr class="memdesc:a6a23160d481d0055582b04d0125bd2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark/unmark whole tree to be deleted with <a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948" title="Traverse subtree setting exclude=true .">Hi5Base::deleteExcluded()</a>  <br /></td></tr>
 <tr class="separator:a6a23160d481d0055582b04d0125bd2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,6 +204,43 @@ template&lt;class M &gt; </div>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aedeffcfbf1f5df54eee6e732bffd80bb" name="aedeffcfbf1f5df54eee6e732bffd80bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedeffcfbf1f5df54eee6e732bffd80bb">&#9670;&#160;</a></span>getMaxRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int getMaxRange </td>
+          <td>(</td>
+          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>projected</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Future option: limit elevation angle range. </p>
 
 </div>
 </div>
@@ -314,7 +353,7 @@ template&lt;class M &gt; </div>
 <div class="line"><a class="code hl_function" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a>(ctx.getHi5(RackContext::CURRENT), output, <a class="code hl_function" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">DataTools::treeToStream</a>);</div>
 <div class="ttc" id="aclassdrain_1_1Output_html"><div class="ttname"><a href="classdrain_1_1Output.html">drain::Output</a></div><div class="ttdoc">Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.</div><div class="ttdef"><b>Definition</b> Output.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1TreeUtils_html_a589a266c64101a3a0441be1cad6ee102"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a></div><div class="ttdeci">static bool dump(const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</div><div class="ttdoc">Render a tree using character graphics.</div><div class="ttdef"><b>Definition</b> TreeUtils.h:160</div></div>
-<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition</b> DataTools.cpp:127</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition</b> DataTools.cpp:128</div></div>
 </div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>– true, if data is empty, ie. no attributes or data array. </dd></dl>
 
 </div>

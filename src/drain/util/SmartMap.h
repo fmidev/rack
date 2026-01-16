@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Castable.h>
 #include <drain/SmartMapTools.h>
 #include <drain/Sprinter.h>
-#include <drain/String.h>
+#include <drain/StringTools.h>
 
 
 
@@ -228,7 +228,10 @@ public:
 	 *   \param entries - string containing key=value pairs separated by separator
 	 */
 	template <bool STRICT=true>
-	void importEntries(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0); //, bool updateOnly = false);
+	inline
+	void importEntries(const std::string & entries, char assignmentChar='=', char separatorChar=0); // { //, bool updateOnly = false);
+		// MapTools::setValues<smap_t,STRICT>(*this, entries, separatorChar, assignmentChar);  //  const std::string & trimChars = ""
+	//}
 	//, unsigned int criticality = LOG_ERR);
 
 
@@ -237,9 +240,9 @@ public:
 	 *   TODO: sequence
 	 */
 	template <bool STRICT=true>
-	void importEntries(const std::list<std::string> & entries, char assignmentSymbol='='){ //; //, bool updateOnly = false);
-		//SmartMapTools::setValues<T,STRICT>(*this, getKeyList(), entries, assignmentSymbol);
-		MapTools::setValues<smap_t,STRICT>(*this, getKeyList(), entries, assignmentSymbol);
+	void importEntries(const std::list<std::string> & entries, char assignmentChar='='){ //; //, bool updateOnly = false);
+		//SmartMapTools::setValues<T,STRICT>(*this, getKeyList(), entries, assignmentChar);
+		MapTools::setValues<smap_t,STRICT>(*this, getKeyList(), entries, assignmentChar);
 	}
 
 	/// Assign values from a map, overriding existing entries.
@@ -269,17 +272,7 @@ public:
 	 */
 	template <class T2,bool STRICT=true>
 	void importCastableMap(const drain::SmartMap<T2> & m){ //, bool updateOnly = false, unsigned int criticality = LOG_ERR){
-		// NUOEVO:
 		SmartMapTools::setCastableValues<smap_t,T2,STRICT>(*this, m);
-		// SmartMapTools::setValues<smap_t,T2,STRICT>(*this, m);
-		//SmartMapTools::setValues<map_t,T2,STRICT>(*this, m);
-		/*
-		for (const typename SmartMap<T2>::keylist_t::value_type &key : m.getKeyList()){
-			importEntry(key, (const Castable &)m[key]); //, updateOnly);
-		}
-		*/
-		// for (typename SmartMap<T2>::const_iterator it = m.begin(); it != m.end(); ++it)
-		//	importEntry(it->first, (const Castable &)it->second, updateOnly); //, criticality); // false);
 	}
 
 
@@ -305,15 +298,15 @@ public:
 
 
 	/// Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry.
-	// TODO: consider: std::string assignmentSymbols="=:", std::string separatorSymbols=", ", std::string trimSymbols=" \t\n\r",
+	// TODO: consider: std::string assignmentChars="=:", std::string separatorChars=", ", std::string trimChars=" \t\n\r",
 	inline
-	void setValues(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0){  // char separatorSymbol=','
-		importEntries<true>(entries, assignmentSymbol, separatorSymbol); //, false);  //, LOG_ERR);
+	void setValues(const std::string & entries, char assignmentChar='=', char separatorChar=0){  // char separatorChar=','
+		importEntries<true>(entries, assignmentChar, separatorChar); //, false);  //, LOG_ERR);
 	}
 
 	inline
-	void setValues(const char * entries, char assignmentSymbol='=', char separatorSymbol=0){
-		importEntries<true>(entries, assignmentSymbol, separatorSymbol); //, false); //, LOG_ERR);
+	void setValues(const char * entries, char assignmentChar='=', char separatorChar=0){
+		importEntries<true>(entries, assignmentChar, separatorChar); //, false); //, LOG_ERR);
 	}
 
 	// status?
@@ -322,8 +315,8 @@ public:
 
 	/// Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silently.
 	inline
-	void updateValues(const std::string & entries, char assignmentSymbol='=', char separatorSymbol=0){// char separatorSymbol=','
-		importEntries<false>(entries, assignmentSymbol, separatorSymbol); //, true); //, LOG_DEBUG);
+	void updateValues(const std::string & entries, char assignmentChar='=', char separatorChar=0){// char separatorChar=','
+		importEntries<false>(entries, assignmentChar, separatorChar); //, true); //, LOG_DEBUG);
 	}
 
 
@@ -426,7 +419,7 @@ public:
 	 *   \param criticality - if true, skip non-existing entries silently
 	 */
 	// \param updateOnly - if true, skip non-existing entries silently
-	//void assignEntries2(const std::string & entries, bool updateOnly = false, char assignmentSymbol='=', char separatorSymbol=0){
+	//void assignEntries2(const std::string & entries, bool updateOnly = false, char assignmentChar='=', char separatorChar=0){
 
 protected:
 
@@ -438,9 +431,14 @@ protected:
 
 };
 
+
+// to be Replaced by MapTools:
+// 	MapTools::setValues<smap_t,STRICT>(*this, entries, separatorChar, assignmentChar);
 template <class T>
 template <bool STRICT>
-void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymbol, char separatorSymbol){ //, bool updateOnly){
+void SmartMap<T>::importEntries(const std::string & entries, char assignmentChar, char separatorChar){ //, bool updateOnly){
+
+	// void importEntries(const std::string & entries, char assignmentChar='=', char separatorChar=0);
 
 	Logger mout(__FILE__, __FUNCTION__);
 	//mout.debug(10) << entries << mout.endl;
@@ -449,35 +447,42 @@ void SmartMap<T>::importEntries(const std::string & entries, char assignmentSymb
 		return;
 	}
 
-	separatorSymbol = separatorSymbol ? separatorSymbol : separator;
 
+	separatorChar = separatorChar ? separatorChar : separator;
+
+	std::list<std::string> l;
+	drain::StringTools::split(entries, l, separatorChar);
+	MapTools::setValues<smap_t,STRICT>(*this, this->getKeyList(), l, assignmentChar);
+
+	/*
 	// Input parameter assignments, separated by the separator: "a=1", "b=2", "c=3", ...
 	std::list<std::string> p;
-	// separatorSymbol = separatorSymbol ? separatorSymbol : separator;
-	if (separatorSymbol)
-		drain::StringTools::split(entries, p, std::string(1, separatorSymbol));  // separators);
+	// separatorChar = separatorChar ? separatorChar : separator;
+	if (separatorChar)
+		drain::StringTools::split(entries, p, std::string(1, separatorChar));  // separators);
 	else {
 		// no separator => single-param cmd, BUT explicit key=value possible
 		// mout.warn("push back entries:" , entries );
 		p.push_back(entries);
 	}
-	importEntries<STRICT>(p, assignmentSymbol);
-
+	importEntries<STRICT>(p, assignmentChar);
+	*/
 }
+
 
 /*
 
 template <class T>
 template <bool STRICT>
-void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmentSymbol){ // , bool updateOnly){
+void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmentChar){ // , bool updateOnly){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
-	// NUEVO3 SmartMapTools::setValues<T,STRICT>(*this, p, assignmentSymbol);
+	// NUEVO3 SmartMapTools::setValues<T,STRICT>(*this, p, assignmentChar);
 
-	//SmartMapTools::setValues<T,STRICT>(*this, getKeyList(), p, assignmentSymbol);
+	//SmartMapTools::setValues<T,STRICT>(*this, getKeyList(), p, assignmentChar);
 
-	const std::string assignmentSymbols(1, assignmentSymbol);
+	const std::string assignmentChars(1, assignmentChar);
 
 	const std::list<std::string> & keys = getKeyList();
 	std::list<std::string>::const_iterator kit = keys.begin();
@@ -485,7 +490,7 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 
 	bool acceptOrderedParams = true;
 
-	// mout.warn(" assignmentSymbol: " ,  assignmentSymbol );
+	// mout.warn(" assignmentChar: " ,  assignmentChar );
 	// mout.warn(" size: " ,  this->size() );
 
 	for (std::list<std::string>::const_iterator pit = p.begin(); pit != p.end(); ++pit){
@@ -493,10 +498,10 @@ void SmartMap<T>::importEntries(const std::list<std::string> & p, char assignmen
 		//mout.warn(" entry: " , *pit );
 
 		// Check specific assignment, ie. check if the key=value is given explicitly.
-		if (assignmentSymbol){ // typically '='
+		if (assignmentChar){ // typically '='
 			std::string key;
 			std::string value;
-			if (StringTools::split2(*pit, key, value, assignmentSymbols)){
+			if (StringTools::split2(*pit, key, value, assignmentChars)){
 				// mout.warn(" specified " ,  key , "=\t" , value );
 				if (this->size()==1){
 					iterator it = this->begin();
