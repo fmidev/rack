@@ -211,6 +211,10 @@ public:
 		replaceWithMap(src, m, dst);
 	};
 
+	/// Interpret commond special chars: tab '\t', newline '\n' and carriage return '\r'.
+	static
+	std::string & convertEscaped(std::string &s);
+
 
 private:
 
@@ -425,6 +429,7 @@ public:
 	template <class T>
 	static
 	T convert(const std::string &s);
+
 
 	template <class T>
 	static

@@ -120,6 +120,19 @@ void StringTools::replace(const std::string & src, const std::map<char,char> & m
 
 }
 
+std::string & StringTools::convertEscaped(std::string &s){
+
+	static
+	const std::map<std::string,char> conv = {
+			{"\\t", '\t'},
+			{"\\n", '\n'},
+	};
+
+	// std::cerr << __FUNCTION__ << '\n';
+	drain::StringTools::replace(s, conv, s);
+
+	return s;
+}
 
 /*
 void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::ostream & ostr){

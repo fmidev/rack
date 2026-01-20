@@ -65,6 +65,7 @@ void Caster::put(void *p, const char * x) const {
 				(this->putDouble)(p, y);
 			}
 			else if (t == typeid(bool)){
+				// TODO: test against "true" and "TRUE"
 				if (TypeUtils::trueRegExp.test(x)){
 					(this->putBool)(p, true);
 				}

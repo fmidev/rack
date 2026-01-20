@@ -346,10 +346,11 @@ public:
 	 */
 	StringMapper & parse(const std::string &s, bool convertEscaped = false);
 
+	/*
 	/// Interpret commond special chars tab '\t' and newline '\n'.
 	static
 	std::string & convertEscaped(std::string &s);
-
+	*/
 
 	/// Return true, if all the elements are literal.
 	bool isLiteral() const;

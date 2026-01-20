@@ -90,9 +90,10 @@ struct PanelConfSVG {
 
 	enum ElemClass {
 		NONE = 0,
-		MAIN_TITLE = 1,  // Main title in SVG image
+		MAIN_TITLE  = 1,  // Main title in SVG image
 		GROUP_TITLE = 2, // Group title
-		IMAGE = 4,  // Image title: small text (time, location) in corners of radar images
+		IMAGE_TITLE = 4,  // Image title: small text (time, location) in corners of radar images
+		// Topical
 		TIME = 8,       // Date and time attributes
 		LOCATION = 16,   // Place (coordinates, municipality)
 		GENERAL = 32,    // Default type
@@ -161,17 +162,20 @@ struct PanelConfSVG {
 
 namespace drain {
 
-template <>
-const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict;
+// template <>
+// const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict;
+DRAIN_ENUM_DICT(rack::SvgInclude);
 DRAIN_ENUM_OSTREAM(rack::SvgInclude);
 
-template <>
-const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict;
+// template <>
+// const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict;
+DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass);
 DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::ElemClass);
 
 
-template <>
-const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict;
+// template <>
+// const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict;
+DRAIN_ENUM_DICT(rack::PanelConfSVG::PathPolicy);
 DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::PathPolicy);
 
 

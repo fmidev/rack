@@ -97,8 +97,26 @@ public:
 	// Projection of the latest radar input.
 	RadarProj radarProj;
 
-	// Maximum range of the latest radar input.
-	int maxRange = 0; // metres
+	inline
+	void deriveMaxRange(const Hi5Tree & srcPolar){
+		maxRange = DataTools::getMaxRange(srcPolar);
+	}
+
+	/// If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such.
+	inline
+	double getRange(double r=1.0){
+		if (r<-1.0){
+			return r;
+		}
+		else if (r<=1.0){
+			return r*maxRange;
+		}
+		else {
+			return r;
+		}
+	};
+
+
 
 	/// Geographic extent and projection (Cartesian)
 	drain::image::GeoFrame geoFrame;
@@ -234,6 +252,9 @@ public:
 protected:
 
 	int radialBezierResolution;
+
+	// Maximum range of the latest radar input.
+	double maxRange = 0.0; // metres
 
 };
 

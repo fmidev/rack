@@ -30,20 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 //#include <stddef.h>
 
-/*
-#include <string>
-#include <drain/image/FilePng.h>
-#include <drain/image/TreeSVG.h>
-#include <drain/prog/Command.h>
-#include <drain/prog/CommandInstaller.h>
-#include <drain/prog/CommandBank.h>
-#include <drain/util/Output.h>
-#include "data/SourceODIM.h" // for NOD
-
-#include "resources.h"
-//#include "fileio-svg.h"
-#include "graphics.h"
- */
 
 #include <drain/util/EnumFlags.h>
 #include <drain/util/SelectorXML.h>
@@ -93,7 +79,8 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 		// These could be
 
 		style[SelectorXMLcls("GRID")] = {
-				{"stroke", "white"},
+				//{"stroke", "white"},
+				{"stroke", "gray"},
 				{"stroke-width", 2.0},
 				{"fill", "none"}, // debug
 				//{"fill", "blue"}, // debug
@@ -122,12 +109,22 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 				{"fill-opacity", "1"},
 		};
 
-		style[SelectorXML(".HIGHLIGHT", ":hover")] = {
+		style[SelectorXML(image::svg::TEXT, ".HIGHLIGHT", ":hover")] = {
 				//{"display", "block"},
 				{"font-size", "larger"},
-				{"fill", "red"},
+				{"opacity", 1.0},
+				// {"fill", "red"},
+				//{"stroke-width", 3.0},
+				//{"stroke-color", "orange"},
+		};
+
+		style[SelectorXML(image::svg::PATH, ".HIGHLIGHT", ":hover")] = {
+				//{"display", "block"},
+				//{"font-size", "larger"},
+				//{"fill", "red"},
 				{"stroke-width", 3.0},
-				{"stroke-color", "orange"},
+				{"opacity", 1.0},
+				//{"stroke-color", "orange"},
 		};
 	}
 

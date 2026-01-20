@@ -104,8 +104,11 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke", "none"},
 		};
 
+		style[SelectorXMLcls(BACKGROUND_RECT)] = {
+				{"stroke", "none"},
+		};
 
-		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::IMAGE)] = {
+		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::IMAGE_TITLE)] = {
 				{"stroke", "white"},
 				{"stroke-opacity", "0.75"},
 				{"stroke-width", "0.3em"},
@@ -142,7 +145,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 		// Currently, image titles have no background RECT, but let's keep this for clarity.
-		style[SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE)] = {
+		style[SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE_TITLE)] = {
 				{"font-size", 12.0},
 		};
 
@@ -190,7 +193,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 	mout.debug("Setting font sizes: ", ctx.svgPanelConf.fontSizes);
 	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
 	style[SelectorXMLcls(PanelConfSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
-	style[SelectorXMLcls(PanelConfSVG::IMAGE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+	style[SelectorXMLcls(PanelConfSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
 
 	/*
 	style[SelectorXMLcls(PanelConfSVG::MAIN_TITLE)] ->set("font-rauno", ctx.svgPanelConf.fontSizes[0]);
@@ -703,7 +706,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const PanelConfSVG &conf, d
 		timeHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::LEFT);
 		locationHeader->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT);
 		break;
-	case PanelConfSVG::ElemClass::IMAGE:
+	case PanelConfSVG::ElemClass::IMAGE_TITLE:
 		textBoxHeight = conf.boxHeights[2]; // fontSizes
 		if (textBoxHeight > 0.0) {
 			mainHeader->setAlign(AlignSVG::BOTTOM, AlignSVG::LEFT);
@@ -892,7 +895,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 	else if (group->hasClass(PanelConfSVG::ElemClass::IMAGE_PANEL)) {
 		// Add elements directly on the image (corners), skip creating a background rectangle.
 		// Use IMAGE element "image" as anchor.
-		RackSVG::appendTitleElements(svgConf, group, "image", PanelConfSVG::ElemClass::IMAGE);
+		RackSVG::appendTitleElements(svgConf, group, "image", PanelConfSVG::ElemClass::IMAGE_TITLE);
 		formatTitle(group, attributesPrivate);
 	}
 	else {

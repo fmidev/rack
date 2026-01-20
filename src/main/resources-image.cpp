@@ -36,8 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-template <>
-const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict = {
+// template <>
+// const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict
+DRAIN_ENUM_DICT(rack::SvgInclude) = {
 		DRAIN_ENUM_ENTRY(rack::SvgInclude, NONE),
 		DRAIN_ENUM_ENTRY(rack::SvgInclude, PNG),
 		DRAIN_ENUM_ENTRY(rack::SvgInclude, SVG),
@@ -51,13 +52,14 @@ const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclud
 };
 
 
-template <>
-const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict = {
+// template <>
+// const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict
+DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN_TITLE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN_TITLE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, GROUP_TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE),
+		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_TITLE),
 		// DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, TITLE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, TIME),
@@ -70,8 +72,9 @@ const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<ra
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
 
-template <>
-const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict = {
+// template <>
+// const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict
+DRAIN_ENUM_DICT(rack::PanelConfSVG::PathPolicy) = {
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::PathPolicy, ABSOLUTE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::PathPolicy, PREFIXED)
 };
