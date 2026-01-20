@@ -216,6 +216,8 @@ WRITE_DOC '\b Background maps. External images can be linked with \c --gLinkImag
 RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD} – \${PLC}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign 'HORZ_FILL:VERT_FILL'  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' -o 'Adding_background_maps'
 
 
+WRITE_DOC '\b Grid, sector, labels.'
+RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD}'" \\ --cProj 5120 --cBBox 20,62,32,66.5 --cSize 600 \\ volume.h5 \\ -Q DBZH -c --palette 'default' -o rgb.png \\ --gRadarGrid 50000:1,15:180:540 \\ --gRadarSector "'245:300,50000:110000'" --gRadarMarker "'0.1,1'" --gStyle ".CmdRadarMarker_circle='stroke:cyan;stroke-width:15px'" --gRadarLabel "'\${PLC}\n\${NOD}'" \\ -o 'grid_and_sector'
 
 
 ls -1t ${OUTFILES[*]//.png/.cmd}
