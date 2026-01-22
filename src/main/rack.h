@@ -39,6 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 /**
+ *  Version 17
+ *  - Revised XML/HTML/SVG CSS classes
+ *
  *  Version 16
  *  - Python UI export (experimental)
  *  Version 16.0

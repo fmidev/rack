@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
+#include <drain/util/EnumUtils.h>
 #include "SelectorXML.h"
 
 namespace drain {
@@ -44,5 +45,23 @@ namespace drain {
 	const char SelectorXML::CLASS;
 	const char SelectorXML::ID;
 
+	template <>
+	void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s){
+		s.assign(EnumDict<PseudoClassCSS>::dict.getKey(value));
+	}
+
+
 }  // drain::
+
+DRAIN_ENUM_DICT(drain::PseudoClassCSS) = {
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, active),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, disabled),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, focus),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, hover),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, link),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, scope),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, target),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, valid),
+		DRAIN_ENUM_ENTRY(drain::PseudoClassCSS, visited),
+};
 

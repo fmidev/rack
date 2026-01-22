@@ -96,6 +96,11 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 	if (style->isUndefined()){
 
 		// mout.debug("initializing style");
+		typedef SelectXML<svg::tag_t> Select;
+
+		static const drain::ClassXML clsMAIN_TITLE(PanelConfSVG::MAIN_TITLE);
+		static const drain::ClassXML clsIMAGE_TITLE(PanelConfSVG::IMAGE_TITLE);
+		static const drain::ClassXML clsGROUP_TITLE(PanelConfSVG::GROUP_TITLE);
 
 		style->setType(svg::STYLE);
 
@@ -104,11 +109,14 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke", "none"},
 		};
 
-		style[SelectorXMLcls(BACKGROUND_RECT)] = {
+		//style[SelectorXMLcls(BACKGROUND_RECT)] = {
+		style[ClassXML(BACKGROUND_RECT)] = {
 				{"stroke", "none"},
 		};
 
-		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::IMAGE_TITLE)] = {
+		// style[SelectorXMLcls(svg::TEXT, PanelConfSVG::IMAGE_TITLE)] = {
+		// style[Select(svg::TEXT, clsIMAGE_TITLE)] = {
+		style[Select(svg::TEXT, PanelConfSVG::IMAGE_TITLE)] = {
 				{"stroke", "white"},
 				{"stroke-opacity", "0.75"},
 				{"stroke-width", "0.3em"},
@@ -118,34 +126,39 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 
-		style[SelectorXMLcls(svg::RECT, PanelConfSVG::GROUP_TITLE)] = {
+		//style[SelectorXMLcls(svg::RECT, PanelConfSVG::GROUP_TITLE)] = {
+		style[Select(svg::RECT, clsGROUP_TITLE)] = {
 				{"fill", "gray"},
 				{"stroke", "white"},
 				{"stroke-width", "1px"},
 				{"opacity", 1.0},
 		};
 
-		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::GROUP_TITLE)] = {
+		//style[SelectorXMLcls(svg::TEXT, PanelConfSVG::GROUP_TITLE)] = {
+		style[Select(svg::TEXT, clsGROUP_TITLE)] = {
 				// {"font-size", 20}, dynamic, see below
 				{"fill", "black"},
 				//{"stroke", "white"},
 		};
 
 
-		style[SelectorXMLcls(svg::RECT, PanelConfSVG::MAIN_TITLE)] = {
+		//style[SelectorXMLcls(svg::RECT, PanelConfSVG::MAIN_TITLE)] = {
+		style[Select(svg::RECT, clsMAIN_TITLE)] = {
 				{"fill", "darkblue"},
 				//{"fill", "gray"},
 				{"opacity", 1.0},
 		};
 
-		style[SelectorXMLcls(svg::TEXT, PanelConfSVG::MAIN_TITLE)] = {
+		// style[SelectorXMLcls(svg::TEXT, PanelConfSVG::MAIN_TITLE)] = {
+		style[Select(svg::TEXT, clsMAIN_TITLE)] = {
 				//
 				{"fill", "white"},
 				// {"stroke", "black"},
 		};
 
 		// Currently, image titles have no background RECT, but let's keep this for clarity.
-		style[SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE_TITLE)] = {
+		// style[SelectorXMLcls(svg::TEXT,PanelConfSVG::IMAGE_TITLE)] = {
+		style[Select(svg::TEXT, clsIMAGE_TITLE)] = {
 				{"font-size", 12.0},
 		};
 

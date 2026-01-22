@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PROJECTOR_H_
 #define DRAIN_PROJECTOR_H_
 
+#include <drain/util/EnumUtils.h>
 #include <cstddef>
 #include <iostream>
 #include <set>
@@ -40,7 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <proj.h>
 
 // #include "Dictionary.h"
-#include "EnumFlags.h"
 // #include "Point.h"
 
 

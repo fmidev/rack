@@ -42,11 +42,265 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <ostream>
 #include <drain/StringBuilder.h>
+#include <drain/StringTools.h>
+#include "ClassXML.h"
 
 namespace drain {
 
 
-/// Currently used only as CSS element selector.
+enum PseudoClassCSS {
+	none=0,
+	active,
+	disabled,
+	focus,
+	hover,
+	link,
+	scope,
+	target,
+	valid,
+	visited,
+};
+
+
+// Alternative 1: redefine the assignment method of the super class
+template <>
+void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s);
+/*
+{
+	s.assign(drain::EnumDict<PseudoClassCSS>::dict.getKey(value));
+}
+*/
+
+
+// Alternative 2: redefine the assignment method.
+/*
+template <>
+template <>
+void StringWrapper<PseudoClassCSS>::set(const PseudoClassCSS & value){
+	assign(drain::EnumDict<PseudoClassCSS>::dict.getKey(value));
+}
+*/
+
+
+/** NEW! 2026
+ *  \tparam T - element tag_t (enum or integer)
+ */
+template <typename E>
+class SelectXML { //  : public std::string {
+
+public:
+
+	template <class ...TT>
+	inline
+	SelectXML(TT... args) {
+		set(args...);
+	}
+
+	/**
+	 *   Handles three types of argument
+	 *   - type E : element id's, implemented as enum lists or integers.
+	 *   - string or ClassXML: CSS class id's
+	 *   - PseudoClassCSS:
+	 */
+	template <class T, class ...TT>
+	void set(const T & arg, TT... args){
+		set(arg);
+		set(args...);
+	}
+
+	template <class T>
+	void set(const T & arg){
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("uncertain role/type of arg: ", arg, " type:", typeid(T).name(), ", assuming CSS class");
+		//elem = drain::EnumDict<E>::dict.getValue(arg, false);
+		cls.set(arg);
+	};
+
+	/*
+	template <class T>
+	void set(const T & arg){
+		elem = drain::EnumDict<E>::dict.getValue(arg, false);
+	};
+
+	inline
+	void set(const char *arg){
+		elem = drain::EnumDict<E>::dict.getValue(arg, false);
+	};
+	*/
+
+	/// Set element
+	/**
+	 *  \tparam E
+	 *
+	 *  \see setElement()
+	 *  \see drain::EnumDict<E>
+	 */
+	inline
+	void set(const E & arg){
+		elem = arg;
+	};
+
+	/// Set CSS class
+	/**
+	 *    In CSS style definitions class "EXAMPLE" appears as ".EXAMPLE".
+	 *
+	 */
+	inline
+	void set(const std::string & arg){
+		cls.assign(arg);
+		//elem = drain::EnumDict<E>::dict.getValue(arg, false);
+	};
+
+	/// Set CSS class
+	inline
+	void set(const char *arg){
+		cls.assign(arg);
+		// elem = drain::EnumDict<E>::dict.getValue(arg, false);
+	};
+
+
+	/// Set CSS class
+	inline
+	void set(const ClassXML & arg){
+		cls.assign(arg);
+	};
+
+	/// Set one of the element pseudo classes: focus, hover
+	/**
+	 *
+	 */
+	inline
+	void set(const PseudoClassCSS & arg){
+		pseudoClass.set(arg);
+	};
+
+	/// Set one of the element pseudo classes: focus, hover
+	/**
+	 *  Note: argument may contain an invalid value (a value not corresponding to any in PseudoClassCSS).
+	 *
+	 *  \see drain::PseudoClassCSS
+	 */
+	inline
+	void set(const StringWrapper<drain::PseudoClassCSS> & p){
+		pseudoClass.assign(p);
+	};
+
+	/// Set element explicitly
+	/**
+	 *  For setting an element type that is not (yet) supported in the enumeration dictionary.
+	 *
+	 *  \see template E
+	 *  \see drain::EnumDict<E>
+	 */
+	template <class T>
+	inline
+	void setElement(const T & arg){
+		elem = drain::EnumDict<E>::dict.getValue(arg, false);
+	};
+
+
+	template <class T>
+	inline
+	void setClass(const T & arg){
+		// FIX StringConv
+		cls = arg;
+	};
+
+	/// Set one of the element pseudo classes: focus, hover
+	/**
+	 *  This function is useful in setting a pseudo class that is not (yet) supported in the enumeration dictionary.
+	 *  \see drain::PseudoClassCSS
+	 *  \see drain::EnumDict<drain::PseudoClassCSS>::dict
+	 */
+	template <class T>
+	inline
+	void setPseudoClass(const T & psCls){
+		pseudoClass.set(psCls);
+	};
+
+
+
+
+
+	inline
+	void clear(){
+		elem = 0;
+		cls.clear();
+		pseudoClass.clear();
+	};
+
+	void toStream(std::ostream & ostr) const {
+
+		// TODO id?
+
+		// Undefined ~ 0 (contract)
+		if (static_cast<int>(elem) != 0){
+			ostr << drain::EnumDict<E>::dict.getKey(elem);
+		}
+
+		if (!cls.empty()){
+			ostr << '.' << cls;
+		}
+
+		if (!pseudoClass.empty()){
+			ostr << ':' << pseudoClass;
+		}
+
+	}
+
+	const std::string & str() const {
+		//sstr.str("");
+		std::stringstream sstr;
+		toStream(sstr);
+		currentStr = sstr.str();
+		return currentStr;
+		//return sstr.str();
+	}
+
+	inline
+	operator const std::string &() const {
+		return str();
+	}
+
+
+protected:
+
+	E elem = static_cast<E>(0);
+	ClassXML cls = "";
+	StringWrapper<PseudoClassCSS> pseudoClass;
+
+	inline
+	void set(){};
+
+	mutable
+	std::string currentStr;
+	//std::stringstream sstr;
+
+};
+
+}
+
+
+
+DRAIN_ENUM_DICT(drain::PseudoClassCSS);
+
+
+DRAIN_ENUM_OSTREAM(drain::PseudoClassCSS);
+
+
+namespace drain {
+
+
+
+template <typename X>
+std::ostream & operator<<(std::ostream & ostr, const drain::SelectXML<X> &x){
+	//return ostr << x.str();
+	x.toStream(ostr);
+	return ostr;
+}
+
+
+/// OLD, Currently used only as CSS element selector.
 class SelectorXML : public std::string {
 
 public:

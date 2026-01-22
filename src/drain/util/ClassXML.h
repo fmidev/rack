@@ -44,18 +44,69 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/Sprinter.h>
 //#include <drain/FlexibleVariable.h>
 
-#include "EnumFlags.h"
+#include "EnumUtils.h"
 #include "ReferenceMap.h"
 #include "TreeUnordered.h"
 
 namespace drain {
 
 
+/// A wrapper marking string an CSS effect
+// Note: Currently separate from ClassListXML
+//class ClassXML : public StringWrapper<std::string> {
+class ClassXML : public MultiEnumWrapper {
+
+public:
+
+	inline
+	ClassXML(const std::string & s="") : MultiEnumWrapper(s){};
+
+	template <typename T>
+	inline
+	ClassXML(const T & arg) : MultiEnumWrapper(arg){};
+	//ClassXML(const T & x) : StringWrapper<std::string>(drain::EnumDict<T>::dict.getKey(x)){};
+
+	// inline
+	// ClassXML(const ClassXML & e) : MultiEnumWrapper((const std::string &)e){};
+
+	inline
+	ClassXML(const char *arg) : MultiEnumWrapper(std::string(arg)){};
+
+
+	virtual inline
+	~ClassXML(){};
+
+	/*
+	inline
+	operator const std::string & () const {
+		return *this;
+	}
+	inline
+	const std::string & str() const {
+		return *this;
+	}
+	*/
+
+	const std::string & strPrefixed() const {
+		prefixed = ".";
+		prefixed += *this;
+		return prefixed;
+	}
+
+protected:
+
+	// Class name prefixed with ".".
+	mutable
+	std::string prefixed;
+
+};
+
 
 /// Container for style classes. Essentially a set of strings, with space-separated output support.
 /**
  *
  */
+// Note: Currently separate from ClassXML
 class ClassListXML : public std::set<std::string> {
 
 public:

@@ -44,7 +44,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "TreeUnordered.h"
 #include "XML.h"
-// #include "UtilsXML.h"
 
 
 namespace drain {
@@ -98,20 +97,11 @@ public:
 
 	/// Default constructor
 	/**
-	 *  In derived classes, handleType(static_cast<T>(t)) should be always called
-	 *  by constructor.
-	 */
-	/*
-	inline
-	NodeXML(const intval_t & t = intval_t(0)){
-		drain::StringTools::import(++nextID, id);
-		setType(t);
-	};
+	 *  In derived classes, setting type should be always called by constructor.
 	 */
 	inline
 	NodeXML(){
 		drain::StringTools::import(++nextID, id);
-		// setType(t);
 	};
 
 	//
@@ -131,28 +121,10 @@ public:
 	inline
 	~NodeXML(){};
 
+	// TODO: Shadowing. Check usage, change name no swapNode()
 	virtual
 	void swap(NodeXML<T> & node);
 
-	/*
-	template <class T2> // "final"
-	void setType(const T2 &t){ // DANGER, without cast?
-		type = static_cast<intval_t>(t); // (elem_t)
-		// handleType(static_cast<T>(t)); REMOVED 2025/09
-		// in derived classes, eg. drain::image::BaseGDAL
-		// warning: case value ‘...’ not in enumerated type
-	}
-
-	// Consider this later, for user-defined (not enumerated) tag types.
-	// virtual
-	// void setType(const std::string & type);
-
-
-	inline
-	const intval_t & getType() const {
-		return type;
-	};
-	*/
 
 	inline
 	T getNativeType() const {
@@ -387,25 +359,7 @@ protected:
 	//void handleType() = 0;
 
 
-
-	/*
-	virtual inline
-	void handleType(const T & type){
-		std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? type=" << type << std::endl;
-
-
-		if ((int)type != 0){
-			drain::Logger(__FILE__, __FUNCTION__).reject("handleType( ",  (int)type, " ) - this is available only as specialized, by inherited classed like SVG, HTML?");
-		}
-		// DANGER, without cast?
-		// std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? " << type << '=' << std::endl;
-		// std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::EnumDict<T>::dict) << std::endl;
-	}
-	*/
-
-
-	/// NOTE: these could/should be templated, in TreeXML<...> right?
-	//typedef std::map<std::string,std::string> xmldoc_attrib_map_t;
+	/// Control constant variables of  (note: templated, through Node<T>::)
 	typedef std::list<std::pair<std::string,std::string> > xmldoc_attrib_map_t;
 	static xmldoc_attrib_map_t xmldoc_attribs;
 
@@ -573,10 +527,12 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
  *
  */
 
+/**
+ *  \tparam  int - type of the values in the dictionary
+ *  \tparam  XML - the owner of the dictionary
+ */
 DRAIN_ENUM_DICT2(int,XML);
 
-//template <>
-//const drain::EnumDict<int,XML>::dict_t drain::EnumDict<int,XML>::dict;
 
 
 template <class E, bool EX, class P>
@@ -589,20 +545,7 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 
 
 
-/*
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeXML & t){
-	// DOC def? TODO: preamble/prologToStream()
-	TreeXML::node_data_t::docTypeToStream(ostr); // must be member, to support virtual?
-	TreeXML::node_data_t::toStream(ostr, t, "");
-	return ostr;
-}
-*/
-
-
-
-
 }  // drain::
 
-#endif /* TREEXML_H_ */
+#endif /* DRAIN_TREE_XML */
 

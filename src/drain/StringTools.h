@@ -46,9 +46,89 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <map>
 
-//#include "RegExp.h"
 
 namespace drain {
+
+template <typename T>
+class StringConverter {
+public:
+
+
+	void convertToString(const T & value, std::string &s){
+		std::stringstream sstr;
+		sstr << value;
+		s.assign(sstr.str());
+	};
+
+	void convertFromString(const std::string &s, T & value){
+		std::stringstream sstr(s);
+		sstr >> value;
+	};
+
+
+};
+
+template <typename T=std::string>
+class StringWrapper : public std::string, protected StringConverter<T> {
+
+public:
+
+	inline
+	//StringWrapper(const std::string & s="") : std::string(s){};
+	//StringWrapper() : std::string(){};
+	StringWrapper(){
+		//set("");
+	};
+
+	/// All the other constructors, including default constructor.
+	//template <typename T>
+	inline
+	StringWrapper(const T & x){
+		set(x);
+	};
+
+
+	inline
+	void set(const std::string & s=""){
+		std::string::assign(s);
+	};
+
+	inline
+	void set(const StringWrapper & e){
+		std::string::assign(e);
+	};
+
+	inline
+	void set(const char *s){
+		std::string::assign(s);
+	};
+
+
+	/// Set the value from an other, user-defined dictionary.
+	/**
+	 *
+	 *   - The enum dict must be defined.
+	 *
+	 *   Loose template: assumes T2 can be converted to T
+	 */
+	template <typename T2>
+	inline
+	void set(const T2 & x){
+		// setSpecial(x);
+		StringConverter<T>::convertToString(x, *this);
+		//StringConverter<T>::convertToString(x, *this);
+	};
+
+	/**
+	 *
+	 *   - This function can be specialized with template <> .
+	virtual inline
+	void setSpecial(const T & x){
+	};
+	 */
+
+};
+
 
 class StringTools {
 

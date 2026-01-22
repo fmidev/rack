@@ -132,6 +132,26 @@ const TreeHTML & TreeHTML::operator[](const Html::tag_t & type) const {
 	return (*this)[EnumDict<Html::tag_t>::dict.getKey(type, false)];
 }
 
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+TreeHTML & TreeHTML::operator[](const ClassXML & cls){
+	return (*this)[cls.strPrefixed()];
+}
+
+/// Automatic conversion of element type (enum value) to a string.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const TreeHTML & TreeHTML::operator[](const ClassXML & cls) const {
+	return (*this)[cls.strPrefixed()];
+}
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool TreeHTML::hasChild(const ClassXML & cls) const {
+	return hasChild(cls.strPrefixed());
+}
+
 
 // TODO: macro with lowerCaser
 // TODO: mark some non-self-closing like <script/>

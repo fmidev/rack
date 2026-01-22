@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <stddef.h>
 
 
-#include <drain/util/EnumFlags.h>
 #include <drain/util/SelectorXML.h>
 #include <drain/image/LayoutSVG.h>
+#include <drain/util/EnumUtils.h>
 
 #include "graphics-radar.h"
 
@@ -57,6 +57,7 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	using namespace drain;
 	using namespace drain::image;
 
 	static
@@ -77,8 +78,17 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 		style->setType(svg::STYLE);
 
 		// These could be
+		SelectXML<svg::tag_t>("polygon");
+		SelectXML<svg::tag_t>(ClassXML("GRID"));
+		SelectXML<svg::tag_t>(ClassXML(GRID));
 
+		SelectXML<svg::tag_t> select;
+		select.set("polygon");
+
+		style[ClassXML(GRID)] = {{"mika", "mäki"}};
+		style[ClassXML("GRID2")] = {{"mika", "mäki"}};
 		style[SelectorXMLcls("GRID")] = {
+				//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
 				//{"stroke", "white"},
 				{"stroke", "gray"},
 				{"stroke-width", 2.0},

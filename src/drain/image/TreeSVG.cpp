@@ -343,6 +343,25 @@ const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type
 	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
 }
 
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const ClassXML & cls) const {
+	return hasChild(cls.strPrefixed()); // no error on non-existent dict entry
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls){
+	return (*this)[cls.strPrefixed()];
+}
+
+/// Automatic conversion of element type (enum value) to a string.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const {
+	return (*this)[cls.strPrefixed()];
+}
+
 
 }  // drain::
 

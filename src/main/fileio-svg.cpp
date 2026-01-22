@@ -1293,7 +1293,7 @@ public:
 			mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepMetres));
 		}
 
-		mout.attention("final range: ", DRAIN_LOG(r), DRAIN_LOG(stepMetres));
+		mout.debug("final range: ", DRAIN_LOG(r), DRAIN_LOG(stepMetres));
 
 		const drain::Range<double> a(azimuthDegrees.range);// int->double
 		if (a.min < -360.0){

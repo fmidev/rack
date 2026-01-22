@@ -54,6 +54,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+
+
 /// Base class for XML "nodes", to be data elements T for drain::Tree<T>
 class XML :  protected ReferenceMap2<FlexibleVariable> {
 public:

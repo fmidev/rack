@@ -753,23 +753,39 @@ bool DataSelector::getPath(const Hi5Tree & src, ODIMPath & path) const {
 
 		const QuantitySelector::list_t & l = quantitySelector.getList();
 
-		if (!(path.back().is(ODIMPathElem::DATASET) || l.empty())){
+		/*
+		mout.attention("paths: ", drain::sprinter(paths));
+		mout.attention(DRAIN_LOG(path));
+		mout.attention("quantities: ", drain::sprinter(l));
+		if (!path.empty()){
+			mout.attention(DRAIN_LOG(path.front()));
+			mout.attention(DRAIN_LOG(path.back()));
+		}
+		*/
+
+		// ERROR here - but what was original idea? :
+		// if (!(path.back().is(ODIMPathElem::DATASET) || l.empty())){
+		//
+		if (! l.empty()){
 			// mout.experimental("could use quantity order here: ", path, " qty:", l.front().value);
 			mout.debug("checking quantity once more...");
 			/// Consider changing loop order, and just  quantitySelector.test(q);
 			for (const drain::StringMatcher & m: l){
 				for (ODIMPath & p: paths){
-					std::string q = src(p).data.image.properties.get("what:quantity", "");
-					// so, here:  quantitySelector.test(q);
-					if (m == q){
-						mout.special<LOG_INFO>("found preferred [", q,"] matching '", m, "' at: ", p);
-						path = p;
-						return true;
+					if (!p.back().is(ODIMPathElem::DATASET)){
+						std::string q = src(p).data.image.properties.get("what:quantity", "");
+						// so, here:  quantitySelector.test(q);
+						if (m == q){
+							mout.special<LOG_INFO>("found preferred [", q,"] matching '", m, "' at: ", p);
+							path = p;
+							return true;
+						}
 					}
 				}
 			}
 		}
 
+		// Satisfy with the first result.
 		path = paths.front();
 		return true;
 	}

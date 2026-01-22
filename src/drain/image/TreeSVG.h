@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_TREE_SVG
 
 #include <drain/image/AlignAnchorSVG.h>
-#include "drain/util/EnumFlags.h"
+#include <drain/util/EnumUtils.h>
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
 #include "drain/util/SelectorXML.h"
@@ -532,10 +532,16 @@ template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
 
 
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+
 /// Automatic conversion of element type (enum value) to a string.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
+
+
 
 /// Automatic conversion of element type (enum value) to a string.
 template <> // for T (Tree class)
@@ -545,7 +551,17 @@ const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+bool image::TreeSVG::hasChild(const ClassXML & cls) const;
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls);
+
+/// Automatic conversion of element type (enum value) to a string.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const ;
+
 
 
 template <>

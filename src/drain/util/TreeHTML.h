@@ -238,6 +238,22 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const TreeHTML & TreeHTML::operator[](const Html::tag_t & type) const;
 
+// Same for ClassXML (designed for children of STYLE element)
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+TreeHTML & TreeHTML::operator[](const ClassXML & cls);
+
+/// Automatic conversion of element type (enum value) to a string.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const TreeHTML & TreeHTML::operator[](const ClassXML & cls) const ;
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool TreeHTML::hasChild(const ClassXML & cls) const;
+
 
 template <>
 inline

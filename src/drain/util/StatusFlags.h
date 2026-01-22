@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define STATUS_FLAGS_H_
 
 
-#include "EnumFlags.h"
+#include <drain/util/EnumUtils.h>
 
 namespace drain
 {

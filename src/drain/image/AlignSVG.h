@@ -38,8 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_ALIGN_SVG
 #define DRAIN_ALIGN_SVG
 
+#include <drain/util/EnumUtils.h>
 #include <string>
-#include "drain/util/EnumFlags.h"
 
 namespace drain {
 

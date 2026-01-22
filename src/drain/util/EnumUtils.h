@@ -29,25 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef DRAIN_ENUM_FLAGS
-#define DRAIN_ENUM_FLAGS
-
-/*
-#include <iostream>
-#include <list>
-#include <iterator>
-#include <iostream>
-#include <list>
-#include <sstream>
-#include <stdexcept>
-//#include <typeinfo>
-#include <stdlib.h>
-
-#include <drain/Log.h>
-#include <drain/StringTools.h>
-#include <drain/Type.h>
-
-*/
+#ifndef DRAIN_ENUM_UTILS
+#define DRAIN_ENUM_UTILS
 
 #include "Dictionary.h"
 #include "Flags.h"
@@ -226,6 +209,50 @@ public:
 		assign(drain::EnumDict<E>::dict.getKey(x, !STRICT));
 	};
 	*/
+
+};
+
+class MultiEnumWrapper : public std::string { // StringWrapper<E> {
+
+public:
+
+	inline
+	MultiEnumWrapper(const std::string & s="") : std::string(s){
+	};
+
+	inline
+	MultiEnumWrapper(const char *s) : std::string(s){
+	};
+
+	/// Default constructor
+	// inline
+	// MultiEnumWrapper(const MultiEnumWrapper & wrapper) : std::string(wrapper){
+	// };
+
+	/// All the other constructors.
+	template <typename T>
+	inline
+	MultiEnumWrapper(const T & arg){
+		set(arg);
+	};
+
+
+	void set(const std::string &arg){
+		assign(arg);
+	}
+
+	void set(const char * arg){
+		assign(arg);
+	}
+
+	void set(const MultiEnumWrapper &arg){
+		assign(arg);
+	}
+
+	template <typename T>
+	void set(const T & value){
+		assign(drain::EnumDict<T>::dict.getKey(value, false));
+	}
 
 };
 

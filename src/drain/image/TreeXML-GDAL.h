@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_FILE_GDAL_XML
 
 // #include "drain/util/Flags.h"
-#include <drain/util/EnumFlags.h>
+#include <drain/util/EnumUtils.h>
 #include "drain/util/TreeXML.h"
 #include "drain/util/UtilsXML.h"
 

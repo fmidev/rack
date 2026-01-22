@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include <drain/util/TreeOrdered.h>
-#include <drain/util/EnumFlags.h>
+#include <drain/util/EnumUtils.h>
 #include <drain/image/Image.h>
 
 
