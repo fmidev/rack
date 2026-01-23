@@ -41,6 +41,26 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+DRAIN_ENUM_DICT(image::FileSVG::PathPolicy) = {
+		DRAIN_ENUM_ENTRY(image::FileSVG::PathPolicy, ABSOLUTE),
+		DRAIN_ENUM_ENTRY(image::FileSVG::PathPolicy, PREFIXED)
+};
+
+DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy) = {
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, NONE),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, PNG),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, SVG),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, TXT),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, ALL),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, NEXT),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, SKIP),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, ON),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, OFF),
+		DRAIN_ENUM_ENTRY(image::FileSVG::IncludePolicy, UNKNOWN),
+};
+
+
+
 DRAIN_TYPENAME_DEF(image::NodeSVG);
 DRAIN_TYPENAME_DEF(image::svg::tag_t);
 
@@ -85,6 +105,10 @@ const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::i
 
 namespace image {
 
+const drain::FileInfo FileSVG::fileInfo("svg");
+// const drain::FileInfo NodeSVG::fileInfo("svg");
+
+
 template <>
 NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {
 		{"version",  "1.0"},
@@ -93,7 +117,6 @@ NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {
 		// {"data-remark", "svg"} debugging? inkview claims
 };
 
-const drain::FileInfo NodeSVG::fileInfo("svg");
 
 std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
 std::string NodeSVG::svg("http://www.w3.org/2000/svg");

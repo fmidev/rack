@@ -489,7 +489,7 @@ public:
 };
 
 
-
+/*
 class CmdImageTitle : public drain::BasicCommand {
 
 public:
@@ -509,6 +509,7 @@ public:
 	}
 
 };
+*/
 
 class CmdTitle : public drain::BasicCommand {
 
@@ -571,7 +572,7 @@ class CmdInclude : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdInclude() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select images to include in SVG panel", "include",
-			drain::sprinter(drain::EnumDict<SvgInclude>::dict.getKeys(), '|').str()) {
+			drain::sprinter(drain::EnumDict<drain::image::FileSVG::IncludePolicy>::dict.getKeys(), '|').str()) {
 	}
 
 	void exec() const override {
@@ -585,10 +586,10 @@ public:
 			ctx.svgPanelConf.svgIncludes.reset();
 		}
 		else if (value == "OFF"){
-			ctx.svgPanelConf.svgIncludes.unset(SvgInclude::ON);
+			ctx.svgPanelConf.svgIncludes.unset(drain::image::FileSVG::IncludePolicy::ON);
 		}
 		else {
-			ctx.svgPanelConf.svgIncludes.set(SvgInclude::ON); // so PNG,SVG,.. need no explicit "ON"
+			ctx.svgPanelConf.svgIncludes.set(drain::image::FileSVG::IncludePolicy::ON); // so PNG,SVG,.. need no explicit "ON"
 			ctx.svgPanelConf.svgIncludes.set(value);
 		}
 	}
@@ -640,7 +641,7 @@ public:
 		group->addClass(LayoutSVG::INDEPENDENT);
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
-		const std::string ANCHOR_ELEM("myRect"); // not PanelConfSVG::MAIN
+		const std::string ANCHOR_ELEM("myRect"); // not RackSVG::MAIN
 		//group->setAlignAnchorHorz(ANCHOR_ELEM);
 		group->setDefaultAlignAnchor(ANCHOR_ELEM);
 
@@ -832,20 +833,20 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		PanelConfSVG & conf = ctx.svgPanelConf;
+		ConfSVG & conf = ctx.svgPanelConf;
 
 		drain::Frame2D<double> frame = {160,300};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[PanelConfSVG::SIDE_PANEL](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[RackSVG::SIDE_PANEL](svg::GROUP);
 		group->setId(value);
-		group->addClass(PanelConfSVG::SIDE_PANEL);
+		group->addClass(RackSVG::SIDE_PANEL);
 		//group->setAlignAnchor(RackSVG::BACKGROUND_RECT);
 
 		RackSVG::consumeAlignRequest(ctx, group);
 
 
 		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
-		rect->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		rect->addClass(RackSVG::ElemClass::SIDE_PANEL);
 		rect->setWidth(frame.width);
 		rect->setHeight(frame.height);
 		/*
@@ -863,7 +864,7 @@ public:
 		VariableFormatterODIM<std::string> formatter;
 
 		{
-			rect2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+			rect2->addClass(RackSVG::ElemClass::SIDE_PANEL);
 			rect2->setMyAlignAnchor(RackSVG::BACKGROUND_RECT);
 			rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
 			rect2->setHeight(120);
@@ -871,7 +872,7 @@ public:
 			drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
 			text->setMyAlignAnchor(HEADER_RECT);
 			text->setAlign(AlignSVG::TOP, AlignSVG::CENTER);
-			text->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+			text->addClass(RackSVG::ElemClass::SIDE_PANEL);
 			text->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 			text->setStyle("fill", "lightblue");
 			text->setText(status["PLC"]);
@@ -879,7 +880,7 @@ public:
 			drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
 			text2->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 			text2->setAlign(AlignSVG::CENTER);
-			text2->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+			text2->addClass(RackSVG::ElemClass::SIDE_PANEL);
 			text2->setFontSize(conf.fontSizes[0], conf.boxHeights[0]);
 			text2->setText(status["NOD"]);
 
@@ -890,7 +891,7 @@ public:
 			// date->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT); // CENTER);
 			date->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
 			date->setAlign(AlignSVG::CENTER);
-			date->addClass(PanelConfSVG::ElemClass::TIME);
+			date->addClass(RackSVG::ElemClass::TIME);
 			date->setStyle("fill", "gray");
 			date->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 			formatter.formatDate(sstr, "date", status.get("what:date", ""), "%Y/%m/%d");
@@ -930,7 +931,7 @@ public:
 				anchorVert.clear();
 				tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 				tkey->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-				tkey->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+				tkey->addClass(RackSVG::ElemClass::SIDE_PANEL);
 				tkey->setFontSize(conf.fontSizes[2], conf.boxHeights[1]);
 				tkey->setStyle("fill", "darkgray");
 				tkey->setText(key);
@@ -940,7 +941,7 @@ public:
 				tval->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
 				tval->setMyAlignAnchor<AlignBase::VERT>(key);
 				tval->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
-				tval->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+				tval->addClass(RackSVG::ElemClass::SIDE_PANEL);
 				tval->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 
 				const std::string & format = RackSVG::guessFormat(key);
@@ -963,7 +964,7 @@ public:
 	// , const drain::VariableMap & vmap
 	drain::image::TreeSVG & addTextElem(drain::image::TreeSVG & group, const std::string & key) const {
 		TreeSVG & t = group[key](svg::TEXT);
-		// t->addClass(PanelConfSVG::ElemClass::SIDE_PANEL);
+		// t->addClass(RackSVG::ElemClass::SIDE_PANEL);
 		t->setFontSize(10.0);
 		t->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
 		t->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
@@ -1428,7 +1429,7 @@ public:
 
 			drain::image::TreeSVG & curve = overlayGroup[getName()](drain::image::svg::PATH);
 			curve -> addClass(getName()); // SECTOR
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(getName()), { // SECTOR
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, getName(), { // SECTOR
 					{"fill", "none"},
 					{"stroke", "green"},
 					{"stroke-width", 12.0},
@@ -1528,7 +1529,7 @@ public:
 			// const std::string clsNameLabel = clsNameBase+"_Label";
 			const std::string & clsNameLabel = clsNameBase;
 
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(clsNameLabel), {
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, clsNameLabel, {
 					//{"font-size", "12"},
 					{"fill", "red"},
 					{"stroke", "white"},  // replace these with image-title etc soft transit
@@ -1565,8 +1566,8 @@ public:
 			// double j = rowHeight * 0.5*(static_cast<double>(lines.size())-1.0);
 			for (const std::string & line: lines){
 				drain::image::TreeSVG & text = overlayGroup.addChild()(drain::image::svg::TEXT);
-				//text->addClass(clsNameLabel, PanelConfSVG::ElemClass::IMAGE);
-				text->addClass(PanelConfSVG::ElemClass::IMAGE_TITLE, PanelConfSVG::ElemClass::LOCATION);
+				//text->addClass(clsNameLabel, RackSVG::ElemClass::IMAGE);
+				text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 				text->setText(line);
 				// text->setLocation(0.0, j);
 				text->setMyAlignAnchor<AlignBase::Axis::HORZ>(RackSVG::BACKGROUND_RECT);
@@ -1656,6 +1657,7 @@ public:
 		MARKER m = drain::EnumDict<MARKER>::getValue(label, false);
 
 		mout.accept<LOG_WARNING>("MARKER: ", m);
+		std::cout << "MARKERs:" << MARKER::DOT << ',' << MARKER::CIRCLE << std::endl;
 		std::cout << "MARKER:" << m << std::endl;
 
 		const std::string & clsNameBase = getName();
@@ -1666,7 +1668,7 @@ public:
 			drain::StringBuilder<'_'> basename(clsNameBase, "circle", m);
 			const std::string clsNameRange = basename.str(); //clsNameBase+"_circle";
 
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(clsNameRange), {
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, clsNameRange, {
 					//{"fill", "none"},
 					{"fill", "green"},
 					{"stroke", "white"},
@@ -1699,7 +1701,7 @@ public:
 		if (dot > 0.0){
 			const std::string clsNameDot = clsNameBase+"_dot";
 
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, drain::SelectorXMLcls(clsNameDot), {
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, clsNameDot, {
 					{"fill", "white"},
 					{"stroke", "black"},
 					{"stroke-width", 3.0},

@@ -52,85 +52,28 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-//using namespace drain::image;
 
-enum SvgInclude {
-	NONE = 0,
-	PNG = 1,  // Main title in SVG image
-	SVG = 2,
-	TXT = 4,
-	SKIP = 16,
-	NEXT = 32,
-	ON   = 64,
-	OFF  = 128,
-	ALL = ON|(PNG|SVG|TXT),
-	UNKNOWN = 255,
-	// --- unused ? ---
-	// TITLE,      // Default title
-};
+struct ConfSVG {
 
+	typedef drain::EnumFlagger<drain::MultiFlagger<FileSVG::IncludePolicy> > IncludeFlagger;
 
-/*
-enum TitleClass {
-	NONE = 0,
-	MAIN = 1,  // Main title in SVG image
-	GROUP = 2,
-	IMAGE = 4,  // Small title in a corner of radar image (time, location)
-	TIME = 8,       // Date and time attributes
-	LOCATION = 16,   // Place (coordinates, municipality)
-	GENERAL = 32,    // Default type
-};
-*/
-
-
-struct PanelConfSVG {
-
-	typedef drain::EnumFlagger<drain::MultiFlagger<SvgInclude> > IncludeFlagger;
 	IncludeFlagger svgIncludes;
 
-	enum ElemClass {
-		NONE = 0,
-		MAIN_TITLE  = 1,  // Main title in SVG image
-		GROUP_TITLE = 2, // Group title
-		IMAGE_TITLE = 4,  // Image title: small text (time, location) in corners of radar images
-		// Topical
-		TIME = 8,       // Date and time attributes
-		LOCATION = 16,   // Place (coordinates, municipality)
-		GENERAL = 32,    // Default type
-		ALL = (63),
-		// MAIN,
-		IMAGE_PANEL,
-		IMAGE_BORDER, // RECT surrounding the image
-		SIDE_PANEL,
-		BORDER, // Overall image border
-		// SHARED_METADATA, // Something that should not be repeated in panels.
-		// --- unused ? ---
-		// TITLE,      // Default title
-	};
-	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
-	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
-
-	std::string imageTitle = "TIME,LOCATION,GENERAL";
-
-	enum PathPolicy {
-		ABSOLUTE = 1,  // Else is relative, stripped away using inputPrefix?
-		PREFIXED = 2,  // file:// is appended
-	};
-
 	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
-	typedef drain::EnumFlagger<drain::MultiFlagger<PathPolicy> > PathPolicyFlagger;
+	typedef drain::EnumFlagger<drain::MultiFlagger<FileSVG::PathPolicy> > PathPolicyFlagger;
 
-	PathPolicyFlagger pathPolicyFlagger = ABSOLUTE;
+	PathPolicyFlagger pathPolicyFlagger = FileSVG::ABSOLUTE;
 	std::string pathPolicy = "ABSOLUTE";
+
+	// Could be better here:
 	// bool absolutePaths = true;
 
-	std::string mainTitle = "AUTO"; // redesign?
-	// std::string groupIdentifier = "AUTO"; // redesign?
-	std::string groupIdentifier = ""; // NEW
-	std::string groupTitle = "AUTO"; // NEW
+	std::string mainTitle = "AUTO";   // redesign?
+	std::string groupIdentifier = ""; // NEW = "AUTO"; // redesign?
+	std::string groupTitle = "AUTO";  // NEW
 	// std::string groupTitleFormatted; dynamic, so better store in data-title attribute
 
-
+	// On hold...
 	/*
 	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
 	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
@@ -150,75 +93,14 @@ struct PanelConfSVG {
 	 */
 	drain::UniTuple<double,3>  boxHeights = {30.0, 25.0, 15.0};
 
+	int debug = 0;
+
 	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
-	PanelConfSVG() : svgIncludes(SvgInclude::ALL), pathPolicyFlagger(PathPolicy::ABSOLUTE), pathPolicy("ABSOLUTE") { // absolutePaths(true){
+	ConfSVG() : svgIncludes(FileSVG::IncludePolicy::ALL), pathPolicyFlagger(FileSVG::PathPolicy::ABSOLUTE), pathPolicy("ABSOLUTE") { // absolutePaths(true){
 	}
 
 
 };
-
-}
-
-
-namespace drain {
-
-// template <>
-// const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict;
-DRAIN_ENUM_DICT(rack::SvgInclude);
-DRAIN_ENUM_OSTREAM(rack::SvgInclude);
-
-// template <>
-// const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict;
-DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass);
-DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::ElemClass);
-
-
-// template <>
-// const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict;
-DRAIN_ENUM_DICT(rack::PanelConfSVG::PathPolicy);
-DRAIN_ENUM_OSTREAM(rack::PanelConfSVG::PathPolicy);
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::PanelConfSVG::ElemClass & key) const ;
-
-
-/// Automatic conversion of elem classes to strings.
-/**
- *
- */
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & value) const;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key);
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::PanelConfSVG::ElemClass & key) const;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key);
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key) const;
-*/
-
-
-}
-
-// using namespace drain::image;
-
-
-namespace rack {
 
 using namespace drain::image;
 
@@ -238,7 +120,7 @@ public:
 	TreeSVG svgTrack;
 
 	// SVG output configuration (layout)
-	PanelConfSVG svgPanelConf; // under constr
+	ConfSVG svgPanelConf; // under constr
 
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
@@ -250,39 +132,7 @@ public:
 	AlignAnchorSVG::anchor_t anchorHorz;
 	AlignAnchorSVG::anchor_t anchorVert;
 
-	int svgDebug = 0;
-
-	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
-	/**
-	 *  Initialize styles, if undone.
-	 */
-	// drain::image::TreeSVG & getStyle();
-
-	/// Top-level GROUP used by Rack. All the graphic elements will be created inside this element.
-	/**
-	 *
-	 *
-	 */
-	// drain::image::TreeSVG & getMainGroup();
-
-	//drain::image::TreeSVG & getCurrentAlignedGroup();
-
-	// virtual
-	// std::string getFormattedStatus(const std::string & format) const = 0;
-
-	// drain::image::TreeSVG & getCurrentAlignedGroup();
-
-	// drain::image::TreeSVG & getImagePanelGroup(const drain::FilePath & filepath);
-
-	/*
-	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
-	TitleFlagger svgTitles = ElemClass::NONE;
-	*/
-	// std::string svgTitles = "";
-
-	/// Apply and reset alignHorz and alignVert.
-	// static
-	// void applyAlignment(drain::image::TreeSVG & group);
+	//int svgDebug = 0;
 
 };
 

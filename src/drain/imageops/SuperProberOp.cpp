@@ -208,7 +208,7 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 		// TODO:ctx could have svg, also for drainage ?
 
-		if (NodeSVG::fileInfo.checkExtension(filePath.extension)){
+		if (FileSVG::fileInfo.checkExtension(filePath.extension)){
 
 			mout.note("Writing: ", filePath);
 			drain::Output output(filePath);

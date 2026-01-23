@@ -110,23 +110,11 @@ public:
 
 	template <class T>
 	void set(const T & arg){
-		Logger mout(__FILE__, __FUNCTION__);
-		mout.warn("uncertain role/type of arg: ", arg, " type:", typeid(T).name(), ", assuming CSS class");
-		//elem = drain::EnumDict<E>::dict.getValue(arg, false);
+		//Logger mout(__FILE__, __FUNCTION__);
 		cls.set(arg);
+		// Logger(__FILE__, __FUNCTION__).experimental<LOG_INFO>("arg '", arg, "' of type:", typeid(T).name(), ", -> CSS class: ", cls);
+		//elem = drain::EnumDict<E>::dict.getValue(arg, false);
 	};
-
-	/*
-	template <class T>
-	void set(const T & arg){
-		elem = drain::EnumDict<E>::dict.getValue(arg, false);
-	};
-
-	inline
-	void set(const char *arg){
-		elem = drain::EnumDict<E>::dict.getValue(arg, false);
-	};
-	*/
 
 	/// Set element
 	/**
@@ -301,6 +289,7 @@ std::ostream & operator<<(std::ostream & ostr, const drain::SelectXML<X> &x){
 
 
 /// OLD, Currently used only as CSS element selector.
+/*
 class SelectorXML : public std::string {
 
 public:
@@ -326,11 +315,11 @@ public:
 	}
 
 };
+*/
 
-// CSS class selector.
-/**
+// OLD CSS class selector.
+/**  Deprecated
  *
- */
 class SelectorXMLcls : public SelectorXML {
 public:
 
@@ -345,7 +334,9 @@ public:
 	}
 
 };
+ */
 
+/*
 class SelectorXMLid : public SelectorXML {
 public:
 
@@ -355,6 +346,7 @@ public:
 	}
 
 };
+*/
 
 
 /*

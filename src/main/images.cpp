@@ -1083,7 +1083,7 @@ public:
 		if (ctx.formatStr.empty()){
 
 			// drain::FilePath filepath(ctx.outputPrefix + value);
-			if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
+			if (FileSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
 
 				mout.special("writing SVG legend");
 

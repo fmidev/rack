@@ -119,7 +119,7 @@ public:
 	 *
 	 */
 	static
-	TreeSVG & ensureStyle(TreeSVG & root, const SelectorXML & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef);
+	TreeSVG & ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef);
 
 	/// Compute the bounding box recursively in objects of type IMAGE, RECT, POLYGON and G (group).
 	/**

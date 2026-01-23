@@ -54,8 +54,7 @@ namespace image
 /// For writing images in basic TIFF format. Reading not supported currently.
 /**
  */
-class FileTIFF : public FileHandler
-{
+class FileTIFF { //: public FileHandler{
 public:
 
 

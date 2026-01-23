@@ -42,8 +42,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-	const char SelectorXML::CLASS;
-	const char SelectorXML::ID;
+	//const char SelectorXML::CLASS;
+	//const char SelectorXML::ID;
 
 	template <>
 	void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s){

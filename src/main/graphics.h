@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_GRAPHICS
 
 
-#include "resources-image.h"
+//#include "resources-image.h"
 #include "resources.h"
 
 // Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
@@ -52,7 +52,28 @@ public:
 	//typedef drain::StyleSelectorXML<NodeSVG> Select;
 
 	// Identifier for the anchor background
-	static const std::string BACKGROUND_RECT; //  = "mainRect";
+	// static const std::string BACKGROUND_RECT; //  = "mainRect";
+
+	enum ElemClass {
+		NONE = 0,
+		MAIN_TITLE  = 1,  // Main title in SVG image
+		GROUP_TITLE = 2, // Group title
+		IMAGE_TITLE = 4,  // Image title: small text (time, location) in corners of radar images
+		// Topical
+		TIME = 8,       // Date and time attributes
+		LOCATION = 16,   // Place (coordinates, municipality)
+		GENERAL = 32,    // Default type
+		ALL = (63),
+		// MAIN,
+		IMAGE_PANEL,
+		IMAGE_BORDER,    // RECT surrounding the image
+		BACKGROUND_RECT, // invisible RECT used for aligning
+		SIDE_PANEL,
+		BORDER, // Overall image border (RECT, invisible by default)
+		// SHARED_METADATA, // Something that should not be repeated in panels.
+		// --- unused ? ---
+		// TITLE,      // Default title
+	};
 
 
 	/// Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned
@@ -89,7 +110,7 @@ public:
 	void consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & node);
 
 	static
-	bool applyInclusion(RackContext & cxt, const drain::FilePath & filepath); // , SvgInclude fileFormat);
+	bool applyInclusion(RackContext & cxt, const drain::FilePath & filepath); // , IncludePolicy fileFormat);
 
 	static
 	// drain::image::TreeSVG &
@@ -114,12 +135,28 @@ public:
 	 *  \return TEXT element located at child(GENERAL)
 	 */
 	static
-	drain::image::TreeSVG & addTitleBox(const PanelConfSVG & conf, drain::image::TreeSVG & object, PanelConfSVG::ElemClass elemClass);
+	drain::image::TreeSVG & addTitleBox(const ConfSVG & conf, drain::image::TreeSVG & object, RackSVG::ElemClass elemClass);
 
 	// TODO: title area "filling order", by group class.
 	/// Add title elements in given group, to "reserve slots" for actual text content to be added later.
+
 	static
-	drain::image::TreeSVG & appendTitleElements(const PanelConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, PanelConfSVG::ElemClass elemClass);
+	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, RackSVG::ElemClass elemClass);
+
+	static inline
+	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const char * anchor, RackSVG::ElemClass elemClass){
+		return appendTitleElements(conf, group, std::string(anchor), elemClass);
+	}
+
+	template <class T>
+	static inline
+	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const T & anchorId, RackSVG::ElemClass elemClass){
+		//const drain::StringWrapper<T> anchor(anchorId);
+		const drain::EnumWrapper<T> anchor(anchorId);
+		// const std::string & s = anchor;
+		return appendTitleElements(conf, group, (const std::string &)anchor, elemClass);
+	}
+
 
 	/// Add rectangle
 	static
@@ -141,7 +178,26 @@ protected:
 
 } // rack
 
+
+
 namespace drain {
+
+DRAIN_ENUM_DICT(rack::RackSVG::ElemClass);
+DRAIN_ENUM_OSTREAM(rack::RackSVG::ElemClass);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const ;
+
+/// Automatic conversion of elem classes to strings.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & value) const;
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key);
 
 //
 /*
@@ -189,7 +245,7 @@ public:
 
 
 	inline
-	TitleCreatorSVG(const PanelConfSVG & svgConf) : svgConf(svgConf) {
+	TitleCreatorSVG(const ConfSVG & svgConf) : svgConf(svgConf) {
 		//titles.set(0xff);
 		/*
 		if (!svgConf.mainTitle.empty()){
@@ -220,7 +276,7 @@ public:
 	//static
 	void formatTitle(TreeSVG & group, const NodeSVG::map_t & attributes) const;
 
-	const PanelConfSVG & svgConf;
+	const ConfSVG & svgConf;
 
 	// Conf
 	// int mainHeaderHeight;

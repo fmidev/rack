@@ -61,7 +61,7 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 	using namespace drain::image;
 
 	static
-	const std::string OVERLAY_STYLE = "OVERLAY_STYLE";
+	const std::string OVERLAY_STYLE = "OVERLAY_STYLE"; // TODO enum
 
 	if (!svgDoc.hasChild(OVERLAY_STYLE)){
 		// Ensure element position at the beginning of the doc.
@@ -77,17 +77,19 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 
 		style->setType(svg::STYLE);
 
+		typedef SelectXML<svg::tag_t> Select;
 		// These could be
+		/*
 		SelectXML<svg::tag_t>("polygon");
 		SelectXML<svg::tag_t>(ClassXML("GRID"));
 		SelectXML<svg::tag_t>(ClassXML(GRID));
-
 		SelectXML<svg::tag_t> select;
 		select.set("polygon");
+		*/
 
-		style[ClassXML(GRID)] = {{"mika", "mäki"}};
-		style[ClassXML("GRID2")] = {{"mika", "mäki"}};
-		style[SelectorXMLcls("GRID")] = {
+		//style[ClassXML(GRID)] = {{"mika", "mäki"}};
+		// style[ClassXML("GRID2")] = {{"mika", "mäki"}};
+		style[Select(GRID)] = {
 				//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
 				//{"stroke", "white"},
 				{"stroke", "gray"},
@@ -106,7 +108,7 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 		};
 		*/
 
-		style[SelectorXMLcls(image::svg::TEXT, "GRID")] = {
+		style[Select(svg::TEXT, GRID)] = {
 				{"text-anchor", "middle"},
 				{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
 				// {"font-size", 20.0},
@@ -119,7 +121,7 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 				{"fill-opacity", "1"},
 		};
 
-		style[SelectorXML(image::svg::TEXT, ".HIGHLIGHT", ":hover")] = {
+		style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] = {
 				//{"display", "block"},
 				{"font-size", "larger"},
 				{"opacity", 1.0},
@@ -128,7 +130,8 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 				//{"stroke-color", "orange"},
 		};
 
-		style[SelectorXML(image::svg::PATH, ".HIGHLIGHT", ":hover")] = {
+		//style[SelectorXML(image::svg::PATH, ".HIGHLIGHT", ":hover")] = {
+		style[Select(svg::PATH, HIGHLIGHT, PseudoClassCSS::hover)] = {
 				//{"display", "block"},
 				//{"font-size", "larger"},
 				//{"fill", "red"},

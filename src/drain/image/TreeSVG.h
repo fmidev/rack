@@ -58,6 +58,46 @@ typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 //typedef NodeXML<NodeSVG>::xml_tree_t TreeSVG;
 */
 
+class FileSVG {
+
+public:
+
+	static
+	const drain::FileInfo fileInfo;
+
+	enum PathPolicy {
+		ABSOLUTE = 1,  // Else is relative, stripped away using inputPrefix?
+		PREFIXED = 2,  // file:// is appended
+	};
+
+	// Rename IncludePolicy ?
+	enum IncludePolicy {
+		NONE = 0,
+		PNG = 1,  // Main title in SVG image
+		SVG = 2,
+		TXT = 4,
+		SKIP = 16,
+		NEXT = 32,
+		ON   = 64,
+		OFF  = 128,
+		ALL = ON|(PNG|SVG|TXT),
+		UNKNOWN = 255,
+		// --- unused ? ---
+		// TITLE,      // Default title
+	};
+
+};
+
+}
+
+DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy);
+DRAIN_ENUM_OSTREAM(image::FileSVG::IncludePolicy);
+
+DRAIN_ENUM_DICT(image::FileSVG::PathPolicy);
+DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy);
+
+namespace image {
+
 struct svg {
 
 	typedef float coord_t;
@@ -125,7 +165,7 @@ public:
 
 
 //typedef drain::StyleSelectorXML<NodeSVG> SelectSVG;
-typedef drain::SelectorXML SelectSVG;
+// typedef drain::SelectorXML SelectSVG;
 
 /// A node structure for drain::UnorderedMultiTree<NodeSVG>, compatible with TreeXML
 /**
@@ -146,9 +186,10 @@ public:
 	static
 	std::string svg;
 
+	/* -> FileSVG
 	static
 	const drain::FileInfo fileInfo;
-
+	*/
 
 	/// Default constructor. Create a node of given type.
 	NodeSVG(svg::tag_t t = svg::UNDEFINED);

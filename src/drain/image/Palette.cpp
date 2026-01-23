@@ -811,7 +811,7 @@ void Palette::write(const std::string & filename) const {
 			mout.debug("writing plain txt palette file");
 			exportTXT(ofstr,'\t', '\t');
 	}
-	else if (NodeSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
+	else if (FileSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
 		mout.debug("writing SVG legend");
 		TreeSVG svg;
 		exportSVGLegend(svg, true);

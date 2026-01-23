@@ -63,7 +63,7 @@ DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
 };
 
 /// Create a new entry, unless already defined.
-TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectorXML & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 
 	TreeSVG & style = root[svg::STYLE](svg::STYLE);
 

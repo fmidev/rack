@@ -116,7 +116,7 @@ public:
 		//svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
 		svgConf.link("paths", ctx.svgPanelConf.pathPolicy);
 		// svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
-		svgConf.link("debug", ctx.svgDebug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		svgConf.link("debug", ctx.svgPanelConf.debug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 
 #ifndef USE_GEOTIFF_NO
 
@@ -177,7 +177,7 @@ public:
 		else if (drain::image::FilePnm::fileInfo.checkExtension(format)){
 			mout.unimplemented("(no parameters supported for PPM/PGM )");
 		}
-		else if (drain::image::NodeSVG::fileInfo.checkExtension(format)){
+		else if (drain::image::FileSVG::fileInfo.checkExtension(format)){
 			handleParams(svgConf, params);
 			ctx.svgPanelConf.pathPolicyFlagger.set(ctx.svgPanelConf.pathPolicy);
 		}
@@ -381,7 +381,7 @@ void CmdOutputFile::exec() const {
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
 	const bool IMAGE_PNM = drain::image::FilePnm::fileInfo.checkPath(path);
 	const bool IMAGE_TIF = drain::image::FileTIFF::fileInfo.checkPath(path);
-	const bool IMAGE_SVG = drain::image::NodeSVG::fileInfo.checkPath(path);
+	const bool IMAGE_SVG = drain::image::FileSVG::fileInfo.checkPath(path);
 	const bool DATA_HTML = drain::NodeHTML::fileInfo.checkPath(path);
 
 	const bool NO_EXTENSION = path.extension.empty() && !STD_OUTPUT;
@@ -566,9 +566,9 @@ void CmdOutputFile::exec() const {
 
 		mout.experimental("writing SVG file: ", path);
 
-		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(PanelConfSVG::ABSOLUTE)){
+		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(drain::image::FileSVG::PathPolicy::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
-			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(PanelConfSVG::PREFIXED) ? "./" : "";
+			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(drain::image::FileSVG::PathPolicy::PREFIXED) ? "./" : "";
 			drain::image::RelativePathSetterSVG psetter(path.dir, prefix); // consider "file://"
 			drain::TreeUtils::traverse(psetter, ctx.svgTrack);
 			// TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);

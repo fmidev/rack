@@ -36,24 +36,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-// template <>
-// const drain::EnumDict<rack::SvgInclude>::dict_t  drain::EnumDict<rack::SvgInclude>::dict
-DRAIN_ENUM_DICT(rack::SvgInclude) = {
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, NONE),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, PNG),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, SVG),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, TXT),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, ALL),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, NEXT),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, SKIP),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, ON),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, OFF),
-		DRAIN_ENUM_ENTRY(rack::SvgInclude, UNKNOWN),
-};
 
-
-// template <>
-// const drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict_t  drain::EnumDict<rack::PanelConfSVG::ElemClass>::dict
+/*
 DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN_TITLE),
@@ -71,41 +55,9 @@ DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass) = {
 		// DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, SHARED_METADATA),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
 };
-
-// template <>
-// const drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict_t  drain::EnumDict<rack::PanelConfSVG::PathPolicy>::dict
-DRAIN_ENUM_DICT(rack::PanelConfSVG::PathPolicy) = {
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::PathPolicy, ABSOLUTE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::PathPolicy, PREFIXED)
-};
+*/
 
 
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::PanelConfSVG::ElemClass & key) const {
-	// std::string(".")+
-	return hasChild(EnumDict<rack::PanelConfSVG::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
-}
-
-
-/// Automatic conversion of elem classes to strings.
-/**
- *
- */
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & value) const {
-	// std::string(".")+
-	return (*this)[EnumDict<rack::PanelConfSVG::ElemClass>::dict.getKey(value, false)];
-}
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::PanelConfSVG::ElemClass & key){
-	// std::string(".")+
-	return (*this)[EnumDict<rack::PanelConfSVG::ElemClass>::dict.getKey(key, false)];
-}
 
 /*
 template <> // for T (Tree class)
@@ -154,13 +106,13 @@ using namespace drain::image;
 namespace rack {
 
 /*
-const drain::SelectorXMLcls PanelConfSVG::clsTITLE(PanelConfSVG::ElemClass::TITLE);
-const drain::SelectorXMLcls PanelConfSVG::clsIMAGE_TITLE(PanelConfSVG::ElemClass::IMAGE_TITLE);
-const drain::SelectorXMLcls PanelConfSVG::clsGROUP_TITLE(PanelConfSVG::ElemClass::GROUP_TITLE);
-const drain::SelectorXMLcls PanelConfSVG::clsMAIN_TITLE(PanelConfSVG::ElemClass::MAIN_TITLE);
-const drain::SelectorXMLcls PanelConfSVG::clsTIME(PanelConfSVG::ElemClass::TIME);
-const drain::SelectorXMLcls PanelConfSVG::clsLOCATION(PanelConfSVG::ElemClass::LOCATION);
-const drain::SelectorXMLcls PanelConfSVG::clsIMAGE_BORDER(PanelConfSVG::ElemClass::IMAGE_BORDER);
+const drain::SelectorXMLcls RackSVG::clsTITLE(RackSVG::ElemClass::TITLE);
+const drain::SelectorXMLcls RackSVG::clsIMAGE_TITLE(RackSVG::ElemClass::IMAGE_TITLE);
+const drain::SelectorXMLcls RackSVG::clsGROUP_TITLE(RackSVG::ElemClass::GROUP_TITLE);
+const drain::SelectorXMLcls RackSVG::clsMAIN_TITLE(RackSVG::ElemClass::MAIN_TITLE);
+const drain::SelectorXMLcls RackSVG::clsTIME(RackSVG::ElemClass::TIME);
+const drain::SelectorXMLcls RackSVG::clsLOCATION(RackSVG::ElemClass::LOCATION);
+const drain::SelectorXMLcls RackSVG::clsIMAGE_BORDER(RackSVG::ElemClass::IMAGE_BORDER);
 */
 
 GraphicsContext::GraphicsContext() {
