@@ -524,7 +524,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 
 	const drain::VariableMap & map = ctx.getStatusMap();
 
-	drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", ""));
+	drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
 
 	mout.experimental("external image panel request: ", filepath);
 
@@ -963,7 +963,8 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 	else if (group->hasClass(RackSVG::ElemClass::IMAGE_PANEL)) {
 		// Add elements directly on the image (corners), skip creating a background rectangle.
 		// Use IMAGE element "image" as anchor.
-		RackSVG::appendTitleElements(svgConf, group, "image", RackSVG::ElemClass::IMAGE_TITLE);
+		// RackSVG::appendTitleElements(svgConf, group, "image", RackSVG::ElemClass::IMAGE_TITLE);
+		RackSVG::appendTitleElements(svgConf, group, svg::IMAGE, RackSVG::ElemClass::IMAGE_TITLE);
 		formatTitle(group, attributesPrivate);
 	}
 	else {

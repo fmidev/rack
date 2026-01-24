@@ -357,12 +357,12 @@ public:
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		adjust(ctx.svgPanelConf.boxHeights, 0.8);
-		mout.accept<LOG_WARNING>("new BOX  values: ", ctx.svgPanelConf.boxHeights);
+		mout.accept<LOG_DEBUG>("new BOX  values: ", ctx.svgPanelConf.boxHeights);
 
 		for (size_t i= 0; i<ctx.svgPanelConf.boxHeights.size(); ++i){
 			ctx.svgPanelConf.fontSizes[i] = 0.65 * ctx.svgPanelConf.boxHeights[i];
 		}
-		mout.accept<LOG_WARNING>("new FONT values: ", ctx.svgPanelConf.fontSizes);
+		mout.accept<LOG_DEBUG>("new FONT values: ", ctx.svgPanelConf.fontSizes);
 
 		// CmdFontSizes::updateFontStyles(ctx);
 	}

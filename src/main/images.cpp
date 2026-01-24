@@ -1417,6 +1417,15 @@ public:
 
 };
 
+class CmdLegendOut : public Deprecator<CmdOutputPalette> {
+
+public:
+	inline
+	CmdLegendOut() : Deprecator<CmdOutputPalette>(__FUNCTION__){
+	}
+
+};
+
 
 ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) {
 
@@ -1457,12 +1466,13 @@ ImageModule::ImageModule(drain::CommandBank & bank) : module_t(bank) {
 	// DRAIN_CMD_INSTALL(Cmd,PaletteOut)();
 	// install<Deprecator<CmdOutputPalette> >();
 	// DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
-	install<CmdOutputPalette>("legendOut"); // Same as --iPaletteOut above
-	// DRAIN_CMD_INSTALL(Cmd,OutputPalette)();
 	DRAIN_CMD_INSTALL(Cmd, OutputPalette)();
 	// install<CmdOutputPalette>(); // last, and visible
-	installDeprecating<CmdPaletteOut,CmdOutputPalette>();
 	linkRelatedCommands(InputPalette, OutputPalette, Palette, PaletteDefault);
+
+	// install<CmdOutputPalette>("legendOut"); // Same as --iPaletteOut above
+	installDeprecating<CmdPaletteOut,CmdOutputPalette>();
+	installDeprecating<CmdLegendOut,CmdOutputPalette>();
 	// linkRelatedCommands(PaletteOut, OutputPalette);
 
 
