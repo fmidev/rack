@@ -202,7 +202,7 @@ public:
 
 				for (const std::string & key: keys){
 					align.set(key);
-					mout.warn("current align: ", align, " == topol=", align.topol, ", axis=", align.axis, ", pos=", align.pos);
+					mout.debug("updated align: ", align, " == topol=", align.topol, ", axis=", align.axis, ", pos=", align.pos);
 				}
 
 				switch (align.axis) {
@@ -786,7 +786,7 @@ public:
 			// style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
 			mout.attention("New style: ", cssSelector, " = ", cssConf);
 			drain::XML::map_t m;
-			m.setValues(cssConf, ':', ';');
+			m.setValues(cssConf, ':', ';'); // FIX map assignment error here
 			mout.accept<LOG_WARNING>("New m: ", m);
 			/*
 			m.clear();

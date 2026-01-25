@@ -254,7 +254,7 @@ void JSON::readTree(T & tree, std::istream & istr){
 // New 2023 "implementation"
 typedef drain::UnorderedMultiTree<drain::Variable,true> JSONtree;
 
-
+// Todo -> .cpp
 template <>
 inline
 void drain::JSON::handleValue(std::istream & istr, JSONtree & dst, const std::string & key){
@@ -263,7 +263,8 @@ void drain::JSON::handleValue(std::istream & istr, JSONtree & dst, const std::st
 	drain::Logger log( __FILE__, __FUNCTION__);
 
 
-	JSONtree & child = dst.addChild(key);
+	//JSONtree & child = dst.addChild(key);
+	JSONtree & child = dst[key];
 
 	TextReader::skipWhiteSpace(istr);
 

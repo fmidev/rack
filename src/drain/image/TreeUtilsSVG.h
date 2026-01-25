@@ -105,7 +105,7 @@ struct CoordSpan {
 	}
 };
 
-
+// TODO: separate TreeLayoutUtilsSVG
 struct TreeUtilsSVG {
 
 public:
@@ -113,6 +113,9 @@ public:
 	enum Roles {
 		MAIN,
 	};
+
+	static
+	TreeSVG & getDefaultObject(TreeSVG & root, svg::tag_t);
 
 	/// Create a new entry, unless already defined.
 	/**
@@ -271,6 +274,13 @@ public:
 
 	ClipperSVG(const ClipperSVG & clipper) : root(clipper.root) { // ???
 	}
+
+	/// Ensures a clipping path o f type RECT of given size.
+	/**
+	 *   Only a single entry is created for each (width,height) combination
+	 */
+	static
+	TreeSVG & getClippingRect(TreeSVG & root, size_t width, size_t height);
 
 	inline
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {

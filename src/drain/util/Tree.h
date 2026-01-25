@@ -788,8 +788,14 @@ x	 *  \see clearData()
 	 *  \see TreeHTML::addChild()
 	 */
 	tree_t & addChild(){ // NEW 2026
-		return addChild(key_t());
+		typename P::elem_t key;
+		generateKey(*this, key);
+		//return addChild(key_t());
+		return addChild(key);
 	}
+
+	static
+	void generateKey(const tree_t & tree, typename P::elem_t & key);
 
 	/// Add a child node. If UNORDERED and not MULTIPLE, reuse existing nodes.
 	/**
@@ -806,6 +812,7 @@ x	 *  \see clearData()
 	tree_t & addChild(const key_t & key){ // 2026/01 : explicit arg
 
 		if (key.empty()){ // Should be exceptional... Warning?
+			std::cerr << typeid(tree_t).name() << std::endl;
 			throw std::runtime_error(drain::StringBuilder<':'>(__FILE__,__FUNCTION__, " empty key (ADD static child counter based naming)"));
 			return *this;
 		}
@@ -1126,6 +1133,19 @@ protected:
 
 template <class T, bool EXCLUSIVE, class P>
 const DRAIN_TREE_NAME<T,EXCLUSIVE, P> DRAIN_TREE_NAME<T,EXCLUSIVE,P>::emptyNode;
+
+template <class T, bool EXCLUSIVE, class P>
+void DRAIN_TREE_NAME<T,EXCLUSIVE, P>::generateKey(const DRAIN_TREE_NAME<T,EXCLUSIVE, P> & tree, typename P::elem_t & key){
+	std::stringstream k; // ("elem");
+	k << "elem"; // number with 4 digits overwrites this?
+	k.width(4);  // consider static member prefix
+	k.fill('0');
+	k << tree.getChildren().size();
+	// Also derived classes require this assignment
+	//key.assign(k.str());
+	key = k.str();
+}
+
 
 /*
 template <class T, bool EXCLUSIVE, class P>

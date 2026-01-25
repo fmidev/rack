@@ -199,10 +199,30 @@ const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_def
 template <>
 inline
 void TreeHTML::initChild(TreeHTML & child) const {
+	UtilsXML::initChildWithDefaultType(*this, child);
+	/*
 	const typename Html::tag_t type = UtilsXML::retrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}
+	*/
+}
+
+// Preferred template specification
+/*
+template <>
+inline
+TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
+	return UtilsXML::addChild(*this);
+}
+*/
+
+// Preferred template specification
+template <>
+template <>
+inline
+bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
+	return TreeHTML::hasChild(EnumDict<Html::tag_t>::dict.getKey(type, false));
 }
 
 
@@ -214,20 +234,6 @@ TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
 	return UtilsXML::setType(*this, type);
 }
 
-// Preferred template specification
-template <>
-inline
-TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
-	return UtilsXML::addChild(*this);
-}
-
-// Preferred template specification
-template <>
-template <>
-inline
-bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
-	return TreeHTML::hasChild(EnumDict<Html::tag_t>::dict.getKey(type, false));
-}
 
 
 template <> // for T (Tree class)

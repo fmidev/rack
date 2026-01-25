@@ -583,6 +583,7 @@ public:
 	 */
 
 
+	// core utility (not to be external)
 	template <class V>
 	static inline
 	void xmlAttribToStream(std::ostream &ostr, const std::string & key, const V &value){
@@ -610,37 +611,6 @@ public:
 		//<< key << '=' << '"' << value << '"'; // << ' ';
 	}
 
-	// ----------------- Static utilities for derived classes ----------------------
-
-	/// Assign another tree structure to another
-	/**
-	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
-	template <typename T>
-	static inline
-	T & xmlAssign(T & dst, const T & src){
-
-		if (&src != &dst){
-			dst.clear(); // clears children...
-			// ... but not copying src? (TreeUtils?)
-			// also dst->clear();
-			xmlAssignNode(dst.data, src);
-		}
-
-		return dst;
-	}
-	 */
-
-
-	/// Copy node data to tree
-	/**
-	 *  \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
-	template <typename TX>
-	static inline
-	TX & xmlAssign(TX & dst, const typename TX::xml_node_t & src){
-		xmlAssignNode(dst.data, src);
-		return dst;
-	}
-	 */
 
 	/// Assign tree node (data) to another
 	/**
@@ -670,142 +640,6 @@ public:
 	}
 
 
-	/// Assign property to a XML tree node
-	/**
-	 *  \tparam T - XML tree
-	template <typename T, typename V>
-	static inline
-	T & xmlAssign(T & tree, const V & arg){
-		tree->set(arg);
-		return tree;
-	}
-	 */
-
-	/// Tree
-	/**
-	 *  \tparam TX - xml tree
-	template <typename T>
-	static
-	T & xmlAssign(T & tree, std::initializer_list<std::pair<const char *,const Variable> > l){
-
-		//switch (static_cast<intval_t>(tree->getType())){
-		switch (tree->getType()){
-		case STYLE:
-			for (const auto & entry: l){
-				T & elem = tree[entry.first];
-				elem->setType(STYLE_SELECT);
-				drain::SmartMapTools::setValues(elem->getAttributes(), entry.second, ';', ':', std::string(" \t\n"));
-			}
-			break;
-		case UNDEFINED:
-			tree->setType(STYLE_SELECT);
-			// no break
-		case STYLE_SELECT:
-		default:
-			tree->set(l);
-			break;
-		}
-
-		return tree;
-	};
-	 */
-
-	// UNDER CONSTRUCTION!
-	/// When assigning a string, create new element unless the element itself is of type CTEXT.
-	/**
-	 *   \return - text element (CTEXT): current or child element of the current element
-	 *
-	 *   Forward definition – type can be set only upon construction of a complete class
-
-	template <typename TX>
-	static inline  // NOT YET as template specification of xmlAssign(...)
-	TX & xmlAssignString(TX & tree, const std::string & s){
-		if (tree->isUndefined()){
-			tree->setType(CTEXT);
-		}
-		tree->ctext = s;
-		return tree;
-	}
-
-	template <typename TX>
-	static inline  // NOT YET as template specification of xmlAssign(...)
-	TX & xmlAppendString(TX & tree, const std::string & s){
-		if (tree->isCText()){
-			tree->ctext += s;
-			return tree;
-		}
-		else if (tree->isUndefined()){
-			tree->setType(CTEXT);
-			// tree->setText(s);
-			tree->ctext += s;
-			return tree;
-		}
-		else {
-			// drain::Logger(__FILE__, __FUNCTION__).error("Assign string...");
-			TX & child = tree.addChild();
-			child->setType(CTEXT);
-			child->setText(s);
-			return child;
-		}
-	}
-	 */
-
-
-	///
-	/**
-	 *   Forward definition – type can be set only upon construction of a complete class
-	 *
-	template <typename TX>
-	static inline
-	TX & xmlSetType(TX & tree, const typename TX::node_data_t::xml_tag_t & type){
-		tree->setType(type);
-		return tree;
-	}
-	 */
-
-
-	/**
-	 *
-	 *  TODO: add default type based on parent group? defaultChildMap TR->TD
-	 *
-	template <typename T>
-	static
-	T & xmlAddChild(T & tree){
-		typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
-		std::stringstream k; // ("elem");
-		k << "elem"; // number with 4 digits overwrites this?
-		k.width(3);  // consider static member prefix
-		k.fill('0');
-		k << tree.getChildren().size();
-		return tree[k.str()](type);
-	}
-
-	template <typename T>
-	static
-	T & xmlAddChild(T & tree, const std::string & key){
-
-		if (!key.empty()){
-			typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
-			return tree[key](type);
-		}
-		else {
-			return xmlAddChild(tree);
-		}
-	}
-
-	template <typename N>
-	static
-	typename N::xml_tag_t xmlRetrieveDefaultType(const N & parentNode){
-		typedef typename N::xml_default_elem_map_t map_t;
-		const typename map_t::const_iterator it = N::xml_default_elems.find(parentNode.getNativeType());
-		if (it != N::xml_default_elems.end()){
-			return (it->second);
-		}
-		else {
-			return static_cast<typename N::xml_tag_t>(0);
-		}
-	}
-	 */
 
 	/*
 	UNUSED!

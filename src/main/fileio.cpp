@@ -651,7 +651,7 @@ void CmdOutputFile::exec() const {
 
 
 		drain::image::ClipperSVG clipper(ctx.svgTrack);
-		//drain::TreeUtils::traverse(clipper, ctx.svgTrack);
+		drain::TreeUtils::traverse(clipper, ctx.svgTrack);
 
 
 		drain::Output ofstr(filepath);

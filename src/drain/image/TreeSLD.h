@@ -238,10 +238,13 @@ const NodeXML<image::SLD::tag_t>::xml_default_elem_map_t NodeXML<image::SLD::tag
 template <>
 inline
 void image::TreeSLD::initChild(image::TreeSLD & child) const {
+	UtilsXML::initChildWithDefaultType(*this, child);
+	/*
 	const typename image::SLD::tag_t type = UtilsXML::retrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}
+	*/
 }
 
 /*
@@ -315,12 +318,13 @@ image::TreeSLD & image::TreeSLD::operator()(const image::SLD::tag_t & type){
 		return UtilsXML::setType(*this, type);
 }
 
+/*
 template <>
 inline
 image::TreeSLD & image::TreeSLD::addChild(){ // const image::TreeSLD::key_t & key
-	// return UtilsXML::addChild(*this, key);
 	return UtilsXML::addChild(*this);
 }
+*/
 
 /*
 template <> // for T (Tree class)

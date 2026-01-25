@@ -604,12 +604,13 @@ template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const ;
 
 
-
+/*
 template <>
 inline
 image::TreeSVG & image::TreeSVG::addChild(){
 	return UtilsXML::addChild(*this);
 }
+*/
 
 
 
@@ -623,10 +624,13 @@ const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag
 template <>
 inline
 void image::TreeSVG::initChild(image::TreeSVG & child) const {
+	UtilsXML::initChildWithDefaultType(*this, child);
+	/*
 	const typename image::svg::tag_t type = UtilsXML::retrieveDefaultType(this->data);
 	if (type){
 		child->setType(type);
 	}
+	*/
 }
 
 

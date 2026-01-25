@@ -1098,6 +1098,41 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 
 const std::string ClipperSVG::CLIP("CLIPPED");
 
+
+TreeSVG & TreeUtilsSVG::getDefaultObject(TreeSVG & root, svg::tag_t tag){
+
+	const std::string & key = EnumDict<svg::tag_t>::getKey(tag);
+
+	if (!root.hasChild(key)){
+		TreeSVG & child = root.prependChild(key); // consider path type!getDefaultObject
+		child->setType(tag);
+		return child;
+	}
+	else {
+		return root[key];
+	}
+};
+
+TreeSVG & ClipperSVG::getClippingRect(TreeSVG & root, size_t width, size_t height){
+
+	TreeSVG & defs = TreeUtilsSVG::getDefaultObject(root, svg::DEFS);
+
+	StringBuilder<'_'> id(svg::CLIP_PATH, width, height);
+
+	TreeSVG & clip = defs[id.str()];
+
+	//if (!defs.hasChild(id.str())){
+	if (clip->isUndefined()){
+		clip->setType(svg::CLIP_PATH);
+		clip->setId(id);
+		TreeSVG & rect = clip[svg::RECT](svg::RECT);
+		rect->setWidth(width);
+		rect->setHeight(height);
+	}
+
+	return clip;
+}
+
 int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -1109,7 +1144,9 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 		mout.experimental("clipping elements under: ", path);
 
-		TreeSVG & defs = this->root[svg::DEFS](svg::DEFS);
+		//TreeSVG & defs = this->root[svg::DEFS](svg::DEFS);
+		/*
+		TreeSVG & defs = TreeUtilsSVG::getDefaultObject(this->root, svg::DEFS);
 
 		const std::string & id = t->getId();
 		TreeSVG & clip = defs[id](svg::CLIP_PATH);
@@ -1129,7 +1166,9 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		}
 		rect->setWidth(w);
 		rect->setHeight(h);
-
+		*/
+		TreeSVG & clip = getClippingRect(this->root, t->getWidth(), t->getHeight());
+		t->set("clip-path", drain::StringBuilder<>("url(#", clip->getId(), ")").str());
 	}
 
 	return 0;
@@ -1171,20 +1210,6 @@ int  AttributeCheckerXML::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & pa
 
 }  // image::
 
-/*
-DRAIN_ENUM_DICT(image::MetaDataCollectorSVG::MetaDataType) = {
-		DRAIN_ENUM_ENTRY(image::MetaDataCollectorSVG, LOCAL),
-		DRAIN_ENUM_ENTRY(image::MetaDataCollectorSVG, SHARED),
-};
-*/
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const image::MetaDataCollectorSVG::MetaDataType & type) const {
-	return (*this)[EnumDict<image::MetaDataCollectorSVG::MetaDataType>::dict.getKey(type, false)];
-}
-*/
 
 
 }  // drain::

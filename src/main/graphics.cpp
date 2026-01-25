@@ -421,7 +421,7 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 		return ctx.svgTrack[MAIN];
 	}
 	else {
-		ctx.svgTrack[svg::DEFS](svg::DEFS);
+		// ctx.svgTrack[svg::DEFS](svg::DEFS);
 
 		drain::image::TreeSVG & main = ctx.svgTrack[MAIN]; //drain::image::LayoutSVG::
 		main->setType(svg::GROUP);
