@@ -35,8 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef DRAIN_TREE_UTILS_SVG
-#define DRAIN_TREE_UTILS_SVG
+#ifndef DRAIN_TREE_LAYOUT_SVG
+#define DRAIN_TREE_LAYOUT_SVG
 
 //
 
@@ -61,7 +61,7 @@ namespace image {
 
 //template <>
 // const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict;
-/*
+
 template <AlignBase::Axis AX>
 struct CoordSpan {
 
@@ -89,27 +89,19 @@ struct CoordSpan {
 		return ! (std::isnan(pos) || std::isnan(span));
 	}
 };
-*/
 
 // TODO: separate TreeLayoutUtilsSVG
-
-struct TreeUtilsSVG {
+struct TreeLayoutSVG {
 
 public:
 
-	enum Roles {
-		MAIN,
-	};
 
-	static
-	TreeSVG & getDefaultObject(TreeSVG & root, svg::tag_t);
-
-	/// Create a new entry, unless already defined.
-	static
-	TreeSVG & ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef);
-
-	/*
 	/// Compute the bounding box recursively in objects of type IMAGE, RECT, POLYGON and G (group).
+	/**
+	 *  Traverses the structure recursively, updating bounding box at each level.
+	 *
+	 *  Future versions may also handle CIRCLE and TEXT (location)
+	 */
 	static
 	void detectBox(TreeSVG & group, bool debug = false);
 
@@ -126,10 +118,25 @@ public:
 	void adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX> anchorSpan);
 
 	/// Set stack layout as a default in a subtree.
+	/**
+	 *  Stack layout is applied in groups (G) of class STACK_LAYOUT.
+	 *  Stacking means the objects are laid subsequently next to each other,
+	 *  alternating horizontal and vertical orientation in each level of STACK_LAYOUTs.
+	 *
+	 *  Currently, the same direction parameter is used for both horizontal and vertical layout.
+	 *  In future, these could be set separately.
+	 *
+	 *   To actually align the objects, call also superAlignNew().	 *
+	 */
 	static
 	void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, unsigned short depth=0);
 
 	/// Sets alignment applying stack layout in a single node.
+	/**
+	 *   This function is invoked by TreeUtilsSVG::addStackLayout() .
+	 *
+	 *   To finally align (translate) the objects, call also TreeUtilsSVG::superAlignNew().	 *
+	 */
 	static
 	void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction);
 
@@ -142,144 +149,17 @@ public:
 	static
 	void realignObject(NodeSVG & node, const CoordSpan<AX> & span);
 
-	*/
+
+
 
 };
-
-DRAIN_ENUM_DICT(TreeUtilsSVG::Roles);
-DRAIN_ENUM_OSTREAM(TreeUtilsSVG::Roles);
-
-/*
-template <>
-void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span);
 
 template <>
-void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
+void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span);
 
-*/
+template <>
+void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
 
-
-class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	// Leading path, maybe partial, to be pruned
-	const std::string dir;
-
-	// String starting the modified path, for example "file://"
-	const std::string prefix;
-
-	inline
-	RelativePathSetterSVG(const drain::FilePath & filepath, const std::string & prefix = "") :
-		dir(filepath.dir.empty() ? "" : filepath.dir.str()+'/'),
-		prefix(prefix) {
-	}
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-
-};
-
-
-/**
- *
- */
-class MetaDataCollectorSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	static
-	const std::string LOCAL;
-
-	static
-	const std::string SHARED;
-
-	/*
-	enum MetaDataType {
-		LOCAL,
-		SHARED
-	};
-	*/
-
-	inline
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
-		// always continue
-		return 0;
-	}
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	// Also
-	//GraphicsContext::TitleFlagger titles;
-
-protected:
-
-	typedef std::map<std::string, unsigned short> variableStat_t;
-
-};
-
-
-/**
- *
- */
-class ClipperSVG : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	static
-	const std::string CLIP;
-
-	/*
-	enum MyDataType {
-		FIRST,
-		SECOND
-	};
-	*/
-
-	inline
-	ClipperSVG(TreeSVG & root) : root(root) {
-	}
-
-	ClipperSVG(const ClipperSVG & clipper) : root(clipper.root) { // ???
-	}
-
-	/// Ensures a clipping path o f type RECT of given size.
-	/**
-	 *   Only a single entry is created for each (width,height) combination
-	 */
-	static
-	TreeSVG & getClippingRect(TreeSVG & root, size_t width, size_t height);
-
-	inline
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
-		// always continue
-		return 0;
-	}
-
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-	TreeSVG & root;
-
-};
-
-
-// DRAIN_ENUM_DICT(MetaDataCollectorSVG::MetaDataType);
-
-/**
- *
-class AttributeCheckerXML {
-
-public:
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path);
-
-	inline
-	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
-		return 0;
-	}
-
-};
- */
 
 
 
