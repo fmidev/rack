@@ -31,15 +31,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Version.h>
 
-
+#include <drain/util/JavaScript.h>
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
 #include <drain/util/TreeXML.h>
 #include <drain/util/TreeHTML.h>
 #include <drain/image/FilePng.h>
 #include <drain/image/TreeSVG.h>
-#include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/TreeElemUtilsSVG.h>
+#include <drain/image/TreeLayoutSVG.h>
+#include <drain/image/TreeUtilsSVG.h>
+
+// #include <js/koe.h>
+
 
 #include "radar/PolarSector.h"
 #include "graphics.h"
@@ -56,6 +60,18 @@ namespace rack {
 struct GraphicsSection : public drain::CommandSection {
 
 	inline	GraphicsSection(): CommandSection("graphics"){
+
+		// const char* koe = R"(JS Mika
+		/*
+		std::vector<double> v(33*33, 1.2345); // = {0.01, 1.0, 1212122.0};
+
+		std::string code;
+		drain::JavaScript::createArray(drain::Outlet(code), "i32", drain::JavaScript::Int32, v);
+		std::cerr << code << std::endl;
+		std::cerr << koe << std::endl;
+
+		drain::super_test();
+		*/
 	};
 
 };
@@ -2197,9 +2213,9 @@ public:
 		// BBoxSVG bbox;
 		// TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
 		mout.attention("Stacking: ", ctx.svgTrack.data);
-		TreeUtilsSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 		mout.attention("Aligning: ", ctx.svgTrack.data);
-		TreeUtilsSVG::superAlign(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		TreeLayoutSVG::superAlign(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 
 	}
 
@@ -2252,6 +2268,123 @@ public:
 
 };
 
+class CmdCoords : public drain::BasicCommand, CmdPolarBase { // drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdCoords() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
+		// getParameters().link("name",   name, "label");
+		// getParameters().link("panel",  panel, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	}
+
+	CmdCoords(const CmdCoords & cmd) : drain::BasicCommand(cmd) {
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	void exec() const override {
+
+		using namespace drain::image;
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		RadarSVG radarSVG;
+
+		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+
+		// const drain::Rectangle<double> &bbox = radarSVG.geoFrame.getBoundingBoxNat();
+		//const drain::Point2D<double> & UR = bbox.upperRight;
+
+		const int width  = radarSVG.geoFrame.getFrameWidth();
+		const int height = radarSVG.geoFrame.getFrameHeight();
+
+		drain::Point2D<double> UL,LL, UR, LR;
+
+		/*
+		radarSVG.geoFrame.pix2LLdeg(drain::Point2D<int>(0,0), UL);
+		radarSVG.geoFrame.pix2deg(drain::Point2D<int>(width,0), UR);
+		radarSVG.geoFrame.pix2deg(drain::Point2D<int>(0,height), LL);
+		radarSVG.geoFrame.pix2deg(drain::Point2D<int>(width,height), LR);
+		const drain::Point2D<double> & LL = bbox.lowerLeft;
+		*/
+
+		/*
+		radarSVG.geoFrame.pix2LLdeg(0,-1,           UL.x, UL.y);
+		radarSVG.geoFrame.pix2LLdeg(width, -1,      UR.x, UR.y);
+		radarSVG.geoFrame.pix2LLdeg(0,height-1,     LL.x, LL.y);
+		radarSVG.geoFrame.pix2LLdeg(width,height-1, LR.x, LR.y);
+		*/
+
+
+		/*
+		const double lonSpan = UR.x - LL.x;
+		const double latSpan = UR.y - LL.y; // kind of negative
+		double cw = 1.0/static_cast<double>(width);
+		double ch = 1.0/static_cast<double>(height);
+		drain::Point2D<int> point;
+		int & i = point.x;
+		int & j = point.y;
+		*/
+
+		drain::image::ImageT<unsigned char> coords(width,height,3);
+		drain::image::Channel & lonChannel = coords.getChannel(0);
+		drain::image::Channel & latChannel = coords.getChannel(1);
+
+		double lon, lat;
+
+		drain::Range<double> latRange(90,-90);
+		drain::Range<double> lonRange(90,-90);
+
+		for (int j = 0; j < height; ++j) {
+			radarSVG.geoFrame.pix2LLdeg(0,j-1, lon,lat);
+			lonRange.insert(lon);
+			latRange.insert(lat);
+			radarSVG.geoFrame.pix2LLdeg(width,j-1, lon,lat);
+			lonRange.insert(lon);
+			latRange.insert(lat);
+		}
+
+		for (int i = 0; i < width; ++i) {
+			radarSVG.geoFrame.pix2LLdeg(i,-1, lon,lat);
+			lonRange.insert(lon);
+			latRange.insert(lat);
+			radarSVG.geoFrame.pix2LLdeg(i,height-1, lon,lat);
+			lonRange.insert(lon);
+			latRange.insert(lat);
+		}
+
+
+		const double maxValue = drain::Type::call<drain::typeMax, double>(coords.getType());
+		const double wLon = maxValue / lonRange.width();
+		const double wLat = maxValue / latRange.width();
+
+		mout.attention(DRAIN_LOG(lonRange), " resolution: ", 1.0/wLon, " deg");
+		mout.attention(DRAIN_LOG(latRange), " resolution: ", 1.0/wLat, " deg");
+
+
+		size_t address;
+
+		for (int j = 0; j < height; ++j) {
+			// WY = ch*static_cast<double>(j);
+			// wy = 1.0-WY;
+			for (int i = 0; i < width; ++i) {
+				// WX = cw*static_cast<double>(i);
+				// wx = (1.0-WX);
+				radarSVG.geoFrame.pix2LLdeg(i,j-1, lon,lat);
+				address = coords.address(i,j);
+				lonChannel.put(address, wLon * (lon-lonRange.min));
+				latChannel.put(address, wLat * (lat-latRange.min));
+			}
+		}
+
+		// const std::string & clsNameBase = getName();
+
+		drain::image::FilePng::write(coords, "coords.png");
+	}
+
+};
+
+
 GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	// const drain::Flagger::ivalue_t section = drain::Static::get<GraphicsSection>().index;
@@ -2295,7 +2428,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	install<CmdAlignTest>();
 	install<CmdDebug>();
-
+	install<CmdCoords>().section = HIDDEN;
 };
 
 //Obsolete. See TreeUtilsSVG::superAlignNE

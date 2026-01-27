@@ -157,6 +157,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>replace</b> (c
 template&lt;class K , class V &gt; </td></tr>
 <tr class="memitem:ad41d5de0984d1dff696acfc9f6d274c1"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>replace</b> (const std::string &amp;src, const std::initializer_list&lt; std::pair&lt; K, V &gt; &gt; &amp;m, std::string &amp;dst)</td></tr>
 <tr class="separator:ad41d5de0984d1dff696acfc9f6d274c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b443726ce74bfd5356a403ef80e87c9" id="r_a4b443726ce74bfd5356a403ef80e87c9"><td class="memItemLeft" align="right" valign="top"><a id="a4b443726ce74bfd5356a403ef80e87c9" name="a4b443726ce74bfd5356a403ef80e87c9"></a>
+static std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>convertEscaped</b> (std::string &amp;s)</td></tr>
+<tr class="memdesc:a4b443726ce74bfd5356a403ef80e87c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret commond special chars: tab '\t', newline '<br  />
+' and carriage return '\r'. <br /></td></tr>
+<tr class="separator:a4b443726ce74bfd5356a403ef80e87c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55aa8698f514bcac221b0fa4c9fb1f2e" id="r_a55aa8698f514bcac221b0fa4c9fb1f2e"><td class="memItemLeft" align="right" valign="top"><a id="a55aa8698f514bcac221b0fa4c9fb1f2e" name="a55aa8698f514bcac221b0fa4c9fb1f2e"></a>
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>trim</b> (const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</td></tr>
 <tr class="memdesc:a55aa8698f514bcac221b0fa4c9fb1f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string without leading and trailing whitespace (or str undesired chars). <br /></td></tr>
@@ -1061,7 +1066,7 @@ template&lt;class T1 , class T2 , class C &gt; </div>
 <p>Coupled trimming: remove a single leading and trailing char, if both found. </p>
 <div class="fragment"><div class="line">s = <a class="code hl_function" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;\&quot;test\&quot;&quot;</span>);</div>
 <div class="line">s = <a class="code hl_function" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;{test}&quot;</span>, <span class="stringliteral">&quot;{&quot;</span>, <span class="stringliteral">&quot;}&quot;</span>);</div>
-<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition</b> StringTools.cpp:239</div></div>
+<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition</b> StringTools.cpp:252</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

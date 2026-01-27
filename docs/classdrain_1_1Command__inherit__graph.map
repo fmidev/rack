@@ -2,20 +2,20 @@
 <area shape="rect" id="Node000001" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="147,993,236,1018"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="309,770,520,795"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="195,978,205,941,222,896,248,851,282,813,318,793,320,798,286,817,252,854,227,898,210,943,200,980"/>
-<area shape="rect" id="Node000150" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="319,827,511,853"/>
-<area shape="poly" id="edge34_Node000001_Node000150" title=" " alt="" coords="203,979,234,929,256,902,282,879,313,862,346,850,347,855,315,867,286,884,260,906,239,932,207,982"/>
-<area shape="rect" id="Node000152" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="310,893,519,933"/>
-<area shape="poly" id="edge36_Node000001_Node000152" title=" " alt="" coords="221,983,283,948,331,931,333,936,285,953,223,988"/>
-<area shape="rect" id="Node000155" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="329,963,500,989"/>
-<area shape="poly" id="edge38_Node000001_Node000155" title=" " alt="" coords="249,995,329,985,330,990,250,1000"/>
-<area shape="rect" id="Node000160" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="329,1013,500,1053"/>
-<area shape="poly" id="edge42_Node000001_Node000160" title=" " alt="" coords="250,1010,330,1020,329,1025,249,1015"/>
-<area shape="rect" id="Node000162" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="320,1077,509,1117"/>
-<area shape="poly" id="edge44_Node000001_Node000162" title=" " alt="" coords="221,1024,251,1045,285,1063,321,1076,319,1081,283,1068,248,1049,218,1029"/>
-<area shape="rect" id="Node000164" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,1142,545,1167"/>
-<area shape="poly" id="edge46_Node000001_Node000164" title=" " alt="" coords="206,1029,237,1080,259,1106,285,1127,311,1140,309,1144,283,1132,256,1110,233,1083,202,1032"/>
-<area shape="rect" id="Node000166" href="$classdrain_1_1BeanCommand.html" title="Retrieves bean dynamically for each call." alt="" coords="321,1191,508,1217"/>
-<area shape="poly" id="edge48_Node000001_Node000166" title=" " alt="" coords="201,1031,212,1065,229,1105,253,1145,286,1178,322,1195,320,1200,282,1182,249,1148,224,1108,207,1067,196,1032"/>
+<area shape="rect" id="Node000152" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="319,827,511,853"/>
+<area shape="poly" id="edge34_Node000001_Node000152" title=" " alt="" coords="203,979,234,929,256,902,282,879,313,862,346,850,347,855,315,867,286,884,260,906,239,932,207,982"/>
+<area shape="rect" id="Node000154" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="310,893,519,933"/>
+<area shape="poly" id="edge36_Node000001_Node000154" title=" " alt="" coords="221,983,283,948,331,931,333,936,285,953,223,988"/>
+<area shape="rect" id="Node000157" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="329,963,500,989"/>
+<area shape="poly" id="edge38_Node000001_Node000157" title=" " alt="" coords="249,995,329,985,330,990,250,1000"/>
+<area shape="rect" id="Node000162" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="329,1013,500,1053"/>
+<area shape="poly" id="edge42_Node000001_Node000162" title=" " alt="" coords="250,1010,330,1020,329,1025,249,1015"/>
+<area shape="rect" id="Node000164" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="320,1077,509,1117"/>
+<area shape="poly" id="edge44_Node000001_Node000164" title=" " alt="" coords="221,1024,251,1045,285,1063,321,1076,319,1081,283,1068,248,1049,218,1029"/>
+<area shape="rect" id="Node000166" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="284,1142,545,1167"/>
+<area shape="poly" id="edge46_Node000001_Node000166" title=" " alt="" coords="206,1029,237,1080,259,1106,285,1127,311,1140,309,1144,283,1132,256,1110,233,1083,202,1032"/>
+<area shape="rect" id="Node000168" href="$classdrain_1_1BeanCommand.html" title="Retrieves bean dynamically for each call." alt="" coords="321,1191,508,1217"/>
+<area shape="poly" id="edge48_Node000001_Node000168" title=" " alt="" coords="201,1031,212,1065,229,1105,253,1145,286,1178,322,1195,320,1200,282,1182,249,1148,224,1108,207,1067,196,1032"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="5,993,99,1018"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,1003,147,1003,147,1008,113,1008"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="627,766,751,791"/>
@@ -34,66 +34,66 @@
 <area shape="poly" id="edge9_Node000004_Node000073" title=" " alt="" coords="688,752,694,672,702,618,715,559,733,498,757,438,789,381,830,331,860,311,863,315,834,335,794,384,762,440,738,500,720,560,707,619,699,672,693,753"/>
 <area shape="rect" id="Node000075" href="$classrack_1_1Deprecator.html" title=" " alt="" coords="832,346,1075,371"/>
 <area shape="poly" id="edge10_Node000004_Node000075" title=" " alt="" coords="688,752,696,678,717,577,736,523,760,471,791,422,830,381,848,369,850,374,834,385,795,426,764,473,740,525,723,579,701,679,694,753"/>
-<area shape="rect" id="Node000077" href="$classdrain_1_1CmdDebug.html" title=" " alt="" coords="906,395,1001,421"/>
-<area shape="poly" id="edge11_Node000004_Node000077" title=" " alt="" coords="690,752,701,686,724,598,742,552,766,507,795,466,830,430,848,419,867,411,906,405,906,410,868,416,850,424,834,434,799,469,770,510,747,554,729,600,706,687,695,753"/>
-<area shape="rect" id="Node000078" href="$classdrain_1_1CmdExecScript.html" title="Executes the defined script." alt="" coords="894,445,1013,470"/>
-<area shape="poly" id="edge12_Node000004_Node000078" title=" " alt="" coords="692,751,706,694,731,620,750,581,772,543,799,509,830,479,861,463,893,456,894,461,862,468,834,484,803,512,776,546,754,583,736,622,711,695,697,753"/>
-<area shape="rect" id="Node000079" href="$classdrain_1_1CmdExpandVariables.html" title=" " alt="" coords="873,494,1033,519"/>
-<area shape="poly" id="edge13_Node000004_Node000079" title=" " alt="" coords="695,752,711,703,738,642,778,580,802,552,830,528,851,517,872,510,874,515,853,522,834,533,806,556,782,584,743,645,716,705,700,753"/>
-<area shape="rect" id="Node000081" href="$classdrain_1_1CmdLog.html" title=" " alt="" coords="916,543,991,569"/>
-<area shape="poly" id="edge14_Node000004_Node000081" title=" " alt="" coords="698,752,717,713,746,665,784,618,831,578,851,567,873,560,915,554,916,559,874,565,853,572,833,582,788,621,750,668,722,716,703,755"/>
-<area shape="rect" id="Node000082" href="$classdrain_1_1CmdStatus.html" title=" " alt="" coords="907,593,1000,618"/>
-<area shape="poly" id="edge15_Node000004_Node000082" title=" " alt="" coords="704,753,755,689,790,655,831,627,868,612,906,605,907,611,870,618,833,632,794,659,758,693,708,756"/>
-<area shape="rect" id="Node000083" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="867,642,1039,667"/>
-<area shape="poly" id="edge16_Node000004_Node000083" title=" " alt="" coords="712,755,764,714,797,694,831,676,866,665,868,670,833,681,799,698,767,719,716,759"/>
-<area shape="rect" id="Node000090" href="$classrack_1_1CartesianBBox.html" title=" " alt="" coords="894,691,1013,717"/>
-<area shape="poly" id="edge17_Node000004_Node000090" title=" " alt="" coords="733,759,831,725,893,711,894,717,833,731,735,764"/>
-<area shape="rect" id="Node000091" href="$classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="876,741,1031,766"/>
-<area shape="poly" id="edge18_Node000004_Node000091" title=" " alt="" coords="764,769,875,758,876,763,765,774"/>
-<area shape="rect" id="Node000092" href="$classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="881,790,1025,815"/>
-<area shape="poly" id="edge19_Node000004_Node000092" title=" " alt="" coords="765,783,881,793,881,799,764,788"/>
-<area shape="rect" id="Node000093" href="$classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="882,839,1025,865"/>
-<area shape="poly" id="edge20_Node000004_Node000093" title=" " alt="" coords="762,793,785,800,809,812,833,824,882,838,881,843,831,829,807,817,783,805,760,798"/>
-<area shape="rect" id="Node000094" href="$classrack_1_1CartesianCreateLookup.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="867,889,1040,914"/>
-<area shape="poly" id="edge21_Node000004_Node000094" title=" " alt="" coords="765,789,786,801,803,819,810,839,818,857,834,874,868,890,865,894,830,878,813,860,805,841,798,822,782,805,763,794"/>
-<area shape="rect" id="Node000095" href="$classrack_1_1CartesianGrid.html" title=" " alt="" coords="898,938,1009,963"/>
-<area shape="poly" id="edge22_Node000004_Node000095" title=" " alt="" coords="765,788,786,801,799,816,806,832,810,864,814,895,821,909,834,923,864,940,898,948,897,953,862,945,830,927,817,912,809,896,805,865,801,834,795,819,782,805,762,792"/>
-<area shape="rect" id="Node000096" href="$classrack_1_1CartesianInit.html" title=" " alt="" coords="901,987,1006,1013"/>
-<area shape="poly" id="edge23_Node000004_Node000096" title=" " alt="" coords="765,787,786,801,802,823,810,845,810,889,811,932,818,953,834,973,848,983,865,991,901,998,900,1003,863,996,846,988,830,977,813,955,805,933,805,889,805,846,798,825,782,805,762,791"/>
-<area shape="rect" id="Node000097" href="$classrack_1_1CartesianPlot.html" title=" " alt="" coords="899,1037,1008,1062"/>
-<area shape="poly" id="edge24_Node000004_Node000097" title=" " alt="" coords="765,787,786,801,806,829,814,858,814,887,810,915,806,943,807,970,814,997,834,1023,848,1034,864,1041,899,1048,898,1054,862,1046,845,1039,830,1027,810,1000,801,971,801,943,805,914,808,886,808,859,801,831,782,805,762,791"/>
-<area shape="rect" id="Node000098" href="$classrack_1_1CartesianRange.html" title=" " alt="" coords="891,1086,1016,1111"/>
-<area shape="poly" id="edge25_Node000004_Node000098" title=" " alt="" coords="765,786,786,801,809,836,817,871,816,905,810,940,804,974,803,1007,811,1040,834,1073,860,1090,891,1097,890,1102,858,1094,830,1077,806,1043,797,1008,798,973,804,939,811,905,812,871,804,838,782,805,762,790"/>
-<area shape="rect" id="Node000099" href="$classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="893,1135,1014,1161"/>
-<area shape="poly" id="edge26_Node000004_Node000099" title=" " alt="" coords="765,786,786,801,802,821,812,842,821,883,818,924,810,965,801,1005,799,1045,808,1084,818,1103,834,1122,861,1139,893,1147,891,1152,859,1144,830,1126,814,1106,803,1086,793,1045,796,1004,804,964,813,923,816,884,807,844,797,824,782,805,762,790"/>
-<area shape="rect" id="Node000100" href="$classrack_1_1CartesianSize.html" title=" " alt="" coords="898,1185,1009,1210"/>
-<area shape="poly" id="edge27_Node000004_Node000100" title=" " alt="" coords="765,786,786,801,804,825,816,848,822,872,825,896,820,943,809,990,799,1036,795,1082,798,1104,804,1127,816,1149,834,1171,847,1182,863,1190,898,1197,897,1202,861,1195,844,1187,830,1175,812,1152,799,1129,792,1105,789,1082,793,1035,804,988,815,942,819,896,817,873,811,850,799,827,782,805,762,790"/>
-<area shape="rect" id="Node000101" href="$classrack_1_1CartesianSpread.html" title=" " alt="" coords="889,1234,1018,1259"/>
-<area shape="poly" id="edge28_Node000004_Node000101" title=" " alt="" coords="765,786,786,801,806,828,819,855,826,882,828,909,823,962,809,1015,796,1067,791,1119,794,1144,801,1170,814,1195,834,1221,859,1238,889,1246,888,1251,857,1243,830,1225,810,1198,796,1172,788,1145,786,1119,791,1066,804,1013,817,961,823,909,821,883,814,857,801,831,782,805,762,790"/>
-<area shape="rect" id="Node000102" href="$classrack_1_1CmdAlign.html" title=" " alt="" coords="911,1283,996,1309"/>
-<area shape="poly" id="edge29_Node000004_Node000102" title=" " alt="" coords="765,785,786,801,808,831,822,861,830,891,832,921,825,981,809,1039,794,1098,787,1156,790,1184,798,1213,812,1241,834,1270,850,1283,869,1291,911,1297,910,1302,868,1296,847,1288,830,1274,807,1244,793,1215,784,1185,782,1156,788,1097,804,1038,820,980,827,921,825,892,817,863,803,834,782,805,762,790"/>
-<area shape="rect" id="Node000103" href="$classrack_1_1CmdAlignTest.html" title=" " alt="" coords="898,1333,1009,1358"/>
-<area shape="poly" id="edge30_Node000004_Node000103" title=" " alt="" coords="765,785,786,801,798,821,807,846,815,909,814,983,810,1063,805,1143,805,1216,813,1277,822,1301,834,1320,847,1331,863,1338,898,1345,897,1351,861,1343,844,1335,830,1323,817,1303,808,1279,800,1217,800,1143,804,1063,809,983,810,909,802,847,794,823,782,804,762,790"/>
-<area shape="rect" id="Node000104" href="$classrack_1_1CmdBaseSelective.html" title=" " alt="" coords="881,1382,1025,1407"/>
-<area shape="poly" id="edge31_Node000004_Node000104" title=" " alt="" coords="765,785,786,801,800,823,809,850,817,919,816,1000,810,1088,804,1175,803,1255,812,1322,821,1349,834,1369,855,1385,882,1393,880,1398,853,1389,830,1372,816,1351,806,1324,798,1256,799,1175,804,1087,810,1000,812,919,804,852,795,825,782,804,762,790"/>
-<area shape="rect" id="Node000108" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="892,1431,1015,1457"/>
-<area shape="poly" id="edge32_Node000004_Node000108" title=" " alt="" coords="765,785,786,801,801,825,810,855,819,929,817,1017,810,1112,803,1207,801,1295,804,1333,810,1368,820,1396,834,1418,846,1429,860,1436,892,1444,891,1449,858,1441,843,1433,830,1422,815,1398,805,1369,799,1334,796,1295,797,1207,804,1112,811,1017,813,929,805,856,796,827,782,804,762,790"/>
-<area shape="rect" id="Node000109" href="$classrack_1_1CmdCompleteODIM.html" title="Ensure correct ODIM types after setting attributes." alt="" coords="878,1481,1029,1506"/>
-<area shape="poly" id="edge33_Node000004_Node000109" title=" " alt="" coords="765,785,786,801,802,827,812,859,818,897,821,939,818,1034,810,1137,801,1240,799,1334,802,1376,808,1413,819,1444,834,1468,854,1483,878,1491,877,1496,851,1487,830,1471,814,1446,803,1414,797,1377,794,1334,796,1239,804,1137,812,1034,815,939,813,897,807,860,797,829,782,804,762,790"/>
-<area shape="rect" id="Node000151" href="$classdrain_1_1BeanRefCommand.html" title=" " alt="" coords="597,815,780,841"/>
-<area shape="poly" id="edge35_Node000150_Node000151" title=" " alt="" coords="524,833,597,829,597,835,525,838"/>
-<area shape="rect" id="Node000153" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="608,865,769,890"/>
-<area shape="poly" id="edge37_Node000152_Node000153" title=" " alt="" coords="533,895,608,885,608,891,533,900"/>
-<area shape="rect" id="Node000156" href="$classrack_1_1AnDReCommand.html" title=" " alt="" coords="598,914,779,939"/>
-<area shape="poly" id="edge39_Node000155_Node000156" title=" " alt="" coords="499,958,617,937,618,942,500,963"/>
-<area shape="rect" id="Node000158" href="$classrack_1_1ProductCommand.html" title="Wrapper for meteorological products derived from VolumeOp." alt="" coords="595,963,782,989"/>
-<area shape="poly" id="edge40_Node000155_Node000158" title=" " alt="" coords="514,973,595,973,595,979,514,979"/>
-<area shape="rect" id="Node000159" href="$classrack_1_1RackImageOpCmd.html" title="Designed for Rack." alt="" coords="593,1013,784,1038"/>
-<area shape="poly" id="edge41_Node000155_Node000159" title=" " alt="" coords="500,989,618,1010,617,1015,499,994"/>
-<area shape="rect" id="Node000161" href="$classrack_1_1CmdImageBox.html" title=" " alt="" coords="629,1062,748,1087"/>
-<area shape="poly" id="edge43_Node000160_Node000161" title=" " alt="" coords="514,1046,630,1063,629,1068,513,1051"/>
-<area shape="rect" id="Node000163" href="$classrack_1_1CmdImageSampler.html" title=" " alt="" coords="615,1111,762,1137"/>
-<area shape="poly" id="edge45_Node000162_Node000163" title=" " alt="" coords="523,1105,615,1114,615,1120,523,1110"/>
-<area shape="rect" id="Node000165" href="$classrack_1_1CmdSelectArea.html" title=" " alt="" coords="627,1161,750,1186"/>
-<area shape="poly" id="edge47_Node000164_Node000165" title=" " alt="" coords="559,1162,627,1167,627,1172,559,1167"/>
+<area shape="rect" id="Node000078" href="$classdrain_1_1CmdDebug.html" title=" " alt="" coords="906,395,1001,421"/>
+<area shape="poly" id="edge11_Node000004_Node000078" title=" " alt="" coords="690,752,701,686,724,598,742,552,766,507,795,466,830,430,848,419,867,411,906,405,906,410,868,416,850,424,834,434,799,469,770,510,747,554,729,600,706,687,695,753"/>
+<area shape="rect" id="Node000079" href="$classdrain_1_1CmdExecScript.html" title="Executes the defined script." alt="" coords="894,445,1013,470"/>
+<area shape="poly" id="edge12_Node000004_Node000079" title=" " alt="" coords="692,751,706,694,731,620,750,581,772,543,799,509,830,479,861,463,893,456,894,461,862,468,834,484,803,512,776,546,754,583,736,622,711,695,697,753"/>
+<area shape="rect" id="Node000080" href="$classdrain_1_1CmdExpandVariables.html" title=" " alt="" coords="873,494,1033,519"/>
+<area shape="poly" id="edge13_Node000004_Node000080" title=" " alt="" coords="695,752,711,703,738,642,778,580,802,552,830,528,851,517,872,510,874,515,853,522,834,533,806,556,782,584,743,645,716,705,700,753"/>
+<area shape="rect" id="Node000082" href="$classdrain_1_1CmdLog.html" title=" " alt="" coords="916,543,991,569"/>
+<area shape="poly" id="edge14_Node000004_Node000082" title=" " alt="" coords="698,752,717,713,746,665,784,618,831,578,851,567,873,560,915,554,916,559,874,565,853,572,833,582,788,621,750,668,722,716,703,755"/>
+<area shape="rect" id="Node000083" href="$classdrain_1_1CmdStatus.html" title=" " alt="" coords="907,593,1000,618"/>
+<area shape="poly" id="edge15_Node000004_Node000083" title=" " alt="" coords="704,753,755,689,790,655,831,627,868,612,906,605,907,611,870,618,833,632,794,659,758,693,708,756"/>
+<area shape="rect" id="Node000084" href="$classdrain_1_1SimpleCommand.html" title="A single&#45;parameter command." alt="" coords="867,642,1039,667"/>
+<area shape="poly" id="edge16_Node000004_Node000084" title=" " alt="" coords="712,755,764,714,797,694,831,676,866,665,868,670,833,681,799,698,767,719,716,759"/>
+<area shape="rect" id="Node000091" href="$classrack_1_1CartesianBBox.html" title=" " alt="" coords="894,691,1013,717"/>
+<area shape="poly" id="edge17_Node000004_Node000091" title=" " alt="" coords="733,759,831,725,893,711,894,717,833,731,735,764"/>
+<area shape="rect" id="Node000092" href="$classrack_1_1CartesianBBoxReset.html" title=" " alt="" coords="876,741,1031,766"/>
+<area shape="poly" id="edge18_Node000004_Node000092" title=" " alt="" coords="764,769,875,758,876,763,765,774"/>
+<area shape="rect" id="Node000093" href="$classrack_1_1CartesianBBoxTest.html" title=" " alt="" coords="881,790,1025,815"/>
+<area shape="poly" id="edge19_Node000004_Node000093" title=" " alt="" coords="765,783,881,793,881,799,764,788"/>
+<area shape="rect" id="Node000094" href="$classrack_1_1CartesianBBoxTile.html" title=" " alt="" coords="882,839,1025,865"/>
+<area shape="poly" id="edge20_Node000004_Node000094" title=" " alt="" coords="762,793,785,800,809,812,833,824,882,838,881,843,831,829,807,817,783,805,760,798"/>
+<area shape="rect" id="Node000095" href="$classrack_1_1CartesianCreateLookup.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="867,889,1040,914"/>
+<area shape="poly" id="edge21_Node000004_Node000095" title=" " alt="" coords="765,789,786,801,803,819,810,839,818,857,834,874,868,890,865,894,830,878,813,860,805,841,798,822,782,805,763,794"/>
+<area shape="rect" id="Node000096" href="$classrack_1_1CartesianGrid.html" title=" " alt="" coords="898,938,1009,963"/>
+<area shape="poly" id="edge22_Node000004_Node000096" title=" " alt="" coords="765,788,786,801,799,816,806,832,810,864,814,895,821,909,834,923,864,940,898,948,897,953,862,945,830,927,817,912,809,896,805,865,801,834,795,819,782,805,762,792"/>
+<area shape="rect" id="Node000097" href="$classrack_1_1CartesianInit.html" title=" " alt="" coords="901,987,1006,1013"/>
+<area shape="poly" id="edge23_Node000004_Node000097" title=" " alt="" coords="765,787,786,801,802,823,810,845,810,889,811,932,818,953,834,973,848,983,865,991,901,998,900,1003,863,996,846,988,830,977,813,955,805,933,805,889,805,846,798,825,782,805,762,791"/>
+<area shape="rect" id="Node000098" href="$classrack_1_1CartesianPlot.html" title=" " alt="" coords="899,1037,1008,1062"/>
+<area shape="poly" id="edge24_Node000004_Node000098" title=" " alt="" coords="765,787,786,801,806,829,814,858,814,887,810,915,806,943,807,970,814,997,834,1023,848,1034,864,1041,899,1048,898,1054,862,1046,845,1039,830,1027,810,1000,801,971,801,943,805,914,808,886,808,859,801,831,782,805,762,791"/>
+<area shape="rect" id="Node000099" href="$classrack_1_1CartesianRange.html" title=" " alt="" coords="891,1086,1016,1111"/>
+<area shape="poly" id="edge25_Node000004_Node000099" title=" " alt="" coords="765,786,786,801,809,836,817,871,816,905,810,940,804,974,803,1007,811,1040,834,1073,860,1090,891,1097,890,1102,858,1094,830,1077,806,1043,797,1008,798,973,804,939,811,905,812,871,804,838,782,805,762,790"/>
+<area shape="rect" id="Node000100" href="$classrack_1_1CartesianReset.html" title="Creates a single&#45;radar Cartesian data set (2D data of both quantity and quality)." alt="" coords="893,1135,1014,1161"/>
+<area shape="poly" id="edge26_Node000004_Node000100" title=" " alt="" coords="765,786,786,801,802,821,812,842,821,883,818,924,810,965,801,1005,799,1045,808,1084,818,1103,834,1122,861,1139,893,1147,891,1152,859,1144,830,1126,814,1106,803,1086,793,1045,796,1004,804,964,813,923,816,884,807,844,797,824,782,805,762,790"/>
+<area shape="rect" id="Node000101" href="$classrack_1_1CartesianSize.html" title=" " alt="" coords="898,1185,1009,1210"/>
+<area shape="poly" id="edge27_Node000004_Node000101" title=" " alt="" coords="765,786,786,801,804,825,816,848,822,872,825,896,820,943,809,990,799,1036,795,1082,798,1104,804,1127,816,1149,834,1171,847,1182,863,1190,898,1197,897,1202,861,1195,844,1187,830,1175,812,1152,799,1129,792,1105,789,1082,793,1035,804,988,815,942,819,896,817,873,811,850,799,827,782,805,762,790"/>
+<area shape="rect" id="Node000102" href="$classrack_1_1CartesianSpread.html" title=" " alt="" coords="889,1234,1018,1259"/>
+<area shape="poly" id="edge28_Node000004_Node000102" title=" " alt="" coords="765,786,786,801,806,828,819,855,826,882,828,909,823,962,809,1015,796,1067,791,1119,794,1144,801,1170,814,1195,834,1221,859,1238,889,1246,888,1251,857,1243,830,1225,810,1198,796,1172,788,1145,786,1119,791,1066,804,1013,817,961,823,909,821,883,814,857,801,831,782,805,762,790"/>
+<area shape="rect" id="Node000103" href="$classrack_1_1CmdAlign.html" title=" " alt="" coords="911,1283,996,1309"/>
+<area shape="poly" id="edge29_Node000004_Node000103" title=" " alt="" coords="765,785,786,801,808,831,822,861,830,891,832,921,825,981,809,1039,794,1098,787,1156,790,1184,798,1213,812,1241,834,1270,850,1283,869,1291,911,1297,910,1302,868,1296,847,1288,830,1274,807,1244,793,1215,784,1185,782,1156,788,1097,804,1038,820,980,827,921,825,892,817,863,803,834,782,805,762,790"/>
+<area shape="rect" id="Node000104" href="$classrack_1_1CmdAlignTest.html" title=" " alt="" coords="898,1333,1009,1358"/>
+<area shape="poly" id="edge30_Node000004_Node000104" title=" " alt="" coords="765,785,786,801,798,821,807,846,815,909,814,983,810,1063,805,1143,805,1216,813,1277,822,1301,834,1320,847,1331,863,1338,898,1345,897,1351,861,1343,844,1335,830,1323,817,1303,808,1279,800,1217,800,1143,804,1063,809,983,810,909,802,847,794,823,782,804,762,790"/>
+<area shape="rect" id="Node000105" href="$classrack_1_1CmdBaseSelective.html" title=" " alt="" coords="881,1382,1025,1407"/>
+<area shape="poly" id="edge31_Node000004_Node000105" title=" " alt="" coords="765,785,786,801,800,823,809,850,817,919,816,1000,810,1088,804,1175,803,1255,812,1322,821,1349,834,1369,855,1385,882,1393,880,1398,853,1389,830,1372,816,1351,806,1324,798,1256,799,1175,804,1087,810,1000,812,919,804,852,795,825,782,804,762,790"/>
+<area shape="rect" id="Node000109" href="$classrack_1_1CmdCheckType.html" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="892,1431,1015,1457"/>
+<area shape="poly" id="edge32_Node000004_Node000109" title=" " alt="" coords="765,785,786,801,801,825,810,855,819,929,817,1017,810,1112,803,1207,801,1295,804,1333,810,1368,820,1396,834,1418,846,1429,860,1436,892,1444,891,1449,858,1441,843,1433,830,1422,815,1398,805,1369,799,1334,796,1295,797,1207,804,1112,811,1017,813,929,805,856,796,827,782,804,762,790"/>
+<area shape="rect" id="Node000110" href="$classrack_1_1CmdCompleteODIM.html" title="Ensure correct ODIM types after setting attributes." alt="" coords="878,1481,1029,1506"/>
+<area shape="poly" id="edge33_Node000004_Node000110" title=" " alt="" coords="765,785,786,801,802,827,812,859,818,897,821,939,818,1034,810,1137,801,1240,799,1334,802,1376,808,1413,819,1444,834,1468,854,1483,878,1491,877,1496,851,1487,830,1471,814,1446,803,1414,797,1377,794,1334,796,1239,804,1137,812,1034,815,939,813,897,807,860,797,829,782,804,762,790"/>
+<area shape="rect" id="Node000153" href="$classdrain_1_1BeanRefCommand.html" title=" " alt="" coords="597,815,780,841"/>
+<area shape="poly" id="edge35_Node000152_Node000153" title=" " alt="" coords="524,833,597,829,597,835,525,838"/>
+<area shape="rect" id="Node000155" href="$classdrain_1_1CmdOpticalFlowBase.html" title="Utility for creating a Command that runs FastOpticalFlowOp operator." alt="" coords="608,865,769,890"/>
+<area shape="poly" id="edge37_Node000154_Node000155" title=" " alt="" coords="533,895,608,885,608,891,533,900"/>
+<area shape="rect" id="Node000158" href="$classrack_1_1AnDReCommand.html" title=" " alt="" coords="598,914,779,939"/>
+<area shape="poly" id="edge39_Node000157_Node000158" title=" " alt="" coords="499,958,617,937,618,942,500,963"/>
+<area shape="rect" id="Node000160" href="$classrack_1_1ProductCommand.html" title="Wrapper for meteorological products derived from VolumeOp." alt="" coords="595,963,782,989"/>
+<area shape="poly" id="edge40_Node000157_Node000160" title=" " alt="" coords="514,973,595,973,595,979,514,979"/>
+<area shape="rect" id="Node000161" href="$classrack_1_1RackImageOpCmd.html" title="Designed for Rack." alt="" coords="593,1013,784,1038"/>
+<area shape="poly" id="edge41_Node000157_Node000161" title=" " alt="" coords="500,989,618,1010,617,1015,499,994"/>
+<area shape="rect" id="Node000163" href="$classrack_1_1CmdImageBox.html" title=" " alt="" coords="629,1062,748,1087"/>
+<area shape="poly" id="edge43_Node000162_Node000163" title=" " alt="" coords="514,1046,630,1063,629,1068,513,1051"/>
+<area shape="rect" id="Node000165" href="$classrack_1_1CmdImageSampler.html" title=" " alt="" coords="615,1111,762,1137"/>
+<area shape="poly" id="edge45_Node000164_Node000165" title=" " alt="" coords="523,1105,615,1114,615,1120,523,1110"/>
+<area shape="rect" id="Node000167" href="$classrack_1_1CmdSelectArea.html" title=" " alt="" coords="627,1161,750,1186"/>
+<area shape="poly" id="edge47_Node000166_Node000167" title=" " alt="" coords="559,1162,627,1167,627,1172,559,1167"/>
 </map>

@@ -1,0 +1,24 @@
+<map id="ConfSVG" name="ConfSVG">
+<area shape="rect" id="Node000001" title=" " alt="" coords="993,103,1072,128"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="647,9,824,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="838,58,970,93,994,100,992,105,969,98,837,63"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="428,17,597,57"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="611,34,646,34,646,39,611,39"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,5,351,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="365,23,428,27,428,33,365,28"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="199,67,345,92"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="357,62,427,49,428,54,358,67"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1MultiFlagger.html" title=" " alt="" coords="428,95,597,135"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="358,91,375,94,428,102,427,107,374,99,358,97"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,59,144,99"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="158,77,199,77,199,82,158,82"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="647,88,824,143"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="838,113,993,113,993,118,838,118"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="611,113,646,113,646,118,611,118"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="193,129,351,155"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="364,129,428,122,428,127,365,134"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="651,167,819,192"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="833,173,900,164,968,147,1011,126,1014,131,970,153,901,169,834,178"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="441,167,585,192"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="598,177,651,177,651,182,598,182"/>
+</map>

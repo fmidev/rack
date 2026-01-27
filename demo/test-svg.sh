@@ -217,7 +217,7 @@ RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD} – \${PLC}'" \\  
 
 
 WRITE_DOC '\b Grid, sector, labels.'
-RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD}'" \\ --cProj 5120 --cBBox 20,62,32,66.5 --cSize 600 \\ volume.h5 \\ -Q DBZH -c --palette 'default' -o rgb.png \\ --gRadarGrid 50000:1,15:180:540 \\ --gRadarSector "'245:300,50000:110000'" --gRadarMarker "'0.1,1'" --gStyle ".CmdRadarMarker_circle='stroke:cyan;stroke-width:15px'" --gRadarLabel "'\${PLC}\n\${NOD}'" \\ -o 'grid_and_sector'
+RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD}'" \\ --cProj 5120 --cBBox 20,62,32,66.5 --cSize 600 \\ volume.h5 \\ -Q DBZH -c --palette 'default' -o rgb.png \\ --gRadarGrid 50000:1,15:180:540 \\ --gRadarSector "'245:300,50000:110000'" \\ --gRadarMarker "'0.1,0.8:0.9'" --gStyle ".CmdRadarMarker_circle='stroke:cyan;stroke-width:15px'" \\ --gRadarLabel "'\${PLC}\n\${NOD}'" \\ -o 'grid_and_sector'
 
 
 ls -1t ${OUTFILES[*]//.png/.cmd}

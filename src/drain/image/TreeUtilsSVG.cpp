@@ -42,22 +42,6 @@ namespace drain {
 namespace image {
 
 
-
-
-
-// PanelConfSVG TreeUtilsSVG::defaultConf;
-
-/*
-const std::set<XML::intval_t> TreeUtilsSVG::abstractTags = {
-		svg::tag_t::STYLE,
-		svg::tag_t::DESC,
-		svg::tag_t::METADATA,
-		svg::tag_t::SCRIPT,
-		svg::tag_t::TITLE,
-		svg::tag_t::TSPAN,
-};
-*/
-
 DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
 		DRAIN_ENUM_ENTRY(drain::image::TreeUtilsSVG::Roles, MAIN),
 };

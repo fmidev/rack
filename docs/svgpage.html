@@ -206,6 +206,20 @@ SVG panel example: Metadata panel.</div></div>
 <img src="adding_background_maps.png" alt=""/>
 <div class="caption">
 SVG panel example: Adding background maps.</div></div>
+ <b>Grid</b>, sector, labels. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --inputPrefix $PWD/ \</div>
+<div class="line">   --gGroupTitle <span class="stringliteral">&#39;${NOD}&#39;</span> \</div>
+<div class="line">   --cProj 5120 --cBBox 20,62,32,66.5 --cSize 600 \</div>
+<div class="line">   volume.h5 \</div>
+<div class="line">   -Q DBZH -c --palette <span class="keywordflow">default</span> -o rgb.png \</div>
+<div class="line">   --gRadarGrid 50000:1,15:180:540 \</div>
+<div class="line">   --gRadarSector <span class="stringliteral">&#39;245:300,50000:110000&#39;</span> --gRadarMarker <span class="stringliteral">&#39;0.1,1&#39;</span> --gStyle .CmdRadarMarker_circle=<span class="stringliteral">&#39;stroke:cyan;stroke-width:15px&#39;</span> --gRadarLabel <span class="stringliteral">&#39;${PLC}\</span></div>
+<div class="line"><span class="stringliteral">  n${NOD}&#39;</span> \</div>
+<div class="line">   -o grid_and_sector.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="grid_and_sector.png" alt=""/>
+<div class="caption">
+SVG panel example: grid and sector.</div></div>
  </p>
 <p>Alignment of the elements is done horizontally or vertically. By default, images are positioned horizontally, from left to right. This can be changed with <code>--gLayout</code> , selecting <code>orientation</code> as <code>HORZ</code> or <code>VERT</code> and coordinate <code>direction</code> as increasing (<code>INCR</code> ) or decreasing (<code>DECR</code> ).</p>
 <p>The resulting SVG file can be converted to various other image formats using ImageMagick's <code>convert</code> program, for example. A good alternative is <code>inkscape</code> .</p>

@@ -148,6 +148,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a361ef6a698e07c6ed35eeeab0606f67d" id="r_a361ef6a698e07c6ed35eeeab0606f67d"><td class="memItemLeft" align="right" valign="top"><a id="a361ef6a698e07c6ed35eeeab0606f67d" name="a361ef6a698e07c6ed35eeeab0606f67d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>RadarSVG</b> (const <a class="el" href="classrack_1_1RadarSVG.html">RadarSVG</a> &amp;radarSvg)</td></tr>
 <tr class="separator:a361ef6a698e07c6ed35eeeab0606f67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2f3c48aed7f6ec14bc7aea14d9ae4dd" id="r_ae2f3c48aed7f6ec14bc7aea14d9ae4dd"><td class="memItemLeft" align="right" valign="top"><a id="ae2f3c48aed7f6ec14bc7aea14d9ae4dd" name="ae2f3c48aed7f6ec14bc7aea14d9ae4dd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>deriveMaxRange</b> (const Hi5Tree &amp;srcPolar)</td></tr>
+<tr class="separator:ae2f3c48aed7f6ec14bc7aea14d9ae4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68a458822d23e54b20a556f67bf97520" id="r_a68a458822d23e54b20a556f67bf97520"><td class="memItemLeft" align="right" valign="top"><a id="a68a458822d23e54b20a556f67bf97520" name="a68a458822d23e54b20a556f67bf97520"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>getRange</b> (double r=1.0)</td></tr>
+<tr class="memdesc:a68a458822d23e54b20a556f67bf97520"><td class="mdescLeft">&#160;</td><td class="mdescRight">If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such. <br /></td></tr>
+<tr class="separator:a68a458822d23e54b20a556f67bf97520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41a281ca60c21e3e446a5c65c6823d8" id="r_aa41a281ca60c21e3e446a5c65c6823d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#aa41a281ca60c21e3e446a5c65c6823d8">updateRadarConf</a> (const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;where)</td></tr>
 <tr class="memdesc:aa41a281ca60c21e3e446a5c65c6823d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read meta data related to polar coordinates, that is, geographic configuration of a single radar.  <br /></td></tr>
 <tr class="separator:aa41a281ca60c21e3e446a5c65c6823d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,9 +220,6 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab631757f0f9b60dc0f7c1c4c92f5a425" id="r_ab631757f0f9b60dc0f7c1c4c92f5a425"><td class="memItemLeft" align="right" valign="top"><a id="ab631757f0f9b60dc0f7c1c4c92f5a425" name="ab631757f0f9b60dc0f7c1c4c92f5a425"></a>
 <a class="el" href="classrack_1_1RadarProj.html">RadarProj</a>&#160;</td><td class="memItemRight" valign="bottom"><b>radarProj</b></td></tr>
 <tr class="separator:ab631757f0f9b60dc0f7c1c4c92f5a425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9fd028f6fac2496f978bb074a2a89f0" id="r_ac9fd028f6fac2496f978bb074a2a89f0"><td class="memItemLeft" align="right" valign="top"><a id="ac9fd028f6fac2496f978bb074a2a89f0" name="ac9fd028f6fac2496f978bb074a2a89f0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>maxRange</b> = 0</td></tr>
-<tr class="separator:ac9fd028f6fac2496f978bb074a2a89f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1240e07a8bcc6cd9f35a8de24ad45beb" id="r_a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="memItemLeft" align="right" valign="top"><a id="a1240e07a8bcc6cd9f35a8de24ad45beb" name="a1240e07a8bcc6cd9f35a8de24ad45beb"></a>
 <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><b>geoFrame</b></td></tr>
 <tr class="memdesc:a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geographic extent and projection (Cartesian) <br /></td></tr>
@@ -229,6 +233,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a60eccf1a0b27787d521fadf4db7859fe" id="r_a60eccf1a0b27787d521fadf4db7859fe"><td class="memItemLeft" align="right" valign="top"><a id="a60eccf1a0b27787d521fadf4db7859fe" name="a60eccf1a0b27787d521fadf4db7859fe"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution</b></td></tr>
 <tr class="separator:a60eccf1a0b27787d521fadf4db7859fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae67f0a1fe15c5c2c2935561e90808d4f" id="r_ae67f0a1fe15c5c2c2935561e90808d4f"><td class="memItemLeft" align="right" valign="top"><a id="ae67f0a1fe15c5c2c2935561e90808d4f" name="ae67f0a1fe15c5c2c2935561e90808d4f"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>maxRange</b> = 0.0</td></tr>
+<tr class="separator:ae67f0a1fe15c5c2c2935561e90808d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Vector graphics for both composites and single radar data (polar coordinates). </p>

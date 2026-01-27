@@ -47,10 +47,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/FilePng.h>
 #include <drain/image/FilePnm.h>
 #include <drain/image/FileGeoTIFF.h>
+#include <drain/image/Image.h>
 #include <drain/image/TreeSVG.h>
 #include <drain/image/TreeElemUtilsSVG.h>
+#include <drain/image/TreeLayoutSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
-#include <drain/image/Image.h>
 #include <drain/imageops/ImageModifierPack.h>
 #include <drain/prog/Command.h>
 #include <drain/prog/CommandBankUtils.h>
@@ -606,8 +607,8 @@ void CmdOutputFile::exec() const {
 
 			// NEW:
 
-			TreeUtilsSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
-			TreeUtilsSVG::superAlign(ctx.svgTrack);
+			TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
+			TreeLayoutSVG::superAlign(ctx.svgTrack);
 
 			// OLD
 			// TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);

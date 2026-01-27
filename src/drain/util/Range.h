@@ -136,6 +136,23 @@ public:
 			return this->min - this->max;
 	}
 
+	// NEW
+	inline
+	void insert(T x) {
+		if (this->min <= this->max){
+			if (x < this->min){
+				this->min = x;
+			}
+			else if (x > this->max){
+				this->max = x;
+			}
+		}
+		else {
+			// "start collecting"
+			this->min = this->max = x;
+		}
+	}
+
 };
 
 /*

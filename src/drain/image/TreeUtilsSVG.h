@@ -59,37 +59,6 @@ namespace image {
  */
 
 
-//template <>
-// const drain::EnumDict<AlignSVG_FOO>::dict_t  drain::EnumDict<AlignSVG_FOO>::dict;
-/*
-template <AlignBase::Axis AX>
-struct CoordSpan {
-
-	inline
-	CoordSpan(svg::coord_t pos = 0, svg::coord_t span = 0) : pos(pos), span(span) {
-	}
-
-	inline
-	CoordSpan(const CoordSpan & cspan) : pos(cspan.pos), span(cspan.span) {
-	}
-
-	// Starting coordinate (x or y).
-	svg::coord_t pos = 0; //BBoxSVG::undefined;
-
-	// Width or height
-	svg::coord_t span = 0; // BBoxSVG::undefined;
-
-	// ? void getTranslatedCoordSpan(const BBoxSVG & bbox);
-	void copyFrom(const NodeSVG & node);
-
-	void copyFrom(const BBoxSVG & bbox);
-
-	inline
-	bool isDefined(){
-		return ! (std::isnan(pos) || std::isnan(span));
-	}
-};
-*/
 
 // TODO: separate TreeLayoutUtilsSVG
 
@@ -108,55 +77,12 @@ public:
 	static
 	TreeSVG & ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef);
 
-	/*
-	/// Compute the bounding box recursively in objects of type IMAGE, RECT, POLYGON and G (group).
-	static
-	void detectBox(TreeSVG & group, bool debug = false);
-
-	static inline
-	void getAdjustedBBox(const NodeSVG & node, BBoxSVG & bbox) { //, bool debug = false){
-		//detectBoxNEW(group, debug);
-		bbox = node.getBoundingBox();
-		bbox.x += node.transform.translate.x;
-		bbox.y += node.transform.translate.y;
-	}
-
-	template <AlignBase::Axis AX>
-	static
-	void adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX> anchorSpan);
-
-	/// Set stack layout as a default in a subtree.
-	static
-	void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, unsigned short depth=0);
-
-	/// Sets alignment applying stack layout in a single node.
-	static
-	void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction);
-
-	static
-	void superAlign(TreeSVG & node);
-
-
-	// Why templated, and not two separate?
-	template <AlignBase::Axis AX>
-	static
-	void realignObject(NodeSVG & node, const CoordSpan<AX> & span);
-
-	*/
 
 };
 
 DRAIN_ENUM_DICT(TreeUtilsSVG::Roles);
 DRAIN_ENUM_OSTREAM(TreeUtilsSVG::Roles);
 
-/*
-template <>
-void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::HORZ> & span);
-
-template <>
-void TreeUtilsSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & span);
-
-*/
 
 
 class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {

@@ -1,25 +1,23 @@
 <map id="FileGeoTIFF" name="FileGeoTIFF">
-<area shape="rect" id="Node000001" title=" " alt="" coords="311,373,409,399"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1FileTIFF.html" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="257,285,330,311"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="313,320,353,371,349,374,309,323"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1FileHandler.html" title=" " alt="" coords="5,183,101,208"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="91,211,198,259,262,283,260,288,196,264,89,216"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="126,183,197,208"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="186,215,240,259,276,283,273,287,237,263,183,219"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="121,87,191,113"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="160,126,163,182,158,183,155,127"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="221,183,366,208"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="296,222,296,285,291,285,291,222"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="224,80,363,120"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="296,134,296,182,291,182,291,134"/>
-<area shape="rect" id="Node000008" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="391,183,519,208"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="447,221,433,244,414,263,372,284,331,295,329,290,370,279,410,259,429,240,442,219"/>
-<area shape="rect" id="Node000009" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="387,87,522,113"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="457,126,457,183,452,183,452,126"/>
-<area shape="rect" id="Node000010" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="383,5,527,31"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="457,44,457,87,452,87,452,44"/>
-<area shape="rect" id="Node000011" href="$classdrain_1_1EnumFlagger.html" title="Default default value..." alt="" coords="421,285,568,311"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="466,320,380,375,377,371,463,316"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="543,183,582,208"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="553,222,529,263,509,287,505,283,524,260,549,219"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="266,373,365,399"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1FileTIFF.html" title="For writing images in basic TIFF format. Reading not supported currently." alt="" coords="212,285,285,311"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="268,320,308,371,304,374,264,323"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1FileInfo.html" title=" " alt="" coords="8,183,79,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="67,216,94,238,126,259,170,277,213,288,211,293,168,282,123,264,91,243,63,220"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1RegExp.html" title=" " alt="" coords="5,87,76,113"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="44,126,46,182,40,183,39,126"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="105,183,251,208"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="180,221,183,241,191,260,204,273,219,283,216,287,200,277,186,263,178,243,175,222"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="109,80,247,120"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="181,134,181,182,175,182,175,134"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1Frame2D.html" title=" " alt="" coords="275,183,403,208"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="331,222,319,243,304,263,272,287,269,283,300,259,315,240,327,219"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="272,87,407,113"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="342,126,342,183,337,183,337,126"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="267,5,411,31"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="342,44,342,87,337,87,337,44"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1EnumFlagger.html" title="Flagger accepting values of enum type E." alt="" coords="343,285,490,311"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="394,322,331,375,328,371,391,318"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="428,183,467,208"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="442,222,423,286,418,285,437,221"/>
 </map>

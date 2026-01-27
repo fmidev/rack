@@ -227,25 +227,42 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            <span class="keywordflow">return</span> this-&gt;min - this-&gt;max;</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">// NEW</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keywordtype">void</span> insert(T x) {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keywordflow">if</span> (this-&gt;min &lt;= this-&gt;max){</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>            <span class="keywordflow">if</span> (x &lt; this-&gt;min){</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                this-&gt;min = x;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            }</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (x &gt; this-&gt;max){</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                this-&gt;max = x;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        }</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            <span class="comment">// &quot;start collecting&quot;</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            this-&gt;min = this-&gt;max = x;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    }</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>};</div>
 </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="comment">template &lt;class T&gt;</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, const Range&lt;T&gt; &amp; r){</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">    ostr &lt;&lt; r.min &lt;&lt; &#39;:&#39; &lt;&lt; r.max;</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">    return ostr;</span></div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">}</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>DRAIN_TYPENAME_T(Range,T);</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>} <span class="comment">// namespace drain</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="preprocessor">#endif </span><span class="comment">/* RECTANGLE_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">template &lt;class T&gt;</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, const Range&lt;T&gt; &amp; r){</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">    ostr &lt;&lt; r.min &lt;&lt; &#39;:&#39; &lt;&lt; r.max;</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">    return ostr;</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">}</span></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>DRAIN_TYPENAME_T(Range,T);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>} <span class="comment">// namespace drain</span></div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="preprocessor">#endif </span><span class="comment">/* RECTANGLE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range</a></div><div class="ttdef"><b>Definition</b> Range.h:52</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html_a2447c3569ff5873341357ebf64e37d7d"><div class="ttname"><a href="classdrain_1_1Range.html#a2447c3569ff5873341357ebf64e37d7d">drain::Range::Range</a></div><div class="ttdeci">Range(T min=T(), T max=T())</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> Range.h:59</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html_a3e1914f9f5702cbbeaaf1ee9607918fa"><div class="ttname"><a href="classdrain_1_1Range.html#a3e1914f9f5702cbbeaaf1ee9607918fa">drain::Range::Range</a></div><div class="ttdeci">Range(const Range&lt; T &gt; &amp;r)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition</b> Range.h:64</div></div>

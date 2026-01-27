@@ -782,7 +782,7 @@ template&lt;class V &gt; </td></tr>
 <tr class="separator:a77554e58136bc7389438258fbc3f357d inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML" id="r_ab428b4617692c30283c5c7fd1a59e81d"><td class="memTemplParams" colspan="2">template&lt;typename N &gt; </td></tr>
 <tr class="memitem:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="memTemplItemLeft" align="right" valign="top">static N &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ab428b4617692c30283c5c7fd1a59e81d">xmlAssignNode</a> (N &amp;dst, const N &amp;src)</td></tr>
-<tr class="memdesc:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <br /></td></tr>
+<tr class="memdesc:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign tree node (data) to another.  <br /></td></tr>
 <tr class="separator:ab428b4617692c30283c5c7fd1a59e81d inherit pub_static_methods_classdrain_1_1XML"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -1094,7 +1094,7 @@ template&lt;class T  = int&gt; </div>
 </div><div class="memdoc">
 
 <p>Internal function called after setType() </p>
-<p>Originally called after setType(), but involves as forward-init problem, a class should not poke members through its constructor. NOTE: these could/should be templated, in TreeXML&lt;...&gt; right? </p>
+<p>Originally called after setType(), but involves as forward-init problem, a class should not poke members through its constructor. Control constant variables of (note: templated, through Node&lt;T&gt;::) </p>
 
 </div>
 </div>
@@ -1125,7 +1125,7 @@ template&lt;class T  = int&gt; </div>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<p>In derived classes, handleType(static_cast&lt;T&gt;(t)) should be always called by constructor. </p>
+<p>In derived classes, setting type should be always called by constructor. </p>
 
 </div>
 </div>
@@ -1157,7 +1157,7 @@ template&lt;class T  = int&gt; </div>
 
 <p>Copy constructor. </p>
 <p>In derived classes, handleType(static_cast&lt;T&gt;(t)) should be always called by constructor.</p>
-<p>Use always default constructor in derived classes? Assign node can violate/invalidate <a class="el" href="classdrain_1_1ReferenceMap2.html#a5660c340292d7a6d78a1340b39e9586b" title="Associates a map entry with a variable.">link()</a> pointers? </p>
+<p>Use always default constructor in derived classes? Assign node can violate/invalidate link() pointers? </p>
 
 </div>
 </div>

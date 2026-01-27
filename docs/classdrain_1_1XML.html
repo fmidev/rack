@@ -536,7 +536,7 @@ template&lt;class V &gt; </td></tr>
 <tr class="separator:a77554e58136bc7389438258fbc3f357d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab428b4617692c30283c5c7fd1a59e81d" id="r_ab428b4617692c30283c5c7fd1a59e81d"><td class="memTemplParams" colspan="2">template&lt;typename N &gt; </td></tr>
 <tr class="memitem:ab428b4617692c30283c5c7fd1a59e81d"><td class="memTemplItemLeft" align="right" valign="top">static N &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1XML.html#ab428b4617692c30283c5c7fd1a59e81d">xmlAssignNode</a> (N &amp;dst, const N &amp;src)</td></tr>
-<tr class="memdesc:ab428b4617692c30283c5c7fd1a59e81d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign another tree structure to another.  <br /></td></tr>
+<tr class="memdesc:ab428b4617692c30283c5c7fd1a59e81d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign tree node (data) to another.  <br /></td></tr>
 <tr class="separator:ab428b4617692c30283c5c7fd1a59e81d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -1884,17 +1884,8 @@ template&lt;typename N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign another tree structure to another. </p>
-<pre class="fragment">    \tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
-template &lt;typename T&gt;
-static inline
-T &amp; xmlAssign(T &amp; dst, const T &amp; src){
-
-    if (&amp;src != &amp;dst){
-        dst.clear(); // clears children...
-</pre><p> ... but not copying src? (<a class="el" href="classdrain_1_1TreeUtils.html" title="Collection of functions for investigating and processing trees.">TreeUtils</a>?) also dst-&gt;clear(); xmlAssignNode(dst.data, src); }</p>
-<p>return dst; } Copy node data to tree </p><pre class="fragment">\tparam XML - xml tree structure (TreeXML, TreeSVG, TreeHTML)
-</pre><p> template &lt;typename TX&gt; static inline TX &amp; xmlAssign(TX &amp; dst, const typename TX::xml_node_t &amp; src){ xmlAssignNode(dst.data, src); return dst; } Assign tree node (data) to another </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+<p>Assign tree node (data) to another. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">N</td><td>- xml node (e.g. <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>, NodeSVG, <a class="el" href="classdrain_1_1NodeHTML.html">NodeHTML</a>)</td></tr>
   </table>

@@ -1,3 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classdrain_1_1TreeUtils.html" title="Collection of functions for investigating and processing trees." alt="" coords="5,5,84,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,31,44,56"/>
+<area shape="rect" id="Node000001" href="$classdrain_1_1ReferenceT.html" title="Intermediate class supporting link() in various forms." alt="" coords="92,5,227,31"/>
+<area shape="poly" id="edge782_Node000000_Node000001" title=" " alt="" coords="57,35,91,28,92,33,58,40"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1VariableT.html" title="VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable." alt="" coords="99,55,220,80"/>
+<area shape="poly" id="edge783_Node000000_Node000002" title=" " alt="" coords="58,46,99,54,98,59,57,52"/>
 </map>

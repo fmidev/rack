@@ -24,7 +24,7 @@ var searchData=
   ['derivedimensions_21',['deriveDimensions',['../classhi5_1_1Writer.html#aa07c0e876eaa5267c60dd61c3cb28055',1,'hi5::Writer']]],
   ['derivedstgeometry_22',['deriveDstGeometry',['../classrack_1_1PolarProductOp.html#a35027d18c08a42943896258054ef7cc4',1,'rack::PolarProductOp']]],
   ['derivewindow_23',['deriveWindow',['../classrack_1_1PolarSector.html#a1c7e742e920716d64d13e74f8518b7a0',1,'rack::PolarSector']]],
-  ['detectbox_24',['detectBox',['../structdrain_1_1image_1_1TreeUtilsSVG.html#a771051ef75028889bf427889791fbb6a',1,'drain::image::TreeUtilsSVG']]],
+  ['detectbox_24',['detectBox',['../structdrain_1_1image_1_1TreeLayoutSVG.html#a771051ef75028889bf427889791fbb6a',1,'drain::image::TreeLayoutSVG']]],
   ['detectorop_25',['DetectorOp',['../classrack_1_1DetectorOp.html#a2f50e39be9c0a4d5a12b076800615d7e',1,'rack::DetectorOp']]],
   ['determineboundingboxm_26',['determineboundingboxm',['../classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213',1,'rack::RadarProj::determineBoundingBoxM(double range, double &amp;xLL, double &amp;yLL, double &amp;xUR, double &amp;yUR) const'],['../classrack_1_1RadarProj.html#a909c6d641d6edc85cfc6fd727d942934',1,'rack::RadarProj::determineBoundingBoxM(double range, drain::Rectangle&lt; double &gt; &amp;bbox) const']]],
   ['determinemetadata_27',['determineMetadata',['../classrack_1_1PolarProductOp.html#a97e2c06ddcf72a3fcdc10f477cb63342',1,'rack::PolarProductOp']]],

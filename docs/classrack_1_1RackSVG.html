@@ -77,8 +77,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classrack_1_1RackSVG-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">RackSVG Class Reference</div></div>
 </div><!--header-->
@@ -89,6 +89,29 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="graphics_8h_source.html">graphics.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a064dd6903edf7f9e2f353b8c336db620" id="r_a064dd6903edf7f9e2f353b8c336db620"><td class="memItemLeft" align="right" valign="top"><a id="a064dd6903edf7f9e2f353b8c336db620" name="a064dd6903edf7f9e2f353b8c336db620"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ElemClass</b> { <br />
+&#160;&#160;<b>NONE</b> = 0
+, <b>MAIN_TITLE</b> = 1
+, <b>GROUP_TITLE</b> = 2
+, <b>IMAGE_TITLE</b> = 4
+, <br />
+&#160;&#160;<b>TIME</b> = 8
+, <b>LOCATION</b> = 16
+, <b>GENERAL</b> = 32
+, <b>ALL</b> = (63)
+, <br />
+&#160;&#160;<b>IMAGE_PANEL</b>
+, <b>IMAGE_BORDER</b>
+, <b>BACKGROUND_RECT</b>
+, <b>SIDE_PANEL</b>
+, <br />
+&#160;&#160;<b>BORDER</b>
+<br />
+ }</td></tr>
+<tr class="separator:a064dd6903edf7f9e2f353b8c336db620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af4ddfe50407c12284aed9a99a61da449" id="r_af4ddfe50407c12284aed9a99a61da449"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#af4ddfe50407c12284aed9a99a61da449">getStyle</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
@@ -128,12 +151,19 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>applyInclusion
 <tr class="memitem:ab1d021da3c43f0a1dd0e59c2ea36c387" id="r_ab1d021da3c43f0a1dd0e59c2ea36c387"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#ab1d021da3c43f0a1dd0e59c2ea36c387">addImage</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; drain::image::svg::coord_t &gt; &amp;frame, const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;filepath, const std::string &amp;styleClass=&quot;&quot;)</td></tr>
 <tr class="memdesc:ab1d021da3c43f0a1dd0e59c2ea36c387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add external image from a file path.  <br /></td></tr>
 <tr class="separator:ab1d021da3c43f0a1dd0e59c2ea36c387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cf7c4b89cee92e24bd68c5e3ea8ef9e" id="r_a9cf7c4b89cee92e24bd68c5e3ea8ef9e"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a9cf7c4b89cee92e24bd68c5e3ea8ef9e">addTitleBox</a> (const <a class="el" href="structrack_1_1PanelConfSVG.html">PanelConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;object, PanelConfSVG::ElemClass elemClass)</td></tr>
-<tr class="memdesc:a9cf7c4b89cee92e24bd68c5e3ea8ef9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)  <br /></td></tr>
-<tr class="separator:a9cf7c4b89cee92e24bd68c5e3ea8ef9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12c978486e44abd60e596cf346ecc11c" id="r_a12c978486e44abd60e596cf346ecc11c"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a12c978486e44abd60e596cf346ecc11c">appendTitleElements</a> (const <a class="el" href="structrack_1_1PanelConfSVG.html">PanelConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const std::string &amp;anchor, PanelConfSVG::ElemClass elemClass)</td></tr>
-<tr class="memdesc:a12c978486e44abd60e596cf346ecc11c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add title elements in given group, to "reserve slots" for actual text content to be added later.  <br /></td></tr>
-<tr class="separator:a12c978486e44abd60e596cf346ecc11c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a019e3a1bd06d80934d7e4b8d2027d924" id="r_a019e3a1bd06d80934d7e4b8d2027d924"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a019e3a1bd06d80934d7e4b8d2027d924">addTitleBox</a> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;object, RackSVG::ElemClass elemClass)</td></tr>
+<tr class="memdesc:a019e3a1bd06d80934d7e4b8d2027d924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)  <br /></td></tr>
+<tr class="separator:a019e3a1bd06d80934d7e4b8d2027d924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037d3a52e0bd5fea27a0db331d4b9787" id="r_a037d3a52e0bd5fea27a0db331d4b9787"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a037d3a52e0bd5fea27a0db331d4b9787">appendTitleElements</a> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const std::string &amp;anchor, RackSVG::ElemClass elemClass)</td></tr>
+<tr class="memdesc:a037d3a52e0bd5fea27a0db331d4b9787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add title elements in given group, to "reserve slots" for actual text content to be added later.  <br /></td></tr>
+<tr class="separator:a037d3a52e0bd5fea27a0db331d4b9787"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a459b194288eec4b26b97c9a26b9d3257" id="r_a459b194288eec4b26b97c9a26b9d3257"><td class="memItemLeft" align="right" valign="top"><a id="a459b194288eec4b26b97c9a26b9d3257" name="a459b194288eec4b26b97c9a26b9d3257"></a>
+static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>appendTitleElements</b> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const char *anchor, RackSVG::ElemClass elemClass)</td></tr>
+<tr class="separator:a459b194288eec4b26b97c9a26b9d3257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61eb114aae5b8f2b54cbe844d722318f" id="r_a61eb114aae5b8f2b54cbe844d722318f"><td class="memTemplParams" colspan="2"><a id="a61eb114aae5b8f2b54cbe844d722318f" name="a61eb114aae5b8f2b54cbe844d722318f"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a61eb114aae5b8f2b54cbe844d722318f"><td class="memTemplItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>appendTitleElements</b> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const T &amp;anchorId, RackSVG::ElemClass elemClass)</td></tr>
+<tr class="separator:a61eb114aae5b8f2b54cbe844d722318f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7917adfb0c43e95cb21531ec8332550" id="r_aa7917adfb0c43e95cb21531ec8332550"><td class="memItemLeft" align="right" valign="top"><a id="aa7917adfb0c43e95cb21531ec8332550" name="aa7917adfb0c43e95cb21531ec8332550"></a>
 static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addRectangleGroup</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; double &gt; &amp;frame={200, 200})</td></tr>
 <tr class="memdesc:aa7917adfb0c43e95cb21531ec8332550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add rectangle. <br /></td></tr>
@@ -141,13 +171,6 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
 <tr class="memitem:a6bee81aad53a1b509f7b8fca055def71" id="r_a6bee81aad53a1b509f7b8fca055def71"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a6bee81aad53a1b509f7b8fca055def71">addImageBorder</a> (drain::image::TreeSVG &amp;imagePanel)</td></tr>
 <tr class="memdesc:a6bee81aad53a1b509f7b8fca055def71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add.  <br /></td></tr>
 <tr class="separator:a6bee81aad53a1b509f7b8fca055def71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4a5266370238f04dd16986f610e7961d" id="r_a4a5266370238f04dd16986f610e7961d"><td class="memItemLeft" align="right" valign="top"><a id="a4a5266370238f04dd16986f610e7961d" name="a4a5266370238f04dd16986f610e7961d"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>BACKGROUND_RECT</b> = &quot;BACKGROUND_RECT&quot;</td></tr>
-<tr class="memdesc:a4a5266370238f04dd16986f610e7961d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Group identifiers for elements which be automatically aligned (stacked horizontally or vertically) <br /></td></tr>
-<tr class="separator:a4a5266370238f04dd16986f610e7961d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SVG support for creating aligned image panels. </p>
@@ -333,8 +356,8 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
 
 </div>
 </div>
-<a id="a9cf7c4b89cee92e24bd68c5e3ea8ef9e" name="a9cf7c4b89cee92e24bd68c5e3ea8ef9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cf7c4b89cee92e24bd68c5e3ea8ef9e">&#9670;&#160;</a></span>addTitleBox()</h2>
+<a id="a019e3a1bd06d80934d7e4b8d2027d924" name="a019e3a1bd06d80934d7e4b8d2027d924"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a019e3a1bd06d80934d7e4b8d2027d924">&#9670;&#160;</a></span>addTitleBox()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,7 +368,7 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
         <tr>
           <td class="memname">drain::image::TreeSVG &amp; addTitleBox </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrack_1_1PanelConfSVG.html">PanelConfSVG</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
         </tr>
         <tr>
@@ -357,7 +380,7 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PanelConfSVG::ElemClass&#160;</td>
+          <td class="paramtype">RackSVG::ElemClass&#160;</td>
           <td class="paramname"><em>elemClass</em>&#160;</td>
         </tr>
         <tr>
@@ -378,8 +401,8 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
 
 </div>
 </div>
-<a id="a12c978486e44abd60e596cf346ecc11c" name="a12c978486e44abd60e596cf346ecc11c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12c978486e44abd60e596cf346ecc11c">&#9670;&#160;</a></span>appendTitleElements()</h2>
+<a id="a037d3a52e0bd5fea27a0db331d4b9787" name="a037d3a52e0bd5fea27a0db331d4b9787"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a037d3a52e0bd5fea27a0db331d4b9787">&#9670;&#160;</a></span>appendTitleElements()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,7 +413,7 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
         <tr>
           <td class="memname">drain::image::TreeSVG &amp; appendTitleElements </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrack_1_1PanelConfSVG.html">PanelConfSVG</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
         </tr>
         <tr>
@@ -408,7 +431,7 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PanelConfSVG::ElemClass&#160;</td>
+          <td class="paramtype">RackSVG::ElemClass&#160;</td>
           <td class="paramname"><em>elemClass</em>&#160;</td>
         </tr>
         <tr>
@@ -454,6 +477,7 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>B
 </div><div class="memdoc">
 
 <p>Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned. </p>
+<p>Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)</p>
 <p>Initialize styles, if undone. </p>
 
 </div>

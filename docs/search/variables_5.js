@@ -4,7 +4,7 @@ var searchData=
   ['filename_1',['filename',['../classdrain_1_1image_1_1ImageSampler.html#ae80f820219e45772366a2a68de6a54c4',1,'drain::image::ImageSampler']]],
   ['fill_2',['fill',['../classdrain_1_1image_1_1SlidingWindow.html#adcab59fea8cafdbf79467d12d7a03018',1,'drain::image::SlidingWindow::fill'],['../classdrain_1_1DotEntity.html#a10e45e58eec15e02139aac149b907a45',1,'drain::DotEntity::fill']]],
   ['fillarray_3',['fillArray',['../classdrain_1_1Castable.html#aa5891ba7dc473f6bb0ae6682e15cde69',1,'drain::Castable']]],
-  ['fontsizes_4',['fontSizes',['../structrack_1_1PanelConfSVG.html#a6e16e6e30a2bbbe2e59a3bed7de1b8e9',1,'rack::PanelConfSVG']]],
+  ['fontsizes_4',['fontSizes',['../structrack_1_1ConfSVG.html#a6e16e6e30a2bbbe2e59a3bed7de1b8e9',1,'rack::ConfSVG']]],
   ['format_5',['format',['../classdrain_1_1image_1_1ImageSampler.html#ad77fc85d76514f2d1ea5618480b51108',1,'drain::image::ImageSampler']]],
   ['formatstr_6',['formatStr',['../classdrain_1_1ContextKit.html#aee4a5737e1021bb341e080d2dca6310a',1,'drain::ContextKit']]],
   ['frame_7',['frame',['../classrack_1_1CartesianDataPicker.html#a8980f428c9c7473a50a92798a7c86c15',1,'rack::CartesianDataPicker']]],

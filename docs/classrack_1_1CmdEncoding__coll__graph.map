@@ -81,7 +81,7 @@
 <area shape="poly" id="edge38_Node000031_Node000038" title=" " alt="" coords="1299,408,1494,425,1494,430,1299,413"/>
 <area shape="rect" id="Node000039" title=" " alt="" coords="772,383,920,423"/>
 <area shape="poly" id="edge39_Node000038_Node000039" title=" " alt="" coords="934,401,1142,401,1142,406,934,406"/>
-<area shape="rect" id="Node000040" href="$classdrain_1_1EnumFlagger.html" title="Default default value..." alt="" coords="1480,497,1627,523"/>
+<area shape="rect" id="Node000040" href="$classdrain_1_1EnumFlagger.html" title="Flagger accepting values of enum type E." alt="" coords="1480,497,1627,523"/>
 <area shape="poly" id="edge40_Node000030_Node000040" title=" " alt="" coords="1641,507,1791,507,1791,513,1641,513"/>
 <area shape="rect" id="Node000041" title=" " alt="" coords="1195,509,1233,535"/>
 <area shape="poly" id="edge41_Node000040_Node000041" title=" " alt="" coords="1247,518,1480,510,1480,515,1247,524"/>
