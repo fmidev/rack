@@ -178,11 +178,12 @@ public:
 
 
 	inline
-    void info(std::ostream & ostr = std::cout, int wkt = -1){
-
+    void info(std::ostream & ostr = std::cout, int wkt = -1) const {
+		/*
 		for (const auto & entry: projDefs){
 			ostr << entry.first << ": '" << entry.second << "'\n";
 		}
+		*/
 		info(pj, ostr, wkt);
     }
 
@@ -195,10 +196,11 @@ public:
 
 // To be protected?
 
-    /// Dump misc information, for debugging
-    void info(PJ *pj, std::ostream & ostr = std::cout, int wkt = -1);
 
 protected:
+
+    /// Dump misc information, for debugging
+    void info(PJ *pj, std::ostream & ostr = std::cout, int wkt = -1) const ;
 
 	/// Metadata for PROJ (introduced in latest versions, currently not used by Drain & Rack )
 	PJ_CONTEXT *pjContext;
@@ -236,8 +238,9 @@ protected:
 
 };
 
-template <>
-const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict;
+//template <>
+//const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict;
+DRAIN_ENUM_DICT(Projector::PROJDEF_variant);
 
 DRAIN_ENUM_OSTREAM(Projector::PROJDEF_variant);
 

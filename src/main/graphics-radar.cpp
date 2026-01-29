@@ -193,6 +193,7 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 	}
 
 	// NOTE: typically these are not in polar data. Only in projected (ie cartesian)
+	/*
 	const int epsg = where.get("epsg", 0); // non-standard
 	if (epsg){
 		mout.attention("EPSG found: ", epsg);
@@ -208,6 +209,7 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 			// radarProj
 		}
 	}
+	*/
 
 	/*
 	int range =  where.get("rstart", 0.0) + where.get("rscale", 0.0)*where.get("nbins", 0.0);
@@ -245,15 +247,16 @@ void RadarSVG::updateCartesianConf(const drain::VariableMap & where) {
 	if (epsg){
 		mout.attention("EPSG found: ", epsg);
 		geoFrame.setProjectionEPSG(epsg);
-		// radarProj.setProjectionDst(epsg);
+		radarProj.setProjectionDst(epsg);
 	}
 	else {
 		const std::string projdef = where.get("projdef", ""); // otherwise gets "null"
 		geoFrame.setProjection(projdef);
-		// radarProj.setProjectionDst(projdef);
+		radarProj.setProjectionDst(projdef); // TEST
 	}
 	geoFrame.setBoundingBoxD(where["LL_lon"], where["LL_lat"], where["UR_lon"], where["UR_lat"]);
 	geoFrame.setGeometry(where["xsize"], where["ysize"]);
+	// mout.pending<LOG_WARNING>("now slowly: bbox: -> ", geoFrame.getBoundingBoxDeg(), " -> NATIVE: ", geoFrame.getBoundingBoxNat());
 
 }
 
@@ -264,17 +267,36 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 	// Todo: also support fully Cartesian input (without single-site metadata)
 	// radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
 
-	const int epsg = comp.projGeo2Native.getDst().getEPSG(); // non-standard
+	const int epsg = comp.getProj().getDst().getEPSG(); // non-standard
 	if (epsg){
 		mout.attention("EPSG found: ", epsg);
 		geoFrame.setProjectionEPSG(epsg);
+		radarProj.setProjectionDst(epsg); // TEST
 	}
 	else {
 		// const std::string projdef = comp.getProjection(); // otherwise gets "null"
-		geoFrame.setProjection(comp.getProjection());
+		geoFrame.setProjection(comp.getProjStr());
+		radarProj.setProjectionDst(comp.getProjStr()); // TEST
+		//mout.reject<LOG_WARNING>("No EPSG found, using: ", comp.getProjection());
 	}
+
+	// mout.pending<LOG_WARNING>(DRAIN_LOG(comp.projGeo2Native));
+
+	// const drain::Rectangle<double> & b = comp.getBoundingBoxDeg();
+	// geoFrame.setBoundingBoxD(b.lowerLeft.x, b.lowerLeft.y, b.upperRight.x, b.upperRight.y);
+	// geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
+	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj()));
+	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj().isSet()));
+	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj().isLongLat()));
 	geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
+	mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
+	mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
+	geoFrame.setBoundingBoxNat(comp.getBoundingBoxNat());
 	geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
+	mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
+	mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
+	//geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
+	// mout.pending<LOG_WARNING>("now slowly: ", comp.getBoundingBoxDeg(), " = ", geoFrame.getBoundingBoxDeg(), " -> NATIVE: ", geoFrame.getBoundingBoxNat());
 
 }
 
@@ -283,8 +305,8 @@ void RadarSVG::getCubicBezierConf(CubicBezierConf & conf, double angleStartR, do
 	//conf.sectorCount = n;
 	//conf.delta = 2.0*M_PI / static_cast<double>(n);
 	conf.delta = angleEndR-angleStartR;
-	double k = 4.0/3.0 * ::tan(conf.delta/4.0);
-	conf.radialCoeff = sqrt(1.0 + k*k);
+	const double k = 4.0/3.0 * ::tan(conf.delta/4.0);
+	conf.radialCoeff   = ::sqrt(1.0 + k*k);
 	conf.angularOffset = ::atan(k);
 }
 

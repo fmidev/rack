@@ -70,8 +70,12 @@ public:
 		MAIN,
 	};
 
+	/// Get header object, which is often but not always unique. If nonexistent, is created and prepended in the document.
+	/**
+	 *  \param root - top-level element of the SVG document (tag type "svg").
+	 */
 	static
-	TreeSVG & getDefaultObject(TreeSVG & root, svg::tag_t);
+	TreeSVG & getHeaderObject(TreeSVG & root, svg::tag_t, const std::string & key = "");
 
 	/// Create a new entry, unless already defined.
 	static

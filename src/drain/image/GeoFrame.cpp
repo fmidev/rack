@@ -105,11 +105,11 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 		}
 
 		if (projectionIsSet() && projGeo2Native.isLongLat()){
-			mout.error("trying to set metric bbox (", ") on long-lat proj: ", getProjection());
+			mout.error("trying to set metric bbox (", ") on long-lat proj: ", getProjStr());
 			return;
 		}
 
-		setBoundingBoxM(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
+		setBoundingBoxNat(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
 
 		mout.special("setting metric bbox: " , getBoundingBoxNat() ); // << resources.bbox
 
@@ -135,7 +135,7 @@ void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double lat
 
 	updateBoundingBoxD();
 	if (projectionIsSet()){
-		updateBoundingBoxM();
+		updateBoundingBoxNat();
 	}
 	else {
 		//mout.warn() = "Projection should be set prior to bounding box";
@@ -154,18 +154,19 @@ void GeoFrame::setBoundingBoxD(double lonLL,double latLL,double lonUR,double lat
 
 	updateBoundingBoxR();
 	if (projectionIsSet()){
-		updateBoundingBoxM();
-		mout.debug("Updated native bbox: ", bBoxNative);
+		updateBoundingBoxNat();
+		//mout.debug("Updated native bbox: ", bBoxNative);
+		mout.accept<LOG_WARNING>("Updated native bbox: ", bBoxNative);
 	}
 	else {
-		//mout.warn() = "Projection should be set prior to bounding box";
+		//mout.warn("Projection should be set prior to bounding box");
 	}
 
 	updateScaling();
 
 }
 
-void GeoFrame::setBoundingBoxM(double xLL,double yLL,double xUR,double yUR) {
+void GeoFrame::setBoundingBoxNat(double xLL,double yLL,double xUR,double yUR) {
 
 	if (projGeo2Native.isSet()){
 		// TODO if latlon!
@@ -247,7 +248,7 @@ void GeoFrame::updateBoundingBoxR(){
 }
 
 /// Given BBox in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale.
-void GeoFrame::updateBoundingBoxM(){
+void GeoFrame::updateBoundingBoxNat(){
 
 	if (projGeo2Native.isSet()){
 		projGeo2Native.projectFwd(bBoxD.lowerLeft.x,  bBoxD.lowerLeft.y,  bBoxNative.lowerLeft.x,  bBoxNative.lowerLeft.y);
@@ -256,12 +257,15 @@ void GeoFrame::updateBoundingBoxM(){
 		// projR2M.projectFwd(bBoxR.upperRight.x, bBoxR.upperRight.y, bBoxNative.upperRight.x, bBoxNative.upperRight.y);
 	}
 	else {
-		// drain::Logger mout(__FILE__, __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		// mout.debug("could not (yet) set metric/native bbox" );
 		// warn?
 		if (isLongLat()){ // ie. native coords went radial above
-			//mout.warn("LAN-LON.. could set R native bbox" );
+			mout.warn("Setting lat-lon as NATIVE coors" ); //  - could set R native bbox
 			bBoxNative.assignSequence(bBoxD);
+		}
+		else {
+			mout.warn("could not (yet) SCALE metric/native bbox" ); //  - could set R native bbox
 		}
 	}
 
@@ -321,7 +325,7 @@ void GeoFrame::updateProjection(){
 		}
 	}
 	else
-		updateBoundingBoxM();
+		updateBoundingBoxNat();
 
 	updateScaling();
 }
@@ -402,7 +406,7 @@ void GeoFrame::cropWithM(double xLL, double yLL, double xUR, double yUR) {
 	// mout.warn(xLL , ',' , yLL , '\t' , xUR , ',' , yUR );
 
 	/// Reset area and rescale
-	setBoundingBoxM(xLL, yLL, xUR, yUR);
+	setBoundingBoxNat(xLL, yLL, xUR, yUR);
 	setGeometry(frame.upperRight.x-frame.lowerLeft.x, frame.upperRight.y-frame.lowerLeft.y);  // +1 +1
 
 }
@@ -457,18 +461,20 @@ void GeoFrame::updateDataExtentNat(const drain::Rectangle<double> & inputExtentN
 std::ostream & GeoFrame::toStream(std::ostream & ostr) const {
 
 	ostr << "frame " << this->getFrameWidth() << 'x' << this->getFrameHeight() << "\n";
-	ostr << "   input coords: " << getCoordinateSystem() << '\n';
-	// const std::string & projStr = ;
+	ostr << "    input proj: " << getInputProjStr() << '\n';
+	ostr << "   output proj: " << getProjStr() << '\n';
+	ostr << "   output epsg: ";
 	const short int EPSG = projGeo2Native.getDst().getEPSG();
 	if (EPSG)
-		ostr << "   projection: epsg(" << EPSG << ")\n";
+		ostr << EPSG << '\n';
 	else
-		ostr << "   projection:" << getProjection() << '\n';
+		ostr << " unknown" << '\n';
+		//ostr << "   projection:" << getProjStr() << '\n';
 
-	ostr << "   bbox[nat]:   [" << getBoundingBoxNat() << "]\n";
-	ostr << "   bbox[rad]:   [" << getBoundingBoxRad() << "]\n";
-	ostr << "   bbox[deg]:   [" << getBoundingBoxDeg() << "]\n";
-	ostr << "   resolution[m/pix]: (" << xScale << ',' << yScale << ")\n";
+	ostr << "    bbox[nat]: [" << getBoundingBoxNat() << "]\n";
+	ostr << "    bbox[rad]: [" << getBoundingBoxRad() << "]\n";
+	ostr << "    bbox[deg]: [" << getBoundingBoxDeg() << "]\n";
+	ostr << "   resolution: (" << xScale << ',' << yScale << ") [/pix]\n";
 
 	return ostr;
 

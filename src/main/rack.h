@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(17,1)
+#define RACK_VERSION drain::Version<>(17,1,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fixed SVG legend image panel path
  *  Vesion 17.1
  *  - SVG clip_path
+ *  Release 17.1.1
+ *  - Fixed GeoFrame numeric EPSG
  *
  *  Version 16
  *  - Python UI export (experimental)

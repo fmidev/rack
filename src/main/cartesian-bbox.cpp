@@ -114,7 +114,7 @@ void CartesianBBoxTest::exec() const {
 
 
 
-	pRadarToComposite.setProjectionDst(ctx.composite.getProjection());
+	pRadarToComposite.setProjectionDst(ctx.composite.getProjStr());
 
 	drain::Rectangle<double> bboxM;
 	//ctx.composite.determineBoundingBoxM(pRadarToComposite, odimIn.rscale*odimIn.geometry.width + odimIn.rscale/2.0 + odimIn.rstart, bboxM);

@@ -497,11 +497,11 @@ drain::image::TreeSVG & RackSVG::getCurrentAlignedGroup(RackContext & ctx){ // w
 	std::string groupId = ctx.getFormattedStatus(ctx.svgPanelConf.groupIdentifier);
 	std::string groupTitleFormatted = ctx.getFormattedStatus(ctx.svgPanelConf.groupTitle); // status updated upon each PNG file save
 
-
-	//drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgPanelConf.groupTitleFormatted];
+	// drain::image::TreeSVG & alignedGroup = mainGroup[ctx.svgPanelConf.groupTitleFormatted];
 	drain::image::TreeSVG & alignedGroup = mainGroup[groupId];
 
 	if (alignedGroup -> isUndefined()){
+		// mout.attention()
 		alignedGroup->setType(svg::GROUP);
 		alignedGroup->set("data-id",    groupId);
 		alignedGroup->set("data-title", groupTitleFormatted);

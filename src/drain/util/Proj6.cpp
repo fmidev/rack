@@ -47,8 +47,8 @@ Proj6::Proj6() : pjContext(nullptr), proj(nullptr) {
 
 Proj6::Proj6(const Proj6 &p) : pjContext(nullptr), proj(nullptr) {
 	//cerr << "Proj4(const Proj4 &p) - someone needs me" << endl;
-	setProjectionSrc(p.getProjectionSrc());
-	setProjectionDst(p.getProjectionDst());
+	setProjectionSrc(p.getProjStrSrc());
+	setProjectionDst(p.getProjStrDst());
 }
 
 #else
@@ -59,8 +59,8 @@ Proj6::Proj6() : pjContext(proj_context_create()), proj(nullptr) {
 
 Proj6::Proj6(const Proj6 &p) : pjContext(proj_context_clone(p.pjContext)), proj(nullptr) {
 	//cerr << "Proj4(const Proj4 &p) - someone needs me" << endl;
-	setProjectionSrc(p.getProjectionSrc());
-	setProjectionDst(p.getProjectionDst());
+	setProjectionSrc(p.getProjStrSrc());
+	setProjectionDst(p.getProjStrDst());
 }
 
 #endif
@@ -105,8 +105,8 @@ void Proj6::setDirectMapping(bool lenient){
 
 
 std::ostream & operator<<(std::ostream & ostr, const Proj6 &p){
-	ostr << "Proj src: " << p.getProjectionSrc() << '\n';
-	ostr << "Proj dst: " << p.getProjectionDst() << '\n';
+	ostr << "Proj src: " << p.getProjStrSrc() << '\n';
+	ostr << "Proj dst: " << p.getProjStrDst() << '\n';
 	return ostr;
 }
 

@@ -47,28 +47,35 @@ DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
 };
 
 
-TreeSVG & TreeUtilsSVG::getDefaultObject(TreeSVG & root, svg::tag_t tag){
+// TreeSVG & TreeUtilsSVG::getDefaultObject(TreeSVG & root, svg::tag_t tag){
+// 	const std::string & key = EnumDict<svg::tag_t>::getKey(tag);
 
-	const std::string & key = EnumDict<svg::tag_t>::getKey(tag);
+TreeSVG & TreeUtilsSVG::getHeaderObject(TreeSVG & root, svg::tag_t tag, const std::string & key){
 
-	if (!root.hasChild(key)){
-		TreeSVG & child = root.prependChild(key); // consider path type!getDefaultObject
+	const std::string & finalKey = !key.empty() ? key : EnumDict<svg::tag_t>::getKey(tag);
+
+	if (!root.hasChild(finalKey)){
+		TreeSVG & child = root.prependChild(finalKey); // consider path type! getDefaultObject
 		child->setType(tag);
 		return child;
 	}
 	else {
-		return root[key];
+		return root[finalKey];
 	}
 };
 
 /// Create a new entry, unless already defined.
 TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 
+	/*
 	TreeSVG & style = root[svg::STYLE](svg::STYLE);
 
 	if (style->isUndefined()){
 		style->setType(svg::STYLE);
 	}
+	*/
+
+	TreeSVG & style = getHeaderObject(root, svg::STYLE);
 
 	TreeSVG & styleEntry = style[selector];
 	if (styleEntry.empty()){
@@ -288,7 +295,7 @@ const std::string ClipperSVG::CLIP("CLIPPED");
 
 TreeSVG & ClipperSVG::getClippingRect(TreeSVG & root, size_t width, size_t height){
 
-	TreeSVG & defs = TreeUtilsSVG::getDefaultObject(root, svg::DEFS);
+	TreeSVG & defs = TreeUtilsSVG::getHeaderObject(root, svg::DEFS);
 
 	StringBuilder<'_'> id(svg::CLIP_PATH, width, height);
 

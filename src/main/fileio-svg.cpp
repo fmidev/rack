@@ -389,7 +389,7 @@ class CmdLinkImage : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdLinkImage() : drain::SimpleCommand<std::string>(__FUNCTION__, "SVG test product") {
+	CmdLinkImage() : drain::SimpleCommand<std::string>(__FUNCTION__, "Link arbitrary external image (PNG).") {
 		//getParameters().link("level", level = 5);
 	}
 
@@ -489,7 +489,7 @@ public:
 		getParameters().separator = 0;
 	}
 
-	CmdGroupId(const CmdGroupTitle & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
+	CmdGroupId(const CmdGroupId & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
 		// getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
 	}
 
@@ -1110,10 +1110,8 @@ public:
 
 };
 
-}
-
-
-namespace rack {
+// }
+// namespace rack {
 
 /**
 
@@ -1180,8 +1178,8 @@ public:
 
 		const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
 		if ((object == "SCAN") || (object == "PVOL")){
-			mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
-			mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
+			// mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
+			// mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
 			// return;
 			geoGroup->set("data-latest", srcCurr[ODIMPathElem::WHAT].data.attributes["source"]);
 		}
@@ -1195,27 +1193,29 @@ public:
 			mout.note("Using Cartesian product (meta data)");
 			//mout.note(DRAIN_LOG(srcCartesion));
 			const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
-			radarSVG.updateRadarConf(whereCart);
 			radarSVG.updateCartesianConf(whereCart);
+			// Redesign multi-frame mosaick...
 			geoGroup->set("data-latest", srcCurr[ODIMPathElem::HOW].data.attributes["nodes"]);
 		}
 		else {
 			Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
 			mout.note("Cartesian product not (yet) created, but using specification: ", DRAIN_LOG(composite));
-			composite.toStream(std::cerr);
+			// composite.toStream(std::cerr);
 			// mout.error("Cartesian empty");
 			// composite.odim;
 			radarSVG.updateCartesianConf(composite);
+			// radarSVG.updateRadarConf(wherePolar);
 		}
 
-		mout.attention(DRAIN_LOG(radarSVG.geoFrame));
+		// mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
+		// mout.reject<LOG_WARNING>(DRAIN_LOG(radarSVG.radarProj));
 
 		/*
 		drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
 		drain::image::TreeSVG & geoGroup = RadarSVG::getOverlayGroup(group);
 		RackSVG::consumeAlignRequest(ctx, geoGroup);
 		*/
-		mout.attention(DRAIN_LOG(geoGroup->get("data-latest")));
+		// mout.attention(DRAIN_LOG(geoGroup->get("data-latest")));
 
 		std::string srcLabel = geoGroup->getAttributes().get("data-latest", "unknown");
 		return geoGroup[srcLabel](drain::image::svg::GROUP);
@@ -1259,6 +1259,7 @@ public:
 		RadarSVG radarSVG;
 
 		drain::image::TreeSVG & geoGroup = prepareGeoGroup(ctx, radarSVG);
+		// mout.pending<LOG_WARNING>("Fresh: ", DRAIN_LOG(radarSVG.radarProj));
 
 		//const drain::Range<double> r(distanceMetres.range); // int -> double
 		drain::Range<int> r; // (distanceMetres.range); // double -> int
@@ -1338,6 +1339,8 @@ public:
 		a.max *= drain::DEG2RAD;
 
 
+		// geoGroup.addChild()->setComment("Position/proj: ", radarSVG.radarProj);
+		// mout.pending<LOG_WARNING>("Freak: ", DRAIN_LOG(radarSVG.radarProj));
 
 		geoGroup.addChild()->setComment("Rays: ", distanceMetres.range.tuple());
 		double angleRad = 0.0;
@@ -2290,7 +2293,7 @@ public:
 
 		RadarSVG radarSVG;
 
-		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+		// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
 
 		// const drain::Rectangle<double> &bbox = radarSVG.geoFrame.getBoundingBoxNat();
 		//const drain::Point2D<double> & UR = bbox.upperRight;

@@ -160,13 +160,13 @@ public:
    	 *   Does not reconstruct it from the allocated proj structure.
    	 */
     inline
-    const std::string & getProjectionSrc() const {
+    const std::string & getProjStrSrc() const {
     	return src.getProjDef();
     	//return getProjection(projSrc, projStrSrc);
     };
 
     inline
-    const std::string & getProjectionDst() const {
+    const std::string & getProjStrDst() const {
     	return dst.getProjDef();
     	//return getProjection(projDst, projStrDst);
     };
@@ -182,9 +182,6 @@ public:
     };
 
 
-
-
-public:
 
 	/// Forward projection (in-place)
 	inline
@@ -298,7 +295,6 @@ protected:
 	/// Set crs_to_crs projection, if both src and dst projections are set.
 	void setDirectMapping(bool lenient);
 
-protected:
 
 	/** \tparam POINT_XY – anything with members double x and double y
 	 *  \tparam D - PJ_DIRECTION enum value (libproj)

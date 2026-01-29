@@ -166,16 +166,16 @@ public:
 
 
 	/// Sets bounding box in meters in the target coordinate system.
-	void setBoundingBoxM(double xLL, double yLL, double xUR, double yUR);
+	void setBoundingBoxNat(double xLL, double yLL, double xUR, double yUR);
 
 	/// Sets bounding box in meters in the target coordinate system.
 	inline
 	/*
-	void setBoundingBoxM(const drain::Rectangle<double> & bboxM) {
-		setBoundingBoxM(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
+	void setBoundingBoxNat(const drain::Rectangle<double> & bboxM) {
+		setBoundingBoxNat(bboxM.lowerLeft.x, bboxM.lowerLeft.y, bboxM.upperRight.x, bboxM.upperRight.y);
 	}*/
-	void setBoundingBoxM(const drain::UniTuple<double,4> & bboxM) {
-		setBoundingBoxM(bboxM[0], bboxM[1], bboxM[2], bboxM[3]);
+	void setBoundingBoxNat(const drain::UniTuple<double,4> & bboxM) {
+		setBoundingBoxNat(bboxM[0], bboxM[1], bboxM[2], bboxM[3]);
 	}
 
 protected:
@@ -187,7 +187,7 @@ protected:
 	void updateBoundingBoxD(); //double lonLL, double latLL, double lonUR, double latUR);
 
 	/// Given BBox in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale.
-	void updateBoundingBoxM(); // double lonLL, double latLL, double lonUR, double latUR);
+	void updateBoundingBoxNat(); // double lonLL, double latLL, double lonUR, double latUR);
 
 
 	/// Geometric scaling.
@@ -414,21 +414,36 @@ public:
 	/// Sets the projection of the image as a EPSG code.
 	inline
 	void setProjectionEPSG(int epsg){
-		projGeo2Native.dst.setProjection(epsg);
+		projGeo2Native.setProjectionDst(epsg);
+		//projGeo2Native.dst.setProjection(epsg);
+		//projGeo2Native.setDirectMapping(true); // was missing?
 		updateProjection();
 	}
 
-	/// Updates bboxes, if needed.
-	void updateProjection();
 
 	/// Returns the projection of the composite image as a proj4 std::string.
 	inline
-	const std::string & getProjection() const { return projGeo2Native.getProjectionDst();};
+	const Proj6 & getProj() const {
+		return projGeo2Native;
+	};
+
+	inline
+	int getEPSG() const {
+		return projGeo2Native.getDst().getEPSG();
+	};
+
+	/// Returns the projection of the composite image as a proj4 std::string.
+	inline
+	const std::string & getProjStr() const {
+		return projGeo2Native.getProjStrDst();
+	};
 
 	/// Returns the source projection (should be radian array, lon & lat).
 	//  Consider: rename src/input projection coord system
 	inline
-	const std::string & getCoordinateSystem() const { return projGeo2Native.getProjectionSrc();};
+	const std::string & getInputProjStr() const {
+		return projGeo2Native.getProjStrSrc();
+	};
 
 
 	/// Return the actual geographical boundingBox suggested by implied by input data.
@@ -458,8 +473,6 @@ public:
 		return projGeo2Native.isLongLat();
 	}
 
-	/// Radial to metric
-	drain::Proj6 projGeo2Native;
 
 	//std::ostream & toOStr(std::ostream & ostr) const ;
 	virtual
@@ -468,6 +481,13 @@ public:
 
 
 protected:
+
+	/// Radial to metric
+	drain::Proj6 projGeo2Native;
+
+	/// Updates bboxes, if needed.
+	void updateProjection();
+
 
 	// drain::image::AreaGeometry frameGeometry; would be fine, but unsigned caused conversion/cast underflows
 	int frameWidth;
@@ -482,7 +502,6 @@ protected:
 	/// Geographical scope in meters, or degrees in case of long/lat
 	drain::Rectangle<double> bBoxNative;
 
-
 	// experimental
 	/// For deriving extent (~union) of input data
 	drain::Rectangle<double> dataBBoxNat;
@@ -490,12 +509,6 @@ protected:
 	// experimental
 	/// For deriving common extent (~intersection) of input data
 	drain::Rectangle<double> dataOverlapBBoxNat;
-
-	/// Utility for deriving extent (degrees) required by input data
-	// drain::Rectangle<double> dataBBoxD;
-
-	/// Utility for deriving extent (degrees) required by input data
-	//drain::Rectangle<double> dataOverlapD;
 
 	// ... needed in mapping...
 	double xScale = 0.0;

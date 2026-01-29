@@ -43,8 +43,9 @@ const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separ
 
 const std::string Projector::proj4version = drain::StringBuilder<'.'>(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 
-template <>
-const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict = {
+//template <>
+//const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict = {
+DRAIN_ENUM_DICT(Projector::PROJDEF_variant) = {
 		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, ORIG),
 		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, MODIFIED),
 		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, PROJ4),
@@ -310,7 +311,7 @@ bool Projector::isLongLat(const PJ *pj) {
 
 	/*
 	PJ_COORDINATE_SYSTEM_TYPE type = proj_cs_get_type(pjContext, projDst);
-	mout.attention("isLongLat:", getProjectionDst(), " type=", type);
+	mout.attention("isLongLat:", getProjStrDst(), " type=", type);
 	return (type != PJ_CS_TYPE_CARTESIAN);
 	if (info.id != nullptr){
 		mout.debug("ID:", info.id);
@@ -321,12 +322,19 @@ bool Projector::isLongLat(const PJ *pj) {
 }
 
 
-void Projector::info(PJ *pj, std::ostream & ostr, int wkt){
+void Projector::info(PJ *pj, std::ostream & ostr, int wkt) const {
 
 	if (pj == nullptr){
 		ostr << "null Projector::info";
 		return;
 	}
+
+	/*
+			for (const auto & entry: projDefs){
+				ostr << entry.first << ": '" << entry.second << "'\n";
+			}
+			*/
+
 
 	PJ_TYPE type = proj_get_type(pj);
 	ostr << "enumtype:" << type;
@@ -356,11 +364,12 @@ void Projector::info(PJ *pj, std::ostream & ostr, int wkt){
 	ostr << ", longLat:" << (isLongLat(pj)?"YES":"NO") << ' ';
 
 	if (wkt >= 0){ // PJ_WKT2_2019_SIMPLIFIED
-		ostr << " WKT:\n " << proj_as_wkt(pjContext, pj, (PJ_WKT_TYPE)wkt, nullptr) << '\n';
+		ostr << " WKT:\n " << proj_as_wkt(pjContext, pj, (PJ_WKT_TYPE)wkt, nullptr);
 	}
+	ostr << '\n';
 
 	for (const auto & entry: drain::EnumDict<Projector::PROJDEF_variant>::dict){
-		ostr << entry.first << ':' << getProjDef(entry.second) << '\n';
+		ostr << entry.first << ':' << '\t' << getProjDef(entry.second) << '\n';
 	}
 
 	ostr << std::flush;

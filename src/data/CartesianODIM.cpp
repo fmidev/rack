@@ -113,11 +113,12 @@ void CartesianODIM::setGeometry(size_t cols, size_t rows){
 
 void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
 	area.width = geoFrame.getFrameWidth();
 	area.height = geoFrame.getFrameHeight();
 
-	projdef = geoFrame.getProjection();
-	drain::Logger mout(__FILE__, __FUNCTION__);
+	projdef = geoFrame.getProjStr();
 
 	/*
 	{
@@ -133,7 +134,7 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 
 	}
 	*/
-	epsg = geoFrame.projGeo2Native.getDst().getEPSG();
+	epsg = geoFrame.getProj().getDst().getEPSG();
 
 	bboxD = geoFrame.getBoundingBoxDeg();
 	/*

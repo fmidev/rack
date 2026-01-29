@@ -342,7 +342,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 	//const DataSet<PolarSrc> konsta(srcData.getTree()["dataset1"]);  // TODO REMOVE XX
 
 	if (!projGeo2Native.isSet()){
-		mout.debug("projGeo2Native src: ", projGeo2Native.getProjectionSrc());
+		mout.debug("projGeo2Native src: ", projGeo2Native.getProjStrSrc());
 		mout.info("projGeo2Native dst: projection unset, using AEQD");
 		projAEQD = true;
 	}
@@ -435,12 +435,12 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		if (projAEQD){
 			mout.info("Using default projection AEQD (azimuthal equidistant).");
-			const std::string & aeqdStr = pRadarToComposite.getProjectionSrc();
+			const std::string & aeqdStr = pRadarToComposite.getProjStrSrc();
 			// mout.debug(aeqdStr );
 			setProjection(aeqdStr);
 		}
 
-		pRadarToComposite.setProjectionDst(getProjection());
+		pRadarToComposite.setProjectionDst(getProjStr()); // TODO: more direct assign
 
 		double range = PolarODIM::defaultRange;
 		if (range > 0.0){
@@ -460,14 +460,14 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 
 		// mout.accept<LOG_DEBUG>("Detected 'native' input BBOX: ", bboxInput);
 
-		setBoundingBoxM(bboxInput);
+		setBoundingBoxNat(bboxInput);
 
 		// mout.note("Now this: " , *this );
 
 	}
 	else {
-		mout.info("Using user-defined projection: ", getProjection());
-		pRadarToComposite.setProjectionDst(getProjection());
+		mout.info("Using user-defined projection: ", getProjStr());
+		pRadarToComposite.setProjectionDst(getProjStr());
 		pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(), bboxInput);
 
 		if (cropping){

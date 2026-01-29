@@ -241,7 +241,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 			projectAEQD = true;
 		}
 		else {
-			mout.note("using predefined projection: ", composite.getProjection());
+			mout.note("using predefined projection: ", composite.getProjStr());
 			//projectAEQD = true;
 			projectAEQD = false;
 		}
@@ -599,7 +599,8 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxDeg());
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 		mout.info("\t --cBBox '" , composite.getBoundingBoxDeg() , "' # degrees" );
-		if (!composite.projGeo2Native.isLongLat()){
+		//if (!composite.projGeo2Native.isLongLat()){
+		if (!composite.getProj().isLongLat()){
 			std::streamsize p = mout.precision(20);
 			mout.info("\t --cBBox '" , composite.getBoundingBoxNat() , "' # metric" );
 			mout.precision(p);
@@ -907,11 +908,12 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 		}
 
-		mout.accept<LOG_DEBUG>("natEPSG:", composite.projGeo2Native.getDst().getEPSG());
+		mout.accept<LOG_DEBUG>("natEPSG:", composite.getProj().getDst().getEPSG());
 
 		//const short epsg = composite.projGeo2Native.getDst().getEPSG();
 		//if (epsg > 0){
-		if (composite.projGeo2Native.getDst().getEPSG() > 0){
+		//if (composite.projGeo2Native.getDst().getEPSG() > 0){
+		if (composite.getProj().getDst().getEPSG() > 0){
 			mout.hint<LOG_DEBUG>("/how:EPSG migrated to /where:EPSG");
 		}
 

@@ -140,8 +140,9 @@ CartesianDataPicker::CartesianDataPicker(drain::ReferenceMap2<> & variableMap, c
 	mout.debug("frame: ", frame);
 
 	infoMap["bbox"] = frame.getBoundingBoxDeg().toVector();
-	infoMap["proj"] = frame.getProjection();
-	infoMap["epsg"] = frame.projGeo2Native.getDst().getEPSG(); // NOTE probably unset...
+	infoMap["proj"] = frame.getProjStr();
+	// infoMap["epsg"] = frame.projGeo2Native.getDst().getEPSG(); // NOTE probably unset...
+	infoMap["epsg"] = frame.getProj().getDst().getEPSG();
 
 }
 
@@ -154,7 +155,8 @@ void CartesianDataPicker::setPosition(int i, int j) const {
 	this->current_j2 = this->height-1 - j;
 
 	//if (!frame.projGeo2Native.isSet()){ // odim.projdef.empty()
-	if (frame.projGeo2Native.isSet()){ // odim.projdef.empty()
+	//if (frame.projGeo2Native.isSet()){ // odim.projdef.empty()
+	if (frame.getProj().isSet()){ // odim.projdef.empty()
 		frame.pix2m(i,j, x,y);
 		frame.pix2deg(i, j, lon, lat);
 	}

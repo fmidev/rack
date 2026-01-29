@@ -303,7 +303,7 @@ void FileGeoTIFF::setGeoMetaData(const drain::image::GeoFrame & frame){
 	//frame.pix2m(imagePos.x, imagePos.y, geoPos.x, geoPos.y);
 	frame.pix2LLm(imageCoord.x, imageCoord.y, mapCoord.x, mapCoord.y);
 	imageCoord.setLocation(0, 0);
-	setProjection(frame.projGeo2Native); // GeoTIFF, FIXED 2023/02
+	setProjection(frame.getProj()); // GeoTIFF, FIXED 2023/02
 
 	/*
 	//if (frame.isLongLat()){
@@ -388,7 +388,7 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 	}
 	else {
 
-		const std::string & dstProj = proj.getProjectionDst();
+		const std::string & dstProj = proj.getProjStrDst();
 		//const std::string dstProj = "+init=epsg:3067";
 
 		mout.info("Writing metric projection: ", dstProj);

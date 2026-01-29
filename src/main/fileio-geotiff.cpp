@@ -171,8 +171,8 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 				if (v.size() == 4){
 					drain::Rectangle<double> bboxM;
 					bboxM.assignSequence(v);
-					//frame.setBoundingBoxM(v[0], v[1], v[2], v[3]);
-					frame.setBoundingBoxM(bboxM);
+					//frame.setBoundingBoxNat(v[0], v[1], v[2], v[3]);
+					frame.setBoundingBoxNat(bboxM);
 					mout.info() << "Setting exact (metric) BBOX=";
 					mout.precision(20);
 					mout << frame.getBoundingBoxNat() << mout;
