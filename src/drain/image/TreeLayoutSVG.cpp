@@ -887,6 +887,60 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 // ---------------------------------------------------
 
 
+//#include <drain/util/TreeUtils.h>
+/*
+class BBoxRetrieverSVG2 : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	BBoxSVG box;
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+
+
+		BBoxSVG b;
+
+		NodeSVG & node = tree(path).data;
+
+		if (node.isAbstract()){
+			return 1;
+		}
+
+		// node.get("data-bb") = 0.0;
+
+		double r=0.0;
+		switch (node.getNativeType()){
+		//switch (tree->getType()){
+		case svg::CIRCLE:
+			r = node.get("r");
+			b.setLocation(node.get("cx", 0.0)-r, node.get("cy", 0.0)-r);
+			b.setArea(2.0*r, 2.0*r);
+			// node.get("data-bb") = b.getLocation().tuple();
+			node.get("data-bb") << b.x << b.y << b.width << b.height;
+			// node.get("data-bb") << b.width << b.height;
+			break;
+		//case svg::RECT:
+		default:
+			drain::Logger(__FILE__, "BBoxRetrieverSVG2::visitPrefix").warn("unhandled type: ", tree->getNativeType());
+
+		}
+
+		if (box.empty()){
+			box = b; // .set(b.x, b.y, b.width, b.height);
+			//box.set(b.tuple());
+		}
+		else {
+			box.expand(b);
+		}
+
+
+		return 0; // continue
+	}
+
+	//int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+};
+ */
 
 
 }  // image::

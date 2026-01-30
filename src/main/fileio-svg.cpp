@@ -398,7 +398,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		const Composite & composite = ctx.getComposite(RackContext::CURRENT);
+		const Composite & composite = ctx.getComposite(RackContext::CURRENT|RackContext::PRIVATE|RackContext::SHARED);
 
 		drain::Frame2D<double> frame(composite.getFrameWidth(), composite.getFrameHeight());
 
@@ -1146,8 +1146,11 @@ protected:
 
 public:
 
+	/**
+	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
+	 */
 	static
-	drain::image::TreeSVG & prepareGeoGroup(RackContext & ctx, RadarSVG & radarSVG){
+	drain::image::TreeSVG & prepareGeoGroup(RackContext & ctx, RadarSVG & radarSVG, bool shared=false){
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -1217,8 +1220,11 @@ public:
 		*/
 		// mout.attention(DRAIN_LOG(geoGroup->get("data-latest")));
 
-		std::string srcLabel = geoGroup->getAttributes().get("data-latest", "unknown");
-		return geoGroup[srcLabel](drain::image::svg::GROUP);
+
+		std::string srcLabel = shared ? "shared" : geoGroup->getAttributes().get("data-latest", "unknown");
+		drain::image::TreeSVG & g = geoGroup[srcLabel](drain::image::svg::GROUP);
+		g->set("data-src", srcLabel);
+		return g;
 		//return geoGroup;
 
 	}
@@ -1742,6 +1748,88 @@ public:
 
 };
 
+/**
+ *
+ *  circle=max RADAR_CIRCLE
+ *  dot=0.0    RADAR_DOT
+ *  label=${NOD}  RADAR_LABEL
+ *
+ *
+ */
+class CmdRadarDot : public drain::BasicCommand, CmdPolarBase {
+
+	bool MASK = false;
+public:
+
+
+	CmdRadarDot() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar position") {
+		getParameters().link("radius", distanceMetres.range.min, "radius of radar location disc [0.0..1.0|0..250..]");
+		getParameters().link("mask", MASK, "inverse");
+	};
+
+	// Copy constructor
+	CmdRadarDot(const CmdRadarDot & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		RadarSVG radarSVG;
+
+		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG, MASK); // shared
+
+		if (distanceMetres.range.min > 0.0){
+
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, "DOT", {
+					{"fill", "green"},
+					{"stroke", "red"},
+					{"stroke-width", 5.0},
+					{"opacity", 0.5}
+			});
+
+			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
+			drain::image::TreeSVG & curve = overlayGroup["DOT"](drain::image::svg::PATH);
+			curve->addClass("DOT");
+			drain::svgPATH bezierElem(curve);
+			bezierElem.noReset = MASK;
+
+			if (MASK && !curve->hasClass("MASK")){
+				curve->addClass("MASK");
+				drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, "MASK", {
+						{"fill-rule", "nonzero"},
+				});
+
+				const int w = radarSVG.geoFrame.getFrameWidth();
+				const int h = radarSVG.geoFrame.getFrameHeight();
+				bezierElem.absolute<drain::svgPATH::MOVE>(0, 0);
+				bezierElem.absolute<drain::svgPATH::LINE>(0, h);
+				bezierElem.absolute<drain::svgPATH::LINE>(w, h);
+				bezierElem.absolute<drain::svgPATH::LINE>(w, 0);
+				bezierElem.absolute<drain::svgPATH::CLOSE>();
+				/*
+				bezierElem.absolute<drain::svgPATH::MOVE>(0, 0);
+				bezierElem.absolute<drain::svgPATH::LINE>(w, 0);
+				bezierElem.absolute<drain::svgPATH::LINE>(w, h);
+				bezierElem.absolute<drain::svgPATH::LINE>(0, h);
+				bezierElem.absolute<drain::svgPATH::CLOSE>();
+				*/
+			}
+
+
+			const double r = radarSVG.getRange(distanceMetres.range.min);
+			radarSVG.moveTo(bezierElem, r, 0.0);
+			radarSVG.cubicBezierTo(bezierElem, r, 0.0, 2.0*M_PI);
+		}
+
+	};
+
+};
+
 
 class CmdSectorTest : public drain::SimpleCommand<std::string> {
 
@@ -1948,60 +2036,6 @@ public:
 };
 
 
-//#include <drain/util/TreeUtils.h>
-/*
-class BBoxRetrieverSVG2 : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	BBoxSVG box;
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
-
-
-		BBoxSVG b;
-
-		NodeSVG & node = tree(path).data;
-
-		if (node.isAbstract()){
-			return 1;
-		}
-
-		// node.get("data-bb") = 0.0;
-
-		double r=0.0;
-		switch (node.getNativeType()){
-		//switch (tree->getType()){
-		case svg::CIRCLE:
-			r = node.get("r");
-			b.setLocation(node.get("cx", 0.0)-r, node.get("cy", 0.0)-r);
-			b.setArea(2.0*r, 2.0*r);
-			// node.get("data-bb") = b.getLocation().tuple();
-			node.get("data-bb") << b.x << b.y << b.width << b.height;
-			// node.get("data-bb") << b.width << b.height;
-			break;
-		//case svg::RECT:
-		default:
-			drain::Logger(__FILE__, "BBoxRetrieverSVG2::visitPrefix").warn("unhandled type: ", tree->getNativeType());
-
-		}
-
-		if (box.empty()){
-			box = b; // .set(b.x, b.y, b.width, b.height);
-			//box.set(b.tuple());
-		}
-		else {
-			box.expand(b);
-		}
-
-
-		return 0; // continue
-	}
-
-	//int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-};
- */
 
 
 
@@ -2426,7 +2460,8 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	DRAIN_CMD_INSTALL(Cmd, RadarSector)();
 	DRAIN_CMD_INSTALL(Cmd, RadarLabel)();
 	DRAIN_CMD_INSTALL(Cmd, RadarMarker)();
-	linkRelatedCommands(RadarGrid, RadarSector, RadarLabel, RadarMarker);
+	DRAIN_CMD_INSTALL(Cmd, RadarDot)();
+	linkRelatedCommands(RadarGrid, RadarSector, RadarLabel, RadarMarker, RadarDot);
 
 
 	install<CmdAlignTest>();

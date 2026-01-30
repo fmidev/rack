@@ -161,14 +161,15 @@ public:
 
 	inline
 	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::PATH), d(node["d"]) {
+		//node[d].setType<std::string>();
+		//node["d"].setSeparator(' ');
 	};
 
 	~Elem(){
 		flush();
-		//node["d"] = sstr.str();
-		//d = sstr.str();
-
 	}
+
+	bool noReset = true;
 
 	NodeXML<image::svg::tag_t> & node;
 
@@ -206,10 +207,6 @@ public:
 		appendArgs<C>(args...);
 	}
 
-	void flush(){
-		node["d"] = sstr.str();
-		sstr.str("");
-	}
 
 	void clear(){
 		sstr.str("");
@@ -220,6 +217,21 @@ protected:
 
 	mutable
 	std::stringstream sstr;
+
+	// Could be protected
+	void flush(){
+		Logger mout(__FILE__, __FUNCTION__);
+		mout.warn("contents1: ", d);
+		if (noReset){
+			node["d"].append(sstr.str());
+			mout.warn("appended contents_: ", d);
+		}
+		else {
+			node["d"] = sstr.str();
+			mout.warn("NEW contents_: ", d);
+		}
+		sstr.str(""); // Destructor would do this anyway
+	}
 
 	template <Command C, Coord R=RELATIVE>
 	inline

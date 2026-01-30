@@ -148,7 +148,6 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	// static const std::string GEO_GROUP("geoGroup");
 
 	TreeSVG & overlayGroup = group[VECTOR_OVERLAY]; // (svg::GROUP);
 
@@ -158,18 +157,9 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 		using namespace drain::image;
 		overlayGroup->setType(svg::GROUP);
-		//TreeSVG & geoGroup = group[VECTOR_OVERLAY](svg::GROUP);
 		overlayGroup->addClass(StyleClasses::GRID);
-
 		overlayGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
-		//overlayGroup->addClass(LayoutSVG::FIXED);
-		/*
-		geoGroup->addClass(LayoutSVG::FIXED); // absolute positions, especially text pos
-		// Set defaults...
-		geoGroup->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
-		geoGroup->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
-		*/
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
 	}
 
