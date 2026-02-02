@@ -55,6 +55,18 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+//const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
+template <int D,typename T,size_t N>
+inline
+void convert(const drain::TupleBase<T,N> &src, drain::TupleBase<T,N> & dst){
+	typename drain::TupleBase<T,N>::const_iterator sit = src.begin();
+	typename drain::TupleBase<T,N>::const_iterator dit = dst.begin();
+	while (sit != src.end()){
+		*dit = D*(*sit);
+		++sit;
+		++dit;
+	}
+}
 
 
 struct GraphicsSection : public drain::CommandSection {
@@ -1207,7 +1219,7 @@ public:
 		}
 		else {
 			Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
-			mout.note("Cartesian product not (yet) created, but using specification: ", DRAIN_LOG(composite));
+			mout.debug("Cartesian product not (yet) created, but using specification: ", DRAIN_LOG(composite));
 			radarSVG.updateCartesianConf(composite);
 		}
 
@@ -1440,15 +1452,10 @@ public:
 				radarSVG.close(bezierElem);
 			}
 
-			if (MASK){ //  && !curve->hasClass("MASK")){
+			if (MASK){
 				const int w = radarSVG.geoFrame.getFrameWidth();
 				const int h = radarSVG.geoFrame.getFrameHeight();
 				MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
-				/*
-				const drain::FlexibleVariable & maskId = MaskerSVG::createMaskId(overlayGroup);
-				drain::image::TreeSVG & mask = MaskerSVG::getMask(ctx.svgTrack, maskId);
-				MaskerSVG::updateMask(mask, w, h, curve.data);
-				*/
 			}
 
 
@@ -1575,10 +1582,11 @@ public:
 
 		}
 
-		drain::Range<double> azmRad;
+		drain::Range<double> azmRad(azm.range);
+		azmRad *= drain::DEG2RAD;
 		// methodize?
-		azmRad.min = azm.range.min * drain::DEG2RAD;
-		azmRad.max = azm.range.max * drain::DEG2RAD;
+		// azmRad.min = azm.range.min * drain::DEG2RAD;
+		// azmRad.max = azm.range.max * drain::DEG2RAD;
 
 		overlay.addChild()->setComment("Circles/arcs: ", azm.range.tuple(), " - ", azmRad.tuple());
 
@@ -1612,6 +1620,20 @@ public:
 
 		}
 
+
+		if (MASK){
+			drain::image::TreeSVG & localMask = overlay[svg::MASK];
+			{
+				// Private scope, to call bezierElem destructor.
+				drain::svgPATH elem(localMask);
+				radarSVG.drawSector(elem, {0,  dist.range.max}, {0.0, 2.0*M_PI} );
+			}
+			const int w = radarSVG.geoFrame.getFrameWidth();
+			const int h = radarSVG.geoFrame.getFrameHeight();
+			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+			localMask->setType(svg::COMMENT);
+		}
+
 		/*  Should copy some of already created.
 		if (MASK){ //  && !curve->hasClass("MASK")){
 			const int w = radarSVG.geoFrame.getFrameWidth();
@@ -1637,9 +1659,9 @@ class CmdRadarSector : public drain::BasicCommand, public CmdPolarBase {
 
 public:
 
-	CmdRadarSector() : drain::BasicCommand(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	CmdRadarSector() : drain::BasicCommand(__FUNCTION__, "Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres)").fillArray = false;
-		getParameters().link("azimuth", azimuthDegrees.range.tuple(0.0, 360.0), "start:end (degrees)").fillArray = false;
+		getParameters().link("azimuth", azimuthDegrees.range.tuple(0.0, 0.0), "start:end (degrees)").fillArray = false;
 		getParameters().link("MASK", MASK, "add a mask");
 	};
 
@@ -1647,13 +1669,6 @@ public:
 	CmdRadarSector(const CmdRadarSector & cmd) : drain::BasicCommand(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
-
-	/*
-	virtual inline
-	void parameterKeysToStream(std::ostream & ostr) const override {
-		Command::parameterKeysToStream(ostr, polarSector.getParameters().getKeyList(), ',');
-	};
-	*/
 
 
 	virtual
@@ -1670,8 +1685,6 @@ public:
 		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
 		overlay.addChild()->setComment(getName(), ' ', getParameters());
-
-
 
 		drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
 		curve -> addClass(getName()); // SECTOR
@@ -1693,7 +1706,6 @@ public:
 		radarSVG.setRadialResolution(radialResolution);
 
 		const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
-
 		// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
 
 		{
@@ -1701,51 +1713,10 @@ public:
 			radarSVG.drawSector(bezierElem, dist.range, azmRad);
 		}
 
-		/*
-
-		if (azm.range.width() > 0.0){
-			mout.info("Drawing sector");
-			// Scope for destructor. Or flush?
-			drain::svgPATH bezierElem(curve);
-			radarSVG.moveTo(bezierElem, dist.range.max, azmRad.min);
-			radarSVG.cubicBezierTo(bezierElem, dist.range.max, azmRad.min, azmRad.max);
-			radarSVG.lineTo(bezierElem, dist.range.min, azmRad.max);
-			if (dist.range.min > 0.0){
-				// Draw inner arc
-				radarSVG.cubicBezierTo(bezierElem, dist.range.min, azmRad.max, azmRad.min);
-			}
-			//radarSVG.lineTo(bezierElem, dist.range.max, azmRad.min);
-			radarSVG.close(bezierElem);
-		}
-		else {
-			// Annulus
-			drain::svgPATH bezierElem(curve);
-			radarSVG.moveTo(bezierElem, dist.range.max, 0.0);
-			radarSVG.cubicBezierTo(bezierElem, dist.range.max, 0.0, +2.0*M_PI);
-			if (dist.range.min > 0.0){
-				mout.info("Drawing annulus");
-				radarSVG.moveTo(bezierElem, dist.range.min, 0.0);
-				// radarSVG.lineTo(bezierElem, dist.range.min, azmRad.max);
-				radarSVG.cubicBezierTo(bezierElem, dist.range.min, +2.0*M_PI, 0.0);
-				// radarSVG.lineTo(bezierElem, dist.range.max, azmRad.min);
-			}
-			else {
-				mout.info("Drawing circle");
-			}
-			radarSVG.close(bezierElem);
-		}
-		*/
-
 		if (MASK){ //  && !curve->hasClass("MASK")){
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
 			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
-			// MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
-			/*
-			const drain::FlexibleVariable & maskId = MaskerSVG::createMaskId(overlayGroup);
-			drain::image::TreeSVG & mask = MaskerSVG::getMask(ctx.svgTrack, maskId);
-			MaskerSVG::updateMask(mask, w, h, curve.data);
-			*/
 		}
 
 	};

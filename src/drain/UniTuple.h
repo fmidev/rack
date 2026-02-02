@@ -127,6 +127,20 @@ public:
 		return *this;
 	}
 
+	// Experimental
+	template<typename S>
+	inline
+	tuple_t & operator*=(S arg){
+		/*
+		for (iterator it = begin(); it != end(); ++it){
+		*it = i;
+		}
+		*/
+		for (T & x: *this){
+			x *= arg;
+		}
+		return *this;
+	}
 
 
 
