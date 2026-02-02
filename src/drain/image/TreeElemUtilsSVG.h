@@ -220,15 +220,15 @@ protected:
 
 	// Could be protected
 	void flush(){
-		Logger mout(__FILE__, __FUNCTION__);
-		mout.warn("contents1: ", d);
+		// Logger mout(__FILE__, __FUNCTION__);
+		// mout.warn("contents1: ", d);
 		if (noReset){
 			node["d"].append(sstr.str());
-			mout.warn("appended contents_: ", d);
+			// mout.warn("appended contents_: ", d);
 		}
 		else {
 			node["d"] = sstr.str();
-			mout.warn("NEW contents_: ", d);
+			// mout.warn("NEW contents_: ", d);
 		}
 		sstr.str(""); // Destructor would do this anyway
 	}

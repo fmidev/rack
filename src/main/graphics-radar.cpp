@@ -275,16 +275,18 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 	// const drain::Rectangle<double> & b = comp.getBoundingBoxDeg();
 	// geoFrame.setBoundingBoxD(b.lowerLeft.x, b.lowerLeft.y, b.upperRight.x, b.upperRight.y);
 	// geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
+	/*
 	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj()));
 	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj().isSet()));
 	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj().isLongLat()));
-	geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
-	mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
-	mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
+	*/
+	// geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
+	// mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
+	// mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
 	geoFrame.setBoundingBoxNat(comp.getBoundingBoxNat());
 	geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
-	mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
-	mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
+	// mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
+	// mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
 	//geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
 	// mout.pending<LOG_WARNING>("now slowly: ", comp.getBoundingBoxDeg(), " = ", geoFrame.getBoundingBoxDeg(), " -> NATIVE: ", geoFrame.getBoundingBoxNat());
 
@@ -371,6 +373,42 @@ void RadarSVG::cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoi
 
 }
 
+void RadarSVG::drawSector(drain::svgPATH & bezierElem, const drain::Range<double> & radius, const drain::Range<double> & azimuthR) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (azimuthR.width() > 0.0){
+		mout.info("Drawing sector");
+		// Scope for destructor. Or flush?
+		//drain::svgPATH bezierElem(curve);
+		moveTo(bezierElem, radius.max, azimuthR.min);
+		cubicBezierTo(bezierElem, radius.max, azimuthR.min, azimuthR.max);
+		lineTo(bezierElem, radius.min, azimuthR.max);
+		if (radius.min > 0.0){
+			// Draw inner arc
+			cubicBezierTo(bezierElem, radius.min, azimuthR.max, azimuthR.min);
+		}
+		//lineTo(bezierElem, radius.max, azimuthR.min);
+		close(bezierElem);
+	}
+	else {
+		// Annulus
+		// drain::svgPATH bezierElem(curve);
+		moveTo(bezierElem, radius.max, 0.0);
+		cubicBezierTo(bezierElem, radius.max, 0.0, +2.0*M_PI);
+		if (radius.min > 0.0){
+			mout.info("Drawing annulus");
+			moveTo(bezierElem, radius.min, 0.0);
+			// lineTo(bezierElem, radius.min, azimuthR.max);
+			cubicBezierTo(bezierElem, radius.min, +2.0*M_PI, 0.0);
+			// lineTo(bezierElem, radius.max, azimuthR.min);
+		}
+		else {
+			mout.info("Drawing circle");
+		}
+		close(bezierElem);
+	}
+}
 
 } // rack
 

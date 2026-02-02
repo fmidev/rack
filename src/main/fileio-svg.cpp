@@ -1115,9 +1115,8 @@ public:
 
 /**
 
-	Move to drain/utils/Range.h ?
+	Moved to drain/utils/Range.h ?
 
- */
 template <typename T>
 class SteppedRange : public drain::UniTuple<T,3> {
 
@@ -1137,20 +1136,30 @@ public:
 
 };
 
+ */
+
+
 
 class CmdPolarBase {
 
 protected:
-	SteppedRange<double> distanceMetres;// (50000.0, 0.0, 250000.0);
-	SteppedRange<int> azimuthDegrees; // (30, 0, 360);
+	drain::SteppedRange<double> radiusMetres = {0.0, 0.0, 0.0};// (50000.0, 0.0, 250000.0);
+	drain::SteppedRange<double> azimuthDegrees = {0.0, 0.0, 0.0}; // (30, 0, 360);
+	bool MASK = false;
 
 public:
+
+	enum MARKER {
+		DOT=8,
+		CIRCLE=16,
+	};
 
 	/**
 	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
 	 */
 	static
-	drain::image::TreeSVG & prepareGeoGroup(RackContext & ctx, RadarSVG & radarSVG, bool shared=false){
+	//drain::image::TreeSVG & prepareGeoGroup(RackContext & ctx, RadarSVG & radarSVG, bool prepend=false){
+	drain::image::TreeSVG & getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG){ // , bool prepend=false){
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -1170,9 +1179,8 @@ public:
 		RadarSVG::getOverlayStyle(ctx.svgTrack);
 
 		drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
-		drain::image::TreeSVG & geoGroup = RadarSVG::getOverlayGroup(group);
-		RackSVG::consumeAlignRequest(ctx, geoGroup);
-
+		drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
+		RackSVG::consumeAlignRequest(ctx, overlayGroup);
 
 		const drain::VariableMap & wherePolar = srcPolar[ODIMPathElem::WHERE].data.attributes;
 
@@ -1183,14 +1191,11 @@ public:
 		if ((object == "SCAN") || (object == "PVOL")){
 			// mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
 			// mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
-			// return;
-			geoGroup->set("data-latest", srcCurr[ODIMPathElem::WHAT].data.attributes["source"]);
+			overlayGroup->set("data-latest", srcCurr[ODIMPathElem::WHAT].data.attributes["source"]);
 		}
 
-		// TRUE
 		// mout.note("Cartesian");
-		// const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT | RackContext::CARTESIAN);
-		const Hi5Tree & srcCartesian = ctx.getHi5(RackContext::CARTESIAN);
+		const Hi5Tree & srcCartesian = ctx.getHi5(RackContext::CARTESIAN);  // ctx.getHi5(RackContext::CURRENT | RackContext::CARTESIAN);
 
 		if (!srcCartesian.empty()){ // HDF5 has been either loaded or extracted.
 			mout.note("Using Cartesian product (meta data)");
@@ -1198,40 +1203,261 @@ public:
 			const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
 			radarSVG.updateCartesianConf(whereCart);
 			// Redesign multi-frame mosaick...
-			geoGroup->set("data-latest", srcCurr[ODIMPathElem::HOW].data.attributes["nodes"]);
+			overlayGroup->set("data-latest", srcCurr[ODIMPathElem::HOW].data.attributes["nodes"]);
 		}
 		else {
 			Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
 			mout.note("Cartesian product not (yet) created, but using specification: ", DRAIN_LOG(composite));
-			// composite.toStream(std::cerr);
-			// mout.error("Cartesian empty");
-			// composite.odim;
 			radarSVG.updateCartesianConf(composite);
-			// radarSVG.updateRadarConf(wherePolar);
 		}
 
 		// mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
 		// mout.reject<LOG_WARNING>(DRAIN_LOG(radarSVG.radarProj));
 
-		/*
-		drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
-		drain::image::TreeSVG & geoGroup = RadarSVG::getOverlayGroup(group);
-		RackSVG::consumeAlignRequest(ctx, geoGroup);
-		*/
-		// mout.attention(DRAIN_LOG(geoGroup->get("data-latest")));
-
-
-		std::string srcLabel = shared ? "shared" : geoGroup->getAttributes().get("data-latest", "unknown");
-		drain::image::TreeSVG & g = geoGroup[srcLabel](drain::image::svg::GROUP);
-		g->set("data-src", srcLabel);
-		return g;
-		//return geoGroup;
+		return overlayGroup;
 
 	}
 
+	static
+	drain::image::TreeSVG & getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label=""){
 
+		std::string srcLabel = overlayGroup->getAttributes().get("data-latest", "unknown");
+		const std::string & key = label.empty() ? srcLabel : label;
+		drain::image::TreeSVG & overlay = overlayGroup[key](drain::image::svg::GROUP); // (drain::image::svg::GROUP);
+		overlay->set("data-src", srcLabel);
+		return overlay;
+
+	}
+
+	static inline
+	double ensureMetricRange(double maxRange, double range=1.0){
+		if (range < -1.0){
+			return range;
+		}
+		else if (range > +1.0){
+			return range;
+		}
+		else {
+			return range*maxRange;
+		}
+	};
+
+	/// Given a distance or a distance range, ensure metric (if relative) and also validate generally.
+	/**
+	 *
+	 */
+	static
+	void resolveDistance(const drain::SteppedRange<double> & ownDist, const drain::SteppedRange<double> & sharedDist, drain::SteppedRange<double> & dist, double maxDistance = 0.0){
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		if (ownDist.range.width() > 0.0){
+			mout.info("using specific range: ", ownDist.range.tuple());
+			dist.range.set(ownDist.range.tuple());
+			dist.step = ownDist.step;
+			// warn if .max == ?
+		}
+		else if (ownDist.range.max > 0.0){
+			mout.info("using max distance of specific range: ", ownDist.range.tuple());
+			dist.range.set(0.0, ownDist.range.max);
+			dist.step =   ownDist.step;
+		}
+		else if (sharedDist.range.width() > 0.0){
+			mout.info("using polarSelector range: ", sharedDist.range.tuple());
+			dist.range.set(sharedDist.range.tuple());
+			dist.step =    sharedDist.step;
+		}
+		else if (sharedDist.range.max > 0.0){
+			mout.info("using max distance of polarSelector range: ", sharedDist.range.tuple());
+			dist.range.set(0.0, sharedDist.range.max);
+			dist.step =  sharedDist.step;
+		}
+		else {
+			mout.info("guessing range (0,max)");
+			dist.range.set(0.0, 1.0); // min to max
+			//dist.step = 50000; // 50 km
+		}
+
+
+
+		if (dist.range.min<0){ // Relax this later!
+			//mout.unimplemented("negative start");
+			// mout.error("negative start of radial range ", dist.range.min, " [metres]");
+			mout.unimplemented<LOG_ERR>("negative start of radial range ", dist.range.min, " [metres]");
+			return;
+		}
+
+		if (dist.range.width() < 0){
+			if (dist.range.max == 0){
+				dist.range.max = dist.range.min;
+				dist.range.min = 0;
+			}
+			else {
+				mout.error("illegal (reversed) radial range: ", DRAIN_LOG(dist.range));
+				return;
+			}
+		}
+
+		if (maxDistance > 0.0){
+			dist.range.min = ensureMetricRange(maxDistance, dist.range.min);
+			dist.range.max = ensureMetricRange(maxDistance, dist.range.max);
+		}
+
+
+
+		if (dist.step == 0.0){
+			if (ownDist.step > 0.0){
+				dist.step = ownDist.step;
+			}
+			else if (sharedDist.step > 0.0){
+				dist.step = sharedDist.step;
+			}
+			else {
+				dist.step = 50000; // 50 km
+			}
+		}
+
+		mout.accept<LOG_NOTICE>(DRAIN_LOG(dist));
+		// rescale max?
+
+	};
+
+	static
+	void resolveAzimuthRange(const drain::SteppedRange<double> & ownAzm, const drain::SteppedRange<double> & sharedAzm, drain::SteppedRange<double> & azm){
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		if (ownAzm.range.width() > 0){
+			azm.set(ownAzm.tuple());
+		}
+		else if (sharedAzm.range.width() > 0.0){
+			azm.set(sharedAzm.tuple());
+		}
+		else {
+			//azm.set(30.0, 0.0, 360.0);
+		}
+
+		if (azm.range.min < -360.0){
+			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
+		}
+		if (azm.range.max > +720.0){
+			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
+		}
+		if (azm.range.max < azm.range.min){
+			mout.error("illegal azimuthal range ", azm.range.tuple(), " [degrees]");
+		}
+
+		mout.accept<LOG_NOTICE>(DRAIN_LOG(azm));
+	}
 
 };
+
+
+
+} // rack
+
+
+DRAIN_ENUM_DICT(rack::CmdPolarBase::MARKER) = {
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, CIRCLE),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, DOT),
+		// {"CIRCLE", CmdRadarMarker::MARKER::CIRCLE}
+};
+
+DRAIN_ENUM_OSTREAM(rack::CmdPolarBase::MARKER);
+
+
+namespace rack {
+
+
+/**
+ *
+ *  circle=max RADAR_CIRCLE
+ *  dot=0.0    RADAR_DOT
+ *  label=${NOD}  RADAR_LABEL
+ *
+ *
+ */
+class CmdRadarDot : public drain::BasicCommand, CmdPolarBase {
+
+
+public:
+
+
+	CmdRadarDot() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar position") {
+		getParameters().link("radius", radiusMetres.range.min, "radius of radar location disc [0.0..1.0|0..250..]");
+		getParameters().link("MASK", MASK, "inverse");
+	};
+
+	// Copy constructor
+	CmdRadarDot(const CmdRadarDot & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		RadarSVG radarSVG;
+		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+
+		// const std::string & value = getLastParameters(); //
+
+		//drain::Range<double> distance;
+		double distance = 10000.0; // km
+		if (radiusMetres.range.min > 0.0){
+			distance = radiusMetres.range.min;
+			// warn if .max == ?
+		}
+		else if (ctx.polarSelector.radius.range.min > 0.0){
+			distance = ctx.polarSelector.radius.range.min;
+		}
+
+		if (distance > 0.0){ // earlier!
+
+			const std::string DOT = "DOT";
+
+			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, DOT, {
+					{"fill", "green"},
+					{"stroke", "red"},
+					{"stroke-width", 5.0},
+					{"opacity", 0.5}
+			});
+
+			overlay.addChild()->setComment(getName(), ' ', getParameters());
+			drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
+			curve->addClass(DOT);
+
+			{
+				// Private scope, to call bezierElem destructor.
+				drain::svgPATH bezierElem(curve);
+				const double r = radarSVG.getRange(distance);
+				radarSVG.moveTo(bezierElem, r, 0.0);
+				radarSVG.cubicBezierTo(bezierElem, r, 0.0, 2.0*M_PI);
+				radarSVG.close(bezierElem);
+			}
+
+			if (MASK){ //  && !curve->hasClass("MASK")){
+				const int w = radarSVG.geoFrame.getFrameWidth();
+				const int h = radarSVG.geoFrame.getFrameHeight();
+				MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+				/*
+				const drain::FlexibleVariable & maskId = MaskerSVG::createMaskId(overlayGroup);
+				drain::image::TreeSVG & mask = MaskerSVG::getMask(ctx.svgTrack, maskId);
+				MaskerSVG::updateMask(mask, w, h, curve.data);
+				*/
+			}
+
+
+		}
+
+	};
+
+};
+
 
 /**
  *
@@ -1239,12 +1465,17 @@ public:
  */
 class CmdRadarGrid : public drain::BasicCommand, CmdPolarBase {
 
+	// future option
+	bool AMZ_TEXT = true;
+	bool DIST_TEXT = true;
+
 public:
 
 
 	CmdRadarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings. Styles: HIGHLIGHT") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
-		getParameters().link("distance", distanceMetres.tuple(), "step:start:end (metres)").fillArray = false;
-		getParameters().link("azimuth", azimuthDegrees.tuple(), "step:start:end (degrees)").fillArray = false;
+		getParameters().link("radius", radiusMetres.tuple(0.0, 0.0, 0.0), "step:start:end (metres)").fillArray = false;
+		getParameters().link("azimuth", azimuthDegrees.tuple(0.0, 0.0, 0.0), "step:start:end (degrees)").fillArray = false;
+		getParameters().link("MASK", MASK, "add a mask");
 	};
 
 	// Copy constructor
@@ -1259,151 +1490,137 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		//mout.note(getParameters());
-
-		// GENERAL?
 		RadarSVG radarSVG;
+		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
-		drain::image::TreeSVG & geoGroup = prepareGeoGroup(ctx, radarSVG);
-		// mout.pending<LOG_WARNING>("Fresh: ", DRAIN_LOG(radarSVG.radarProj));
+		drain::SteppedRange<double> dist(0.0, 0.0, 1.0); // (distanceMetres.range); // double -> int
 
-		//const drain::Range<double> r(distanceMetres.range); // int -> double
-		drain::Range<int> r; // (distanceMetres.range); // double -> int
+		resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
 
-		r.set(distanceMetres.range.tuple());
-		// mout.attention("initial range: ", DRAIN_LOG(distanceMetres), " => ", DRAIN_LOG(r));
-		// r.set(distanceMetres.range.min, distanceMetres.range.max);
-		// mout.attention("initial range: ", DRAIN_LOG(distanceMetres), " => ", DRAIN_LOG(r));
+		/*
+		dist.range.min = radarSVG.getRange(dist.range.min);
+		dist.range.max = radarSVG.getRange(dist.range.max);
+		*/
 
-		const double maxRange = radarSVG.getRange();
-
-		if (distanceMetres.range.span() == 0){
-			mout.debug("Assuming range start from radar");
-			r.min = 0;
-			r.max = static_cast<int>(distanceMetres.range.max);
+		/*
+		if (dist.step == 0.0){
+			dist.step = dist.range.span() / 5;
+			mout.warn("zero distance step, assigned  ", DRAIN_LOG(dist.step));
 		}
-		if ((distanceMetres.range.min > 0.0) && (distanceMetres.range.min <= 1.0)){
-			r.min = static_cast<int>(distanceMetres.range.min * maxRange);
-			mout.debug("Range.min(", distanceMetres.range.min,"), assuming relative, min=", r.min, "");
-		}
-		if (distanceMetres.range.max < 1.0){
-			r.max = static_cast<int>(distanceMetres.range.max * maxRange);
-			mout.debug("Range.max(", distanceMetres.range.max,"), assuming relative, max=", r.max, "");
-		}
+		*/
 
-		if (r.min<0){ // Relax this later!
-			mout.error("negative start of radial range ", r.min, " [metres]");
-			return;
-		}
-
-		if (r.width() < 0){
-			if (r.max == 0){
-				r.max = r.min;
-				r.min = 0;
-			}
-			else {
-				mout.error("illegal (reversed) radial range: ", DRAIN_LOG(distanceMetres), " => ", DRAIN_LOG(r));
-				return;
-			}
-		}
-
-		if (r.span() == 0.0){
-			mout.warn("empty range: ", distanceMetres.range.tuple(), " => ", r.tuple(), " [metres]");
-		}
-
-		int stepMetres = distanceMetres.step;
-		if (stepMetres == 0){
-			stepMetres = r.span() / 5;
-			mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepMetres));
-		}
-
-		mout.debug("final range: ", DRAIN_LOG(r), DRAIN_LOG(stepMetres));
-
-		const drain::Range<double> a(azimuthDegrees.range);// int->double
-		if (a.min < -360.0){
-			mout.error("illegal start of azimuthal range ", a.min, " [degrees]");
-		}
-		if (a.max > +720.0){
-			mout.error("illegal start of azimuthal range ", a.min, " [degrees]");
-		}
-		if (a.max < a.min){
-			mout.error("illegal azimuthal range ", a.tuple(), " [degrees]");
-		}
-
-		int stepDegrees = azimuthDegrees.step;
-		if (stepDegrees == 0){
-			stepDegrees = 15;
-			mout.warn("zero distance step, assigned  ", DRAIN_LOG(stepDegrees));
-		}
-
-		if (azimuthDegrees.range.span() % stepDegrees){
-			mout.warn(DRAIN_LOG(stepDegrees), "not multiple of  ", DRAIN_LOG(azimuthDegrees.range));
+		if (dist.range.span() == 0.0){
+			mout.error("empty range: ", radiusMetres.range.tuple(), " => ", dist.range.tuple(), " [metres]");
 		}
 
 
-		a.min *= drain::DEG2RAD;
-		a.max *= drain::DEG2RAD;
+		mout.debug("final range: ", DRAIN_LOG(dist.range), DRAIN_LOG(dist.step));
+
+		drain::SteppedRange<double> azm; // (distanceMetres.range); // double -> int
+
+		if (azimuthDegrees.range.width() > 0){
+			azm.set(azimuthDegrees.tuple());
+		}
+		else if (ctx.polarSelector.azimuth.range.width() > 0.0){
+			azm.set(ctx.polarSelector.azimuth.tuple());
+		}
+		else {
+			azm.set(30.0, 0.0, 360.0);
+		}
 
 
-		// geoGroup.addChild()->setComment("Position/proj: ", radarSVG.radarProj);
-		// mout.pending<LOG_WARNING>("Freak: ", DRAIN_LOG(radarSVG.radarProj));
+		// const drain::Range<double> a(azimuthDegrees.range);// int->double
+		if (azm.range.min < -360.0){
+			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
+		}
+		if (azm.range.max > +720.0){
+			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
+		}
+		if (azm.range.max < azm.range.min){
+			mout.error("illegal azimuthal range ", azm.range.tuple(), " [degrees]");
+		}
 
-		geoGroup.addChild()->setComment("Rays: ", distanceMetres.range.tuple());
+		if (azm.step == 0){
+			azm.step = 15;
+			mout.info("zero distance step, assigned  ", DRAIN_LOG(azm.step));
+		}
+
+		/*
+		if (azm.range.span() % azm.step){
+			mout.warn(DRAIN_LOG(azm.step), " not multiple of  ", DRAIN_LOG(azm.range));
+		}
+		*/
+
+
+		overlay.addChild()->setComment("Rays: ", dist.range.tuple());
 		double angleRad = 0.0;
-		for (int j=azimuthDegrees.range.min; j<=azimuthDegrees.range.max; j += azimuthDegrees.step){
+		for (int j=azm.range.min; j<=azm.range.max; j += azm.step){
 
 			angleRad = drain::DEG2RAD * static_cast<double>(j);
 
-			drain::image::TreeSVG & rayNode = geoGroup.addChild();
+			drain::image::TreeSVG & rayNode = overlay.addChild();
 			rayNode->addClass(RadarSVG::HIGHLIGHT);
 			rayNode[svg::TITLE](svg::TITLE)->setText(j, drain::XML::DEGREE); // degree sign "&#176;"
 
 			drain::svgPATH rayElem(rayNode);
 
-			radarSVG.moveTo(rayElem, distanceMetres.range.min, angleRad);
+			radarSVG.moveTo(rayElem, dist.range.min, angleRad);
 
-			int step = 5000; // metres, note not: metres.step
-			//for (int i=distanceMetres.range.min+distanceMetres.step; i<=distanceMetres.range.max; i += step){
-			for (int i=r.min+stepMetres; i<=r.max; i += step){
-				i = std::min(i, r.max);
+			int step = 5000; // metres, like drawing resolution here, note not: metres.step
+			for (int i=dist.range.min+step; i<=dist.range.max; i += step){
+				i = std::min(i, static_cast<int>(dist.range.max));
 				radarSVG.lineTo(rayElem, static_cast<double>(i), angleRad);
 			}
 
-
 		}
 
+		drain::Range<double> azmRad;
+		// methodize?
+		azmRad.min = azm.range.min * drain::DEG2RAD;
+		azmRad.max = azm.range.max * drain::DEG2RAD;
 
-		geoGroup.addChild()->setComment("Circles/arcs: ", azimuthDegrees.range.tuple());
+		overlay.addChild()->setComment("Circles/arcs: ", azm.range.tuple(), " - ", azmRad.tuple());
 
-		for (int i=r.min + stepMetres; i<=r.max; i += stepMetres){
+		for (int i=dist.range.min + dist.step; i<=dist.range.max; i += dist.step){
 
-			drain::image::TreeSVG & g = geoGroup.addChild()(svg::GROUP);
+			drain::image::TreeSVG & g = overlay.addChild()(svg::GROUP);
 			g->addClass(RadarSVG::HIGHLIGHT);
 			g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
 
 			drain::image::TreeSVG & arcNode = g.addChild();
 			drain::svgPATH arcElem(arcNode);
-			radarSVG.moveTo(arcElem, i, a.min);
-			radarSVG.cubicBezierTo(arcElem, i, a.min, a.max);
+			radarSVG.moveTo(arcElem, i, azmRad.min);
+			radarSVG.cubicBezierTo(arcElem, i, azmRad.min, azmRad.max);
 			// Tool tip
 			arcNode[svg::TITLE](svg::TITLE)->setText(i/1000, " kms");
 			// radarSVG.close(arcElem);
 
-			if (true){ // todo switch?
-				g.addChild()->setComment("Write kilometres");
-				double angleRad = drain::DEG2RAD * static_cast<double>(azimuthDegrees.range.min);
-				drain::Point2D<int> imgPoint;
-				int offset = distanceMetres.step/4;
-				drain::image::TreeSVG & text = g[svg::TEXT](svg::TEXT);
-				text->addClass(RadarSVG::GRID); // on top of image, background gray blur applied
-				text->addClass(RadarSVG::HIGHLIGHT);
-				radarSVG.convert(i + offset, angleRad, imgPoint);
-				text->setLocation(imgPoint);
-				text->setText(i/1000); // "km - ", imgPoint.tuple());
-			}
+			// if (true){ // todo switch?
+			g.addChild()->setComment("Write kilometres");
+			// double angleRad = drain::DEG2RAD * static_cast<double>(azimuthDegrees.range.min);
+			drain::Point2D<int> imgPoint;
+			int offset = radiusMetres.step/4;
+			drain::image::TreeSVG & text = g[svg::TEXT](svg::TEXT);
+			text->addClass(RadarSVG::GRID); // on top of image, background gray blur applied
+			text->addClass(RadarSVG::HIGHLIGHT);
+			radarSVG.convert(i + offset, azmRad.min, imgPoint);
+			text->setLocation(imgPoint);
+			text->setText(i/1000); // "km - ", imgPoint.tuple());
+			//}
 
 
 		}
+
+		/*  Should copy some of already created.
+		if (MASK){ //  && !curve->hasClass("MASK")){
+			const int w = radarSVG.geoFrame.getFrameWidth();
+			const int h = radarSVG.geoFrame.getFrameHeight();
+			const drain::FlexibleVariable & maskId = MaskerSVG::createMaskId(overlayGroup);
+			drain::image::TreeSVG & mask = MaskerSVG::getMask(ctx.svgTrack, maskId);
+			MaskerSVG::updateMask(mask, w, h, curve.data);
+		}
+		*/
 
 
 
@@ -1416,21 +1633,27 @@ public:
 
 
 
-class CmdRadarSector : public drain::SimpleCommand<std::string>, public CmdPolarBase {
+class CmdRadarSector : public drain::BasicCommand, public CmdPolarBase {
 
 public:
 
-	CmdRadarSector() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	CmdRadarSector() : drain::BasicCommand(__FUNCTION__, "Select (and draw) sector using natural coordinates or indices. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres)").fillArray = false;
+		getParameters().link("azimuth", azimuthDegrees.range.tuple(0.0, 360.0), "start:end (degrees)").fillArray = false;
+		getParameters().link("MASK", MASK, "add a mask");
 	};
 
-	// static
-	// const std::string SECTOR;
+	// Copy constructor
+	CmdRadarSector(const CmdRadarSector & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
 
-
+	/*
 	virtual inline
 	void parameterKeysToStream(std::ostream & ostr) const override {
 		Command::parameterKeysToStream(ostr, polarSector.getParameters().getKeyList(), ',');
 	};
+	*/
 
 
 	virtual
@@ -1439,59 +1662,98 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		polarSector.reset();
-
-		polarSector.setParameters(value);
+		// polarSector.reset();
+		// polarSector.setParameters(value);
 
 		RadarSVG radarSVG;
+		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
-		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+		overlay.addChild()->setComment(getName(), ' ', getParameters());
+
+
+
+		drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
+		curve -> addClass(getName()); // SECTOR
+		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, getName(), { // SECTOR
+				{"fill", "none"},
+				{"stroke", "rgb(160,255,160)"},
+				{"stroke-width", 5.0},
+				// {"opacity", 0.65}
+		});
+
+
+		drain::SteppedRange<double> dist; // (distanceMetres.range); // double -> int
+		resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
+
+		drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
+		resolveAzimuthRange(azimuthDegrees, ctx.polarSelector.azimuth, azm);
+
+		const int radialResolution = 8; // steps, for Bezier curves
+		radarSVG.setRadialResolution(radialResolution);
+
+		const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
+
+		// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
 
 		{
-			// mout.note(getName(), ": Cartesian");
-
-			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
-
-			drain::image::TreeSVG & curve = overlayGroup[getName()](drain::image::svg::PATH);
-			curve -> addClass(getName()); // SECTOR
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, getName(), { // SECTOR
-					{"fill", "none"},
-					{"stroke", "green"},
-					{"stroke-width", 12.0},
-					{"opacity", 0.65}
-			});
-
-			// TreeElemUtilsSVG.h
 			drain::svgPATH bezierElem(curve);
+			radarSVG.drawSector(bezierElem, dist.range, azmRad);
+		}
 
-			// Note: polygon path has (here) integer coordinates; assuming integer frame.
+		/*
 
-			const int radialResolution = 8; // steps, for Bezier curves
-			radarSVG.setRadialResolution(radialResolution);
-
-
-			const drain::Range<double> & r = polarSector.distanceRange;
-			const drain::Range<double> & a = polarSector.azmRange;
-			a.min *= drain::DEG2RAD;
-			a.max *= drain::DEG2RAD;
-
-			// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
-			radarSVG.moveTo(bezierElem, r.max, a.min);
-			radarSVG.cubicBezierTo(bezierElem, r.max, a.min, a.max);
-			radarSVG.lineTo(bezierElem, r.min, a.max);
-			radarSVG.cubicBezierTo(bezierElem, r.min, a.max, a.min);
-			radarSVG.lineTo(bezierElem, r.max, a.min);
+		if (azm.range.width() > 0.0){
+			mout.info("Drawing sector");
+			// Scope for destructor. Or flush?
+			drain::svgPATH bezierElem(curve);
+			radarSVG.moveTo(bezierElem, dist.range.max, azmRad.min);
+			radarSVG.cubicBezierTo(bezierElem, dist.range.max, azmRad.min, azmRad.max);
+			radarSVG.lineTo(bezierElem, dist.range.min, azmRad.max);
+			if (dist.range.min > 0.0){
+				// Draw inner arc
+				radarSVG.cubicBezierTo(bezierElem, dist.range.min, azmRad.max, azmRad.min);
+			}
+			//radarSVG.lineTo(bezierElem, dist.range.max, azmRad.min);
 			radarSVG.close(bezierElem);
+		}
+		else {
+			// Annulus
+			drain::svgPATH bezierElem(curve);
+			radarSVG.moveTo(bezierElem, dist.range.max, 0.0);
+			radarSVG.cubicBezierTo(bezierElem, dist.range.max, 0.0, +2.0*M_PI);
+			if (dist.range.min > 0.0){
+				mout.info("Drawing annulus");
+				radarSVG.moveTo(bezierElem, dist.range.min, 0.0);
+				// radarSVG.lineTo(bezierElem, dist.range.min, azmRad.max);
+				radarSVG.cubicBezierTo(bezierElem, dist.range.min, +2.0*M_PI, 0.0);
+				// radarSVG.lineTo(bezierElem, dist.range.max, azmRad.min);
+			}
+			else {
+				mout.info("Drawing circle");
+			}
+			radarSVG.close(bezierElem);
+		}
+		*/
 
-
+		if (MASK){ //  && !curve->hasClass("MASK")){
+			const int w = radarSVG.geoFrame.getFrameWidth();
+			const int h = radarSVG.geoFrame.getFrameHeight();
+			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+			// MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+			/*
+			const drain::FlexibleVariable & maskId = MaskerSVG::createMaskId(overlayGroup);
+			drain::image::TreeSVG & mask = MaskerSVG::getMask(ctx.svgTrack, maskId);
+			MaskerSVG::updateMask(mask, w, h, curve.data);
+			*/
 		}
 
 	};
 
 protected:
 
-	mutable
-	PolarSector polarSector;
+	// mutable
+	// PolarSector polarSector;
 
 };
 
@@ -1542,7 +1804,9 @@ public:
 
 		RadarSVG radarSVG;
 
-		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+		// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
 
 		const std::string & clsNameBase = getName();
 
@@ -1615,24 +1879,6 @@ public:
 
 };
 
-enum MARKER {
-	DOT=8,
-	CIRCLE=16,
-};
-
-}
-
-
-DRAIN_ENUM_DICT(rack::MARKER) = {
-		DRAIN_ENUM_ENTRY(rack, CIRCLE),
-		DRAIN_ENUM_ENTRY(rack, DOT),
-		// {"CIRCLE", CmdRadarMarker::MARKER::CIRCLE}
-};
-
-DRAIN_ENUM_OSTREAM(rack::MARKER);
-
-
-namespace rack {
 
 /**
  *
@@ -1677,7 +1923,10 @@ public:
 
 		RadarSVG radarSVG;
 
-		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+		// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+
 
 		MARKER m = drain::EnumDict<MARKER>::getValue(label, false);
 
@@ -1740,88 +1989,6 @@ public:
 			// TreeElemUtilsSVG.h
 			drain::svgPATH bezierElem(curve);
 			const double r = radarSVG.getRange(dot);
-			radarSVG.moveTo(bezierElem, r, 0.0);
-			radarSVG.cubicBezierTo(bezierElem, r, 0.0, 2.0*M_PI);
-		}
-
-	};
-
-};
-
-/**
- *
- *  circle=max RADAR_CIRCLE
- *  dot=0.0    RADAR_DOT
- *  label=${NOD}  RADAR_LABEL
- *
- *
- */
-class CmdRadarDot : public drain::BasicCommand, CmdPolarBase {
-
-	bool MASK = false;
-public:
-
-
-	CmdRadarDot() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar position") {
-		getParameters().link("radius", distanceMetres.range.min, "radius of radar location disc [0.0..1.0|0..250..]");
-		getParameters().link("mask", MASK, "inverse");
-	};
-
-	// Copy constructor
-	CmdRadarDot(const CmdRadarDot & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
-	}
-
-
-	virtual
-	void exec() const override {
-
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		RadarSVG radarSVG;
-
-		drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG, MASK); // shared
-
-		if (distanceMetres.range.min > 0.0){
-
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, "DOT", {
-					{"fill", "green"},
-					{"stroke", "red"},
-					{"stroke-width", 5.0},
-					{"opacity", 0.5}
-			});
-
-			overlayGroup.addChild()->setComment(getName(), ' ', getParameters());
-			drain::image::TreeSVG & curve = overlayGroup["DOT"](drain::image::svg::PATH);
-			curve->addClass("DOT");
-			drain::svgPATH bezierElem(curve);
-			bezierElem.noReset = MASK;
-
-			if (MASK && !curve->hasClass("MASK")){
-				curve->addClass("MASK");
-				drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, "MASK", {
-						{"fill-rule", "nonzero"},
-				});
-
-				const int w = radarSVG.geoFrame.getFrameWidth();
-				const int h = radarSVG.geoFrame.getFrameHeight();
-				bezierElem.absolute<drain::svgPATH::MOVE>(0, 0);
-				bezierElem.absolute<drain::svgPATH::LINE>(0, h);
-				bezierElem.absolute<drain::svgPATH::LINE>(w, h);
-				bezierElem.absolute<drain::svgPATH::LINE>(w, 0);
-				bezierElem.absolute<drain::svgPATH::CLOSE>();
-				/*
-				bezierElem.absolute<drain::svgPATH::MOVE>(0, 0);
-				bezierElem.absolute<drain::svgPATH::LINE>(w, 0);
-				bezierElem.absolute<drain::svgPATH::LINE>(w, h);
-				bezierElem.absolute<drain::svgPATH::LINE>(0, h);
-				bezierElem.absolute<drain::svgPATH::CLOSE>();
-				*/
-			}
-
-
-			const double r = radarSVG.getRange(distanceMetres.range.min);
 			radarSVG.moveTo(bezierElem, r, 0.0);
 			radarSVG.cubicBezierTo(bezierElem, r, 0.0, 2.0*M_PI);
 		}

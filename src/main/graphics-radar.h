@@ -105,14 +105,14 @@ public:
 	/// If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such.
 	inline
 	double getRange(double r=1.0){
-		if (r<-1.0){
+		if (r < -1.0){
 			return r;
 		}
-		else if (r<=1.0){
-			return r*maxRange;
+		else if (r > +1.0){
+			return r;
 		}
 		else {
-			return r;
+			return r*maxRange;
 		}
 	};
 
@@ -245,9 +245,13 @@ public:
 	void cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthStartR, double azimuthEndR) const;
 
 	inline
-	void close(drain::svgPATH & elem){
+	void close(drain::svgPATH & elem) const {
+		// No difference for absolute/relative
 		elem.absolute<drain::svgPATH::CLOSE>();
 	}
+
+	// Convenience
+	void drawSector(drain::svgPATH & elem, const drain::Range<double> & radius, const drain::Range<double> & azimuthR) const;
 
 protected:
 

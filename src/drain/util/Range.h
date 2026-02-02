@@ -165,8 +165,29 @@ std::ostream & operator<<(std::ostream & ostr, const Range<T> & r){
 
 DRAIN_TYPENAME_T(Range,T);
 
-} // namespace drain
 
+template <typename T>
+class SteppedRange : public UniTuple<T,3> {
+
+public:
+
+	typedef Range<T> range_t;
+	T & step;
+	range_t range;
+
+	SteppedRange(T step=1, T min=0, T max=0) : UniTuple<T,3>(step, min, max),
+			step(this->next()), range(this->tuple(),1) {
+	}
+
+	SteppedRange(const SteppedRange & range) : UniTuple<T,3>(range),
+			step(this->next()), range(this->tuple(),1) {
+	}
+
+};
+
+DRAIN_TYPENAME_T(SteppedRange,T);
+
+} // namespace drain
 
 
 #endif /* RECTANGLE_H_ */

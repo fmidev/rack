@@ -193,6 +193,89 @@ public:
 };
 
 
+
+/// Tools for creating masks for graphic objects based on their contours.
+/**
+ *
+ */
+class MaskerSVG : public drain::TreeVisitor<TreeSVG> {
+
+public:
+
+	static
+	const std::string MASK_ID;
+
+	static
+	const ClassXML COVER;
+
+	inline
+	MaskerSVG(){
+	}
+
+	MaskerSVG(const MaskerSVG & clipper){ // ???
+	}
+
+
+	/// Mark an overlay group "masked", meaning that at least one of its objects (also) creates a mask for that group.
+	/**
+	 *  Later, a RECT will be appended, serving as a masking element.
+	 */
+	static
+	const drain::FlexibleVariable & createMaskId(TreeSVG & group);
+
+	/// From global document definitions (DEFS), retrieve the mask designed for this group.
+	static
+	TreeSVG & getMask(TreeSVG & root, const std::string & maskId);
+
+	/// Method for an object to copy its contour
+	/**
+	 *   \param mask - SVG object of type MASK.
+	 *   \param width  - width of the originating object
+	 *   \param height - height of the originating object
+	 *   \param contourNode - (closed) SVG element, typically of type PATH, to be copied to the mask.
+	 */
+	static
+	void updateMask(TreeSVG & mask, int width, int height, const NodeSVG & contourNode);
+
+
+	/// Calls createMaskId(), getMask() and updateMask().
+	/**
+	 *
+	 */
+	static
+	TreeSVG & createMask(TreeSVG & root, TreeSVG & group, int width=0, int height=0, const NodeSVG & node = NodeSVG(svg::UNDEFINED));
+
+	/// Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object.
+	/**
+	 *  The mask parameter with be assigned value "url(" + maskId + ")".
+	 *
+	 *  \param mask - SVG object of type MASK.
+	 *  \param obj  - SVG element, typically of type RECT, to be masked.
+	 *
+	 */
+	static
+	void linkMask(const TreeSVG & mask, TreeSVG & obj);
+
+
+	/// Ensures a clipping path o f type RECT of given size.
+	/**
+	 *   \code
+	 *  drain::image::MaskerSVG masker;
+	 *	drain::TreeUtils::traverse(masker, svg);
+	 *  \endcode
+	 *
+	 */
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		return 0;
+	}
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+};
+
+
+
 // DRAIN_ENUM_DICT(MetaDataCollectorSVG::MetaDataType);
 
 /**

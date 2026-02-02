@@ -127,11 +127,22 @@ public:
 		add(args...);
 	};
 
+	/// Add one or several classes.
 	template <typename ... TT>
 	inline
 	void add(const char *arg, const TT &... args) {
 		add(std::string(arg), args...);
 	}
+
+	/// Add one or several classes.
+	template <typename ... TT>
+	inline
+	void add(const ClassXML & arg, const TT &... args) {
+		if (!arg.empty()){
+			insert(arg);
+		}
+		add(args...);
+	};
 
 	/// Add one or several classes.
 	/**

@@ -183,71 +183,6 @@ protected:
 
 */
 
-/*
-class CmdSelect : public CmdBaseSelective {
-
-public:
-
-	CmdSelect() : CmdBaseSelective(__FUNCTION__, "Data selector for the next computation"){
-	};
-
-	CmdSelect(const CmdSelect & cmd) : CmdBaseSelective(cmd) {
-		setParameters(cmd.getParameters());
-	};
-
-
-	virtual
-	void exec() const override {
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
-
-		mySelector.reset();
-
-		// mout.attention("Select...");
-		// consider "reset" as a special argument.
-		try {
-			mySelector.setParameters(value); // will alert early
-		}
-		catch (const std::exception & e) {
-			mout.error("syntax error in selection string: ", value);
-		}
-		mout.special<LOG_DEBUG>("ctx.selector: ", mySelector);
-		ctx.select = value;
-	}
-
-
-
-	virtual
-	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const override {
-
-		const drain::ReferenceMap & params = mySelector.getParameters();
-		const std::list<std::string> & keys = params.getKeyList();  // To get keys in specified order.
-
-		const std::map<std::string,std::string> & units = params.getUnitMap();
-
-		for (const std::string & key: keys){
-			ostr << indent << key << " (" << params.get(key, "") << ")";
-
-			std::map<std::string,std::string>::const_iterator uit = units.find(key);
-			if (uit != units.end()){
-				if (!uit->second.empty()){
-					ostr << ' ' << '[' << uit->second << ']';
-				}
-			}
-			ostr << '\n';
-		}
-	}
-
-	virtual inline
-	void parameterKeysToStream(std::ostream & ostr) const override {
-		Command::parameterKeysToStream(ostr, mySelector.getParameters().getKeyList(), ',');
-	};
-
-
-
-
-};
-*/
 
 class CmdSelect : public CmdBaseSelective {
 
@@ -316,6 +251,45 @@ public:
 
 };
 
+// Consider CmdSelectPolar
+class CmdPolarSelect : public drain::BasicCommand {
+
+	PolarSelector polarSelector;
+
+public:
+
+	CmdPolarSelect() : drain::BasicCommand(__FUNCTION__, "Data selector for the next computation"){
+		getParameters().link("azimuth", polarSelector.azimuth.range.tuple()).setFill(true);
+		getParameters().link("azimuthStep", polarSelector.azimuth.step);
+		getParameters().link("radius", polarSelector.radius.range.tuple()).setFill(true);
+		getParameters().link("radiusStep", polarSelector.radius.step);
+	};
+
+	CmdPolarSelect(const CmdPolarSelect & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+		// setParameters(cmd.getParameters());
+	};
+
+
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, getName().c_str(), __FUNCTION__);
+
+		const std::string & value = getLastParameters();
+		if (value.empty()){
+
+		}
+		ctx.polarSelector.azimuth.set(polarSelector.azimuth.tuple());
+		ctx.polarSelector.radius.set(polarSelector.radius.tuple());
+
+	}
+
+};
 
 /// Tool for selecting data for next command(s), based on paths, quantities and elevations.
 /**
@@ -483,7 +457,7 @@ public:
 
 };
 
-
+/*
 struct TestAreaSelector : drain::BeanLike {
 
 	inline
@@ -511,14 +485,14 @@ public:
 
 	void exec() const {
 		RackContext & ctx  = getContext<RackContext>(); // this->template
-		ctx.polarAreaSelector.distance = bean.distance;
-		ctx.polarAreaSelector.azimuth  = bean.azimuth;
+		ctx.polarSelector.distance = bean.distance;
+		ctx.polarSelector.azimuth  = bean.azimuth;
 
 		// ctx.inputFlags.set(value);
 	}
 
 };
-
+*/
 
 /// Modifies metadata (data attributes).
 /**
@@ -2943,8 +2917,9 @@ HiddenModule::HiddenModule(){ //
 	install<CmdHdf5Test>("getMyH5");
 	install<CmdUpdateVariables>();
 
+	install<CmdPolarSelect>();
 	//DRAIN_CMD_INSTALL(Cmd,SelectArea)();
-	install<CmdSelectArea>();
+	// install<CmdSelectArea>();
 	// install<CmdTrigger>();
 	// install<CmdEcho>(); consider CmdRemark
 	// install<CmdSelectOld>();

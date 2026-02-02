@@ -58,15 +58,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-struct PolarAreaSelector : drain::BeanLike {
+struct PolarSelector : drain::BeanLike {
 
 	inline
-	PolarAreaSelector() : BeanLike(__FUNCTION__, ""){
+	PolarSelector() : BeanLike(__FUNCTION__, ""){
 	};
 
+	void reset(){
+		radius.fill(0.0);
+		azimuth.fill(0.0);
+	}
 
-	drain::Range<double> distance = {0.0, 250.0};
-	drain::Range<double> azimuth  = {0.0, 360.0};
+	// step, min, max
+	drain::SteppedRange<double> radius = {0.0, 0.0, 0.0};
+	drain::SteppedRange<double> azimuth  = {0.0, 0.0, 0.0}; //360.0};
 
 };
 
@@ -118,7 +123,7 @@ public:
 	/// Add prefix, unless filePath starts with a slash '/'.
 	void resolveFilePath(const std::string & prefix, const std::string & filePath, std::string & finalFilePath);
 
-	PolarAreaSelector polarAreaSelector;
+	PolarSelector polarSelector;
 
 
 	// Accumulator for data in Cartesian coordinates

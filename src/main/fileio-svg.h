@@ -43,9 +43,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
 
+
+
 namespace rack {
-
-
 
 
 /*

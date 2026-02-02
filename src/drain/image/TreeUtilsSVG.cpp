@@ -67,13 +67,6 @@ TreeSVG & TreeUtilsSVG::getHeaderObject(TreeSVG & root, svg::tag_t tag, const st
 /// Create a new entry, unless already defined.
 TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 
-	/*
-	TreeSVG & style = root[svg::STYLE](svg::STYLE);
-
-	if (style->isUndefined()){
-		style->setType(svg::STYLE);
-	}
-	*/
 
 	TreeSVG & style = getHeaderObject(root, svg::STYLE);
 
@@ -84,16 +77,6 @@ TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> 
 	}
 	return styleEntry;
 
-	/*
-	if (style.hasChild(selector)){
-		return style[selector];
-	}
-	else {
-		TreeSVG & styleEntry = style[selector];
-		styleEntry = styleDef;
-		return styleEntry;
-	}
-	*/
 }
 
 
@@ -353,6 +336,110 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	return 0;
 }
+
+
+
+const std::string MaskerSVG::MASK_ID = "data-mask";
+
+const ClassXML MaskerSVG::COVER("COVER");
+
+
+const drain::FlexibleVariable & MaskerSVG::createMaskId(TreeSVG & group){
+	const drain::StringBuilder<'_'> maskId(svg::MASK, group->getId());
+	group->set(MASK_ID, maskId.str());
+	return group->get(MASK_ID);
+}
+
+TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	drain::image::TreeSVG & defs = drain::image::TreeUtilsSVG::getHeaderObject(root, svg::DEFS);
+	//drain::image::TreeSVG & mask = defs[group->get(MASK_ID, "default")](svg::MASK);
+	drain::image::TreeSVG & mask = defs[maskId]; //(svg::MASK);
+
+	drain::image::TreeUtilsSVG::ensureStyle(root, COVER, { // drain::ClassXML(svg::MASK)
+			{"fill",   "gray"},
+			{"opacity", 0.5},
+	}
+	);
+
+	// if (!mask.hasChild(svg::RECT)){
+	// Ensure background.
+	if (mask->isUndefined()){
+		mask->setType(svg::MASK);
+		mask->setId(maskId);
+		// maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
+		mask->set("maskUnits", "userSpaceOnUse");
+		mask->set("maskContentUnits", "userSpaceOnUse");
+		drain::image::TreeSVG & comment = mask.addChild()(svg::COMMENT);
+		comment->setText("RECT is also the reference for (width, height)");
+		drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
+		rect->setWidth(128);
+		rect->setHeight(128);
+		rect->set("fill", "white");
+	}
+
+
+	return mask;
+}
+
+
+void MaskerSVG::updateMask(drain::image::TreeSVG & mask, int width, int height, const NodeSVG & node){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
+	rect->setWidth(width);
+	rect->setHeight(height);
+
+	// Punch hole
+	if (node.typeIsSet()){
+		drain::image::TreeSVG & hole = mask.addChild();
+		hole.data = node;
+		hole->clearClasses();
+		hole->set("fill", "black"); // Later, consider other style(s), like gradient fill?
+	}
+
+}
+
+TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node){
+	const drain::FlexibleVariable & maskId = createMaskId(group);
+	drain::image::TreeSVG & mask = getMask(root, maskId);
+	if ((width != 0) && (height != 0)){
+		updateMask(mask, width, height, node);
+	}
+	return mask;
+}
+
+
+void MaskerSVG::linkMask(const TreeSVG & mask, TreeSVG & obj) {
+	obj->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
+	obj->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
+	obj->addClass(COVER);
+	// obj->set("fill", "gray"); // debug
+	// obj->set("opacity", 0.5); // debug
+}
+
+
+int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	TreeSVG & group = tree(path);
+
+	if (group->getAttributes().hasKey(MASK_ID)){
+		const drain::image::TreeSVG & mask = getMask(tree, group->get(MASK_ID));
+
+		if (group->typeIs(drain::image::svg::GROUP)){
+			drain::image::TreeSVG & rect = group[drain::image::svg::RECT](drain::image::svg::RECT);
+			linkMask(mask, rect);
+		}
+		else {
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.fail("Adding MASK ", mask->getId(), " to element of type '", group->getNativeType(), "' not supported");
+		}
+	}
+
+	return 0;
+};
 
 /**
  *
