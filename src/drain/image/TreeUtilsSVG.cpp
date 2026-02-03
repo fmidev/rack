@@ -408,6 +408,9 @@ TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int 
 	if ((width != 0) && (height != 0)){
 		updateMask(mask, width, height, node);
 	}
+	std::string s = drain::MapTools::get(group->getAttributes(), "data-src", group->getId());
+	drain::image::TreeSVG & comment = mask.prependChild(s)(svg::COMMENT);
+	comment->setText("applied by: ", s);
 	return mask;
 }
 
@@ -429,9 +432,7 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		const drain::image::TreeSVG & mask = getMask(tree, group->get(MASK_ID));
 
 		if (group->typeIs(drain::image::svg::GROUP)){
-			//drain::image::TreeSVG & rect = group[drain::image::svg::RECT](drain::image::svg::RECT)
 			drain::image::TreeSVG & rect = group.prependChild(drain::EnumDict<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
-			//drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
 			linkMask(mask, rect);
 		}
 		else {

@@ -59,13 +59,18 @@ public:
 
 
 	inline
-	RadarSVG(int radialBezierResolution = 8){
-		setRadialResolution(radialBezierResolution);
+	RadarSVG(int radialBezierResolution = 0){
+		if (radialBezierResolution > 0){
+			setRadialResolution(radialBezierResolution);
+		}
+		else {
+			setRadialResolution(drain::image::FileSVG::radialBezierResolution);
+		}
 	};
 
 	inline
 	RadarSVG(const RadarSVG & radarSvg){
-		setRadialResolution(radialBezierResolution);
+		setRadialResolution(radarSvg.radialBezierResolution);
 	};
 
 
@@ -141,8 +146,14 @@ public:
 	/// Number of "sectors" in a sphere.
 	inline
 	void setRadialResolution(int n){
-		getCubicBezierConf(conf, n);
-		radialBezierResolution = n;
+		if (n>1){
+			getCubicBezierConf(conf, n);
+			radialBezierResolution = n;
+		}
+		else {
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("To small radialBezierResolution: ", n);
+		}
 	}
 
 	/**
@@ -250,8 +261,22 @@ public:
 		elem.absolute<drain::svgPATH::CLOSE>();
 	}
 
-	// Convenience
-	void drawSector(drain::svgPATH & elem, const drain::Range<double> & radius, const drain::Range<double> & azimuthR) const;
+	/// Convenience: draw sector, starting from radius.min, ending at radius.max, in azimuth range azimuthR.min ... azimuthR.max.
+	/**
+	 *
+	 *
+	 */
+	void drawSector(drain::svgPATH & elem, const drain::Range<double> & radius, const drain::Range<double> & azimuthR = {0.0, 0.0}) const;
+
+	/// Convenience: draw circle (disk or annulus)
+	/**
+	 *   If (radius.min == radius.max), dist
+	 *
+	 */
+	inline
+	void drawCircle(drain::svgPATH & elem, const drain::Range<double> & radius) const {
+		drawSector(elem, radius, {0.0, 0.0});
+	}
 
 protected:
 

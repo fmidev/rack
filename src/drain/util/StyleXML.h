@@ -52,7 +52,10 @@ namespace drain {
  *   Flexibility is used (at least) in:
  *   - linking box.height to font-size (in TEXT or TSPAN elems)
  */
-class StyleXML : public ReferenceMap2<FlexibleVariable> {
+//class StyleXML : public ReferenceMap2<FlexibleVariable> {
+//
+//class StyleXML : public std::map<std::string,FlexibleVariable> {
+class StyleXML : public std::map<std::string,Variable> {
 
 public:
 
@@ -93,7 +96,8 @@ protected:
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
-	drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
+	//drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
+	drain::Sprinter::toStream(ostr, style, drain::Sprinter::xmlAttributeLayout);
 	return ostr;
 }
 

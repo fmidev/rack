@@ -87,13 +87,11 @@ drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc
 		select.set("polygon");
 		*/
 
-		//style[ClassXML(GRID)] = {{"mika", "mäki"}};
-		// style[ClassXML("GRID2")] = {{"mika", "mäki"}};
 		style[Select(GRID)] = {
 				//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
-				//{"stroke", "white"},
-				{"stroke", "gray"},
-				{"stroke-width", 2.0},
+				{"stroke", "white"},
+				//{"stroke", "gray"},
+				{"stroke-width", 3.0},
 				{"fill", "none"}, // debug
 				//{"fill", "blue"}, // debug
 				//{"fill-opacity", 0.35},

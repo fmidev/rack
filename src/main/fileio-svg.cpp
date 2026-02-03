@@ -1164,7 +1164,16 @@ protected:
 
 public:
 
-	enum MARKER {
+	/**
+	 *
+	 *  circle=max RADAR_CIRCLE
+	 *  dot=0.0    RADAR_DOT
+	 *  label=${NOD}  RADAR_LABEL
+	 *
+	 *
+	 */
+
+	enum GRAPHIC {
 		DOT=8,
 		CIRCLE=16,
 	};
@@ -1299,8 +1308,8 @@ public:
 		if (dist.range.min<0){ // Relax this later!
 			//mout.unimplemented("negative start");
 			// mout.error("negative start of radial range ", dist.range.min, " [metres]");
-			mout.unimplemented<LOG_ERR>("negative start of radial range ", dist.range.min, " [metres]");
-			return;
+			//mout.unimplemented<LOG_ERR>("negative start of radial range ", dist.range.min, " [metres]");
+			//return;
 		}
 
 		if (dist.range.width() < 0){
@@ -1349,9 +1358,10 @@ public:
 		else if (sharedAzm.range.width() > 0.0){
 			azm.set(sharedAzm.tuple());
 		}
-		else {
-			//azm.set(30.0, 0.0, 360.0);
+		/* else {
+			azm.set(30.0, 0.0, 360.0);
 		}
+		*/
 
 		if (azm.range.min < -360.0){
 			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
@@ -1373,13 +1383,13 @@ public:
 } // rack
 
 
-DRAIN_ENUM_DICT(rack::CmdPolarBase::MARKER) = {
+DRAIN_ENUM_DICT(rack::CmdPolarBase::GRAPHIC) = {
 		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, CIRCLE),
 		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, DOT),
-		// {"CIRCLE", CmdRadarMarker::MARKER::CIRCLE}
+		// {"CIRCLE", CmdRadarGRAPHIC::GRAPHIC::CIRCLE}
 };
 
-DRAIN_ENUM_OSTREAM(rack::CmdPolarBase::MARKER);
+DRAIN_ENUM_OSTREAM(rack::CmdPolarBase::GRAPHIC);
 
 
 namespace rack {
@@ -1398,10 +1408,10 @@ class CmdRadarDot : public drain::BasicCommand, CmdPolarBase {
 
 public:
 
-
+	// Default: 10 kms.
 	CmdRadarDot() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar position") {
-		getParameters().link("radius", radiusMetres.range.min, "radius of radar location disc [0.0..1.0|0..250..]");
-		getParameters().link("MASK", MASK, "inverse");
+		getParameters().link("radius", radiusMetres.range.tuple(10000.0,10000.0), "radius of radar location disc [0.0..1.0|0..250..]").setFill(true);
+		getParameters().link("MASK", MASK, "add mask");
 	};
 
 	// Copy constructor
@@ -1420,27 +1430,24 @@ public:
 		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
-		// const std::string & value = getLastParameters(); //
+		// const std::string & value = getLastParameters();
+		// Always a range, though here only dis.max used
+		drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
+		// Note: DOT does not use shared polar selection
+		//resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
+		resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.getRange());
 
 		//drain::Range<double> distance;
-		double distance = 10000.0; // km
-		if (radiusMetres.range.min > 0.0){
-			distance = radiusMetres.range.min;
-			// warn if .max == ?
-		}
-		else if (ctx.polarSelector.radius.range.min > 0.0){
-			distance = ctx.polarSelector.radius.range.min;
-		}
 
-		if (distance > 0.0){ // earlier!
+		if (dist.range.max > 0.0){ // earlier!
 
 			const std::string DOT = "DOT";
 
 			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, DOT, {
-					{"fill", "green"},
-					{"stroke", "red"},
-					{"stroke-width", 5.0},
-					{"opacity", 0.5}
+					{"fill", "red"},
+					{"stroke", "white"},
+					{"stroke-width", 2.0},
+					// {"opacity", 0.5}
 			});
 
 			overlay.addChild()->setComment(getName(), ' ', getParameters());
@@ -1450,16 +1457,21 @@ public:
 			{
 				// Private scope, to call bezierElem destructor.
 				drain::svgPATH bezierElem(curve);
-				const double r = radarSVG.getRange(distance);
-				radarSVG.moveTo(bezierElem, r, 0.0);
-				radarSVG.cubicBezierTo(bezierElem, r, 0.0, 2.0*M_PI);
-				radarSVG.close(bezierElem);
+				radarSVG.drawCircle(bezierElem, dist.range);
 			}
 
 			if (MASK){
+				// Note: mask is full 100% range.
+				drain::image::TreeSVG & localMask = overlay[svg::MASK];
+				{
+					// Private scope, to call bezierElem destructor.
+					drain::svgPATH elem(localMask);
+					radarSVG.drawSector(elem, {0, radarSVG.getRange()});
+				}
 				const int w = radarSVG.geoFrame.getFrameWidth();
 				const int h = radarSVG.geoFrame.getFrameHeight();
-				MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+				MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+				localMask->setType(svg::COMMENT);
 			}
 
 
@@ -1485,7 +1497,7 @@ public:
 
 	CmdRadarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings. Styles: HIGHLIGHT") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 		getParameters().link("radius", radiusMetres.tuple(0.0, 0.0, 0.0), "step:start:end (metres)").fillArray = false;
-		getParameters().link("azimuth", azimuthDegrees.tuple(0.0, 0.0, 0.0), "step:start:end (degrees)").fillArray = false;
+		getParameters().link("azimuth", azimuthDegrees.tuple(30.0, 0.0, 360.0), "step:start:end (degrees)").fillArray = false;
 		getParameters().link("MASK", MASK, "add a mask");
 	};
 
@@ -1504,64 +1516,30 @@ public:
 		RadarSVG radarSVG;
 		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+		overlay.addChild()->setComment(getName(), ' ', getParameters());
 
 		drain::SteppedRange<double> dist(0.0, 0.0, 1.0); // (distanceMetres.range); // double -> int
-
 		resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
-
-		/*
-		dist.range.min = radarSVG.getRange(dist.range.min);
-		dist.range.max = radarSVG.getRange(dist.range.max);
-		*/
-
-		/*
-		if (dist.step == 0.0){
-			dist.step = dist.range.span() / 5;
-			mout.warn("zero distance step, assigned  ", DRAIN_LOG(dist.step));
-		}
-		*/
-
 		if (dist.range.span() == 0.0){
 			mout.error("empty range: ", radiusMetres.range.tuple(), " => ", dist.range.tuple(), " [metres]");
 		}
-
-
+		if (dist.step < 5000){
+			dist.step = 5000;
+			mout.info("too small distance step, assigned  ", DRAIN_LOG(dist.step));
+		}
+		else if (dist.step < 10000){
+			mout.suspicious("small distance step: ", DRAIN_LOG(dist.step), ", remember to use metres");
+		}
 		mout.debug("final range: ", DRAIN_LOG(dist.range), DRAIN_LOG(dist.step));
 
 		drain::SteppedRange<double> azm; // (distanceMetres.range); // double -> int
-
-		if (azimuthDegrees.range.width() > 0){
-			azm.set(azimuthDegrees.tuple());
-		}
-		else if (ctx.polarSelector.azimuth.range.width() > 0.0){
-			azm.set(ctx.polarSelector.azimuth.tuple());
-		}
-		else {
-			azm.set(30.0, 0.0, 360.0);
-		}
-
-
-		// const drain::Range<double> a(azimuthDegrees.range);// int->double
-		if (azm.range.min < -360.0){
-			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
-		}
-		if (azm.range.max > +720.0){
-			mout.error("illegal start of azimuthal range ", azm.range.min, " [degrees]");
-		}
-		if (azm.range.max < azm.range.min){
-			mout.error("illegal azimuthal range ", azm.range.tuple(), " [degrees]");
-		}
-
-		if (azm.step == 0){
+		// drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
+		resolveAzimuthRange(azimuthDegrees, ctx.polarSelector.azimuth, azm);
+		const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
+		if (azm.step < 5){
 			azm.step = 15;
-			mout.info("zero distance step, assigned  ", DRAIN_LOG(azm.step));
+			mout.info("too small azimuthal step, assigned  ", DRAIN_LOG(azm.step));
 		}
-
-		/*
-		if (azm.range.span() % azm.step){
-			mout.warn(DRAIN_LOG(azm.step), " not multiple of  ", DRAIN_LOG(azm.range));
-		}
-		*/
 
 
 		overlay.addChild()->setComment("Rays: ", dist.range.tuple());
@@ -1578,7 +1556,8 @@ public:
 
 			radarSVG.moveTo(rayElem, dist.range.min, angleRad);
 
-			int step = 5000; // metres, like drawing resolution here, note not: metres.step
+			// Drawing resolution here (metres). Note: not same as dist.step
+			int step = 5000;
 			for (int i=dist.range.min+step; i<=dist.range.max; i += step){
 				i = std::min(i, static_cast<int>(dist.range.max));
 				radarSVG.lineTo(rayElem, static_cast<double>(i), angleRad);
@@ -1586,11 +1565,7 @@ public:
 
 		}
 
-		drain::Range<double> azmRad(azm.range);
-		azmRad *= drain::DEG2RAD;
-		// methodize?
-		// azmRad.min = azm.range.min * drain::DEG2RAD;
-		// azmRad.max = azm.range.max * drain::DEG2RAD;
+		// const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 
 		overlay.addChild()->setComment("Circles/arcs: ", azm.range.tuple(), " - ", azmRad.tuple());
 
@@ -1619,8 +1594,6 @@ public:
 			radarSVG.convert(i + offset, azmRad.min, imgPoint);
 			text->setLocation(imgPoint);
 			text->setText(i/1000); // "km - ", imgPoint.tuple());
-			//}
-
 
 		}
 
@@ -1630,27 +1603,17 @@ public:
 			{
 				// Private scope, to call bezierElem destructor.
 				drain::svgPATH elem(localMask);
-				radarSVG.drawSector(elem, {0,  dist.range.max}, {0.0, 2.0*M_PI} );
+				radarSVG.drawCircle(elem, {0,  dist.range.max});
 			}
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
+			// drain::image::TreeSVG & mask =
 			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+			// drain::image::TreeSVG & comment = mask.prependChild("")(svg::COMMENT);
+			// comment->setText("applied by: ", getName(), ' ', getParameters());
 			localMask->setType(svg::COMMENT);
 		}
 
-		/*  Should copy some of already created.
-		if (MASK){ //  && !curve->hasClass("MASK")){
-			const int w = radarSVG.geoFrame.getFrameWidth();
-			const int h = radarSVG.geoFrame.getFrameHeight();
-			const drain::FlexibleVariable & maskId = MaskerSVG::createMaskId(overlayGroup);
-			drain::image::TreeSVG & mask = MaskerSVG::getMask(ctx.svgTrack, maskId);
-			MaskerSVG::updateMask(mask, w, h, curve.data);
-		}
-		*/
-
-
-
-		// }
 
 	};
 
@@ -1681,8 +1644,66 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		// polarSector.reset();
-		// polarSector.setParameters(value);
+		RadarSVG radarSVG;
+		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+
+		overlay.addChild()->setComment(getName(), ' ', getParameters());
+
+		drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
+		curve -> addClass(getName()); // SECTOR
+		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, getName(), { // SECTOR
+				{"fill", "none"},
+				{"stroke", "rgb(160,255,160)"},
+				{"stroke-width", 5.0},
+				// {"opacity", 0.65}
+		});
+
+		drain::SteppedRange<double> dist; // (distanceMetres.range); // double -> int
+		resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
+
+		drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
+		resolveAzimuthRange(azimuthDegrees, ctx.polarSelector.azimuth, azm);
+		const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
+
+		{
+			drain::svgPATH bezierElem(curve);
+			radarSVG.drawSector(bezierElem, dist.range, azmRad);
+		}
+
+		if (MASK){ //  && !curve->hasClass("MASK")){
+			const int w = radarSVG.geoFrame.getFrameWidth();
+			const int h = radarSVG.geoFrame.getFrameHeight();
+			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+		}
+
+	};
+
+
+};
+
+
+class CmdRadarRay : public drain::BasicCommand, public CmdPolarBase {
+
+public:
+
+	CmdRadarRay() : drain::BasicCommand(__FUNCTION__, "Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres)").fillArray = true;
+		getParameters().link("azimuth", azimuthDegrees.range.min, "(degrees)");
+		getParameters().link("MASK", MASK, "add a mask");
+	};
+
+	// Copy constructor
+	CmdRadarRay(const CmdRadarRay & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+
+	virtual
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		RadarSVG radarSVG;
 		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
@@ -1699,36 +1720,27 @@ public:
 				// {"opacity", 0.65}
 		});
 
-
 		drain::SteppedRange<double> dist; // (distanceMetres.range); // double -> int
 		resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
 
-		drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
-		resolveAzimuthRange(azimuthDegrees, ctx.polarSelector.azimuth, azm);
+		const double azmRad = azimuthDegrees.range.min * drain::DEG2RAD;
 
-		const int radialResolution = 8; // steps, for Bezier curves
-		radarSVG.setRadialResolution(radialResolution);
+		drain::svgPATH bezierElem(curve);
+		radarSVG.moveTo(bezierElem, dist.range.min, azmRad);
+		radarSVG.lineTo(bezierElem, dist.range.max, azmRad);
+		//radarSVG.drawSector(bezierElem, dist.range, azmRad);
 
-		const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
-		// mout.attention("Range: ", polarSector.distanceRange, " Azm:", polarSector.azmRange);
-
-		{
-			drain::svgPATH bezierElem(curve);
-			radarSVG.drawSector(bezierElem, dist.range, azmRad);
-		}
-
+		// needed
 		if (MASK){ //  && !curve->hasClass("MASK")){
+			/*
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
 			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+			*/
 		}
 
 	};
 
-protected:
-
-	// mutable
-	// PolarSector polarSector;
 
 };
 
@@ -1800,7 +1812,7 @@ public:
 					{"stroke-width", "0.2"},
 			});
 
-			overlayGroup.addChild()->setComment(clsNameLabel);
+			overlay.addChild()->setComment(clsNameLabel);
 
 			//drain::image::TreeSVG & rect = overlayGroup.addChild()(drain::image::svg::RECT);
 			drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
@@ -1829,7 +1841,7 @@ public:
 			// const double rowHeight = 1.2 * fontSize;
 			// double j = rowHeight * 0.5*(static_cast<double>(lines.size())-1.0);
 			for (const std::string & line: lines){
-				drain::image::TreeSVG & text = overlayGroup.addChild()(drain::image::svg::TEXT);
+				drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
 				//text->addClass(clsNameLabel, RackSVG::ElemClass::IMAGE);
 				text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 				text->setText(line);
@@ -1863,114 +1875,6 @@ public:
  *
  *
  */
-class CmdRadarMarker : public drain::BasicCommand, CmdPolarBase {
-
-protected:
-
-	double dot = 0.0;
-	//double circle = 0.0;
-	drain::Range<double> circle; // = 0.0;
-	///  Mutable, to convert escaped chars. \see StringMapper::convertEscaped(
-	// mutable
-	// std::string label = "${NOD}\n${PLC}";
-	std::string label = "CIRCLE";
-
-public:
-
-
-	CmdRadarMarker() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar range. Styles: GRID,HIGHLIGHT,CmdPolarScope") {
-		getParameters().link("dot", dot, "radius of radar location disc [0.0..1.0|0..250..]");
-		getParameters().link("circle", circle.tuple(), "radius of radar range circle (% or m) [0.0..1.0|0..250..]").setFill(true);
-		getParameters().link("label", label, "label");
-	};
-
-	// Copy constructor
-	CmdRadarMarker(const CmdRadarMarker & cmd) : drain::BasicCommand(cmd) {
-		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
-	}
-
-
-	virtual
-	void exec() const override {
-
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		RadarSVG radarSVG;
-
-		// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
-		drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-		drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
-
-
-		MARKER m = drain::EnumDict<MARKER>::getValue(label, false);
-
-		mout.accept<LOG_WARNING>("MARKER: ", m);
-		std::cout << "MARKERs:" << MARKER::DOT << ',' << MARKER::CIRCLE << std::endl;
-		std::cout << "MARKER:" << m << std::endl;
-
-		const std::string & clsNameBase = getName();
-
-		if (circle.max > 0.0){
-
-			// Basename = CmdRadarMarker_circle (+ circle parameter, to separate see below)
-			drain::StringBuilder<'_'> basename(clsNameBase, "circle", m);
-			const std::string clsNameRange = basename.str(); //clsNameBase+"_circle";
-
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, clsNameRange, {
-					//{"fill", "none"},
-					{"fill", "green"},
-					{"stroke", "white"},
-					{"stroke-width", 4.0},
-					{"opacity", 0.5},
-					{"fill-rule", "nonzero"}
-			});
-
-			basename.add(circle);
-
-			overlayGroup.addChild()->setComment(basename.str()); // clsNameRange, ' ', circle);
-			drain::image::TreeSVG & curve = overlayGroup[basename.str()](drain::image::svg::PATH);
-			curve->addClass(clsNameRange);
-			// drain::image::TreeSVG & metadata = curve.addChild()
-
-			// TreeElemUtilsSVG.h
-			drain::svgPATH bezierElem(curve);
-			const double rMax = radarSVG.getRange(circle.max);
-			radarSVG.moveTo(bezierElem, rMax, 0.0);
-			radarSVG.cubicBezierTo(bezierElem, rMax, 0.0, 2.0*M_PI);
-
-			const double rMin = radarSVG.getRange(circle.min);
-			if (rMin < rMax){
-				radarSVG.moveTo(bezierElem, rMin, 0.0);
-				radarSVG.cubicBezierTo(bezierElem, rMin, 0.0, -2.0*M_PI);
-			}
-
-		}
-
-		if (dot > 0.0){
-			const std::string clsNameDot = clsNameBase+"_dot";
-
-			drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, clsNameDot, {
-					{"fill", "white"},
-					{"stroke", "black"},
-					{"stroke-width", 3.0},
-					// {"opacity", 0.85}
-			});
-
-			overlayGroup.addChild()->setComment(clsNameDot, ' ', getParameters());
-			drain::image::TreeSVG & curve = overlayGroup[clsNameDot](drain::image::svg::PATH);
-			curve->addClass(clsNameDot);
-
-			// TreeElemUtilsSVG.h
-			drain::svgPATH bezierElem(curve);
-			const double r = radarSVG.getRange(dot);
-			radarSVG.moveTo(bezierElem, r, 0.0);
-			radarSVG.cubicBezierTo(bezierElem, r, 0.0, 2.0*M_PI);
-		}
-
-	};
-
-};
 
 
 class CmdSectorTest : public drain::SimpleCommand<std::string> {
@@ -2447,6 +2351,37 @@ public:
 
 };
 
+/*
+class CmdLogo : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdLogo() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
+		getParameters().link("name",   name, "Name (label) of the logo");
+		getParameters().link("variant",  variant, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	}
+
+	CmdLogo(const CmdLogo & cmd) : drain::BasicCommand(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	std::string variant = "black";
+	std::string name  = "fmi-fi";
+
+
+	void exec() const override {
+
+		using namespace drain::image;
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+	}
+
+};
+*/
+
 class CmdCoords : public drain::BasicCommand, CmdPolarBase { // drain::SimpleCommand<std::string> {
 
 public:
@@ -2598,16 +2533,18 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	// install<CmdImageTitle>(); consider
 	install<CmdStyle>();
 
+	DRAIN_CMD_INSTALL(Cmd, RadarDot)();
 	DRAIN_CMD_INSTALL(Cmd, RadarGrid)();
 	DRAIN_CMD_INSTALL(Cmd, RadarSector)();
 	DRAIN_CMD_INSTALL(Cmd, RadarLabel)();
-	DRAIN_CMD_INSTALL(Cmd, RadarMarker)();
-	DRAIN_CMD_INSTALL(Cmd, RadarDot)();
-	linkRelatedCommands(RadarGrid, RadarSector, RadarLabel, RadarMarker, RadarDot);
+	// DRAIN_CMD_INSTALL(Cmd, RadarMarker)();
+	DRAIN_CMD_INSTALL(Cmd, RadarRay)();
+	linkRelatedCommands(RadarDot, RadarGrid, RadarRay, RadarSector, RadarLabel); // RadarMarker,
 
 
 	install<CmdAlignTest>();
 	install<CmdDebug>();
+	//install<CmdLogo>().section = HIDDEN;
 	install<CmdCoords>().section = HIDDEN;
 };
 

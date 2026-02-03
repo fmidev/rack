@@ -143,14 +143,25 @@ EOF
 # A set of tests...
 COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
 
-for i in RadarGrid_50000:1,15:180:540 RadarSector_radius=0:150000; do
+WRITE_DOC '\b'" Illustrations applying graphic commands for each input – inside a script."
+
+for i in RadarDot_30000 RadarDot_20000:30000 RadarSector_25000:125000 RadarSector_1.0; do
     CMD=${i%_*}
     PARAMS=${i##*_}
-    WRITE_DOC '\b'" Illustration of $CMD "
-    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --g$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage 'data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "composite-$CMD"  
+    WRITE_DOC '\c'" --g$CMD $PARAMS,MASK=true"
+    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --g$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage 'data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "composite-$CMD-$PARAMS"  
     
 done
 
+WRITE_DOC '\b'" Illustrations applying graphic commands for the last (outside a script)."
+
+for i in RadarGrid_50000:1,15:180:240 RadarSector_radius=0:150000,azimuth=170:240 RadarSector_radius=0:250000,azimuth=135:140  RadarSector_radius=100000:175000,azimuth=300:370; do
+    CMD=${i%_*}
+    PARAMS=${i##*_}
+    WRITE_DOC '\c'" --g$CMD $PARAMS,MASK=true"
+    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage 'data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --g$CMD $PARAMS,MASK=true --gStyle "'.COVER=fill:black;opacity:0.75'" \\ -o "composite-$CMD-$PARAMS"  
+    
+done
 
 exit 0
 

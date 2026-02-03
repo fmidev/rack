@@ -116,6 +116,7 @@ public:
 
 		//svgConf.link("absolutePaths", ctx.svgPanelConf.absolutePaths);
 		svgConf.link("paths", ctx.svgPanelConf.pathPolicy);
+		svgConf.link("resolution", drain::image::FileSVG::radialBezierResolution, "radial Bezier point density");
 		// svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
 		svgConf.link("debug", ctx.svgPanelConf.debug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 

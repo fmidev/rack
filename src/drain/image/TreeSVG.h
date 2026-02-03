@@ -86,6 +86,9 @@ public:
 		// TITLE,      // Default title
 	};
 
+	static
+	int radialBezierResolution;
+
 };
 
 }

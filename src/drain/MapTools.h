@@ -107,6 +107,7 @@ public:
 		return m[key];
 	}
 
+	/*
 	template <class M, class T>
 	static
 	const T & get(const M & m, const typename M::key_type & key, const T & defaultValue){ // todo: const char *
@@ -118,6 +119,23 @@ public:
 			return defaultValue;
 			//static const typename M::mapped_type empty;
 			//return empty;
+		}
+	}
+	*/
+
+	// Universal (map and list compatible)
+	/**
+	 *
+	 */
+	template <class M>
+	static
+	const typename M::value_type::second_type & get(const M & m, const typename M::value_type::first_type & key, const typename M::value_type::second_type & defaultValue){ // todo: const char *
+		typename M::const_iterator it = findEntryByKey(m, key);
+		if (it != m.end()){
+			return it->second;
+		}
+		else {
+			return defaultValue;
 		}
 	}
 

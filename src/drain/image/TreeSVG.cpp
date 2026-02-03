@@ -60,6 +60,8 @@ DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy) = {
 };
 
 
+int image::FileSVG::radialBezierResolution = 8;
+
 
 DRAIN_TYPENAME_DEF(image::NodeSVG);
 DRAIN_TYPENAME_DEF(image::svg::tag_t);
