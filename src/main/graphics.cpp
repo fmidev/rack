@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeLayoutSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
+#include <main/graphics-overlay.h>
 #include <main/graphics-panel.h>
 
 // #include <js/koe.h>
@@ -52,8 +53,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-panel.h"
 
 #include "graphics-radar.h"
-#include "graphics-wireframe.h"
-
 #include "graphics.h"
 
 

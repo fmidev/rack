@@ -34,14 +34,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/JavaScript.h>
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
-#include <drain/util/TreeXML.h>
-#include <drain/util/TreeHTML.h>
+//#include <drain/util/TreeXML.h>
+//#include <drain/util/TreeHTML.h>
 #include <drain/image/FilePng.h>
-#include <drain/image/TreeSVG.h>
+//#include <drain/image/TreeSVG.h>
 #include <drain/image/TreeElemUtilsSVG.h>
-#include <drain/image/TreeLayoutSVG.h>
+//#include <drain/image/TreeLayoutSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
-#include <main/graphics-overlay.h>
+
+
 
 // #include <js/koe.h>
 
@@ -49,11 +50,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "radar/PolarSector.h"
 #include "graphics-panel.h"
 #include "graphics-radar.h"
+#include "graphics-overlay.h"
 
 
+namespace drain {
+
+
+}
 
 
 namespace rack {
+
+DRAIN_ENUM_DICT(CmdPolarBase::GRAPHIC) = {
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, CIRCLE),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, DOT),
+		// {"CIRCLE", CmdRadarGRAPHIC::GRAPHIC::CIRCLE}
+};
+
+DRAIN_ENUM_OSTREAM(CmdPolarBase::GRAPHIC);
 
 //const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 /*
@@ -288,15 +302,6 @@ void CmdPolarBase::resolveAzimuthRange(const drain::SteppedRange<double> & ownAz
 
 
 } // rack
-
-
-DRAIN_ENUM_DICT(rack::CmdPolarBase::GRAPHIC) = {
-		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, CIRCLE),
-		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, DOT),
-		// {"CIRCLE", CmdRadarGRAPHIC::GRAPHIC::CIRCLE}
-};
-
-DRAIN_ENUM_OSTREAM(rack::CmdPolarBase::GRAPHIC);
 
 
 namespace rack {

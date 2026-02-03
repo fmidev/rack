@@ -34,10 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // #include <string>
 #include <drain/prog/Command.h>
+
 #include "hi5/Hi5.h"
 #include "resources.h" // ctx
 
-// Notice: role of graphics.cpp and fileio-svg.cpp is currently equivalent
+#include "graphics-radar.h" // ctx
+
 
 
 
