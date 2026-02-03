@@ -53,6 +53,33 @@ class MapTools {
 
 public:
 
+	/// Quick search for std::map
+	template <class K,class V>
+	static inline
+	typename std::map<K,V>::const_iterator findEntryByKey(const std::map<K,V> & m, const K & key){
+		return m.find(key);
+	}
+
+	/// Slow (exhaustive) search for std::list
+	template <class K,class V>
+	static inline
+	typename std::list<K,V>::const_iterator findEntryByKey(const std::list<K,V> & l, const K & key){
+		for (typename std::list<K,V>::const_iterator it=l.begin(); it!=l.end(); ++it){
+			if (it->first == key){
+				return it;
+			}
+		}
+		return l.end();
+	}
+
+	template <class M>
+	static
+	bool hasKey(const M & m, const typename M::key_type & key){
+		typename M::const_iterator it = findEntryByKey(m, key);
+		return it != m.end();
+	}
+
+
 	/// If the key is found, the value is returned as a reference.
 	/**
 	 *  \param m - map in which keys are searched
@@ -70,6 +97,42 @@ public:
 		else {
 			static const typename M::mapped_type empty;
 			return empty;
+		}
+	}
+
+	// NEW
+	template <class M>
+	static
+	typename M::mapped_type & get(M & m, const typename M::key_type & key){
+		return m[key];
+	}
+
+	template <class M, class T>
+	static
+	const T & get(const M & m, const typename M::key_type & key, const T & defaultValue){ // todo: const char *
+		typename M::const_iterator it = m.find(key);
+		if (it != m.end()){
+			return static_cast<T>(it->second);
+		}
+		else {
+			return defaultValue;
+			//static const typename M::mapped_type empty;
+			//return empty;
+		}
+	}
+
+	template <class M>
+	static
+	std::string get(const M & m, const typename M::key_type & key, const char * defaultValue){ // todo: const char *
+		typename M::const_iterator it = m.find(key);
+		if (it != m.end()){
+			//return static_cast<std::string>(it->second);
+			return it->second;
+		}
+		else {
+			return defaultValue;
+			//static const typename M::mapped_type empty;
+			//return empty;
 		}
 	}
 

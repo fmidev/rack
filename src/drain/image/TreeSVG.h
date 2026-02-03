@@ -374,7 +374,8 @@ public:
 	template <typename T>
 	inline
 	void setMargin(T w){
-		link("data-margin", box.width);
+		getMap()["data-margin"].link(box.width = w);
+		// link("data-margin", box.width);
 		box.width = w;
 	}
 
@@ -396,7 +397,8 @@ public:
 	inline
 	void setHeight(T h){
 		if (typeIs(svg::TEXT)){
-			link("data-height", box.height);
+			//link("data-height", box.height);
+			getMap()["data-height"].link(box.height = h);
 		}
 		box.height = h;
 	}

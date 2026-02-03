@@ -627,7 +627,8 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 
 
 	drain::image::TreeSVG & description = image[svg::DESC](svg::DESC);
-	description->getAttributes().importCastableMap(metadata->getAttributes());
+	//description->getAttributes().importCastableMap(metadata->getAttributes());
+	description->set(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
 
 

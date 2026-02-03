@@ -199,7 +199,7 @@ public:
 		// TODO: redirect to set(key,value), for consistency
 		if (type == STYLE){
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			mout.deprecating("Setting attributes/style of a STYLE element: ", args);
+			mout.deprecating("Setting attributes/style of a STYLE element: "); //, args);
 			//drain::SmartMapTools::setValues(style, args);
 			setStyle(args);
 			/*
@@ -209,7 +209,8 @@ public:
 			*/
 		}
 		else {
-			drain::SmartMapTools::setValues<map_t,true>(getAttributes(), args);       // add new keys
+			drain::MapTools::setValues(getAttributes(), args);       // add new keys
+			// drain::SmartMapTools::setValues<map_t,true>(getAttributes(), args);       // add new keys
 			// drain::SmartMapTools::setValues<map_t,false>((map_t &)*this, l);   // update only
 		}
 	}
@@ -369,7 +370,8 @@ protected:
 template <class T>
 void NodeXML<T>::swap(NodeXML<T> & node){
 	// Swap attributes
-	ReferenceMap2<FlexibleVariable>::swap(node);
+	//ReferenceMap2<FlexibleVariable>::swap(node);
+	map_t::swap(node);
 	// Swap classes
 	this->classList.swap(node.classList);
 }
@@ -429,7 +431,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 	else {
 
 		if (isUndefined()){
-			drain::Logger(__FILE__, __FUNCTION__).warn("Undefined TAG type for ", getName(), "  ID=", getId(), " attr=", getAttributes());
+			drain::Logger(__FILE__, __FUNCTION__).warn("Undefined TAG type for ", getName(), "  ID=", getId(), " attr=", drain::sprinter(getAttributes()));
 		}
 
 		if (mode==CLOSING_TAG){
@@ -440,7 +442,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 		}
 
 		if (getTag().empty()){
-			drain::Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("defaultTag for type=", getType(), " requested by ID=", getId(), " attr=", getAttributes());
+			drain::Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("defaultTag for type=", getType(), " requested by ID=", getId(), " attr=", drain::sprinter(getAttributes()));
 
 			ostr << "defaultTag"; // << ' ';  FIX! getDefaultTag?
 		}
@@ -464,11 +466,22 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			char sep=0;
 
 			// Iterate attributes - note: also for comment
+			/*
 			for (const auto & key: getAttributes().getKeyList()){
 				std::string v = get(key, "");
 				// Skip empties (so Sprinter::toStream not applicable)
 				if (!v.empty()){
 					xmlAttribToStream(ostr, key, v);
+					sep=' ';
+				}
+			}
+			*/
+			for (const auto & entry: getMap()){
+				//std::string v = get(entry.first, std::string(""));
+				std::string v = get(entry.first, "");
+				// Skip empties (so Sprinter::toStream not applicable)
+				if (!v.empty()){
+					xmlAttribToStream(ostr, entry.first, v);
 					sep=' ';
 				}
 			}

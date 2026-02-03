@@ -67,7 +67,8 @@ public:
 			mout.warn("allocation requested for empty area" );
 		}
 		//AccumulationArray::setGeometry(frameWidth, frameHeight);
-		accArray.setGeometry(frameWidth, frameHeight);
+		//accArray.setGeometry(frameWidth, frameHeight);
+		accArray.setGeometry(frame.width, frame.height);
 	};
 
 	inline

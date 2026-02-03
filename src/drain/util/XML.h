@@ -42,8 +42,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <ostream>
 
-#include <drain/Sprinter.h>
 #include <drain/FlexibleVariable.h>
+#include <drain/MapTools.h> // NEW
+#include <drain/Sprinter.h>
+
 
 #include "ClassXML.h"
 // #include "UtilsXML.h"
@@ -57,8 +59,21 @@ namespace drain {
 
 
 /// Base class for XML "nodes", to be data elements T for drain::Tree<T>
-class XML :  protected ReferenceMap2<FlexibleVariable> {
+//class XML :  protected ReferenceMap2<FlexibleVariable> {
+//class XML :  protected ReferenceMap2<FlexibleVariable> {
+class XML :  protected std::map<std::string,FlexibleVariable> {
 public:
+
+	typedef std::map<std::string,FlexibleVariable> map_t;
+	//typedef ReferenceMap2<FlexibleVariable> map_t;
+
+	map_t & getMap(){
+		return *this;
+	}
+
+	const map_t & getMap() const {
+		return *this;
+	}
 
 	typedef int intval_t;
 
@@ -106,7 +121,6 @@ public:
 	/// User may optionally filter attributes and CTEST with this using StringTools::replace(XML::encodingMap);
 	// OLD static	const std::map<char,std::string> encodingMap;
 
-	typedef ReferenceMap2<FlexibleVariable> map_t;
 
 
 
@@ -234,20 +248,23 @@ public:
 	 */
 	inline
 	void setId(){
-		link("id", id);
+		getMap()["id"].link(id);
+		//link("id", id);
 	}
 
 	/// Makes ID a visible attribute, with a given value.
 	inline
 	void setId(const std::string & s){
-		link("id", id = s);
+		getMap()["id"].link(id=s);
+		// link("id", id = s);
 	}
 
 	/// Concatenates arguments to an id.
 	template <char C='\0', typename ...TT>
 	inline
 	void setId(const TT & ...args) {
-		link("id", id = drain::StringBuilder<C>(args...));
+		getMap()["id"].link(id=drain::StringBuilder<C>(args...));
+		// link("id", id = drain::StringBuilder<C>(args...));
 	}
 
 	/// Returns ID of this element. Hopefully a unique ID...
@@ -317,7 +334,8 @@ public:
 
 	inline
 	const FlexibleVariable & getName() const {
-		return (*this)["data-name"];
+		return MapTools::get(getMap(), std::string("data-name"));
+		// return (*this)["data-name"];
 	}
 
 
@@ -327,6 +345,11 @@ public:
 	bool empty() const {
 		return map_t::empty();
 	}
+
+	inline
+	bool hasAttribute(const std::string & key){
+		return MapTools::hasKey(getMap(), key);
+	};
 
 	inline
 	const map_t & getAttributes() const {
@@ -342,13 +365,15 @@ public:
 	// Rename getAttribute?
 	inline
 	const drain::FlexibleVariable & get(const std::string & key) const {
-		return (*this)[key];
+		return MapTools::get(getMap(), key);
+		//return (*this)[key];
 	}
 
 	// Rename getAttribute?
 	inline
 	drain::FlexibleVariable & get(const std::string & key){
-		return (*this)[key];
+		return MapTools::get(getMap(), key);
+		// return (*this)[key];
 	}
 
 
@@ -356,12 +381,15 @@ public:
 	template <class V>
 	inline
 	V get(const std::string & key, const V & defaultValue) const {
-		return map_t::get(key, defaultValue);
+		return MapTools::get(getMap(), key, defaultValue);
+		//return map_t::get(key, defaultValue);
 	}
 
+	// Rename getAttribute?
 	inline
 	std::string get(const std::string & key, const char * defaultValue) const {
-		return map_t::get(key, defaultValue);
+		return MapTools::get(getMap(), key, defaultValue);
+		//return map_t::get(key, defaultValue);
 	}
 
 	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
@@ -510,6 +538,11 @@ public:
 		drain::SmartMapTools::setValues(style, args);
 	}
 
+	template <class V>
+	void setStyle(const std::map<std::string, V> & args){
+		drain::MapTools::setValues(style, args);
+	}
+
 
 
 protected:
@@ -630,7 +663,8 @@ public:
 				// Warning: does not create links.
 				dst.setType(src.getType());
 			}
-			dst.getAttributes().importMap(src.getAttributes());
+			// dst.getAttributes().importMap(src.getAttributes());
+			MapTools::setValues(dst.getAttributes(), src.getAttributes());
 			dst.setStyle(src.getStyle());
 			// dst.setText(src.ctext); // wrong! set type to CTEXT
 			dst.ctext = src.ctext;

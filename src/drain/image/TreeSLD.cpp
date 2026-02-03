@@ -132,7 +132,8 @@ void NodeSLD::handleType() { // const SLD::tag_t & t
 		});
 		break;
 	case SLD::ColorMapEntry:
-		link("color", ctext); // rename
+		getMap()["color"].link(ctext); // rename
+		//link("color", ctext); // rename
 		break;
 	default:
 		return;

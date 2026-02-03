@@ -105,14 +105,14 @@ NodeGDAL::NodeGDAL(const NodeGDAL & node) : xml_node_t() { // , sample(-1)
 void NodeGDAL::handleType(){ // const tag_t & t
 
 	clear();
-	link("name", name);
+	getAttributes()["name"].link(name);
 
 	switch (getNativeType()){
 	case ROOT:
 		break;
 	case ITEM:
-		link("role",   role = "");
-		link("name",   name); // don't change!  = ""
+		getAttributes()["role"].link(role = "");
+		getAttributes()["name"].link(name); // don't change!  = ""
 		break;
 	default:
 		return;

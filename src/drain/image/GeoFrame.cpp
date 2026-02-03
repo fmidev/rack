@@ -81,8 +81,8 @@ GeoFrame::GeoFrame(const GeoFrame & gf) : projR2M(gf.projR2M), xScale(1), yScale
 void GeoFrame::setGeometry(unsigned int w,unsigned int h) {
 
 	//frameGeometry.setArea(w, h);
-	frameWidth = w;
-	frameHeight = h;
+	frame.width = w;
+	frame.height = h;
 	updateScaling();
 
 }

@@ -173,10 +173,12 @@ void NodeHTML::handleType(){ // const tag_t &t
 
 	switch (getNativeType()) {
 	case A:
-		link("href", url = "");
+		getMap()["href"].link(url ="");
+		// link("href", url = "");
 		break;
 	case IMG:
-		link("src", url = "");
+		getMap()["src"].link(url ="");
+		//link("src", url = "");
 		break;
 	default:
 		return;

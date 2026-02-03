@@ -197,6 +197,14 @@ public:
 	}
 };
 
+template <class T>
+inline
+std::ostream & operator<<(std::ostream & ostr, const ReferenceMap2<T> & rmap){
+	//drain::Sprinter::toStream(ostr, rmap, drain::Sprinter::jsLayout);
+	drain::Sprinter::mapToStream(ostr, rmap, drain::Sprinter::jsLayout, rmap.getKeyList());
+	return ostr;
+}
+
 
 /// A map of references to base type scalars, arrays or std::string; changing values in either are equivalent operations.
 /** A class designed for objects returned by CastableIterator. Contains a pointer to external object.
@@ -542,6 +550,13 @@ protected:
 
 
 };
+
+inline
+std::ostream & operator<<(std::ostream & ostr, const ReferenceMap & rmap){
+	// drain::Sprinter::toStream(ostr, rmap, drain::Sprinter::jsLayout);
+	drain::Sprinter::mapToStream(ostr, rmap, drain::Sprinter::jsLayout, rmap.getKeyList());
+	return ostr;
+}
 
 /*
 template <class T>

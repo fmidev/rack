@@ -177,6 +177,11 @@ public:
 		return *this;
 	}
 
+	inline
+	void unlink(){
+		this->reset();
+		//this->unlink();
+	}
 
 protected:
 

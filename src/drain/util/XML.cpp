@@ -172,7 +172,7 @@ void XML::setText(const std::string & s) {
 	case XML::STYLE_SELECT: // OK!
 		mout.debug("parsing text to CSS definition");
 		MapTools::setValues(getAttributes(), s, ';', ':', " \t\n");
-		mout.special<LOG_DEBUG>(s, " -> ", getAttributes());
+		mout.special<LOG_DEBUG>(s, " -> ", drain::sprinter(getAttributes()));
 		break;
 	case XML::UNDEFINED:
 		type = CTEXT;

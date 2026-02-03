@@ -5,6 +5,10 @@ TMPDIR=out
 #RACK="rack --outputPrefix \$PWD/$TMPDIR/ --outputConf svg:absolutePaths=true "
 RACK="rack --outputPrefix \$PWD/$TMPDIR/ "
 
+
+
+# exit 0
+
 OUTFILES=()
 
 mkdir -v --parents $TMPDIR
@@ -136,7 +140,19 @@ EOF
 
 #CONF="--format metadata -o \"\${NOD}_\${where:EPSG}_\${where:xsize},\${where:xsize}.cnf\""
 
-#exit 0
+# A set of tests...
+COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
+
+for i in RadarGrid_50000:1,15:180:540 RadarSector_radius=0:150000; do
+    CMD=${i%_*}
+    PARAMS=${i##*_}
+    WRITE_DOC '\b'" Illustration of $CMD "
+    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --g$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage 'data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "composite-$CMD"  
+    
+done
+
+
+exit 0
 
 WRITE_DOC "Align images horizontally (default):" 
 RUN_TEST \\  volume.h5 --cProj 3067 --cSize 400 -Q DBZH -c "$CONF" -o gray.png --palette "'default'" -o rgb.png \\  -o 'Basic_example'
@@ -216,8 +232,20 @@ WRITE_DOC '\b Background maps. External images can be linked with \c --gLinkImag
 RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD} – \${PLC}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign 'HORZ_FILL:VERT_FILL'  -o out-\${what:date}T\${what:time}-\${NOD}.png'"  'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' -o 'Adding_background_maps'
 
 
-WRITE_DOC '\b Grid, sector, labels.'
-RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD}'" \\ --cProj 5120 --cBBox 20,62,32,66.5 --cSize 600 \\ volume.h5 \\ -Q DBZH -c --palette 'default' -o rgb.png \\ --gRadarGrid 50000:1,15:180:540 \\ --gRadarSector "'245:300,50000:110000'" \\ --gRadarMarker "'0.1,0.8:0.9'" --gStyle ".CmdRadarMarker_circle='stroke:cyan;stroke-width:15px'" \\ --gRadarLabel "'\${PLC}\n\${NOD}'" \\ -o 'grid_and_sector'
+#WRITE_DOC '\b Grid, sector, labels.'
+#RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD}'" \\ --cProj 5120 --cBBox 20,62,32,66.5 --cSize 600 \\ volume.h5 \\ -Q DBZH -c --palette 'default' -o rgb.png \\ --gRadarGrid 50000:1,15:180:540 \\ --gRadarSector "'245:300,50000:110000'" \\ --gRadarMarker "'0.1,0.8:0.9'" --gStyle ".CmdRadarMarker_circle='stroke:cyan;stroke-width:15px'" \\ --gRadarLabel "'\${PLC}\n\${NOD}'" \\ -o 'grid_and_sector'
+
+
+# A set of tests...
+COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
+
+for i in RadarGrid_50000:1,15:180:540 RadarSector_radius=0:150000; do
+    CMD=${i%_*}
+    PARAMS=${i##*_}
+    WRITE_DOC '\b'" Illustration of $CMD "
+    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "'composite-$CMD.svg'"  
+    
+done
 
 
 ls -1t ${OUTFILES[*]//.png/.cmd}

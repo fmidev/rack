@@ -812,24 +812,27 @@ public:
 			// style[cssSelector] = cssConf; // Assings string to CTEXT !? problem!
 			// drain::SmartMapTools::setValues(style[cssSelector+"MIKA"]->getAttributes(), cssConf, ';', ':');
 			// style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
-			mout.attention("New style: ", cssSelector, " = ", cssConf);
+			mout.pending<LOG_WARNING>("New style str: ", cssSelector, " = ", cssConf);
+
 			drain::XML::map_t m;
-			m.setValues(cssConf, ':', ';'); // FIX map assignment error here
-			mout.accept<LOG_WARNING>("New m: ", m);
 			/*
+			m.setValues(cssConf, ':', ';'); // FIX map assignment error here
+			mout.accept<LOG_WARNING>("Own m: ", m);
+
 			m.clear();
 			m.importEntries<true>(cssConf, ':', ';');
 			mout.accept<LOG_WARNING>("IMP m: ", m);
 			*/
 			m.clear();
 			drain::MapTools::setValues(m, cssConf, ';', ':');
-			mout.accept<LOG_WARNING>("Now m: ", m);
+			mout.accept<LOG_WARNING>("Now m: ", drain::sprinter(m));
 
 			style[cssSelector](svg::STYLE_SELECT);
-			style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
+			//style[cssSelector]->getAttributes().setValues(cssConf, ':', ';');
+			//style[cssSelector]->set();
+			drain::MapTools::setValues(style[cssSelector]->getMap(), cssConf, ';', ':');
 
-
-			mout.attention("New style: ", cssSelector, " <- ", style[cssSelector]->getAttributes());
+			mout.attention("New style: ", cssSelector, " <- ", drain::sprinter(style[cssSelector]->getAttributes()));
 
 			//style[cssSelector]->setStyle(cssConf); // TODO fix -> ->getAttributes().setValues(cssConf, ':', ';');
 
@@ -1233,7 +1236,8 @@ public:
 	static
 	drain::image::TreeSVG & getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label=""){
 
-		std::string srcLabel = overlayGroup->getAttributes().get("data-latest", "unknown");
+		//std::string srcLabel = overlayGroup->getAttributes().get("data-latest", "unknown");
+		std::string srcLabel = overlayGroup->get("data-latest", "unknown");
 		const std::string & key = label.empty() ? srcLabel : label;
 		drain::image::TreeSVG & overlay = overlayGroup[key](drain::image::svg::GROUP); // (drain::image::svg::GROUP);
 		overlay->set("data-src", srcLabel);

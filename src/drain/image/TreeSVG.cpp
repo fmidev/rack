@@ -144,37 +144,38 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 	case image::svg::CTEXT:
 		break;
 	case image::svg::SVG:
-		link("width", box.width); // = 0);
-		link("height", box.height); // = 0);
-		link("xmlns", NodeSVG::svg);
-		link("xmlns:svg", NodeSVG::svg);
-		link("xmlns:xlink", NodeSVG::xlink);
+	  getMap()["width"].link(box.width); // = 0);
+		// link("width", box.width); // = 0);
+	  getMap()["height"].link(box.height); // = 0);
+	  getMap()["xmlns"].link(NodeSVG::svg);
+	  getMap()["xmlns:svg"].link(NodeSVG::svg);
+	  getMap()["xmlns:xlink"].link(NodeSVG::xlink);
 		break;
 	case image::svg::TITLE:
 		break;
 	case image::svg::GROUP:
-		link("data-pos", box.getLocation().tuple());
-		link("data-frm", box.getFrame().tuple());
+	  getMap()["data-pos"].link(box.getLocation().tuple());
+	  getMap()["data-frm"].link(box.getFrame().tuple());
 		break;
 	case image::svg::RECT:
-		link("x", box.x = 0);
-		link("y", box.y = 0);
-		link("width", box.width); // = 0);
-		link("height", box.height); // = 0);
+	  getMap()["x"].link(box.x = 0);
+	  getMap()["y"].link(box.y = 0);
+	  getMap()["width"].link(box.width); // = 0);
+	  getMap()["height"].link(box.height); // = 0);
 		break;
 	case image::svg::CIRCLE:
-		link("cx", box.x = 0);
-		link("cy", box.y = 0);
+	  getMap()["cx"].link(box.x = 0);
+	  getMap()["cy"].link(box.y = 0);
 		set("r", svg::coord_t(0));
-		// link("r", radius = 0);
+		// getMap()["r"].link(radius = 0);
 		break;
 	case image::svg::IMAGE:
-		link("x", box.x = 0);
-		link("y", box.y = 0);
-		link("width", box.width); //  = 0);
-		link("height", box.height); //  = 0);
+	  getMap()["x"].link(box.x = 0);
+	  getMap()["y"].link(box.y = 0);
+	  getMap()["width"].link(box.width); //  = 0);
+	  getMap()["height"].link(box.height); //  = 0);
 		// if (version == 1) {
-		link("xlink:href", url); // text_anchor
+	  getMap()["xlink:href"].link(url); // text_anchor
 		// if (version > 2.x ?) {
 		break;
 	case image::svg::PATH:
@@ -182,14 +183,14 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 		get("d").setSeparator(0);
 		break;
 	case image::svg::POLYGON:
-		// link("path", ctext);
+		// getMap()["path"].link(ctext);
 		// set("path", "");
 		get("points").setType<std::string>();
 		get("points").setSeparator(0);
 		break;
 	case image::svg::TEXT:
-		link("x", box.x); //  = 0);
-		link("y", box.y); //  = 0);
+	  getMap()["x"].link(box.x); //  = 0);
+	  getMap()["y"].link(box.y); //  = 0);
 		break;
 	case image::svg::TSPAN:
 		break;
@@ -197,12 +198,12 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 		return;
 	}
 
-	// link("pos", box.getLocation().tuple());
-	// link("frm", box.getFrame().tuple());
+	// getMap()["pos"].link(box.getLocation().tuple());
+	// getMap()["frm"].link(box.getFrame().tuple());
 	// DEPRECATING: see separate STYLE and CLASS?
-	// link("style", style = "");
-	// link("fill", fill = "");
-	// link("opacity", opacity = ""); // string, so silent if empty
+	// getMap()["style"].link(style = "");
+	// getMap()["fill"].link(fill = "");
+	// getMap()["opacity"].link(opacity = ""); // string, so silent if empty
 
 
 }
@@ -273,46 +274,46 @@ void NodeSVG::updateAlign(){
 	updateAlignStr();
 
 	if (alignStr.empty()){
-		this->unlink("data-align");
+		this->getMap().erase("data-align");
 	}
 	else {
-		if (!this->hasKey("data-align")){
-			this->link("data-align", alignStr); // (should be safe anyway)
-		}
+		// if (!this->hasKey("data-align")){
+		this->getMap()["data-align"].link(alignStr); // (should be safe anyway)
+		//}
 	}
 
-	this->unlink("data-anchor");
-	this->unlink("data-anchorHorz");
-	this->unlink("data-anchorVert");
+	this->getMap().erase("data-anchor");
+	this->getMap().erase("data-anchorHorz");
+	this->getMap().erase("data-anchorVert");
 
 	if ((!myAnchorHorz.empty()) || (!myAnchorVert.empty())){
 
 		if (myAnchorHorz == myAnchorVert){
-			this->link("data-anchor", myAnchorHorz.str());
+		  this->getMap()["data-anchor"].link(myAnchorHorz.str());
 		}
 		else if (!myAnchorHorz.empty()){
-			this->link("data-anchorHorz", myAnchorHorz.str());
+		  this->getMap()["data-anchorHorz"].link(myAnchorHorz.str());
 		}
 		else if (!myAnchorVert.empty()){
-			this->link("data-anchorVert", myAnchorVert.str());
+		  this->getMap()["data-anchorVert"].link(myAnchorVert.str());
 		}
 
 	}
 
-	this->unlink("data-anchorDefault");
-	this->unlink("data-anchorHorzDefault");
-	this->unlink("data-anchorVertDefault");
+	this->getMap().erase("data-anchorDefault");
+	this->getMap().erase("data-anchorHorzDefault");
+	this->getMap().erase("data-anchorVertDefault");
 
 	if ((!defaultAnchorHorz.empty()) || (!defaultAnchorVert.empty())){
 
 		if (defaultAnchorHorz == defaultAnchorVert){
-			this->link("data-anchorDefault", defaultAnchorHorz.str());
+		  this->getMap()["data-anchorDefault"].link(defaultAnchorHorz.str());
 		}
 		else if (!defaultAnchorHorz.empty()){
-			this->link("data-anchorHorzDefault", defaultAnchorHorz.str());
+		  this->getMap()["data-anchorHorzDefault"].link(defaultAnchorHorz.str());
 		}
 		else if (!defaultAnchorVert.empty()){
-			this->link("data-anchorVertDefault", defaultAnchorVert.str());
+		  this->getMap()["data-anchorVertDefault"].link(defaultAnchorVert.str());
 		}
 
 	}

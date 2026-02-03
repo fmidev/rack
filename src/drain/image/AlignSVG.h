@@ -68,6 +68,17 @@ public:
 		UNDEFINED_AXIS = 2,
 	};
 
+
+	/// supporting simultaneous HORZ|VERT
+	/*
+	enum Axis {
+		// Index, must contain 0 and 1 for HORZ and VERT
+		UNDEFINED_AXIS = 0,
+		HORZ      = 1, // 0b00110011,
+		VERT      = 2, // b11001100,
+	};
+	*/
+
 	static inline
 	Axis flip(Axis axis){
 		switch (axis){
@@ -100,12 +111,12 @@ public:
 };
 
 
-template <>
-const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict;
+// template <> const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict;
+DRAIN_ENUM_DICT(AlignBase::Axis);
 DRAIN_ENUM_OSTREAM(AlignBase::Axis);
 
-template <>
-const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict;
+// template <>const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict;
+DRAIN_ENUM_DICT(AlignBase::Pos);
 DRAIN_ENUM_OSTREAM(AlignBase::Pos);
 
 
@@ -226,7 +237,7 @@ struct AlignSVG { // : protected Align {
 
 	/// Alias for {HORZ:MIN}
 	static
-	const HorzAlign LEFT; // ,Coord::MIN
+	const HorzAlign LEFT;
 
 	/// Alias for {HORZ:MID}
 	static

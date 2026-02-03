@@ -87,7 +87,7 @@ public:
 	/// Return true, if array area is greater than zero.
 	inline
 	bool geometryIsSet() const {
-		return ((frameWidth > 0) && (frameHeight > 0));
+		return ((frame.width > 0) && (frame.height > 0));
 	};
 
 	/// Returns true, if the bounding box (geographical extent) has been set.
@@ -117,11 +117,11 @@ public:
 
 	/// Return the nominal width, not the width of the memory array which does not have to be allocated.
 	inline
-	int getFrameWidth() const {return frameWidth; };
+	int getFrameWidth() const {return frame.width; };
 
 	/// Return the nominal height, not the height of the memory array which does not have to be allocated.
 	inline
-	int getFrameHeight() const {return  frameHeight; };
+	int getFrameHeight() const {return  frame.height; };
 
 
 	/// Sets bounding box in degrees OR in metres in the target coordinate system.
@@ -347,16 +347,16 @@ public:
 		// j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
 		// j = frameHeight-1 - static_cast<int>(0.5+ (y - bBoxNative.lowerLeft.y) / yScale);
 		i = ::lround((x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
-		j = frameHeight-1 - ::lround((y - bBoxNative.lowerLeft.y) / yScale);
+		j = frame.height-1 - ::lround((y - bBoxNative.lowerLeft.y) / yScale);
 	}
 
 	inline virtual
 	void m2pix(const drain::Point2D<double> & pMetric, drain::Point2D<int> & pImage) const {
 		// pImage.x = static_cast<int>(0.5+ (pMetric.x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
-		// pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
-		// pImage.y = frameHeight-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
+		// pImage.y = frame.height-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
+		// pImage.y = frame.height-1 - static_cast<int>(0.5+ (pMetric.y - bBoxNative.lowerLeft.y) / yScale);
 		pImage.x = ::lround( (pMetric.x - bBoxNative.lowerLeft.x) / xScale); //  xOffset
-		pImage.y = frameHeight-1 - ::lround((pMetric.y - bBoxNative.lowerLeft.y) / yScale);
+		pImage.y = frame.height-1 - ::lround((pMetric.y - bBoxNative.lowerLeft.y) / yScale);
 	}
 
 
@@ -372,7 +372,7 @@ public:
 	virtual
 	void pix2m(int i, int j, double & x, double & y) const {
 		x = (static_cast<double>(i)+0.5)*xScale + bBoxNative.lowerLeft.x;
-		y = (static_cast<double>(frameHeight-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
+		y = (static_cast<double>(frame.height-1 - j)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to map coordinates (x,y) in the pixel \b centres.
@@ -380,7 +380,7 @@ public:
 	virtual
 	void pix2m(const drain::Point2D<int> & pImage, drain::Point2D<double> & pMetric) const {
 		pMetric.x = (static_cast<double>(pImage.x)+0.5)*xScale + bBoxNative.lowerLeft.x;
-		pMetric.y = (static_cast<double>(frameHeight-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
+		pMetric.y = (static_cast<double>(frame.height-1 - pImage.y)+0.5)*yScale + bBoxNative.lowerLeft.y;
 	}
 
 	/// Scales image coordinates (i,j) to map coordinates (x,y) of the lower left corner pixel.
@@ -396,7 +396,7 @@ public:
 	virtual
 	void pix2LLm(int i, int j, double & x, double & y) const {
 		x = (static_cast<double>(i))*xScale + bBoxNative.lowerLeft.x;
-		y = (static_cast<double>(frameHeight-1 - j))*yScale + bBoxNative.lowerLeft.y;
+		y = (static_cast<double>(frame.height-1 - j))*yScale + bBoxNative.lowerLeft.y;
 		// y = (static_cast<double>(frameHeight-1 - j))*yScale + bBoxNative.lowerLeft.y;
 	}
 
@@ -490,8 +490,9 @@ protected:
 
 
 	// drain::image::AreaGeometry frameGeometry; would be fine, but unsigned caused conversion/cast underflows
-	int frameWidth;
-	int frameHeight;
+	Frame2D<int> frame;
+	// int frameWidth;
+	// int frameHeight;
 
 	/// Geographical scope in Radians.
 	drain::Rectangle<double> bBoxR;

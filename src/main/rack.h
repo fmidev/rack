@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(17,2)
+#define RACK_VERSION drain::Version<>(17,3)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -49,6 +49,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fixed GeoFrame numeric EPSG
  *  Version 17.2
  *  - SVG mask
+ *  Version 17.3
+ *  - XML attributes as std::map
  *
  *  Version 16
  *  - Python UI export (experimental)
