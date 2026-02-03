@@ -56,6 +56,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/Command.h>
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandInstaller.h>
+#include <main/graphics-panel.h>
 #include <product/RadarProductOp.h>
 
 #include "data/Data.h"
@@ -72,7 +73,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio.h"
 #include "fileio-read.h"
 #include "fileio-geotiff.h"
-#include "fileio-svg.h"
+//#include "fileio-svg.h"
 #include "graphics.h"
 #include "fileio-html.h"
 #include "file-hist.h"

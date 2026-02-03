@@ -408,9 +408,15 @@ TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int 
 	if ((width != 0) && (height != 0)){
 		updateMask(mask, width, height, node);
 	}
-	std::string s = drain::MapTools::get(group->getAttributes(), "data-src", group->getId());
+	std::string s; //  = drain::MapTools::get(group->getAttributes(), "data-latest", group->getId());
+	if (group.hasChild(svg::DESC)){
+		s = group[svg::DESC].data.getText();
+	}
+	else {
+		s = group->getId();
+	}
 	drain::image::TreeSVG & comment = mask.prependChild(s)(svg::COMMENT);
-	comment->setText("applied by: ", s);
+	comment->setText("reference: ", s);
 	return mask;
 }
 
@@ -419,8 +425,6 @@ void MaskerSVG::linkMask(const TreeSVG & mask, TreeSVG & obj) {
 	obj->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
 	obj->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
 	obj->addClass(COVER);
-	// obj->set("fill", "gray"); // debug
-	// obj->set("opacity", 0.5); // debug
 }
 
 
