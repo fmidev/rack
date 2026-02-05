@@ -205,6 +205,8 @@ public:
 
 	Palette & getPalette(const std::string & key);
 
+	// New, returns also the actual key.
+	//PaletteMap::iterator it getPaletteEntry(const std::string & key);
 
 	/// Given image pointer (null ok), get properties.
 	static

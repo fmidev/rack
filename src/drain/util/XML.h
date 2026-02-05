@@ -86,6 +86,9 @@ public:
 	static const intval_t SCRIPT    = 3; // || flag_EXPLICIT || flag_TEXT
 	static const intval_t STYLE     = 4; // || flag_EXPLICIT
 	static const intval_t STYLE_SELECT = 5;
+	static const intval_t JAVASCRIPT       = 6; // future extension
+	static const intval_t JAVASCRIPT_SCOPE = 7; // future extension
+
 
 	enum entity_t {
 		AMPERSAND = '&',
@@ -122,8 +125,6 @@ public:
 	// OLD static	const std::map<char,std::string> encodingMap;
 
 
-
-
 public:
 
 	inline
@@ -131,8 +132,10 @@ public:
 
 	inline
 	XML(const XML &){
-
 	};
+
+	inline
+	~XML(){};
 
 	template <class T> // "final"
 	void setType(const T &t){ // DANGER, without cast?
@@ -213,6 +216,11 @@ public:
 	inline
 	bool isScript() const {
 		return type == SCRIPT;
+	}
+
+	inline
+	bool isScopeJS() const {
+		return type == JAVASCRIPT_SCOPE;
 	}
 
 	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
@@ -695,9 +703,8 @@ public:
 };
 
 
-template <>
-const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict;
-
+// template <> const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict;
+DRAIN_ENUM_DICT(XML::entity_t);
 DRAIN_ENUM_OSTREAM(XML::entity_t);
 
 template <class TR>

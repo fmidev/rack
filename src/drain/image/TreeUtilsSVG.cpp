@@ -385,7 +385,7 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 }
 
 
-void MaskerSVG::updateMask(drain::image::TreeSVG & mask, int width, int height, const NodeSVG & node){
+drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int width, int height, const NodeSVG & node){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
@@ -393,21 +393,22 @@ void MaskerSVG::updateMask(drain::image::TreeSVG & mask, int width, int height, 
 	rect->setHeight(height);
 
 	// Punch hole
+	drain::image::TreeSVG & hole = mask.addChild();
 	if (node.typeIsSet()){
-		drain::image::TreeSVG & hole = mask.addChild();
 		hole.data = node;
 		hole->clearClasses();
 		hole->set("fill", "black"); // Later, consider other style(s), like gradient fill?
 	}
-
+	else {
+		hole->setType(svg::COMMENT);
+		hole->setText("unimplemented mask? ", mask->getId(), "/", node.getId());
+	}
+	return hole;
 }
 
 TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node){
 	const drain::FlexibleVariable & maskId = createMaskId(group);
-	drain::image::TreeSVG & mask = getMask(root, maskId);
-	if ((width != 0) && (height != 0)){
-		updateMask(mask, width, height, node);
-	}
+
 	std::string s; //  = drain::MapTools::get(group->getAttributes(), "data-latest", group->getId());
 	if (group.hasChild(svg::DESC)){
 		s = group[svg::DESC].data.getText();
@@ -415,8 +416,16 @@ TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int 
 	else {
 		s = group->getId();
 	}
-	drain::image::TreeSVG & comment = mask.prependChild(s)(svg::COMMENT);
-	comment->setText("reference: ", s);
+
+	drain::image::TreeSVG & mask = getMask(root, maskId);
+	if ((width != 0) && (height != 0)){
+		TreeSVG & hole = updateMask(mask, width, height, node);
+		hole[svg::DESC](svg::DESC)->setText(s);
+	}
+
+	// c = mask.prependChild(s)(svg::COMMENT);
+	// comment->setText("reference: ", s);
+
 	return mask;
 }
 

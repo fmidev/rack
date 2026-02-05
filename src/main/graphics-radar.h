@@ -46,6 +46,52 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+class Graphic  {
+
+public:
+
+	enum GRAPHIC {
+		VECTOR_OVERLAY, // this is more for group ID/name
+		HIGHLIGHT,      // CSS: activated on tool tip
+		GRID,           // overlapping with element class?
+		DOT,
+		LABEL, // External
+		RAY,
+		SECTOR,
+		ANNULUS,
+		CIRCLE,
+	};
+
+	const drain::ClassXML cls;
+
+
+	inline
+	Graphic(GRAPHIC g = RAY) : cls(drain::EnumDict<GRAPHIC>::dict.getKey(g)) {
+	}
+
+	inline
+	Graphic(const Graphic & g) : cls(g.cls) {
+	}
+
+	inline
+	Graphic(const drain::ClassXML & cls) : cls(cls) {
+	}
+
+	static
+	drain::image::TreeSVG & getGraphicStyle(drain::image::TreeSVG & svgDoc);
+
+
+};
+
+
+}
+
+DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC);
+DRAIN_ENUM_OSTREAM(rack::Graphic::GRAPHIC);
+
+namespace rack {
+
+
 /// Vector graphics for both composites and single radar data (polar coordinates).
 /**
  *   This class utilizes SVG elements supporting free draw, especially POLYGON and PATH.
@@ -74,13 +120,14 @@ public:
 	};
 
 
-
+	/*
 	enum StyleClasses {
 		VECTOR_OVERLAY, // this is more for group ID/name
 		HIGHLIGHT,      // CSS: activated on tool tip
 		// ^ rename VECTORS  VECTOR_GRAPHICS
 		GRID,           // CSS
 	};
+	*/
 
 	/// Sets some CSS properties applicable in radar graphics (grids, sectors).
 	/**
@@ -88,8 +135,8 @@ public:
 	 *
 	 *  More general style is obtained with RackSVG::getStyle().
 	 */
-	static
-	drain::image::TreeSVG & getOverlayStyle(drain::image::TreeSVG & svgDoc);
+	// static
+	// drain::image::TreeSVG & getOverlayStyle(drain::image::TreeSVG & svgDoc);
 
 	/// Get (create) group dedicated for layers drawn over radar data
 	/**
@@ -314,32 +361,37 @@ void RadarSVG::updateCartesianConf(const drain::SmartMap<T> & where) {
 
 } // rack::
 
+/*
+
 
 DRAIN_ENUM_DICT(rack::RadarSVG::StyleClasses);
 
 DRAIN_ENUM_OSTREAM(rack::RadarSVG::StyleClasses);
 
+*/
+
 namespace drain {
 
+
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
-const image::TreeSVG & image::TreeSVG::operator[](const rack::RadarSVG::StyleClasses & cls) const {
-	return (*this)[EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, false)];
+const image::TreeSVG & image::TreeSVG::operator[](const rack::Graphic::GRAPHIC & cls) const {
+	return (*this)[EnumDict<rack::Graphic::GRAPHIC>::dict.getKey(cls, false)];
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
-image::TreeSVG & image::TreeSVG::operator[](const rack::RadarSVG::StyleClasses & cls) {
-	return (*this)[EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, false)];
+image::TreeSVG & image::TreeSVG::operator[](const rack::Graphic::GRAPHIC & cls) {
+	return (*this)[EnumDict<rack::Graphic::GRAPHIC>::dict.getKey(cls, false)];
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
-bool image::TreeSVG::hasChild(const rack::RadarSVG::StyleClasses & cls) const {
-        return hasChild(EnumDict<rack::RadarSVG::StyleClasses>::dict.getKey(cls, true)); // no error
+bool image::TreeSVG::hasChild(const rack::Graphic::GRAPHIC & cls) const {
+        return hasChild(EnumDict<rack::Graphic::GRAPHIC>::dict.getKey(cls, true)); // no error
 }
 
 }

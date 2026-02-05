@@ -45,14 +45,42 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-class CmdPolarBase {
+
+
+class CmdPolarBase : public Graphic, public drain::BasicCommand {
 
 protected:
+
 	drain::SteppedRange<double> radiusMetres = {0.0, 0.0, 0.0};// (50000.0, 0.0, 250000.0);
 	drain::SteppedRange<double> azimuthDegrees = {0.0, 0.0, 0.0}; // (30, 0, 360);
 	bool MASK = false;
 
 public:
+
+	/*
+	enum GRAPHIC {
+		GRID, // overlapping with element class?
+		DOT,
+		LABEL, // External
+		RAY,
+		SECTOR,
+		ANNULUS,
+		CIRCLE,
+	};
+	const drain::ClassXML cssClass;
+	*/
+
+
+	inline
+	CmdPolarBase(const std::string & name, const std::string & description, Graphic::GRAPHIC cg = GRID) : Graphic(cg),
+		drain::BasicCommand(name, description + ". CSS classes: GRID," + (const std::string &)cls)
+	{
+	};
+
+	inline
+	CmdPolarBase(const CmdPolarBase & cmd): Graphic(cmd.cls), drain::BasicCommand(cmd) {
+	}
+
 
 	static
 	const std::string DATA_ID; // "data-latest"
@@ -66,10 +94,6 @@ public:
 	 *
 	 */
 
-	enum GRAPHIC {
-		DOT=8,
-		CIRCLE=16,
-	};
 
 	/**
 	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
@@ -77,8 +101,8 @@ public:
 	static
 	drain::image::TreeSVG & getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG);
 
-	static
-	drain::image::TreeSVG & getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label="");
+	// static
+	drain::image::TreeSVG & getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label="") const;
 
 	static
 	double ensureMetricRange(double maxRange, double range=1.0);
@@ -97,6 +121,7 @@ public:
 
 };
 
+
 /**
  *
  *  circle=max RADAR_CIRCLE
@@ -105,18 +130,18 @@ public:
  *
  *
  */
-class CmdRadarDot : public drain::BasicCommand, CmdPolarBase {
+class CmdRadarDot : public CmdPolarBase { //  drain::BasicCommand,
 
 public:
 
 	// Default: 10 kms.
-	CmdRadarDot() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar position") {
-		getParameters().link("radius", radiusMetres.range.tuple(10000.0,10000.0), "radius of radar location disc [0.0..1.0|0..250..]").setFill(true);
+	CmdRadarDot() : CmdPolarBase(__FUNCTION__, "Mark the radar position with a circle", DOT) {
+		getParameters().link("radius", radiusMetres.range.tuple(10000.0,10000.0), "metres or relative").setFill(true);
 		getParameters().link("MASK", MASK, "add mask");
 	};
 
 	// Copy constructor
-	CmdRadarDot(const CmdRadarDot & cmd) : drain::BasicCommand(cmd) {
+	CmdRadarDot(const CmdRadarDot & cmd) : CmdPolarBase(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
@@ -129,7 +154,7 @@ public:
  *
  *  See also: CmdGrid, CmdCartesianGrid
  */
-class CmdRadarGrid : public drain::BasicCommand, CmdPolarBase {
+class CmdRadarGrid : public CmdPolarBase { //  drain::BasicCommand,
 
 	// future option
 	bool AMZ_TEXT = true;
@@ -138,15 +163,15 @@ class CmdRadarGrid : public drain::BasicCommand, CmdPolarBase {
 public:
 
 	inline
-	CmdRadarGrid() : drain::BasicCommand(__FUNCTION__, "Draw polar sectors and rings. Styles: HIGHLIGHT") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
-		getParameters().link("radius", radiusMetres.tuple(0.0, 0.0, 0.0), "step:start:end (metres)").fillArray = false;
+	CmdRadarGrid() : CmdPolarBase(__FUNCTION__, "Draw polar sectors and rings", GRID) { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+		getParameters().link("radius", radiusMetres.tuple(0.0, 0.0, 0.0), "step:start:end (metres or relative)").fillArray = false;
 		getParameters().link("azimuth", azimuthDegrees.tuple(30.0, 0.0, 360.0), "step:start:end (degrees)").fillArray = false;
 		getParameters().link("MASK", MASK, "add a mask");
 	};
 
 	// Copy constructor
 	inline
-	CmdRadarGrid(const CmdRadarGrid & cmd) : drain::BasicCommand(cmd) {
+	CmdRadarGrid(const CmdRadarGrid & cmd) : CmdPolarBase(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
@@ -155,18 +180,18 @@ public:
 
 };
 
-class CmdRadarSector : public drain::BasicCommand, public CmdPolarBase {
+class CmdRadarSector : public CmdPolarBase { // public drain::BasicCommand,
 
 public:
 
-	CmdRadarSector() : drain::BasicCommand(__FUNCTION__, "Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
-		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres)").fillArray = false;
+	CmdRadarSector() : CmdPolarBase(__FUNCTION__, "Draw a sector, annulus or a disc.", SECTOR) { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres or relative)").fillArray = true;
 		getParameters().link("azimuth", azimuthDegrees.range.tuple(0.0, 0.0), "start:end (degrees)").fillArray = false;
 		getParameters().link("MASK", MASK, "add a mask");
 	};
 
 	// Copy constructor
-	CmdRadarSector(const CmdRadarSector & cmd) : drain::BasicCommand(cmd) {
+	CmdRadarSector(const CmdRadarSector & cmd) : CmdPolarBase(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
@@ -176,18 +201,18 @@ public:
 };
 
 
-class CmdRadarRay : public drain::BasicCommand, public CmdPolarBase {
+class CmdRadarRay : public CmdPolarBase { // public drain::BasicCommand, public CmdPolarBase {
 
 public:
 
-	CmdRadarRay() : drain::BasicCommand(__FUNCTION__, "Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector") { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
+	CmdRadarRay() : CmdPolarBase(__FUNCTION__, "Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector", RAY) { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres)").fillArray = true;
 		getParameters().link("azimuth", azimuthDegrees.range.min, "(degrees)");
 		getParameters().link("MASK", MASK, "add a mask");
 	};
 
 	// Copy constructor
-	CmdRadarRay(const CmdRadarRay & cmd) : drain::BasicCommand(cmd) {
+	CmdRadarRay(const CmdRadarRay & cmd) : CmdPolarBase(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
@@ -197,7 +222,7 @@ public:
 };
 
 
-class CmdRadarLabel : public drain::BasicCommand, CmdPolarBase {
+class CmdRadarLabel : public CmdPolarBase { //  drain::BasicCommand,
 
 protected:
 
@@ -207,18 +232,64 @@ protected:
 
 public:
 
-	CmdRadarLabel() : drain::BasicCommand(__FUNCTION__, "Draw circle describing the radar range. Styles: GRID,HIGHLIGHT,CmdPolarScope") {
+	CmdRadarLabel() : CmdPolarBase(__FUNCTION__, "Draw circle describing the radar range.", LABEL) {
 		getParameters().link("label", label, "string, supporting variables like ${where:lon}, ${NOD}, ${PLC}");
 		//getParameters().link("azimuth", azimuthDegrees.tuple(), "step:start:end (degrees)").fillArray = false;
 	};
 
 	// Copy constructor
-	CmdRadarLabel(const CmdRadarLabel & cmd) : drain::BasicCommand(cmd) {
+	CmdRadarLabel(const CmdRadarLabel & cmd) : CmdPolarBase(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 
 	virtual
+	void exec() const override;
+
+};
+
+
+class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
+
+public:
+
+	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
+		// getParameters().link("name",   name, "label");
+		// getParameters().link("panel",  panel, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	}
+
+	CmdCoords(const CmdCoords & cmd) : CmdPolarBase(cmd) {
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	void exec() const override ;
+};
+
+
+
+class CmdDot : public CmdPolarBase { //  drain::BasicCommand,
+
+	drain::Point2D<double> coords;
+	// drain::Range<double>   radius;
+	std::string id;
+	std::string style;
+
+public:
+
+	inline
+	CmdDot() : CmdPolarBase(__FUNCTION__, "Draw a marker circle", LABEL) {
+		getParameters().link("lonlat", coords.tuple(25.0, 60.0), "Coordinate (lon,lat) in degrees(decimal) or metres.");
+		getParameters().link("radius", radiusMetres.range.tuple(0,25000), "metres or relative").setFill(true);
+		getParameters().link("id", id, "XML element id");
+		getParameters().link("style", style, "XML element CSS style");
+	}
+
+	inline
+	CmdDot(const CmdDot & cmd) : CmdPolarBase(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
 	void exec() const override;
 
 };

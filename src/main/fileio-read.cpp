@@ -320,10 +320,13 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		ctx.currentPolarHi5 = & ctx.polarInputHi5;
 
 		if (object == "SCAN"){
-			mout.revised<LOG_WARNING>("moving rooted /how-attributes to /dataset<N>/how-attributes");
+
+			mout.revised("moving rooted /how attributes to /dataset<N>/how");
+
+			std::list<std::string> movedAttributes;
 
 			for (const char * key: {
-					"lowprf", "highprf", "NI", "astart", "rpm", "nsampleH", "nsampleV", "how:scan_index",
+					"lowprf", "highprf", "NI", "astart", "rpm", "nsampleH", "nsampleV", "scan_index",
 					"startazT", "stopazT", "startelA", "stopelA"
 			}){
 
@@ -345,6 +348,11 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 					srcTmp[ODIMPathElem::HOW].data.attributes.erase(key);
 				}
 			}
+
+			if (!movedAttributes.empty()){
+				mout.revised<LOG_WARNING>("moved rooted /how attributes to /dataset<N>/how: ", drain::sprinter(movedAttributes));
+			}
+
 		}
 
 		// TODO: force APPEND / REPLACE?

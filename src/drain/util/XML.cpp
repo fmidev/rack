@@ -40,6 +40,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+typedef drain::EnumDict<XML::entity_t> xml_entity;
+
+#define DRAIN_XML_ENTITY(entity) {entity_t::entity, drain::EnumDict<XML::entity_t>::dict.getKey(entity_t::entity)}
 
 
 /// Uses spaces as separators.
@@ -54,16 +57,13 @@ const XML::intval_t XML::STYLE;
 const XML::intval_t XML::STYLE_SELECT;
 const XML::intval_t XML::SCRIPT;
 
-typedef drain::EnumDict<XML::entity_t> xml_entity;
-
-#define DRAIN_XML_ENTITY(entity) {entity_t::entity, drain::EnumDict<XML::entity_t>::dict.getKey(entity_t::entity)}
 
 /**
  *
  *  https://www.w3schools.com/charsets/ref_utf_basic_latin.asp
  */
-template <>
-const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict = {
+// template <> const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict
+DRAIN_ENUM_DICT(XML::entity_t)  = {
 		{"&#38;",  XML::AMPERSAND},  // &amp;
 		{"&#60;",  XML::LESS_THAN},  // &lt;
 		{"&#61;",  XML::EQUAL_TO},  // &lt;

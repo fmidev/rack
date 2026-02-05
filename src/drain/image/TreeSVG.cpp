@@ -73,6 +73,8 @@ DRAIN_ENUM_DICT(image::svg::tag_t) = {
 		{"script", drain::image::svg::SCRIPT},
 		{"style", drain::image::svg::STYLE},
 		{"style_select", drain::image::svg::STYLE_SELECT},
+		{"javascript_scope", drain::image::svg::JAVASCRIPT_SCOPE},
+		// -- Actual SVG elems
 		{"svg", drain::image::svg::SVG},
 		{"circle", drain::image::svg::CIRCLE},
 		{"clipPath", drain::image::svg::CLIP_PATH},

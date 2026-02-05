@@ -235,7 +235,7 @@ public:
 	 *   \param contourNode - (closed) SVG element, typically of type PATH, to be copied to the mask.
 	 */
 	static
-	void updateMask(TreeSVG & mask, int width, int height, const NodeSVG & contourNode);
+	drain::image::TreeSVG & updateMask(TreeSVG & mask, int width, int height, const NodeSVG & contourNode);
 
 
 	/// Calls createMaskId(), getMask() and updateMask().

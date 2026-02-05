@@ -124,7 +124,7 @@ void ODIMPathElem::add(const std::string &s){
 	this->currentStr = s;
 
 	//mout.note("non-standard path element: " , *this );
-	mout.warn("non-standard path element: " , *this );
+	mout.suspicious<LOG_INFO>("non-standard path element: " , *this );
 
 }
 

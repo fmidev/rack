@@ -33,12 +33,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(17,3)
+#define RACK_VERSION drain::Version<>(18.0)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
 
 /**
+ *  Version 18
+ *  - SVG basic command set completed
+ *  - Palette retrieval with secondary quantity names, for example "TH" or "DBZH" are mapped to "DBZ".
+ *
  *  Version 17
  *  - Revised XML/HTML/SVG CSS classes
  *  Vesion 17.0

@@ -37,21 +37,32 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "graphics-radar.h"
 
+DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
+		DRAIN_ENUM_ENTRY(rack::Graphic, VECTOR_OVERLAY),
+		DRAIN_ENUM_ENTRY(rack::Graphic, HIGHLIGHT),
+		DRAIN_ENUM_ENTRY(rack::Graphic, GRID),
+		DRAIN_ENUM_ENTRY(rack::Graphic, DOT),
+		DRAIN_ENUM_ENTRY(rack::Graphic, LABEL),
+		DRAIN_ENUM_ENTRY(rack::Graphic, RAY),
+		DRAIN_ENUM_ENTRY(rack::Graphic, SECTOR),
+		DRAIN_ENUM_ENTRY(rack::Graphic, ANNULUS),
+		DRAIN_ENUM_ENTRY(rack::Graphic, CIRCLE),
+};
 
-
+/*
 DRAIN_ENUM_DICT(rack::RadarSVG::StyleClasses) = {
 		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, VECTOR_OVERLAY),
 		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, GRID),
 		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, HIGHLIGHT),
 };
-
+*/
 
 namespace rack {
 
 using namespace drain;
 
 
-drain::image::TreeSVG & RadarSVG::getOverlayStyle(drain::image::TreeSVG & svgDoc){
+drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc){
 
 	// Consider areas or frames: MAIN_FRAME, GROUP_FRAME, IMAGE_FRAME
 
@@ -147,7 +158,7 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	TreeSVG & overlayGroup = group[VECTOR_OVERLAY]; // (svg::GROUP);
+	TreeSVG & overlayGroup = group[Graphic::VECTOR_OVERLAY]; // (svg::GROUP);
 
 	//if (!group.hasChild(VECTOR_OVERLAY)){
 	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
@@ -155,7 +166,8 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 		using namespace drain::image;
 		overlayGroup->setType(svg::GROUP);
-		overlayGroup->addClass(StyleClasses::GRID);
+		overlayGroup->addClass(Graphic::VECTOR_OVERLAY);
+		//overlayGroup->addClass(StyleClasses::GRID);
 		overlayGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);

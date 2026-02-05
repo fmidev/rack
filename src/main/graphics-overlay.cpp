@@ -48,26 +48,36 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 //#include "radar/PolarSector.h"
+#include "graphics.h"
 #include "graphics-panel.h"
 #include "graphics-radar.h"
 #include "graphics-overlay.h"
 
 
-namespace drain {
-
-
-}
-
-
-namespace rack {
-
-DRAIN_ENUM_DICT(CmdPolarBase::GRAPHIC) = {
-		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, CIRCLE),
-		DRAIN_ENUM_ENTRY(rack::CmdPolarBase, DOT),
-		// {"CIRCLE", CmdRadarGRAPHIC::GRAPHIC::CIRCLE}
+/*
+DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
+		DRAIN_ENUM_ENTRY(rack::Graphic, GRID),
+		DRAIN_ENUM_ENTRY(rack::Graphic, DOT),
+		DRAIN_ENUM_ENTRY(rack::Graphic, LABEL),
+		DRAIN_ENUM_ENTRY(rack::Graphic, RAY),
+		DRAIN_ENUM_ENTRY(rack::Graphic, SECTOR),
+		DRAIN_ENUM_ENTRY(rack::Graphic, ANNULUS),
+		DRAIN_ENUM_ENTRY(rack::Graphic, CIRCLE),
 };
 
-DRAIN_ENUM_OSTREAM(CmdPolarBase::GRAPHIC);
+DRAIN_ENUM_OSTREAM(rack::Graphic::GRAPHIC);
+*/
+
+namespace rack {
+/*
+	GRID,
+		DOT,
+		LABEL, // External
+		RAY,
+		SECTOR,
+		ANNULUS,
+		CIRCLE,
+		*/
 
 //const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 /*
@@ -120,7 +130,8 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		// return;
 	}
 
-	RadarSVG::getOverlayStyle(ctx.svgTrack);
+	//RadarSVG::getOverlayStyle(ctx.svgTrack);
+	Graphic::getGraphicStyle(ctx.svgTrack);
 
 	drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
 	drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
@@ -159,6 +170,7 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		radarSVG.updateCartesianConf(composite);
 	}
 
+	// overlayGroup->addClass(GRID); // add RADAR?
 	overlayGroup->set(DATA_ID, srcDsc); // Rack necessity.
 	overlayGroup[svg::DESC](svg::DESC)->setText(srcDsc); // General SVG comment
 	// mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
@@ -168,13 +180,16 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 
 };
 
-drain::image::TreeSVG & CmdPolarBase::getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label){
+drain::image::TreeSVG & CmdPolarBase::getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label) const {
 
 	//std::string srcLabel = overlayGroup->getAttributes().get("data-latest", "unknown");
 	std::string srcLabel = overlayGroup->get(DATA_ID, "unknown");
 	const std::string & key = label.empty() ? srcLabel : label;
 	drain::image::TreeSVG & overlay = overlayGroup[key](drain::image::svg::GROUP); // (drain::image::svg::GROUP);
+	overlay->addClass(GRID);
 	overlay->set("data-src", srcLabel); // just info
+	overlay.addChild()->setComment(getName(), ' ', getParameters(), " getOverLay");
+
 	return overlay;
 
 }
@@ -341,7 +356,7 @@ void CmdRadarDot::exec() const {
 				// {"opacity", 0.5}
 		});
 
-		overlay.addChild()->setComment(getName(), ' ', getParameters());
+		// overlay.addChild()->setComment(getName(), ' ', getParameters());
 		drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
 		curve->addClass(DOT);
 
@@ -385,7 +400,7 @@ void CmdRadarGrid::exec() const  {
 	RadarSVG radarSVG;
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
-	overlay.addChild()->setComment(getName(), ' ', getParameters());
+	// overlay.addChild()->setComment(getName(), ' ', getParameters());
 
 	drain::SteppedRange<double> dist(0.0, 0.0, 1.0); // (distanceMetres.range); // double -> int
 	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
@@ -418,7 +433,7 @@ void CmdRadarGrid::exec() const  {
 		angleRad = drain::DEG2RAD * static_cast<double>(j);
 
 		drain::image::TreeSVG & rayNode = overlay.addChild();
-		rayNode->addClass(RadarSVG::HIGHLIGHT);
+		rayNode->addClass(Graphic::HIGHLIGHT);
 		rayNode[svg::TITLE](svg::TITLE)->setText(j, drain::XML::DEGREE); // degree sign "&#176;"
 
 		drain::svgPATH rayElem(rayNode);
@@ -441,7 +456,7 @@ void CmdRadarGrid::exec() const  {
 	for (int i=dist.range.min + dist.step; i<=dist.range.max; i += dist.step){
 
 		drain::image::TreeSVG & g = overlay.addChild()(svg::GROUP);
-		g->addClass(RadarSVG::HIGHLIGHT);
+		g->addClass(Graphic::HIGHLIGHT);
 		g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
 
 		drain::image::TreeSVG & arcNode = g.addChild();
@@ -458,8 +473,8 @@ void CmdRadarGrid::exec() const  {
 		drain::Point2D<int> imgPoint;
 		int offset = radiusMetres.step/4;
 		drain::image::TreeSVG & text = g[svg::TEXT](svg::TEXT);
-		text->addClass(RadarSVG::GRID); // on top of image, background gray blur applied
-		text->addClass(RadarSVG::HIGHLIGHT);
+		text->addClass(Graphic::GRID); // on top of image, background gray blur applied
+		text->addClass(Graphic::HIGHLIGHT);
 		radarSVG.convert(i + offset, azmRad.min, imgPoint);
 		text->setLocation(imgPoint);
 		text->setText(i/1000); // "km - ", imgPoint.tuple());
@@ -498,18 +513,18 @@ void CmdRadarSector::exec() const  {
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
-	overlay.addChild()->setComment(getName(), ' ', getParameters());
+	// overlay.addChild()->setComment(getName(), ' ', getParameters());
 
-	drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
-	curve -> addClass(getName()); // SECTOR
-	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, getName(), { // SECTOR
+	drain::image::TreeSVG & curve = overlay[getName()+getLastParameters()](drain::image::svg::PATH);
+	curve -> addClass(cls); // SECTOR
+	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, { // SECTOR
 			{"fill", "none"},
-			{"stroke", "rgb(160,255,160)"},
+			// {"stroke", "rgb(160,255,160)"},
 			{"stroke-width", 5.0},
 			// {"opacity", 0.65}
 	});
 
-	drain::SteppedRange<double> dist; // (distanceMetres.range); // double -> int
+	drain::SteppedRange<double> dist(0,0,1.0); // (distanceMetres.range); // double -> int
 	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
 
 	drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
@@ -517,15 +532,28 @@ void CmdRadarSector::exec() const  {
 	const drain::Range<double> azmR(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 
 	{
-		drain::svgPATH bezierElem(curve);
-		radarSVG.drawSector(bezierElem, dist.range, azmR);
+		drain::svgPATH svgElem(curve);
+		radarSVG.drawSector(svgElem, dist.range, azmR);
 	}
 
-	if (MASK){ //  && !curve->hasClass("MASK")){
+	// Note: above svgElem clears element
+	// curve->addClass(SECTOR);
+	if (azmR.empty()){
+		if (dist.range.empty()){
+			curve->addClass(CIRCLE);
+		}
+		else {
+			curve->addClass(ANNULUS);
+		}
+	}
+
+	if (MASK){
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
 		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
 	}
+
+
 
 };
 
@@ -541,12 +569,11 @@ void CmdRadarRay::exec() const {
 	RadarSVG radarSVG;
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
-
-	overlay.addChild()->setComment(getName(), ' ', getParameters());
+	// overlay.addChild()->setComment(getName(), ' ', getParameters());
 
 	drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
-	curve -> addClass(getName()); // SECTOR
-	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, getName(), { // SECTOR
+	curve->addClass(cls); // SECTOR
+	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, { // SECTOR
 			{"fill", "none"},
 			{"stroke", "rgb(160,255,160)"},
 			{"stroke-width", 5.0},
@@ -608,7 +635,7 @@ void CmdRadarLabel::exec() const  {
 	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 	// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
 
-	const std::string & clsNameBase = getName();
+	// const std::string & clsNameBase = getName();
 
 
 	if (!label.empty()){
@@ -616,16 +643,16 @@ void CmdRadarLabel::exec() const  {
 		using namespace drain::image;
 
 		// const std::string clsNameLabel = clsNameBase+"_Label";
-		const std::string & clsNameLabel = clsNameBase;
+		// const std::string & clsNameLabel = clsNameBase;
 
-		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, clsNameLabel, {
+		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, {
 				//{"font-size", "12"},
 				{"fill", "red"},
 				{"stroke", "white"},  // replace these with image-title etc soft transit
 				{"stroke-width", "0.2"},
 		});
 
-		overlay.addChild()->setComment(clsNameLabel);
+		// overlay.addChild()->setComment(clsNameLabel);
 
 		//drain::image::TreeSVG & rect = overlayGroup.addChild()(drain::image::svg::RECT);
 		drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
@@ -677,6 +704,66 @@ void CmdRadarLabel::exec() const  {
 
 
 
+void CmdDot::exec() const  {
+
+	using namespace drain::image;
+
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+	RadarSVG radarSVG;
+
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+	// NoTE: this is  not radar specific
+	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " imageCoords=", imageCoords);
+
+	drain::Point2D<double> coordsDeg;
+	// drain::Point2D<int> imageCoords;
+	if (drain::BBox::isMetric(coords)){
+		radarSVG.geoFrame.m2deg(coords, coordsDeg);
+		//radarSVG.geoFrame.m2pix(coords, imageCoords);
+		overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
+	}
+	else {
+		coordsDeg = coords;
+		//radarSVG.geoFrame.deg2pix(coords, imageCoords);
+	}
+	//mout.attention(DRAIN_LOG(imageCoords));
+	mout.attention(DRAIN_LOG(coordsDeg));
+	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
+
+	radarSVG.radarProj.setSiteLocationDeg(coordsDeg.x, coordsDeg.y);
+
+	const std::string SPOT = "SPOT";
+
+	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, SPOT, {
+			{"fill", "green"},
+			{"stroke", "white"},
+			{"stroke-width", 2.0},
+			// {"opacity", 0.5}
+	});
+
+	// overlay.addChild()->setComment(getName(), ' ', getParameters());
+	drain::image::TreeSVG & curve = overlay[SPOT](drain::image::svg::PATH);
+	curve->addClass(SPOT);
+	if (!id.empty()){
+		curve->setId(id);
+	}
+
+	drain::svgPATH svgElem(curve);
+	radarSVG.drawCircle(svgElem, radiusMetres.range); // km
+
+	if (!style.empty()){
+		curve->setStyle(style);
+	}
+
+	// radarSVG.geoFrame.p
+
+}
+
+
+
 
 /**
  *
@@ -722,25 +809,41 @@ public:
 };
  */
 
-class CmdCoords : public drain::BasicCommand, CmdPolarBase { // drain::SimpleCommand<std::string> {
+/*
+#include "js/set_image_coord_tracker.h"
+#include "js/add_coord_tracker.h"
+*/
 
-public:
+void CmdCoords::exec() const {
 
-	CmdCoords() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
-		// getParameters().link("name",   name, "label");
-		// getParameters().link("panel",  panel, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	using namespace drain::image;
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	const std::string onload_fnc_name = "rack_onload";
+
+	TreeSVG & onloadJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, onload_fnc_name);
+	if (onloadJS->get("type").empty()){
+		onloadJS->set("type", "text/javascript");
+		onloadJS->setText("function ", onload_fnc_name, "()");
+		ctx.svgTrack->set("onload", onload_fnc_name+"()");
 	}
+	TreeSVG & myJS = onloadJS["myContrib"](svg::JAVASCRIPT_SCOPE);
+	myJS.addChild() = "const x = 1;";
+	myJS.addChild() = "const y = 2;";
 
-	CmdCoords(const CmdCoords & cmd) : drain::BasicCommand(cmd) {
-		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
-	}
+	TreeSVG & coordTrackerJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coordTracker");
+	coordTrackerJS->set("type", "text/javascript");
+	coordTrackerJS = "/* set_image_coord_tracker */";
+	// coordTrackerJS->setText(set_image_coord_tracker);
 
-	void exec() const override {
+	// mout.error("Here we go: ", set_image_coord_tracker);
 
-		using namespace drain::image;
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+}
+
+/*
+	void exec2() const  {
 
 		RadarSVG radarSVG;
 
@@ -754,31 +857,6 @@ public:
 
 		drain::Point2D<double> UL,LL, UR, LR;
 
-		/*
-		radarSVG.geoFrame.pix2LLdeg(drain::Point2D<int>(0,0), UL);
-		radarSVG.geoFrame.pix2deg(drain::Point2D<int>(width,0), UR);
-		radarSVG.geoFrame.pix2deg(drain::Point2D<int>(0,height), LL);
-		radarSVG.geoFrame.pix2deg(drain::Point2D<int>(width,height), LR);
-		const drain::Point2D<double> & LL = bbox.lowerLeft;
-		 */
-
-		/*
-		radarSVG.geoFrame.pix2LLdeg(0,-1,           UL.x, UL.y);
-		radarSVG.geoFrame.pix2LLdeg(width, -1,      UR.x, UR.y);
-		radarSVG.geoFrame.pix2LLdeg(0,height-1,     LL.x, LL.y);
-		radarSVG.geoFrame.pix2LLdeg(width,height-1, LR.x, LR.y);
-		 */
-
-
-		/*
-		const double lonSpan = UR.x - LL.x;
-		const double latSpan = UR.y - LL.y; // kind of negative
-		double cw = 1.0/static_cast<double>(width);
-		double ch = 1.0/static_cast<double>(height);
-		drain::Point2D<int> point;
-		int & i = point.x;
-		int & j = point.y;
-		 */
 
 		drain::image::ImageT<unsigned char> coords(width,height,3);
 		drain::image::Channel & lonChannel = coords.getChannel(0);
@@ -833,11 +911,11 @@ public:
 
 		// const std::string & clsNameBase = getName();
 
-		drain::image::FilePng::write(coords, "coords.png");
+		// drain::image::FilePng::write(coords, "coords.png");
 	}
 
 };
-
+*/
 
 
 } // namespace rack

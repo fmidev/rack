@@ -55,7 +55,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/imageops/PaletteOp.h>
 #include <drain/imageops/FunctorOp.h>
 #include <drain/prog/Command.h>
-#include <main/graphics-panel.h>
 
 #include "hi5/Hi5.h"
 #include "data/Data.h"
@@ -69,7 +68,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "fileio-svg.h"
 #include "image-ops.h" // why
 
-
+//#include <main/graphics-panel.h>
+#include "graphics.h"
 // #include <pthread.h>
 
 namespace rack {
@@ -460,16 +460,22 @@ public:
 		const drain::image::Image & srcImage = ctx.getCurrentGrayImage();
 		if (!srcImage.isEmpty()){
 			quantity = srcImage.getProperties().get("what:quantity", "");
-			if (!quantity.empty())
+			if (!quantity.empty()){
 				mout.special<LOG_DEBUG>("ctx.currentGrayImage: quantity=" , quantity );
+			}
 		}
 
 		if (quantity.empty()){
 			drain::VariableMap & statusMap = ctx.getStatusMap(); // Note: no image created
 			//ctx.updateImageStatus(statusMap);
 			quantity = statusMap["what:quantity"].toStr();
-			if (!quantity.empty())
+			if (!quantity.empty()){
 				mout.ok("ctx.statusMap quantity=" , quantity );
+			}
+		}
+
+		if (quantity.empty()){
+			mout.fail("quantity was not automatically detected");
 		}
 
 	}
@@ -842,23 +848,18 @@ public:
 		// No explicit quantity issued
 		const bool DEFAULT_PALETTE = (value.empty() || (value == "default"));
 
-		if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
-			mout.revised("NOT: Using current palette: ", ctx.paletteKey);
-		}
-		//if (DEFAULT_PALETTE && !ctx.paletteKey.empty()){
-		// Read (get) a palette? (Ie. change current palette
-		//if ((!value.empty()) || ctx.paletteKey.empty()){
-		//if (!value.empty() || ctx.palette.empty()){
-
 		if (DEFAULT_PALETTE){
+			if (!ctx.paletteKey.empty()){
+				mout.revised("NOT: Using current palette: ", ctx.paletteKey);
+			}
 			retrieveDefaultPalette(ctx);
 		}
 		else {
 			const Palette & p = ctx.getPalette(value);
-			mout.info("using specific palette: ", p.comment, " size=", p.size());
+			mout.info("using specific palette: '", p.comment, "' size=", p.size());
 			if (!p.empty()){
-				mout.note("stored latest palette key: ", value);
-				ctx.paletteKey = value;
+				mout.info("stored palette selection [", ctx.paletteKey, "] associated with '", value, "'");
+				// ctx.paletteKey = value;
 			}
 			// ctx.palette.load(value, true);
 		}

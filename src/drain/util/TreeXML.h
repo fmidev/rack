@@ -428,6 +428,15 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			ostr << "<!--"; // << ctext; // << " /-->\n";
 		}
 	}
+	else if (isScopeJS()){
+		if (mode != CLOSING_TAG){
+			ostr << "{\n";
+		}
+		else {
+			ostr << "}\n";
+		}
+		return ostr;
+	}
 	else {
 
 		if (isUndefined()){

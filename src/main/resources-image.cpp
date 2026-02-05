@@ -146,6 +146,12 @@ Palette & ImageContext::getPalette(const std::string & key){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	//PaletteMap::iterator it = getPaletteEntry(const std::string & key);
+
+	// }
+
+	// PaletteMap::iterator it ImageContext::getPaletteEntry(const std::string & key){
+
 	//paletteKey = key;
 
 	// NEW: try direct and the QM based, only after that load
@@ -171,7 +177,7 @@ Palette & ImageContext::getPalette(const std::string & key){
 			mout.pending("Trying general quantity key: [", qit->first, "]");
 			it = pmap.find(qit->first);
 			if (it != pmap.end()){
-				mout.ok("Found palette using general quantity key: [", qit->first, "]");
+				mout.success<LOG_NOTICE>("Palette[", qit->first, "] associated with key [", key, "] in quantityConf");
 				//mout.ok("Found palette using general quantity key: [", qit->first, "]: \n", qit->second);
 				paletteKey = it->first;
 				return it->second;
@@ -199,34 +205,13 @@ Palette & ImageContext::getPalette(const std::string & key){
 
 
 	try {
-		return PaletteOp::getPalette(key);
+		Palette & palette = PaletteOp::getPalette(key);
+		paletteKey = key;
+		return palette;
 	}
 	catch (const std::exception & e){
 
 		mout.fail("Tried everything...");
-
-		/*
-		mout.special("Failed with [", key, "], now trying QM search...");
-
-
-		const QuantityMap & qm = getQuantityMap();
-
-		mout.special("Failed with [", key, "], now trying QM search...");
-
-		QuantityMap::const_iterator it = qm.retrieve(key);
-		if (it != qm.end()){
-			mout.special("Found: [", it->first, "]: \n", it->second);
-			if (it->first != key){
-				mout.special("Trying QM [", it->first, "]");
-				Palette & p = PaletteOp::getPalette(it->first);
-				mout.accept<LOG_NOTICE>("Found [", it->first, "] ->", p.comment);
-				return p;
-			}
-			else {
-				mout.warn("Problem: [", it->first, "] != ", key);
-			}
-		}
-		*/
 		throw e; // forward...
 
 		//return PaletteOp::getPalette(key);

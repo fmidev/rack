@@ -56,8 +56,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/Command.h>
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandInstaller.h>
-#include <main/graphics-panel.h>
-#include <product/RadarProductOp.h>
 
 #include "data/Data.h"
 //#include "data/DataOutput.h"
@@ -69,15 +67,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "data/VariableFormatterODIM.h"
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Write.h"
+//#include "product/RadarProductOp.h"
+
 #include "resources.h"
 #include "fileio.h"
 #include "fileio-read.h"
 #include "fileio-geotiff.h"
-//#include "fileio-svg.h"
-#include "graphics.h"
 #include "fileio-html.h"
 #include "file-hist.h"
 #include "images.h"  // ImageSection
+#include "graphics.h"
+#include "graphics-panel.h"
 
 
 namespace rack {
