@@ -120,7 +120,8 @@ void RhiODIM::init(group_t initialize){ //referenceRootAttrs(){
 		link("where:minRange", range.min = 0.0);  // where or how??
 		link("where:range",    range.max = 0.0);  // where or how??
 		link("where:az_angle", az_angle = 0.0);
-		link("where:angles",   angles = 0.0);
+		// link("where:angles",   angles = -1.0);
+		//link("where:angles", angles);
 	}
 
 	if (initialize & ODIMPathElem::DATA){

@@ -136,7 +136,7 @@ public:
 		}
 		catch (const std::exception & e){
 			//Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", drain::TypeName<F>::str()); // , " msg:", e.what()
-			Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", typeid(F).name(), " msg:", e.what());
+			Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", typeid(F).name(), ", value=", p, " msg:", e.what());
 			// std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
 			// throw std::runtime_error("unsupported type");
 		}

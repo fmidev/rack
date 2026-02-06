@@ -142,6 +142,31 @@ ImageContext::ImageContext(const ImageContext & ctx):
 		currentGrayImage(ctx.currentGrayImage){
 }
 
+void ImageContext::refinePalette(Palette & palette){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	if (paletteResolution > 0){
+		if (paletteResolution > palette.refinement){
+			mout.revised("Refining palette to resolution (", paletteResolution, "), (current ", palette.refinement, ")");
+			palette.refine(paletteResolution);
+		}
+		else {
+			mout.note("Palette resolution (", paletteResolution, ") smaller than current (", palette.refinement, ") requested, skipping...");
+		}
+		paletteResolution = 0;
+	}
+};
+
+Palette & ImageContext::getPalette(){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.note("Re-requesting (?) current palette: '", paletteKey, "'");
+
+	// TODO: redirect to ImageContext::getPalette(paletteKey) instead:
+	Palette & palette =	PaletteOp::getPalette(paletteKey);
+	refinePalette(palette);
+	return palette;
+}
+
 Palette & ImageContext::getPalette(const std::string & key){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -162,7 +187,9 @@ Palette & ImageContext::getPalette(const std::string & key){
 	PaletteMap::iterator it = pmap.find(key);
 	if (it != pmap.end()){
 		paletteKey = key;
-		return it->second;
+		Palette & palette = it->second;
+		refinePalette(palette);
+		return palette;
 	}
 
 	/// Attempt 2: exact match of \c key
@@ -180,7 +207,10 @@ Palette & ImageContext::getPalette(const std::string & key){
 				mout.success<LOG_NOTICE>("Palette[", qit->first, "] associated with key [", key, "] in quantityConf");
 				//mout.ok("Found palette using general quantity key: [", qit->first, "]: \n", qit->second);
 				paletteKey = it->first;
-				return it->second;
+				Palette & palette = it->second;
+				refinePalette(palette);
+				return palette;
+				// return it->second;
 			}
 		}
 		else {
@@ -194,7 +224,9 @@ Palette & ImageContext::getPalette(const std::string & key){
 			it = pmap.find(ksel.value);
 			if (it != pmap.end()){
 				paletteKey = it->first;
-				return it->second;
+				Palette & palette = it->second;
+				refinePalette(palette);
+				return palette;
 			}
 		}
 
@@ -207,6 +239,9 @@ Palette & ImageContext::getPalette(const std::string & key){
 	try {
 		Palette & palette = PaletteOp::getPalette(key);
 		paletteKey = key;
+		refinePalette(palette);
+		return palette;
+
 		return palette;
 	}
 	catch (const std::exception & e){

@@ -123,7 +123,7 @@ public:
 	drain::Range<double> azmRange;
 	//double startaz; // non-stardard for profile
 	//double stopaz; // non-stardard for profile
-	long int azSlots;  // non-stardard
+	long int azSlots = 0;  // non-stardard
 
 
 	inline
@@ -157,14 +157,14 @@ class RhiODIM : public VerticalCrossSectionODIM {
 public:
 
 	// where (radar site)
-	double lon;
-	double lat;
+	double lon = std::numeric_limits<double>::signaling_NaN();
+	double lat = std::numeric_limits<double>::signaling_NaN();
+
 	//double height;
 
-
 	// where
-	double az_angle; // non-stardard for profile
-	double angles; // non-stardard for profile
+	double az_angle = 0.0; // non-stardard for profile
+	// double angles; // non-stardard for profile
 
 
 	//long int azSlots;  // non-stardard

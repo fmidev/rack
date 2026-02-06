@@ -196,14 +196,14 @@ public:
 	Image colorImage;
 
 	std::string paletteKey;
+	int paletteResolution = 0;
 
-
-	inline
-	Palette & getPalette(){
-		return PaletteOp::getPalette(paletteKey);
-	}
+	Palette & getPalette();
 
 	Palette & getPalette(const std::string & key);
+
+	void refinePalette(Palette & palette);
+
 
 	// New, returns also the actual key.
 	//PaletteMap::iterator it getPaletteEntry(const std::string & key);
@@ -214,7 +214,8 @@ public:
 
 
 
-	static std::string outputQuantitySyntax;
+	static
+	std::string outputQuantitySyntax;
 
 //protected:
 

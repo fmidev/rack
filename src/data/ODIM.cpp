@@ -84,7 +84,7 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 		// Almost-ODIM: in ODIM, this is for Cartesians only
 		// angles.reserve(128); // not enough for RHI...
-		// NOTE: linking std::vector has been removed, as ptr target (address of 1st elem) to may be changed
+		// NOTE: linking std::vector has been removed, since address of v[0] may be moved upon resize()
 		// link("how:angles", angles);
 
 		// Non-ODIM:

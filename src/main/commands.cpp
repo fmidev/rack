@@ -2471,8 +2471,16 @@ protected:
 
 		mout.debug("[" , quantity , "]: " , encoding , ", zero=" , zero );
 
-		QuantityMap & m = getQuantityMap();
-		Quantity & q = m[quantity];
+		QuantityMap & qmap = getQuantityMap();
+		//Quantity & q = m[quantity];
+		QuantityMap::iterator it = qmap.retrieve(quantity);
+		if (it == qmap.end()){
+			mout.debug("[" , quantity , "]: not found ");
+			return;
+		}
+
+		const QuantityMap::key_type & key = it->first;
+		Quantity & q = it->second;
 
 		// mout.warn("base: " , q );
 		// double z = atoi(zero.c_str());
@@ -2518,7 +2526,7 @@ protected:
 			mout.note("set default type for :" , quantity , '\n' , q );
 		}
 		else if (zero.empty()){  // No type or zero given, dump quantity conf
-			std::cout << quantity << " – "; //  << '\n';
+			std::cout << key << " – "; //  << '\n';
 			// if (params != quantity)
 			//	std::cout << " *\t" << q.get(q.defaultType) << '\n';
 			// else

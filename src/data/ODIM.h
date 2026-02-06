@@ -189,6 +189,7 @@ public:
 	// Elevation angles.
 	// In ODIM, defined for Cartesian but used more generally - for polar products - in Rack
 	std::vector<double> angles;
+	// double angles = 0.0; // FIX!
 
 
 	// Number of images used in precipitation accumulation (lenient, not linked)

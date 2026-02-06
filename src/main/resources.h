@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/RegExp.h>
 #include <drain/image/Image.h>
 #include <drain/imageops/ImageModifierPack.h>
-#include <drain/imageops/PaletteOp.h>
+// #include <drain/imageops/PaletteOp.h>
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/util/Rectangle.h>
 #include <drain/util/StatusFlags.h>

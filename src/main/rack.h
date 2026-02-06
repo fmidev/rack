@@ -42,6 +42,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 18
  *  - SVG basic command set completed
  *  - Palette retrieval with secondary quantity names, for example "TH" or "DBZH" are mapped to "DBZ".
+ *  Release 18.0.1
+ *  - Fixed --quantityConf, now finds quantity also by variant (like "DBZ" from "DBZHC")
+ *  - Modification in --pPseudoRhi: array size as single parameter, distance range as metres
  *
  *  Version 17
  *  - Revised XML/HTML/SVG CSS classes

@@ -1129,15 +1129,35 @@ public:
 
 		RackContext & ctx = getContext<RackContext>();
 
-		/* OLD
-		if (ctx.palette.empty()){
-			mout.note("Palette not (yet) loaded, ok");
-			ctx.palette.refinement = value;
-			return;
-		}
+		ctx.paletteResolution = value;
 
-		ctx.palette.refine(value);
-		*/
+		mout.revised<LOG_WARNING>("Palette refinement not applied yet, but for the next palette command");
+		return;
+
+		// OLD code:
+		// ctx.getPalette().refine(value);
+		// CmdPalette::apply(ctx);
+
+
+
+	}
+
+};
+
+/* Potential future command replacing refine...
+class CmdPaletteResolution : public drain::SimpleCommand<int> {
+
+public:
+
+	CmdPaletteResolution() : drain::SimpleCommand<int>(__FUNCTION__, "Refine colors of the current or next palette.", "count", 0){
+	};
+
+	void exec() const {
+
+		drain::Logger mout(__FILE__, __FUNCTION__); // = resources.mout;
+
+		RackContext & ctx = getContext<RackContext>();
+
 
 		// NEW
 		if (ctx.paletteKey.empty()){
@@ -1155,7 +1175,7 @@ public:
 	}
 
 };
-
+*/
 
 /// Quality groups accepted as alpha channels
 /**
