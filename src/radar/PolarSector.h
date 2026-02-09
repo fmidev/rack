@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-
+// Deprecating, use PolarSelector?
 class PolarSector : public drain::BeanLike {
 
 public:
@@ -105,6 +105,30 @@ public:
 
 };
 
+// NEW!
+
+struct PolarSelector : drain::BeanLike {
+
+	inline
+	PolarSelector() : BeanLike(__FUNCTION__, "Configure azimuth and range"){
+	};
+
+	inline
+	PolarSelector(const PolarSelector & selector) : BeanLike(selector){ //, radius(selector.radius), azimuth(selector.azimuth){
+		radius.set(selector.radius);
+		azimuth.set(selector.azimuth);
+	};
+
+	void reset(){
+		radius.fill(0.0);
+		azimuth.fill(0.0);
+	}
+
+	// step, min, max
+	drain::SteppedRange<double> radius = {0.0, 0.0, 0.0};
+	drain::SteppedRange<double> azimuth  = {0.0, 0.0, 0.0}; //360.0};
+
+};
 
 }  // rack::
 

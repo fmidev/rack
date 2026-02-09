@@ -52,7 +52,7 @@ class PseudoRhiOp : public VolumeOp<RhiODIM> {  // Consider class lift
 public:
 
 	//PseudoRhiOp(const std::string & name = "PolarProductOp", const std::string & description = "");
-	PseudoRhiOp(double az_angle=0.0, long int xsize=500, long int ysize=250, double minRange=1.0, double range=250000.0,
+	PseudoRhiOp(double az_angle=0.0, long int xsize=500, long int ysize=250, double minRange=0.0, double range=0.0,
 			double minHeight=0, double maxHeight=10000, double beamWidth = 0.25, double beamPowerThreshold = 0.01) : //, std::string type="C", double gain=0.5, double offset=-32.0) :
 		VolumeOp<RhiODIM>("PseudoRhiOp","Computes vertical intersection in a volume in the beam direction.") {
 
@@ -103,6 +103,9 @@ public:
 	double beamWidth;
 	// double weightThreshold; // = 0.1;
 	drain::Range<double> weightThreshold = {0.1,0.2}; // = 0.1;
+
+	virtual
+	void setPolarSelector(const PolarSelector & ps) override;
 
 
 	/// Implements VolumeOp::filter.

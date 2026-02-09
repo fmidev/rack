@@ -39,26 +39,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACKOP_H_
 
 
-//#include <drain/util/DataScaling.h>
-//#include <drain/util/StringMapper.h>
-//#include <drain/util/Variable.h>
-//#include <drain/util/TreeOrdered.h>
 #include <drain/util/ReferenceMap.h>
-#include <product/RadarProductOp.h> // NEW
 
-
-
-//#include "main/rack.h"
-#include "hi5/Hi5.h"
 #include "data/DataSelector.h"
 #include "data/Data.h"
 #include "data/ODIM.h"
 #include "data/ODIMPathTools.h"
 #include "data/Quantity.h" // NEW
 
+#include "hi5/Hi5.h"
 #include "hi5/Hi5Write.h" // debugging
 
 
+#include "radar/PolarSector.h"
+#include "RadarProductOp.h"
 
 namespace rack {
 
@@ -107,10 +101,18 @@ public:
 	virtual
 	Hi5Tree & processVolume(const Hi5Tree &srcRoot, Hi5Tree &dstRoot) const final;
 
-
+	virtual inline
+	void setPolarSelector(const PolarSelector & ps){
+		// polarSelector = ps;
+		if (ps.azimuth.range.empty() && ps.radius.range.empty()){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.info(this->getName(), ": no support for polar selector");
+		}
+	}
 
 protected:
 
+	// PolarSelector polarSelector;
 
 
 };

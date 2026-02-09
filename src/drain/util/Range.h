@@ -183,6 +183,13 @@ public:
 			step(this->next()), range(this->tuple(),1) {
 	}
 
+	inline
+	SteppedRange & operator=(const SteppedRange & range){
+		this->set(range.tuple());
+		return *this;
+	}
+
+
 };
 
 DRAIN_TYPENAME_T(SteppedRange,T);

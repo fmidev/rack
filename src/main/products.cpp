@@ -220,7 +220,11 @@ public:
 
 		mout.special<LOG_DEBUG>("My data selector: ", this->bean.getDataSelector() );
 
-		mout.attention<LOG_DEBUG>(this->getName(), " last pars: ", this->getLastParameters());
+		mout.accept<LOG_WARNING>("My polar selector: azm=", ctx.polarSelector.azimuth, " radius=", ctx.polarSelector.radius);
+		this->bean.setPolarSelector(ctx.polarSelector);
+		mout.accept<LOG_WARNING>(this->getName(), " params: ", this->getParameters());
+		//mout.accept<LOG_WARNING>(this->getName(), " last pars: ", this->getLastParameters());
+
 
 	}
 
@@ -243,6 +247,9 @@ public:
 				RackContext::SHARED |RackContext::POLAR|RackContext::INPUT
 		);
 		ctx.inputFlags.reset();
+
+		//this->bean.setPolarSelector(ctx.polarSelector);
+
 
 		// mout.warn("Private ", ctx.id);
 		// mout.warn("BaseCtx ", getResources().baseCtx().id);

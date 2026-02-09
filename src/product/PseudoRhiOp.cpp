@@ -48,7 +48,42 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void PseudoRhiOp::setPolarSelector(const PolarSelector & ps){
+	// polarSelector = ps;
 
+	if (odim.range.empty()){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		//mout.experimental("using shared polarSelector: azm:", ps.azimuth.range);
+
+		mout.experimental<LOG_NOTICE>("using shared polarSelector");
+
+		if (ps.radius.range.empty()){
+			mout.warn("(also) shared polarSelector radius empty");
+			odim.range.set(0.0, 250000.0);
+		}
+		else {
+			odim.range.set(ps.radius.range.tuple());
+		}
+		mout.note("setting range: ", odim.range);
+
+		if (!ps.azimuth.range.empty()){
+			mout.warn("polarSelector azimuth is a range: ", ps.azimuth.range, " using start");
+		}
+		odim.az_angle = ps.azimuth.range.min;
+
+	}
+
+	/*
+	if (!(ps.azimuth.range.empty() && ps.radius.range.empty())){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		odim.range.set(ps.radius.range);
+		odim.az_angle = 0.5*(ps.azimuth.range.min + ps.azimuth.range.max);
+		mout.revised<LOG_WARNING>("Using polarSelector values: azm=", odim.az_angle, "[m], range: ", odim.range, "[m]");
+		// mout.info(this->getName(), ": no support for polar selector");
+		mout.attention(DRAIN_LOG(odim.range), " ", DRAIN_LOG(odim.az_angle));
+	}
+	*/
+}
 
 void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dstData) const {
 
@@ -63,7 +98,20 @@ void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dst
 	dstData.odim.altitudeRange = odim.altitudeRange;
 	//dstData.odim.secondheight = odim.secondheight;
 	//dstData.odim.firstRange  = odim.firstRange;
+	/*
+	if (this->polarSelector.radius.range.empty()){
+		dstData.odim.range     = odim.range;
+		dstData.odim.az_angle  = odim.az_angle;
+	}
+	else {
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		dstData.odim.range.set(this->polarSelector.radius.range);
+		dstData.odim.az_angle = 0.5*(this->polarSelector.azimuth.range.min + this->polarSelector.azimuth.range.max);
+		mout.revised<LOG_WARNING>("Using polarSelector values: azm=", dstData.odim.az_angle, "[m], range: ", dstData.odim.range, "[m]");
+	}
+	*/
 	dstData.odim.range     = odim.range;
+	dstData.odim.az_angle  = odim.az_angle;
 	dstData.odim.xscale    = (odim.range.max - odim.range.min)/static_cast<double>(odim.area.width);
 	dstData.odim.yscale    = (odim.altitudeRange.max - odim.altitudeRange.min)/static_cast<double>(odim.area.height);
 
@@ -71,7 +119,8 @@ void PseudoRhiOp::setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dst
 		dstData.data.setType(dstData.odim.type.at(0));
 	}
 	dstData.data.setGeometry(odim.area.width, odim.area.height);
-
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.attention(DRAIN_LOG(dstData.odim));
 }
 
 void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet<RhiDst> & dstProduct) const {
@@ -105,7 +154,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	initDst(srcData.odim, dstData);
 
 	// mout.warn(odim         );
-	// mout.warn(dstData.odim );
+	mout.warn(dstData.odim );
 
 	if ((odim.area.width==0) || (odim.area.height==0)){
 		mout.warn("empty image: " ,  DRAIN_LOG(dstData.data.getGeometry()) );
@@ -204,11 +253,27 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 	/// Azimuthal bin index (j coordinate)
 	int azm;
+
+	/*
+	if (this->polarSelector.radius.range.empty()){
+		azm = odim.az_angle;
+	}
+	else {
+
+		// warn if non-empty azimuthal range?
+		azm = 0.5 * (this->polarSelector.azimuth.range.min + this->polarSelector.azimuth.range.max);
+	}
+	*/
+
 	// Vice versa?
-	const int azmForward = (static_cast<int>(odim.az_angle) + 180) % 360;
-	const int azmInverse =  static_cast<int>(odim.az_angle)        % 360;
+	const int azmForward = (static_cast<int>(dstData.odim.az_angle) + 180) % 360;
+	const int azmInverse =  static_cast<int>(dstData.odim.az_angle)        % 360;
+
+	mout.warn(DRAIN_LOG(azmInverse), DRAIN_LOG(azmForward));
 
 	//const drain::Frame2D<int> srcArea(srcData.odim.area);
+	double eta;
+	double weight; // max(upper,lower)
 
 	/// MAIN LOOPS
 	//  Traverse range (horz dimension)
@@ -217,6 +282,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 		// TODO: check ODIM VERSION
 		//beta   = (1000.0*odim.range.min + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
 		// Ground angle
+		//beta   = (odim.range.min + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
 		beta   = (odim.range.min + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
 
 		if (beta < 0.0){
@@ -227,12 +293,11 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 			azm = azmForward;
 		}
 
-		lower.USE = false;
-		double weight; // max(upper,lower)
+		// lower.USE = false;
 		// double etaLower = -M_PI;
 		// double etaUpper = -M_PI;
-		lower.eta = -M_PI;
-		upper.eta = -M_PI;
+		// lower.eta = -M_PI;
+		// upper.eta = -M_PI;
 
 		for (unsigned int j = odim.area.height-1; j>0; --j) {
 				//const unsigned int j = j;
@@ -246,10 +311,10 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 				// beam.reset()?
 				upper.USE    = false;
 				upper.eta    = +M_PI;
-				upper.weight = 0.0;
+				// upper.weight = 0.0;
 				lower.USE    = false;
 				lower.eta    = -M_PI;
-				lower.weight = 0.0;
+				// lower.weight = 0.0;
 
 				// Exhaustive search - logarithmic sorted search cannot be used as
 				for (const auto & entry: src){
@@ -261,7 +326,8 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 					const Data<PolarSrc>      & srcData = srcDataSet.getFirstData(); // todo 1) what if differs from quantity  2) control quantity?
 					const drain::Frame2D<int> srcArea(srcData.odim.area);
 
-					const double eta = srcData.odim.elangle*drain::DEG2RAD;
+					//const double eta = srcData.odim.elangle*drain::DEG2RAD;
+					eta = srcData.odim.elangle*drain::DEG2RAD;
 					// USE: srcData.odim.getBinIndex()
 					bin = static_cast<int>(Geometry::beamFromEtaBeta(eta, beta) / srcData.odim.rscale - srcData.odim.rstart);
 
