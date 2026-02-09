@@ -101,13 +101,19 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	dstData.odim.quantity = quantity;
 	//mout.warn(dstData.odim );
 
+	// setEncoding(srcData.odim, dstData);
 	initDst(srcData.odim, dstData);
 
 	// mout.warn(odim         );
 	// mout.warn(dstData.odim );
 
 	if ((odim.area.width==0) || (odim.area.height==0)){
-		mout.warn("empty image: " ,  dstData.data.getGeometry() );
+		mout.warn("empty image: " ,  DRAIN_LOG(dstData.data.getGeometry()) );
+		return;
+	}
+
+	if (dstData.data.isEmpty()){
+		mout.warn("empty image: " ,  DRAIN_LOG(dstData.data) );
 		return;
 	}
 
@@ -138,12 +144,8 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	// "Ground angle" = distance / earthRadius43
 	double beta;
 
-	// True, if "behind" the radar, ie. negative beta and range.
-	// bool REVERSE;
-
-	//
-	bool UNDETECT_UPPER = false;
-	bool UNDETECT_LOWER = false;
+	// Angle between radar beam and ground line.
+	// double gamma; // check name
 
 	// Altitude of location (i,j)
 	double h;
@@ -151,17 +153,37 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	/// Virtual elevation at the point (i,k)
 	double etaPixel;
 
-	// Use the beam (scope ok, data available)
-	bool USE_UPPER = false;
-	bool USE_LOWER = false;
-
 	// QUANTITY
-	double x, xLower = 0.0, xUpper = 0.0;
+	double x;
+
+	/*
+	// QUANTITY
+	double xLower = 0.0, xUpper = 0.0;
 
 	// WEIGHT
 	double weightLower = 0.0, weightUpper = 0.0; //, weight;
 
+	// Use the beam (scope ok, data available)
+	bool USE_UPPER = false;
+	bool USE_LOWER = false;
+
+	bool UNDETECT_UPPER = false;
+	bool UNDETECT_LOWER = false;
+	*/
+
+
 	//const double weightThreshold = 0.1;
+
+	struct beamInfo {
+		double eta;      //
+		double x=0;      // measurement value
+		double weight=0;
+		bool USE = false;
+		bool UNDETECT = false;
+	};
+
+	beamInfo upper;
+	beamInfo lower;
 
 	/*
 	std::map<std::string,double>
@@ -182,10 +204,11 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 	/// Azimuthal bin index (j coordinate)
 	int azm;
+	// Vice versa?
 	const int azmForward = (static_cast<int>(odim.az_angle) + 180) % 360;
 	const int azmInverse =  static_cast<int>(odim.az_angle)        % 360;
 
-	const drain::Frame2D<int> srcArea(srcData.odim.area);
+	//const drain::Frame2D<int> srcArea(srcData.odim.area);
 
 	/// MAIN LOOPS
 	//  Traverse range (horz dimension)
@@ -193,6 +216,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 		// TODO: check ODIM VERSION
 		//beta   = (1000.0*odim.range.min + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
+		// Ground angle
 		beta   = (odim.range.min + static_cast<double>(i) * rangeResolution) / Geometry::EARTH_RADIUS_43;
 
 		if (beta < 0.0){
@@ -203,205 +227,223 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 			azm = azmForward;
 		}
 
-		USE_LOWER = false;
+		lower.USE = false;
 		double weight; // max(upper,lower)
-		double etaLower = -M_PI;
-		double etaUpper = -M_PI;
-		//std::map<double,const Image &>::const_iterator itStart = images.begin();
-		DataSetMap<PolarSrc>::const_iterator itStart = src.begin();
+		// double etaLower = -M_PI;
+		// double etaUpper = -M_PI;
+		lower.eta = -M_PI;
+		upper.eta = -M_PI;
 
-		// TODO:
-		// - weighting: x sharper, q slower
-		// - refactor final logic
+		for (unsigned int j = odim.area.height-1; j>0; --j) {
+				//const unsigned int j = j;
 
-		//  Traverse altitude (vert dimension)
-		for (unsigned int k = 0; k < odim.area.height; ++k) {
+				// Height in metres.
+				h   = odim.altitudeRange.min + static_cast<double>(odim.area.height-j-1) * heightResolution;
 
-			h   = odim.altitudeRange.min + static_cast<double>(k) * heightResolution;
+				// "Virtual elevation angle" of the pixel.
+				etaPixel = Geometry::etaFromBetaH(beta, h);
 
-			// "Virtual elevation angle" of the pixel.
-			etaPixel = Geometry::etaFromBetaH(beta, h);
+				// beam.reset()?
+				upper.USE    = false;
+				upper.eta    = +M_PI;
+				upper.weight = 0.0;
+				lower.USE    = false;
+				lower.eta    = -M_PI;
+				lower.weight = 0.0;
 
-			if (etaPixel > etaUpper){
+				// Exhaustive search - logarithmic sorted search cannot be used as
+				for (const auto & entry: src){
 
-				/// Who knows, maybe there is no upper beam
-				USE_UPPER = false;
+					// mout.accept<LOG_WARNING>(entry.first, ": ", entry.second.getFirstData().odim.elangle);
+					// dstData.odim.angles.insert(dstData.odim.angles.end(), entry.second.getFirstData().odim.elangle);
 
-				DataSetMap<PolarSrc>::const_iterator it = itStart; // ??
-
-				/// Traverse the sweeps, derive upper and lower beams.
-				while (true){
-
-					const DataSet<PolarSrc> & srcDataSet = it->second;
+					const DataSet<PolarSrc>   & srcDataSet = entry.second;
 					const Data<PolarSrc>      & srcData = srcDataSet.getFirstData(); // todo 1) what if differs from quantity  2) control quantity?
+					const drain::Frame2D<int> srcArea(srcData.odim.area);
 
-					const double eta0 = srcData.odim.elangle*drain::DEG2RAD; //(M_PI/180.0);
-
-					bin = static_cast<int>(Geometry::beamFromEtaBeta(eta0, beta) / srcData.odim.rscale - srcData.odim.rstart);
+					const double eta = srcData.odim.elangle*drain::DEG2RAD;
+					// USE: srcData.odim.getBinIndex()
+					bin = static_cast<int>(Geometry::beamFromEtaBeta(eta, beta) / srcData.odim.rscale - srcData.odim.rstart);
 
 					if ((bin >= 0) && (bin < srcArea.width)){
 
 						x = srcData.data.get<double>(bin, (azm*srcArea.height)/360);
 
-						/// Use this value, if it is valid
-						//if ((x != srcData.odim.undetect) && (x != srcData.odim.nodata)){
 						if (x != srcData.odim.nodata){
-							/// Update lower beam value (possibly several times)
-							if (eta0 < etaPixel){
-								USE_LOWER = true;
-								etaLower = eta0;
-								if (x != srcData.odim.undetect) {
-									xLower = srcData.odim.scaleForward(x);
-									UNDETECT_LOWER = false;
+
+							// Is it lower than the pixel in focus...
+							if (eta < etaPixel){
+								/// ... but still as high as or higher than previous
+								if (eta >= lower.eta){
+									lower.eta = eta;
+									lower.USE = true;
+									if (x == srcData.odim.undetect) {
+										lower.x = undetectValue;
+										lower.UNDETECT = USE_TRUE_UNDETECT;
+									}
+									else {
+										lower.x = srcData.odim.scaleForward(x);
+										lower.UNDETECT = false;
+									}
 								}
-								else {
-									xLower = undetectValue;
-									UNDETECT_LOWER = USE_TRUE_UNDETECT;
-								}
-								//itStart = it; // unneeded?
 							}
-							/// Update upper beam value (once), update next itStart.
+							/// Ok, it is higher or as high as the pixel in focus
 							else {
-								USE_UPPER = true;
-								etaUpper = eta0;
-								//xUpper = srcData.odim.scaleForward(x);
-								if (x != srcData.odim.undetect){
-									xUpper = srcData.odim.scaleForward(x);
-									UNDETECT_UPPER = false;
+								/// ... but still as low as or lower than previous
+								if (eta < upper.eta){
+									upper.eta = eta;
+									upper.USE = true;
+									if (x == srcData.odim.undetect) {
+										upper.x = undetectValue;
+										upper.UNDETECT = USE_TRUE_UNDETECT;
+									}
+									else {
+										upper.x = srcData.odim.scaleForward(x);
+										upper.UNDETECT = false;
+									}
 								}
-								else {
-									xUpper = undetectValue;
-									UNDETECT_UPPER = USE_TRUE_UNDETECT;
-								}
-								itStart = it;
-								break;
+
 							}
+						} // if (x != srcData.odim.nodata)
+
+					} // if ((bin >= 0) && (bin < srcArea.width)){
+				}
+
+
+				// if (i == 100) std::cerr << "Height:" << h << " elangle:" << etaPixel << " etaPixel:" << etaPixel << "\n lower.eta:" << lower.eta << "\n upper.eta:" << upper.eta << '\n';
+
+
+				// Beam proximity test.
+				if (lower.USE){
+					lower.weight = relativeBeamPower(etaPixel - lower.eta, beamWidth2);
+				}
+
+				// Beam proximity test.
+				if (upper.USE){
+					upper.weight = relativeBeamPower(etaPixel - upper.eta, beamWidth2);
+				}
+
+				// Between two elevations
+				if (lower.USE && upper.USE){
+
+					// New: rescale
+					// Residual of power of one beam at the other beam..
+					double coeff = relativeBeamPower(upper.eta - lower.eta, beamWidth2);
+					lower.weight = (lower.weight - coeff) / (1.0 - coeff);
+					upper.weight = (upper.weight - coeff) / (1.0 - coeff);
+
+					if (lower.UNDETECT && upper.UNDETECT){
+						dstData.data.put(i, j, odim.undetect );
+					}
+					else {
+						if (lower.UNDETECT){
+							// lower.weight *= 0.5;
+							x = upper.x;
 						}
+						else if (upper.UNDETECT){
+							// upper.weight *= 0.5;
+							x = lower.x;
+						}
+						else {
+							x =  (lower.weight*lower.x + upper.weight*upper.x) / (lower.weight + upper.weight);
+						}
+						//if (x > undetectValue)
+						// dstData.data.put(i, odim.area.height-1-k, dstData.odim.scaleInverse(x) );
+					}
+					// dstQuality.data.put(i, odim.area.height-1-k, Q_MAX *  std::max(lower.weight, upper.weight));
+
+					weight = std::max(lower.weight, upper.weight);
+					if (weight > weightThreshold.max){
+						dstData.data.put(i, j, dstData.odim.scaleInverse(x) );
+						dstQuality.data.put(i, j, Q_MAX * weight );
+					}
+					else if (weight > weightThreshold.min){
+						dstData.data.put(i, j, dstData.odim.undetect);
+						dstQuality.data.put(i, j, Q_MAX * weight );
+					}
+					else{
+						dstData.data.put(i, j, dstData.odim.nodata);
+						dstQuality.data.put(i, j, 0 );
 					}
 
-					++it;
-					if (it == src.end()){
-						etaUpper = M_PI;
-						break;
+				}
+				else if (upper.USE){
+					//if (upper.x > undetectValue)
+					if (upper.UNDETECT){
+						x = odim.undetect;
+						// dstData.data.put(i, j, odim.undetect );
+					}
+					else {
+						x = dstData.odim.scaleInverse(upper.x);
+						// dstData.data.put(i, j, dstData.odim.scaleInverse(upper.x) );
 					}
 
-				} // while true }
+					// dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * upper.weight );
 
+					if (upper.weight > weightThreshold.max){
+						dstData.data.put(i, j, x);
+						dstQuality.data.put(i, j, Q_MAX * upper.weight );
+					}
+					/*
+				else if (upper.weight > weightThreshold.min){
+					dstData.data.put(i, j, dstData.odim.undetect);
+					dstQuality.data.put(i, j, Q_MAX * upper.weight );
+				} */
+					else{
+						dstData.data.put(i, j, dstData.odim.nodata);
+						dstQuality.data.put(i, j, 0 );
+					}
 
-			} // if (etaPixel > etaMax) }
-
-			// if (i == 100) std::cerr << "Height:" << h << " elangle:" << etaPixel << " etaPixel:" << etaPixel << "\n etaLower:" << etaLower << "\n etaUpper:" << etaUpper << '\n';
-
-
-			// Beam proximity test.
-			if (USE_LOWER){
-				weightLower = relativeBeamPower(etaPixel - etaLower, beamWidth2);
-				if (weightLower < weightThreshold.min){
-					//USE_LOWER = false;
-					weightLower = 0.0;
 				}
-			}
+				else if (lower.USE){
+					if (lower.UNDETECT){
+						dstData.data.put(i, j, odim.undetect);
+					}
+					else {
+						dstData.data.put(i, j, dstData.odim.scaleInverse(lower.x) );
+					}
+					// dstQuality.data.put(i, j, Q_MAX * lower.weight );
 
-			// Beam proximity test.
-			if (USE_UPPER){
-				weightUpper = relativeBeamPower(etaPixel - etaUpper, beamWidth2);
-				if (weightUpper < weightThreshold.min){
-					//USE_UPPER = false;
-					weightUpper = 0.0;
+					if (lower.weight > weightThreshold.max){
+						dstQuality.data.put(i, j, Q_MAX * lower.weight );
+					}
+					/*
+				else if (lower.weight > weightThreshold.min){
+					dstData.data.put(i, j, dstData.odim.undetect);
+					dstQuality.data.put(i, j, Q_MAX * lower.weight );
 				}
-			}
+					 */
+					else{
+						dstData.data.put(i, j, dstData.odim.nodata);
+						dstQuality.data.put(i, j, 0 );
+					}
 
-
-			// Between two elevations
-			if (USE_LOWER && USE_UPPER){
-				if (UNDETECT_LOWER && UNDETECT_UPPER){
-					dstData.data.put(i, odim.area.height-1-k, odim.undetect );
 				}
-				else {
-					if (UNDETECT_LOWER)
-						weightLower = 0.0;
-					else if (UNDETECT_UPPER)
-						weightUpper = 0.0;
-					x =  (weightLower*xLower + weightUpper*xUpper) / (weightLower + weightUpper);
-					//if (x > undetectValue)
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.scaleInverse(x) );
-				}
-				// dstQuality.data.put(i, odim.area.height-1-k, Q_MAX *  std::max(weightLower, weightUpper));
-
-				weight = std::max(weightLower, weightUpper);
-				if (weight > weightThreshold.max){
-					dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weight );
-				}
-				else if (weight > weightThreshold.min){
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.undetect);
-					dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weight );
-				}
-				else{
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.nodata);
-					dstQuality.data.put(i, odim.area.height-1-k, 0 );
+				else { // mark as no-data
+					dstData.data.put(i, j, odim.nodata);
+					dstQuality.data.put(i, j, 0);
 				}
 
-			}
-			else if (USE_UPPER){
-				//if (xUpper > undetectValue)
-				if (!UNDETECT_UPPER)
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.scaleInverse(xUpper) );
-				else
-					dstData.data.put(i, odim.area.height-1-k, odim.undetect );
-				// dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weightUpper );
+				//if (lower.USE)					dstData.data.put(i, odim.geometry.height-1-k, 192);
 
-				if (weightUpper > weightThreshold.max){
-					dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weightUpper );
-				}
-				else if (weightUpper > weightThreshold.min){
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.undetect);
-					dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weightUpper );
-				}
-				else{
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.nodata);
-					dstQuality.data.put(i, odim.area.height-1-k, 0 );
-				}
+				// mout.debug2("elev=" , it->first , "\t : " , it->second );
 
-			}
-			else if (USE_LOWER){
-				if (! UNDETECT_LOWER)
-					//if (xLower > undetectValue)
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.scaleInverse(xLower) );
-				else
-					dstData.data.put(i, odim.area.height-1-k, odim.undetect );
-				dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weightLower );
-
-				if (weightLower > weightThreshold.max){
-					dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weightLower );
-				}
-				else if (weightLower > weightThreshold.min){
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.undetect);
-					dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * weightLower );
-				}
-				else{
-					dstData.data.put(i, odim.area.height-1-k, dstData.odim.nodata);
-					dstQuality.data.put(i, odim.area.height-1-k, 0 );
-				}
-
-			}
-			else { // mark as no-data
-				dstData.data.put(i, odim.area.height-1 - k, odim.nodata);
-				dstQuality.data.put(i, odim.area.height-1 - k, 0);
-			}
-
-			//if (USE_LOWER)					dstData.data.put(i, odim.geometry.height-1-k, 192);
-
-			// mout.debug2("elev=" , it->first , "\t : " , it->second );
-
-		}  // for k
+		}  // for j
 
 
 	} // for i
 
 	dstData.odim.angles.clear();
 	dstData.odim.angles.reserve(src.size());
+	std::set<double> angles;
 	for (const auto & entry: src){
+		mout.accept<LOG_WARNING>(entry.first, ": ", entry.second.getFirstData().odim.elangle);
 		dstData.odim.angles.insert(dstData.odim.angles.end(), entry.second.getFirstData().odim.elangle);
+		angles.insert(entry.second.getFirstData().odim.elangle);
+	}
+
+	if (angles.size() < dstData.odim.angles.size()){
+		mout.warn("Input data contains repeated angles:",  drain::sprinter(dstData.odim.angles));
 	}
 
 	// dstData.odim.angles = {1,2,3};
@@ -412,4 +454,72 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 }  // namespace rack
 
+/// Traverse the sweeps to derive upper and lower beams.
+/*
+while (true){
+
+	const DataSet<PolarSrc> & srcDataSet = it->second;
+	const Data<PolarSrc>      & srcData = srcDataSet.getFirstData(); // todo 1) what if differs from quantity  2) control quantity?
+	const drain::Frame2D<int> srcArea(srcData.odim.area);
+
+	const double eta = srcData.odim.elangle*drain::DEG2RAD; //(M_PI/180.0);
+
+	bin = static_cast<int>(Geometry::beamFromEtaBeta(eta, beta) / srcData.odim.rscale - srcData.odim.rstart);
+
+
+	if ((bin >= 0) && (bin < srcArea.width)){
+
+		x = srcData.data.get<double>(bin, (azm*srcArea.height)/360);
+
+		/// Use this value, if it is valid
+
+		if (x != srcData.odim.nodata){
+			/// Update lower beam value (possibly several times)
+			if (eta < etaPixel){
+				lower.USE = true;
+				lower.eta = eta;
+				if (x == srcData.odim.undetect) {
+					lower.x = undetectValue;
+					lower.UNDETECT = USE_TRUE_UNDETECT;
+				}
+				else {
+					lower.x = srcData.odim.scaleForward(x);
+					lower.UNDETECT = false;
+				}
+				//itStart = it; // unneeded?
+			}
+			/// Update upper beam value (once), update next itStart.
+			else {
+				upper.USE = true;
+				upper.eta = eta;
+				//upper.x = srcData.odim.scaleForward(x);
+				if (x == srcData.odim.undetect){
+					upper.x = undetectValue;
+					upper.UNDETECT = USE_TRUE_UNDETECT;
+				}
+				else {
+					upper.x = srcData.odim.scaleForward(x);
+					upper.UNDETECT = false;
+				}
+				// Upper beam (the next upper beam) has been found -> exit search
+				itStart = it;
+				break;
+			}
+		}
+	}
+
+	++it;
+	if (it == src.end()){
+		upper.eta = M_PI;
+		// consider:  upper.UNDETECT = USE_TRUE_UNDETECT;
+		//
+		break;
+	}
+
+} // while true }
+
+
+} // if (etaPixel > etaMax) }
+
+*/
 // Rack

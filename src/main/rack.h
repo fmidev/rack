@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(18.0)
+#define RACK_VERSION drain::Version<>(18.1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -45,10 +45,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 18.0.1
  *  - Fixed --quantityConf, now finds quantity also by variant (like "DBZ" from "DBZHC")
  *  - Modification in --pPseudoRhi: array size as single parameter, distance range as metres
+ *  Version 18.1
+ *  - Revised --pPseudoRhi
  *
  *  Version 17
  *  - Revised XML/HTML/SVG CSS classes
- *  Vesion 17.0
+ *  Version 17.0
  *  - Fixed SVG legend image panel path
  *  Vesion 17.1
  *  - SVG clip_path

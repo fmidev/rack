@@ -316,12 +316,12 @@ void Palette::refine(size_t n){
 					pNew.color << (1.0-coeff)*lastEntry->second.color.get<double>(k) + coeff*entry.second.color.get<double>(k);
 				}
 			}
-			mout.warn("current: [", lastEntry->first, ',',  entry.first, "[: ", drain::sprinter(debugIntervals));
+			mout.debug("interval: [", lastEntry->first, ',',  entry.first, "[: ", drain::sprinter(debugIntervals));
 		}
 		lastEntry = & entry;
 
 	}
-	mout.warn("refined palette contains ", size(), " entries (colours)");
+	mout.info("refined palette contains ", size(), " entries (colours)");
 
 }
 

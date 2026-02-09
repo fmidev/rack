@@ -103,7 +103,7 @@ public:
 	double beamWidth;
 	// double weightThreshold; // = 0.1;
 	drain::Range<double> weightThreshold = {0.1,0.2}; // = 0.1;
-	// double undetectValue;
+
 
 	/// Implements VolumeOp::filter.
 	virtual
@@ -113,13 +113,13 @@ protected:
 
 	inline
 	void setGeometry(const PolarODIM & srcODIM, PlainData<RhiDst> & dstData) const;
-	///
+
+	/// Simple non-gaussian model for a beam.
 	/**
 	 *   \param beamWidth2 - beam width squared
 	 *   \param angle - elevation angle in the same units as beam width
 	 */
-	inline
-	static
+	static inline
 	double relativeBeamPower(double angle, double beamWidth2){
 		return beamWidth2 / (beamWidth2 + angle*angle);
 	}
