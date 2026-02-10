@@ -593,6 +593,7 @@ def compose_command(args):
     verbosityKey = rack.log.handle_parameters(args)
     progBuilder.verbose(level=verbosityKey)
 
+    logger.info("# args", args)
     handle_geoconf(args, progBuilder)
 
     if (args.SCHEME == 'TILE'):
@@ -718,6 +719,7 @@ def main():
         test()
         sys.exit(0)
 
+    logger.info("# args ", type(args))
     prog = compose_command(args)
 
     if args.print != "":

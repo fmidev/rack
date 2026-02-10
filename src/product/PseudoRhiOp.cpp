@@ -266,8 +266,8 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	*/
 
 	// Vice versa?
-	const int azmForward = (static_cast<int>(dstData.odim.az_angle) + 180) % 360;
-	const int azmInverse =  static_cast<int>(dstData.odim.az_angle)        % 360;
+	const int azmInverse = (static_cast<int>(dstData.odim.az_angle) + 180) % 360;
+	const int azmForward =  static_cast<int>(dstData.odim.az_angle)        % 360;
 
 	mout.warn(DRAIN_LOG(azmInverse), DRAIN_LOG(azmForward));
 

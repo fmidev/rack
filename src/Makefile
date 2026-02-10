@@ -9,7 +9,8 @@ USE_GEOTIFF=YES
 # VERSION=$(shell fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
 # export VERSION=$(fgrep __RACK_VERSION__ src/main/rack.h | cut -d' ' -f 3 | tr -d '"')
 # VERSION=$(shell rack --version | head -1)
-VERSION=$(shell fgrep RACK_VERSION src/main/rack.h | tr '(,)' '|.|' | cut -d'|' -f 2)
+# VERSION=$(shell fgrep RACK_VERSION src/main/rack.h | tr '(,)' '|.|' | cut -d'|' -f 2)
+VERSION=$(shell fgrep RACK_VERSION main/rack.h | tr '(,)' '|.|' | cut -d'|' -f 2)
 
 
 help:
