@@ -162,6 +162,15 @@ class Registry(rack.prog.Register):
     
     def terminal(self, terminal_type: Terminal | str = Terminal.PNG, **opts):
         terminal_type = Terminal(terminal_type) 
+        if "size" in opts:
+            size = opts.pop("size")
+            if isinstance(size, tuple):
+                size = Literal(f"size {size[0]},{size[1]}")
+            else: # if size is not None:
+                size = Literal(f"size {size}")
+        
+        #opts["size"] = size
+
         return self.make_set_cmd(locals())
 
     def output(self, filename: str):
@@ -316,6 +325,21 @@ class Registry(rack.prog.Register):
             self.cmdSequence.add(cmd)
         return cmd
 
+class LineStyle:
+    
+    linetype: int
+    linewidth: int
+    linecolor: str
+    pointtype: int
+    pointsize: int
+    fillstyle: str
+    
+
+    def __init__(self, index: int):
+        self.index = index
+
+    def __str__(self):
+        return f"linetype {self.index}" 
     
 
 class Style(Enum):
