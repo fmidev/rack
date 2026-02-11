@@ -1361,6 +1361,16 @@ class Rack(rack.prog.Register):
         return cmd
 
 
+    def gCoords(self):
+        """ SVG test product. CSS classes: GRID,GRID
+
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
     def gDebug(self,
         name:str='',
         panel:str='playGround1'):
@@ -1372,6 +1382,30 @@ class Rack(rack.prog.Register):
           label
         panel:str
           label
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gDot(self,
+        lonlat:list=[25,60],
+        radius:list=[0,25000],
+        id:str='',
+        style:str=''):
+        """ Draw a marker circle. CSS classes: GRID,LABEL
+
+        Parameters
+        ----------
+        lonlat:list
+          Coordinate (lon,lat) in degrees(decimal) or metres.
+        radius:list
+          metres or relative
+        id:str
+          XML element id
+        style:str
+          XML element CSS style
 
         """
 
@@ -1459,7 +1493,7 @@ class Rack(rack.prog.Register):
 
     def gLinkImage(self,
         value:str=''):
-        """ SVG test product
+        """ Link arbitrary external image (PNG).
 
         Parameters
         ----------
@@ -1517,17 +1551,38 @@ class Rack(rack.prog.Register):
         return cmd
 
 
-    def gPolarGrid(self,
-        distance:list=[1,0,0],
-        azimuth:list=[1,0,0]):
-        """ Draw polar sectors and rings
+    def gRadarDot(self,
+        radius:list=[10000,10000],
+        MASK:bool=False):
+        """ Mark the radar position with a circle. CSS classes: GRID,DOT
 
         Parameters
         ----------
-        distance:list
-          step:start:end (metres)
+        radius:list
+          metres or relative
+        MASK:bool
+          add mask
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gRadarGrid(self,
+        radius:list=[0,0,0],
+        azimuth:list=[30,0,360],
+        MASK:bool=False):
+        """ Draw polar sectors and rings. CSS classes: GRID,GRID
+
+        Parameters
+        ----------
+        radius:list
+          step:start:end (metres or relative)
         azimuth:list
           step:start:end (degrees)
+        MASK:bool
+          add a mask
 
         """
 
@@ -1535,24 +1590,56 @@ class Rack(rack.prog.Register):
         return cmd
 
 
-    def gPolarScope(self):
-        """ Draw circle, typically transparent, on the radar range
-
-
-        """
-
-        cmd = self.make_cmd(locals())
-        return cmd
-
-
-    def gPolarSector(self,
-        value:str=''):
-        """ Select (and draw) sector using natural coordinates or indices
+    def gRadarLabel(self,
+        label:str='${NOD}\n${PLC}'):
+        """ Draw circle describing the radar range.. CSS classes: GRID,LABEL
 
         Parameters
         ----------
-        value:str
-          
+        label:str
+          string, supporting variables like ${where:lon}, ${NOD}, ${PLC}
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gRadarRay(self,
+        radius:list=[0,1],
+        azimuth:float=0,
+        MASK:bool=False):
+        """ Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector. CSS classes: GRID,RAY
+
+        Parameters
+        ----------
+        radius:list
+          start:end (metres)
+        azimuth:float
+          (degrees)
+        MASK:bool
+          add a mask
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gRadarSector(self,
+        radius:list=[0,1],
+        azimuth:list=[0,0],
+        MASK:bool=False):
+        """ Draw a sector, annulus or a disc.. CSS classes: GRID,SECTOR
+
+        Parameters
+        ----------
+        radius:list
+          start:end (metres or relative)
+        azimuth:list
+          start:end (degrees)
+        MASK:bool
+          add a mask
 
         """
 
@@ -3117,12 +3204,12 @@ class Rack(rack.prog.Register):
 
 
     def legendOut(self,
-        filename:str=''):
-        """ Save palette as TXT, JSON, SVG or SLD.
+        params:str=''):
+        """ Deprecating command
 
         Parameters
         ----------
-        filename:str
+        params:str
           
 
         """
@@ -3893,29 +3980,26 @@ class Rack(rack.prog.Register):
 
     def pPseudoRhi(self,
         az_angle:float=0,
-        xsize:int=500,
-        ysize:int=250,
-        range:list=[1,250],
+        size:list=[500,250],
+        range:list=[0,0],
         height:list=[0,10000],
         beamWidth:float=0.25,
-        beamPowerThreshold:float=0.01):
+        beamPowerThreshold:list=[0.005,0.01]):
         """ Computes vertical intersection in a volume in the beam direction.
 
         Parameters
         ----------
         az_angle:float
           deg
-        xsize:int
-          pix
-        ysize:int
+        size:list
           pix
         range:list
-          km
+          m
         height:list
           m
         beamWidth:float
           deg
-        beamPowerThreshold:float
+        beamPowerThreshold:list
           0..1
 
         """
@@ -4157,8 +4241,32 @@ class Rack(rack.prog.Register):
         return cmd
 
 
+    def polarSelect(self,
+        azimuth:list=[0,0],
+        azimuthStep:float=0,
+        radius:list=[0,0],
+        radiusStep:float=0):
+        """ Data selector for the next computation
+
+        Parameters
+        ----------
+        azimuth:list
+          
+        azimuthStep:float
+          
+        radius:list
+          
+        radiusStep:float
+          
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
     def precipKDP(self,
-        a:float=6.95264e-310,
+        a:float=6.95259e-310,
         b:float=0):
         """ Precip rate from KDP
 
@@ -4176,9 +4284,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95264e-310,
+        a:float=6.95259e-310,
         b:float=0,
-        c:float=6.84788e-310):
+        c:float=6.79301e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
@@ -4519,24 +4627,6 @@ class Rack(rack.prog.Register):
           count
         quantity:str
           string
-
-        """
-
-        cmd = self.make_cmd(locals())
-        return cmd
-
-
-    def testAreaSelector(self,
-        distance:list=[0,250],
-        azimuth:list=[0,360]):
-        """ Polar area (sector, annulus) selector
-
-        Parameters
-        ----------
-        distance:list
-          
-        azimuth:list
-          
 
         """
 

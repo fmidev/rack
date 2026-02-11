@@ -65,6 +65,7 @@ class TestGnuPlot(unittest.TestCase):
         """
         #logger.warning(self._testMethodName)
         self.check_set_command("set terminal png", self.reg.terminal, gp.Terminal.PNG)
+        self.check_set_command("set terminal png size 640,400", "terminal", gp.Terminal.PNG, size="640,400")
         self.check_set_command("set terminal png size 800,600", "terminal", gp.Terminal.PNG, size=(800, 600))
         # OLD STYLE:
         # cmd = self.conf.terminal(gp.Terminal.PNG, size=(800, 600))
@@ -259,7 +260,7 @@ class TestGnuPlot(unittest.TestCase):
         #self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
 
     def test_plot_multiple(self):
-        self.check_plot_command('plot sin(x) with lines,cos(x) with lines,tan(x) with lines',
+        self.check_plot_command('plot sin(x) with lines,\n  cos(x) with lines,\n  tan(x) with lines',
                              "sin(x)", "cos(x)", "tan(x)", style=gp.Style.LINES)
     
     # plot.plot("sin(x)", "cos(x)", "tan(x)", style=Style.LINES)
@@ -278,7 +279,7 @@ class TestGnuPlot(unittest.TestCase):
         #self.assertEqual(e2.to_string(gp.PlotSequence.fmt), expected_str)   
  
         cmd = self.reg.plot(e1, e2)
-        expected_str = 'plot random(x) with linesdots,"my_file.dat" with dots color "brown"'
+        expected_str = 'plot random(x) with linesdots,\n  "my_file.dat" with dots color "brown"'
         self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)  
 
 

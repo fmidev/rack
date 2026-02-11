@@ -53,13 +53,13 @@ def handle_parameters(args):
     elif (args.verbose):
         args.log_level = str(logging.INFO)
     
-
     if not args.log_level:
         args.log_level = logging.getLevelName(logger.getEffectiveLevel())
 
     if args.log_level == "NOTE":
         logger.setLevel(logging.INFO)
         return args.log_level
+    
     if hasattr(logging, args.log_level):
         logger.setLevel(getattr(logging, args.log_level))
         return args.log_level
