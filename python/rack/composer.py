@@ -419,7 +419,9 @@ def handle_geoconf(args, Rack: rack.core.Rack):
 
     if args.GEOCONF:
         if type(args.GEOCONF) in (str, Path):
-            read_geoconf(args.GEOCONF) 
+            # logger.info("# args.GEOCONF? %s", args)
+            #read_geoconf(args.GEOCONF) 
+            read_geoconf(args) 
         elif type(args.GEOCONF) == dict:
             vars(args).update(args.GEOCONF)
         else:
@@ -593,7 +595,7 @@ def compose_command(args):
     verbosityKey = rack.log.handle_parameters(args)
     progBuilder.verbose(level=verbosityKey)
 
-    logger.info("# args", args)
+    logger.info("# args %s", args)
     handle_geoconf(args, progBuilder)
 
     if (args.SCHEME == 'TILE'):
@@ -719,7 +721,7 @@ def main():
         test()
         sys.exit(0)
 
-    logger.info("# args ", type(args))
+    logger.info("# args %s", type(args))
     prog = compose_command(args)
 
     if args.print != "":
