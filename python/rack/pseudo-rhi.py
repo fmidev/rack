@@ -513,43 +513,7 @@ def compose_command(args):
         
     return prog
 
-    handle_cartesian(args, scriptBuilder, progBuilder)
 
-    # On the command line, reserve a slot for the script. 
-    scr = progBuilder.script()
-
-    # First call, for the script (SCHEME=TILE)
-    handle_outfile(args, scriptBuilder) 
-    # now scipt should have content...
-    scr.set_args(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
-    # progBuilder.script(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
-
-    handle_infile(args, progBuilder)
-
-    # handle_extract = 
-    if args.EXTRACT:
-        progBuilder.cExtract(args.EXTRACT)
-
-    # Second call, now for progBuilder
-    handle_outfile(args, progBuilder) 
-    
-    # if args.OUTFILE:
-    # handle_output_formats
-    # progBuilder.outputFile(args.OUTFILE)
-
-
-    return prog
-    """
-    #arg_vars = vars(args)
-    print(vars(args))
-    logger.debug("🔧 Final configuration:")
-    for key, value in vars(args).items():
-        logger.debug(f"  {key}: {value}")
-    """
-
-def get_fmt(cmd_separator=" ", **kwargs):
-    return rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=cmd_separator, **kwargs)
-    
 
   
 def exec_command(args):
