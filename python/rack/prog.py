@@ -1,7 +1,9 @@
+import argparse
 import inspect
 import pathlib
 from typing import Any, List, Dict, Union
 from enum import Enum # For keywords, e.g. Literal
+import numbers
 
 #from collections import OrderedDict
 import rack.base
@@ -139,6 +141,7 @@ def copy_signature_from(source):
 
 
 class Command:
+    """A command, for example, a command line argument. It has a name and optionally, a list of parameters (arguments)."""
 
     PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
@@ -343,9 +346,9 @@ class Command:
         return v
     """
 
-import numbers
 
 class Register:
+    """A command register, for example, for a specific program or a specific group of commands."""
 
     def __init__(self, cmdSequence=None):
         """ Create instance of a command Register.
@@ -367,16 +370,14 @@ class Register:
         """
         local_vars.pop('self')
        
-
-        #typelist = [type(v) for v in local_vars.values()]
+        # typelist = [type(v) for v in local_vars.values()]
         # Detect caller function. Then, myFunction(...) implies cmd name "myFunction"
         caller_name = inspect.stack()[1].function
         func = getattr(self, caller_name)
         
         # Function signature
         sig = inspect.signature(func)
-        #numerics = [type(v.default) for v in sig.parameters.values()]
-        #logger.warning(f"{caller_name}: numerics {numerics}")
+        # Detect if default values are numeric, for possible "covering" with a single sequence argument.
         numerics = [isinstance(v.default, numbers.Number) for v in sig.parameters.values()]
         logger.debug(f"{caller_name}: args numeric: {numerics}")
 
@@ -419,6 +420,7 @@ class Register:
                 explicit_args[k]=v
             FIRST=False
         
+        logger.warning(f"{caller_name}: args={args}, explicit_args={explicit_args}")
         if cmd == None:
             cmd = Command(caller_name, args=args, specific_args=explicit_args)
         
@@ -474,10 +476,59 @@ class Register:
             #if self.cmdSequence:
             #    self.cmdSequence.add(cmd)
     
+    @classmethod
+    def explode_args(self, func, parser: argparse.ArgumentParser = None, name_mapper = None):
+        logger.warning(f"Exploding args for {func.__doc__}")
+        # caller_name = inspect.stack()[1].function
+        if isinstance(func, str):
+            caller_name = func
+            func = getattr(self, caller_name)   
+        if not inspect.isfunction(func):
+            raise TypeError(f"Expected a function, got {type(func)}")
+
+        def camel_to_upper_underscore(name: str) -> str:
+            # Insert underscore between lowercase-to-uppercase transitions
+            s1 = re.sub(r'(.)([A-Z][a-z]+)', r'\1_\2', name)
+            # Insert underscore between lower/number-to-uppercase transitions
+            s2 = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', s1)
+            return s2.upper()
+        
+        if name_mapper == None:
+            logger.warning(f"No name mapper given for {func.__name__}, using default (camel to upper underscore)")
+            name_mapper = camel_to_upper_underscore
+
+        # Function signature
+        sig = inspect.signature(func)
+        params = list(sig.parameters.values())
+        # Remove 'self' if it exists in the source signature
+        if params and params[0].name == "self":
+            params = params[1:]
+        
+        for v in params:
+            name = v.name
+            logger.warning(f"{func.__name__}: arg {v.name} default: {v.default}")
+            if name_mapper: # not False
+                logger.warning(f"mapping {v.name} to {name_mapper(v.name)}")
+                name = name_mapper(v.name)
+            else:
+                logger.warning(f"{v.name} not mapped")
+                #v.name = name_mapper(v.name)
+            if parser:
+                if v.default is not inspect._empty:
+                    parser.add_argument(f"--{name}", default=v.default, 
+                                        metavar=f"<{v.name}>",
+                                        dest=v.name,
+                                        help=f"default: {v.default}")
+                                        #help=f"{v.name}(default: {v.default})")
+                else:
+                    parser.add_argument(f"--{name}", required=True)
+            #else:
+            #   logger.warning(f"No parser given for {func.__name__}, skipping argument registration for {name}")
 
 
 
 class CommandSequence:
+    """A sequence of commands, for example, a program or a script."""
 
     CmdClass = Command
 
@@ -587,7 +638,11 @@ class CommandSequence:
         
         return "\n".join(result)
 
+
+
+
 class RackFormatter(Formatter):
+    """A formatter for Rack commands (command line arguments). Overrides some of the default formatting rules."""
     
     def fmt_name(self, name:str) -> str :
         l = len(name)
