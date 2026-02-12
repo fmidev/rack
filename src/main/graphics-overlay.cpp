@@ -121,8 +121,8 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 	const Hi5Tree & srcCurr  = ctx.getHi5(RackContext::CURRENT); // this works well with -c (--cCreate)
 
 	if (!srcPolar.empty()){
-		//radarSVG.maxRange = DataTools::getMaxRange(srcPolar);
-		radarSVG.deriveMaxRange(srcPolar);
+		//radarSVG.deriveMaxRange(srcPolar);
+		radarSVG.radarProj.deriveMaxRange(srcPolar);
 		//mout.debug(DRAIN_LOG(radarSVG.maxRange));
 	}
 	else {
@@ -342,14 +342,12 @@ void CmdRadarDot::exec() const {
 	// Always a range, though here only dis.max used
 	drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
 	// Note: DOT does not use shared polar selection
-	resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.getRange());
+	resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.radarProj.getRange());
 
 
 	if (dist.range.max > 0.0){ // earlier!
 
-		const std::string DOT = "DOT";
-
-		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, DOT, {
+		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, {
 				{"fill", "red"},
 				{"stroke", "white"},
 				{"stroke-width", 2.0},
@@ -372,7 +370,7 @@ void CmdRadarDot::exec() const {
 			{
 				// Private scope, to call bezierElem destructor.
 				drain::svgPATH elem(localMask);
-				radarSVG.drawSector(elem, {0, radarSVG.getRange()});
+				radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
 			}
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
@@ -403,7 +401,7 @@ void CmdRadarGrid::exec() const  {
 	// overlay.addChild()->setComment(getName(), ' ', getParameters());
 
 	drain::SteppedRange<double> dist(0.0, 0.0, 1.0); // (distanceMetres.range); // double -> int
-	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
+	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());
 	if (dist.range.span() == 0.0){
 		mout.error("empty range: ", radiusMetres.range.tuple(), " => ", dist.range.tuple(), " [metres]");
 	}
@@ -525,7 +523,7 @@ void CmdRadarSector::exec() const  {
 	});
 
 	drain::SteppedRange<double> dist(0,0,1.0); // (distanceMetres.range); // double -> int
-	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
+	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());
 
 	drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
 	resolveAzimuthRange(azimuthDegrees, ctx.polarSelector.azimuth, azm);
@@ -581,7 +579,7 @@ void CmdRadarRay::exec() const {
 	});
 
 	drain::SteppedRange<double> dist; // (distanceMetres.range); // double -> int
-	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.getRange());
+	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());
 
 	const double azmR = azimuthDegrees.range.min * drain::DEG2RAD;
 
@@ -735,8 +733,7 @@ void CmdDot::exec() const  {
 
 	radarSVG.radarProj.setSiteLocationDeg(coordsDeg.x, coordsDeg.y);
 
-	const std::string SPOT = "SPOT";
-
+	// const std::string SPOT = "SPOT";
 	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, SPOT, {
 			{"fill", "green"},
 			{"stroke", "white"},

@@ -38,9 +38,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-radar.h"
 
 DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
+		/* Abstract or general classes */
 		DRAIN_ENUM_ENTRY(rack::Graphic, VECTOR_OVERLAY),
 		DRAIN_ENUM_ENTRY(rack::Graphic, HIGHLIGHT),
 		DRAIN_ENUM_ENTRY(rack::Graphic, GRID),
+		/* Graphic objects */
 		DRAIN_ENUM_ENTRY(rack::Graphic, DOT),
 		DRAIN_ENUM_ENTRY(rack::Graphic, LABEL),
 		DRAIN_ENUM_ENTRY(rack::Graphic, RAY),
@@ -49,13 +51,6 @@ DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
 		DRAIN_ENUM_ENTRY(rack::Graphic, CIRCLE),
 };
 
-/*
-DRAIN_ENUM_DICT(rack::RadarSVG::StyleClasses) = {
-		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, VECTOR_OVERLAY),
-		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, GRID),
-		DRAIN_ENUM_ENTRY(rack::RadarSVG::StyleClasses, HIGHLIGHT),
-};
-*/
 
 namespace rack {
 
@@ -91,10 +86,10 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		typedef SelectXML<svg::tag_t> Select;
 		// These could be
 		/*
-		SelectXML<svg::tag_t>("polygon");
-		SelectXML<svg::tag_t>(ClassXML("GRID"));
-		SelectXML<svg::tag_t>(ClassXML(GRID));
-		SelectXML<svg::tag_t> select;
+		Select("polygon");
+		Select(ClassXML("GRID"));
+		Select(ClassXML(GRID));
+		Select select;
 		select.set("polygon");
 		*/
 
@@ -108,14 +103,6 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 				//{"fill-opacity", 0.35},
 		};
 
-		/*
-		style[SelectorXMLcls("SECTOR")] = {
-				{"fill", "none"},
-				{"stroke", "green"},
-				{"stroke-width", 12.0},
-				{"opacity", 0.65}
-		};
-		*/
 
 		style[Select(svg::TEXT, GRID)] = {
 				{"text-anchor", "middle"},
@@ -130,23 +117,17 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 				{"fill-opacity", "1"},
 		};
 
-		style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] = {
+		style[Select(HIGHLIGHT, PseudoClassCSS::hover)] = {
 				//{"display", "block"},
-				{"font-size", "larger"},
 				{"opacity", 1.0},
-				// {"fill", "red"},
-				//{"stroke-width", 3.0},
-				//{"stroke-color", "orange"},
 		};
 
-		//style[SelectorXML(image::svg::PATH, ".HIGHLIGHT", ":hover")] = {
+		style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] = {
+				{"font-size", "larger"},
+		};
+
 		style[Select(svg::PATH, HIGHLIGHT, PseudoClassCSS::hover)] = {
-				//{"display", "block"},
-				//{"font-size", "larger"},
-				//{"fill", "red"},
-				{"stroke-width", 3.0},
-				{"opacity", 1.0},
-				//{"stroke-color", "orange"},
+				{"stroke-width", 5.0},
 		};
 	}
 
@@ -192,47 +173,6 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 		// warn?
 	}
 
-	// NOTE: typically these are not in polar data. Only in projected (ie cartesian)
-	/*
-	const int epsg = where.get("epsg", 0); // non-standard
-	if (epsg){
-		mout.attention("EPSG found: ", epsg);
-		// geoFrame.setProjectionEPSG(epsg);
-		radarProj.setProjectionDst(epsg);
-	}
-	else {
-		const std::string projdef = where.get("projdef", ""); // // otherwise gets "null"
-		if (!projdef.empty()){
-			radarProj.setProjectionDst(projdef); // Cartesian!
-		}
-		else {
-			// radarProj
-		}
-	}
-	*/
-
-	/*
-	int range =  where.get("rstart", 0.0) + where.get("rscale", 0.0)*where.get("nbins", 0.0);
-	if (range > 0){
-		maxRange = range;
-		mout.accept<LOG_WARNING>("setting maxRange=", maxRange);
-	}
-	else {
-		mout.fail<LOG_DEBUG+1>("could not set maxRange");
-		mout.fail<LOG_WARNING>(where);
-	}
-	*/
-	/*
-	// PolarODIM odim;
-	// rstart + rscale*static_cast<double>(area.width);
-	// double radius = 250000.0;
-	double maxRange =  where.get("rstart", 0.0) + where.get("rscale", 0.0)*where.get("nbins", 0.0);
-	drain::Rectangle<double> bbox;
-	radarProj.determineBoundingBoxM(maxRange, bbox); // M = "native"
-	mout.special("BBOX (250km) of the last input:", bbox);
-	// mout.special("GeoFrame BBOX: ", geoFrame);
-	mout.special("GeoFrame BBOX: ", geoFrame.getBoundingBoxNat());
-	*/
 }
 
 // Composite has ReferenceMap, Hi5Tree has VariableMap (drain::image::properties)
@@ -280,25 +220,10 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 		//mout.reject<LOG_WARNING>("No EPSG found, using: ", comp.getProjection());
 	}
 
-	// mout.pending<LOG_WARNING>(DRAIN_LOG(comp.projGeo2Native));
-
-	// const drain::Rectangle<double> & b = comp.getBoundingBoxDeg();
-	// geoFrame.setBoundingBoxD(b.lowerLeft.x, b.lowerLeft.y, b.upperRight.x, b.upperRight.y);
-	// geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
-	/*
-	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj()));
-	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj().isSet()));
-	mout.pending<LOG_WARNING>(DRAIN_LOG(comp.getProj().isLongLat()));
-	*/
-	// geoFrame.setBoundingBoxD(comp.getBoundingBoxDeg());
-	// mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
 	// mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
 	geoFrame.setBoundingBoxNat(comp.getBoundingBoxNat());
 	geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
 	// mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
-	// mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));
-	//geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
-	// mout.pending<LOG_WARNING>("now slowly: ", comp.getBoundingBoxDeg(), " = ", geoFrame.getBoundingBoxDeg(), " -> NATIVE: ", geoFrame.getBoundingBoxNat());
 
 }
 
@@ -306,7 +231,8 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 void RadarSVG::getCubicBezierConf(CubicBezierConf & conf, double angleStartR, double angleEndR) const {
 	//conf.sectorCount = n;
 	//conf.delta = 2.0*M_PI / static_cast<double>(n);
-	conf.delta = angleEndR-angleStartR;
+	// IMPORTANT!
+	conf.delta = angleEndR - angleStartR;
 	const double k = 4.0/3.0 * ::tan(conf.delta/4.0);
 	conf.radialCoeff   = ::sqrt(1.0 + k*k);
 	conf.angularOffset = ::atan(k);

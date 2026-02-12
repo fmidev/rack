@@ -29,20 +29,19 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include <drain/Log.h>
-#include "data/Quantity.h"
-#include "data/QuantityMap.h"
-//#include <drain/util/Log.h>
-//#include <drain/util/Variable.h>
-#include <drain/image/Image.h>
-#include <product/RadarProductOp.h>
-#include "product/PseudoRhiOp.h"
-#include "radar/Geometry.h"
 #include <algorithm>
 #include <cmath>
 #include <map>
 //#include <stdexcept>
-#include <utility>
+// #include <utility>
+
+#include <drain/Log.h>
+#include <drain/image/Image.h>
+//#include "data/Quantity.h"
+#include "data/QuantityMap.h"
+#include "product/RadarProductOp.h"
+#include "product/PseudoRhiOp.h"
+#include "radar/Geometry.h"
 
 
 
@@ -205,23 +204,6 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	// QUANTITY
 	double x;
 
-	/*
-	// QUANTITY
-	double xLower = 0.0, xUpper = 0.0;
-
-	// WEIGHT
-	double weightLower = 0.0, weightUpper = 0.0; //, weight;
-
-	// Use the beam (scope ok, data available)
-	bool USE_UPPER = false;
-	bool USE_LOWER = false;
-
-	bool UNDETECT_UPPER = false;
-	bool UNDETECT_LOWER = false;
-	*/
-
-
-	//const double weightThreshold = 0.1;
 
 	struct beamInfo {
 		double eta;      //

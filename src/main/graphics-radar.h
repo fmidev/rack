@@ -55,11 +55,12 @@ public:
 		HIGHLIGHT,      // CSS: activated on tool tip
 		GRID,           // overlapping with element class?
 		DOT,
-		LABEL, // External
 		RAY,
 		SECTOR,
 		ANNULUS,
 		CIRCLE,
+		SPOT,  // External
+		LABEL, // External
 	};
 
 	const drain::ClassXML cls;
@@ -91,6 +92,35 @@ DRAIN_ENUM_OSTREAM(rack::Graphic::GRAPHIC);
 
 namespace rack {
 
+class PolarRadarConf : public RadarProj {
+
+public:
+
+	inline
+	void deriveMaxRange(const Hi5Tree & srcPolar){
+		maxRange = DataTools::getMaxRange(srcPolar);
+	}
+
+	inline
+	double getRange(double r=1.0){
+		// double getRange(double r, double maxRange){
+		if (r < -1.0){
+			return r;
+		}
+		else if (r > +1.0){
+			return r;
+		}
+		else {
+			return r*maxRange;
+		}
+	};
+
+protected:
+
+	// Maximum range of the latest radar input.
+	double maxRange = 0.0; // metres
+
+};
 
 /// Vector graphics for both composites and single radar data (polar coordinates).
 /**
@@ -147,16 +177,21 @@ public:
 
 
 	// Projection of the latest radar input.
-	RadarProj radarProj;
+	//RadarProj radarProj;
+	PolarRadarConf radarProj;
 
+	/*
 	inline
 	void deriveMaxRange(const Hi5Tree & srcPolar){
 		maxRange = DataTools::getMaxRange(srcPolar);
 	}
+	*/
 
 	/// If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such.
-	inline
+	/*
+	static inline
 	double getRange(double r=1.0){
+	// double getRange(double r, double maxRange){
 		if (r < -1.0){
 			return r;
 		}
@@ -167,7 +202,7 @@ public:
 			return r*maxRange;
 		}
 	};
-
+	*/
 
 
 	/// Geographic extent and projection (Cartesian)
@@ -330,7 +365,7 @@ protected:
 	int radialBezierResolution;
 
 	// Maximum range of the latest radar input.
-	double maxRange = 0.0; // metres
+	// double maxRange = 0.0; // metres
 
 };
 
