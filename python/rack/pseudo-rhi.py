@@ -61,9 +61,9 @@ def build_parser():
 
     # Rhi specific parameters
     # rack.prog.Register.export_func(rack.core.Rack.pPseudoRhi, parser, key="RHI", name_mapper=camel_to_upper_underscore)
-    rack.prog.Register.export_func(rack.core.Rack.pPseudoRhi, parser, name_mapper=camel_to_upper_underscore)
+    rack.prog.Register.publish_func(rack.core.Rack.pPseudoRhi, parser, name_mapper=camel_to_upper_underscore)
 
-    rack.prog.Register.export_func(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
+    rack.prog.Register.publish_func(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
 
 
     parser.add_argument(
@@ -287,18 +287,13 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     else:
         output_basename = f"{p.parent}/{p.stem}"
         
-        
-                
-
-    #output_basename = output_basename.removesuffix(f".{formats}")
-
+    
+    # output_basename = output_basename.removesuffix(f".{formats}")
     # OUTPUT_PREFIX not handled, but could be derived from OUTFILE if needed, e.g. for gnuplot output files
-    #parent = Path(args.OUTFILE).parent
-    #if parent and parent != Path('.'):  
+    # parent = Path(args.OUTFILE).parent
+    # if parent and parent != Path('.'):  
     #    cmdBuilder.outputPrefix(f"{parent}/")
-
-        
-
+    
     logger.debug(f"formats: {formats}")
         
     if 'h5' in formats:
@@ -427,7 +422,8 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     #confCmdReg.comment("General settings")
     
     plotCmdReg.comment("Plotting the background image (radar beams)")
-    plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
+    plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), 
+                    style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
     print(gpl_plot.to_string())  # ";\n
     gpl_plot.clear() # Clear plot sequence to separate it from background image plot in the output
 
@@ -437,7 +433,7 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     confCmdReg.xrange(*xrange)
     confCmdReg.yrange(yrange)
     confCmdReg.set("border") # see above unset border, to remove default border and tics, and then add custom border back with margins
-
+    #confCmdReg
     confCmdReg.set("tics out nomirror scale 2")
     confCmdReg.set("mxtics 5")
     confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
@@ -490,11 +486,10 @@ def compose_command(args):
     # RHI specific here
     # handle_outfile(args, rackCmdReg)
 
-
     # removed for debugging
-    rackCmdReg.handle_exploded_command(args, rack.core.Rack.select)
+    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
 
-    rackCmdReg.handle_exploded_command(args, rack.core.Rack.pPseudoRhi)
+    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi)
 
     #handle_prhi(args, progBuilder)
 

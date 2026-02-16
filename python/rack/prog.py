@@ -383,7 +383,7 @@ class Register:
             #    self.cmdSequence.add(cmd)
     
     @classmethod
-    def export_func(self, func: callable, parser: argparse.ArgumentParser = None, key: str = None, name_mapper = None):
+    def publish_func(self, func: callable, parser: argparse.ArgumentParser = None, key: str = None, name_mapper = None):
         """ Export function arguments to an argparse parser. The function name will be the command name,
             and the arguments will be the command arguments.
         
@@ -447,10 +447,12 @@ class Register:
                 #v.name = name_mapper(v.name)
             
             if parser:
-                args = {"dest": v.name, "help": f"equals --{caller_name} {v.name}=..."}
+                args = {"dest":v.name, "type":str, #"nargs":argparse.REMAINDER,
+                        "help": f"equals --{caller_name} {v.name}=..."}
 
                 if v.default is not inspect._empty:
                     args["default"] = v.default
+                    # args["default"] = str(v.default)
                     default_str = ""
                     if isinstance(v.default, str) and v.default.strip() != "":
                         default_str = f" default: '{v.default}'"
@@ -472,7 +474,7 @@ class Register:
     
 
     # @classmethod
-    def handle_exploded_command(self, args: argparse.Namespace, cmd_func: callable):
+    def handle_published_cmd_args(self, args: argparse.Namespace, cmd_func: callable):
         """
         Docstring for handle_exploded_command
         
@@ -514,7 +516,8 @@ class Register:
                 # default is studied "locally"
                 if value != v.default:
                     logger.debug(f"Argument {v.name} has value {value} different from default {v.default}, including in command")
-                    kw_args[v.name] = value
+                    kw_args[v.name] = str(value).strip().replace(cmd.fmt.PARAM_SEPARATOR, cmd.fmt.VALUE_SEPARATOR) 
+                    #.strip('"').strip("'") # TODO: strip quotes if any, for example, value.strip('"').strip("'") or similar
                     #logger.info(f"{cmd_func.__name__}: adding argument {v.name}={value}")
             else:
                 logger.warning(f"Argument {v.name} not found in args or is None, skipping for {cmd_func.__name__}")
@@ -576,7 +579,7 @@ class CommandSequence:
 
     def clear(self):
         self.commands = []
-        
+
     def to_list(self, fmt:Formatter=Formatter()) -> list:
         """Produces a list suited to be joined with newline char, for example. """
         

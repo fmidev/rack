@@ -53,23 +53,22 @@ public:
 
 	//PseudoRhiOp(const std::string & name = "PolarProductOp", const std::string & description = "");
 	PseudoRhiOp(double az_angle=0.0, long int xsize=500, long int ysize=250, double minRange=0.0, double range=0.0,
-			double minHeight=0, double maxHeight=10000, double beamWidth = 0.25, double beamPowerThreshold = 0.01) : //, std::string type="C", double gain=0.5, double offset=-32.0) :
+			double minHeight=0, double maxHeight=10000, double beamWidth = 0.25, double beamThreshold = 0.01) : //, std::string type="C", double gain=0.5, double offset=-32.0) :
 		VolumeOp<RhiODIM>("PseudoRhiOp","Computes vertical intersection in a volume in the beam direction.") {
 
 		odim.object = "XSEC";
 		odim.product = "PRHI";
 
 		parameters.link("az_angle", odim.az_angle = az_angle, "deg");
-		parameters.link("size", odim.area.tuple(xsize, ysize), "pix");
-		// parameters.link("xsize", odim.area.width = xsize, "pix");
-		// parameters.link("ysize", odim.area.height = ysize, "pix");
 
-		odim.range.set(minRange, range);
 		// Odim Version km/m?
-		parameters.link("range",  odim.range.tuple(),  "m");
+		// odim.range.set(minRange, range);
+		parameters.link("range",  odim.range.tuple(minRange, range),  "m");
 
-		odim.altitudeRange.set(minHeight, maxHeight);
-		parameters.link("height", odim.altitudeRange.tuple(), "m" );
+		// odim.altitudeRange.set(minHeight, maxHeight);
+		parameters.link("height", odim.altitudeRange.tuple(minHeight, maxHeight), "m" );
+
+		parameters.link("size", odim.area.tuple(xsize, ysize), "pix");
 
 		/*
 		parameters.link("minRange",  odim.minRange = minRange, "km");
@@ -80,12 +79,13 @@ public:
 		//link("levels", odim.levels, levels);
 
 		parameters.link("beamWidth", this->beamWidth = beamWidth, "deg");
-		parameters.link("beamPowerThreshold", this->weightThreshold.tuple(0.5*beamPowerThreshold, beamPowerThreshold), "0..1").setFill(true);
+		//parameters.link("beamThreshold", this->weightThreshold.tuple(0.5*beamThreshold, beamThreshold), "0..1").setFill(true);
+		parameters.link("beamThreshold", this->weightThreshold = beamThreshold, "0..1");
 
 		// link("undetectValue", undetectValue, -30.0);  AUTOMATIC, see --quantity DBZH:undetectValue
-		//link("type", odim.type, "C"); // TODO
-		//link("gain", odim.scaling.scale, 0.5);
-		//link("offset", odim.scaling.offset, -32.0);
+		// link("type", odim.type, "C"); // TODO
+		// link("gain", odim.scaling.scale, 0.5);
+		// link("offset", odim.scaling.offset, -32.0);
 
 		allowedEncoding.link("type", odim.type = "C");  // TODO: automatic?
 		allowedEncoding.link("gain", odim.scaling.scale);
@@ -100,9 +100,9 @@ public:
 	~PseudoRhiOp(){};
 
 
-	double beamWidth;
-	// double weightThreshold; // = 0.1;
-	drain::Range<double> weightThreshold = {0.1,0.2}; // = 0.1;
+	double beamWidth = 0.25;
+	double weightThreshold = 0.1;
+	// drain::Range<double> weightThreshold = {0.1,0.2}; // = 0.1;
 
 	virtual
 	void setPolarSelector(const PolarSelector & ps) override;

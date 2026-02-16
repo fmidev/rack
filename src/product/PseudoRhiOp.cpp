@@ -236,20 +236,8 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	/// Azimuthal bin index (j coordinate)
 	int azm;
 
-	/*
-	if (this->polarSelector.radius.range.empty()){
-		azm = odim.az_angle;
-	}
-	else {
-
-		// warn if non-empty azimuthal range?
-		azm = 0.5 * (this->polarSelector.azimuth.range.min + this->polarSelector.azimuth.range.max);
-	}
-	*/
-
-	// Vice versa?
-	const int azmInverse = (static_cast<int>(dstData.odim.az_angle) + 180) % 360;
 	const int azmForward =  static_cast<int>(dstData.odim.az_angle)        % 360;
+	const int azmInverse = (static_cast<int>(dstData.odim.az_angle) + 180) % 360;
 
 	mout.warn(DRAIN_LOG(azmInverse), DRAIN_LOG(azmForward));
 
@@ -401,14 +389,14 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 					// dstQuality.data.put(i, odim.area.height-1-k, Q_MAX *  std::max(lower.weight, upper.weight));
 
 					weight = std::max(lower.weight, upper.weight);
-					if (weight > weightThreshold.max){
+					if (weight > weightThreshold){
 						dstData.data.put(i, j, dstData.odim.scaleInverse(x) );
 						dstQuality.data.put(i, j, Q_MAX * weight );
 					}
-					else if (weight > weightThreshold.min){
+					/* else if (weight > weightThreshold.min){
 						dstData.data.put(i, j, dstData.odim.undetect);
 						dstQuality.data.put(i, j, Q_MAX * weight );
-					}
+					}*/
 					else{
 						dstData.data.put(i, j, dstData.odim.nodata);
 						dstQuality.data.put(i, j, 0 );
@@ -428,7 +416,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 					// dstQuality.data.put(i, odim.area.height-1-k, Q_MAX * upper.weight );
 
-					if (upper.weight > weightThreshold.max){
+					if (upper.weight > weightThreshold){ // .max
 						dstData.data.put(i, j, x);
 						dstQuality.data.put(i, j, Q_MAX * upper.weight );
 					}
@@ -452,7 +440,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 					}
 					// dstQuality.data.put(i, j, Q_MAX * lower.weight );
 
-					if (lower.weight > weightThreshold.max){
+					if (lower.weight > weightThreshold){ // .max
 						dstQuality.data.put(i, j, Q_MAX * lower.weight );
 					}
 					/*

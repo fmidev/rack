@@ -3980,26 +3980,26 @@ class Rack(rack.prog.Register):
 
     def pPseudoRhi(self,
         az_angle:float=0,
-        size:list=[500,250],
         range:list=[0,0],
         height:list=[0,10000],
+        size:list=[500,250],
         beamWidth:float=0.25,
-        beamPowerThreshold:list=[0.005,0.01]):
+        beamThreshold:float=0.01):
         """ Computes vertical intersection in a volume in the beam direction.
 
         Parameters
         ----------
         az_angle:float
           deg
-        size:list
-          pix
         range:list
           m
         height:list
           m
+        size:list
+          pix
         beamWidth:float
           deg
-        beamPowerThreshold:list
+        beamThreshold:float
           0..1
 
         """
@@ -4266,7 +4266,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95259e-310,
+        a:float=6.95258e-310,
         b:float=0):
         """ Precip rate from KDP
 
@@ -4284,9 +4284,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95259e-310,
+        a:float=6.95258e-310,
         b:float=0,
-        c:float=6.79301e-310):
+        c:float=6.08801e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
