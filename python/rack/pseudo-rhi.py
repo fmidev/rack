@@ -16,6 +16,7 @@ import logging
 
 from types import SimpleNamespace
 
+from matplotlib import lines, scale
 from numpy import size
 
 from rack.composer import handle_prod
@@ -48,23 +49,8 @@ def build_parser():
         default="",
         help="Output file (basename). See --FORMAT")
     
-
-
-    """
-    az_angle default: 0
-    size default: [500, 250]
-    range default: [0, 0]
-    height default: [0, 10000]
-    beamWidth default: 0.25
-    beamPowerThreshold default: [0.005, 0.01]
-    """
     
     # Rhi specific parameters
-    parser.add_argument(
-        "--rhi",
-        metavar="KEY=VALUE[,KEY2=VALUE2]",
-        default=None,
-        help="RHI parameters collectively, e.g. --rhi RANGE=1000,AZIMUTH=45 or --rhi RANGE=500:1500,AZIMUTH=30")
 
     def camel_to_upper_underscore(name: str) -> str:
         # Insert underscore between lowercase-to-uppercase transitions
@@ -73,73 +59,11 @@ def build_parser():
         s2 = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', s1)
         return s2.upper()
 
-    rack.prog.Register.explode_args(rack.core.Rack.pPseudoRhi, parser, name_mapper=camel_to_upper_underscore)
-
-    #rack.core.Rack.pPseudoRhi.__
-
     # Rhi specific parameters
-    """
-    parser.add_argument(
-        "--AZIMUTH",
-        default=0.0,
-        metavar="<angle>",  
-        help="RHI Azimuthal direction [degrees]")
+    # rack.prog.Register.export_func(rack.core.Rack.pPseudoRhi, parser, key="RHI", name_mapper=camel_to_upper_underscore)
+    rack.prog.Register.export_func(rack.core.Rack.pPseudoRhi, parser, name_mapper=camel_to_upper_underscore)
 
-    # Rhi specific parameters
-    parser.add_argument(
-        "--RANGE",
-        default=0.0,
-        metavar="<max>|<min>:<max>",  
-        help="RHI Radial range [metres] or relative [0...1]")
-
-    # Rhi specific parameters
-    parser.add_argument(
-        "--BEAM_WIDTH",
-        default=1.0,
-        metavar="<width>",  
-        help="RHI Beam width [degrees]")
-
-    parser.add_argument(
-        "--WEIGHT_THRESHOLD",
-        default=0.1,
-        metavar="<value>",  
-        help="RHI Weight threshold [0-1] for masking output")
-
-    parser.add_argument(
-        "--SIZE",
-        default="800,400",
-        metavar="<width>,<height>",
-        help="") 
-
-    """
-        
-    """
-    Selection: todo: move to separate function, and also support for multiple SELECT-like parameters (e.g. quantity and dataset)
-    parser.add_argument(
-        "--SELECT",
-        default=None,
-        help="") 
-
-    parser.add_argument(
-        "--QUANTITY",
-        default=None,
-        #default='DBZH',
-        metavar="<code>",
-        help="Same as --SELECT quantity=<code> , where code is DBZH, VRAD, HGHT") 
-
-    parser.add_argument(
-        "--DATASET",
-        default='', 
-        metavar="<index>[:<index2>]",
-        help="Same as --SELECT path=/dataset<index>") 
-
-    parser.add_argument(
-        "--PRF",
-        default=None, 
-        metavar="SINGLE|DOUBLE|ANY",
-        help="Same as --SELECT prf=<prf>") 
-   """
- 
+    rack.prog.Register.export_func(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
 
 
     parser.add_argument(
@@ -196,6 +120,12 @@ def build_parser():
         "-e", "--exec",
         action='store_true',
         help="execute parsed command")
+
+    parser.add_argument(
+        "--background",   
+        metavar="<intensity>|<red,green,blue>",
+        default="0", # black
+        help="Illustrate radar beams with given background color.")
 
         
     parser.add_argument(
@@ -306,6 +236,10 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     
     logger.debug(f"INFILE {args.INFILE}")
 
+    if not args.INFILE:
+        logger.error("No input file specified. Use --INFILE or check your config file.")
+        sys.exit(1) 
+
     if type(args.INFILE) == str:
         args.INFILE = [ args.INFILE ]
 
@@ -313,44 +247,57 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     for i in args.INFILE:
         progBuilder.inputFile(i)
 
-    """
-    shortPaths=[]
-    if (args.INDIR == 'AUTO'):
-        args.INDIR = extract_prefix(args.INFILE, shortPaths)
-    
-    if args.INDIR:
-        progBuilder.inputPrefix(args.INDIR)
 
-    args.INFILE = shortPaths
-    for i in args.INFILE:
-        progBuilder.inputFile(i)
-    """
-
-def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
-    """Light adjustments to args.OUTFILE"""
-
-    if args.SCHEME == 'TILE':
-        args.OUTFILE = None
+            
+def get_background_filename(args, prefixed=False):
+    p = Path(args.gnuplot)
+    if prefixed and args.OUTDIR:
+        return f"{args.OUTDIR}{p.stem}-background.png"  
     else:
-        if not args.OUTFILE:
-            args.OUTFILE = 'out.h5'
-        if cmdBuilder:
-            cmdBuilder.outputFile(args.OUTFILE)
-        else:
-            logger.error("No cmdBuilder set")
+        return f"{p.parent}/{p.stem}-background.png"
 
 def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     # Assumes prefix has been handled
-    
-    output_basename = args.OUTFILE
-    fmt = args.OUTFILE.split('.').pop()
-    #logger.warning(f"format: {fmt}")
-    output_basename = output_basename.removesuffix(f".{fmt}")
 
-    if args.FORMAT:
-        formats = args.FORMAT.strip().split(',')
+    if not (args.OUTFILE or args.gnuplot):
+        args.OUTFILE = 'out.h5'
+
+
+    if args.OUTFILE:
+        formats = set(args.FORMAT.strip().split(','))
+        formats.add(args.OUTFILE.split('.').pop())
+    #else:
+    #    args.FORMAT = args.gnuplot.split('.').pop()
+    #    args.OUTFILE = args.gnuplot.removesuffix(f".{args.FORMAT}") + f"-bkg.{args.FORMAT}"
+    #    formats = {args.FORMAT} 
+
+    #args.OUTFILE
+    
+    
+    p = Path(args.OUTFILE)
+    
+    if (not args.OUTDIR) and len(formats) > 1:
+        if p.parent and p.parent != Path('.'):
+            args.OUTDIR = f"{p.parent}/"
+            cmdBuilder.outputPrefix(args.OUTDIR)
+    
+    if args.OUTDIR:
+        cmdBuilder.outputPrefix(args.OUTDIR)
+        output_basename = p.stem
     else:
-        formats = {fmt}
+        output_basename = f"{p.parent}/{p.stem}"
+        
+        
+                
+
+    #output_basename = output_basename.removesuffix(f".{formats}")
+
+    # OUTPUT_PREFIX not handled, but could be derived from OUTFILE if needed, e.g. for gnuplot output files
+    #parent = Path(args.OUTFILE).parent
+    #if parent and parent != Path('.'):  
+    #    cmdBuilder.outputPrefix(f"{parent}/")
+
+        
 
     logger.debug(f"formats: {formats}")
         
@@ -363,11 +310,23 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
         cmdBuilder.outputFile(f"{output_basename}.tif")
         formats.remove('tif')
 
-    if 'png' in formats:
+    if ('png' in formats) or args.gnuplot:
+
         cmdBuilder.paletteDefault()
+        
+        if args.background  != "":
+            cmdBuilder.select(quantity='QIND')
+            cmdBuilder.encoding(type="C", gain=0.004, offset=0) # 
+            cmdBuilder.imageAlpha()
+            cmdBuilder.imageFlatten(args.background)
         # transparency?
-        cmdBuilder.outputFile(f"{output_basename}.png")
-        formats.remove('png')
+        if (args.gnuplot):
+            # cmdBuilder.outputFile(f"{Path(args.gnuplot).stem}-background.png")
+            cmdBuilder.outputFile(get_background_filename(args, prefixed=False))
+        
+        if ('png' in formats):
+            cmdBuilder.outputFile(f"{output_basename}.png")
+            formats.remove('png')
 
     if 'svg' in formats:
         cmdBuilder.outputFile(f"{output_basename}.svg")
@@ -376,6 +335,7 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     if (formats):
         raise Exception('Unhandled formats:', formats)
         
+"""
 import inspect
 def handle_prhi(args, progBuilder: rack.core.Rack):
  
@@ -406,27 +366,8 @@ def handle_prhi(args, progBuilder: rack.core.Rack):
     progBuilder.pPseudoRhi(**dict_args)
 
     return
+"""
 
-    if args.SIZE:
-        # args.SIZE = str(args.SIZE).replace(',', ':')
-        args.SIZE = [int(x) for x in str(args.SIZE).split(',')]
-        if len(args.SIZE) == 1:
-            args.SIZE.append(int(args.SIZE[0]/2)) 
-        #value.append(f"size={args.SIZE}")
-
-    if args.RANGE:
-        args.RANGE = str(args.RANGE).replace(',', ':')
-        #value.append(f"range={args.RANGE}")
-    
-    #if args.BEAM_WIDTH:
-    #    value.append(f"beam_width={args.BEAM_WIDTH}")
-    
-    #if args.WEIGHT_THRESHOLD:
-    #    value.append(f"weight_threshold={args.WEIGHT_THRESHOLD}")
-
-    progBuilder.pPseudoRhi(az_angle=args.AZIMUTH, range=args.RANGE, size=args.SIZE, 
-                           beamWidth=args.BEAM_WIDTH, beamPowerThreshold=args.WEIGHT_THRESHOLD)
-            
 
 def handle_gnuplot(args, progBuilder: rack.core.Rack):
 
@@ -436,45 +377,79 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
         return
 
     # ensure png file is generated by rack, and use that as input for gnuplot (background image)
-    outpath = Path(args.OUTFILE)
+    """
+    outpath = Path(args.gnuplot)
     basename = outpath.stem
     outfile_rack = f'{outpath.stem}-background.png'
     progBuilder.outputFile(outfile_rack)
 
     terminal = outpath.suffix[1:] 
+    """
+    terminal = args.gnuplot.split('.').pop()
     if terminal not in ['png', 'svg', 'tif']:
         logger.warning(f"Unsupported gnuplot terminal format: {terminal}, defaulting to png")
         terminal = 'png'
 
 
-    gnuplot_conf = rack.gnuplot.ConfSequence()
+    gpl_conf = rack.gnuplot.ConfSequence()
+    gpl_plot = rack.gnuplot.PlotSequence()
+ 
+    confCmdReg = rack.gnuplot.Registry(gpl_conf)
+    plotCmdReg = rack.gnuplot.Registry(gpl_plot)
+    
 
-    conf = rack.gnuplot.Registry(gnuplot_conf)
-    conf.terminal(rack.gnuplot.Terminal(terminal), size=args.size) # Hard-coded. See also handle_prhi for size handling.
-    conf.output(args.OUTFILE)
-    #reg.set("terminal", GnuPlot.Terminal.PNG, size=(800, 600))
+    # conf.comment("Generated by rack with --gnuplot option")
+    #conf.comment("General settings")
+    confCmdReg.terminal(rack.gnuplot.Terminal(terminal), size=args.size) # Hard-coded. See also handle_prhi for size handling.
+    confCmdReg.output(args.gnuplot)
 
-    # conf.datafile(rack.gnuplot.Datafile.SEPARATOR, rack.gnuplot.Datafile.WHITESPACE)
-    #reg.datafile(Datafile.SEPARATOR, char=Datafile.WHITESPACE)
-    conf.xdata(rack.gnuplot.Data.TIME)
-    conf.timefmt("%s")
-    # reg.format_x(Format.X, "%H:%M")
-    conf.format_x("%H:%M")
-    conf.grid()
-    conf.title("statistics 00min 20140525-1200")
-    conf.xlabel("TIME START REL")
-    conf.ylabel("ELANGLE")
+    confCmdReg.multiplot()    # (rows=1, cols=1)
+    confCmdReg.title(f"Pseudo-RHI [{args.select}] fikor {args.az_angle} deg  2017/08/12 16:00")
 
-    prog_plot = rack.gnuplot.PlotSequence()
-    plot = rack.gnuplot.Registry(prog_plot)
-    plot.plot("sin(x)")
-    plot.plot("sin(x) with lines")
 
-    print("# Generated GnuPlot script:\n")
-    print(gnuplot_conf.to_string())  # ";\n"
-    #fmt.PARAM_SEPARATOR = ",\\\n\t"
-    print(prog_plot.to_string())  # ";\n
-    pass
+    confCmdReg.unset("tics")
+    confCmdReg.grid(rack.gnuplot.Tics.XTICS, rack.gnuplot.Tics.YTICS)
+    confCmdReg.unset("border")
+
+    # consider single command with multiple parameters for margins, e.g. margin left 10, right 20, top 30, bottom 40
+    confCmdReg.comment("lmargin at screen 0.22")
+    confCmdReg.comment("rmargin at screen 0.9")
+    confCmdReg.comment("bmargin at screen 0.18")
+    confCmdReg.comment("tmargin at screen 0.9")
+
+    # left, right, bottom, top in character units. See also margin command for more flexible margins in screen units.
+    confCmdReg.set("margins 12, 4, 4, 3"  ) 
+
+    #print("# GnuPlot script\n")
+    print(gpl_conf.to_string())  # ";\n"
+    gpl_conf.clear() # Clear conf sequence to separate it from plot commands in the output
+
+    #confCmdReg.comment("General settings")
+    
+    plotCmdReg.comment("Plotting the background image (radar beams)")
+    plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
+    print(gpl_plot.to_string())  # ";\n
+    gpl_plot.clear() # Clear plot sequence to separate it from background image plot in the output
+
+    xrange = (-220000, +240000)
+    yrange = (100, 8000)
+
+    confCmdReg.xrange(*xrange)
+    confCmdReg.yrange(yrange)
+    confCmdReg.set("border") # see above unset border, to remove default border and tics, and then add custom border back with margins
+
+    confCmdReg.set("tics out nomirror scale 2")
+    confCmdReg.set("mxtics 5")
+    confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
+    confCmdReg.xlabel(f'Range {xrange}')
+    confCmdReg.ylabel(f'Altitude {yrange}')
+
+
+    plotCmdReg.comment("Plotting a dummy line (to ensure gnuplot output is not empty)")
+    plotCmdReg.plot('x*0', style=rack.gnuplot.Style.LINES) # linecolor='rgb "gray"', linewidth=1)
+    print(gpl_plot.to_string())  # ";\n
+    gpl_plot.clear()
+
 
 def compose_command(args):
     """Main library entry point.
@@ -488,11 +463,15 @@ def compose_command(args):
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
 
+    #logger.info(f"Parsed args: {args}")
+
     # Rack command sequence, the "program" to be executed
-    prog = rack.prog.CommandSequence(programName='rack', quote="'")
+    rackProg = rack.prog.CommandSequence(programName='rack', quote="'")
+
+    # consider also PythonCommandSequence 
 
     # Command registry, "factory" for adding command to the program sequence.
-    progBuilder = rack.core.Rack(prog)
+    rackCmdReg = rack.core.Rack(rackProg)
 
     """
     script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
@@ -503,32 +482,30 @@ def compose_command(args):
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     # Handle --log_level <level>, --debug, --verbose
     verbosityKey = rack.log.handle_parameters(args)
-    progBuilder.verbose(level=verbosityKey)
+    rackCmdReg.verbose(level=verbosityKey)
 
-    handle_infile(args, progBuilder)
+    # RHI specific
+    handle_infile(args, rackCmdReg)
 
-    rack.select.handle_select(args, progBuilder)
+    # RHI specific here
+    # handle_outfile(args, rackCmdReg)
 
-    handle_prhi(args, progBuilder)
+
+    # removed for debugging
+    rackCmdReg.handle_exploded_command(args, rack.core.Rack.select)
+
+    rackCmdReg.handle_exploded_command(args, rack.core.Rack.pPseudoRhi)
+
+    #handle_prhi(args, progBuilder)
 
     # Note: progBuilder is passed to handle_gnuplot, but it doesn't actually modify the progBuilder, just generates a separate GnuPlot script.
     # This is a bit hacky, but allows us to keep all command handling in one place for now.
-    handle_gnuplot(args, progBuilder)
+    handle_gnuplot(args, rackCmdReg)
 
     # Rack outfiles (only)
-    handle_outfiles(args, progBuilder)
-
-    # logger.debug(dirpath)
-    # if dirpath:
-    #    progBuilder.outputPrefix(dirpath)
-        #logger.debug(filepath)
+    handle_outfiles(args, rackCmdReg)
         
-    #handle_outfiles(args, scriptBuilder)
-    #    progBuilder.script(script.to_string(scriptFmt))
-        # prog   <- (inputPrefix) input(s)
-    
-        
-    return prog
+    return rackProg
 
 
 
@@ -548,7 +525,7 @@ def main():
     parser = build_parser()
 
     rack.log.add_parameters(parser)
-    rack.select.build_parser(parser)
+    # rack.select.build_parser(parser)
 
     read_default_args(parser)
 

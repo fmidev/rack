@@ -2,119 +2,21 @@ import argparse
 import inspect
 import pathlib
 from typing import Any, List, Dict, Union
-from enum import Enum # For keywords, e.g. Literal
 import numbers
 
 #from collections import OrderedDict
 import rack.base
+from rack.formatter import Formatter, ParamFormatter
 
 
 logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
-
-class ParamFormatter:
-
-    """Formatting key=value pairs"""
-    KEY_FORMAT ='{key}'
-    VALUE_FORMAT='{value}'
-    VALUE_SEPARATOR=':'
-    VALUE_ASSIGN='='
-    PARAM_SEPARATOR=','
-    PARAMS_FORMAT='{params}'
-    
-    def __init__(self, key_format ='{key}', value_format='{value}', value_separator=':', 
-                 value_assign='=', param_separator=',', params_format='{params}'):
-        self.KEY_FORMAT   = key_format
-        self.VALUE_FORMAT = value_format
-        self.VALUE_SEPARATOR = value_separator
-        self.VALUE_ASSIGN = value_assign
-        self.PARAM_SEPARATOR = param_separator
-        self.PARAMS_FORMAT = params_format
-
-    def fmt_value(self, value:str)->str :
-        if isinstance(value, (tuple,list)):
-            # if type(value) in (tuple,list):
-            value = [str(v) for v in value]
-            value = self.VALUE_SEPARATOR.join(value)
-
-        if isinstance(value, Enum):
-            value=value.value
-
-        return self.VALUE_FORMAT.format(value=value)
-
-    def fmt_param(self, value, key:str=None)->str :
-        """
-        Notice the order of parameters.
-        """
-        value = self.fmt_value(value)
-        if (key is None) or (isinstance(key, (int, float))):
-            return value
-        else:
-            key = self.KEY_FORMAT.format(key=key)
-            return f"{key}{self.VALUE_ASSIGN}{value}"
-    
-    def get_param_lst(self, arg_dict={}, key_list=None)->list:
-        """ Return a list of strings of key-value entries. By default, 
-            in this base class implementation, such entry 
-            is "key=value", or only the value if the key is numeric. 
-        """
-        if key_list == None:
-            # Return all
-            return [self.fmt_param(v,k) for k,v in arg_dict.items()]
-        else: # key_list can be empty.
-            result = []
-            key_map = dict(enumerate(arg_dict.keys())) # list(arg_dict.keys())))
-            for k in key_list:
-                if isinstance(k, (int, float)):
-                    result.append(self.fmt_param(arg_dict[key_map[k]], None))
-                else:
-                    result.append(self.fmt_param(arg_dict[k],k))                        
-            return result
-
-    # fmt strings also for this?
-    def fmt_params(self, arg_dict={}, key_list=None)->str :
-        param_list = self.get_param_lst(arg_dict, key_list)
-        params = self.PARAM_SEPARATOR.join(param_list)
-        return self.PARAMS_FORMAT.format(params=params)
-
-class Formatter(ParamFormatter):
-
-    NAME_FORMAT='{name}'
-    # KEY_FORMAT ='{key}'
-    # VALUE_FORMAT='{value}'
-    # VALUE_SEPARATOR=':'
-    # VALUE_ASSIGN='='
-    # PARAM_SEPARATOR=','
-    # PARAMS_FORMAT='{params}'
-    CMD_ASSIGN=' ' 
-    CMD_SEPARATOR=' '
-
-    def __init__(self, name_format='{name}', key_format ='{key}', value_format='{value}', value_separator=':', 
-                 value_assign='=', param_separator=',', params_format='{params}', cmd_assign=' ', cmd_separator=' '):
-        
-        super().__init__(key_format=key_format, value_format=value_format, value_separator=value_separator,
-                         value_assign=value_assign, param_separator=param_separator, params_format=params_format)
-        
-        self.NAME_FORMAT  = name_format
-        # self.KEY_FORMAT   = key_format
-        # self.VALUE_FORMAT = value_format
-        # self.VALUE_SEPARATOR = value_separator
-        # self.VALUE_ASSIGN = value_assign
-        # self.PARAM_SEPARATOR = param_separator
-        # self.PARAMS_FORMAT   = params_format
-        self.CMD_ASSIGN      = cmd_assign
-        self.CMD_SEPARATOR   = cmd_separator
-
-    def fmt_name(self, name:str)->str :
-        return self.NAME_FORMAT.format(name=name)
-
-
-
 
 import inspect
 from functools import wraps
 
 def copy_signature_from(source):
-    """Copy signature from another callable (except 'self' in methods)."""
+    """ UNUSED?
+    Copy signature from another callable (except 'self' in methods)."""
 
     def decorator(target):
         sig = inspect.signature(source)
@@ -146,8 +48,6 @@ class Command:
     PRIMARY_SEP   = ","
     SECONDARY_SEP = ":"
     
-    #
-
     # def __init__(self, name, args=None, specific_args={}):
     def __init__(self, name, args=None, specific_args=None): #None
         """This defines the command parameter list, including default values.
@@ -165,7 +65,8 @@ class Command:
 
         name - command name
         args - either a dict or a list
-
+        specific_args - either a dict or a list. If dict, it contains the explicitly given arguments. If list, it contains the keys of the explicitly given arguments.
+        
         """
         
         self.name = name.strip(" -\t\n")
@@ -192,12 +93,6 @@ class Command:
         # At this point, args is a dict
         self.args = {}
         self.args.update(args)
-        """
-        if args:
-            self.args = args.copy()
-        else:
-            self.args = {}
-        """
 
         if specific_args:
             if isinstance(specific_args, dict):
@@ -207,12 +102,14 @@ class Command:
             elif isinstance(specific_args, (set, tuple, list)):
                 self.expl_keys = list(specific_args)
         else:
-
             self.expl_keys = []
+        
         # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
         self.implicit = False
+        
         # ParamFormatter (if command specific)
         self.fmt = None
+
 
     def set_args(self, *args, **kwargs):
         """ Set ordered arguments and keyword arguments.
@@ -242,18 +139,20 @@ class Command:
         for (k,v) in kwargs.items():
             if k in keys: 
                 if k in assigned_keys:
-                    logger.warning(f"overriding ordered arg ({self.args[k]}) with keyword arg ({k}={v})")
+                    logger.warning(f"Overriding ordered arg ({self.args[k]}) with keyword arg ({k}={v})")
+                else:
+                    self.expl_keys.append(k)
                 self.args[k] = v
-                self.expl_keys.append(k)
+                 # This is not needed, because we already have specific_args in __init__ and it is used to determine expl_keys. So, we can just use specific_args to determine expl_keys, and not update expl_keys here.
                 
             else:
                 keys = list(keys)
                 raise ValueError(f"Unknown argument keyword {k}, use: {keys})")
-        
 
-        
+
  
-    def set_separators(self, primary:str=",", secondary:str=":"):
+    # def set_separators(self, primary:str=",", secondary:str=":"):
+    def set_separators(self, primary:str=",", secondary:str=None):
         """Separators: primary for parameters and secondary for parameters of the parameters"""
         self.PRIMARY_SEP   = primary
         if secondary is None:
@@ -265,7 +164,7 @@ class Command:
         if (primary == secondary):
             logger.error(f"setSeparators illegal equality primary:{primary} == secondary:{secondary}")
         self.fmt = ParamFormatter(value_separator=secondary, param_separator=primary)
-        logger.warning(f"assigning separators in a formatter for {self.name}")
+        #logger.warning(f"assigning separators in a formatter for {self.name}")
 
     def set_implicit(self, value:bool = True):
         """If a command is implict, its name (keyword) will not be displayed on command line. 
@@ -285,12 +184,18 @@ class Command:
             return None
 
 
-    def get_args(self, fmt:Formatter=Formatter()) -> str:
+    def get_args(self, fmt:Formatter=None) -> str:
         
         if self.fmt:
-            logger.warning(f"{self.name}: own format: {self.fmt}")
+            if fmt:
+                logger.debug(f"{self.name}: overriding with own format: {self.fmt}")
             fmt = self.fmt
+        else:
+            if not fmt:
+                # logger.debug(f"{self.name}: using default format: {fmt}")
+                fmt = Formatter()
 
+ 
         if self.args:
             key_list = list(range(0,self.ordered_args_count))
             key_list.extend(self.expl_keys)
@@ -363,7 +268,7 @@ class Register:
         return ( param.default is not inspect._empty and value == param.default )
 
 
-    def make_cmd(self, local_vars:dict, separator:str=""):
+    def make_cmd(self, local_vars:dict, separator:str="") -> Command:
         """ Creates a command. The name will be the caller function
         
         Each explicitly given argument will be stored if its value differs from the default one.
@@ -432,6 +337,7 @@ class Register:
 
         return cmd
     
+
     def import_commands(self, commands:Dict[str,Any], separator:str=""):
         """ Creates multiple commands from a dictionary of command names and arguments.
         """
@@ -477,14 +383,46 @@ class Register:
             #    self.cmdSequence.add(cmd)
     
     @classmethod
-    def explode_args(self, func, parser: argparse.ArgumentParser = None, name_mapper = None):
-        logger.warning(f"Exploding args for {func.__doc__}")
-        # caller_name = inspect.stack()[1].function
+    def export_func(self, func: callable, parser: argparse.ArgumentParser = None, key: str = None, name_mapper = None):
+        """ Export function arguments to an argparse parser. The function name will be the command name,
+            and the arguments will be the command arguments.
+        
+        :param self: Description
+        :param func: Description
+        :param key: Description
+        :param parser: Description
+        :type parser: argparse.ArgumentParser
+        :param name_mapper: Description
+        """
+        
+        logger.info(f"Exporting args for {func.__name__}")
+        
         if isinstance(func, str):
             caller_name = func
-            func = getattr(self, caller_name)   
+            func = getattr(self, caller_name)
+
         if not inspect.isfunction(func):
             raise TypeError(f"Expected a function, got {type(func)}")
+
+        # Function signature
+        sig = inspect.signature(func)
+        params = list(sig.parameters.values())
+        # Remove 'self' if it exists in the source signature
+        if params and params[0].name == "self":
+            params = params[1:]
+
+        # Function name 
+        if parser:
+            if key:
+                caller_name = key
+            else:
+                caller_name = func.__name__
+                # This is not done:
+                # if name_mapper:
+                #    caller_name = name_mapper(caller_name)
+            keys = ",".join((p.name for p in sig.parameters.values()))
+            parser.add_argument(f"--{caller_name}", metavar=f"<{keys}>", help=f"execute {func.__name__} with given arguments" )
+
 
         def camel_to_upper_underscore(name: str) -> str:
             # Insert underscore between lowercase-to-uppercase transitions
@@ -493,38 +431,102 @@ class Register:
             s2 = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', s1)
             return s2.upper()
         
-        if name_mapper == None:
-            logger.warning(f"No name mapper given for {func.__name__}, using default (camel to upper underscore)")
+        if name_mapper == True:
+            logger.warning(f"No name mapper given for {func.__name__}, using default (camel to upper-underscore)")
             name_mapper = camel_to_upper_underscore
 
-        # Function signature
-        sig = inspect.signature(func)
-        params = list(sig.parameters.values())
-        # Remove 'self' if it exists in the source signature
-        if params and params[0].name == "self":
-            params = params[1:]
-        
+        if not name_mapper:
+            return
+
         for v in params:
             name = v.name
-            logger.warning(f"{func.__name__}: arg {v.name} default: {v.default}")
-            if name_mapper: # not False
-                logger.warning(f"mapping {v.name} to {name_mapper(v.name)}")
+            logger.debug(f"{func.__name__}: arg {v.name} default: {v.default}")
+            if name_mapper:
+                logger.debug(f"mapping {v.name} to {name_mapper(v.name)}")
                 name = name_mapper(v.name)
-            else:
-                logger.warning(f"{v.name} not mapped")
                 #v.name = name_mapper(v.name)
+            
             if parser:
+                args = {"dest": v.name, "help": f"equals --{caller_name} {v.name}=..."}
+
                 if v.default is not inspect._empty:
-                    parser.add_argument(f"--{name}", default=v.default, 
-                                        metavar=f"<{v.name}>",
-                                        dest=v.name,
-                                        help=f"default: {v.default}")
-                                        #help=f"{v.name}(default: {v.default})")
+                    args["default"] = v.default
+                    default_str = ""
+                    if isinstance(v.default, str) and v.default.strip() != "":
+                        default_str = f" default: '{v.default}'"
+                    elif v.default is not None:
+                        default_str = f" default: {v.default}"
+
+                    if default_str:
+                        args["help"] += default_str
+                        args["metavar"] = f"<{type(v.default).__name__}>"
+                        #args["default"] = v.default
+
+                    #f" default: {v.default}" if v.default is not None else ""
+                    parser.add_argument(f"--{name}", **args)
                 else:
-                    parser.add_argument(f"--{name}", required=True)
+                    parser.add_argument(f"--{name}", required=True, **args)
             #else:
             #   logger.warning(f"No parser given for {func.__name__}, skipping argument registration for {name}")
+        
+    
 
+    # @classmethod
+    def handle_exploded_command(self, args: argparse.Namespace, cmd_func: callable):
+        """
+        Docstring for handle_exploded_command
+        
+        :param args: Namespace of arguments, typically from argparse. The keys should match the parameter names of cmd_func.
+        :param cmd_func: The function to call with the arguments. Typically, this is a method of the Rack class, e.g., Rack.select or Rack.pPseudoRhi.
+        :param exec: If True, the command will be executed (i.e., cmd_func will be called with the arguments).
+        :type exec: bool
+        :return: If exec is True, returns the result of cmd_func. Otherwise, returns a dict of arguments that would be passed to cmd_func.
+        """
+    
+        sig = inspect.signature(cmd_func)
+        params = list(sig.parameters.values())
+
+        var_args = vars(args)
+        # logger.warning(f"Handling exploded command {cmd_func.__name__}")
+        # logger.warning(f"Handling exploded command {cmd_func.__name__} with args: {var_args}") # too verbose...
+
+        # First, create the command with default args, then override with explicit args, and finally parse free args if any.
+        cmd = cmd_func(self)
+        # logger.warning(f"Building command {cmd_func.__name__}: {cmd.to_string()}")
+
+        pos_args = []
+        kw_args = {}
+        if not cmd.fmt:
+            cmd.set_separators()        
+        cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
+        #cmd.set_args(*pos_args, **kw_args)
+        #
+        logger.debug(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
+
+        # explicit args. Notice that they are given as --cmd_func arg=value, so they are in var_args with key cmd_func and value "arg=value,..."
+        for v in params:
+            #name = v.name
+            if v.name == "self":
+                continue
+
+            if v.name in var_args and var_args[v.name] is not None:
+                value = var_args[v.name]
+                # default is studied "locally"
+                if value != v.default:
+                    logger.debug(f"Argument {v.name} has value {value} different from default {v.default}, including in command")
+                    kw_args[v.name] = value
+                    #logger.info(f"{cmd_func.__name__}: adding argument {v.name}={value}")
+            else:
+                logger.warning(f"Argument {v.name} not found in args or is None, skipping for {cmd_func.__name__}")
+        
+        cmd.set_args(*pos_args, **kw_args)
+        logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
+
+        # if exec:
+        # logger.warning(f"Executing '{cmd_func.__name__}' with explicit args: {kw_args}")
+        # cmd = cmd_func(self, free_args, **dict_args)
+
+        return cmd
 
 
 class CommandSequence:
@@ -572,7 +574,9 @@ class CommandSequence:
             raise TypeError(f"Unsupported arg type for cmd='{cmd}':" + str(type(cmd)))
             #raise TypeError(f"Unsupported arg type for cmd='{cmd}'..")
 
-    
+    def clear(self):
+        self.commands = []
+        
     def to_list(self, fmt:Formatter=Formatter()) -> list:
         """Produces a list suited to be joined with newline char, for example. """
         

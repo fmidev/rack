@@ -98,6 +98,12 @@ class Format(Enum):
 class Data(Enum):
     TIME = "time"
 
+class Tics(Literal):
+    OUT = "out"
+    NOMIRROR = "nomirror"
+    XTICS = "xtics"
+    YTICS = "ytics"
+
 class Key(Enum):
     """Gnuplot legend positioning keywords
     """
@@ -123,20 +129,38 @@ class KeywordExpr:
     def from_values(cls, enum_cls, values):
         return cls(*(enum_cls(v) for v in values))
     
+class Range:
+    def __init__(self, *args):
+        self.args = args
+
+    def __str__(self):
+        if isinstance(self.args[0], (tuple, list)):
+            args = list(self.args[0])
+        else:
+            args = self.args
+        return f"[{':'.join(map(str, args))}]"
+        #return f"[{':'.join(map(str, args))} {type(self.args[0])}]"
+
 class Registry(rack.prog.Register):
     """ Collection of GnuPlot 'set' and 'plot' commands.
     """
 
     # Helper to create 'set' commands
 
+    def comment(self, *args):
+        #cmd = rack.prog.Command("# ", [Literal(text)])
+        cmd = rack.prog.Command("# ", [Literal(' '.join([str(a) for a in args]))])
+        if self.cmdSequence:
+            self.cmdSequence.add(cmd)
+        return cmd
+    
+
     def make_set_cmd(self, locs: dict):
 
         # Detect caller function automatically
         caller_name = inspect.stack()[1].function
-        # func = getattr(self, caller_name)
 
         # Initialize with caller name
-        #args = [KeyWord(caller_name.replace('_',' '))]
         args = [Literal(caller_name.replace('_',' '))]
 
         for k, v in locs.items():
@@ -152,12 +176,22 @@ class Registry(rack.prog.Register):
         else:
             cmd = rack.prog.Command("set", args)
 
-
+        # see be below .. 
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
         
         #logger.warning(cmd.to_tuple())
         return cmd
+    
+    def set(self, *args): #, **opts):
+        # General 'set' command support
+        # args = [Literal(' '.join([str(a) for a in args]))]
+        # cmd = rack.prog.Command("set", Literal(' '.join([str(a) for a in args])))
+        cmd = rack.prog.Command("set", [Literal(' '.join([str(a) for a in args]))])
+        if self.cmdSequence:
+            self.cmdSequence.add(cmd)
+        return cmd
+        #return self.make_set_cmd(locals()) 
     
     
     def terminal(self, terminal_type: Terminal | str = Terminal.PNG, **opts):
@@ -165,9 +199,10 @@ class Registry(rack.prog.Register):
         if "size" in opts:
             size = opts.pop("size")
             if isinstance(size, tuple):
-                size = Literal(f"size {size[0]},{size[1]}")
-            else: # if size is not None:
-                size = Literal(f"size {size}")
+                size = ",".join(str(s) for s in size)   
+            # size = Literal(f"size {size[0]},{size[1]}")
+            #else: # if size is not None:
+            size = Literal(f"size {size}")
         
         #opts["size"] = size
 
@@ -185,8 +220,10 @@ class Registry(rack.prog.Register):
         value = Datafile(value)
         return self.make_set_cmd(locals()) 
     
-    def grid(self, **opts) : 
-        return self.make_set_cmd(locals()) 
+    def grid(self, *args): #, **opts):
+        return self.set("grid", *args)
+        #args = Literal(' '.join([str(a) for a in args]))
+        #return self.make_set_cmd(locals()) 
     
     def xdata(self, mode: Data|str, **opts) : 
         mode = Data(mode)
@@ -198,7 +235,15 @@ class Registry(rack.prog.Register):
     def ylabel(self, label: str, **opts) : 
         return self.make_set_cmd(locals()) 
 
+
+    def xrange(self, *args) :
+        args = Range(*args)
+        return self.make_set_cmd(locals())
     
+    def yrange(self, *args) :
+        args = Range(*args)
+        return self.make_set_cmd(locals())
+
     def timefmt(self, fmt: str) : 
         return self.make_set_cmd(locals()) 
 
@@ -226,15 +271,34 @@ class Registry(rack.prog.Register):
         return self.make_set_cmd(locals()) 
 
 
-    def multiplot(self, rows: int, cols: int, title: str = None) : 
+    def multiplot(self, rows: int = 1, cols: int = 1, title: str = "") : 
         # cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
         # if title:
         #    cmds.append(GnuPlotCommand("set", "title", title))
         return self.make_set_cmd(locals()) #  cmds
     
-    def unset_multiplot(self) : 
-        return self.make_set_cmd(locals()) 
+    #def unset_multiplot(self) : 
+    #    return self.make_set_cmd(locals()) 
 
+    """
+    def tics(self, *args: Tics|str, **opts) :
+        tics = []
+        for arg in args:
+            if isinstance(arg, str):
+                arg = arg.strip().split(' ')
+            if isinstance(arg, Enum):
+                arg = [arg.value]
+
+            tics.extend(Tics(a).value for a in arg)
+        
+        tics_expr = Literal(' '.join(tics))
+        return self.make_set_cmd({"arg": tics_expr})  
+    """
+
+    def unset(self, what: str) :
+        what = Literal(what)
+        return self.make_set_cmd(locals()) 
+        
 
     # Plot command support
 
@@ -349,6 +413,9 @@ class Style(Enum):
     LINES = "lines"
     DOTS  = "dots"
     LINES_DOTS = "linesdots"
+    RGBIMAGE = "rgbimage"
+    LINESPOINTS = "linespoints"
+    POINTS = "points"
 
 
 class ConfSequence(rack.prog.CommandSequence):

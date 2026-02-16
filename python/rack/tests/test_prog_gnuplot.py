@@ -67,6 +67,7 @@ class TestGnuPlot(unittest.TestCase):
         self.check_set_command("set terminal png", self.reg.terminal, gp.Terminal.PNG)
         self.check_set_command("set terminal png size 640,400", "terminal", gp.Terminal.PNG, size="640,400")
         self.check_set_command("set terminal png size 800,600", "terminal", gp.Terminal.PNG, size=(800, 600))
+        #self.check_set_command("set terminal png size 800,600", "terminal", gp.Terminal.PNG, size=[800, 600])
         # OLD STYLE:
         # cmd = self.conf.terminal(gp.Terminal.PNG, size=(800, 600))
         # expected_str = "set terminal png size 800,600"
