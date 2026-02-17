@@ -193,16 +193,28 @@ class Registry(rack.prog.Register):
         return cmd
         #return self.make_set_cmd(locals()) 
     
-    
+    def range_str(self, arg):
+        if isinstance(arg, str):
+            arg = arg.strip("[({ })]").split(':')  # Remove brackets if present
+        if isinstance(arg, (tuple, list)):
+            return f"[{':'.join(map(str, arg))}]"
+        else:
+            return str(arg)
+
+    def size_str(self, arg):
+        if isinstance(arg, str):
+            arg = arg.strip("[({ })]").split(':')  # Remove brackets if present
+        if isinstance(arg, (tuple, list)):
+            return f"{','.join(map(str, arg))}"
+        else:
+            return str(arg)
+
+
     def terminal(self, terminal_type: Terminal | str = Terminal.PNG, **opts):
         terminal_type = Terminal(terminal_type) 
         if "size" in opts:
             size = opts.pop("size")
-            if isinstance(size, tuple):
-                size = ",".join(str(s) for s in size)   
-            # size = Literal(f"size {size[0]},{size[1]}")
-            #else: # if size is not None:
-            size = Literal(f"size {size}")
+            size = Literal(f"size {self.size_str(size)}")
         
         #opts["size"] = size
 
@@ -422,7 +434,7 @@ class ConfSequence(rack.prog.CommandSequence):
     
     fmt = GnuPlotFormatter(param_separator=' ', value_separator=',')
 
-    def to_string(self, fmt = None):
+    def to_stringFOO(self, fmt = None):
         if not fmt:
             fmt = self.fmt
         return super().to_string(fmt)
@@ -431,7 +443,7 @@ class PlotSequence(rack.prog.CommandSequence):
     
     fmt = GnuPlotFormatter(param_separator=',\n  ')
 
-    def to_string(self, fmt = None):
+    def to_stringFOO(self, fmt = None):
         if not fmt:
             fmt = self.fmt
         return super().to_string(fmt)

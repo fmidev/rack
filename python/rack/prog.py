@@ -537,6 +537,8 @@ class CommandSequence:
 
     CmdClass = Command
 
+    fmt = Formatter()
+
     # For arguments. Helps in toggling within-argument quotes
     QUOTE = "'"
 
@@ -580,9 +582,13 @@ class CommandSequence:
     def clear(self):
         self.commands = []
 
-    def to_list(self, fmt:Formatter=Formatter()) -> list:
+    #def to_list(self, fmt:Formatter=Formatter()) -> list:
+    def to_list(self, fmt:Formatter=None) -> list:
         """Produces a list suited to be joined with newline char, for example. """
         
+        if not fmt:
+            fmt = self.fmt
+
         if self.programName:
             result = [self.programName]
         else:
@@ -594,8 +600,11 @@ class CommandSequence:
         return result
 
 
-    def to_token_list(self, fmt:Formatter=Formatter()) -> list:
-        
+    def to_token_list(self, fmt:Formatter=None) -> list:
+
+        if not fmt:
+            fmt = self.fmt
+
         if self.programName:
             result = [self.programName]
         else:
@@ -608,7 +617,7 @@ class CommandSequence:
         #return [cmd.to_string() for cmd in self.commands]
 
 
-    def to_string(self, fmt:Formatter=Formatter()) -> str:
+    def to_string(self, fmt:Formatter=None) -> str:
         """ Compose a single string of commands.
 
         Typically, this format is suited to command line use.
@@ -631,8 +640,8 @@ class CommandSequence:
             # TODO Formatter
             f.write(self.to_string() + "\n")
     
-    def to_debug(self, fmt:Formatter=Formatter()) -> list:
-        
+    #def to_debug(self, fmt:Formatter=Formatter()) -> list:
+    def to_debug(self) -> list:        
         if self.programName:
             result = [self.programName]
         else:
