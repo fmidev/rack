@@ -52,8 +52,8 @@ class PseudoRhiOp : public VolumeOp<RhiODIM> {  // Consider class lift
 public:
 
 	//PseudoRhiOp(const std::string & name = "PolarProductOp", const std::string & description = "");
-	PseudoRhiOp(double az_angle=0.0, long int xsize=500, long int ysize=250, double minRange=0.0, double range=0.0,
-			double minHeight=0, double maxHeight=10000, double beamWidth = 0.25, double beamThreshold = 0.01) : //, std::string type="C", double gain=0.5, double offset=-32.0) :
+	PseudoRhiOp(double az_angle=0.0, drain::Range<double> range={0.0, 0.0}, drain::Range<double> height={0.0, 12000.0},
+			drain::Frame2D<unsigned short> size={800,600}, double beamWidth = 0.25, double beamThreshold = 0.01) : //, std::string type="C", double gain=0.5, double offset=-32.0) :
 		VolumeOp<RhiODIM>("PseudoRhiOp","Computes vertical intersection in a volume in the beam direction.") {
 
 		odim.object = "XSEC";
@@ -63,12 +63,12 @@ public:
 
 		// Odim Version km/m?
 		// odim.range.set(minRange, range);
-		parameters.link("range",  odim.range.tuple(minRange, range),  "m");
+		parameters.link("range",  odim.range.tuple(range.min, range.max),  "m");
 
 		// odim.altitudeRange.set(minHeight, maxHeight);
-		parameters.link("height", odim.altitudeRange.tuple(minHeight, maxHeight), "m" );
+		parameters.link("height", odim.altitudeRange.tuple(height.min, height.max), "m" );
 
-		parameters.link("size", odim.area.tuple(xsize, ysize), "pix");
+		parameters.link("size", odim.area.tuple(size.width, size.height), "pix");
 
 		/*
 		parameters.link("minRange",  odim.minRange = minRange, "km");

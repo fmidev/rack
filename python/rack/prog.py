@@ -75,8 +75,22 @@ class Command:
             # logger.setLevel("DEBUG")
             # logger.warning(f"ARGS: {args}, EXPLICIT: {explicit_args}")
             # logger.warning(f"command: args={args}")
+ 
+        self.args = {} 
         
         self.ordered_args_count = 0
+
+        # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
+        self.implicit = False
+        
+        # ParamFormatter (if command specific)
+        self.fmt = None
+
+        if self.name == "":
+            # logger.warning("Empty command name, setting implicit to True")
+            self.name = "#"
+            self.implicit = True
+            return
 
         #if type(args) == str:
         if not args:
@@ -91,7 +105,6 @@ class Command:
             args = dict(enumerate(args)) #{k,v for enumerate(args)}
 
         # At this point, args is a dict
-        self.args = {}
         self.args.update(args)
 
         if specific_args:
@@ -104,11 +117,6 @@ class Command:
         else:
             self.expl_keys = []
         
-        # If a command is implict, its name (keyword) will not be displayed on command line. Typical for input file args.
-        self.implicit = False
-        
-        # ParamFormatter (if command specific)
-        self.fmt = None
 
 
     def set_args(self, *args, **kwargs):
@@ -625,6 +633,9 @@ class CommandSequence:
         fmt.CMD_SEPARATOR can also be '\\\n\t' for example.
         """
         #prog = [str(k) for k in ]
+        if not fmt:
+            fmt = self.fmt
+
         return fmt.CMD_SEPARATOR.join(self.to_list(fmt))
 
 

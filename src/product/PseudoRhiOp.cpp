@@ -228,7 +228,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 	const bool USE_TRUE_UNDETECT = !quantityInfo.hasUndetectValue();
 	const double undetectValue = quantityInfo.undetectValue;
-	mout.note(DRAIN_LOG(quantityInfo.hasUndetectValue()));
+	// mout.info(DRAIN_LOG(quantityInfo.hasUndetectValue()));
 
 	/// bin index
 	int bin;

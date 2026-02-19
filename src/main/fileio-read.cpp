@@ -371,7 +371,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 			if (sourceNew == sourceOld){
 				mout.ok<LOG_DEBUG>("Unchanged input src '", sourceNew, "' -> update (append) volume");
 				appendPolarH5(srcTmp, ctx.polarInputHi5);
-				mout.revised<LOG_WARNING>("ensuring PVOL (instead of SCAN)");
+				mout.revised<LOG_INFO>("ensuring PVOL (instead of SCAN)");
 				ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"] = "PVOL";
 			}
 			else {

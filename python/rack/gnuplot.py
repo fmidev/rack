@@ -145,12 +145,22 @@ class Registry(rack.prog.Register):
     """ Collection of GnuPlot 'set' and 'plot' commands.
     """
 
+
+    fmtConf = GnuPlotFormatter(param_separator=' ', value_separator=',')
+    
+    fmtPlot = GnuPlotFormatter(param_separator=',\n  ')
+
+
     # Helper to create 'set' commands
 
-    def comment(self, *args):
+    def comment(self, *args, skip_lines=1):
         #cmd = rack.prog.Command("# ", [Literal(text)])
+        #skip_str = "\n" * skip_lines
         cmd = rack.prog.Command("# ", [Literal(' '.join([str(a) for a in args]))])
         if self.cmdSequence:
+            if (skip_lines > 0):
+               self.cmdSequence.add(rack.prog.Command('#'))  # Blank line before comment
+            # self.cmdSequence.add(rack.prog.Command("# ", [Literal("")]))  # Blank line before comment
             self.cmdSequence.add(cmd)
         return cmd
     
@@ -176,6 +186,9 @@ class Registry(rack.prog.Register):
         else:
             cmd = rack.prog.Command("set", args)
 
+        # New
+        cmd.fmt = self.fmtConf
+
         # see be below .. 
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
@@ -192,7 +205,15 @@ class Registry(rack.prog.Register):
             self.cmdSequence.add(cmd)
         return cmd
         #return self.make_set_cmd(locals()) 
-    
+
+
+    def unset(self, *args):
+        cmd = rack.prog.Command("unset", [Literal(' '.join([str(a) for a in args]))])
+        if self.cmdSequence:
+            self.cmdSequence.add(cmd)
+        return cmd
+        
+
     def range_str(self, arg):
         if isinstance(arg, str):
             arg = arg.strip("[({ })]").split(':')  # Remove brackets if present
@@ -282,8 +303,8 @@ class Registry(rack.prog.Register):
         position = Literal(' '.join(position))
         return self.make_set_cmd(locals()) 
 
-
-    def multiplot(self, rows: int = 1, cols: int = 1, title: str = "") : 
+    #     def multiplot(self, rows: int = 1, cols: int = 1, title: str = "") : 
+    def multiplot(self, **opts) : 
         # cmds = [GnuPlotCommand("set", "multiplot", f"layout {rows},{cols}")]
         # if title:
         #    cmds.append(GnuPlotCommand("set", "title", title))
@@ -292,7 +313,7 @@ class Registry(rack.prog.Register):
     #def unset_multiplot(self) : 
     #    return self.make_set_cmd(locals()) 
 
-    """
+    
     def tics(self, *args: Tics|str, **opts) :
         tics = []
         for arg in args:
@@ -305,12 +326,7 @@ class Registry(rack.prog.Register):
         
         tics_expr = Literal(' '.join(tics))
         return self.make_set_cmd({"arg": tics_expr})  
-    """
-
-    def unset(self, what: str) :
-        what = Literal(what)
-        return self.make_set_cmd(locals()) 
-        
+    
 
     # Plot command support
 
@@ -331,6 +347,14 @@ class Registry(rack.prog.Register):
                 #raise KeyError("neither 'expr' nor 'filename' assigned")
 
             self.opts = {}
+            if "filetype" in opts:
+                filetype = opts.pop("filetype")
+                if filetype == "png":
+                    self.opts["binary"] = Literal(f"filetype={filetype}")
+                    #self.opts["format"] = "png"
+                else:
+                    logger.warning(f"Unsupported filetype '{filetype}' for plot entry with filename='{filename}'")
+
             if (style):
                 self.opts["with"] = style
             elif opts:
@@ -397,6 +421,9 @@ class Registry(rack.prog.Register):
                     raise TypeError("Each plot item must be a string or dict with 'expr'")
         
         cmd = rack.prog.Command("plot", segments) #  there are no super_global_opts 
+        # New
+        cmd.fmt = self.fmtPlot
+
         if self.cmdSequence:
             self.cmdSequence.add(cmd)
         return cmd

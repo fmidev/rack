@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(18.1)
+#define RACK_VERSION drain::Version<>(18.2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -46,6 +46,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fixed --quantityConf, now finds quantity also by variant (like "DBZ" from "DBZHC")
  *  - Modification in --pPseudoRhi: array size as single parameter, distance range as metres
  *  Version 18.1
+ *  - Revised --pPseudoRhi
+ *  Version 18.2
  *  - Revised --pPseudoRhi
  *
  *  Version 17
