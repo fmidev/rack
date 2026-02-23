@@ -1,5 +1,6 @@
 import unittest
 import rack.prog
+import rack.core
 
 
 class TestCommand(unittest.TestCase):
@@ -68,6 +69,25 @@ class TestCommand(unittest.TestCase):
         cmd = rack.prog.Command("select", {"quantity":'DBZH', "elangle":(0.5,10.0), "prf": "ANY" }, ["elangle", "prf"])
         expected_str = "--select 'elangle=0.5:10.0,prf=ANY'" # Note colon separator for range
         self.assertEqual(cmd.to_string(self.fmt), expected_str)
+
+    
+    def test_prog_pseudo_rhi(self):
+        """
+        Given a dict of arguments and a list of keys, only respective values appear, in that order.
+        """
+        fmt = rack.prog.RackFormatter(params_format="'{params}'")
+        rackProg = rack.prog.CommandSequence(programName='rack', quote="'")
+        Rack = rack.core.Rack(rackProg)
+        Rack.inputFile('volume.h5')
+        Rack.pPseudoRhi(168, range=[-50000,250000], height=[0,15000])
+        Rack.outputFile('pseudo-rhi.h5')
+        cmds = rackProg.to_list(fmt)
+        self.assertEqual(cmds, ['rack',
+                                "'volume.h5'",
+                                "--pPseudoRhi '168,-50000:250000,0:15000'",
+                                "--outputFile 'pseudo-rhi.h5'"])
+
+
 
     """
     def test_command_dict_explicit(self):

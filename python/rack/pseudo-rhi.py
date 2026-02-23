@@ -548,6 +548,8 @@ def test():
     }
     compose_command("")
 
+import rack.args    
+    
 def main():
 
     parser = build_parser()
@@ -596,8 +598,9 @@ def main():
         #logger.info("# Executing GnuPlot script...")
         #os.system(f"gnuplot {script_filename}") 
 
+    line = rack.args.args_to_cli(parser, args)
+    logger.info(f"Command line: {line}")
 
-    
 
 if __name__ == "__main__":
     main()
