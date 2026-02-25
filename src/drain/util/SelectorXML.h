@@ -42,7 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <ostream>
 #include <drain/StringBuilder.h>
-#include <drain/StringTools.h>
+#include <drain/StringWrapper.h>
 #include "ClassXML.h"
 
 namespace drain {
@@ -63,14 +63,19 @@ enum PseudoClassCSS {
 
 
 // Alternative 1: redefine the assignment method of the super class
-template <>
-void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s);
+// template <>
+//void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s);
+
+#include <drain/Converter.h>
 /*
-{
+template <>
+inline
+void Converter<PseudoClassCSS>::convert(const PseudoClassCSS & value, std::string &s){
 	s.assign(drain::EnumDict<PseudoClassCSS>::dict.getKey(value));
 }
 */
 
+DRAIN_ENUM_CONV(PseudoClassCSS);
 
 // Alternative 2: redefine the assignment method.
 /*

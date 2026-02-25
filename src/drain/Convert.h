@@ -40,13 +40,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "Log.h"
 //#include "MapTools.h"
 //#include "Sprinter.h"
-#include "StringTools.h"
+// #include "StringTools.h"
 
 namespace drain {
 
 /// Utility class with static conversions
 /**
- *
+ *  Deprecating, see Converter.
  */
 class Convert {
 
@@ -63,6 +63,7 @@ public:
 	template <class S, class D>
 	static
 	void convert(const S & src, D & dst){
+		//std::ostringstream / std::istringstream,
 		std::stringstream sstr;
 		sstr << src;
 		sstr >> dst;
@@ -71,9 +72,12 @@ public:
 	template <class D>
 	static
 	void convert(const char * src, D & dst){
-		std::stringstream sstr(src);
+		std::ostringstream sstr(src);
 		//sstr << src;
 		sstr >> dst;
+		if (sstr.failbit){
+			std::cerr << __FILE__ << " read of " << src << " failed with " << sstr.failbit << std::endl;
+		}
 	}
 
 

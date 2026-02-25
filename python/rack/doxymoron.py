@@ -114,7 +114,9 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         if m:
             kind = m.group("cmd")
             arg = m.group("arg")
-            print(f"[DEBUG] Found simple command: {kind} arg={arg} at line {i}")
+            if kind in ("example", "include") and arg:
+                yield (kind, arg.strip())
+            print(f"[DEBUG] line {i}: cmd: {kind} arg={arg}")
             i += 1
             continue
 
@@ -175,9 +177,15 @@ def main() -> int:
     cliconf = CliConf()
     pyconf = PyConf()
 
+    conf = {}
+
     total_blocks = 0
     for kind, obj in scan_dox(args.docfile):
-        if kind == "json":
+
+        if 'head' in conf:
+            print("[HEAD] " + "\n[HEAD] ".join(conf['head']))
+
+        if kind == "jsonUNUSED":
             # This is a special case for when the entire .dox file is just a JSON config blob
             # (instead of Doxygen markup). We can directly parse it into our conf objects.
             conf_dict = obj
@@ -190,6 +198,14 @@ def main() -> int:
                 if args.verbose:
                     print("[CFG] loaded pyconf from JSON")
             continue
+        elif kind in {"example", "include"}:
+            # Handle example command, e.g. by running the example script and capturing its output
+            print(f"[{kind.upper()}] {obj}")
+            conf[kind] = obj
+            # You could implement logic here to run the example and capture CLI commands it emits
+        #elif kind == "include":
+        #    print(f"[INCLUDE] {obj}")
+            # You could implement logic here to read the included file and process it as a separate .dox
         elif kind == "cliconf":
             #update_conf(cliconf, parse_kv_lines(obj))  # type: ignore[arg-type]
             if args.verbose:
@@ -203,6 +219,7 @@ def main() -> int:
                     print("\n".join(f"  {line}" for line in obj))
                 else:
                     print(json.dumps(obj, indent=2))
+                    conf.update(obj)  # merge into main conf dict
         elif kind == "block":
             block: Block = obj  # type: ignore[assignment]
             total_blocks += 1
@@ -210,7 +227,12 @@ def main() -> int:
                 print(f"[CLI] block at line {block.start_line}")
                 #run_cli_block(block, cliconf, args.verbose)
             elif block.kind == "py":
-                print(f"[PY ] block at line {block.start_line}")    
+                print(f"[PY ] block at line {block.start_line}")
+                script = []
+                if 'head' in conf:
+                    script.extend(conf['head'])
+                script.extend(block.content)
+                print(f"[PY ] Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
                 #run_py_block(block, pyconf, cliconf, args.verbose)
             else:
                 if args.verbose:

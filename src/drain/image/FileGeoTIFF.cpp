@@ -419,6 +419,11 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 	//GTIFKeySet(gtif, GTRasterTypeGeoKey, TYPE_SHORT,  1, RasterPixelIsPoint);
 }
 
+/**
+ *  \code{.sh}
+ *  gdalsrsinfo EPSG:3857
+ *  \endcode
+ */
 void FileGeoTIFF::setProjectionEPSG(short epsg){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -440,6 +445,7 @@ void FileGeoTIFF::setProjectionEPSG(short epsg){
 		setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
 		setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
 
+		// For explanations, run: gdalsrsinfo EPSG:<code>
 		switch (epsg) {
 		case 3035:
 			setGeoTiffField(GTCitationGeoKey,   "ETRS89-extended / LAEA Europe");
@@ -456,6 +462,14 @@ void FileGeoTIFF::setProjectionEPSG(short epsg){
 		case 3844:
 			setGeoTiffField(GTCitationGeoKey,   "Pulkovo 1942(58) / Stereo70");
 			setGeoTiffField(GeogCitationGeoKey, "Pulkovo 1942(58)");
+			break;
+		case 3857:
+			// TODO
+			//	3857 /home/products/maps/wms/epsg
+			//	<3857> +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs <>
+			mout.experimental("Unchecked code for proj ", epsg);
+			setGeoTiffField(GTCitationGeoKey,   "WGS 84 / Pseudo-Mercator");
+			setGeoTiffField(GeogCitationGeoKey, "WGS 84");
 			break;
 		case 3995:
 			setGeoTiffField(GTCitationGeoKey,   "WGS 84 / Arctic Polar Stereographic");

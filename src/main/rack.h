@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(18.2)
+#define RACK_VERSION drain::Version<>(18,2,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -49,6 +49,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Revised --pPseudoRhi
  *  Version 18.2
  *  - Revised --pPseudoRhi
+ *  Release 18.2.1
+ *  - Separate StringWrapper, experimental Converter
  *
  *  Version 17
  *  - Revised XML/HTML/SVG CSS classes

@@ -45,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/FlexibleVariable.h>
 #include <drain/MapTools.h> // NEW
 #include <drain/Sprinter.h>
-
+#include <drain/StringTools.h>
 
 #include "ClassXML.h"
 // #include "UtilsXML.h"
@@ -134,7 +134,7 @@ public:
 	XML(const XML &){
 	};
 
-	inline
+	virtual inline
 	~XML(){};
 
 	template <class T> // "final"

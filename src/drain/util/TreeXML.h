@@ -118,7 +118,7 @@ public:
 		// XML::xmlAssignNode(*this, node); // RISKY!? Should be called by the copy constructors of derived classes.
 	}
 
-	inline
+	virtual inline
 	~NodeXML(){};
 
 	// TODO: Shadowing. Check usage, change name no swapNode()

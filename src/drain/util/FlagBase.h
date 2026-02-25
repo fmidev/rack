@@ -209,7 +209,9 @@ typename FlagResolver::ivalue_t FlagResolver::getIntValue(const drain::Dictionar
 	}
 
 	if (separator){
-		drain::StringTools::split(args, keys, separator);
+		//drain::
+		// StringTools foo;
+		StringTools::split(args, keys, separator);
 	}
 
 

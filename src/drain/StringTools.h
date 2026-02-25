@@ -35,31 +35,38 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#ifndef DRAIN_STRING_H_
-#define DRAIN_STRING_H_
+#ifndef DRAIN_STRING_TOOLS
+#define DRAIN_STRING_TOOLS
 
 #include <limits>
-#include <iterator>
+#include <map>
 #include <string>
 #include <sstream>
+
+/*
+#include <iterator>
 #include <iostream>
 #include <list>
-#include <map>
+*/
+
+// #include "Converter.h"
 
 
 namespace drain {
 
+/*
 template <typename T>
 class StringConverter {
 public:
 
-
+	static
 	void convertToString(const T & value, std::string &s){
 		std::stringstream sstr;
 		sstr << value;
 		s.assign(sstr.str());
 	};
 
+	static
 	void convertFromString(const std::string &s, T & value){
 		std::stringstream sstr(s);
 		sstr >> value;
@@ -67,17 +74,16 @@ public:
 
 
 };
+*/
 
+/*
 template <typename T=std::string>
-class StringWrapper : public std::string, protected StringConverter<T> {
+class StringWrapper : public std::string { // , protected StringConverter<T> {
 
 public:
 
 	inline
-	//StringWrapper(const std::string & s="") : std::string(s){};
-	//StringWrapper() : std::string(){};
 	StringWrapper(){
-		//set("");
 	};
 
 	/// All the other constructors, including default constructor.
@@ -105,29 +111,26 @@ public:
 
 
 	/// Set the value from an other, user-defined dictionary.
-	/**
-	 *
-	 *   - The enum dict must be defined.
-	 *
-	 *   Loose template: assumes T2 can be converted to T
-	 */
 	template <typename T2>
 	inline
 	void set(const T2 & x){
-		// setSpecial(x);
-		StringConverter<T>::convertToString(x, *this);
+		Converter<T2>::convert(x, *this);
 		//StringConverter<T>::convertToString(x, *this);
 	};
 
-	/**
-	 *
-	 *   - This function can be specialized with template <> .
-	virtual inline
-	void setSpecial(const T & x){
-	};
-	 */
+	inline
+	bool operator==(const T & x){
+		std::string s;
+		Converter<T>::convert(x, s);
+		// StringConverter<T>::convertToString(x, s);
+		return *this == s;
+	}
+
+
+
 
 };
+*/
 
 
 class StringTools {
@@ -360,7 +363,7 @@ public:
 	 *
 	 */
 	static
-	bool trimScan(const std::string &s, size_t & pos1, size_t & pos2, const std::string &trimChars=" \t\n");
+	bool trimScan(const std::string &s, std::size_t & pos1, std::size_t & pos2, const std::string &trimChars=" \t\n");
 
 	/// Splits and trims a given std::string to a std Sequence.
 	/**

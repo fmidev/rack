@@ -78,6 +78,25 @@ public:
 	static
 	const std::string TEXT_ANCHOR;
 
+	template <class T>
+	inline
+	T get(const key_type & key, const T & defaultValue = T()) const {
+		const const_iterator it = this->find(key);
+		if (it != this->end()){
+			return it->second;
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+	inline
+	std::string get(const key_type & key, const char * defaultValue) const {
+		return get(key, std::string(defaultValue));
+	}
+
+
+
 protected:
 
 	template <class T, class ...TT>

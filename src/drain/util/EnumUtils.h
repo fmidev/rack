@@ -32,7 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_ENUM_UTILS
 #define DRAIN_ENUM_UTILS
 
+//#include <drain/util/StringTools.h>
+
 #include "Dictionary.h"
+
 #include "Flags.h"
 
 namespace drain {
@@ -396,5 +399,11 @@ public:
 
 #define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
 
+/**
+ * #include <drain/Converter.h>
+ */
+#define DRAIN_ENUM_CONV(enumtype)  \
+		template <> inline void Converter<enumtype>::convert(const enumtype & value, std::string &s){s.assign(drain::EnumDict<enumtype>::dict.getKey(value));};
+//		template <> inline void Converter<enumtype>::convert(const std::string &key, enumtype & value){value = drain::EnumDict<enumtype>::dict.getValue(key));};
 
 #endif
