@@ -43,94 +43,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <sstream>
 
-/*
-#include <iterator>
-#include <iostream>
-#include <list>
-*/
-
-// #include "Converter.h"
 
 
 namespace drain {
-
-/*
-template <typename T>
-class StringConverter {
-public:
-
-	static
-	void convertToString(const T & value, std::string &s){
-		std::stringstream sstr;
-		sstr << value;
-		s.assign(sstr.str());
-	};
-
-	static
-	void convertFromString(const std::string &s, T & value){
-		std::stringstream sstr(s);
-		sstr >> value;
-	};
-
-
-};
-*/
-
-/*
-template <typename T=std::string>
-class StringWrapper : public std::string { // , protected StringConverter<T> {
-
-public:
-
-	inline
-	StringWrapper(){
-	};
-
-	/// All the other constructors, including default constructor.
-	//template <typename T>
-	inline
-	StringWrapper(const T & x){
-		set(x);
-	};
-
-
-	inline
-	void set(const std::string & s=""){
-		std::string::assign(s);
-	};
-
-	inline
-	void set(const StringWrapper & e){
-		std::string::assign(e);
-	};
-
-	inline
-	void set(const char *s){
-		std::string::assign(s);
-	};
-
-
-	/// Set the value from an other, user-defined dictionary.
-	template <typename T2>
-	inline
-	void set(const T2 & x){
-		Converter<T2>::convert(x, *this);
-		//StringConverter<T>::convertToString(x, *this);
-	};
-
-	inline
-	bool operator==(const T & x){
-		std::string s;
-		Converter<T>::convert(x, s);
-		// StringConverter<T>::convertToString(x, s);
-		return *this == s;
-	}
-
-
-
-
-};
-*/
 
 
 class StringTools {

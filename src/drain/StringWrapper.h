@@ -32,53 +32,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_WRAPPER
 #define DRAIN_WRAPPER
 
-/*
-#include <limits>
-#include <iterator>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <list>
-#include <map>
-*/
 
 #include "Converter.h"
 
-
 namespace drain {
 
-/*
-template <typename T>
-class StringConverter {
-public:
-
-	static
-	void convertToString(const T & value, std::string &s){
-		std::stringstream sstr;
-		sstr << value;
-		s.assign(sstr.str());
-	};
-
-	static
-	void convertFromString(const std::string &s, T & value){
-		std::stringstream sstr(s);
-		sstr >> value;
-	};
-
-
-};
-*/
 
 template <typename T=std::string>
-class StringWrapper : public std::string { // , protected StringConverter<T> {
+class StringWrapper : public std::string {
 
 public:
 
 	inline
-	//StringWrapper(const std::string & s="") : std::string(s){};
-	//StringWrapper() : std::string(){};
 	StringWrapper(){
-		//set("");
 	};
 
 	/// All the other constructors, including default constructor.
@@ -116,26 +82,15 @@ public:
 	inline
 	void set(const T2 & x){
 		Converter<T2>::convert(x, *this);
-		//StringConverter<T>::convertToString(x, *this);
 	};
 
 	inline
 	bool operator==(const T & x){
 		std::string s;
 		Converter<T>::convert(x, s);
-		// StringConverter<T>::convertToString(x, s);
 		return *this == s;
 	}
 
-
-
-	/**
-	 *
-	 *   - This function can be specialized with template <> .
-	virtual inline
-	void setSpecial(const T & x){
-	};
-	 */
 
 };
 
