@@ -39,6 +39,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "XML.h"
 
+#include "SelectorXML.h" // Only for StyleUtils :-/
+
+
 namespace drain {
 
 
@@ -202,7 +205,35 @@ public:
 		}
 	}
 
+	template <typename T>
+	static
+	T & getHeaderObject(T & root, typename T::node_data_t::xml_tag_t tag, const typename T::path_elem_t & key = typename T::path_elem_t()){
 
+		const typename T::path_elem_t & finalKey = !key.empty() ? key : EnumDict<typename T::node_data_t::xml_tag_t>::getKey(tag);
+
+		if (!root.hasChild(finalKey)){
+			T & child = root.prependChild(finalKey); // consider path type! getDefaultObject
+			child->setType(tag);
+			return child;
+		}
+		else {
+			return root[finalKey];
+		}
+	};
+
+	template <typename T>
+	static
+	T & ensureStyle(T & root, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+
+		T & style = getHeaderObject(root, T::node_data_t::xml_tag_t::STYLE);
+
+		T & styleEntry = style[selector];
+		if (styleEntry.empty()){
+			styleEntry = styleDef;
+			// styleEntry->setStyle(styleDef); WRONG (did not work)
+		}
+		return styleEntry;
+	}
 
 
 };

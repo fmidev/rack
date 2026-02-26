@@ -108,7 +108,6 @@ public:
 
 	typedef std::map<typename T::node_data_t::xml_tag_t, short unsigned int> tag_selector_t;
 
-	tag_selector_t tagSelector;
 	TreePruner(){
 	}
 
@@ -119,65 +118,76 @@ public:
 
 	int visitPostfix(T & tree, const typename  T::path_t & path) override;
 
+	template <class ... TT>
+	void setEmptinessCriterion(typename T::node_data_t::xml_tag_t tag, const TT &... args){
+		drain::EnumFlagger<drain::MultiFlagger<XmlEmptiness> > flagger;
+		flagger.set(args...);
+		tagSelector[tag] = flagger.getValue(); // check int type?
+	}
+
+protected:
+
+	tag_selector_t tagSelector;
 
 };
 
 
 template <class T>
 int TreePruner<T>::visitPostfix(T & tree, const typename  T::path_t & path){
+
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-		T & current = tree(path);
+	T & current = tree(path);
 
-		std::list<typename T::path_elem_t> elemsToDelete;
+	std::list<typename T::path_elem_t> elemsToDelete;
 
-		for (const auto & entry: current.getChildren()){
+	for (const auto & entry: current.getChildren()){
 
-			const T & child = entry.second;
+		const T & child = entry.second;
 
-			// Is current tag type mentioned in selector?
-			typename tag_selector_t::const_iterator it = tagSelector.find(child->getNativeType());
-			if (it != tagSelector.end()){
+		// Is current tag type mentioned in selector?
+		typename tag_selector_t::const_iterator it = tagSelector.find(child->getNativeType());
+		if (it != tagSelector.end()){
 
-				// mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , ElemPrinter<typename T::node_data_t>(child).str());
+			// mout.pending<LOG_WARNING>("found : ", child->getType(), " -> " , ElemPrinter<typename T::node_data_t>(child).str());
 
 
-				if (it->second == 0){
-					// Unconditioned deletion of this tag type: the type is mentioned without selector value.
+			if (it->second == 0){
+				// Unconditioned deletion of this tag type: the type is mentioned without selector value.
+				elemsToDelete.push_back(entry.first);
+			}
+			else {
+
+				drain::EnumFlagger<drain::MultiFlagger<XmlEmptiness> > emptiness;
+
+				if (child.getChildren().empty())
+					emptiness.add(CHILDREN);
+
+				if (child.data.getAttributes().empty())
+					emptiness.add(ATTRIBUTES);
+
+				if (child.data.getText().empty())
+					emptiness.add(TEXT);
+
+				// Note: checks rule if-ALL-set
+				if (emptiness.isSet(it->second)){
 					elemsToDelete.push_back(entry.first);
 				}
-				else {
-
-					drain::EnumFlagger<drain::MultiFlagger<XmlEmptiness> > emptiness;
-
-					if (child.getChildren().empty())
-						emptiness.add(CHILDREN);
-
-					if (child.data.getAttributes().empty())
-						emptiness.add(ATTRIBUTES);
-
-					if (child.data.getText().empty())
-						emptiness.add(TEXT);
-
-					// Note: checks rule if-ALL-set
-					if (emptiness.isSet(it->second)){
-						elemsToDelete.push_back(entry.first);
-					}
-					else if ((it->second & XmlEmptiness::ANY) && emptiness.isAnySet(it->second)){
-						elemsToDelete.push_back(entry.first);
-					}
+				else if ((it->second & XmlEmptiness::ANY) && emptiness.isAnySet(it->second)){
+					elemsToDelete.push_back(entry.first);
 				}
-
 			}
 
 		}
 
-		for (const typename T::path_elem_t & elem: elemsToDelete){
-			// mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , ElemPrinter<typename T::node_data_t>(current[elem]).str());
-			current.erase(elem);
-		}
+	}
 
-		return 0;
+	for (const typename T::path_elem_t & elem: elemsToDelete){
+		// mout.reject<LOG_WARNING>("erasing: ", elem, " -> " , ElemPrinter<typename T::node_data_t>(current[elem]).str());
+		current.erase(elem);
+	}
+
+	return 0;
 
 }
 

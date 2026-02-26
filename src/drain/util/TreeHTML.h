@@ -74,7 +74,8 @@ struct Html {
 		SCRIPT=NodeXML<>::SCRIPT,
 		STYLE=NodeXML<>::STYLE,
 		STYLE_SELECT=NodeXML<>::STYLE_SELECT,
-		HTML,
+		JAVASCRIPT_SCOPE=XML::JAVASCRIPT_SCOPE,
+		HTML=10,
 		HEAD, BASE, LINK, META, TITLE,
 		BODY, A, BR, CAPTION, DIV, H1, H2, H3, HR, IMG, LI, OL, P, PRE, SPAN, TABLE, TR, TH, TD, UL};
 
@@ -87,6 +88,7 @@ struct Html {
 // const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict;
 
 DRAIN_ENUM_DICT(Html::tag_t);
+DRAIN_ENUM_OSTREAM(Html::tag_t);
 
 // Note: this specialization actually applies to all XML paths of default type, that is NodeXML<int> .
 template <>

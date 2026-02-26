@@ -347,7 +347,8 @@ void CmdRadarDot::exec() const {
 
 	if (dist.range.max > 0.0){ // earlier!
 
-		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, {
+		// drain::image::TreeUtilsSVG\n
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
 				{"fill", "red"},
 				{"stroke", "white"},
 				{"stroke-width", 2.0},
@@ -515,7 +516,8 @@ void CmdRadarSector::exec() const  {
 
 	drain::image::TreeSVG & curve = overlay[getName()+getLastParameters()](drain::image::svg::PATH);
 	curve -> addClass(cls); // SECTOR
-	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, { // SECTOR
+	// drain::image::TreeUtilsSVG\n
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
 			{"fill", "none"},
 			// {"stroke", "rgb(160,255,160)"},
 			{"stroke-width", 5.0},
@@ -571,7 +573,8 @@ void CmdRadarRay::exec() const {
 
 	drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
 	curve->addClass(cls); // SECTOR
-	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, { // SECTOR
+	// drain::image::TreeUtilsSVG\n
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
 			{"fill", "none"},
 			{"stroke", "rgb(160,255,160)"},
 			{"stroke-width", 5.0},
@@ -643,7 +646,8 @@ void CmdRadarLabel::exec() const  {
 		// const std::string clsNameLabel = clsNameBase+"_Label";
 		// const std::string & clsNameLabel = clsNameBase;
 
-		drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, cls, {
+		//// drain::image::TreeUtilsSVG\n drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
 				//{"font-size", "12"},
 				{"fill", "red"},
 				{"stroke", "white"},  // replace these with image-title etc soft transit
@@ -734,7 +738,8 @@ void CmdDot::exec() const  {
 	radarSVG.radarProj.setSiteLocationDeg(coordsDeg.x, coordsDeg.y);
 
 	// const std::string SPOT = "SPOT";
-	drain::image::TreeUtilsSVG::ensureStyle(ctx.svgTrack, SPOT, {
+	//drain::image::TreeUtilsSVG
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, SPOT, {
 			{"fill", "green"},
 			{"stroke", "white"},
 			{"stroke-width", 2.0},
@@ -819,7 +824,8 @@ void CmdCoords::exec() const {
 
 	const std::string onload_fnc_name = "rack_onload";
 
-	TreeSVG & onloadJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, onload_fnc_name);
+	//TreeSVG & onloadJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, onload_fnc_name);
+	TreeSVG & onloadJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, onload_fnc_name);
 	if (onloadJS->get("type").empty()){
 		onloadJS->set("type", "text/javascript");
 		onloadJS->setText("function ", onload_fnc_name, "()");
@@ -829,7 +835,8 @@ void CmdCoords::exec() const {
 	myJS.addChild() = "const x = 1;";
 	myJS.addChild() = "const y = 2;";
 
-	TreeSVG & coordTrackerJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coordTracker");
+	// TreeSVG & coordTrackerJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coordTracker");
+	TreeSVG & coordTrackerJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coordTracker");
 	coordTrackerJS->set("type", "text/javascript");
 	coordTrackerJS = "/* set_image_coord_tracker */";
 	// coordTrackerJS->setText(set_image_coord_tracker);

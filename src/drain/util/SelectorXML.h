@@ -41,8 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_SELECTOR_XML
 
 //#include <ostream>
-#include <drain/StringBuilder.h>
+// #include <drain/StringBuilder.h>
 #include <drain/StringWrapper.h>
+#include <drain/Converter.h>
 #include "ClassXML.h"
 
 namespace drain {
@@ -61,30 +62,8 @@ enum PseudoClassCSS {
 	visited,
 };
 
-
-// Alternative 1: redefine the assignment method of the super class
-// template <>
-//void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s);
-
-#include <drain/Converter.h>
-/*
-template <>
-inline
-void Converter<PseudoClassCSS>::convert(const PseudoClassCSS & value, std::string &s){
-	s.assign(drain::EnumDict<PseudoClassCSS>::dict.getKey(value));
-}
-*/
-
 DRAIN_ENUM_CONV(PseudoClassCSS);
 
-// Alternative 2: redefine the assignment method.
-/*
-template <>
-template <>
-void StringWrapper<PseudoClassCSS>::set(const PseudoClassCSS & value){
-	assign(drain::EnumDict<PseudoClassCSS>::dict.getKey(value));
-}
-*/
 
 
 /** NEW! 2026

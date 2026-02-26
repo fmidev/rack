@@ -390,6 +390,25 @@ public:
 };
 
 
+template <class EnumType>
+class EnumConverter {
+public:
+
+	static
+	void convert(const EnumType & value, std::string &s){
+		// std::cerr << "Using fwd EnumConverter" << std::endl;
+		s.assign(drain::EnumDict<EnumType>::dict.getKey(value));
+	};
+
+	static
+	void convert(const std::string &s, EnumType & value){
+		// std::cerr << "Using inv EnumConverter" << std::endl;
+		value = drain::EnumDict<EnumType>::dict.getValue(s);
+	};
+
+};
+
+
 } // drain::
 
 #define DRAIN_ENUM_DICT(enumtype)        template <> const drain::EnumDict<enumtype>::dict_t drain::EnumDict<enumtype>::dict
@@ -400,10 +419,9 @@ public:
 #define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
 
 /**
- * #include <drain/Converter.h>
+ *   To use this, you must also  #include <drain/Converter.h>
  */
-#define DRAIN_ENUM_CONV(enumtype)  \
-		template <> inline void Converter<enumtype>::convert(const enumtype & value, std::string &s){s.assign(drain::EnumDict<enumtype>::dict.getKey(value));};
-//		template <> inline void Converter<enumtype>::convert(const std::string &key, enumtype & value){value = drain::EnumDict<enumtype>::dict.getValue(key));};
+#define DRAIN_ENUM_CONV(enumtype) template <> class Converter<enumtype> : public EnumConverter<enumtype> {}
+
 
 #endif

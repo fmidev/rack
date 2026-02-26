@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
-template <typename T=std::string>
+template <typename T>
 class StringWrapper : public std::string {
 
 public:
@@ -78,10 +78,10 @@ public:
 	 *
 	 *   Loose template: assumes T2 can be converted to T
 	 */
-	template <typename T2>
+	//template <typename T2>
 	inline
-	void set(const T2 & x){
-		Converter<T2>::convert(x, *this);
+	void set(const T & x){
+		Converter<T>::convert(x, *this);
 	};
 
 	inline

@@ -439,23 +439,33 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 	}
 	else {
 
+		/*
 		if (isUndefined()){
 			drain::Logger(__FILE__, __FUNCTION__).warn("Undefined TAG type for ", getName(), "  ID=", getId(), " attr=", drain::sprinter(getAttributes()));
 		}
+		*/
 
-		if (mode==CLOSING_TAG){
-			ostr << "</";
-		}
-		else {
-			ostr << '<';
-		}
-
+		/*
 		if (getTag().empty()){
 			drain::Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("defaultTag for type=", getType(), " requested by ID=", getId(), " attr=", drain::sprinter(getAttributes()));
 
 			ostr << "defaultTag"; // << ' ';  FIX! getDefaultTag?
+		}*/
+		if (isUndefined() || getTag().empty()){
+			drain::Logger(__FILE__, __FUNCTION__).warn("Undefined TAG type for ", getName(), "  ID=", getId(), " attr=", drain::sprinter(getAttributes()));
+			//if (mode != CLOSING_TAG){
+			ostr << "<!-- " << getTag() << " tag? " << ctext << " /-->";
+			//}
 		}
 		else {
+
+			if (mode==CLOSING_TAG){
+				ostr << "</";
+			}
+			else {
+				ostr << '<';
+			}
+
 			ostr << getTag(); // << ' ';
 			// TODO check GDAL XML
 			// if (!defaultTag.empty())
@@ -520,7 +530,16 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			// it is EMPTY_TAG or CLOSING TAG
 			ostr << "/-->"; // \n
 		}
-		// warn if has children? or comment them??
+		// warn if children?
+	}
+	else if (isUndefined() || getTag().empty()){
+		/*
+		ostr << ' '; // prefix for free ctext
+		if (mode != OPENING_TAG){
+			// it is EMPTY_TAG or CLOSING TAG
+			ostr << "<!--  end /-->"; // \n
+		}
+		*/
 	}
 	else if (mode==EMPTY_TAG){ // OR no ctext!
 		// close TAG

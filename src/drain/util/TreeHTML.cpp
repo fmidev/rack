@@ -98,7 +98,7 @@ DRAIN_ENUM_DICT(Html::tag_t) = { // drain::EnumDict<Basehtml::tag_t>::getDict();
 		{"base", drain::Html::BASE},
 		{"br", drain::Html::BR},
 		{"caption", drain::Html::CAPTION},
-		{"div", drain::Html::DIV},
+		{"div", drain::Html::DIV}, // HEAD <-> DIV
 		{"h1", drain::Html::H1},
 		{"h2", drain::Html::H2},
 		{"h3", drain::Html::H3},

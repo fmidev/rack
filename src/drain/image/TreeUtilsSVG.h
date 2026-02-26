@@ -74,16 +74,18 @@ public:
 	/**
 	 *  \param root - top-level element of the SVG document (tag type "svg").
 	 */
+	/*
 	static
 	TreeSVG & getHeaderObject(TreeSVG & root, svg::tag_t, const std::string & key = "");
+	*/
 
 	/// Create a new entry, unless already defined.
 	/**
 	 *   @certified
-	 */
+
 	static
 	TreeSVG & ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef);
-
+	*/
 
 };
 

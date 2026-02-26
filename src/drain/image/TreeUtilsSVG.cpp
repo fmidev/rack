@@ -49,8 +49,10 @@ DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
 
 // TreeSVG & TreeUtilsSVG::getDefaultObject(TreeSVG & root, svg::tag_t tag){
 // 	const std::string & key = EnumDict<svg::tag_t>::getKey(tag);
-
+/*
 TreeSVG & TreeUtilsSVG::getHeaderObject(TreeSVG & root, svg::tag_t tag, const std::string & key){
+
+	return UtilsXML::getHeaderObject(root, tag, key);
 
 	const std::string & finalKey = !key.empty() ? key : EnumDict<svg::tag_t>::getKey(tag);
 
@@ -62,11 +64,16 @@ TreeSVG & TreeUtilsSVG::getHeaderObject(TreeSVG & root, svg::tag_t tag, const st
 	else {
 		return root[finalKey];
 	}
+
 };
+*/
 
 /// Create a new entry, unless already defined.
+/*
+
 TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 
+	return UtilsXML::ensureStyle(root, selector, styleDef);
 
 	TreeSVG & style = getHeaderObject(root, svg::STYLE);
 
@@ -76,8 +83,8 @@ TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> 
 		// styleEntry->setStyle(styleDef); WRONG (did not work)
 	}
 	return styleEntry;
-
 }
+	*/
 
 
 
@@ -278,7 +285,7 @@ const std::string ClipperSVG::CLIP("CLIPPED");
 
 TreeSVG & ClipperSVG::getClippingRect(TreeSVG & root, size_t width, size_t height){
 
-	TreeSVG & defs = TreeUtilsSVG::getHeaderObject(root, svg::DEFS);
+	TreeSVG & defs = UtilsXML::getHeaderObject(root, svg::DEFS);
 
 	StringBuilder<'_'> id(svg::CLIP_PATH, width, height);
 
@@ -354,11 +361,11 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	drain::image::TreeSVG & defs = drain::image::TreeUtilsSVG::getHeaderObject(root, svg::DEFS);
+	drain::image::TreeSVG & defs = drain::UtilsXML::getHeaderObject(root, svg::DEFS);
 	//drain::image::TreeSVG & mask = defs[group->get(MASK_ID, "default")](svg::MASK);
 	drain::image::TreeSVG & mask = defs[maskId]; //(svg::MASK);
 
-	drain::image::TreeUtilsSVG::ensureStyle(root, COVER, { // drain::ClassXML(svg::MASK)
+	drain::UtilsXML::ensureStyle(root, COVER, { // drain::ClassXML(svg::MASK)
 			{"fill",   "gray"},
 			{"opacity", 0.5},
 	}

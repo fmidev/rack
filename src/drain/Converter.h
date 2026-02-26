@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include <iterator>
 #include <sstream>
 
-//#include "Log.h"
+#include "Log.h"
 //#include "MapTools.h"
 //#include "Sprinter.h"
 // #include "StringTools.h"
@@ -55,15 +55,21 @@ public:
 
 	static
 	void convert(const T & value, std::string &s){
-		std::stringstream sstr;
+		std::ostringstream sstr;
 		sstr << value;
+		if (!sstr.good()){
+			Logger(__FILE__, __FUNCTION__).warn("failed in reading ", value);
+		}
 		s.assign(sstr.str());
 	};
 
 	static
 	void convert(const std::string &s, T & value){
-		std::stringstream sstr(s);
+		std::istringstream sstr(s);
 		sstr >> value;
+		if (sstr){
+			Logger(__FILE__, __FUNCTION__).warn(sstr.str(), " was unread from ", s);
+		}
 	};
 
 
