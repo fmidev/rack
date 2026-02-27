@@ -48,13 +48,13 @@ DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
 
 
 // TreeSVG & TreeUtilsSVG::getDefaultObject(TreeSVG & root, svg::tag_t tag){
-// 	const std::string & key = EnumDict<svg::tag_t>::getKey(tag);
+// 	const std::string & key = Enum<svg::tag_t>::getKey(tag);
 /*
 TreeSVG & TreeUtilsSVG::getHeaderObject(TreeSVG & root, svg::tag_t tag, const std::string & key){
 
 	return UtilsXML::getHeaderObject(root, tag, key);
 
-	const std::string & finalKey = !key.empty() ? key : EnumDict<svg::tag_t>::getKey(tag);
+	const std::string & finalKey = !key.empty() ? key : Enum<svg::tag_t>::getKey(tag);
 
 	if (!root.hasChild(finalKey)){
 		TreeSVG & child = root.prependChild(finalKey); // consider path type! getDefaultObject
@@ -452,7 +452,7 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		const drain::image::TreeSVG & mask = getMask(tree, group->get(MASK_ID));
 
 		if (group->typeIs(drain::image::svg::GROUP)){
-			drain::image::TreeSVG & rect = group.prependChild(drain::EnumDict<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
+			drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
 			linkMask(mask, rect);
 		}
 		else {

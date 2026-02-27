@@ -38,8 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_SVG
 #define DRAIN_TREE_SVG
 
+#include <drain/Enum.h>
 #include <drain/image/AlignAnchorSVG.h>
-#include <drain/util/EnumUtils.h>
 #include "drain/util/FileInfo.h"
 #include "drain/util/Frame.h"
 #include "drain/util/SelectorXML.h"
@@ -128,11 +128,11 @@ typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 } // image::
 
 
-// const drain::EnumDict<image::svg::tag_t>::dict_t & getDict();
+// const drain::Enum<image::svg::tag_t>::dict_t & getDict();
 
 
 // template <>
-// const EnumDict<image::svg::tag_t>::dict_t EnumDict<image::svg::tag_t>::dict;
+// const Enum<image::svg::tag_t>::dict_t Enum<image::svg::tag_t>::dict;
 DRAIN_ENUM_DICT(image::svg::tag_t);
 
 DRAIN_ENUM_OSTREAM(image::svg::tag_t)
@@ -645,7 +645,7 @@ void image::TreeSVG::initChild(image::TreeSVG & child) const {
 template <>
 template <class K>
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
-	return EnumDict<K>::dict.getKey(key, false);
+	return Enum<K>::dict.getKey(key, false);
 }
 */
 
@@ -653,7 +653,7 @@ const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
 template <>
 template <typename K> // for K (path elem arg)
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
-	return EnumDict<K>::dict.getKey(key, false);
+	return Enum<K>::dict.getKey(key, false);
 }
 
 template <>

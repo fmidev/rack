@@ -703,7 +703,7 @@ public:
 };
 
 
-// template <> const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict;
+// template <> const drain::Enum<XML::entity_t>::dict_t drain::Enum<XML::entity_t>::dict;
 DRAIN_ENUM_DICT(XML::entity_t);
 DRAIN_ENUM_OSTREAM(XML::entity_t);
 

@@ -166,7 +166,7 @@ protected:
 };
 
 template <>
-const drain::EnumDict<Hdf5Context::Hi5RoleFlagger>::dict_t drain::EnumDict<Hdf5Context::Hi5RoleFlagger>::dict;
+const drain::Enum<Hdf5Context::Hi5RoleFlagger>::dict_t drain::Enum<Hdf5Context::Hi5RoleFlagger>::dict;
 
 } /* namespace rack */
 

@@ -320,7 +320,7 @@ public:
  *
  */
 template <>
-const drain::EnumDict<rack::ODIM::Version,CmdOutputFile>::dict_t drain::EnumDict<rack::ODIM::Version,CmdOutputFile>::dict = {
+const drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict_t drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict = {
 		{"ODIM_H5/V2_2",  rack::ODIM::ODIM_2_2 },
 		{"ODIM_H5/V2_3",  rack::ODIM::ODIM_2_3 },
 		{"ODIM_H5/V2_4",  rack::ODIM::ODIM_2_4 },
@@ -411,7 +411,7 @@ void CmdOutputFile::exec() const {
 		// conventions = "";
 		// conventions.setSeparator(0);
 
-		for (const auto & entry: drain::EnumDict<rack::ODIM::Version,CmdOutputFile>::dict){
+		for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
 			if (ODIM::versionFlagger.isSet(entry.second)){
 				conventions = entry.first;
 				break;
@@ -427,7 +427,7 @@ void CmdOutputFile::exec() const {
 		}
 
 
-		// const std::string & v = drain::EnumDict<rack::ODIM::Version>::dict.getKey((rack::ODIM::Version)ODIM::versionFlagger.getValue());
+		// const std::string & v = drain::Enum<rack::ODIM::Version>::dict.getKey((rack::ODIM::Version)ODIM::versionFlagger.getValue());
 		// mout.revised<LOG_WARNING>("Simplifying ODIM version: ", ODIM::versionFlagger, " => ", v);
 
 		/*
@@ -443,7 +443,7 @@ void CmdOutputFile::exec() const {
 		//conventions = "ODIM_H5/";
 
 		/*
-		for (const auto & entry: drain::EnumDict<rack::ODIM::Version>::dict){
+		for (const auto & entry: drain::Enum<rack::ODIM::Version>::dict){
 			if (static_cast<ODIM::VersionFlagger::storage_t>(entry.second) == ODIM::versionFlagger.getValue()){
 				conventions << entry.second;
 				break;

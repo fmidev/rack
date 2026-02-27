@@ -97,7 +97,7 @@ public:
 		//Logger mout(__FILE__, __FUNCTION__);
 		cls.set(arg);
 		// Logger(__FILE__, __FUNCTION__).experimental<LOG_INFO>("arg '", arg, "' of type:", typeid(T).name(), ", -> CSS class: ", cls);
-		//elem = drain::EnumDict<E>::dict.getValue(arg, false);
+		//elem = drain::Enum<E>::dict.getValue(arg, false);
 	};
 
 	/// Set element
@@ -105,7 +105,7 @@ public:
 	 *  \tparam E
 	 *
 	 *  \see setElement()
-	 *  \see drain::EnumDict<E>
+	 *  \see drain::Enum<E>
 	 */
 	inline
 	void set(const E & arg){
@@ -120,14 +120,14 @@ public:
 	inline
 	void set(const std::string & arg){
 		cls.assign(arg);
-		//elem = drain::EnumDict<E>::dict.getValue(arg, false);
+		//elem = drain::Enum<E>::dict.getValue(arg, false);
 	};
 
 	/// Set CSS class
 	inline
 	void set(const char *arg){
 		cls.assign(arg);
-		// elem = drain::EnumDict<E>::dict.getValue(arg, false);
+		// elem = drain::Enum<E>::dict.getValue(arg, false);
 	};
 
 
@@ -162,12 +162,12 @@ public:
 	 *  For setting an element type that is not (yet) supported in the enumeration dictionary.
 	 *
 	 *  \see template E
-	 *  \see drain::EnumDict<E>
+	 *  \see drain::Enum<E>
 	 */
 	template <class T>
 	inline
 	void setElement(const T & arg){
-		elem = drain::EnumDict<E>::dict.getValue(arg, false);
+		elem = drain::Enum<E>::dict.getValue(arg, false);
 	};
 
 
@@ -182,7 +182,7 @@ public:
 	/**
 	 *  This function is useful in setting a pseudo class that is not (yet) supported in the enumeration dictionary.
 	 *  \see drain::PseudoClassCSS
-	 *  \see drain::EnumDict<drain::PseudoClassCSS>::dict
+	 *  \see drain::Enum<drain::PseudoClassCSS>::dict
 	 */
 	template <class T>
 	inline
@@ -207,7 +207,7 @@ public:
 
 		// Undefined ~ 0 (contract)
 		if (static_cast<int>(elem) != 0){
-			ostr << drain::EnumDict<E>::dict.getKey(elem);
+			ostr << drain::Enum<E>::dict.getKey(elem);
 		}
 
 		if (!cls.empty()){

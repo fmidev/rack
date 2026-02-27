@@ -91,7 +91,7 @@ struct SLD {
 
 
 template <>
-const EnumDict<image::SLD::tag_t>::dict_t EnumDict<image::SLD::tag_t>::dict;
+const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict;
 
 DRAIN_ENUM_OSTREAM(image::SLD::tag_t)
 

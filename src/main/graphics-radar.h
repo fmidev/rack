@@ -67,7 +67,7 @@ public:
 
 
 	inline
-	Graphic(GRAPHIC g = RAY) : cls(drain::EnumDict<GRAPHIC>::dict.getKey(g)) {
+	Graphic(GRAPHIC g = RAY) : cls(drain::Enum<GRAPHIC>::dict.getKey(g)) {
 	}
 
 	inline
@@ -412,21 +412,21 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 const image::TreeSVG & image::TreeSVG::operator[](const rack::Graphic::GRAPHIC & cls) const {
-	return (*this)[EnumDict<rack::Graphic::GRAPHIC>::dict.getKey(cls, false)];
+	return (*this)[Enum<rack::Graphic::GRAPHIC>::dict.getKey(cls, false)];
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 image::TreeSVG & image::TreeSVG::operator[](const rack::Graphic::GRAPHIC & cls) {
-	return (*this)[EnumDict<rack::Graphic::GRAPHIC>::dict.getKey(cls, false)];
+	return (*this)[Enum<rack::Graphic::GRAPHIC>::dict.getKey(cls, false)];
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 bool image::TreeSVG::hasChild(const rack::Graphic::GRAPHIC & cls) const {
-        return hasChild(EnumDict<rack::Graphic::GRAPHIC>::dict.getKey(cls, true)); // no error
+        return hasChild(Enum<rack::Graphic::GRAPHIC>::dict.getKey(cls, true)); // no error
 }
 
 }

@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_PRODUCT_CONF
 #define RACK_PRODUCT_CONF "ProductConf"
 
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 #include <string>
 
 /*
@@ -108,10 +108,10 @@ public:
 };
 
 template <>
-const drain::EnumDict<ProductConf::OutputDataVerbosity>::dict_t  drain::EnumDict<ProductConf::OutputDataVerbosity>::dict;
+const drain::Enum<ProductConf::OutputDataVerbosity>::dict_t  drain::Enum<ProductConf::OutputDataVerbosity>::dict;
 
 // template <>
-// const ProductConf::OutputDataVerbosity drain::EnumDict<ProductConf::OutputDataVerbosity>::defaultValue; //= ProductConf::OutputDataVerbosity::DEFAULT;
+// const ProductConf::OutputDataVerbosity drain::Enum<ProductConf::OutputDataVerbosity>::defaultValue; //= ProductConf::OutputDataVerbosity::DEFAULT;
 
 }  // namespace rack
 

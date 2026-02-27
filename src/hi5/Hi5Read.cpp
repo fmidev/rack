@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace hi5 {
 
 template <>
-const drain::EnumDict<Reader::Mode>::dict_t drain::EnumDict<Reader::Mode>::dict = {
+const drain::Enum<Reader::Mode>::dict_t drain::Enum<Reader::Mode>::dict = {
 		{"ATTRIBUTES", hi5::Reader::ATTRIBUTES},
 		{"DATASETS",   hi5::Reader::DATASETS},
 		{"MARKED",     hi5::Reader::EXCLUSIVE}

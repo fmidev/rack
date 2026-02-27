@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "MapTools.h"
 //#include "Sprinter.h"
 // #include "StringTools.h"
-//#include "drain/util/EnumUtils.h"
+//#include "drain/EnumUtils.h"
 
 namespace drain {
 
@@ -84,11 +84,11 @@ template <class E>
 struct enum_traits<E> {
 
     static std::string_view to_string(E e) {
-    	return EnumDict<E>::dict.getKey(e);
+    	return Enum<E>::dict.getKey(e);
     }
 
     static E from_string(std::string_view s) {
-    	return EnumDict<E>::dict.getValue(s);
+    	return Enum<E>::dict.getValue(s);
     }
 };
 */

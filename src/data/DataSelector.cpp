@@ -47,20 +47,20 @@ namespace rack {
 ///const drain::FlaggerBase<Crit>::dict_t CritFlagger::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}};
 
 template <>
-const drain::EnumDict<DataOrder::Crit>::dict_t drain::EnumDict<DataOrder::Crit>::dict = {
+const drain::Enum<DataOrder::Crit>::dict_t drain::Enum<DataOrder::Crit>::dict = {
 		{"DATA",    rack::DataOrder::DATA},
 		{"ELANGLE", rack::DataOrder::ELANGLE},
 		{"TIME",    rack::DataOrder::TIME}
 };
 
 template <>
-const drain::EnumDict<DataOrder::Oper>::dict_t drain::EnumDict<DataOrder::Oper>::dict =  {
+const drain::Enum<DataOrder::Oper>::dict_t drain::Enum<DataOrder::Oper>::dict =  {
 		{"MIN", rack::DataOrder::MIN},
 		{"MAX", rack::DataOrder::MAX}
 };
 
 template <>
-const drain::EnumDict<DataSelector::Prf>::dict_t drain::EnumDict<DataSelector::Prf>::dict =  {
+const drain::Enum<DataSelector::Prf>::dict_t drain::Enum<DataSelector::Prf>::dict =  {
 		{"ANY", rack::DatasetSelector::ANY},
 		{"SINGLE", rack::DataSelector::SINGLE},
 		{"DOUBLE", rack::DataSelector::DOUBLE}
@@ -149,13 +149,13 @@ void DataSelector::init() {
 	//parameters.link("order", order.str, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
 	// std::cerr << "DataSelector: init order... " << std::flush;
 	parameters.link("order", order.str,
-				drain::sprinter(drain::EnumDict<DataOrder::Crit>::dict.getKeys()).str() + ':' +
-				drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
+				drain::sprinter(drain::Enum<DataOrder::Crit>::dict.getKeys()).str() + ':' +
+				drain::sprinter(drain::Enum<DataOrder::Oper>::dict.getKeys()).str()
 				);
 	// std::cerr << "... order END " << std::endl;
 
 	//parameters.link("order", order.str, drain::sprinter(order.getParameters().getKeyList()).str());
-	parameters.link("prf", prf, drain::sprinter(drain::EnumDict<DataSelector::Prf>::dict.getKeys()).str());
+	parameters.link("prf", prf, drain::sprinter(drain::Enum<DataSelector::Prf>::dict.getKeys()).str());
 	parameters.link("timespan", timespan.tuple(), "range from nominal time [seconds]").fillArray = false;
 	// <-- TODO: develop to: enum PRF {"Single",1}, {"Dual",2}
 

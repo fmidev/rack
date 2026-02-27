@@ -209,7 +209,7 @@ public:
 	static
 	T & getHeaderObject(T & root, typename T::node_data_t::xml_tag_t tag, const typename T::path_elem_t & key = typename T::path_elem_t()){
 
-		const typename T::path_elem_t & finalKey = !key.empty() ? key : EnumDict<typename T::node_data_t::xml_tag_t>::getKey(tag);
+		const typename T::path_elem_t & finalKey = !key.empty() ? key : Enum<typename T::node_data_t::xml_tag_t>::getKey(tag);
 
 		if (!root.hasChild(finalKey)){
 			T & child = root.prependChild(finalKey); // consider path type! getDefaultObject

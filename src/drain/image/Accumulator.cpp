@@ -64,9 +64,9 @@ namespace image
 Accumulator::FieldType Accumulator::getField(char field){
 
 	short int i;
-	//EnumDict<Accumulator::FieldType>::dict
+	//Enum<Accumulator::FieldType>::dict
 	//for (const auto & entry: Accumulator::dict){
-	for (const auto & entry: EnumDict<FieldType>::dict){
+	for (const auto & entry: Enum<FieldType>::dict){
 		i = static_cast<short int>(entry.second);
 		if ((entry.second&127) == i){
 			return entry.second;
@@ -109,7 +109,7 @@ void Accumulator::createFieldList(const std::string & fieldChars, FieldList & fi
 			mout.error("Unsupported field marker: char '", c, "'");
 		}
 
-		mout.info("Converted field code: ", c, " => ", EnumDict<FieldType>::dict.getKey(fieldList.back()));
+		mout.info("Converted field code: ", c, " => ", Enum<FieldType>::dict.getKey(fieldList.back()));
 
 	}
 
@@ -122,7 +122,7 @@ void Accumulator::getFields(const std::string & fieldStr, FieldList & fieldList)
 	std::list<std::string> fieldKeys;
 	drain::StringTools::split(fieldStr, fieldKeys, ','); // ':');
 		for (const std::string & key: fieldKeys){
-			int value = EnumDict<FieldType>::dict.getValue(key);
+			int value = Enum<FieldType>::dict.getValue(key);
 			if (value > 0){
 				fieldList.push_back((FieldType)value);
 			}

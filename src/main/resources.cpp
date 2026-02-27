@@ -157,7 +157,7 @@ Hi5Tree & RackContext::getHi5Full(Hi5RoleFlagger::ivalue_t filter) {
 
 	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
 
-	const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
+	const drain::Enum<Hdf5Context::Hi5Role>::dict_t & dict = drain::Enum<Hdf5Context::Hi5Role>::dict;
 
 	// bool emptyOk = (filter & EMPTY)>0;
 	// mout.special("Accept empty:", emptyOk);
@@ -202,7 +202,7 @@ Composite & RackContext::getComposite(Hi5RoleFlagger::ivalue_t filter){
 
 	if ((filter & (PRIVATE|SHARED)) == 0){
 		filter = (filter|PRIVATE|SHARED);
-		const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
+		const drain::Enum<Hdf5Context::Hi5Role>::dict_t & dict = drain::Enum<Hdf5Context::Hi5Role>::dict;
 		mout.warn("Unset PRIVATE|SHARED selection, accepting both, filter=", drain::FlagResolver::getKeys(dict, filter, '|')); // h5_role::getKeysNEW2(filter, '|'));
 	}
 

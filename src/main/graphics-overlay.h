@@ -256,7 +256,7 @@ public:
 	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
 		// getParameters().link("name",   name, "label");
 		// getParameters().link("panel",  panel, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdCoords(const CmdCoords & cmd) : CmdPolarBase(cmd) {

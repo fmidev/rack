@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 
 #include <drain/util/TreeOrdered.h>
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 #include <drain/image/Image.h>
 
 
@@ -138,7 +138,7 @@ protected:
 
 //const drain::SingleFlagger<Reader::Mode>::dict_t Reader::dict = {{"ATTRIBUTES", ATTRIBUTES}, {"DATASETS", DATASETS}};
 template <>
-const drain::EnumDict<hi5::Reader::Mode>::dict_t drain::EnumDict<hi5::Reader::Mode>::dict;
+const drain::Enum<hi5::Reader::Mode>::dict_t drain::Enum<hi5::Reader::Mode>::dict;
 
 
 #endif /* ImageH5_H_ */

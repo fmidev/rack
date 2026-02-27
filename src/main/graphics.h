@@ -230,12 +230,12 @@ image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
 
 
 //template <>
-//const drain::EnumDict<RackSVG::TitleClass>::dict_t  drain::EnumDict<RackSVG::TitleClass>::dict;
+//const drain::Enum<RackSVG::TitleClass>::dict_t  drain::Enum<RackSVG::TitleClass>::dict;
 
 /*
 template <>
 const std::string std::static_cast<std::string>(const RackSVG::ElemClass & e){
-	return drain::EnumDict<RackSVG::ElemClass>::dict.getKey(e);
+	return drain::Enum<RackSVG::ElemClass>::dict.getKey(e);
 }
 */
 

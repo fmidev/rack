@@ -59,7 +59,7 @@ void AnchorElem::set(const std::string & s){
 
 // inline?
 void AnchorElem::set(const AnchorElem::Anchor & anchor){
-	set(drain::EnumDict<AnchorElem::Anchor>::getKey(anchor));
+	set(drain::Enum<AnchorElem::Anchor>::getKey(anchor));
 }
 
 void AlignAnchorSVG::swapAnchors(AlignAnchorSVG & anchors){

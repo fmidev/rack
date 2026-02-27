@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_ALIGN_SVG
 #define DRAIN_ALIGN_SVG
 
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 #include <string>
 
 namespace drain {
@@ -91,7 +91,7 @@ public:
 		}
 	};
 
-	//typedef drain::EnumDict<Coord>::dict_t pos_dict_t;
+	//typedef drain::Enum<Coord>::dict_t pos_dict_t;
 
 	static inline
 	AlignBase::Pos flip(AlignBase::Pos pos){
@@ -111,11 +111,11 @@ public:
 };
 
 
-// template <> const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict;
+// template <> const drain::Enum<AlignBase::Axis>::dict_t drain::Enum<AlignBase::Axis>::dict;
 DRAIN_ENUM_DICT(AlignBase::Axis);
 DRAIN_ENUM_OSTREAM(AlignBase::Axis);
 
-// template <>const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict;
+// template <>const drain::Enum<AlignBase::Pos>::dict_t drain::Enum<AlignBase::Pos>::dict;
 DRAIN_ENUM_DICT(AlignBase::Pos);
 DRAIN_ENUM_OSTREAM(AlignBase::Pos);
 
@@ -371,9 +371,9 @@ struct AlignSVG { // : protected Align {
 	 */
 	template <typename T>
 	void setAlign(const std::string & align, const T & topol){
-		const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
-		const Topol & t = EnumDict<AlignSVG::Topol>::getValue(topol, false);
-		//const Alignment<> & a = EnumDict<Alignment<> >::getValue(align, false);
+		const Alignment<> & a = Enum<Alignment<> >::getValue(align, false);
+		const Topol & t = Enum<AlignSVG::Topol>::getValue(topol, false);
+		//const Alignment<> & a = Enum<Alignment<> >::getValue(align, false);
 		setAlign(a.axis, a.pos, t);
 	}
 
@@ -447,7 +447,7 @@ protected:
 	/// Change alignment configuration without updating the alignStr.
 	template <typename P, typename A, typename V>
 	void modifyAlign(const P & owner, const A & axis,  const V &value){
-		getAlign(owner, axis) = EnumDict<AlignBase::Pos>::getValue(value, false);
+		getAlign(owner, axis) = Enum<AlignBase::Pos>::getValue(value, false);
 	}
 
 
@@ -479,12 +479,12 @@ std::ostream & operator<<(std::ostream &ostr, const AlignSVG & align){
 
 
 // template <>
-// const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>::dict;
+// const drain::Enum<AlignSVG::Owner>::dict_t drain::Enum<AlignSVG::Owner>::dict;
 DRAIN_ENUM_DICT(AlignSVG::Owner);
 DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
 
 //template <>
-//const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict;
+//const drain::Enum<AlignSVG::Topol>::dict_t drain::Enum<AlignSVG::Topol>::dict;
 DRAIN_ENUM_DICT(AlignSVG::Topol);
 DRAIN_ENUM_OSTREAM(AlignSVG::Topol);
 
@@ -508,33 +508,33 @@ DRAIN_TYPENAME(AlignSVG::VertAlign);
 
 /// Dictionary of horizontal (LEFT,CENTER,RIGHT) flags
 template <>
-const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::HorzAlign>::dict;
+const drain::Enum<AlignSVG::HorzAlign>::dict_t  drain::Enum<AlignSVG::HorzAlign>::dict;
 // DRAIN_ENUM_OSTREAM(AlignSVG::HorzAlign);
 
 /// Dictionary of vertical (TOP,MIDDLE,BOTTOM) flags
 template <>
-const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::VertAlign>::dict;
+const drain::Enum<AlignSVG::VertAlign>::dict_t  drain::Enum<AlignSVG::VertAlign>::dict;
 // DRAIN_ENUM_OSTREAM(AlignSVG::VertAlign);
 
 
 /// Dictionary combining horizontal (LEFT,CENTER,RIGHT) and vertical (TOP,MIDDLE,BOTTOM) flags
 template <>
-const drain::EnumDict<Alignment<> >::dict_t  drain::EnumDict<Alignment<> >::dict;
+const drain::Enum<Alignment<> >::dict_t  drain::Enum<Alignment<> >::dict;
 
 
 
 
 template <typename OBJ, typename A>
 AlignBase::Pos & AlignSVG::getAlign(const OBJ & owner, const A & axis){
-	const AlignSVG::Owner p = EnumDict<AlignSVG::Owner>::getValue(owner, false); // raise error
-	const AlignBase::Axis a = EnumDict<AlignBase::Axis>::getValue(axis, false); // raise error
+	const AlignSVG::Owner p = Enum<AlignSVG::Owner>::getValue(owner, false); // raise error
+	const AlignBase::Axis a = Enum<AlignBase::Axis>::getValue(axis, false); // raise error
 	return alignments[p][a];
 }
 
 template <typename OBJ, typename A>
 const AlignBase::Pos & AlignSVG::getAlign(const OBJ & owner, const A & axis) const {
-	const AlignSVG::Owner p  = EnumDict<AlignSVG::Owner>::getValue(owner, false); // raise error
-	const AlignBase::Axis a  = EnumDict<AlignBase::Axis>::getValue(axis, false); // raise error
+	const AlignSVG::Owner p  = Enum<AlignSVG::Owner>::getValue(owner, false); // raise error
+	const AlignBase::Axis a  = Enum<AlignBase::Axis>::getValue(axis, false); // raise error
 	return alignments[p][a];
 }
 
@@ -626,16 +626,16 @@ struct CompleteAlignment : public Alignment<AX,A> {
 
 	template <class ...TT>
 	void set(const std::string & key, const TT... args){
-		if (EnumDict<AlignSVG::Topol>::setValue(key, topol)){
+		if (Enum<AlignSVG::Topol>::setValue(key, topol)){
 			// ok
 		}
-		else if (EnumDict<Alignment<> >::setValue(key, *this)){ // RIGHT or?
+		else if (Enum<Alignment<> >::setValue(key, *this)){ // RIGHT or?
 			// ok
 		}
-		else if (EnumDict<AlignBase::Axis>::setValue(key, this->axis)){
+		else if (Enum<AlignBase::Axis>::setValue(key, this->axis)){
 			// ok
 		}
-		else if (EnumDict<AlignBase::Pos>::setValue(key, this->pos)){
+		else if (Enum<AlignBase::Pos>::setValue(key, this->pos)){
 			// ok
 		}
 		else {

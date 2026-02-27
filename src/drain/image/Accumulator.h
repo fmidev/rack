@@ -93,7 +93,7 @@ public:
 		DEVIATION_DS = 'S'|QUALITY  // Separation
 	};
 
-	typedef drain::EnumDict<FieldType>::dict_t dict_t;
+	typedef drain::Enum<FieldType>::dict_t dict_t;
 
 	//static
 	// const dict_t dict;

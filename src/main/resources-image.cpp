@@ -64,7 +64,7 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) const {
 	// std::string(".")+
-	return hasChild(EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
+	return hasChild(Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
 }
 
 
@@ -76,7 +76,7 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & value) const {
 	// std::string(".")+
-	return (*this)[EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(value, false)];
+	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(value, false)];
 }
 
 
@@ -84,7 +84,7 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key){
 	// std::string(".")+
-	return (*this)[EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
+	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
 }
 */
 
@@ -92,7 +92,7 @@ image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemCla
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x){
-	return (*this)[std::string(".")+EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(x, false)];
+	return (*this)[std::string(".")+Enum<rack::GraphicsContext::ElemClass>::dict.getKey(x, false)];
 }
  */
 

@@ -46,7 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/StringTools.h>
 #include <drain/Type.h>
 
-#include "Dictionary.h"
+#include <drain/Dictionary.h>
 
 #include "FlagBase.h"
 
@@ -76,7 +76,7 @@ public:
 	typedef E storage_t;
 
 	typedef FlaggerBase<E,E> flagger_t;
-	// typedef typename EnumDict<E>::dict_t dict_t;
+	// typedef typename Enum<E>::dict_t dict_t;
 	typedef typename flagger_t::dict_t dict_t;
 	typedef typename dict_t::key_t key_t; // ~string
 

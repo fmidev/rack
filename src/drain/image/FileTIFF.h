@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include "drain/util/FileInfo.h"
-#include "drain/util/Dictionary.h"
+#include "drain/Dictionary.h"
 #include "drain/util/Time.h"
 #include "GeoFrame.h"
 #include "Image.h"

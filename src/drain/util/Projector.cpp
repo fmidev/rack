@@ -44,7 +44,7 @@ const SprinterLayout Projector::projDefLayout(" ","","=", "",""); // space-separ
 const std::string Projector::proj4version = drain::StringBuilder<'.'>(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 
 //template <>
-//const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict = {
+//const drain::Enum<Projector::PROJDEF_variant>::dict_t  drain::Enum<Projector::PROJDEF_variant>::dict = {
 DRAIN_ENUM_DICT(Projector::PROJDEF_variant) = {
 		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, ORIG),
 		DRAIN_ENUM_ENTRY(Projector::PROJDEF_variant, MODIFIED),
@@ -160,7 +160,7 @@ void Projector::createProjection(CRS_mode crs){
 
 	//for (Projector::PROJDEF_variant v: {ORIG, MODIFIED, PROJ4, PROJ5, SIMPLE}){
 	/*
-	for (const auto & entry: drain::EnumDict<Projector::PROJDEF_variant>::dict){
+	for (const auto & entry: drain::Enum<Projector::PROJDEF_variant>::dict){
 		mout.warn(entry.first, ':', getProjDef(entry.second));
 	}
 	*/
@@ -368,7 +368,7 @@ void Projector::info(PJ *pj, std::ostream & ostr, int wkt) const {
 	}
 	ostr << '\n';
 
-	for (const auto & entry: drain::EnumDict<Projector::PROJDEF_variant>::dict){
+	for (const auto & entry: drain::Enum<Projector::PROJDEF_variant>::dict){
 		ostr << entry.first << ':' << '\t' << getProjDef(entry.second) << '\n';
 	}
 

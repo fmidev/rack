@@ -110,9 +110,9 @@ public:
 	CmdLayout() : drain::BasicCommand(__FUNCTION__, "Set main panel alignment"){
 
 		getParameters().link("orientation", orientation="HORZ",
-				drain::sprinter(drain::EnumDict<orientation_enum>::dict.getKeys(), {"|"}).str());
+				drain::sprinter(drain::Enum<orientation_enum>::dict.getKeys(), {"|"}).str());
 		getParameters().link("direction", direction="INCR",
-				drain::sprinter(drain::EnumDict<direction_enum>::dict.getKeys(), {"|"}).str());
+				drain::sprinter(drain::Enum<direction_enum>::dict.getKeys(), {"|"}).str());
 
 	}
 
@@ -156,10 +156,10 @@ public:
 
 	/*
 	CmdAlign() : drain::SimpleCommand<std::string>(__FUNCTION__, "Alignment of the next element", "topology", "",
-			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
-			drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
-			drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
-			drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
+			drain::sprinter(drain::Enum<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+			drain::sprinter(drain::Enum<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
+			drain::sprinter(drain::Enum<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+			drain::sprinter(drain::Enum<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
 	){
 		//getParameters().link("", x, drain::StringBuilder<':'>());
 	}
@@ -169,14 +169,14 @@ public:
 	CmdAlign() : drain::BasicCommand(__FUNCTION__, "Alignment of the next element"){
 
 		getParameters().link("position", position,
-				drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
-				drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
-				drain::sprinter(drain::EnumDict<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
-				drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
+				drain::sprinter(drain::Enum<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+				drain::sprinter(drain::Enum<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
+				drain::sprinter(drain::Enum<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+				drain::sprinter(drain::Enum<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
 		).setSeparator(':');
 
 		getParameters().link("anchor", anchor.str(),
-				std::string("<name>|<empty>") + drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), {"|"}).str()
+				std::string("<name>|<empty>") + drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), {"|"}).str()
 		);
 		getParameters().link("anchorHorz", anchorHorz.str(),
 				"..."
@@ -216,7 +216,7 @@ public:
 
 	inline
 	CmdAnchor() : drain::SimpleCommand<std::string>(__FUNCTION__, "Alignment of the next element", "topology", "",
-			drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), {"|"}).str()
+			drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), {"|"}).str()
 	){
 		//getParameters().link("", x, drain::StringBuilder<':'>());
 	}
@@ -449,7 +449,7 @@ class CmdInclude : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdInclude() : drain::SimpleCommand<std::string>(__FUNCTION__, "Select images to include in SVG panel", "include",
-			drain::sprinter(drain::EnumDict<drain::image::FileSVG::IncludePolicy>::dict.getKeys(), '|').str()) {
+			drain::sprinter(drain::Enum<drain::image::FileSVG::IncludePolicy>::dict.getKeys(), '|').str()) {
 	}
 
 	void exec() const override;

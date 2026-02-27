@@ -45,7 +45,7 @@ DRAIN_TYPENAME_DEF(image::SLD::tag_t);
 
 
 template <>
-const EnumDict<image::SLD::tag_t>::dict_t EnumDict<image::SLD::tag_t>::dict = {
+const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::SLD, COMMENT), // good to have an explicit TAG string,  for debugging
 		DRAIN_ENUM_ENTRY(drain::image::SLD, Abstract),
 		DRAIN_ENUM_ENTRY(drain::image::SLD, ColorMap),
@@ -159,7 +159,7 @@ void NodeSLD::setAttribute(const std::string & key, const char *value){
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSLD::hasChild(const image::SLD::tag_t & type) const {
-	return hasChild(EnumDict<image::SLD::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
+	return hasChild(Enum<image::SLD::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
 }
 
 
@@ -170,14 +170,14 @@ bool image::TreeSLD::hasChild(const image::SLD::tag_t & type) const {
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSLD & image::TreeSLD::operator[](const image::SLD::tag_t & type) const {
-	return (*this)[EnumDict<image::SLD::tag_t>::dict.getKey(type, false)];
+	return (*this)[Enum<image::SLD::tag_t>::dict.getKey(type, false)];
 }
 
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSLD & image::TreeSLD::operator[](const image::SLD::tag_t & type){
-	return (*this)[EnumDict<image::SLD::tag_t>::dict.getKey(type, false)];
+	return (*this)[Enum<image::SLD::tag_t>::dict.getKey(type, false)];
 }
 
 

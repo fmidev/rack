@@ -85,7 +85,7 @@ struct Html {
 
 
 // template <>
-// const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict;
+// const drain::Enum<Html::tag_t>::dict_t drain::Enum<Html::tag_t>::dict;
 
 DRAIN_ENUM_DICT(Html::tag_t);
 DRAIN_ENUM_OSTREAM(Html::tag_t);
@@ -96,7 +96,7 @@ template <>
 inline
 void drain::NodeXML<>::path_t::appendElem(const Html::tag_t & type){
 	// void TreeHTML::path_t::appendElem(const Html::tag_t & type){
-	appendElem(EnumDict<Html::tag_t>::dict.getKey(type, false));
+	appendElem(Enum<Html::tag_t>::dict.getKey(type, false));
 }
 
 /**
@@ -224,7 +224,7 @@ template <>
 template <>
 inline
 bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
-	return TreeHTML::hasChild(EnumDict<Html::tag_t>::dict.getKey(type, false));
+	return TreeHTML::hasChild(Enum<Html::tag_t>::dict.getKey(type, false));
 }
 
 

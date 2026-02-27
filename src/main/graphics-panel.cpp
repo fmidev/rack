@@ -59,7 +59,7 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const {
 	// std::string(".")+
-	return hasChild(EnumDict<rack::RackSVG::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
+	return hasChild(Enum<rack::RackSVG::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
 }
 
 
@@ -71,7 +71,7 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & value) const {
 	// std::string(".")+
-	return (*this)[EnumDict<rack::RackSVG::ElemClass>::dict.getKey(value, false)];
+	return (*this)[Enum<rack::RackSVG::ElemClass>::dict.getKey(value, false)];
 }
 
 
@@ -79,12 +79,12 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key){
 	// std::string(".")+
-	return (*this)[EnumDict<rack::RackSVG::ElemClass>::dict.getKey(key, false)];
+	return (*this)[Enum<rack::RackSVG::ElemClass>::dict.getKey(key, false)];
 }
 
 /*
 template <>
-const drain::EnumDict<rack::RackSVG::ElemClass>::dict_t  drain::EnumDict<rack::RackSVG::ElemClass>::dict = {
+const drain::Enum<rack::RackSVG::ElemClass>::dict_t  drain::Enum<rack::RackSVG::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MAIN),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MAIN_TITLE),
@@ -335,12 +335,12 @@ void CmdLayout::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-	drain::EnumDict<orientation_enum>::setValue(orientation, ctx.mainOrientation);
-	drain::EnumDict<direction_enum>::setValue(direction,     ctx.mainDirection);
+	drain::Enum<orientation_enum>::setValue(orientation, ctx.mainOrientation);
+	drain::Enum<direction_enum>::setValue(direction,     ctx.mainDirection);
 
 	// reset
-	orientation = drain::EnumDict<orientation_enum>::dict.getKey(orientation_enum::HORZ);
-	direction   = drain::EnumDict<direction_enum>::dict.getKey(direction_enum::INCR);
+	orientation = drain::Enum<orientation_enum>::dict.getKey(orientation_enum::HORZ);
+	direction   = drain::Enum<direction_enum>::dict.getKey(direction_enum::INCR);
 
 }
 
@@ -413,10 +413,10 @@ void CmdAlign::exec() const  {
 				// Ok, topology (INSIDE or OUTSIDE) was set
 				break;
 			default:
-				mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignBase::Axis>::dict.getKeys(), {"|"}).str());
-				mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str());
-				mout.advice("use: ", drain::sprinter(drain::EnumDict<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str());
-				// mout.advice("use: ", drain::sprinter(drain::EnumDict<Alignment<> >::dict.getKeys(), {"|"}).str()); // = HorzAlign + VertAlign
+				mout.advice("use: ", drain::sprinter(drain::Enum<AlignBase::Axis>::dict.getKeys(), {"|"}).str());
+				mout.advice("use: ", drain::sprinter(drain::Enum<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str());
+				mout.advice("use: ", drain::sprinter(drain::Enum<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str());
+				// mout.advice("use: ", drain::sprinter(drain::Enum<Alignment<> >::dict.getKeys(), {"|"}).str()); // = HorzAlign + VertAlign
 				mout.error("could not determine axis from argument '", arg, "'");
 				break;
 			}
@@ -481,7 +481,7 @@ void CmdLinkImage::exec() const {
 	RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
 	// RackSVG::addImage(ctx, frame, filePath, drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
 	// drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);
-	// EnumDict<LayoutSVG::GroupType>::dict
+	// Enum<LayoutSVG::GroupType>::dict
 
 }
 

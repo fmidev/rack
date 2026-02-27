@@ -161,8 +161,8 @@ void Compositor::add(Composite & composite, int inputFilter, bool updateSelector
 
 	if (src.empty()){
 		mout.warn("thread #", ctx.getName(), ": input data empty? Filter =",
-				drain::FlagResolver::getKeys(drain::EnumDict<Hdf5Context::Hi5Role>::dict, inputFilter, '|')) ;
-				//drain::EnumDict<Hdf5Context::h5_role>::dict.getKey(inputFilter, '|'));
+				drain::FlagResolver::getKeys(drain::Enum<Hdf5Context::Hi5Role>::dict, inputFilter, '|')) ;
+				//drain::Enum<Hdf5Context::h5_role>::dict.getKey(inputFilter, '|'));
 	}
 
 

@@ -39,12 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_CLASS_XML
 #define DRAIN_CLASS_XML
 
+#include <drain/Enum.h>
 #include <ostream>
 
 //#include <drain/Sprinter.h>
 //#include <drain/FlexibleVariable.h>
 
-#include "EnumUtils.h"
 #include "ReferenceMap.h"
 #include "TreeUnordered.h"
 
@@ -64,7 +64,7 @@ public:
 	template <typename T>
 	inline
 	ClassXML(const T & arg) : MultiEnumWrapper(arg){};
-	//ClassXML(const T & x) : StringWrapper<std::string>(drain::EnumDict<T>::dict.getKey(x)){};
+	//ClassXML(const T & x) : StringWrapper<std::string>(drain::Enum<T>::dict.getKey(x)){};
 
 	// inline
 	// ClassXML(const ClassXML & e) : MultiEnumWrapper((const std::string &)e){};
@@ -154,7 +154,7 @@ public:
 	template <typename E, typename ...TT>
 	inline
 	void add(const E & arg, const TT &... args) {
-		insert(drain::EnumDict<E>::dict.getKey(arg));
+		insert(drain::Enum<E>::dict.getKey(arg));
 		add(args...);
 	};
 
@@ -190,7 +190,7 @@ public:
 	template <typename E>
 	inline
 	bool has(const E & arg) const {
-		return (find(drain::EnumDict<E>::dict.getKey(arg)) != end());
+		return (find(drain::Enum<E>::dict.getKey(arg)) != end());
 	};
 
 

@@ -38,9 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_LAYOUT_SVG
 #define DRAIN_LAYOUT_SVG
 
-//#include <string>
-
 #include <drain/image/AlignAnchorSVG.h>
+#include <drain/util/EnumFlagger.h>
 
 namespace drain {
 
@@ -107,7 +106,7 @@ protected:
 	template <typename V>
 	inline
 	void setOrientation(const V & axis){
-		orientation.set(EnumDict<AlignBase::Axis>::getValue(axis));
+		orientation.set(Enum<AlignBase::Axis>::getValue(axis));
 	};
 
 	/// Set direction: coordinates increasing or decreasing
@@ -118,7 +117,7 @@ protected:
 	template <typename D>
 	inline
 	void setDirection(const D & dir){
-		direction.set(EnumDict<LayoutSVG::Direction>::getValue(dir));
+		direction.set(Enum<LayoutSVG::Direction>::getValue(dir));
 	};
 
 	/// Set direction and orientation
@@ -128,8 +127,8 @@ protected:
 	template <typename D, typename V>
 	inline
 	void set(const D & d, const V &v){
-		direction.set(EnumDict<LayoutSVG::Direction>::getValue(d));
-		orientation.set(EnumDict<AlignBase::Axis>::getValue(v));
+		direction.set(Enum<LayoutSVG::Direction>::getValue(d));
+		orientation.set(Enum<AlignBase::Axis>::getValue(v));
 	};
 
 	/*
@@ -145,11 +144,11 @@ protected:
 
 /*
 template <>
-const EnumDict<LayoutSVG::Direction>::dict_t  drain::EnumDict<LayoutSVG::Direction>::dict;
+const Enum<LayoutSVG::Direction>::dict_t  drain::Enum<LayoutSVG::Direction>::dict;
 DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);
 
 template<>
-const EnumDict<LayoutSVG::GroupType>::dict_t EnumDict<LayoutSVG::GroupType>::dict;
+const Enum<LayoutSVG::GroupType>::dict_t Enum<LayoutSVG::GroupType>::dict;
 DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
 */
 

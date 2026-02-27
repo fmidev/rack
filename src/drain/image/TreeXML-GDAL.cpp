@@ -55,7 +55,7 @@ namespace image
 {
 
 template <>
-const drain::EnumDict<NodeGDAL::tag_t>::dict_t drain::EnumDict<NodeGDAL::tag_t>::dict = {
+const drain::Enum<NodeGDAL::tag_t>::dict_t drain::Enum<NodeGDAL::tag_t>::dict = {
 		{"UNDEFINED", drain::image::GDAL::UNDEFINED},
 		{"GDALMetadata", drain::image::GDAL::ROOT},
 		{"Item", drain::image::GDAL::ITEM},

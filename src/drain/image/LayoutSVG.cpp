@@ -95,7 +95,7 @@ void LayoutSVG::setStackAlignment(AlignBase::Axis orientation, LayoutSVG::Direct
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool drain::image::TreeSVG::hasChild(const drain::image::LayoutSVG::GroupType & type) const {
-	return hasChild(EnumDict<drain::image::LayoutSVG::GroupType>::dict.getKey(type, true)); // no error
+	return hasChild(Enum<drain::image::LayoutSVG::GroupType>::dict.getKey(type, true)); // no error
 }
 
 

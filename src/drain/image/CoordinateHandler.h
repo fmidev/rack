@@ -70,7 +70,7 @@ enum coord_overflow_t {
 };
 
 template <>
-const drain::EnumDict<coord_overflow_t>::dict_t drain::EnumDict<coord_overflow_t>::dict;
+const drain::Enum<coord_overflow_t>::dict_t drain::Enum<coord_overflow_t>::dict;
 */
 typedef unsigned int coord_overflow_t;
 

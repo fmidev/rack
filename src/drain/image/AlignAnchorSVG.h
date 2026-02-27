@@ -117,17 +117,17 @@ struct AnchorElem : public std::string {
 	// Use the bounding box of the compound, "accumulated" object as anchor.
 	inline
 	bool isCollective() const {
-		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::COLLECTIVE_CURRENT);
+		return (drain::Enum<AnchorElem::Anchor>::getValue(*this) == Anchor::COLLECTIVE_CURRENT);
 	}
 
 	// Use the bounding box of the latest object as anchor.
 	bool isPrevious() const {
-		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::PREVIOUS);
+		return (drain::Enum<AnchorElem::Anchor>::getValue(*this) == Anchor::PREVIOUS);
 	}
 
 	// Explicitly states that an object uses no anchor, hence the position is absolute (not aligned)
 	bool isNone() const {
-		return (drain::EnumDict<AnchorElem::Anchor>::getValue(*this) == Anchor::NONE);
+		return (drain::Enum<AnchorElem::Anchor>::getValue(*this) == Anchor::NONE);
 	}
 
 	// Use the bounding box of a named object as anchor.
@@ -240,7 +240,7 @@ protected:
 	template <class T>
 	static inline
 	void adjustAnchor(AnchorElem & anchor, const T & value){
-		anchor.assign(EnumDict<T>::getKey(value));
+		anchor.assign(Enum<T>::getKey(value));
 	}
 
 	/// Redefined in NodeSVG

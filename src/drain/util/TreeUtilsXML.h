@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_UTILS_XML
 #define DRAIN_TREE_UTILS_XML
 
+#include "EnumFlagger.h"
+
 #include "TreeUtils.h"
 #include "TreeXML.h"
 

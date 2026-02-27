@@ -1992,7 +1992,7 @@ public:
 			if (flags){
 				// mout.note("error state: ", ctx.statusFlags, " – tested: ", flags);
 				mout.warn("stopping on error condition(s): ", flags);
-				// drain::EnumDict<Status>;
+				// drain::Enum<Status>;
 				exit(flags);
 			}
 		}
@@ -2362,7 +2362,7 @@ class CmdStore : public drain::SimpleCommand<std::string> { //
 public:
 
 	CmdStore() : drain::SimpleCommand<std::string>(__FUNCTION__, "Request additional (debugging) outputs",
-			"level", "0", drain::sprinter(drain::EnumDict<ProductConf::OutputDataVerbosity>::dict).str() ){ // drain::sprinter(outputFlagger.getDict().getContainer(), drain::Command::cmdArgLayout).str()
+			"level", "0", drain::sprinter(drain::Enum<ProductConf::OutputDataVerbosity>::dict).str() ){ // drain::sprinter(outputFlagger.getDict().getContainer(), drain::Command::cmdArgLayout).str()
 	};
 
 	virtual
@@ -2699,7 +2699,7 @@ class CmdInputFilter : public drain::SimpleCommand<std::string> {
 public:
 
 	CmdInputFilter() : drain::SimpleCommand<std::string>(__FUNCTION__, "Partial file read. You probably search for --inputSelect", "ATTRIBUTES", "3",
-			sprinter(drain::EnumDict<hi5::Reader::Mode>::dict, "|").str()) {
+			sprinter(drain::Enum<hi5::Reader::Mode>::dict, "|").str()) {
 	}
 
 	void exec() const {
@@ -2847,7 +2847,7 @@ public:
 
 		// const drain::Flags
 		Hdf5Context::Hi5RoleFlagger::dict_t d;
-		const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t & dict = drain::EnumDict<Hdf5Context::Hi5Role>::dict;
+		const drain::Enum<Hdf5Context::Hi5Role>::dict_t & dict = drain::Enum<Hdf5Context::Hi5Role>::dict;
 
 		//mout.warn(dict);
 		if (!this->value.empty()){

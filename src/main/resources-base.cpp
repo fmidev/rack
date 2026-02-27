@@ -39,7 +39,7 @@ namespace drain {
 
 /*
 template <>
-const drain::EnumDict<rack::GraphicsContext::ElemClass>::dict_t  drain::EnumDict<rack::GraphicsContext::ElemClass>::dict = {
+const drain::Enum<rack::GraphicsContext::ElemClass>::dict_t  drain::Enum<rack::GraphicsContext::ElemClass>::dict = {
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN),
 		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN_TITLE),
@@ -59,21 +59,21 @@ const drain::EnumDict<rack::GraphicsContext::ElemClass>::dict_t  drain::EnumDict
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) const {
-	return hasChild(EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
+	return hasChild(Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
 }
 
 /// Automatic conversion of elem classes to strings.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & value) const {
-	return (*this)[EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(value, false)];
+	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(value, false)];
 }
 
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key){
-	return (*this)[EnumDict<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
+	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
 }
 */
 
@@ -102,7 +102,7 @@ Hdf5Context::Hdf5Context(const Hdf5Context &ctx):
 }
 
 template <>
-const drain::EnumDict<Hdf5Context::Hi5Role>::dict_t drain::EnumDict<Hdf5Context::Hi5Role>::dict = {
+const drain::Enum<Hdf5Context::Hi5Role>::dict_t drain::Enum<Hdf5Context::Hi5Role>::dict = {
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, CURRENT),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, INPUT),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, POLAR),
@@ -123,7 +123,7 @@ Hi5Tree & Hdf5Context::getMyHi5(Hi5RoleFlagger::ivalue_t filter){
 
 	//mout.debug("filter=", h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
 
-	mout.debug("filter=", FlagResolver::getKeys( drain::EnumDict<Hdf5Context::Hi5Role>::dict, filter, '|')); // h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
+	mout.debug("filter=", FlagResolver::getKeys( drain::Enum<Hdf5Context::Hi5Role>::dict, filter, '|')); // h5_role::getShared().getKeys(filter, '|'), " (", filter, ')');
 	/*
 	if (!(filter & (POLAR|CARTESIAN))){
 		// = auto

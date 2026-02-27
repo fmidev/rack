@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_FILE_GDAL_XML
 
 // #include "drain/util/Flags.h"
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 #include "drain/util/TreeXML.h"
 #include "drain/util/UtilsXML.h"
 
@@ -117,7 +117,7 @@ std::ostream & operator<<(std::ostream & ostr, const image::TreeGDAL & tree){
 }
 
 template <>
-const EnumDict<image::NodeGDAL::tag_t>::dict_t EnumDict<image::NodeGDAL::tag_t>::dict;
+const Enum<image::NodeGDAL::tag_t>::dict_t Enum<image::NodeGDAL::tag_t>::dict;
 
 DRAIN_TYPENAME(image::NodeGDAL);
 

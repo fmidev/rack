@@ -138,7 +138,7 @@ template <> // for K (path elem arg)
 inline
 const Hi5Tree & Hi5Tree::operator[](const std::string & s) const {
 	return (*this)[rack::ODIMPathElem(s)];
-	//return (*this)[EnumDict<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
+	//return (*this)[Enum<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
 }
 
 template <> // for T (Tree class)
@@ -146,7 +146,7 @@ template <> // for K (path elem arg)
 inline
 Hi5Tree & Hi5Tree::operator[](const std::string & s) {
 	return (*this)[rack::ODIMPathElem(s)];
-	//return (*this)[EnumDict<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
+	//return (*this)[Enum<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
 }
 */
 

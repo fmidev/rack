@@ -38,7 +38,7 @@ namespace drain
 {
 
 template <>
-const drain::EnumDict<Status>::dict_t drain::EnumDict<Status>::dict = {
+const drain::Enum<Status>::dict_t drain::Enum<Status>::dict = {
 		DRAIN_ENUM_ENTRY(drain, INPUT_ERROR),
 		DRAIN_ENUM_ENTRY(drain, DATA_ERROR),
 		DRAIN_ENUM_ENTRY(drain, METADATA_ERROR),

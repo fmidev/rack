@@ -383,7 +383,7 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
  */
 drain::image::TreeSVG & RackSVG::getAdapterGroup(drain::image::TreeSVG & group){
 
-	// EnumDict<drain::image::LayoutSVG::GroupType>::dict::getKey(LayoutSVG::ADAPTER)
+	// Enum<drain::image::LayoutSVG::GroupType>::dict::getKey(LayoutSVG::ADAPTER)
 
 	drain::image::TreeSVG & adapterGroup = group["ADAPTER"];
 
@@ -1172,7 +1172,7 @@ public:
 		typedef drain::image::AlignSVG::Owner  Owner;
 		typedef drain::image::AlignBase::Pos   Pos;
 
-		const drain::EnumDict<Pos>::dict_t & dict = drain::EnumDict<Pos>::dict;
+		const drain::Enum<Pos>::dict_t & dict = drain::Enum<Pos>::dict;
 
 
 		//const std::list<Pos> pos = {AlignBase::MAX, AlignBase::MIN, AlignBase::MID};
@@ -1329,7 +1329,7 @@ public:
 	CmdAlignTest() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
 		getParameters().link("name",   name, "label");
 		getParameters().link("panel",  panel, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdAlignTest(const CmdAlignTest & cmd) : drain::BasicCommand(cmd) {
@@ -1374,7 +1374,7 @@ public:
 			//group->setDefaultAlignAnchorHorz(ANCHOR_ELEM); // Note: axis Horz/Vert should be taken from ctx?
 			group->setDefaultAlignAnchor(defaultAnchor); // Note: axis Horz/Vert should be taken from ctx?
 			// AnchorElem::Anchor anchor = DRAIN_ENUM_DICT(AnchorElem::Anchor)::getValue("");
-			AnchorElem::Anchor anchor = drain::EnumDict<AnchorElem::Anchor>::getValue(myAnchor);
+			AnchorElem::Anchor anchor = drain::Enum<AnchorElem::Anchor>::getValue(myAnchor);
 			mout.accept<LOG_WARNING>("ANCHOR:", anchor);
 
 
@@ -1398,7 +1398,7 @@ public:
 	 */
 
 	// template <typename T>
-	// std::string static_cast<std::string>(drain::EnumDict<T>::){};
+	// std::string static_cast<std::string>(drain::Enum<T>::){};
 
 	void exec() const override {
 
@@ -1474,7 +1474,7 @@ public:
 	CmdDebug() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
 		getParameters().link("name",   name, "label");
 		getParameters().link("panel",  panel, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdDebug(const CmdDebug & cmd) : drain::BasicCommand(cmd) {
@@ -1521,7 +1521,7 @@ public:
 	CmdLogo() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
 		getParameters().link("name",   name, "Name (label) of the logo");
 		getParameters().link("variant",  variant, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdLogo(const CmdLogo & cmd) : drain::BasicCommand(cmd) {
@@ -1806,5 +1806,5 @@ void CmdOutputPanel::appendImage(TreeSVG & group, const std::string & label, dra
 } // namespace rack
 
 //DRAIN_ENUM_DICT(CmdRadarMarker::MARKER);
-// drain::EnumDict<orientation_enum>::dict
+// drain::Enum<orientation_enum>::dict
 // template <>

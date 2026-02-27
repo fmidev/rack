@@ -111,7 +111,7 @@ enum TypeEnum {
 	DOUBLE
 };
 
-typedef drain::EnumDict<TypeEnum>::dict_t typedict_t;
+typedef drain::Enum<TypeEnum>::dict_t typedict_t;
 const typedict_t kokeilu = {
 		DRAIN_ENUM_ENTRY(TypeEnum, DOUBLE)
 };
@@ -133,7 +133,7 @@ class TypeWrapper : public std::type_info {
 TypeWrapper koe2(typeid(float));
 
 
-typedef drain::EnumDict<TypeWrapper>::dict_t test_t;
+typedef drain::Enum<TypeWrapper>::dict_t test_t;
 const test_t koe = {
 		{"MIKA", typeid(float)}
 //		{"MIKA", TypeWrapper(typeid(float))}

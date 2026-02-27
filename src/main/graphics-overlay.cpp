@@ -788,7 +788,7 @@ public:
 	CmdLogo() : drain::BasicCommand(__FUNCTION__, "SVG test product") {
 		getParameters().link("name",   name, "Name (label) of the logo");
 		getParameters().link("variant",  variant, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::EnumDict<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdLogo(const CmdLogo & cmd) : drain::BasicCommand(cmd) {
@@ -925,5 +925,5 @@ void CmdCoords::exec() const {
 } // namespace rack
 
 //DRAIN_ENUM_DICT(CmdRadarMarker::MARKER);
-// drain::EnumDict<orientation_enum>::dict
+// drain::Enum<orientation_enum>::dict
 // template <>

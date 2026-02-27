@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <geotiffio.h>
 #include <geo_normalize.h>
 
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 #include "TreeXML-GDAL.h"
 
 
@@ -254,7 +254,7 @@ void FileGeoTIFF::setGeoTiffField(geokey_t tag, const std::string & value){
 } // image::
 
 //template <>
-// const drain::FlagResolver::dict_t drain::EnumDict<image::FileGeoTIFF::TiffCompliance>::dict;
+// const drain::FlagResolver::dict_t drain::Enum<image::FileGeoTIFF::TiffCompliance>::dict;
 
 /*
 template <>

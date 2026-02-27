@@ -41,7 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/util/BeanLike.h"
 #include "drain/util/VariableMap.h"
 
-#include "drain/util/Dictionary.h" // temporary ?
+#include "drain/Dictionary.h" // temporary ?
 #include "drain/util/JSON.h"
 #include "Legend.h"
 

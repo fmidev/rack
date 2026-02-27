@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/UniTuple.h"
 #include "drain/util/BeanLike.h"
 #include "drain/util/JSON.h"
-#include "drain/util/Dictionary.h"
+#include "drain/Dictionary.h"
 
 #include "ImageFile.h"
 #include "Geometry.h"

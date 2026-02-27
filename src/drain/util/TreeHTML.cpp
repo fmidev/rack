@@ -73,8 +73,8 @@ const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_def
 
 /*
 template <>
-const drain::EnumDict<Basehtml::tag_t>::dict_t & drain::EnumDict<Basehtml::tag_t>::getDict(){
-	//// static drain::EnumDict<Basehtml::tag_t>::dict_t dict;
+const drain::Enum<Basehtml::tag_t>::dict_t & drain::Enum<Basehtml::tag_t>::getDict(){
+	//// static drain::Enum<Basehtml::tag_t>::dict_t dict;
 
 	//if (dict.empty()){ dict.add("undefined", drain::Basehtml::UNDEFINED);}
 	return dict;
@@ -82,8 +82,8 @@ const drain::EnumDict<Basehtml::tag_t>::dict_t & drain::EnumDict<Basehtml::tag_t
 */
 
 // template <>
-// const drain::EnumDict<Html::tag_t>::dict_t drain::EnumDict<Html::tag_t>::dict
-DRAIN_ENUM_DICT(Html::tag_t) = { // drain::EnumDict<Basehtml::tag_t>::getDict(); // maybe dangerous.
+// const drain::Enum<Html::tag_t>::dict_t drain::Enum<Html::tag_t>::dict
+DRAIN_ENUM_DICT(Html::tag_t) = { // drain::Enum<Basehtml::tag_t>::getDict(); // maybe dangerous.
 
 		{"undefined", drain::Html::UNDEFINED},
 		{"#comment", drain::Html::COMMENT},
@@ -123,13 +123,13 @@ DRAIN_ENUM_DICT(Html::tag_t) = { // drain::EnumDict<Basehtml::tag_t>::getDict();
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 TreeHTML & TreeHTML::operator[](const Html::tag_t & type){
-	return (*this)[EnumDict<Html::tag_t>::dict.getKey(type, false)];
+	return (*this)[Enum<Html::tag_t>::dict.getKey(type, false)];
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const TreeHTML & TreeHTML::operator[](const Html::tag_t & type) const {
-	return (*this)[EnumDict<Html::tag_t>::dict.getKey(type, false)];
+	return (*this)[Enum<Html::tag_t>::dict.getKey(type, false)];
 }
 
 template <> // for T (Tree class)

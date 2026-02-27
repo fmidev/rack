@@ -8,8 +8,8 @@
 #ifndef DRAIN_UTIL_JAVASCRIPT_H_
 #define DRAIN_UTIL_JAVASCRIPT_H_
 
+#include <drain/Enum.h>
 #include <drain/Sprinter.h>
-#include <drain/util/EnumUtils.h>
 
 namespace drain {
 

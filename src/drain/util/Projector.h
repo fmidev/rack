@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PROJECTOR_H_
 #define DRAIN_PROJECTOR_H_
 
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 #include <cstddef>
 #include <iostream>
 #include <set>
@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <proj.h>
 
-// #include "Dictionary.h"
+// #include <drain/Dictionary.h>
 // #include "Point.h"
 
 
@@ -239,7 +239,7 @@ protected:
 };
 
 //template <>
-//const drain::EnumDict<Projector::PROJDEF_variant>::dict_t  drain::EnumDict<Projector::PROJDEF_variant>::dict;
+//const drain::Enum<Projector::PROJDEF_variant>::dict_t  drain::Enum<Projector::PROJDEF_variant>::dict;
 DRAIN_ENUM_DICT(Projector::PROJDEF_variant);
 
 DRAIN_ENUM_OSTREAM(Projector::PROJDEF_variant);

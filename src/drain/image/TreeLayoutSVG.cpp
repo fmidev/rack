@@ -363,7 +363,7 @@ const AnchorElem & getAnchorElem(TreeSVG & group, NodeSVG & node){
 		}
 		else {
 			// grand default
-			return drain::EnumDict<AnchorElem::Anchor>::getKey(AnchorElem::PREVIOUS);
+			return drain::Enum<AnchorElem::Anchor>::getKey(AnchorElem::PREVIOUS);
 		}
 	}
 

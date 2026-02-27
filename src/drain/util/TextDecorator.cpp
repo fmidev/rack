@@ -46,7 +46,7 @@ namespace drain
 
 
 template <>
-const drain::EnumDict<TextStyle::Style>::dict_t drain::EnumDict<TextStyle::Style>::dict = {
+const drain::Enum<TextStyle::Style>::dict_t drain::Enum<TextStyle::Style>::dict = {
 		{"ITALIC", TextStyle::ITALIC},
 		{"BOLD", TextStyle::BOLD},
 		{"DIM", TextStyle::DIM},
@@ -55,7 +55,7 @@ const drain::EnumDict<TextStyle::Style>::dict_t drain::EnumDict<TextStyle::Style
 };
 
 template <>
-const drain::EnumDict<TextStyle::Colour>::dict_t drain::EnumDict<TextStyle::Colour>::dict = {
+const drain::Enum<TextStyle::Colour>::dict_t drain::Enum<TextStyle::Colour>::dict = {
 		{"BLACK", TextStyle::BLACK},
 		{"GRAY", TextStyle::GRAY},
 		{"WHITE", TextStyle::WHITE},
@@ -69,7 +69,7 @@ const drain::EnumDict<TextStyle::Colour>::dict_t drain::EnumDict<TextStyle::Colo
 };
 
 template <>
-const drain::EnumDict<TextStyle::Line>::dict_t drain::EnumDict<TextStyle::Line>::dict = {
+const drain::Enum<TextStyle::Line>::dict_t drain::Enum<TextStyle::Line>::dict = {
 		{"NO_LINE", TextStyle::NO_LINE}, // deprecating
 		{"UNDERLINE", TextStyle::UNDERLINE},
 		{"DOUBLE_UNDERLINE", TextStyle::DOUBLE_UNDERLINE},

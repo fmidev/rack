@@ -255,8 +255,8 @@ protected:
 	// horzRadius(11.0, 12.0), vertRadius(-1.0, -1.0) {
 	parameters.link("width",  horzRadius.tuple(), "pix").fillArray = true;
 		parameters.link("height", vertRadius.tuple(), "pix").fillArray = true;
-		parameters.link("topology", pixelAdjacencyStr = "16-CONNECTED", sprinter(EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()).str());
-		//drain::sprinter(drain::EnumDict<DataOrder::Oper>::dict.getKeys()).str()
+		parameters.link("topology", pixelAdjacencyStr = "16-CONNECTED", sprinter(Enum<DistanceModel::PIXEL_ADJACENCY>::dict.getKeys()).str());
+		//drain::sprinter(drain::Enum<DataOrder::Oper>::dict.getKeys()).str()
 		// ? update();
 		setMax(255); // warning
 		// drain::Logger mout(getImgLog(), __FUNCTION__, getName());

@@ -41,7 +41,7 @@ const float DistanceModel::nan_f = std::numeric_limits<float>::quiet_NaN();
 // PixelAdjacencyFlagger pixelAdjacency;
 
 template <>
-const EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict_t EnumDict<DistanceModel::PIXEL_ADJACENCY>::dict = {
+const Enum<DistanceModel::PIXEL_ADJACENCY>::dict_t Enum<DistanceModel::PIXEL_ADJACENCY>::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::DistanceModel, CONN_UNSET),
 		// {"UNSET",   	drain::image::DistanceModel::CONN_UNSET},
 		// Idea in the following ones: leading digits are enough to identify

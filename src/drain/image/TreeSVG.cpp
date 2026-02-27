@@ -340,7 +340,7 @@ void NodeSVG::specificAttributesToStream(std::ostream & ostr) const {
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
-	return hasChild(EnumDict<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
+	return hasChild(Enum<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
 }
 
 /// Set the type.
@@ -357,7 +357,7 @@ image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
-	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
+	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
 }
 
 
@@ -368,7 +368,7 @@ image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
-	return (*this)[EnumDict<image::svg::tag_t>::dict.getKey(type, false)];
+	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
 }
 
 template <> // for T (Tree class)

@@ -37,7 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-//#include <drain/util/EnumUtils.h>
+//#include <drain/EnumUtils.h>
 #include "SelectorXML.h"
 
 namespace drain {
@@ -48,7 +48,7 @@ namespace drain {
 /*
 template <>
 void StringConverter<PseudoClassCSS>::convertToString(const PseudoClassCSS & value, std::string &s){
-	s.assign(EnumDict<PseudoClassCSS>::dict.getKey(value));
+	s.assign(Enum<PseudoClassCSS>::dict.getKey(value));
 }
 */
 

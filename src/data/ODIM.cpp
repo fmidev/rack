@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "QuantityMap.h"
 
 //template <>
-//const drain::EnumDict<rack::ODIM::Version>::dict_t drain::EnumDict<rack::ODIM::Version>::dict = {
+//const drain::Enum<rack::ODIM::Version>::dict_t drain::Enum<rack::ODIM::Version>::dict = {
 DRAIN_ENUM_DICT(rack::ODIM::Version) = {
 		{"2.2",  rack::ODIM::ODIM_2_2 },
 		{"2.3",  rack::ODIM::ODIM_2_3 },

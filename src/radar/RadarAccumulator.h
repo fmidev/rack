@@ -408,7 +408,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 	// TODO: clean confusing mixture of referring to dataCoder.dataODIM <==> odimData
 	DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
 
-	//mout.debug("extracting field '", field, "' = ", static_cast<int>(field), " #", drain::EnumDict<drain::image::Accumulator::FieldType>::dict.getKey(field));
+	//mout.debug("extracting field '", field, "' = ", static_cast<int>(field), " #", drain::Enum<drain::image::Accumulator::FieldType>::dict.getKey(field));
 	mout.debug("extracting field '", field, "' (", static_cast<int>(field), ")");
 
 	{

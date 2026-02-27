@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <map>
 #include <drain/PseudoTuple.h>
-#include <drain/util/Dictionary.h>
+#include <drain/Dictionary.h>
 
 namespace drain
 {

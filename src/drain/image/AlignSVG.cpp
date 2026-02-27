@@ -32,10 +32,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /*
  * TreeSVG.cpp
  *
- *  Created on: Jun 24, 2012
  *      Author: mpeura
  */
 
+#include <drain/Log.h>
+#include <drain/StringTools.h>
 #include <drain/image/AlignAnchorSVG.h>
 
 namespace drain {
@@ -47,8 +48,6 @@ namespace image {
  *  FILL must be left as a flag.
  *
  */
-// template <>
-// const drain::EnumDict<AlignBase::Pos>::dict_t drain::EnumDict<AlignBase::Pos>::dict
 DRAIN_ENUM_DICT(AlignBase::Pos) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, UNDEFINED_POS),
 		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MAX),
@@ -57,8 +56,6 @@ DRAIN_ENUM_DICT(AlignBase::Pos) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, FILL),
 };
 
-// template <>
-// const drain::EnumDict<AlignBase::Axis>::dict_t drain::EnumDict<AlignBase::Axis>::dict
 DRAIN_ENUM_DICT(AlignBase::Axis) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Axis, HORZ),
 		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Axis, VERT),
@@ -66,8 +63,6 @@ DRAIN_ENUM_DICT(AlignBase::Axis) = {
 
 // -----------------------------------------------------------------------------------------------------------
 
-// template <>
-// const drain::EnumDict<AlignSVG::Owner>::dict_t drain::EnumDict<AlignSVG::Owner>::dict
 DRAIN_ENUM_DICT(AlignSVG::Owner) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, OBJECT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, ANCHOR),
@@ -81,7 +76,7 @@ const AlignSVG::HorzAlign AlignSVG::HORZ_FILL(AlignBase::Pos::FILL);
 const AlignSVG::HorzAlign AlignSVG::UNDEFINED_HORZ(AlignBase::Pos::UNDEFINED_POS);
 
 // template <>
-// const drain::EnumDict<AlignSVG::HorzAlign>::dict_t  drain::EnumDict<AlignSVG::HorzAlign>::dict = {
+// const drain::Enum<AlignSVG::HorzAlign>::dict_t  drain::Enum<AlignSVG::HorzAlign>::dict = {
 DRAIN_ENUM_DICT(AlignSVG::HorzAlign) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
@@ -97,7 +92,7 @@ const AlignSVG::VertAlign AlignSVG::VERT_FILL(AlignBase::Pos::FILL);
 const AlignSVG::VertAlign AlignSVG::UNDEFINED_VERT(AlignBase::Pos::UNDEFINED_POS);
 
 // template <>
-// const drain::EnumDict<AlignSVG::VertAlign>::dict_t  drain::EnumDict<AlignSVG::VertAlign>::dict
+// const drain::Enum<AlignSVG::VertAlign>::dict_t  drain::Enum<AlignSVG::VertAlign>::dict
 DRAIN_ENUM_DICT(AlignSVG::VertAlign) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
@@ -112,7 +107,7 @@ DRAIN_TYPENAME_DEF(AlignSVG::VertAlign);
 
 
 // template <>
-// const drain::EnumDict<Alignment<> >::dict_t  drain::EnumDict<Alignment<> >::dict = {
+// const drain::Enum<Alignment<> >::dict_t  drain::Enum<Alignment<> >::dict = {
 DRAIN_ENUM_DICT(Alignment<>) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
@@ -157,7 +152,7 @@ void AlignSVG::setAlign(const std::string & align){
 			break;
 		// case 1:
 			//mout.attention("Setting: ", conf[0]);
-			//setAlign(EnumDict<Alignment<> >::getValue(conf[0], false).pos);
+			//setAlign(Enum<Alignment<> >::getValue(conf[0], false).pos);
 			//setAlign(conf[0], conf[1]);
 			//break;
 		default:
@@ -210,7 +205,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 					//ostr << '.';
 				}
 
-				const std::string & key = drain::EnumDict<Alignment<> >::dict.getKey(Alignment<>(axis, pos), true);
+				const std::string & key = drain::Enum<Alignment<> >::dict.getKey(Alignment<>(axis, pos), true);
 				if (!key.empty()){
 					ostr << key;
 				}
@@ -218,7 +213,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 					ostr << axis << '-' << pos;
 				}
 
-				//std::cerr << __FUNCTION__ << ':' << EnumDict<AlignAnchorSVG::Owner>::dict.getKey(p) << '_' << EnumDict<AlignAnchorSVG::axis_t>::dict.getKey(a) << '_' << EnumDict<AlignAnchorSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
+				//std::cerr << __FUNCTION__ << ':' << Enum<AlignAnchorSVG::Owner>::dict.getKey(p) << '_' << Enum<AlignAnchorSVG::axis_t>::dict.getKey(a) << '_' << Enum<AlignAnchorSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
 			}
 
 			alignment |= (((bitvect_t)pos)<<bitShift);
@@ -245,7 +240,7 @@ void AlignSVG::swapAlign(AlignSVG & align){
 }
 
 // template <>
-// const drain::EnumDict<AlignSVG::Topol>::dict_t drain::EnumDict<AlignSVG::Topol>::dict
+// const drain::Enum<AlignSVG::Topol>::dict_t drain::Enum<AlignSVG::Topol>::dict
 DRAIN_ENUM_DICT(drain::image::AlignSVG::Topol)= {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Topol, INSIDE),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Topol, OUTSIDE),

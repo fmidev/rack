@@ -40,9 +40,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-typedef drain::EnumDict<XML::entity_t> xml_entity;
+typedef drain::Enum<XML::entity_t> xml_entity;
 
-#define DRAIN_XML_ENTITY(entity) {entity_t::entity, drain::EnumDict<XML::entity_t>::dict.getKey(entity_t::entity)}
+#define DRAIN_XML_ENTITY(entity) {entity_t::entity, drain::Enum<XML::entity_t>::dict.getKey(entity_t::entity)}
 
 
 /// Uses spaces as separators.
@@ -62,7 +62,7 @@ const XML::intval_t XML::SCRIPT;
  *
  *  https://www.w3schools.com/charsets/ref_utf_basic_latin.asp
  */
-// template <> const drain::EnumDict<XML::entity_t>::dict_t drain::EnumDict<XML::entity_t>::dict
+// template <> const drain::Enum<XML::entity_t>::dict_t drain::Enum<XML::entity_t>::dict
 DRAIN_ENUM_DICT(XML::entity_t)  = {
 		{"&#38;",  XML::AMPERSAND},  // &amp;
 		{"&#60;",  XML::LESS_THAN},  // &lt;
@@ -191,7 +191,7 @@ const std::map<char,std::string> & XML::getEntityMap(){
 	static std::map<char,std::string> m;
 
 	if (m.empty()){
-		for (const auto & entry: drain::EnumDict<drain::XML::entity_t>::dict){
+		for (const auto & entry: drain::Enum<drain::XML::entity_t>::dict){
 			switch (entry.second) {
 				case XML::entity_t::NONBREAKABLE_SPACE:
 				case XML::entity_t::EQUAL_TO:

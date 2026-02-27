@@ -247,8 +247,8 @@ public:
 	 */
 	virtual
 	const std::string & getTag() const {
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
-		return drain::EnumDict<T>::getDict().getKey((T)type, false);
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::Enum<T>::dict) << std::endl; // <<
+		return drain::Enum<T>::getDict().getKey((T)type, false);
 	}
 
 	/**
@@ -256,8 +256,8 @@ public:
 	 */
 	static inline // needed?
 	const std::string & getTag(const T & type){
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::EnumDict<T>::dict) << std::endl; // <<
-		return drain::EnumDict<T>::getDict().getKey((T)type, false);
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::Enum<T>::dict) << std::endl; // <<
+		return drain::Enum<T>::getDict().getKey((T)type, false);
 	}
 
 
@@ -385,14 +385,14 @@ inline
 void NodeXML<int>::handle Type(const int & type){
  // DANGER, without cast?
 	std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? " << type << '=' << std::endl;
-	std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::EnumDict<int,XML>::dict) << std::endl;
+	std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::Enum<int,XML>::dict) << std::endl;
 }
 */
 
 template <>
 inline
 const std::string & NodeXML<int>::getTag() const {
-	return drain::EnumDict<int,XML>::dict.getKey(this->type, false);
+	return drain::Enum<int,XML>::dict.getKey(this->type, false);
 }
 
 typedef NodeXML<>::xml_tree_t TreeXML;
