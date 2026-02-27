@@ -37,11 +37,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <stdexcept>
 #include <string>
 
-// #include <proj.h>
-// #include <drain/Dictionary.h>
+#include <drain/Log.h>
 #include "Point.h"
 #include "Projector.h"
-// #include "TreeUnordered.h"
 
 
 namespace drain

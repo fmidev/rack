@@ -38,6 +38,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+/// String-like object easily supporting conversion from other types, like Enum values.
+/**
+ *
+ *
+ *  \see SelectorXML
+ *  \see StringWrapper<PseudoClassCSS>
+ *
+ */
 template <typename T>
 class StringWrapper : public std::string {
 
@@ -53,6 +61,35 @@ public:
 	StringWrapper(const T & x){
 		set(x);
 	};
+
+	// imitating std::string
+	StringWrapper<T> & operator=(const std::string & s){
+		assign(s);
+		return *this;
+	}
+
+	StringWrapper<T> & operator=(const char *s){
+		assign(s);
+		return *this;
+	}
+
+	StringWrapper<T> & operator=(char c){
+		std::string::operator=(c);
+		return *this;
+	}
+
+	/// Copy string of another StringWrapper.
+	template <typename T2>
+	StringWrapper<T> & operator=(const StringWrapper<T2> & s){
+		assign(s);
+		return *this;
+	}
+
+	template <typename T2>
+	StringWrapper<T> & operator=(const T2 & x){
+		set(x);
+		return *this;
+	}
 
 
 	inline

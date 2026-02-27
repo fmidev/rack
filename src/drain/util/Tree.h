@@ -492,17 +492,16 @@ public:
 	template <class K>
 	inline
 	tree_t & operator[](const K & key){
-		//return retrieveChild(getKey(key)); // 2025
-		return retrieveChild(key); // OLD
+		return retrieveChild(getKey(key)); // 2026/02
+		//return retrieveChild(key); // OLD
 	}
 
 	/// NEW 2025 templated child addressing operator
 	template <class K>
 	inline
 	const tree_t & operator[](const K & key) const {
-		// return retrieveChild(getKey(key)); // 2025
-		// return retrieveChild(static_cast<key_t>(key)); // OLD
-		return retrieveChild(key); // OLD
+		return retrieveChild(getKey(key)); // 2026/02
+		// return retrieveChild(key); // OLD
 	}
 
 
@@ -732,11 +731,14 @@ x	 *  \see clearData()
 	 */
 	virtual inline
 	bool hasChild(const key_t &key) const {
-		#ifdef DRAIN_TREE_ORDERED  // map
+
+		#ifdef DRAIN_TREE_ORDERED
+		// map -> native (NlogN) search
 
 		return (children.find(key) != children.end());
 
 		#else
+		// list -> brute-force search
 
 		for (const auto & entry: children){
 			if (entry.first == key){
@@ -752,8 +754,8 @@ x	 *  \see clearData()
 	template <typename K>
 	inline
 	bool hasChild(const K &key) const {
-		//return hasChild(getKey(key)); 2025
-		return hasChild(static_cast<key_t>(key)); // OLDISH
+		return hasChild(getKey(key)); // 2025
+		// return hasChild(static_cast<key_t>(key)); // OLDISH
 	}
 
 
@@ -797,19 +799,29 @@ x	 *  \see clearData()
 		return addChild(key);
 	}
 
-
-	/// Add a child node. If UNORDERED and not MULTIPLE, reuse existing nodes.
 	/**
 	 *   Behaviour of this function varies as follows:
 	 *
 	 *   - OrderedTree: return child named \c key, if exists
-	 *   - UnorderedTree, UNIQUE==true:  return the first child named \c key, if exists, else create one.
+	 *   - UnorderedTree, MULTIPLE:  return the first child named \c key, if exists, else create one.
 	 *   - UnorderedTree, UNIQUE==false: always create a new child named \c key and return it.
 	 *
+	 *   If UNORDERED and not MULTIPLE, reuse existing nodes.
 	 *
 	 */
-	//virtual
-	//tree_t & addChild(const key_t & key = key_t()){ // Added default empty 2024/04
+	//  retrieve
+
+	/// Ensure that a child node with given key exists. For MULTIPLE, always add one.
+	/**
+	 *   Behaviour of this function varies as follows:
+	 *
+	 *   - OrderedTree: create a child, if nonexistent.
+	 *   - UnorderedTree, MULTIPLE:  always add a child.
+	 *   - UnorderedTree, not MULTIPLE: create a child, if nonexistent
+	 *
+	 *   This implementation, OrderedTree has always unique keys for children.
+	 *
+	 */
 	tree_t & addChild(const key_t & key){ // 2026/01 : explicit arg
 
 		if (key.empty()){ // Should be exceptional... Warning?
@@ -824,7 +836,7 @@ x	 *  \see clearData()
 		}
 
 		#ifdef DRAIN_TREE_ORDERED
-		// Always unique (non-multiple)
+		// Always unique ( ==non-multiple)
 		iterator it = children.find(key);
 		if (it != children.end()){
 			return it->second;
@@ -833,27 +845,25 @@ x	 *  \see clearData()
 			tree_t & child = children.insert(children.begin(), pair_t(key, tree_t()))->second;
 			initChild(child);
 			return child;
-			//return children.insert(children.begin(), pair_t(key, tree_t()))->second;
 		}
-		//return children[key];
 
 		#else
 
-		// Try searching first
+		// If not MULTIPLE, return the child if it exists
 		if (!isMultiple()){
 			for (auto & entry: children){
+				// Brute-force search
 				if (entry.first == key){
 					return entry.second;
 				}
 			}
 		}
 
-		// Add:
+		// Add a child.
 		children.push_back(pair_t(key, tree_t()));
-		tree_t & child = children.back().second; //children.insert(children.begin(), pair_t(key, tree_t()))->second;
+		tree_t & child = children.back().second;
 		initChild(child);
 		return child;
-		//return children.back().second;
 
 		#endif
 	};
@@ -865,7 +875,8 @@ x	 *  \see clearData()
 	template <typename E>
 	tree_t & addChild(const E & key){
 		// Cast ensures forwarding to main function
-		return addChild(static_cast<key_t>(getKey(key)));
+		//return addChild(static_cast<key_t>(getKey(key)));
+		return addChild(getKey(key));
 	};
 
 
@@ -1021,13 +1032,6 @@ x	 *  \see clearData()
 		}
 	}
 
-protected:
-
-	container_t children;
-
-	static
-	const tree_t emptyNode;
-
 	/// "Default implementation" of key conversion – the identity mapping.
 	/*
 	 *  As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
@@ -1053,6 +1057,15 @@ protected:
 	template <typename K>
 	static
 	const key_t & getKey(const K & key); // left undefined!
+
+
+protected:
+
+	container_t children;
+
+	static
+	const tree_t emptyNode;
+
 
 
 	/// Checks if there is a node with a given path name.

@@ -36,16 +36,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef HI5_BASE
 #define HI5_BASE
 
-
+#include <list>
+#include <map>
+#include <string>
 
 #include <hdf5.h>
 
-#include <string>
-#include <list>
-
 #include <drain/Log.h>
-// #include <drain/VariableAssign.h>
-// #include <drain/Variable.h>
 #include <drain/image/Image.h>
 #include <drain/util/FileInfo.h>
 #include <drain/util/TreeOrdered.h>
@@ -102,8 +99,16 @@ struct NodeHi5 {
 	//void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
 	void writeText(std::ostream & ostr = std::cout, const rack::ODIMPath & prefix = rack::ODIMPath()) const;
 
+	/// Marker for excluding from any "serious" file write.
+	/**
+	 *   Marker for excluding from any "serious" file write.
+	 */
+	bool exclude;
+
 	/// Experimental
-	bool exclude;  // OK!
+	typedef std::map<std::string, rack::ODIMPathElem> lookup_t;
+	// static
+	// lookup_t lookUp;
 
 };
 
@@ -114,6 +119,29 @@ struct NodeHi5 {
 typedef drain::OrderedTree<hi5::NodeHi5, false, rack::ODIMPath> Hi5Tree;
 
 namespace drain {
+
+
+/*
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const ClassXML & cls){
+	// return Enum<image::svg::tag_t>::dict.getKey(type, false);
+	return image::TreeSVG::getKey(cls.strPrefixed());
+}
+*/
+
+// Experimental implementations, based on above example
+
+// Basic idea: a static map is maintained. TODO: check its contents upon rack exit.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const rack::ODIMPathElem & Hi5Tree::getKey(const std::string  & key);
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const rack::ODIMPathElem & Hi5Tree::getKey(const rack::ODIMPathElem::group_t  & key);
+
 
 /*
 template <>

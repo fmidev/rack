@@ -164,9 +164,25 @@ DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
 DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::GroupType);
 
 #include "TreeSVG.h"
+
+// NEW
+namespace drain {
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::LayoutSVG::GroupType & type){
+	return Enum<image::LayoutSVG::GroupType>::dict.getKey(type, false);
+}
+
+}
+
+// OLD
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool drain::image::TreeSVG::hasChild(const drain::image::LayoutSVG::GroupType & type) const;
+*/
 
 #endif // DRAIN_ALIGN_SVG_H_
 

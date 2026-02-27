@@ -219,13 +219,6 @@ TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
 }
 */
 
-// Preferred template specification
-template <>
-template <>
-inline
-bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
-	return TreeHTML::hasChild(Enum<Html::tag_t>::dict.getKey(type, false));
-}
 
 
 // Preferred template specification
@@ -237,6 +230,29 @@ TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
 }
 
 
+// NEW 2026/02/27 replacing many!?
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const TreeHTML::key_t & TreeHTML::getKey(const Html::tag_t & type){
+	return Enum<Html::tag_t>::dict.getKey(type, false);
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const TreeHTML::key_t & TreeHTML::getKey(const ClassXML & cls){
+	return cls.strPrefixed();
+}
+
+/*
+// old template specification
+template <>
+template <>
+inline
+bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
+	return TreeHTML::hasChild(Enum<Html::tag_t>::dict.getKey(type, false));
+}
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -257,11 +273,10 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const TreeHTML & TreeHTML::operator[](const ClassXML & cls) const ;
 
-
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool TreeHTML::hasChild(const ClassXML & cls) const;
-
+*/
 
 template <>
 inline
@@ -301,7 +316,8 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 }
 
 
-
+// TODO: try
+// DRAIN_TYPENAME_STR
 DRAIN_TYPENAME(NodeHTML);
 DRAIN_TYPENAME(Html);
 DRAIN_TYPENAME(Html::tag_t);

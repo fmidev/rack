@@ -43,6 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include <string>
 //#include "drain/util/EnumFlags.h"
+#include <drain/Log.h>
 
 #include "AlignSVG.h"
 

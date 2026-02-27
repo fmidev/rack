@@ -46,6 +46,8 @@ DRAIN_TYPENAME_DEF(Html);
 DRAIN_TYPENAME_DEF(Html::tag_t);
 
 
+const FileInfo NodeHTML::fileInfo("html");
+
 template <>
 NodeHTML::xmldoc_attrib_map_t NodeHTML::xml_node_t::xmldoc_attribs = {
 		{"version",  "1.0"},
@@ -119,7 +121,7 @@ DRAIN_ENUM_DICT(Html::tag_t) = { // drain::Enum<Basehtml::tag_t>::getDict(); // 
 		{"ul", drain::Html::UL},
 };
 
-
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 TreeHTML & TreeHTML::operator[](const Html::tag_t & type){
@@ -151,7 +153,7 @@ template <> // for K (path elem arg)
 bool TreeHTML::hasChild(const ClassXML & cls) const {
 	return hasChild(cls.strPrefixed());
 }
-
+*/
 
 // TODO: macro with lowerCaser
 // TODO: mark some non-self-closing like <script/>
@@ -221,8 +223,6 @@ bool NodeHTML::isExplicit() const {
 
 }
 
-
-const FileInfo NodeHTML::fileInfo("html");
 
 
 

@@ -165,6 +165,22 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 }  // image::
 
+// This is perhaps not used. At least make not much sense
+// Anchor elems are relational (elem-to-elem), hence not general keys for SVG elems.
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::AnchorElem::Anchor & type){
+	return Enum<image::AnchorElem::Anchor>::dict.getKey(type, false);
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::AnchorElem & elem){
+	return image::TreeSVG::getKey(elem.str());
+}
+
 }  // drain::
 
 

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/SelectorXML.h>
 #include <drain/image/LayoutSVG.h>
-#include <drain/util/EnumUtils.h>
+#include <drain/Enum.h>
 
 #include "graphics-radar.h"
 

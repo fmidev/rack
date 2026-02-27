@@ -579,10 +579,39 @@ template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
 
 
+
+// NEW 2026/02/27 replacing many!?
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::svg::tag_t & type){
+	return Enum<image::svg::tag_t>::dict.getKey(type, false);
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const ClassXML & cls){
+	//return Enum<image::svg::tag_t>::dict.getKey(type, false);
+	return image::TreeSVG::getKey(cls.strPrefixed()); // const !
+}
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+inline
+const image::TreeSVG::key_t & image::TreeSVG::getKey(const drain::SelectXML<image::svg::tag_t> & sel){
+	return image::TreeSVG::getKey(sel.str()); // const !
+}
+
+
+
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
+*/
 
+/*
 /// Automatic conversion of element type (enum value) to a string.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -609,6 +638,7 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const ;
 
+*/
 
 /*
 template <>

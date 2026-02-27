@@ -30,15 +30,91 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 
-#include <drain/TypeUtils.h>
 #include <fstream>
 
+#include <drain/TypeUtils.h>
 #include <drain/Dictionary.h>
 #include <drain/util/JSON.h>
 
 #include "Hi5.h"
 
 
+namespace drain {
+
+// Limited set
+/*
+template <>
+drain::Enum<rack::ODIMPathElem::group_t, signed long>::dict_t drain::Enum<rack::ODIMPathElem::group_t>::dict = {
+		// {"dataset", rack::ODIMPathElem::DATASET},
+		// {"data",  rack::ODIMPathElem::DATA},
+		{"what",  rack::ODIMPathElem::WHAT},
+		{"where", rack::ODIMPathElem::WHERE},
+		{"array", rack::ODIMPathElem::ARRAY},
+		// {"palette",   rack::ODIMPathElem::PALETTE},
+		// {"legend",   rack::ODIMPathElem::LEGEND},
+};
+*/
+
+
+// Experimental implementation, based on above example
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const rack::ODIMPathElem & Hi5Tree::getKey(const std::string  & key){
+
+	typedef std::map<std::string, rack::ODIMPathElem> lookup_t;
+
+	static // const? or extend for somebody using odd ones?
+	lookup_t myLookUp = {
+		// starters kit...
+		{"what",  rack::ODIMPathElem(rack::ODIMPathElem::WHAT)},
+		{"where", rack::ODIMPathElem(rack::ODIMPathElem::WHERE)},
+		{"how",   rack::ODIMPathElem(rack::ODIMPathElem::HOW)},
+	};
+
+	typename lookup_t::iterator it = myLookUp.find(key);
+	if (it != myLookUp.end()){
+		return it->second;
+	}
+	else {
+		rack::ODIMPathElem & elem = myLookUp[key];
+		elem.set(key);
+		std::cerr << "warning: added elem " << elem << " for key '" << key << "'\n";
+		return elem;
+	}
+	//return drain::Enum<rack::ODIMPathElem::group_t>::dict.getKey(key, false);
+
+}
+
+
+
+template <> // for T (Tree class)
+template <> // for K (path elem arg)
+const rack::ODIMPathElem & Hi5Tree::getKey(const rack::ODIMPathElem::group_t  & key){
+
+	typedef std::map<rack::ODIMPathElem::group_t, rack::ODIMPathElem> lookup_t;
+
+	static // const? or extend for somebody using odd ones?
+	lookup_t myLookUp = {
+		{rack::ODIMPathElem::WHAT, rack::ODIMPathElem(rack::ODIMPathElem::WHAT)},
+		{rack::ODIMPathElem::WHERE, rack::ODIMPathElem(rack::ODIMPathElem::WHERE)},
+		{rack::ODIMPathElem::HOW, rack::ODIMPathElem(rack::ODIMPathElem::HOW)},
+	};
+
+	typename lookup_t::iterator it = myLookUp.find(key);
+	if (it != myLookUp.end()){
+		return it->second;
+	}
+	else {
+		rack::ODIMPathElem & elem = myLookUp[key];
+		elem.set(key);
+		std::cerr << "warning: added elem " << elem << " for index=" << key << '\n';
+		return elem;
+	}
+	//return drain::Enum<rack::ODIMPathElem::group_t>::dict.getKey(key, false);
+
+}
+
+}
 
 namespace hi5 {
 
@@ -53,6 +129,7 @@ drain::Log & getLogH5(){
 	return hi5monitor;
 }
 
+// std::map<std::string, rack::ODIMPathElem> NodeHi5::lookUp;
 
 
 void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {

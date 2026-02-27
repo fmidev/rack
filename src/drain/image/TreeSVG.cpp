@@ -354,28 +354,34 @@ image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
 /**
  *  Convenience
  */
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
 	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
 }
+*/
 
 
 /// Automatic conversion of element type (enum value) to a string.
 /**
  *   Convenience
  */
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
 	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
 }
+*/
 
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const ClassXML & cls) const {
 	return hasChild(cls.strPrefixed()); // no error on non-existent dict entry
 }
+
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -389,7 +395,7 @@ template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const {
 	return (*this)[cls.strPrefixed()];
 }
-
+*/
 
 }  // drain::
 
