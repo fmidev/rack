@@ -295,6 +295,7 @@ public:
 
 
 #ifdef DRAIN_TYPE_UTILS
+DRAIN_TYPENAME_STR(TreeUtils);
 /*
 template <>
 struct TypeName<TreeUtils> {

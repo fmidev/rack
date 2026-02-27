@@ -36,9 +36,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <cstddef>
 #include <iostream>
 #include <sstream>
-#include <typeinfo>
 #include <stdexcept>
 #include <string>
+#include <typeinfo>
 //#include <set>
 
 #include "StringBuilder.h"
@@ -329,14 +329,15 @@ public:
 	 */
 	virtual
 	void toStreamFormatted(std::ostream & ostr, char separator=',') const {
-	// void toStream(std::ostream & ostr) const {
-		//, char separator=','
+
+		// Keep for debugging ostr << TypeName<S>::str();
 		char sep = 0;
 		for (const_iterator it = begin(); it != end(); ++it){
 			if (sep)
 				ostr << sep;
 			else
 				sep = separator;
+			ostr << std::boolalpha; // does not work
 			ostr << *it;
 		}
 		//return ostr;

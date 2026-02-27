@@ -53,16 +53,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// Determines if separators will be stored in the path.
+/// Determines how separator char (often / ) will be handled in the path.
 /*
  *
- *  In unix style, intermediate separators are accepted but not stored.
+ *  In Unix style, intermediate separators are accepted but not stored.
  *
  *  Note that technically, accepting leading, intermediate or trailing separators means also
  *  accepting \e empty path elements, respectively.
  *
  *  When using strings as path elements, the root is identified with an empty string -- not actually with the separator char like '/'.
  *
+ *  Future option: const version implemended as fully templated class (perhaps with const UniTuple ).
  */
 struct PathSeparatorPolicy : UniTuple<bool,3> {
 
@@ -91,9 +92,33 @@ struct PathSeparatorPolicy : UniTuple<bool,3> {
 
 };
 
+DRAIN_TYPENAME(PathSeparatorPolicy);
+
+/*
+template <class T,char SEP, bool ALEAD, bool AREPEAT, bool ATRAIL>
+struct TypeName<Path<T,SEP, ALEAD, AREPEAT, ATRAIL> > {
+
+	typedef Path<T,SEP, ALEAD, AREPEAT, ATRAIL> path_t;
+
+    static
+	const std::string & str(){
+
+    	static const std::string name = drain::StringBuilder<>(
+    			"Path<", TypeName<T>::str(), ">[", SEP?SEP:'?', "](", ALEAD, AREPEAT, ATRAIL, ')');
+    											//'<', drain::Type::call<drain::simpleName>(typeid(typename tree_t::node_data_t)), '>');
+    	return name;
+    }
+
+};
+*/
+
 inline
 std::ostream & operator<<(std::ostream & ostr, const PathSeparatorPolicy & policy) {
-	ostr << "Separator='" << policy.character << "', policy=" << policy.tuple();
+	ostr << "PathSeparatorPolicy";
+	if (policy.character){
+		ostr << '[' << policy.character << ']';
+	}
+	ostr << '(' << policy.tuple() << ')';
 	return ostr;
 }
 
@@ -209,30 +234,40 @@ public:
 		append(args...);
 	}
 
-	// NEW
+	/// Add elements, first of which is a character. Any string argument is handled as a path.
 	template <typename ... TT>
 	void append(char c, const TT &... args) {
-		appendElem(c);
+		if (!c){
+			std::cerr << __FILE__ << ' ' << __FUNCTION__ << "::" << " null separator char \n";
+		}
+		else if (c==separator.character){
+			appendElem(elem_t());
+		}
+		else {
+			appendElem(std::string(1,c));
+		}
 		append(args...);
 	}
 
+	/// Add elements. Any string argument handled as a path.
 	template <typename ... TT>
 	void append(const char * arg, const TT &... args) {
-		_appendPath(arg, 0);
+		appendSubStr(arg, 0);
 		append(args...);
 	}
 
+	/// Add elements. Any string argument handled as a path.
 	template <typename ... TT>
 	void append(const std::string &arg, const TT &... args) {
-		_appendPath(arg, 0);
+		appendSubStr(arg, 0);
 		append(args...);
 	}
 
 
-	/// Specialized handler for strings (note, possibly: elem_t==std:::string)
+	/// Add path. Specialized handler for strings (note, possibly: elem_t==std:::string)
 	inline
 	void appendPath(const char *p){
-		_appendPath(p, 0);
+		appendSubStr(p, 0);
 	}
 
 	// Reverse convenience...
@@ -301,7 +336,7 @@ public:
 		//return separator.acceptLeading && ((this->size()==1) && this->front().empty());
 	}
 
-	/// Returns true, if the path is not empty and the  first element is empty.
+	/// Returns true, if the path is not empty and the first element is empty.
 	/**
 	 *
 	 *  \see isRoot()
@@ -595,7 +630,7 @@ protected:
 	*/
 
 	/// Extract elements from the string, starting at position i.
-	void _appendPath(const std::string & p, size_t start=0){
+	void appendSubStr(const std::string & p, size_t start=0){
 
 		if (start == p.length()){
 			// Last char in the string has been passed by one, meaning that: previous elem was empty
@@ -617,7 +652,7 @@ protected:
 		else {
 			// ... contains separator, hence contains several elements
 			appendElem(p.substr(start, nextSep - start)); // maybe empty, nextSep==start
-			_appendPath(p, nextSep + 1);
+			appendSubStr(p, nextSep + 1);
 		}
 
 	}
@@ -669,6 +704,25 @@ Path<T> & operator<<(Path<T> & path, const Path<T> & path2){
 
 template <class T, char SEP, bool ALEAD, bool AREPEAT, bool ATRAIL>
 const PathSeparatorPolicy Path<T,SEP,ALEAD,AREPEAT,ATRAIL>::separator(SEP, ALEAD, AREPEAT, ATRAIL);
+
+
+template <class T,char SEP, bool ALEAD, bool AREPEAT, bool ATRAIL>
+struct TypeName<Path<T,SEP, ALEAD, AREPEAT, ATRAIL> > {
+
+	// typedef Path<T,SEP, ALEAD, AREPEAT, ATRAIL> path_t;
+
+    static
+	const std::string & str(){
+
+    	static const std::string name = drain::StringBuilder<>(
+    			"Path<", TypeName<T>::str(), ">[", SEP?SEP:'?', "](", ALEAD, AREPEAT, ATRAIL, ')');
+
+    	return name;
+    }
+
+};
+
+
 
 }
 

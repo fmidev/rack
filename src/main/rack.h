@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(18,3)
+#define RACK_VERSION drain::Version<>(18,3,0)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -54,6 +54,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 18.3
  *  - Fixed HTML HEAD bug
  *  - Simplified XML getHeaderObject, ensureStyle
+ *  Release 18.3.1
+ *  - Rename EnumDict -> Enum
  *
  *  Version 17
  *  - Revised XML/HTML/SVG CSS classes

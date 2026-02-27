@@ -554,6 +554,21 @@ protected:
 template <typename T>
 const std::string TypeName<T>::name(typeid(T).name());
 
+
+
+
+/// Default implementation
+/*
+
+*/
+template <typename T>
+inline
+std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
+	ostr << t.str();
+	return ostr;
+}
+
+
 /// Name declaration, for header files.
 #define DRAIN_TYPENAME(tname) template <>      const std::string TypeName<tname>::name
 /// Name definition, for object files.
@@ -561,6 +576,10 @@ const std::string TypeName<T>::name(typeid(T).name());
 
 //#define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return name;}
 #define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return n;}}
+
+// NEW
+/// Simple functor redefinition, only
+#define DRAIN_TYPENAME_STR(tname) template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
 
 
 /// Add a specialization for each type of those you want to support.
@@ -573,7 +592,7 @@ DRAIN_TYPENAME(char);
 DRAIN_TYPENAME(unsigned char);
 DRAIN_TYPENAME(short);
 DRAIN_TYPENAME(unsigned short);
-DRAIN_TYPENAME(int);
+DRAIN_TYPENAME(int);  // see what happend
 DRAIN_TYPENAME(unsigned int);
 DRAIN_TYPENAME(long);
 DRAIN_TYPENAME(unsigned long);

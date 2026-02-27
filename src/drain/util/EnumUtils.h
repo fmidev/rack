@@ -178,11 +178,50 @@ struct EnumDict {
 	}
 	 */
 
+	// Was: separate EnumConverter
+
+	static
+	void convert(const E & value, std::string &s){
+		// std::cerr << "Using fwd EnumConverter" << std::endl;
+		s.assign(dict.getKey(value));
+	};
+
+	static
+	void convert(const std::string &s, E & value){
+		// std::cerr << "Using inv EnumConverter" << std::endl;
+		value = dict.getValue(s);
+	};
+
 };
+
+
+/*
+template <class EnumType>
+class EnumConverter {
+public:
+
+	static
+	void convert(const EnumType & value, std::string &s){
+		// std::cerr << "Using fwd EnumConverter" << std::endl;
+		s.assign(drain::EnumDict<EnumType>::dict.getKey(value));
+	};
+
+	static
+	void convert(const std::string &s, EnumType & value){
+		// std::cerr << "Using inv EnumConverter" << std::endl;
+		value = drain::EnumDict<EnumType>::dict.getValue(s);
+	};
+
+};
+*/
+
 
 /**
  *   If you want to support assigning several enum sets, use StringWrapper<>
  *   with
+ *
+ *   \see MultiEnumWrapper
+ *   \see StringWrapper
  */
 template <typename E, bool STRICT=true>
 class EnumWrapper : public std::string { // StringWrapper<E> {
@@ -193,6 +232,8 @@ public:
 	EnumWrapper(const std::string & s=""){ //  : std::string(s){
 		set(s);
 	};
+
+	// what about: const char *
 
 	/// All the other constructors, including default constructor.
 	inline
@@ -215,6 +256,11 @@ public:
 
 };
 
+/**
+ *
+ *   \see EnumWrapper
+ *   \see StringWrapper
+ */
 class MultiEnumWrapper : public std::string { // StringWrapper<E> {
 
 public:
@@ -390,23 +436,12 @@ public:
 };
 
 
-template <class EnumType>
-class EnumConverter {
-public:
-
-	static
-	void convert(const EnumType & value, std::string &s){
-		// std::cerr << "Using fwd EnumConverter" << std::endl;
-		s.assign(drain::EnumDict<EnumType>::dict.getKey(value));
-	};
-
-	static
-	void convert(const std::string &s, EnumType & value){
-		// std::cerr << "Using inv EnumConverter" << std::endl;
-		value = drain::EnumDict<EnumType>::dict.getValue(s);
-	};
-
-};
+/**
+ *   To use this,
+ *   1) #include <drain/Converter.h>
+ *   2) set this in namespace drain
+ */
+#define DRAIN_ENUM_CONV(enumtype) template <> class Converter<enumtype> : public EnumDict<enumtype> {}
 
 
 } // drain::
@@ -418,10 +453,6 @@ public:
 
 #define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream & operator<<(std::ostream &ostr, const enumtype & e){return ostr << drain::EnumDict<enumtype>::dict.getKey(e);}
 
-/**
- *   To use this, you must also  #include <drain/Converter.h>
- */
-#define DRAIN_ENUM_CONV(enumtype) template <> class Converter<enumtype> : public EnumConverter<enumtype> {}
 
 
 #endif

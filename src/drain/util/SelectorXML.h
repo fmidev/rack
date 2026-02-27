@@ -62,7 +62,7 @@ enum PseudoClassCSS {
 	visited,
 };
 
-DRAIN_ENUM_CONV(PseudoClassCSS);
+DRAIN_ENUM_CONV(PseudoClassCSS); // for StringWrapper?
 
 
 
@@ -250,101 +250,23 @@ protected:
 
 };
 
-}
+} // drain::
 
 
 
 DRAIN_ENUM_DICT(drain::PseudoClassCSS);
-
-
 DRAIN_ENUM_OSTREAM(drain::PseudoClassCSS);
 
 
 namespace drain {
 
-
-
 template <typename X>
 std::ostream & operator<<(std::ostream & ostr, const drain::SelectXML<X> &x){
-	//return ostr << x.str();
 	x.toStream(ostr);
 	return ostr;
 }
 
 
-/// OLD, Currently used only as CSS element selector.
-/*
-class SelectorXML : public std::string {
-
-public:
-
-	static
-	const char CLASS = '.';
-
-	static
-	const char ID = '#';
-
-
-	inline
-	SelectorXML(const std::string &s) : std::string(s){
-	}
-
-	inline
-	SelectorXML(const char *s) : std::string(s){
-	}
-
-	template <class ...T>
-	inline
-	SelectorXML(T... args) : std::string(StringBuilder<>(args...)){
-	}
-
-};
-*/
-
-// OLD CSS class selector.
-/**  Deprecated
- *
-class SelectorXMLcls : public SelectorXML {
-public:
-
-	template <class C>
-	inline
-	SelectorXMLcls(const C &cls) : SelectorXML(CLASS, cls){
-	}
-
-	template <class E, class C>
-	inline
-	SelectorXMLcls(const E &elem, const C &cls) : SelectorXML(elem, CLASS, cls){
-	}
-
-};
- */
-
-/*
-class SelectorXMLid : public SelectorXML {
-public:
-
-	template <class T>
-	inline
-	SelectorXMLid(const T & arg) : SelectorXML(ID, arg){
-	}
-
-};
-*/
-
-
-/*
-inline
-std::ostream & operator<<(std::ostream &ostr, const TreeXML & t){
-	// DOC def? TODO: preamble/prologToStream()
-	TreeXML::node_data_t::docTypeToStream(ostr); // must be member, to support virtual?
-	TreeXML::node_data_t::toStream(ostr, t, "");
-	return ostr;
-}
-*/
-
-
 }  // drain::
 
-#endif /* TREEXML_H_ */
-
+#endif

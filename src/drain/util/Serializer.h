@@ -215,7 +215,9 @@ public:
 
 	virtual
 	void boolToStream(std::ostream & ostr, bool x) const {
-		ostr << std::ios_base::boolalpha;
+		//Logger mout(__FILE__, __FUNCTION__);
+		//ostr << std::ios_base::boolalpha;
+		ostr << std::boolalpha;
 		ostr << x;
 	}
 

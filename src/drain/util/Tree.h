@@ -782,6 +782,9 @@ x	 *  \see clearData()
 	void initChild(tree_t & child) const {
 	}
 
+	static
+	void generateKey(const tree_t & tree, typename P::elem_t & key);
+
 	/// Add a child with an automatically generated key (path element).
 	/**
 	 *  For example, specialized methods may generate a key (path element) automatically.
@@ -794,8 +797,6 @@ x	 *  \see clearData()
 		return addChild(key);
 	}
 
-	static
-	void generateKey(const tree_t & tree, typename P::elem_t & key);
 
 	/// Add a child node. If UNORDERED and not MULTIPLE, reuse existing nodes.
 	/**
@@ -856,6 +857,18 @@ x	 *  \see clearData()
 
 		#endif
 	};
+
+	/// Converts argument to std:string and calls addChild()
+	/**
+	 *   \tparam E - class other than std:string
+	 */
+	template <typename E>
+	tree_t & addChild(const E & key){
+		// Cast ensures forwarding to main function
+		return addChild(static_cast<key_t>(getKey(key)));
+	};
+
+
 
 	///  Push in the front. This is only available for unordered trees.
 	inline
@@ -998,10 +1011,14 @@ x	 *  \see clearData()
 		return &data;
 	};
 
+
 	/// Replace children (but no data?)
 	inline
 	void swap(tree_t &t){
 		children.swap(t.children);
+		if (!data.empty()){
+			Logger(__FILE__, __FUNCTION__).unimplemented("node data unempty but not swapped");
+		}
 	}
 
 protected:
@@ -1013,33 +1030,30 @@ protected:
 
 	/// "Default implementation" of key conversion – the identity mapping.
 	/*
-	 * As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
+	 *  As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
 	 */
-	/*
 	static inline
 	const key_t & getKey(const key_t & key){
 		return key;
 	}
-	*/
 
-	/// Conversion of char array to key type, which itself should never be a char array.
-	/*
+	/// Conversion of char array to key type (which is never a char array).
+	// NOTE: char * should not be directed to getKey! (But more to inst std::string(key)
+	// Return to temp?
 	static inline
 	key_t getKey(const char * key){
 		return key_t(key);
 	}
-	*/
 
 	/// Mapping of keys of external type - for example an enumerated type - to native \c key_t type.
 	/*
 	 * As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
 	 * Not that this version returns a constant reference.
 	 */
-	/*
 	template <typename K>
 	static
 	const key_t & getKey(const K & key); // left undefined!
-	*/
+
 
 	/// Checks if there is a node with a given path name.
 	/** Could be called hasDescendant; hence is like hasChild() but calls children recursively.
@@ -1147,16 +1161,9 @@ void DRAIN_TREE_NAME<T,EXCLUSIVE, P>::generateKey(const DRAIN_TREE_NAME<T,EXCLUS
 }
 
 
-/*
-template <class T, bool EXCLUSIVE, class P>
-template <typename K>
-typename DRAIN_TREE_NAME<T,EXCLUSIVE,P>::key_t DRAIN_TREE_NAME<T,EXCLUSIVE,P>::getKey(const K & key){
-	return typename DRAIN_TREE_NAME<T,EXCLUSIVE,P>::key_t(key); // for example, std::string("myKey")
-}
-*/
 
 
-// Certified.
+// @certified
 template <class T, bool EXCLUSIVE, class P>
 struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
 
@@ -1174,32 +1181,7 @@ struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
     	return name;
     }
 
-    /*
-    static
-	const char* get(){
-    	return str().c_str();
-    };
-    */
-
 };
-
-//template <class F>
-/*  -> JSON?
-template <class T, bool EXCLUSIVE, class P>
-inline
-ReferenceT & link(DRAIN_TREE_NAME<T,EXCLUSIVE, P> &p){
-	try {
-		//this->setPtr(p);
-	}
-	catch (const std::exception & e){
-		// Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", drain::TypeName<F>::str()); // , " msg:", e.what()
-		// Logger(__FILE__, __LINE__, __FUNCTION__).error("unsupported type: ", typeid(F).name(), " msg:", e.what());
-		// std::cerr << __FILE__ << ':' << __FUNCTION__ << ": unsupported type: " << typeid(F).name() << std::endl;
-		// throw std::runtime_error("unsupported type");
-	}
-	return *this;
-}
-*/
 
 } // drain::
 
