@@ -98,10 +98,8 @@ DRAIN_ENUM_DICT(image::svg::tag_t) = {
 
 
 // Applied by UtilsXML::addChild()
-template <>
-const NodeXML<drain::image::svg::tag_t>::xml_default_elem_map_t NodeXML<drain::image::svg::tag_t>::xml_default_elems = {
+DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG) = {
 		{drain::image::svg::STYLE, drain::image::svg::STYLE_SELECT}, // ??
-		// {drain::image::svg::STYLE,  drain::image::svg::CTEXT}, // ??
 		{drain::image::svg::SCRIPT, drain::image::svg::CTEXT},
 		//{drain::image::svg::SVG, drain::image::svg::GROUP},
 };
@@ -123,7 +121,7 @@ NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {
 
 
 std::string NodeSVG::xlink("http://www.w3.org/1999/xlink");
-std::string NodeSVG::svg("http://www.w3.org/2000/svg");
+std::string NodeSVG::svg_decl("http://www.w3.org/2000/svg");
 
 
 // Explicit default constructor of base class  xml_node_t
@@ -151,8 +149,8 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 	  getMap()["width"].link(box.width); // = 0);
 		// link("width", box.width); // = 0);
 	  getMap()["height"].link(box.height); // = 0);
-	  getMap()["xmlns"].link(NodeSVG::svg);
-	  getMap()["xmlns:svg"].link(NodeSVG::svg);
+	  getMap()["xmlns"].link(NodeSVG::svg_decl);
+	  getMap()["xmlns:svg"].link(NodeSVG::svg_decl);
 	  getMap()["xmlns:xlink"].link(NodeSVG::xlink);
 		break;
 	case image::svg::TITLE:
@@ -336,19 +334,22 @@ void NodeSVG::specificAttributesToStream(std::ostream & ostr) const {
 
 }  // image::
 
-
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
 	return hasChild(Enum<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
 }
+*/
 
 /// Set the type.
+/*
 template <> // for T - Tree class
 template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
 	return UtilsXML::setType(*this, type);
 }
+*/
 
 /// Automatic conversion of element type (enum value) to a string.
 /**

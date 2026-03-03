@@ -79,7 +79,8 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 
 	odim.product  = "PCAPPI";
 	odim.type = "";
-	odim.quantity = "DBZH"; // <- NOTE: only a default, for palette automagics?
+	//odim.quantity = "DBZH"; // <- NOTE: only a default, for palette automagics?
+	odim.quantity = ""; // <- NOTE: only a default, for palette automagics?
 
 };
 
@@ -230,6 +231,12 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 			continue;
 
 		//std::cerr << "cappi " << sweep.odim.elangle << '\t' << (etaBin*drain::RAD2DEG) << '\t' << '>' << ' ' << beamWeight << '\n';
+		/*
+		if ((i&16) == 0){
+			if (beamWeight>beamWeightMin)
+				mout.attention(sweep.odim.elangle, ":\t", i, '\t', etaBin, "\t -> ", beamWeight);
+		}
+		*/
 
 		// TODO: derive iStart and iEnd instead.
 		//if ((binDistance >= sweep.odim.rstart) && (iSweep < sweep.odim.geometry.width)){
@@ -243,6 +250,11 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 				value = sweep.data.get<double>(iSweep, jSweep);
 
+				/*
+				if (value == sweep.odim.nodata){
+					continue;
+				}
+				*/
 				// if (i==j) std::cerr << "cappi w0=" << weight << "(" << value << ") => ";
 
 				if (USE_QUALITY){
@@ -258,6 +270,15 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 					else {
 						w = beamWeight;
 					}
+					/*
+					else if (value == sweep.odim.nodata){
+						continue;
+					}
+					else {
+						value  = sweep.odim.scaleForward(value);
+						w = beamWeight;
+					}
+					*/
 					if (!coder.decode(value))
 						continue;
 
@@ -265,7 +286,9 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 
 				address = accumulator.accArray.data.address(i,j);
 				accumulator.add(address, value, w);
-				//accumulator.add(address, value, 1.0);
+				// accumulator.add(address, value, 10.0);
+				// accumulator.add(address, 12.5, w);
+				// accumulator.add(address, value, 1.0);
 
 			}
 
@@ -293,6 +316,8 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 					w = sweepQuality.data.get<double>(iSweep,jSweep);
 					// if (!heightCoder.decode(value, w))
 					//	continue;
+					if (!coder.decode(value, w))
+						continue; // unchecked code
 					w = beamWeight * w;
 				}
 				else {
@@ -308,11 +333,15 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 				}
 
 				address = accumulator.accArray.data.address(i,j);
-				//accumulator.add(address, value, w);
-				accumulator.add(address, height, w);
+				accumulator.add(address, value, w);
+				// accumulator.add(address, height, w);
 			}
 		}
 	}
+
+	// mout.special<LOG_WARNING>(DRAIN_LOG(COMPUTE_HGHT));
+	// mout.special<LOG_WARNING>(DRAIN_LOG(USE_QUALITY));
+
 	/*
 	std::stringstream filename;
 	filename << "sweep-" << sweep.odim.elangle << ".png";

@@ -588,5 +588,70 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 
 }  // drain::
 
+/// Utility for declaring a default tag type for children of elements of each tag type.
+/**
+ *   \b Usage
+ *
+ *   Header files:
+ *   \code
+ *   namespace drain {
+ *   DRAIN_XML_DEFAULT_ELEMS(image::TreeSvg);
+ *   }
+ *   \endcode
+ *
+ *   Definition files:
+ *   \code
+ *   namespace drain {
+ *   DRAIN_XML_DEFAULT_ELEMS(image::TreeSvg) = {
+ *      {drain::image::svg::SCRIPT, drain::image::svg::CTEXT},
+ *      ...
+ *   }
+ *   \endcode
+ *
+ *   \param xml_tree - XML Tree type, like TreeSVG, TreeSLD or TreeGDAL.
+ */
+#define DRAIN_XML_DEFAULT_ELEMS(xml_tree) template <> const NodeXML<xml_tree::node_data_t::tag_t>::xml_default_elem_map_t NodeXML<xml_tree::node_data_t::tag_t>::xml_default_elems
+
+/// Utility for automatically setting child element types. Uses xml_default_elems .
+/**
+ *   \b Usage
+ *
+ *   In header files:
+ *   \code{.cpp}
+ *   namespace drain {
+ *   DRAIN_XML_DEFAULT_INIT(image::TreeSvg);
+ *   }
+ *   \endcode
+ *
+ *   In code:
+ *   \code{.cpp}
+ *   // Assume TreeSvg script is of type svg::SCRIPT.
+ *   image::TreeSvg & line1 = script.addChild(); // Set type xml::CTEXT.
+ *   image::TreeSvg & line2 = script["l2"];      // Set type xml::CTEXT.
+ *   \endcode
+ */
+#define DRAIN_XML_DEFAULT_INIT(xml_tree) template <> inline void xml_tree::initChild(xml_tree & child) const { UtilsXML::initChildWithDefaultType(*this, child); }
+
+/// Set type with simple operator().
+/**
+ *   \b Usage
+ *
+ *   In header files:
+ *   \code
+ *   namespace drain {
+ *   DRAIN_XML_DEFAULT_ELEMS_INIT(image::TreeSvg);
+ *   }
+ *
+ *   In code:
+ *   \code
+ *   image::TreeSvg & tree = tree["image1"](svg::IMAGE); // Set type svg::IMAGE.
+ *   \endcode
+ */
+#define DRAIN_XML_EASY_TYPE(xml_tree) template <> template <> inline xml_tree & xml_tree::operator()(const xml_tree::node_data_t::tag_t & type){ return UtilsXML::setType(*this, type); }
+
+/// Enable using keys of enum_type to be used as path elements.
+#define DRAIN_XML_ENUM_KEY(xml_tree, enum_type) template <> template <> inline const xml_tree::key_t & xml_tree::getKey(const enum_type & type){ return Enum<enum_type>::dict.getKey(type, false); }
+
+
 #endif /* DRAIN_TREE_XML */
 

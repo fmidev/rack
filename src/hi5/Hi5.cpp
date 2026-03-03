@@ -63,12 +63,13 @@ const rack::ODIMPathElem & Hi5Tree::getKey(const std::string  & key){
 
 	typedef std::map<std::string, rack::ODIMPathElem> lookup_t;
 
-	static // const? or extend for somebody using odd ones?
+	static // non-const, supports extending.
 	lookup_t myLookUp = {
 		// starters kit...
 		{"what",  rack::ODIMPathElem(rack::ODIMPathElem::WHAT)},
 		{"where", rack::ODIMPathElem(rack::ODIMPathElem::WHERE)},
 		{"how",   rack::ODIMPathElem(rack::ODIMPathElem::HOW)},
+		{"data",  rack::ODIMPathElem(rack::ODIMPathElem::ARRAY)},
 	};
 
 	typename lookup_t::iterator it = myLookUp.find(key);
@@ -78,7 +79,7 @@ const rack::ODIMPathElem & Hi5Tree::getKey(const std::string  & key){
 	else {
 		rack::ODIMPathElem & elem = myLookUp[key];
 		elem.set(key);
-		std::cerr << "warning: added elem " << elem << " for key '" << key << "'\n";
+		std::cerr << "warning: added elem '" << elem << "' for key (" << key << ")\n";
 		return elem;
 	}
 	//return drain::Enum<rack::ODIMPathElem::group_t>::dict.getKey(key, false);
@@ -93,11 +94,12 @@ const rack::ODIMPathElem & Hi5Tree::getKey(const rack::ODIMPathElem::group_t  & 
 
 	typedef std::map<rack::ODIMPathElem::group_t, rack::ODIMPathElem> lookup_t;
 
-	static // const? or extend for somebody using odd ones?
+	static // non-const, supports extending.
 	lookup_t myLookUp = {
 		{rack::ODIMPathElem::WHAT, rack::ODIMPathElem(rack::ODIMPathElem::WHAT)},
 		{rack::ODIMPathElem::WHERE, rack::ODIMPathElem(rack::ODIMPathElem::WHERE)},
 		{rack::ODIMPathElem::HOW, rack::ODIMPathElem(rack::ODIMPathElem::HOW)},
+		{rack::ODIMPathElem::ARRAY, rack::ODIMPathElem(rack::ODIMPathElem::ARRAY)},
 	};
 
 	typename lookup_t::iterator it = myLookUp.find(key);
@@ -107,7 +109,7 @@ const rack::ODIMPathElem & Hi5Tree::getKey(const rack::ODIMPathElem::group_t  & 
 	else {
 		rack::ODIMPathElem & elem = myLookUp[key];
 		elem.set(key);
-		std::cerr << "warning: added elem " << elem << " for index=" << key << '\n';
+		std::cerr << "warning: added elem '" << elem << "' for index=(" << key << ")\n";
 		return elem;
 	}
 	//return drain::Enum<rack::ODIMPathElem::group_t>::dict.getKey(key, false);

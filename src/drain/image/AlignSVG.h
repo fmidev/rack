@@ -507,20 +507,23 @@ DRAIN_TYPENAME(AlignSVG::HorzAlign);
 DRAIN_TYPENAME(AlignSVG::VertAlign);
 
 /// Dictionary of horizontal (LEFT,CENTER,RIGHT) flags
+/*
 template <>
 const drain::Enum<AlignSVG::HorzAlign>::dict_t  drain::Enum<AlignSVG::HorzAlign>::dict;
-// DRAIN_ENUM_OSTREAM(AlignSVG::HorzAlign);
 
 /// Dictionary of vertical (TOP,MIDDLE,BOTTOM) flags
 template <>
 const drain::Enum<AlignSVG::VertAlign>::dict_t  drain::Enum<AlignSVG::VertAlign>::dict;
-// DRAIN_ENUM_OSTREAM(AlignSVG::VertAlign);
 
 
 /// Dictionary combining horizontal (LEFT,CENTER,RIGHT) and vertical (TOP,MIDDLE,BOTTOM) flags
 template <>
 const drain::Enum<Alignment<> >::dict_t  drain::Enum<Alignment<> >::dict;
+*/
 
+DRAIN_ENUM_DICT(AlignSVG::HorzAlign);
+DRAIN_ENUM_DICT(AlignSVG::VertAlign);
+DRAIN_ENUM_DICT(Alignment<>);
 
 
 

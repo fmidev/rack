@@ -82,32 +82,70 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	mout.experimental("Super list", drain::sprinter(qs.getList()));
 
 	const Data<PolarSrc> & srcData = firstSweep.getData(dataSelector.getQuantitySelector()); // firstSweep.getFirstData();
-	const std::string & quantity = srcData.odim.quantity;
+	const std::string & srcQuantity = srcData.odim.quantity;
 
 	/* OLD
 	if (firstSweep.size() > 1){
 		mout.info("several quantities, using the first one :" , quantity );
 	}
 	*/
-	if (dataSelector.getQuantity() != quantity){
-		mout.info("selected input [", quantity, "]");
+	if (dataSelector.getQuantity() != srcQuantity){
+		mout.info("selected input [", srcQuantity, "]");
 	}
 
 
 	// Consider EchoTop, with DBZH input and HGHT output; but CAPPI should adapt to input quantity
 	//const std::string dstQuantity = odim.quantity.empty() ? quantity : odim.quantity;
-	const std::string dstQuantity = getOutputQuantity(quantity);
+	const std::string dstQuantity = getOutputQuantity(srcQuantity);
 
 	mout.special("output quantity: ", dstQuantity);
-	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity);
-	//mout.warn("dstOdim " , dstData.odim );
+	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity); // User may change it below
 
-	setEncoding(srcData.odim, dstData);
-	mout.debug("output encoding: ", ODIM(dstData.odim));
+	if (!targetEncoding.empty()){ // good
+		/** If targetEncoding has been defined, use it.
+		 *  It should have at least type (or quantity in some rare cases).
+		 *  TODO: there should actually be warning, if scaling is given without type.
+		 */
+		setEncodingNEW(dstData, getOutputQuantity(srcQuantity), targetEncoding);
+		mout.accept<LOG_NOTICE>("Quantity=", dstQuantity, " + user-defined: ", targetEncoding);
+		if (dstData.odim.quantity != dstQuantity){
+			mout.attention("For data /", dstQuantity, "/, quantity (metadata) changed to [", dstData.odim.quantity, "]");
+		}
+	}
+	else if (!odim.quantity.empty()){ // explicit!
+		/**
+		 *   If no user encoding was defined, use that defined by the operator itself.
+		 *   The current implementation relies on quantity and type –
+		 *   scaling is not assumed to be operator-specific but universal (from QuantityMap).
+		 *   TODO: also type from QuantityMap (default type) or from input?
+		 *   This will probably change. ->setEncodingNEW(dstData, odim).
+		 */
+		if (dstData.odim.type.empty()){
+			mout.attention("Using op quantity: ", odim.quantity, ", default type");
+		}
+		setEncodingNEW(dstData, odim.quantity, odim.type);  // scaling?
+	}
+	else if (!odim.type.empty()){
+		/**  Use input quantity, but different storage type. (Rare?)
+		 */
+		// TODO: what if (also) quantity set - could be checked here (instead of getOutputQuantity(...) above
+		setEncodingNEW(dstData, srcData.odim.quantity, odim.type);
+	}
+	else {
+		// Use input encoding (TODO: scaling!)
+		// TODO: setEncodingNEW(dstData, srcData.odim)
+		setEncodingNEW(dstData, srcData.odim.quantity, srcData.odim.type);
+	}
+
+	/*
+	const QuantityMap & qm = getQuantityMap();
+	qm.setQuantityDefaults(dstData, dstQuantity, targetEncoding);
+	*/
+	mout.attention(DRAIN_LOG(EncodingODIM(dstData.odim)));
 
 	deriveDstGeometry(srcSweeps, dstData.odim);
-	//dstData.data.setGeometry(dstData.odim.area.width, dstData.odim.area.height);
 	dstData.data.setGeometry(dstData.odim.area);
+
 
 	RadarAccumulator<Accumulator,PolarODIM> accumulator;
 
@@ -138,15 +176,15 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	dstData.odim.angles.clear(); // DO NOT USE clear(), it changes address of 1st elem
 	//dstData.odim.angles.resize(0); // DO NOT USE clear(), it changes address of 1st elem
 
-	mout.debug("main loop, quantity=" , quantity );
+	mout.debug("main loop, quantity=" , srcQuantity );
 
 	//for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
 	for (const auto & entry: srcSweeps){
 
-		const Data<PolarSrc> & srcData = entry.second.getData(quantity);
+		const Data<PolarSrc> & srcData = entry.second.getData(srcQuantity);
 
 		if (srcData.data.isEmpty()){
-			mout.warn("selected quantity=", quantity, " not present in index=", entry.first, ", skipping");
+			mout.warn("selected quantity=", srcQuantity, " not present in index=", entry.first, ", skipping");
 			continue;
 		}
 		mout.debug3("index: ", entry.first);
@@ -162,20 +200,21 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	}
 
 	// drain::image::FilePng::write(accumulator.accArray.data, "debug.png");
-
 	// mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
+	// if (mout.isDebug(LOG_DEBUG))
+	// accumulator.extractOLD(dstData.odim, dstProduct, "dwC");
 
-	//if (mout.isDebug(LOG_DEBUG))
-	accumulator.extractOLD(dstData.odim, dstProduct, "dwC");
+	// Quality data
+	PlainData<PolarDst> & dstQualityData = dstData.getQualityData();
+	dstQualityData.copyEncoding(getQuantityMap().QIND.get('C'));
+	dstQualityData.setGeometry(dstData.odim.area);
 
-	/* 2025 no no...
-	DataCoder dataCoder(dstData.odim, dstData.getQualityData().odim); // (
-	// for (const Accumulator::FieldType field: {Accumulator::FieldType::DATA, ...})
-	drain::image::Image &img = dstData.data;
-	const drain::Rectangle<int> area(0, 0, img.getWidth(), img.getHeight());
-	accumulator.extractField(Accumulator::FieldType::DATA,   dataCoder, dstData.data, area);
-	accumulator.extractField(Accumulator::FieldType::WEIGHT, dataCoder, dstData.data, area);
-	*/
+
+	DataCoder dataCoder(dstData.odim, dstQualityData.odim); // (
+	mout.warn(DRAIN_LOG(dataCoder));
+	const drain::Rectangle<int> area; // (0, 0, img.getWidth(), img.getHeight());
+	accumulator.extractField(Accumulator::FieldType::DATA,   dataCoder, dstData.data,        area);
+	accumulator.extractField(Accumulator::FieldType::WEIGHT, dataCoder, dstQualityData.data, area);
 
 	//else
 	// OK mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );

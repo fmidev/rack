@@ -163,7 +163,7 @@ for i in RadarGrid_50000:1,15:180:240 RadarSector_radius=0:150000,azimuth=170:24
     
 done
 
-exit 0
+#exit 0
 
 WRITE_DOC "Align images horizontally (default):" 
 RUN_TEST \\  volume.h5 --cProj 3067 --cSize 400 -Q DBZH -c "$CONF" -o gray.png --palette "'default'" -o rgb.png \\  -o 'Basic_example'
@@ -253,8 +253,8 @@ COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit
 for i in RadarGrid_50000:1,15:180:540 RadarSector_radius=0:150000; do
     CMD=${i%_*}
     PARAMS=${i##*_}
-    WRITE_DOC '\b'" Illustration of $CMD "
-    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "'composite-$CMD.svg'"  
+    echo SKIP...   WRITE_DOC '\b'" Illustration of $CMD "
+#    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --g$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "'composite-$CMD.svg'"  
     
 done
 

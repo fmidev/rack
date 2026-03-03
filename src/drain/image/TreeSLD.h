@@ -90,8 +90,10 @@ struct SLD {
 
 
 
-template <>
-const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict;
+//template <>
+//const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict;
+
+DRAIN_ENUM_DICT(image::SLD::tag_t);
 
 DRAIN_ENUM_OSTREAM(image::SLD::tag_t)
 
@@ -148,8 +150,6 @@ public:
 		return *this;
 	}
 
-
-
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
 	void setAttribute(const std::string & key, const std::string &value) override;
@@ -162,24 +162,6 @@ public:
 	virtual
 	bool isSingular() const override final;
 
-	/// Write transform, in addition to XML::ClassList.
-	/**
-	 *  Writes special attributes:
-	 *  - class="..." as defined XMK::specificAttributesToStream()
-	 *  - transform="..." geometric transformations – only if defined.
-	 *
-	virtual
-	void specificAttributesToStream(std::ostream & ostr) const override;
-	 */
-
-
-
-	///
-	/**
-	 *  Special: for TEXT and SPAN elements, links STYLE[font-size] to bbox.height?
-	 */
-	// virtual
-	// void handleType(const SLD::tag_t & t) override final;
 
 protected:
 
@@ -188,14 +170,6 @@ protected:
 
 };
 
-
-/*
-template <typename P, typename A,typename V>
-void NodeSLD::setAlign(const P & pos, const A & axis,  const V &value){
-	alignments[p][a] = v;
-}
-*/
-//typedef UnorderedMultiTree<NodeSLD,false, drain::NodeXML<>::path_t> TreeSLD;
 
 
 }  // image::
@@ -207,7 +181,6 @@ std::ostream & operator<<(std::ostream &ostr, const image::NodeSLD & node){
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const image::TreeSLD & tree){
-	//return drain::NodeXML<const drain::image::NodeSLD>::docToStream(ostr, tree);
 	return image::NodeSLD::docToStream(ostr, tree);
 }
 
@@ -215,13 +188,6 @@ std::ostream & operator<<(std::ostream &ostr, const image::TreeSLD & tree){
 }  // drain::
 
 
-/*
-inline
-std::ostream & operator<<(std::ostream &ostr, const drain::image::TreeSLD & tree){
-	//return drain::NodeXML<const drain::image::NodeSLD>::docToStream(ostr, tree);
-	return drain::image::NodeSLD::docToStream(ostr, tree);
-}
-*/
 
 
 
@@ -239,29 +205,8 @@ template <>
 inline
 void image::TreeSLD::initChild(image::TreeSLD & child) const {
 	UtilsXML::initChildWithDefaultType(*this, child);
-	/*
-	const typename image::SLD::tag_t type = UtilsXML::retrieveDefaultType(this->data);
-	if (type){
-		child->setType(type);
-	}
-	*/
 }
 
-/*
-template <>
-template <typename K, typename V>
-image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<K,V> > args){
-	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.attention("initlist pair<K,V>: ", args);
-	data.set(args); // what about TreeSLD & arg
-	return *this;
-}
-*/
-
-/*
-template <> // referring to Tree<NodeSLD>
-image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const char *> > l);
-*/
 
 template <> // referring to Tree<NodeSLD>
 inline

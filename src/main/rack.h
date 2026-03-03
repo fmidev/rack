@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 /**
  *  Version 19
- *  - Tree path element lookup table (simplified code)
+ *  - Simplified tree path element handling (including lookup table)
  *
  *  Version 18
  *  - SVG basic command set completed

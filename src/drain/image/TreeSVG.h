@@ -182,13 +182,15 @@ public:
 class NodeSVG: public NodeXML<svg::tag_t>, public AlignSVG, public AlignAnchorSVG {
 public:
 
+	typedef svg::tag_t tag_t; // DRAIN_XML_...  macros expect (NodeXML)::tag_t
+
 	/// In opening SVG tag, referred to by attribute "xmlns:xlink"
 	static
 	std::string xlink;
 
 	/// In opening SVG tag, referred to by attributes "xmlns" and "xmlns:svg"
 	static
-	std::string svg;
+	std::string svg_decl;
 
 	/* -> FileSVG
 	static
@@ -573,26 +575,30 @@ image::TreeSVG & image::TreeSVG::operator=(const T & arg){
  *    TreeSVG & child = tree(path)(type);
  *
  *   Note: fails with older C++ compilers ?
- */
 template <> // for T - Tree class
 template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
+ */
 
 
+DRAIN_XML_EASY_TYPE(image::TreeSVG);
+
+DRAIN_XML_ENUM_KEY(image::TreeSVG, image::svg::tag_t);
 
 // NEW 2026/02/27 replacing many!?
+/*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::svg::tag_t & type){
 	return Enum<image::svg::tag_t>::dict.getKey(type, false);
 }
+*/
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const ClassXML & cls){
-	//return Enum<image::svg::tag_t>::dict.getKey(type, false);
 	return image::TreeSVG::getKey(cls.strPrefixed()); // const !
 }
 
@@ -649,25 +655,24 @@ image::TreeSVG & image::TreeSVG::addChild(){
 */
 
 
+DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG);
 
-template <>
-const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag_t>::xml_default_elems;
+//template <>
+//const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag_t>::xml_default_elems;
 
 /// Specialization of default child elements in SVG. For example, \c TEXT has \c TSPAN elements, by default.
 /**
  *   Relates to the above list of default elements.
  */
+DRAIN_XML_DEFAULT_INIT(image::TreeSVG);
+
+/*
 template <>
 inline
 void image::TreeSVG::initChild(image::TreeSVG & child) const {
 	UtilsXML::initChildWithDefaultType(*this, child);
-	/*
-	const typename image::svg::tag_t type = UtilsXML::retrieveDefaultType(this->data);
-	if (type){
-		child->setType(type);
-	}
-	*/
 }
+*/
 
 
 

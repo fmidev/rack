@@ -219,10 +219,10 @@ protected:
 	 *   \see setGeometry
 	 *
 	 *  \param quantity - if given, applied as a "template", standard quantity to be copied; also odim.type, if empty, is set.
-	 *  \param type - if given, odim.type is always changed
+	 *  \param args     - if given, expects at least type (char), and type is always changed
 	 */
 	// void ProductOp<MS,MD>::setEncodingNEW
-	void setEncodingNEW(PlainData<dst_t> & dstData, const std::string quantity = "", const std::string type = "") const;
+	void setEncodingNEW(PlainData<dst_t> & dstData, const std::string & quantity = "", const std::string & args = "") const;
 
 	/*
 	static
@@ -242,22 +242,26 @@ protected:
 };
 
 /**
+ *  For example, quantity parameter may be PROB (0...1), and the actual named parameter PROB_BIRD,
+ *  but the scaling will be adopted.
  *
  *  \param quantity - if given, applied as a "template", standard quantity to be copied; also odim.type, if empty, is set.
  *  \param type - if given, odim.type is always changed
  */
-
 template <class MS, class MD>
-void RadarProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,
-		const std::string quantity, const std::string type) const {
+void RadarProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,	const std::string & quantity, const std::string & args) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	if (dstData.odim.quantity.empty())
+	if (dstData.odim.quantity.empty()){
 		dstData.odim.quantity = quantity;
+	}
 
-	if (!type.empty())
+	/*
+	if (!type.empty()){
 		dstData.odim.type = type;
+	}
+	*/
 
 	const std::string & qty = quantity.empty() ? dstData.odim.quantity : quantity;
 
@@ -266,10 +270,18 @@ void RadarProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,
 	}
 
 	const QuantityMap & qmap = getQuantityMap();
-	qmap.setQuantityDefaults(dstData, qty, dstData.odim.type);
+
+	qmap.setQuantityDefaults(dstData, qty, args);
+
+	/*
+	qmap.setQuantityDefaults(dstData, qty, dstData.odim.type, );
 	dstData.odim.updateValues(targetEncoding);
+
+	// Why two times?
 	qmap.setQuantityDefaults(dstData, qty, dstData.odim.type); // type also?
 	dstData.odim.updateValues(targetEncoding);
+	*/
+
 	// update
 	dstData.data.setScaling(odim.scaling);
 
@@ -304,12 +316,20 @@ void ProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dst, const std::string 
 }
 */
 
+/*
+ *   This is one of the many parallel similar implementations. To be removed.
+ *   See also:
+ */
 template <class MS, class MD>
 void RadarProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t> & dst) const {
 
 	ProductBase::applyODIM(dst.odim, this->odim);
 	ProductBase::applyODIM(dst.odim, inputODIM, true);  // New. Use defaults if still unset
 	dst.odim.completeEncoding( this->targetEncoding);
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.unimplemented<LOG_WARNING>("Does not set data storarge type?");
 
 	// Set actual scaling up to date with metadata)
 	dst.data.setScaling(dst.odim.scaling);

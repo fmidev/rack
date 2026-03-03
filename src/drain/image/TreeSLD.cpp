@@ -43,9 +43,9 @@ namespace drain {
 DRAIN_TYPENAME_DEF(image::NodeSLD);
 DRAIN_TYPENAME_DEF(image::SLD::tag_t);
 
-
-template <>
-const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict = {
+// template <>
+// const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict =
+DRAIN_ENUM_DICT(image::SLD::tag_t) = {
 		DRAIN_ENUM_ENTRY(drain::image::SLD, COMMENT), // good to have an explicit TAG string,  for debugging
 		DRAIN_ENUM_ENTRY(drain::image::SLD, Abstract),
 		DRAIN_ENUM_ENTRY(drain::image::SLD, ColorMap),

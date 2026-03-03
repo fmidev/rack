@@ -209,7 +209,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug3("for quantity=" , quantity , ", values=" , values );
-	//if (quantity.empty())
+	// if (quantity.empty())
 	//	quantity = dstODIM.quantity;
 
 	drain::ReferenceMap refMap;
@@ -219,7 +219,6 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 	}
 
 	mout.debug3("searching for quantity=" , quantity );
-	//const_iterator it = find(quantity);
 	const_iterator it = retrieve(quantity);
 	if (it != end()){
 
@@ -270,6 +269,7 @@ bool QuantityMap::setQuantityDefaults(EncodingODIM & dstODIM, const std::string 
 		if (!values.empty()){
 			refMap.setValues(values);
 		}
+		// return true? SOME storage type has been set.
 	}
 
 	return false;
@@ -545,7 +545,7 @@ QuantityMap & getQuantityMap() {
 	if (ODIM::versionFlagger.isSet(ODIM::KILOMETRES)){
 		if (FIRST_INIT){ // TODO: only if changed?
 			//mout.debug("Using kilometres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
-			mout.attention<LOG_INFO>("ODIM version: ", ODIM::versionFlagger, " (selects metres/kilometres for HGHT and HGHTDEV)");
+			mout.attention<LOG_INFO>("ODIM version: ", ODIM::versionFlagger, " (applies kilometres for HGHT and HGHTDEV)");
 		}
 		quantityMap["HGHT"] = {
 				"Height/altitude [km]", {"ALT", "ALTITUDE"},
@@ -567,7 +567,8 @@ QuantityMap & getQuantityMap() {
 	else {
 
 		if (FIRST_INIT){ // TODO: only if changed?
-			mout.debug("Using metres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
+			mout.debug("ODIM version: ", ODIM::versionFlagger, " (applies metres for HGHT and HGHTDEV)");
+			// mout.debug("Using metres for HGHT and HGHTDEV (ODIM version: ", ODIM::versionFlagger, ")");
 		}
 
 		quantityMap["HGHT"] = {

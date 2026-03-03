@@ -48,49 +48,28 @@ namespace drain
 
 
 DRAIN_TYPENAME_DEF(image::NodeGDAL);
-
 DRAIN_TYPENAME_DEF(image::NodeGDAL::tag_t);
 
-namespace image
-{
-
-template <>
-const drain::Enum<NodeGDAL::tag_t>::dict_t drain::Enum<NodeGDAL::tag_t>::dict = {
-		{"UNDEFINED", drain::image::GDAL::UNDEFINED},
+DRAIN_ENUM_DICT(image::NodeGDAL::tag_t) = {
+		{"UNDEFINED",    drain::image::GDAL::UNDEFINED},
 		{"GDALMetadata", drain::image::GDAL::ROOT},
 		{"Item", drain::image::GDAL::ITEM},
-		{"Item", drain::image::GDAL::USER},
+		{"Item", drain::image::GDAL::USER}, // User tag has the same label, but additional attributes.
 	//	{"Item", drain::image::GDAL::OFFSET},
 	//	{"Item", drain::image::GDAL::SCALE,	    },
 	//	{"Item", drain::image::GDAL::UNITS},
 };
 
-/*
-template <>
-std::map<NodeGDAL::tag_t,std::string> NodeXML<GDAL::tag_t>::tags = {
-	{drain::image::GDAL::UNDEFINED,	"UNDEFINED"},
-	{drain::image::GDAL::ROOT,	    "GDALMetadata"},
-	{drain::image::GDAL::ITEM,	    "Item"},
-	{drain::image::GDAL::USER,	    "Item"},
-//	{drain::image::GDAL::OFFSET,	"Item"},
-//	{drain::image::GDAL::SCALE,	    "Item"},
-//	{drain::image::GDAL::UNITS,	    "Item"},
+// TreeGDAL::node_data_t::tag_t;
+// template <>
+// const NodeXML<image::TreeGDAL::node_data_t::tag_t>::xml_default_elem_map_t NodeXML<image::TreeGDAL::node_data_t::tag_t>::xml_default_elems = {
+
+DRAIN_XML_DEFAULT_ELEMS(image::TreeGDAL) = {
+		{image::NodeGDAL::tag_t::ROOT, image::NodeGDAL::tag_t::ITEM},
 };
-*/
 
-/*
-NodeGDAL::NodeGDAL(const tag_t & t) : xml_node_t(){ // , sample(-1)
-	setType(t);
-	// name = "test" + getTag();
-}
+namespace image {
 
-NodeGDAL::NodeGDAL(const NodeGDAL & node) : xml_node_t(){ // , sample(-1)
-	type = GDAL::UNDEFINED;
-	copyStruct(node, node, *this);
-	setType(node.getType());
-}
-
-*/
 
 NodeGDAL::NodeGDAL(const tag_t & t) : xml_node_t() {
 	setType(t);

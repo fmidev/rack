@@ -172,41 +172,40 @@ public:
 	template <class D>
 	bool setQuantityDefaults(PlainData<D> & dstData, const std::string & quantity = "", const std::string & values = "") const {
 
-		drain::Logger mout("QuantityMap", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 
-		const std::string & q = !quantity.empty() ? quantity : dstData.odim.quantity;
+		const std::string & quantityTemplate = !quantity.empty() ? quantity : dstData.odim.quantity;
 
-		const bool typeSet = setQuantityDefaults(dstData.odim, q, values);
+		const bool TYPE_IS_SET = setQuantityDefaults(dstData.odim, quantityTemplate, values);
 
 		if (dstData.odim.quantity.empty()){
-			if (!q.empty()){
-				dstData.odim.quantity = q;
+			if (!quantityTemplate.empty()){
+				dstData.odim.quantity = quantityTemplate;
 			}
 			else {
-				mout.warn("quantity neither given nor set already" );
+				mout.warn("quantity neither predefined nor supplied" );
 			}
 		}
 
-		if (!typeSet){
+		if (!TYPE_IS_SET){
 			mout.warn("conf for " , quantity , "[" , dstData.odim.type , "] not found" );
 		}
+
 		// Redesign all this...
 		dstData.data.setType(dstData.odim.type);
-		//dstData.data.scaling.set(dstData.odim.scaling);
-		//dstData.data.setScaling(dstData.odim.scaling.scale, dstData.odim.scaling.offset);
 		dstData.data.setScaling(dstData.odim.scaling); // needed?
 
 		//if ((dstData.odim.quantity == "QIND") || (dstData.odim.quantity == "PROB")){
-		if ((q == "QIND") || (q == "PROB")){
+		if ((quantityTemplate == "QIND") || (quantityTemplate == "PROB")){
 			//dstData.data.setOptimalScale(0.0, 1.0);
 			//dstData.data.setPhysicalRange(0.0, 1.0, true);
 			dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
-		else if (q == "CLASS"){
-			//dstData.data.setOptimalScale(0.0, 1.0);
-			drain::image::Image & img = dstData.data;
-			img.setPhysicalRange(0.0, img.getConf().getTypeMax<double>());
-			//dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
+		else if (quantityTemplate == "CLASS"){
+			// dstData.data.setOptimalScale(0.0, 1.0);
+			// drain::image::Image & img = dstData.data;
+			dstData.data.setPhysicalRange(0.0, dstData.data.getConf().template getTypeMax<double>());
+			// dstData.data.getScaling().setPhysicalRange(0.0, 1.0); // note: does not change scaling
 		}
 
 
@@ -215,7 +214,7 @@ public:
 
 		mout.debug2("final scaling for " , dstData.odim.quantity , '[' , quantity , ']' , dstData.data.getScaling() );
 
-		return typeSet;
+		return TYPE_IS_SET;
 	}
 
 	/// Checks if data

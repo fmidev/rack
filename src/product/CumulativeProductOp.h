@@ -63,10 +63,17 @@ public:
 	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
 	virtual inline
 	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
+		drain::Logger(__FILE__, __FUNCTION__).revised<LOG_NOTICE>("Fixed obvious bug (check output quantity");
+		if (!odim.quantity.empty())
+			return odim.quantity; //outputQuantity;
+		else
+			return inputQuantity;
+		/*
 		if (!inputQuantity.empty())
 			return inputQuantity; //outputQuantity;
 		else
 			return odim.quantity;
+			*/
 	}
 
 	// Public for ConvOp
@@ -89,7 +96,7 @@ protected:
 	virtual
 	inline
 	void setGeometry(const PolarODIM & srcODIM, PlainData<PolarDst> & dstData) const {
-		drain::Logger mout(__FILE__, __FUNCTION__); //REPL name+"(CumulativeProductOp)", __FUNCTION__);
+		drain::Logger mout(__FILE__, __FUNCTION__);
 		mout.warn("setGeometry??" );
 		copyPolarGeometry(dstData.odim, dstData);
 	}
@@ -97,6 +104,11 @@ protected:
 
 	virtual
 	void processData(const Data<PolarSrc> & src, RadarAccumulator<Accumulator,PolarODIM> & cumulator) const = 0;
+
+	virtual inline
+	void processData(const Data<PolarSrc> & src, Data<PolarDst> & dst) const {
+		drain::Logger(__FILE__, __FUNCTION__).error("programming error (illegal state)");
+	};
 
 
 };

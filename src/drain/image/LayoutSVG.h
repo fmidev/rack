@@ -136,26 +136,14 @@ protected:
 	Direction flip(Direction ...){
 	};
 	*/
-
-
-
 };
 
-
-/*
-template <>
-const Enum<LayoutSVG::Direction>::dict_t  drain::Enum<LayoutSVG::Direction>::dict;
-DRAIN_ENUM_OSTREAM(LayoutSVG::Direction);
-
-template<>
-const Enum<LayoutSVG::GroupType>::dict_t Enum<LayoutSVG::GroupType>::dict;
-DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
-*/
 
 }  // image::
 
 DRAIN_ENUM_DICT(image::LayoutSVG::Direction);
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
+
 
 }  // drain::
 
@@ -164,25 +152,9 @@ DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
 DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::GroupType);
 
 #include "TreeSVG.h"
-
-// NEW
 namespace drain {
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-inline
-const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::LayoutSVG::GroupType & type){
-	return Enum<image::LayoutSVG::GroupType>::dict.getKey(type, false);
+DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
 }
-
-}
-
-// OLD
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool drain::image::TreeSVG::hasChild(const drain::image::LayoutSVG::GroupType & type) const;
-*/
 
 #endif // DRAIN_ALIGN_SVG_H_
 

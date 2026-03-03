@@ -116,51 +116,50 @@ std::ostream & operator<<(std::ostream & ostr, const image::TreeGDAL & tree){
 	return image::TreeGDAL::node_data_t::toStream(ostr, tree);
 }
 
-template <>
-const Enum<image::NodeGDAL::tag_t>::dict_t Enum<image::NodeGDAL::tag_t>::dict;
+//template <>
+//const Enum<image::NodeGDAL::tag_t>::dict_t Enum<image::NodeGDAL::tag_t>::dict;
 
 DRAIN_TYPENAME(image::NodeGDAL);
-
 DRAIN_TYPENAME(image::NodeGDAL::tag_t);
+
+DRAIN_ENUM_DICT(image::NodeGDAL::tag_t);
+
+/*
+#define DRAIN_XML_DEFAULT_ELEMS(xml_tree) template <> const NodeXML<xml_tree::node_data_t::tag_t>::xml_default_elem_map_t NodeXML<xml_tree::node_data_t::tag_t>::xml_default_elems
+#define DRAIN_XML_DEFAULT_INIT(xml_tree) template <> inline void xml_tree::initChild(xml_tree & child) const { UtilsXML::initChildWithDefaultType(*this, child); }
+#define DRAIN_XML_EASY_TYPE(xml_tree) template <> template <> inline xml_tree & xml_tree::operator()(const xml_tree::node_data_t::tag_t & type){ return UtilsXML::setType(*this, type); }
+*/
+
+DRAIN_XML_DEFAULT_ELEMS(image::TreeGDAL);
+//template <>
+//const NodeXML<image::NodeGDAL::tag_t>::xml_default_elem_map_t NodeXML<image::NodeGDAL::tag_t>::xml_default_elems;
+
+
+DRAIN_XML_DEFAULT_INIT(image::TreeGDAL);
+
+
+DRAIN_XML_EASY_TYPE(image::TreeGDAL);
 
 /*
 template <>
 inline
-const char* TypeName<image::NodeGDAL>::get(){
-	return "XML-GDAL";
-}
-
-template <>
-inline
-const char* TypeName<image::GDAL::tag_t>::get(){
-	return "XML-GDAL2";
+void image::TreeGDAL::initChild(image::TreeGDAL & child) const {
+	UtilsXML::initChildWithDefaultType(*this, child);
 }
 */
 
-/// Note: this overrides path based addressing of descendants
+///
+/*
+ * Default method is does path based addressing of descendants
+ */
+/*
 template <>
 template <>
 inline
 image::TreeGDAL & image::TreeGDAL::operator()(const image::GDAL::tag_t & type){
 	return UtilsXML::setType(*this, type);
-	// this->data.setType(type);
-	// return *this;
-}
-
-/*
-SUPRESSED. Semantics become unclear, esp. if calling: const version of x& = tree("name") which returns a tree.
-
-
-/// Note: this overrides path based addressing of descendants
-template <>
-template <>
-inline
-image::TreeGDAL & image::TreeGDAL::operator()(const std::string & name){
-	this->data.name = name;
-	return *this;
 }
 */
-
 
 
 

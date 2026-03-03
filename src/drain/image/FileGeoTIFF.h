@@ -151,12 +151,7 @@ public:
 	template <class T>
 	void setGdal(const std::string & key, const T & value, int sample=-1, const std::string & role = ""){
 
-		TreeGDAL & elem =  gdalMetadata[key](GDAL::ITEM);
-		//elem->setType(GDAL::UNDEFINED);
-		//elem->setType(GDAL::ITEM);
-
-		//NodeGDAL gdalItem =  gdalMetadata[key](NodeGDAL::ITEM).data;
-
+		TreeGDAL & elem =  gdalMetadata[key]; // defaulted (GDAL::ITEM);
 		NodeGDAL & item =  elem.data;
 		item.name = key;
 		item.setText(value);
