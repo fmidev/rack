@@ -69,13 +69,15 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	static
 	const std::string OVERLAY_STYLE = "OVERLAY_STYLE"; // TODO enum
 
+
 	if (!svgDoc.hasChild(OVERLAY_STYLE)){
 		// Ensure element position at the beginning of the doc.
 		svgDoc.prependChild(OVERLAY_STYLE);
 	}
 
-	TreeSVG & style = svgDoc[OVERLAY_STYLE];
 
+	TreeSVG & style = svgDoc[OVERLAY_STYLE];
+	//TreeSVG & style = drain::UtilsXML::getHeaderObject(svgDoc, svg::STYLE, OVERLAY_STYLE);
 
 	if (style->isUndefined()){
 
@@ -96,10 +98,8 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		style[Select(GRID)] = {
 				//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
 				{"stroke", "white"},
-				//{"stroke", "gray"},
 				{"stroke-width", 3.0},
 				{"fill", "none"}, // debug
-				//{"fill", "blue"}, // debug
 				//{"fill-opacity", 0.35},
 		};
 

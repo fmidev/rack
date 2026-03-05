@@ -39,8 +39,7 @@ echo "OPERATOR=$OPERATOR"
 
 #PROD_BRIEF=${OPERATOR:1}
 #PROD_BRIEF=${PROD_BRIEF,,}
-
-echo $PROD_BRIEF
+# echo $PROD_BRIEF
 
 if [ "$PROD" != '' ]; then
 
@@ -62,51 +61,50 @@ if [ "$PROD" != '' ]; then
 fi
 
 
-OUTFILE_GRAY=$OPERATOR-$QUANTITY.png
-OUTFILE_RGB=$OPERATOR-$QUANTITY-rgb.png
-OUTFILE_QUALITY=$OPERATOR-QIND.png
-OUTFILE_LEGEND=legend-$QUANTITY.png
-OUTFILE_PROD=$OPERATOR-$QUANTITY-rgb-leg.png
+#OUTFILE_GRAY=$OPERATOR-$QUANTITY.png
+#OUTFILE_RGB=$OPERATOR-$QUANTITY-rgb.png
+#OUTFILE_QUALITY=$OPERATOR-QIND.png
+#OUTFILE_LEGEND=legend-$QUANTITY.png
+#OUTFILE_PROD=$OPERATOR-$QUANTITY-rgb-leg.png
+ID='tmp-${what:product}-${what:quantity}'
 
-OUTFILE_FINAL=$OPERATOR-$QUANTITY-${NICK:+"$NICK-"}panel.png
+OUTFILE=${OUTFILE:-$OPERATOR-$QUANTITY-${NICK:+"$NICK-"}panel.png}
 
-product=${PROD:+"${ENCODING:+--encoding $ENCODING} --$OPERATOR $VALUES"}
+
+quality=${PROD:+"-Q QIND -o '$ID-QIND.png'"}
 
 select=${SELECT:+"--select $SELECT"} 
+product=${PROD:+"${ENCODING:+--encoding $ENCODING} --$OPERATOR $VALUES"}
+# Add line only if either is set
+prodsel="$select$product"
+prodsel=${prodsel:+"$select $product"}
 
-cmd="rack $INPUT $select $product --cSize 400,400 --select quantity=$QUANTITY -c  -o $OUTFILE_GRAY  --palette palette-${QUANTITY/_/-}.txt -o $OUTFILE_RGB --legendOut tmp.svg"
-echo $cmd
-eval $cmd
+TMP_DIR="$PWD/out"
+TMP_FILE_SVG="panel-$NICK.svg"
+mkdir --parents $TMP_DIR
 
-#if [ ! -f $OUTFILE_LEGEND ]; then
-echo "# Creating legend..."
+style="--gStyle .BORDER='stroke:darkslateblue;stroke-width:1px' --gStyle .IMAGE_BORDER='stroke:slateblue;stroke-width:1px' \\"
+
+cmd="rack $INPUT \\ --outputPrefix $TMP_DIR/ \\ $style $prodsel --cSize 500,500 --select quantity=$QUANTITY -c \\ --paletteDefault -o '$ID-rgb.png' \\$quality --paletteOut '$ID-legend.svg'\\ -o $TMP_FILE_SVG"
+
+
+echo ${cmd//\\/ }
+eval ${cmd//\\/ }
+
+echo "# Converting SVG -> PNG..."
 #cmd="convert tmp.svg  $OUTFILE_LEGEND"
 #cmd="inkscape -z --export-png $OUTFILE_LEGEND tmp.svg"
-cmd="convert tmp.svg  $OUTFILE_LEGEND"  # -filter point -resize 400 
-echo $cmd
-eval $cmd
+cmd2="convert  $TMP_DIR/$TMP_FILE_SVG $OUTFILE"  # -filter point -resize 400 
+echo $cmd2
+eval $cmd2
+
+CMD_FILE=out/${OUTFILE%.*}.cmd
+cmd=${cmd//$ID-/}
+echo "# Writing $CMD_FILE ..."
+echo -e ${cmd//\\/'\\\n    '} > $CMD_FILE
+#display $OUTFILE_FINAL
+#read -e  -i "Y" -p "Accept?" ACCEPT
+#read -e  -p "Ok?" ACCEP
+#if  [ "$ACCEPT" != '' ]
+#    exit -1
 #fi
-
-# cmd="convert +append $OUTFILE_RGB $OUTFILE_LEGEND $OUTFILE_PROD"
-cmd="convert +append $OUTFILE_LEGEND  $OUTFILE_RGB $OUTFILE_PROD"
-echo $cmd
-eval $cmd
-
-if [ "$PROD" != '' ]; then 
-  echo $OPERATOR
-
-  cmd="rack $INPUT $product --cSize 400,400 -c --select quantity=QIND -o $OUTFILE_QUALITY"
-  echo $cmd
-  eval $cmd
-  
-  if [ -f $OUTFILE_QUALITY ]; then
-      convert -frame 3 +append $OUTFILE_PROD $OUTFILE_QUALITY $OUTFILE_FINAL
-  else
-      echo "# No quality field (QIND), ok..."
-      mv -v $OUTFILE_PROD  $OUTFILE_FINAL
-  fi
-else
-  mv $OUTFILE_PROD  $OUTFILE_FINAL
-  #convert -frame 3 +append $OPERATOR-$QUANTITY-image.png $OPERATOR-image.png 
-fi
-echo "Created: $OUTFILE_FINAL"

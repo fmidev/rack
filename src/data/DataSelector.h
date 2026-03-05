@@ -486,8 +486,17 @@ private:
 
 } // rack::
 
+
+DRAIN_ENUM_DICT(rack::DataOrder::Crit);
+DRAIN_ENUM_DICT(rack::DataOrder::Oper);
+DRAIN_ENUM_DICT(rack::DataSelector::Prf);
+
+DRAIN_TYPENAME_STR(rack::DataSelector);
+
 namespace drain {
-	DRAIN_TYPENAME(rack::DataSelector);
+	// DRAIN_TYPENAME(rack::DataSelector);
+
+
 }
 
 #endif /* DATASELECTOR_H_ */

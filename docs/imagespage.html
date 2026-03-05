@@ -260,8 +260,8 @@ How it works internally</h2>
 <p>In <b>Rack</b>, the data sets of a HDF structure are implemented directly as image objects. Copies of images are needed only if the intensities are rescaled or coloured. <br  />
  <b>Rack</b> has two memory arrays in which images can be extracted: <code>grayImage</code> and <code>colorImage</code>. In addition, there are two pointers: <code>grayImagePtr</code> and <code>imagePtr</code> . The flow of image data is illustrated below. <code>grayImagePtr</code> points to the latest HDF5 object processed or <code>grayImage</code> . <code>imagePtr</code> points to the latest HDF5 object processed, <code>grayImage</code> or <code>colorImage</code>. To be specific, these pointers point to the first HDF5 dataset matching the path selector <code>--select</code> , for example <code>/dataset1/data1/data</code> . The pointers are updated automatically by appropriate commands like <code>--image</code> or <code>--palette</code> . The flows implemented using pointers are illustrated with dotted lines.</p>
 <div class="dotgraph">
-<img src="dot_inline_dotgraph_5.png" alt="dot_inline_dotgraph_5.png" border="0" usemap="#dot_inline_dotgraph_5.map"/>
-<map name="dot_inline_dotgraph_5.map" id="dot_inline_dotgraph_5.map"><area shape="rect" href="" title="Output file" alt="" coords="822,199,917,249"/>
+<img src="dot_inline_dotgraph_7.png" alt="dot_inline_dotgraph_7.png" border="0" usemap="#dot_inline_dotgraph_7.map"/>
+<map name="dot_inline_dotgraph_7.map" id="dot_inline_dotgraph_7.map"><area shape="rect" href="" title="Output file" alt="" coords="822,199,917,249"/>
 <area shape="rect" href="volume" title="Input Volume,\nPolar product,\nCartesian product" alt="" coords="27,69,171,125"/>
 <area shape="rect" href="gray_image" title="&lt;i&gt;Gray image|&lt;alpha&gt;alpha channel\n(optional)" alt="" coords="272,84,391,151"/>
 <area shape="rect" href="color_image" title="&lt;i&gt;Color image|&lt;alpha&gt;alpha channel\n(optional)" alt="" coords="810,107,929,173"/>

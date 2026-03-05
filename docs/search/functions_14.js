@@ -33,7 +33,7 @@ var searchData=
   ['trim_30',['trim',['../classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e',1,'drain::StringTools']]],
   ['trimhead_31',['trimHead',['../classdrain_1_1Path.html#ada8b6fb3840daf16e30b9459877f5aad',1,'drain::Path']]],
   ['trimpathmatcher_32',['trimpathmatcher',['../classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187',1,'rack::DataSelector::trimPathMatcher()'],['../classrack_1_1DataSelector.html#aa648b72fc9830c47bae0d23449e83187',1,'rack::DataSelector::trimPathMatcher()']]],
-  ['trimscan_33',['trimScan',['../classdrain_1_1StringTools.html#a98f3cde2adcacaf13731dc116bcec0da',1,'drain::StringTools']]],
+  ['trimscan_33',['trimScan',['../classdrain_1_1StringTools.html#a15ac877cdfca1978bfb381d974832daa',1,'drain::StringTools']]],
   ['trimsymmetric_34',['trimSymmetric',['../classdrain_1_1StringTools.html#acb61794727d3578be74a55c2daa637a5',1,'drain::StringTools']]],
   ['trimtail_35',['trimTail',['../classdrain_1_1Path.html#acf80c1dec12e6ba79a26261728eb207c',1,'drain::Path']]],
   ['trimwords_36',['trimWords',['../classdrain_1_1CommandBank.html#a65163847655f407062834a530cd66f0f',1,'drain::CommandBank']]],

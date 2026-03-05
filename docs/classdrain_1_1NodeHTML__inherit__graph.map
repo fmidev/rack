@@ -1,17 +1,18 @@
 <map id="NodeHTML" name="NodeHTML">
-<area shape="rect" id="Node000001" title=" " alt="" coords="58,372,151,397"/>
-<area shape="rect" id="Node000002" href="$structdrain_1_1Html.html" title=" " alt="" coords="5,299,60,324"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,332,95,370,91,374,53,336"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="85,299,271,324"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,336,118,374,115,370,154,332"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="153,225,203,251"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="172,264,174,298,168,299,167,265"/>
-<area shape="poly" id="edge8_Node000003_Node000004" title=" " alt="" coords="189,265,188,299,182,298,184,264"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="49,152,307,177"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="172,191,174,225,168,225,167,191"/>
-<area shape="poly" id="edge7_Node000004_Node000005" title=" " alt="" coords="189,191,188,225,182,225,184,191"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="115,79,241,104"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="181,118,181,152,175,152,175,118"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="97,5,259,31"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="181,44,181,79,175,79,175,44"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="139,387,232,412"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1Html.html" title=" " alt="" coords="86,313,141,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,347,176,385,172,388,133,351"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="165,313,352,339"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,350,199,388,195,385,235,346"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="233,240,284,265"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="253,279,254,313,249,313,247,279"/>
+<area shape="poly" id="edge8_Node000003_Node000004" title=" " alt="" coords="270,279,268,313,263,313,265,279"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,159,264,185"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="166,190,242,238,239,242,163,194"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="71,79,198,104"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="137,118,137,159,132,159,132,118"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="53,5,216,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="137,44,137,79,132,79,132,44"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="289,152,479,192"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="343,202,278,242,276,238,340,197"/>
 </map>

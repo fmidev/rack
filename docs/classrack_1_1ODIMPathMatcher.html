@@ -109,7 +109,7 @@ Collaboration diagram for ODIMPathMatcher:</div>
 <area shape="poly" title=" " alt="" coords="141,282,141,317,135,317,135,282"/>
 <area shape="rect" title=" " alt="" coords="5,155,228,180"/>
 <area shape="poly" title=" " alt="" coords="125,193,138,241,132,243,120,194"/>
-<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="253,155,405,180"/>
+<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="253,155,405,180"/>
 <area shape="poly" title=" " alt="" coords="292,188,165,245,163,240,289,183"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="253,80,405,105"/>
 <area shape="poly" title=" " alt="" coords="331,120,331,154,326,154,326,120"/>
@@ -203,16 +203,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const <a 
 <tr class="separator:a6f8cdbdd039401daae62d5a8e60f7d21 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4fa55fc12b66762a87c118c0f8111d8 inherit pub_methods_classdrain_1_1Path" id="r_ac4fa55fc12b66762a87c118c0f8111d8"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (char c, const TT &amp;... args)</td></tr>
+<tr class="memdesc:ac4fa55fc12b66762a87c118c0f8111d8 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add elements, first of which is a character. Any string argument is handled as a path. <br /></td></tr>
 <tr class="separator:ac4fa55fc12b66762a87c118c0f8111d8 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd5753d248459e7cd0439ea0934280c5 inherit pub_methods_classdrain_1_1Path" id="r_acd5753d248459e7cd0439ea0934280c5"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const char *arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:acd5753d248459e7cd0439ea0934280c5 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add elements. Any string argument handled as a path. <br /></td></tr>
 <tr class="separator:acd5753d248459e7cd0439ea0934280c5 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6055d5e1385e10cc13b6f52aaf0e0250 inherit pub_methods_classdrain_1_1Path" id="r_a6055d5e1385e10cc13b6f52aaf0e0250"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> (const std::string &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:a6055d5e1385e10cc13b6f52aaf0e0250 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add elements. Any string argument handled as a path. <br /></td></tr>
 <tr class="separator:a6055d5e1385e10cc13b6f52aaf0e0250 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cc89a498442c421275172ef7a616c67 inherit pub_methods_classdrain_1_1Path" id="r_a4cc89a498442c421275172ef7a616c67"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPath</b> (const char *p)</td></tr>
-<tr class="memdesc:a4cc89a498442c421275172ef7a616c67 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialized handler for strings (note, possibly: elem_t==std:string) <br /></td></tr>
+<tr class="memdesc:a4cc89a498442c421275172ef7a616c67 inherit pub_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add path. Specialized handler for strings (note, possibly: elem_t==std:string) <br /></td></tr>
 <tr class="separator:a4cc89a498442c421275172ef7a616c67 inherit pub_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a165a8c281d963dd17232b172cf733901 inherit pub_methods_classdrain_1_1Path" id="r_a165a8c281d963dd17232b172cf733901"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPath</b> (const <a class="el" href="classdrain_1_1Path.html">path_t</a> &amp;p)</td></tr>
@@ -312,9 +315,9 @@ static const <a class="el" href="structdrain_1_1PathSeparatorPolicy.html">PathSe
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> ()</td></tr>
 <tr class="memdesc:ad680a12a996d3e8e592d522751bffba6 inherit pro_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminal function for variadic templates. <br /></td></tr>
 <tr class="separator:ad680a12a996d3e8e592d522751bffba6 inherit pro_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25600135daa54f895a054078f531622a inherit pro_methods_classdrain_1_1Path" id="r_a25600135daa54f895a054078f531622a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a25600135daa54f895a054078f531622a">_appendPath</a> (const std::string &amp;p, size_t start=0)</td></tr>
-<tr class="memdesc:a25600135daa54f895a054078f531622a inherit pro_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Default" append function.  <br /></td></tr>
-<tr class="separator:a25600135daa54f895a054078f531622a inherit pro_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eca5699c40b91aadd5cc952d94097e2 inherit pro_methods_classdrain_1_1Path" id="r_a3eca5699c40b91aadd5cc952d94097e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a3eca5699c40b91aadd5cc952d94097e2">appendSubStr</a> (const std::string &amp;p, size_t start=0)</td></tr>
+<tr class="memdesc:a3eca5699c40b91aadd5cc952d94097e2 inherit pro_methods_classdrain_1_1Path"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Default" append function.  <br /></td></tr>
+<tr class="separator:a3eca5699c40b91aadd5cc952d94097e2 inherit pro_methods_classdrain_1_1Path"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure for testing if a path matches a given sequence of path elements. </p>

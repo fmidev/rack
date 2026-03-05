@@ -608,10 +608,18 @@ public:
 	std::ostream & nodeToStream(std::ostream & ostr, tag_display_mode mode=EMPTY_TAG) const = 0;
 
 
-
+	/*
 	template <class TR>
 	static
 	std::ostream & toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag="ELEM", int indent=0);
+	*/
+
+	// , const std::string & defaultTag="ELEM" UnorderedMultiTree<N>
+	template <class N>
+	static
+	std::ostream & toStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent=0);
+
+
 
 	/// Handy map for converting characters to XML entities. Example: '&' -> "&amp;"
 	/**
@@ -707,10 +715,15 @@ public:
 DRAIN_ENUM_DICT(XML::entity_t);
 DRAIN_ENUM_OSTREAM(XML::entity_t);
 
-template <class TR>
-std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::string & defaultTag, int indent){
+// drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
+// , const std::string & defaultTag
+// template <class TR>
+template <class N>
+std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent){
 
 	drain::Logger mout(__FILE__,__FUNCTION__);
+
+	typedef UnorderedMultiTree<N> TR;
 
 	const typename TR::container_t & children = tree.getChildren();
 
@@ -752,11 +765,20 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 	}
 	// Hence, is flexible, "bimodal", supports empty and open-close mode.
 
+
 	// Indent
-	// std::fill_n(std::ostream_iterator<char>(ostr), 2*indent, ' ');
 	std::string fill(2*indent, ' ');
 	ostr << fill;
+
+	// Print opening tag and attributes.
 	data.nodeToStream(ostr, mode);
+
+	if (data.isScript() && !tree.empty()){ // (mode==OPENING_TAG)
+		//std::string fill(2*indent, ' ');
+		ostr << "//<![CDATA[\n";
+	}
+
+
 
 	if (mode == EMPTY_TAG){
 		//ostr << "<!--ET-->";
@@ -844,7 +866,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 
 		// Elements "own" CTEXT will be always output first -> check for problems, if other elements added first.
 		// ostr << data.ctext;
-
+		/*
 		if (data.isScript()){
 			ostr << data.ctext; // let < and > pass through
 		}
@@ -852,6 +874,8 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 			ostr << data.ctext; // let < and > pass through
 			// StringTools::replace(XML::encodingMap, data.ctext, ostr); // sometimes an issue? // any time issue?
 		}
+		*/
+		ostr << data.ctext;
 
 		// Detect if all the children are of type CTEXT, to be rendered in a single line.
 		// Note: potential re-parsing will probably detect them as a single CTEXT element.
@@ -878,7 +902,13 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 				}
 				//ostr << entry.second->getText();
 				//StringTools::replace(XML::encodingMap, entry.second->getText(), ostr); // any time issue?
-				StringTools::replace(entry.second->getText(), getEntityMap(), ostr); // any time issue?
+				if (data.isScript()){
+					// Unfiltered
+					ostr << entry.second->getText();
+				}
+				else {
+					StringTools::replace(entry.second->getText(), getEntityMap(), ostr); // any time issue?
+				}
 				// ostr << entry.second->getText();
 			}
 		}
@@ -887,7 +917,8 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 			ostr << '\n';
 			/// iterate children - note the use of default tag
 			for (const auto & entry: children){
-				toStream(ostr, entry.second, entry.first, indent+1); // Notice, no ++indent
+				//toStream(ostr, entry.second, entry.first, indent+1); // Notice, no ++indent
+				toStream(ostr, entry.second, indent+1); // Notice, no ++indent
 				// "implicit" newline
 			}
 			ostr << fill; //  for CLOSING tag
@@ -896,6 +927,10 @@ std::ostream & XML::toStream(std::ostream & ostr, const TR & tree, const std::st
 	}
 
 	// ostr << "<!-- END "<< data.getId() << ' ' << data.getTag() << '(' << data.getType() << ')' << "-->";
+	if (data.isScript() && !tree.empty()){
+		//std::string fill(2*indent, ' ');
+		ostr << "//]]>";
+	}
 
 	data.nodeToStream(ostr, CLOSING_TAG);
 	ostr << '\n';  // Always after closing tag!

@@ -46,22 +46,26 @@ namespace rack {
 
 ///const drain::FlaggerBase<Crit>::dict_t CritFlagger::dict = {{"DATA", DATA}, {"ELANGLE", ELANGLE}, {"TIME", TIME}};
 
-template <>
-const drain::Enum<DataOrder::Crit>::dict_t drain::Enum<DataOrder::Crit>::dict = {
+// template <>
+// const drain::Enum<DataOrder::Crit>::dict_t drain::Enum<DataOrder::Crit>::dict = {
+
+DRAIN_ENUM_DICT(DataOrder::Crit) = {
 		{"DATA",    rack::DataOrder::DATA},
 		{"ELANGLE", rack::DataOrder::ELANGLE},
 		{"TIME",    rack::DataOrder::TIME}
 };
 
-template <>
-const drain::Enum<DataOrder::Oper>::dict_t drain::Enum<DataOrder::Oper>::dict =  {
+// template <>
+// const drain::Enum<DataOrder::Oper>::dict_t drain::Enum<DataOrder::Oper>::dict =  {
+DRAIN_ENUM_DICT(DataOrder::Oper) = {
 		{"MIN", rack::DataOrder::MIN},
 		{"MAX", rack::DataOrder::MAX}
 };
 
-template <>
-const drain::Enum<DataSelector::Prf>::dict_t drain::Enum<DataSelector::Prf>::dict =  {
-		{"ANY", rack::DatasetSelector::ANY},
+// template <>
+// const drain::Enum<DataSelector::Prf>::dict_t drain::Enum<DataSelector::Prf>::dict =  {
+DRAIN_ENUM_DICT(DataSelector::Prf) = {
+		{"ANY",    rack::DatasetSelector::ANY},
 		{"SINGLE", rack::DataSelector::SINGLE},
 		{"DOUBLE", rack::DataSelector::DOUBLE}
 };
@@ -73,7 +77,6 @@ DataSelector::DataSelector(
 		unsigned int count,
 		drain::Range<double> elangle,
 		DataSelector::Prf prf
-		// int dualPRF,
 		// drain::Range<int> timespan
 		) : BeanLike(__FUNCTION__) { //, orderFlags(orderDict) {
 
@@ -143,7 +146,7 @@ void DataSelector::init() {
 	reset();
 	pathMatcher.separator.acceptTrailing = true;
 	parameters.link("path", path, "[/]dataset<i>[/data<j>|/quality<j>]");
-	parameters.link("quantity", quantities, "DBZH|VRAD|RHOHV|...");
+	parameters.link("quantity", quantities, "DBZH:VRAD:RHOHV:...");
 	parameters.link("elangle", elangle.tuple(), "min[:max]").fillArray = false;
 	parameters.link("count", count);
 	//parameters.link("order", order.str, drain::sprinter(orderDict).str()); // TODO:  sprinter(orderDict)
@@ -860,22 +863,11 @@ bool DataSelector::getNextPath(const Hi5Tree & src, ODIMPath & path, ODIMPathEle
 
 void DataSelector::swapData(Hi5Tree & src,const ODIMPathElem &srcElem, Hi5Tree & dst){
 
-	//RackResources & resources = getResources();
-	// RackContext & ctx = getResources().getContext<RackContext>();
-
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// mout.warn("Swapping!");
 	mout.debug("Swapping: src: '", srcElem, "'...");
 	swapData(src[srcElem], dst, srcElem.getType());
 
-	/*
-	//mout.debug("Swapping subtree of type: ", srcElem.getType());
-	ODIMPathElem dstElem(srcElem.getType());
-	DataSelector::getNextChild(dst, dstElem);
-	mout.attention("Swapping src:", srcElem, ") <=> dst:", dstElem);
-	// Create empty dstRoot[path] and swap it...
-	dst[dstElem].swap(src[srcElem]);
-	*/
 }
 
 // TODO: Datatools?
@@ -884,7 +876,6 @@ void DataSelector::swapData(Hi5Tree & srcGroup, Hi5Tree & dst, ODIMPathElem::gro
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	ODIMPathElem dstElem(groupType, 1);
-	//DataSelector::getNextChild(dst, dstElem);
 	ODIMPathTools::getNextChild(dst, dstElem);
 	mout.debug("Swapping: ... dst:'", dstElem, "' group type: ", groupType, " note: odim?"); // see quality comb..
 	// Create empty dst[dstElem] and swap it...
@@ -947,6 +938,8 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 
 }  // rack::
 
+/*
 namespace drain {
 	DRAIN_TYPENAME_DEF(rack::DataSelector);
 }
+*/

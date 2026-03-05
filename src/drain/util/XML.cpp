@@ -181,7 +181,8 @@ void XML::setText(const std::string & s) {
 	case XML::COMMENT:
 	default:
 		// TODO: check types, somehow...
-		drain::StringTools::import(s, ctext); // ? obsolete code, orig with templates
+		ctext.assign(s);
+		//drain::StringTools::import(s, ctext); // ? obsolete code, orig with templates
 	}
 
 }

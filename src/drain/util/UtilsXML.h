@@ -235,6 +235,31 @@ public:
 		return styleEntry;
 	}
 
+	/**
+	 *
+	 */
+	template <typename N, typename ...TT>
+	static
+	UnorderedMultiTree<N> & ensureJavaScriptFunction(UnorderedMultiTree<N> & root, const std::string & name, const TT & ...args){
+
+		typedef UnorderedMultiTree<N> T;
+		T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, name);
+
+		if (jsFunction.empty()){
+			jsFunction->setText("function ", name, '(', args..., ')');
+			//T & jsFunctionScope =
+			//jsFunction[XML::JAVASCRIPT_SCOPE](XML::JAVASCRIPT_SCOPE);
+		}
+		/*
+		if (jsFunction->get("type").empty()){
+			// Ensure code scope.
+			jsFunction->set("type", "text/javascript");
+			jsFunction->setText("function ", name, '(', args..., ')');
+		}
+		*/
+		return jsFunction; // [XML::JAVASCRIPT_SCOPE];
+	}
+
 
 };
 

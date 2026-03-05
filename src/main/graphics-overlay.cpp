@@ -70,17 +70,6 @@ DRAIN_ENUM_OSTREAM(rack::Graphic::GRAPHIC);
 
 namespace rack {
 /*
-	GRID,
-		DOT,
-		LABEL, // External
-		RAY,
-		SECTOR,
-		ANNULUS,
-		CIRCLE,
-		*/
-
-//const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
-/*
 template <int D,typename T,size_t N>
 inline
 void convert(const drain::TupleBase<T,N> &src, drain::TupleBase<T,N> & dst){
@@ -170,8 +159,17 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		radarSVG.updateCartesianConf(composite);
 	}
 
+
+
+
 	// overlayGroup->addClass(GRID); // add RADAR?
 	overlayGroup->set(DATA_ID, srcDsc); // Rack necessity.
+	// New. For mouse coords: // drain::Sprinter::plainLayout
+
+	overlayGroup->set("data-bbox", drain::sprinter(radarSVG.geoFrame.getBoundingBoxNat().tuple(), drain::Sprinter::plainLayout).str());
+	// DOES not work overlayGroup->set("data-epsg", radarSVG.geoFrame.getEPSG());
+
+	// overlayGroup->addClass("COORDS");
 	overlayGroup[svg::DESC](svg::DESC)->setText(srcDsc); // General SVG comment
 	// mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
 	// mout.reject<LOG_WARNING>(DRAIN_LOG(radarSVG.radarProj));
@@ -811,10 +809,10 @@ public:
 };
  */
 
-/*
+
 #include "js/set_image_coord_tracker.h"
-#include "js/add_coord_tracker.h"
-*/
+#include "js/add_mouse_listeners.h"
+
 
 void CmdCoords::exec() const {
 
@@ -822,26 +820,65 @@ void CmdCoords::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	// GENERALIZE (start)
+	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
 	const std::string onload_fnc_name = "rack_onload";
+	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
+	// GENERALIZE (end)
 
-	//TreeSVG & onloadJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, onload_fnc_name);
-	TreeSVG & onloadJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, onload_fnc_name);
-	if (onloadJS->get("type").empty()){
-		onloadJS->set("type", "text/javascript");
-		onloadJS->setText("function ", onload_fnc_name, "()");
-		ctx.svgTrack->set("onload", onload_fnc_name+"()");
+
+	RadarSVG radarSVG;
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
+	overlayGroup->setId(); // visible
+	std::string bbox = overlayGroup->get("data-bbox","");
+	if (!bbox.empty()){
+		mout.special("Attaching coordinate monitor to overlaygroup #", overlayGroup->getId());
 	}
-	TreeSVG & myJS = onloadJS["myContrib"](svg::JAVASCRIPT_SCOPE);
-	myJS.addChild() = "const x = 1;";
-	myJS.addChild() = "const y = 2;";
+	else {
+		mout.warn("Could not attach coordinate monitor - overlaygroup #", overlayGroup->getId(), "has no 'data-bbox' attribute ");
+	}
 
-	// TreeSVG & coordTrackerJS = TreeUtilsSVG::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coordTracker");
-	TreeSVG & coordTrackerJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coordTracker");
-	coordTrackerJS->set("type", "text/javascript");
-	coordTrackerJS = "/* set_image_coord_tracker */";
-	// coordTrackerJS->setText(set_image_coord_tracker);
 
-	// mout.error("Here we go: ", set_image_coord_tracker);
+	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
+	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE); //  COORD_TRACKER
+	// -> track IMAGE_BORDER
+	// -> write to COORDS
+
+	//drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
+	//coordCatcher->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
+	drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
+	// Mark for coord monitoring
+	//coordCatcher->addClass("COORDS");
+	coordCatcher->setStyle("fill","red");
+	coordCatcher->setStyle("fill-opacity", 0.5);
+	coordCatcher->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	coordCatcher->set("data-bbox", bbox);
+
+	drain::image::TreeSVG & coordDisplay = imagePanelGroup[RackSVG::ElemClass::COORD_TRACKER](svg::TEXT);
+	coordDisplay->setId();
+	coordDisplay->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
+	coordDisplay->setAlign(AlignSVG::RIGHT, AlignSVG::TOP);
+	coordDisplay->addClass(RackSVG::ElemClass::MONITOR);
+	// Associate with graphical "location" style
+	coordDisplay->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+	coordDisplay->setTextSafe("(lon,lat)");
+	coordDisplay->setFontSize(15,20);
+
+	/*
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
+			{"fill", "red"},
+			{"opacity", 0.5},
+	});
+	*/
+
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "add_mouse_listeners")     = add_mouse_listeners;
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "set_image_coord_tracker") = set_image_coord_tracker;
+
+	//
+	//TreeSVG & myJS = onloadJS[getName()](svg::JAVASCRIPT_SCOPE);
+	onloadJS["add_coord_tracker"] = drain::StringBuilder<>("add_coord_tracker();");
+
 
 
 }

@@ -264,58 +264,61 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <a class="code hl_class" href="classdrain_1_1image_1_1Image.html">Image</a> colorImage;</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    std::string paletteKey;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keywordtype">int</span> paletteResolution = 0;</div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    Palette &amp; getPalette(){</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="keywordflow">return</span> PaletteOp::getPalette(paletteKey);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    }</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    Palette &amp; getPalette(<span class="keyword">const</span> std::string &amp; key);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    Palette &amp; getPalette();</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    Palette &amp; getPalette(<span class="keyword">const</span> std::string &amp; key);</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordtype">void</span> refinePalette(Palette &amp; palette);</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ImageContext.html#a3171c757824d08b7e82f5a726454df98">getImageInfo</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1image_1_1Image.html">Image</a> *ptr, <a class="code hl_typedef" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a> &amp; entry);</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="comment">// New, returns also the actual key.</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    <span class="comment">//PaletteMap::iterator it getPaletteEntry(const std::string &amp; key);</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ImageContext.html#a3171c757824d08b7e82f5a726454df98">getImageInfo</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1image_1_1Image.html">Image</a> *ptr, <a class="code hl_typedef" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a> &amp; entry);</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="classrack_1_1ImageContext.html#a46f8e9258dc62e0a3abf23e74897c013">  215</a></span>    <span class="keyword">static</span> std::string <a class="code hl_variable" href="classrack_1_1ImageContext.html#a46f8e9258dc62e0a3abf23e74897c013">outputQuantitySyntax</a>;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">//protected:</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordtype">void</span> updateImageStatus(<a class="code hl_class" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp; statusMap) <span class="keyword">const</span> ;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno"><a class="line" href="classrack_1_1ImageContext.html#a46f8e9258dc62e0a3abf23e74897c013">  218</a></span>    std::string <a class="code hl_variable" href="classrack_1_1ImageContext.html#a46f8e9258dc62e0a3abf23e74897c013">outputQuantitySyntax</a>;</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">//protected:</span></div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>};</div>
-</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordtype">void</span> updateImageStatus(<a class="code hl_class" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp; statusMap) <span class="keyword">const</span> ;</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>};</div>
+</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span> </div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>} <span class="comment">/* namespace rack */</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="preprocessor">#endif </span><span class="comment">/* RACKLET_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition</b> EnumUtils.h:294</div></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>} <span class="comment">/* namespace rack */</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="preprocessor">#endif </span><span class="comment">/* RACKLET_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">// Rack</span></div>
+<div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition</b> EnumFlagger.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1FlexVariableMap_html"><div class="ttname"><a href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a></div><div class="ttdoc">A map of FlexVariable:s.</div><div class="ttdef"><b>Definition</b> VariableMap.h:138</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition</b> UniTuple.h:65</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableMap_html"><div class="ttname"><a href="classdrain_1_1VariableMap.html">drain::VariableMap</a></div><div class="ttdoc">A map of Variables.</div><div class="ttdef"><b>Definition</b> VariableMap.h:61</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FileSVG_html"><div class="ttname"><a href="classdrain_1_1image_1_1FileSVG.html">drain::image::FileSVG</a></div><div class="ttdef"><b>Definition</b> TreeSVG.h:61</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageSampler_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageSampler.html">drain::image::ImageSampler</a></div><div class="ttdoc">Traverses image, returning samples.</div><div class="ttdef"><b>Definition</b> ImageModifierPack.h:401</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Image_html"><div class="ttname"><a href="classdrain_1_1image_1_1Image.html">drain::image::Image</a></div><div class="ttdoc">Class for multi-channel digital images. Supports dynamic typing with base types (char,...</div><div class="ttdef"><b>Definition</b> Image.h:193</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1LayoutSVG_html_a224b9163917ac32fc95a60d8c1eec3aa"><div class="ttname"><a href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">drain::image::LayoutSVG::Direction</a></div><div class="ttdeci">Direction</div><div class="ttdoc">Direction for &quot;Stacked&quot;, horziontally or vertically sequentially aligned layout.</div><div class="ttdef"><b>Definition</b> LayoutSVG.h:64</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1LayoutSVG_html_a224b9163917ac32fc95a60d8c1eec3aa"><div class="ttname"><a href="classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa">drain::image::LayoutSVG::Direction</a></div><div class="ttdeci">Direction</div><div class="ttdoc">Direction for &quot;Stacked&quot;, horziontally or vertically sequentially aligned layout.</div><div class="ttdef"><b>Definition</b> LayoutSVG.h:63</div></div>
 <div class="ttc" id="aclassrack_1_1GraphicsContext_html"><div class="ttname"><a href="classrack_1_1GraphicsContext.html">rack::GraphicsContext</a></div><div class="ttdef"><b>Definition</b> resources-image.h:107</div></div>
 <div class="ttc" id="aclassrack_1_1GraphicsContext_html_a51f09e71ebcb3612af4fde976165685a"><div class="ttname"><a href="classrack_1_1GraphicsContext.html#a51f09e71ebcb3612af4fde976165685a">rack::GraphicsContext::GraphicsContext</a></div><div class="ttdeci">GraphicsContext()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> resources-image.cpp:118</div></div>
 <div class="ttc" id="aclassrack_1_1ImageContext_html"><div class="ttname"><a href="classrack_1_1ImageContext.html">rack::ImageContext</a></div><div class="ttdef"><b>Definition</b> resources-image.h:143</div></div>
 <div class="ttc" id="aclassrack_1_1ImageContext_html_a1a3c4fd044db18bf9f5c9f9d1bfd32ba"><div class="ttname"><a href="classrack_1_1ImageContext.html#a1a3c4fd044db18bf9f5c9f9d1bfd32ba">rack::ImageContext::imagePhysical</a></div><div class="ttdeci">bool imagePhysical</div><div class="ttdoc">Defines if the next image processing operation uses scaled intentsites instead of raw byte values.</div><div class="ttdef"><b>Definition</b> resources-image.h:154</div></div>
 <div class="ttc" id="aclassrack_1_1ImageContext_html_a2c2cd3e0852716d18e2b7a8cce5dae29"><div class="ttname"><a href="classrack_1_1ImageContext.html#a2c2cd3e0852716d18e2b7a8cce5dae29">rack::ImageContext::currentImage</a></div><div class="ttdeci">const Image * currentImage</div><div class="ttdoc">Pointer to the last 2D data (image) processed.</div><div class="ttdef"><b>Definition</b> resources-image.h:189</div></div>
-<div class="ttc" id="aclassrack_1_1ImageContext_html_a3171c757824d08b7e82f5a726454df98"><div class="ttname"><a href="classrack_1_1ImageContext.html#a3171c757824d08b7e82f5a726454df98">rack::ImageContext::getImageInfo</a></div><div class="ttdeci">static void getImageInfo(const Image *ptr, drain::Variable &amp;entry)</div><div class="ttdoc">Given image pointer (null ok), get properties.</div><div class="ttdef"><b>Definition</b> resources-image.cpp:249</div></div>
-<div class="ttc" id="aclassrack_1_1ImageContext_html_a46f8e9258dc62e0a3abf23e74897c013"><div class="ttname"><a href="classrack_1_1ImageContext.html#a46f8e9258dc62e0a3abf23e74897c013">rack::ImageContext::outputQuantitySyntax</a></div><div class="ttdeci">static std::string outputQuantitySyntax</div><div class="ttdef"><b>Definition</b> resources-image.h:215</div></div>
+<div class="ttc" id="aclassrack_1_1ImageContext_html_a3171c757824d08b7e82f5a726454df98"><div class="ttname"><a href="classrack_1_1ImageContext.html#a3171c757824d08b7e82f5a726454df98">rack::ImageContext::getImageInfo</a></div><div class="ttdeci">static void getImageInfo(const Image *ptr, drain::Variable &amp;entry)</div><div class="ttdoc">Given image pointer (null ok), get properties.</div><div class="ttdef"><b>Definition</b> resources-image.cpp:270</div></div>
+<div class="ttc" id="aclassrack_1_1ImageContext_html_a46f8e9258dc62e0a3abf23e74897c013"><div class="ttname"><a href="classrack_1_1ImageContext.html#a46f8e9258dc62e0a3abf23e74897c013">rack::ImageContext::outputQuantitySyntax</a></div><div class="ttdeci">static std::string outputQuantitySyntax</div><div class="ttdef"><b>Definition</b> resources-image.h:218</div></div>
 <div class="ttc" id="aclassrack_1_1ImageContext_html_a6270b936d0b7f381803a878da7bbcc3d"><div class="ttname"><a href="classrack_1_1ImageContext.html#a6270b936d0b7f381803a878da7bbcc3d">rack::ImageContext::ImageContext</a></div><div class="ttdeci">ImageContext()</div><div class="ttdoc">Default constr.</div><div class="ttdef"><b>Definition</b> resources-image.cpp:134</div></div>
 <div class="ttc" id="aclassrack_1_1ImageContext_html_a69e49d94611fea0ba5535345568662d0"><div class="ttname"><a href="classrack_1_1ImageContext.html#a69e49d94611fea0ba5535345568662d0">rack::ImageContext::qualityGroups</a></div><div class="ttdeci">ODIMPathElem::group_t qualityGroups</div><div class="ttdoc">Defines which quality data, if any, is used as input weight.</div><div class="ttdef"><b>Definition</b> resources-image.h:162</div></div>
 <div class="ttc" id="aclassrack_1_1ImageContext_html_abf45a4c7158a8be3ae14d2c5396346c0"><div class="ttname"><a href="classrack_1_1ImageContext.html#abf45a4c7158a8be3ae14d2c5396346c0">rack::ImageContext::currentGrayImage</a></div><div class="ttdeci">const Image * currentGrayImage</div><div class="ttdoc">Pointer to the last single-channel 2D data (image) processed.</div><div class="ttdef"><b>Definition</b> resources-image.h:192</div></div>
@@ -323,8 +326,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespacedrain_1_1image_html"><div class="ttname"><a href="namespacedrain_1_1image.html">drain::image</a></div><div class="ttdoc">Namespace for images and image processing tools.</div><div class="ttdef"><b>Definition</b> AccumulationArray.cpp:45</div></div>
 <div class="ttc" id="anamespacedrain_html_ab7d12e28978bddd9b2fda7142a1c0420"><div class="ttname"><a href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">drain::Variable</a></div><div class="ttdeci">DRAIN_VARIABLE Variable</div><div class="ttdoc">Value container supporting dynamic type.</div><div class="ttdef"><b>Definition</b> Variable.h:63</div></div>
 <div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
-<div class="ttc" id="astructdrain_1_1image_1_1AnchorElem_html"><div class="ttname"><a href="structdrain_1_1image_1_1AnchorElem.html">drain::image::AnchorElem</a></div><div class="ttdef"><b>Definition</b> AlignAnchorSVG.h:76</div></div>
-<div class="ttc" id="astructdrain_1_1image_1_1CompleteAlignment_html"><div class="ttname"><a href="structdrain_1_1image_1_1CompleteAlignment.html">drain::image::CompleteAlignment</a></div><div class="ttdoc">&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its...</div><div class="ttdef"><b>Definition</b> AlignSVG.h:550</div></div>
+<div class="ttc" id="astructdrain_1_1image_1_1AnchorElem_html"><div class="ttname"><a href="structdrain_1_1image_1_1AnchorElem.html">drain::image::AnchorElem</a></div><div class="ttdef"><b>Definition</b> AlignAnchorSVG.h:77</div></div>
+<div class="ttc" id="astructdrain_1_1image_1_1CompleteAlignment_html"><div class="ttname"><a href="structdrain_1_1image_1_1CompleteAlignment.html">drain::image::CompleteAlignment</a></div><div class="ttdoc">&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its...</div><div class="ttdef"><b>Definition</b> AlignSVG.h:564</div></div>
 <div class="ttc" id="astructrack_1_1ConfSVG_html"><div class="ttname"><a href="structrack_1_1ConfSVG.html">rack::ConfSVG</a></div><div class="ttdef"><b>Definition</b> resources-image.h:56</div></div>
 <div class="ttc" id="astructrack_1_1ConfSVG_html_a2db93ae162ed4811fbe54e152c210d65"><div class="ttname"><a href="structrack_1_1ConfSVG.html#a2db93ae162ed4811fbe54e152c210d65">rack::ConfSVG::boxHeights</a></div><div class="ttdeci">drain::UniTuple&lt; double, 3 &gt; boxHeights</div><div class="ttdef"><b>Definition</b> resources-image.h:94</div></div>
 <div class="ttc" id="astructrack_1_1ConfSVG_html_a6e16e6e30a2bbbe2e59a3bed7de1b8e9"><div class="ttname"><a href="structrack_1_1ConfSVG.html#a6e16e6e30a2bbbe2e59a3bed7de1b8e9">rack::ConfSVG::fontSizes</a></div><div class="ttdeci">drain::UniTuple&lt; double, 3 &gt; fontSizes</div><div class="ttdef"><b>Definition</b> resources-image.h:88</div></div>

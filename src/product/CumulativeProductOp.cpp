@@ -101,6 +101,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	mout.special("output quantity: ", dstQuantity);
 	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity); // User may change it below
 
+	/// NEW, focused! 2026/03
 	if (!targetEncoding.empty()){ // good
 		/** If targetEncoding has been defined, use it.
 		 *  It should have at least type (or quantity in some rare cases).
@@ -211,7 +212,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 
 	DataCoder dataCoder(dstData.odim, dstQualityData.odim); // (
-	mout.warn(DRAIN_LOG(dataCoder));
+	// mout.warn(DRAIN_LOG(dataCoder));
 	const drain::Rectangle<int> area; // (0, 0, img.getWidth(), img.getHeight());
 	accumulator.extractField(Accumulator::FieldType::DATA,   dataCoder, dstData.data,        area);
 	accumulator.extractField(Accumulator::FieldType::WEIGHT, dataCoder, dstQualityData.data, area);

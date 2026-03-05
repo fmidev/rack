@@ -141,7 +141,7 @@ Collaboration diagram for PseudoRhiOp:</div>
 <area shape="poly" title=" " alt="" coords="1077,466,1270,444,1306,439,1307,444,1271,449,1078,472"/>
 <area shape="rect" title=" " alt="" coords="496,466,719,491"/>
 <area shape="poly" title=" " alt="" coords="733,477,833,478,833,483,732,482"/>
-<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="531,515,683,541"/>
+<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="531,515,683,541"/>
 <area shape="poly" title=" " alt="" coords="696,513,855,491,856,497,697,518"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="233,527,385,553"/>
 <area shape="poly" title=" " alt="" coords="398,534,531,528,531,534,398,539"/>
@@ -206,9 +206,11 @@ Collaboration diagram for PseudoRhiOp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae5e616f102dfbc465e01a9877bc3497b" id="r_ae5e616f102dfbc465e01a9877bc3497b"><td class="memItemLeft" align="right" valign="top"><a id="ae5e616f102dfbc465e01a9877bc3497b" name="ae5e616f102dfbc465e01a9877bc3497b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PseudoRhiOp</b> (double az_angle=0.0, long int xsize=500, long int ysize=250, double minRange=1.0, double range=250.0, double minHeight=0, double maxHeight=10000, double beamWidth=0.25, double beamPowerThreshold=0.01)</td></tr>
-<tr class="separator:ae5e616f102dfbc465e01a9877bc3497b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db533d04bc8263c0afe84af0a7690e1" id="r_a5db533d04bc8263c0afe84af0a7690e1"><td class="memItemLeft" align="right" valign="top"><a id="a5db533d04bc8263c0afe84af0a7690e1" name="a5db533d04bc8263c0afe84af0a7690e1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PseudoRhiOp</b> (double az_angle=0.0, <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; range={0.0, 0.0}, <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; height={0.0, 12000.0}, <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; unsigned short &gt; size={800, 600}, double beamWidth=0.25, double beamThreshold=0.01)</td></tr>
+<tr class="separator:a5db533d04bc8263c0afe84af0a7690e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322d8aeb4de229708bbbbdcbb35d1db1" id="r_a322d8aeb4de229708bbbbdcbb35d1db1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PseudoRhiOp.html#a322d8aeb4de229708bbbbdcbb35d1db1">setPolarSelector</a> (const <a class="el" href="structrack_1_1PolarSelector.html">PolarSelector</a> &amp;ps) override</td></tr>
+<tr class="separator:a322d8aeb4de229708bbbbdcbb35d1db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0510c85b0b46b0e99b7993c12d123453" id="r_a0510c85b0b46b0e99b7993c12d123453"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PseudoRhiOp.html#a0510c85b0b46b0e99b7993c12d123453">computeSingleProduct</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;src, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="namespacerack.html#af36110f9442c61364896b0fe28c6b6bf">RhiDst</a> &gt; &amp;dstProduct) const</td></tr>
 <tr class="memdesc:a0510c85b0b46b0e99b7993c12d123453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements VolumeOp::filter.  <br /></td></tr>
 <tr class="separator:a0510c85b0b46b0e99b7993c12d123453"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -358,10 +360,10 @@ virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ae167d2f8125388fd7e16e3c2ca03cb8b" id="r_ae167d2f8125388fd7e16e3c2ca03cb8b"><td class="memItemLeft" align="right" valign="top"><a id="ae167d2f8125388fd7e16e3c2ca03cb8b" name="ae167d2f8125388fd7e16e3c2ca03cb8b"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>beamWidth</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>beamWidth</b> = 0.25</td></tr>
 <tr class="separator:ae167d2f8125388fd7e16e3c2ca03cb8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90ce7826d5232a8373a9a93697f17fb6" id="r_a90ce7826d5232a8373a9a93697f17fb6"><td class="memItemLeft" align="right" valign="top"><a id="a90ce7826d5232a8373a9a93697f17fb6" name="a90ce7826d5232a8373a9a93697f17fb6"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>weightThreshold</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>weightThreshold</b> = 0.1</td></tr>
 <tr class="separator:a90ce7826d5232a8373a9a93697f17fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1RadarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1RadarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp&lt; MS, MD &gt;</a></td></tr>
 <tr class="memitem:a582a43111f0014d61e6272cc1ed36d51 inherit pub_attribs_classrack_1_1RadarProductOp" id="r_a582a43111f0014d61e6272cc1ed36d51"><td class="memItemLeft" align="right" valign="top">
@@ -399,9 +401,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initDst</b> (
 <tr class="memitem:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp" id="r_a374ba63d22bde63d4ec14d887236b97b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a374ba63d22bde63d4ec14d887236b97b">setEncoding</a> (const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData) const</td></tr>
 <tr class="memdesc:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.  <br /></td></tr>
 <tr class="separator:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ce468ec901323e1b143f8ce039b4148 inherit pro_methods_classrack_1_1RadarProductOp" id="r_a0ce468ec901323e1b143f8ce039b4148"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a0ce468ec901323e1b143f8ce039b4148">setEncodingNEW</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData, const std::string quantity=&quot;&quot;, const std::string type=&quot;&quot;) const</td></tr>
-<tr class="memdesc:a0ce468ec901323e1b143f8ce039b4148 inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.  <br /></td></tr>
-<tr class="separator:a0ce468ec901323e1b143f8ce039b4148 inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp" id="r_a322875e2d99379d2b04032f4d8d5ee4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a322875e2d99379d2b04032f4d8d5ee4c">setEncodingNEW</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData, const std::string &amp;quantity=&quot;&quot;, const std::string &amp;args=&quot;&quot;) const</td></tr>
+<tr class="memdesc:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.  <br /></td></tr>
+<tr class="separator:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:ad4df2c00e899650fb621004091420b49 inherit pro_methods_classrack_1_1ProductBase" id="r_ad4df2c00e899650fb621004091420b49"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>ProductBase</b> (const std::string &amp;name, const std::string &amp;description)</td></tr>
@@ -421,6 +423,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initDst</b> (
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
 <tr class="memitem:ab130d33f06d9ebd4c579a364f2d76dd0" id="r_ab130d33f06d9ebd4c579a364f2d76dd0"><td class="memItemLeft" align="right" valign="top">static double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PseudoRhiOp.html#ab130d33f06d9ebd4c579a364f2d76dd0">relativeBeamPower</a> (double angle, double beamWidth2)</td></tr>
+<tr class="memdesc:ab130d33f06d9ebd4c579a364f2d76dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple non-gaussian model for a beam.  <br /></td></tr>
 <tr class="separator:ab130d33f06d9ebd4c579a364f2d76dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase" id="r_a2c647c4533f71ac1551da8776912436c"><td class="memItemLeft" align="right" valign="top">
@@ -522,11 +525,9 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
 <p>bin index</p>
 <p>Azimuthal bin index (j coordinate)</p>
 <p>MAIN LOOPS</p>
-<p>Who knows, maybe there is no upper beam</p>
-<p>Traverse the sweeps, derive upper and lower beams.</p>
-<p>Use this value, if it is valid</p>
-<p>Update lower beam value (possibly several times)</p>
-<p>Update upper beam value (once), update next itStart.</p>
+<p>... but still as high as or higher than previous</p>
+<p>Ok, it is higher or as high as the pixel in focus</p>
+<p>... but still as low as or lower than previous</p>
 
 </div>
 </div>
@@ -563,6 +564,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Simple non-gaussian model for a beam. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">beamWidth2</td><td>- beam width squared </td></tr>
@@ -570,6 +573,34 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>descript
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a322d8aeb4de229708bbbbdcbb35d1db1" name="a322d8aeb4de229708bbbbdcbb35d1db1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a322d8aeb4de229708bbbbdcbb35d1db1">&#9670;&#160;</a></span>setPolarSelector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setPolarSelector </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structrack_1_1PolarSelector.html">PolarSelector</a> &amp;&#160;</td>
+          <td class="paramname"><em>ps</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classrack_1_1VolumeOp.html">VolumeOp&lt; RhiODIM &gt;</a>.</p>
 
 </div>
 </div>

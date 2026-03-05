@@ -118,7 +118,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#define DRAIN_FILE_GDAL_XML</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">// #include &quot;drain/util/Flags.h&quot;</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;drain/util/EnumUtils.h&gt;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;drain/Enum.h&gt;</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;drain/util/TreeXML.h&quot;</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;drain/util/UtilsXML.h&quot;</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
@@ -199,62 +199,61 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>}</div>
 </div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">const</span> EnumDict&lt;image::NodeGDAL::tag_t&gt;::dict_t EnumDict&lt;image::NodeGDAL::tag_t&gt;::dict;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="comment">//template &lt;&gt;</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="comment">//const Enum&lt;image::NodeGDAL::tag_t&gt;::dict_t Enum&lt;image::NodeGDAL::tag_t&gt;::dict;</span></div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(image::NodeGDAL);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(image::NodeGDAL::tag_t);</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">inline</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">const char* TypeName&lt;image::NodeGDAL&gt;::get(){</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">    return &quot;XML-GDAL&quot;;</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">}</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment"></span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment">template &lt;&gt;</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">inline</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">const char* TypeName&lt;image::GDAL::tag_t&gt;::get(){</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">    return &quot;XML-GDAL2&quot;;</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment">}</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(image::NodeGDAL::tag_t);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>DRAIN_ENUM_DICT(image::NodeGDAL::tag_t);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="comment">#define DRAIN_XML_DEFAULT_ELEMS(xml_tree) template &lt;&gt; const NodeXML&lt;xml_tree::node_data_t::tag_t&gt;::xml_default_elem_map_t NodeXML&lt;xml_tree::node_data_t::tag_t&gt;::xml_default_elems</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="comment">#define DRAIN_XML_DEFAULT_INIT(xml_tree) template &lt;&gt; inline void xml_tree::initChild(xml_tree &amp; child) const { UtilsXML::initChildWithDefaultType(*this, child); }</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="comment">#define DRAIN_XML_EASY_TYPE(xml_tree) template &lt;&gt; template &lt;&gt; inline xml_tree &amp; xml_tree::operator()(const xml_tree::node_data_t::tag_t &amp; type){ return UtilsXML::setType(*this, type); }</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>DRAIN_XML_DEFAULT_ELEMS(image::TreeGDAL);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">//template &lt;&gt;</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">//const NodeXML&lt;image::NodeGDAL::tag_t&gt;::xml_default_elem_map_t NodeXML&lt;image::NodeGDAL::tag_t&gt;::xml_default_elems;</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>DRAIN_XML_DEFAULT_INIT(image::TreeGDAL);</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>image::TreeGDAL &amp; image::TreeGDAL::operator()(<span class="keyword">const</span> image::GDAL::tag_t &amp; type){</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classdrain_1_1UtilsXML.html#aa433c01eae08611b8ec0da251c4e374d">UtilsXML::setType</a>(*<span class="keyword">this</span>, type);</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="comment">// this-&gt;data.setType(type);</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// return *this;</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">SUPRESSED. Semantics become unclear, esp. if calling: const version of x&amp; = tree(&quot;name&quot;) which returns a tree.</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment"></span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"></span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>template &lt;&gt;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>template &lt;&gt;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>inline</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>image::TreeGDAL &amp; image::TreeGDAL::operator()(const std::string &amp; name){</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    this-&gt;data.name = name;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    return *this;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>}</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>*/</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>DRAIN_XML_EASY_TYPE(image::TreeGDAL);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="comment">inline</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="comment">void image::TreeGDAL::initChild(image::TreeGDAL &amp; child) const {</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment">    UtilsXML::initChildWithDefaultType(*this, child);</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">}</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"> * Default method is does path based addressing of descendants</span></div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment">template &lt;&gt;</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment">inline</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment">image::TreeGDAL &amp; image::TreeGDAL::operator()(const image::GDAL::tag_t &amp; type){</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment">    return UtilsXML::setType(*this, type);</span></div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="comment">}</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>} <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>} <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html"><div class="ttname"><a href="classdrain_1_1NodeXML.html">drain::NodeXML</a></div><div class="ttdef"><b>Definition</b> TreeXML.h:341</div></div>
 <div class="ttc" id="aclassdrain_1_1NodeXML_html_a7cc0f9579ac7017a48c7c63d3f10de1e"><div class="ttname"><a href="classdrain_1_1NodeXML.html#a7cc0f9579ac7017a48c7c63d3f10de1e">drain::NodeXML&lt; GDAL::tag_t &gt;::setText</a></div><div class="ttdeci">NodeXML &amp; setText(const S &amp;value)</div><div class="ttdoc">Assign the text content of this node. If the node type is undefined, set it to CTEXT.</div><div class="ttdef"><b>Definition</b> TreeXML.h:619</div></div>
-<div class="ttc" id="aclassdrain_1_1UtilsXML_html_aa433c01eae08611b8ec0da251c4e374d"><div class="ttname"><a href="classdrain_1_1UtilsXML.html#aa433c01eae08611b8ec0da251c4e374d">drain::UtilsXML::setType</a></div><div class="ttdeci">static TX &amp; setType(TX &amp;tree, const typename TX::node_data_t::xml_tag_t &amp;type)</div><div class="ttdef"><b>Definition</b> UtilsXML.h:169</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeGDAL_html"><div class="ttname"><a href="classdrain_1_1image_1_1NodeGDAL.html">drain::image::NodeGDAL</a></div><div class="ttdef"><b>Definition</b> TreeXML-GDAL.h:61</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeGDAL_html_a57f90c96bc66f332847a61d1b490ecdb"><div class="ttname"><a href="classdrain_1_1image_1_1NodeGDAL.html#a57f90c96bc66f332847a61d1b490ecdb">drain::image::NodeGDAL::sample</a></div><div class="ttdeci">std::string sample</div><div class="ttdoc">Standard GDAL attribute.</div><div class="ttdef"><b>Definition</b> TreeXML-GDAL.h:87</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1NodeGDAL_html_af3e5220f5a9e8d12b1431c2600585e29"><div class="ttname"><a href="classdrain_1_1image_1_1NodeGDAL.html#af3e5220f5a9e8d12b1431c2600585e29">drain::image::NodeGDAL::role</a></div><div class="ttdeci">std::string role</div><div class="ttdoc">Standard GDAL attribute.</div><div class="ttdef"><b>Definition</b> TreeXML-GDAL.h:90</div></div>

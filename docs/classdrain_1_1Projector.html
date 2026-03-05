@@ -163,17 +163,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLongLat</b> () cons
 <tr class="memitem:abd794b75c867c60b5f407bc857606436" id="r_abd794b75c867c60b5f407bc857606436"><td class="memItemLeft" align="right" valign="top"><a id="abd794b75c867c60b5f407bc857606436" name="abd794b75c867c60b5f407bc857606436"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getEPSG</b> () const</td></tr>
 <tr class="separator:abd794b75c867c60b5f407bc857606436"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f7ff2a52afd17349558cf2397a3b297" id="r_a3f7ff2a52afd17349558cf2397a3b297"><td class="memItemLeft" align="right" valign="top"><a id="a3f7ff2a52afd17349558cf2397a3b297" name="a3f7ff2a52afd17349558cf2397a3b297"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>info</b> (std::ostream &amp;ostr=std::cout, int wkt=-1)</td></tr>
-<tr class="memdesc:a3f7ff2a52afd17349558cf2397a3b297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prunes "+init=epsg:&lt;...&gt;" and optionally "+type=crs" codes. <br /></td></tr>
-<tr class="separator:a3f7ff2a52afd17349558cf2397a3b297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab151256cbe0efd98b439d7fcba83ed65" id="r_ab151256cbe0efd98b439d7fcba83ed65"><td class="memItemLeft" align="right" valign="top"><a id="ab151256cbe0efd98b439d7fcba83ed65" name="ab151256cbe0efd98b439d7fcba83ed65"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>info</b> (std::ostream &amp;ostr=std::cout, int wkt=-1) const</td></tr>
+<tr class="memdesc:ab151256cbe0efd98b439d7fcba83ed65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prunes "+init=epsg:&lt;...&gt;" and optionally "+type=crs" codes. <br /></td></tr>
+<tr class="separator:ab151256cbe0efd98b439d7fcba83ed65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa871aa958cb921d9d2b565ffb38b3eee" id="r_aa871aa958cb921d9d2b565ffb38b3eee"><td class="memItemLeft" align="right" valign="top"><a id="aa871aa958cb921d9d2b565ffb38b3eee" name="aa871aa958cb921d9d2b565ffb38b3eee"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getErrorString</b> () const</td></tr>
 <tr class="separator:aa871aa958cb921d9d2b565ffb38b3eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b3c9300ff4acc15f049ae3563b97df" id="r_ab5b3c9300ff4acc15f049ae3563b97df"><td class="memItemLeft" align="right" valign="top"><a id="ab5b3c9300ff4acc15f049ae3563b97df" name="ab5b3c9300ff4acc15f049ae3563b97df"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>info</b> (PJ *<a class="el" href="classdrain_1_1Projector.html#aaf888f501116a334cb0e37c10b1777c7">pj</a>, std::ostream &amp;ostr=std::cout, int wkt=-1)</td></tr>
-<tr class="memdesc:ab5b3c9300ff4acc15f049ae3563b97df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump misc information, for debugging. <br /></td></tr>
-<tr class="separator:ab5b3c9300ff4acc15f049ae3563b97df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -189,6 +185,10 @@ static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>p
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a163e100ed05635eb2878151a2580e9dc" id="r_a163e100ed05635eb2878151a2580e9dc"><td class="memItemLeft" align="right" valign="top"><a id="a163e100ed05635eb2878151a2580e9dc" name="a163e100ed05635eb2878151a2580e9dc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>info</b> (PJ *<a class="el" href="classdrain_1_1Projector.html#aaf888f501116a334cb0e37c10b1777c7">pj</a>, std::ostream &amp;ostr=std::cout, int wkt=-1) const</td></tr>
+<tr class="memdesc:a163e100ed05635eb2878151a2580e9dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dump misc information, for debugging. <br /></td></tr>
+<tr class="separator:a163e100ed05635eb2878151a2580e9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfe60041b6799f13627428d325fb6a68" id="r_adfe60041b6799f13627428d325fb6a68"><td class="memItemLeft" align="right" valign="top"><a id="adfe60041b6799f13627428d325fb6a68" name="adfe60041b6799f13627428d325fb6a68"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>storeProjDef</b> (const std::string &amp;str)</td></tr>
 <tr class="separator:adfe60041b6799f13627428d325fb6a68"><td class="memSeparator" colspan="2">&#160;</td></tr>

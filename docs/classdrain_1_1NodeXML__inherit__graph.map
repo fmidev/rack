@@ -1,13 +1,14 @@
 <map id="NodeXML&lt; T &gt;" name="NodeXML&lt; T &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="73,299,196,324"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="109,225,160,251"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,264,130,298,125,299,123,265"/>
-<area shape="poly" id="edge6_Node000001_Node000002" title=" " alt="" coords="146,265,144,299,139,298,141,264"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,152,264,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="129,191,130,225,125,225,123,191"/>
-<area shape="poly" id="edge5_Node000002_Node000003" title=" " alt="" coords="146,191,144,225,139,225,141,191"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="197,313,320,339"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="233,240,284,265"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,279,254,313,249,313,247,279"/>
+<area shape="poly" id="edge6_Node000001_Node000002" title=" " alt="" coords="270,279,268,313,263,313,265,279"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,159,264,185"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="166,190,242,238,239,242,163,194"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="71,79,198,104"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="137,118,137,152,132,152,132,118"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="137,118,137,159,132,159,132,118"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="53,5,216,31"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="137,44,137,79,132,79,132,44"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="289,152,479,192"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="343,202,278,242,276,238,340,197"/>
 </map>

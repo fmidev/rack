@@ -1,13 +1,13 @@
 var searchData=
 [
   ['qdtmatch_0',['QDTmatch',['../namespacedrain_1_1image.html#ada95ee94b48395c5ece5687f9b277b45',1,'drain::image']]],
-  ['qind_20accept_20any_20qind_1',['QIND  - accept any QIND',['../classrack_1_1DataSelector.html#autotoc_md6',1,'']]],
-  ['qind_20accept_20higher_20level_20qind_20only_2',['QIND/ - accept higher-level QIND only',['../classrack_1_1DataSelector.html#autotoc_md5',1,'']]],
-  ['qind_20accept_20lower_20level_20qind_20only_3',['/QIND - accept lower-level QIND only',['../classrack_1_1DataSelector.html#autotoc_md4',1,'']]],
-  ['qind_20accept_20qind_20which_20is_20under_20dbhz_4',['DBZH/QIND - accept QIND which is under DBHZ',['../classrack_1_1DataSelector.html#autotoc_md0',1,'']]],
-  ['qind_20accept_20top_20level_20qind_20only_5',['qind accept top level qind only',['../classrack_1_1DataSelector.html#autotoc_md2',1,'/QIND - accept top-level QIND only'],['../classrack_1_1DataSelector.html#autotoc_md3',1,'?? QIND - accept top-level QIND only']]],
-  ['qind_20accept_20whichever_20qinds_20in_20the_20order_20of_20appearance_6',['QIND - accept whichever QINDs, in the order of appearance',['../classrack_1_1DataSelector.html#autotoc_md1',1,'']]],
-  ['qinds_20in_20the_20order_20of_20appearance_7',['QIND - accept whichever QINDs, in the order of appearance',['../classrack_1_1DataSelector.html#autotoc_md1',1,'']]],
+  ['qind_20accept_20any_20qind_1',['QIND  - accept any QIND',['../classrack_1_1DataSelector.html#autotoc_md7',1,'']]],
+  ['qind_20accept_20higher_20level_20qind_20only_2',['QIND/ - accept higher-level QIND only',['../classrack_1_1DataSelector.html#autotoc_md6',1,'']]],
+  ['qind_20accept_20lower_20level_20qind_20only_3',['/QIND - accept lower-level QIND only',['../classrack_1_1DataSelector.html#autotoc_md5',1,'']]],
+  ['qind_20accept_20qind_20which_20is_20under_20dbhz_4',['DBZH/QIND - accept QIND which is under DBHZ',['../classrack_1_1DataSelector.html#autotoc_md1',1,'']]],
+  ['qind_20accept_20top_20level_20qind_20only_5',['qind accept top level qind only',['../classrack_1_1DataSelector.html#autotoc_md3',1,'/QIND - accept top-level QIND only'],['../classrack_1_1DataSelector.html#autotoc_md4',1,'?? QIND - accept top-level QIND only']]],
+  ['qind_20accept_20whichever_20qinds_20in_20the_20order_20of_20appearance_6',['QIND - accept whichever QINDs, in the order of appearance',['../classrack_1_1DataSelector.html#autotoc_md2',1,'']]],
+  ['qinds_20in_20the_20order_20of_20appearance_7',['QIND - accept whichever QINDs, in the order of appearance',['../classrack_1_1DataSelector.html#autotoc_md2',1,'']]],
   ['quadtreeop_8',['QuadTreeOp',['../classdrain_1_1image_1_1QuadTreeOp.html',1,'drain::image']]],
   ['quality_9',['quality',['../classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac',1,'rack::ODIMPathElem::QUALITY'],['../andrepage.html#aTime',1,'Timing based quality']]],
   ['quality_20data_10',['Reading and combining quality data',['../fileiopage.html#file_quality',1,'']]],
@@ -26,5 +26,5 @@ var searchData=
   ['quantizatorfunctor_23',['QuantizatorFunctor',['../classdrain_1_1image_1_1QuantizatorFunctor.html',1,'drain::image']]],
   ['quick_20reference_24',['Quick reference',['../quickpage.html',1,'']]],
   ['quit_25',['quit',['../classdrain_1_1Logger.html#a63239a9e36ffb5cf0eb0214e548880d4',1,'drain::Logger']]],
-  ['quotes_3a_26',['quotes:',['../classdrain_1_1Sprinter.html#autotoc_md36',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md32',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md40',1,'strings with single quotes: &apos;...&apos;']]]
+  ['quotes_3a_26',['quotes:',['../classdrain_1_1Sprinter.html#autotoc_md37',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md33',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md41',1,'strings with single quotes: &apos;...&apos;']]]
 ];

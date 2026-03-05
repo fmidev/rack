@@ -93,11 +93,13 @@ Inheritance diagram for Proj6:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1Proj6__inherit__graph.png" border="0" usemap="#aProj6_inherit__map" alt="Inheritance graph"/></div>
 <map name="aProj6_inherit__map" id="aProj6_inherit__map">
-<area shape="rect" title=" " alt="" coords="77,5,131,31"/>
-<area shape="rect" href="classrack_1_1RadarProj.html" title=" " alt="" coords="5,79,91,104"/>
-<area shape="poly" title=" " alt="" coords="88,43,59,80,55,77,84,40"/>
-<area shape="rect" href="classrack_1_1RadarProj4.html" title=" " alt="" coords="115,79,208,104"/>
-<area shape="poly" title=" " alt="" coords="124,40,154,77,150,80,120,43"/>
+<area shape="rect" title=" " alt="" coords="95,5,150,31"/>
+<area shape="rect" href="classrack_1_1RadarProj.html" title=" " alt="" coords="24,79,109,104"/>
+<area shape="poly" title=" " alt="" coords="107,43,78,80,74,77,103,40"/>
+<area shape="rect" href="classrack_1_1RadarProj4.html" title=" " alt="" coords="133,79,227,104"/>
+<area shape="poly" title=" " alt="" coords="143,40,173,77,169,80,138,43"/>
+<area shape="rect" href="classrack_1_1PolarRadarConf.html" title=" " alt="" coords="5,152,128,177"/>
+<area shape="poly" title=" " alt="" coords="69,118,69,152,64,152,64,118"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -142,12 +144,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjectionDst</b> 
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjections</b> (const std::string &amp;projDefSrc, const std::string &amp;projDefDst)</td></tr>
 <tr class="memdesc:a6f2c3ce059f81475e93eea2fe41b18cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets source and destination projection. TOOD: EPSG code handling. <br /></td></tr>
 <tr class="separator:a6f2c3ce059f81475e93eea2fe41b18cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68db4cd20396df1b2fbe40690b2f64c1" id="r_a68db4cd20396df1b2fbe40690b2f64c1"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a68db4cd20396df1b2fbe40690b2f64c1">getProjectionSrc</a> () const</td></tr>
-<tr class="memdesc:a68db4cd20396df1b2fbe40690b2f64c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the projection std::string applied by the last setProjection call.  <br /></td></tr>
-<tr class="separator:a68db4cd20396df1b2fbe40690b2f64c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab19c9dd45e66df89d44e79bdb1449378" id="r_ab19c9dd45e66df89d44e79bdb1449378"><td class="memItemLeft" align="right" valign="top"><a id="ab19c9dd45e66df89d44e79bdb1449378" name="ab19c9dd45e66df89d44e79bdb1449378"></a>
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getProjectionDst</b> () const</td></tr>
-<tr class="separator:ab19c9dd45e66df89d44e79bdb1449378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84067a6440619d356b4cd317587360b9" id="r_a84067a6440619d356b4cd317587360b9"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a84067a6440619d356b4cd317587360b9">getProjStrSrc</a> () const</td></tr>
+<tr class="memdesc:a84067a6440619d356b4cd317587360b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the projection std::string applied by the last setProjection call.  <br /></td></tr>
+<tr class="separator:a84067a6440619d356b4cd317587360b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36c9ecb0c489b9995e33c8bdcd5fa641" id="r_a36c9ecb0c489b9995e33c8bdcd5fa641"><td class="memItemLeft" align="right" valign="top"><a id="a36c9ecb0c489b9995e33c8bdcd5fa641" name="a36c9ecb0c489b9995e33c8bdcd5fa641"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getProjStrDst</b> () const</td></tr>
+<tr class="separator:a36c9ecb0c489b9995e33c8bdcd5fa641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53cf94eb88380992c5967b4032620c64" id="r_a53cf94eb88380992c5967b4032620c64"><td class="memItemLeft" align="right" valign="top"><a id="a53cf94eb88380992c5967b4032620c64" name="a53cf94eb88380992c5967b4032620c64"></a>
 const <a class="el" href="classdrain_1_1Projector.html">Projector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getSrc</b> () const</td></tr>
 <tr class="separator:a53cf94eb88380992c5967b4032620c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,8 +243,8 @@ PJ *&#160;</td><td class="memItemRight" valign="bottom"><b>proj</b> = nullptr</t
 <p>IMPORTANT:</p>
 <p><a href="https://proj.org/development/reference/functions.html#c.proj_create">https://proj.org/development/reference/functions.html#c.proj_create</a> If a proj-string contains a +type=crs option, then it is interpreted as a CRS definition. In particular geographic CRS are assumed to have axis in the longitude, latitude order and with degree angular unit. The use of proj-string to describe a CRS is discouraged. It is a legacy means of conveying CRS descriptions: use of object codes (EPSG:XXXX typically) or WKT description is recommended for better expressivity. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a68db4cd20396df1b2fbe40690b2f64c1" name="a68db4cd20396df1b2fbe40690b2f64c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68db4cd20396df1b2fbe40690b2f64c1">&#9670;&#160;</a></span>getProjectionSrc()</h2>
+<a id="a84067a6440619d356b4cd317587360b9" name="a84067a6440619d356b4cd317587360b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84067a6440619d356b4cd317587360b9">&#9670;&#160;</a></span>getProjStrSrc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -251,7 +253,7 @@ PJ *&#160;</td><td class="memItemRight" valign="bottom"><b>proj</b> = nullptr</t
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::string &amp; getProjectionSrc </td>
+          <td class="memname">const std::string &amp; getProjStrSrc </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

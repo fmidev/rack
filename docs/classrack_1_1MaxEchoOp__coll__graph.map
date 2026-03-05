@@ -31,7 +31,7 @@
 <area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1409,332,1402,421,1396,420,1404,332"/>
 <area shape="rect" id="Node000015" title=" " alt="" coords="1499,190,1721,215"/>
 <area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="1576,224,1433,295,1430,290,1573,219"/>
-<area shape="rect" id="Node000016" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="1322,190,1474,215"/>
+<area shape="rect" id="Node000016" href="$structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="1322,190,1474,215"/>
 <area shape="poly" id="edge16_Node000014_Node000016" title=" " alt="" coords="1403,229,1410,292,1405,293,1398,230"/>
 <area shape="rect" id="Node000017" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="1322,95,1474,120"/>
 <area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="1401,134,1401,190,1395,190,1395,134"/>

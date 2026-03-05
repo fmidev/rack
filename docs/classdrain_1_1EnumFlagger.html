@@ -88,7 +88,7 @@ $(function() {
 <p>Flagger accepting values of enum type E.  
  <a href="classdrain_1_1EnumFlagger.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="EnumUtils_8h_source.html">EnumUtils.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="EnumFlagger_8h_source.html">EnumFlagger.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for EnumFlagger&lt; F &gt;:</div>
 <div class="dyncontent">
@@ -164,8 +164,8 @@ class drain::EnumFlagger&lt; F &gt;</div><p>Flagger accepting values of enum typ
   </table>
   </dd>
 </dl>
-<p>Enum dictionary should be defined as follows:</p>
-<p>template &lt;&gt; const drain::EnumDict&lt;...&gt;::dict_t drain::EnumDict&lt;...&gt;::dict = {{"A", A}, {"B", B}, {"C", C}}; </p>
+<p><a class="el" href="structdrain_1_1Enum.html" title="A container for a static dictionary of enumeration values.">Enum</a> dictionary should be defined as follows:</p>
+<p>template &lt;&gt; const drain::Enum&lt;...&gt;::dict_t drain::Enum&lt;...&gt;::dict = {{"A", A}, {"B", B}, {"C", C}}; </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af9e814eec199193985df42fa55416257" name="af9e814eec199193985df42fa55416257"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9e814eec199193985df42fa55416257">&#9670;&#160;</a></span>getValueNEW()</h2>
@@ -197,7 +197,7 @@ template&lt;class F &gt; </div>
 <pre class="fragment">Notice that this function is non-static but returns a reference to a static dictionary.
 In C++ virtual functions must be non-static.
 This is nevertheless handy in templated design, for example.
-</pre><p> virtual const dict_t &amp; getDict() const override { return EnumDict&lt;value_t&gt;::dict; }; Return the integer value corresponding to a key. Retrieves the value directly from the dictionary. <a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> throws except if key now found. </p>
+</pre><p> virtual const dict_t &amp; getDict() const override { return Enum&lt;value_t&gt;::dict; }; Return the integer value corresponding to a key. Retrieves the value directly from the dictionary. <a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> throws except if key now found. </p>
 
 </div>
 </div>
@@ -227,12 +227,12 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 <pre class="fragment">Dictionary throws except if key now found.
-</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)EnumDict&lt;value_t&gt;::dict.getValue(key); }; Consider handler through this-&gt;set(Flagger) ? Needs protected/private _set() (or assign()). </p>
+</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)Enum&lt;value_t&gt;::dict.getValue(key); }; Consider handler through this-&gt;set(Flagger) ? Needs protected/private _set() (or assign()). </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/drain/util/<a class="el" href="EnumUtils_8h_source.html">EnumUtils.h</a></li>
+<li>src/drain/util/<a class="el" href="EnumFlagger_8h_source.html">EnumFlagger.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

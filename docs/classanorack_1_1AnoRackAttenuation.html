@@ -116,19 +116,19 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T = unsigned char, class T2 = unsigned char&gt;<br />
 class anorack::AnoRackAttenuation&lt; T, T2 &gt;</div><p>By Ulrich Blahak (and Isztar Zawadski, Heikki Pohjola, Jarmo Koistinen), for liquid precipitation (including bright band):  </p><p class="formulaDsp">
-<picture><source srcset="form_135_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
-     k(Z) = 1.12\cdot10^{-4} Z_e^{0.62}
- \]" src="form_135.png"/></picture>
-</p>
-<p> and for snow:  </p><p class="formulaDsp">
 <picture><source srcset="form_136_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
-     k(Z) = 1.1\cdot10^{-7} Z_e + 2.1\cdot10^{-5} Z_e^{0.5}
+     k(Z) = 1.12\cdot10^{-4} Z_e^{0.62}
  \]" src="form_136.png"/></picture>
 </p>
-<p>Hence, the general expression for precipitation attenuation is  </p><p class="formulaDsp">
+<p> and for snow:  </p><p class="formulaDsp">
 <picture><source srcset="form_137_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+     k(Z) = 1.1\cdot10^{-7} Z_e + 2.1\cdot10^{-5} Z_e^{0.5}
+ \]" src="form_137.png"/></picture>
+</p>
+<p>Hence, the general expression for precipitation attenuation is  </p><p class="formulaDsp">
+<picture><source srcset="form_138_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
      k(Z) = c Z_e^p + c_2 Z_e^{p_2}.
-\]" src="form_137.png"/></picture>
+\]" src="form_138.png"/></picture>
 </p>
 <p> In the code, <code>coeff</code>, <code>pow</code>, <code>coeff2</code>, and <code>pow2</code> refer to <picture><source srcset="form_47_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$c$" src="form_47.png" width="5" height="6"/></picture>, <picture><source srcset="form_48_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$p$" src="form_48.png" width="8" height="9"/></picture>, <picture><source srcset="form_49_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$c_2$" src="form_49.png" width="10" height="9"/></picture>, and <picture><source srcset="form_50_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$p_2$" src="form_50.png" width="13" height="9"/></picture>, respectively. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>

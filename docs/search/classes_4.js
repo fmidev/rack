@@ -10,7 +10,7 @@ var searchData=
   ['encoding_7',['Encoding',['../classdrain_1_1image_1_1Encoding.html',1,'drain::image']]],
   ['encodingbag_8',['EncodingBag',['../classrack_1_1EncodingBag.html',1,'rack']]],
   ['encodingodim_9',['EncodingODIM',['../classrack_1_1EncodingODIM.html',1,'rack']]],
-  ['enumdict_10',['EnumDict',['../structdrain_1_1EnumDict.html',1,'drain']]],
+  ['enum_10',['Enum',['../structdrain_1_1Enum.html',1,'drain']]],
   ['enumflagger_11',['EnumFlagger',['../classdrain_1_1EnumFlagger.html',1,'drain']]],
   ['enumflagger_3c_20drain_3a_3amultiflagger_3c_20filesvg_3a_3aincludepolicy_20_3e_20_3e_12',['EnumFlagger&lt; drain::MultiFlagger&lt; FileSVG::IncludePolicy &gt; &gt;',['../classdrain_1_1EnumFlagger.html',1,'drain']]],
   ['enumflagger_3c_20drain_3a_3amultiflagger_3c_20filesvg_3a_3apathpolicy_20_3e_20_3e_13',['EnumFlagger&lt; drain::MultiFlagger&lt; FileSVG::PathPolicy &gt; &gt;',['../classdrain_1_1EnumFlagger.html',1,'drain']]],

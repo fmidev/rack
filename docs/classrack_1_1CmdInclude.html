@@ -82,6 +82,8 @@ $(function() {
   <div class="headertitle"><div class="title">CmdInclude Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="graphics-panel_8h_source.html">graphics-panel.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CmdInclude:</div>
 <div class="dyncontent">
@@ -166,7 +168,6 @@ Collaboration diagram for CmdInclude:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a85b7ace61a985aca58f1db4ddc6a158a" id="r_a85b7ace61a985aca58f1db4ddc6a158a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInclude.html#a85b7ace61a985aca58f1db4ddc6a158a">exec</a> () const override</td></tr>
-<tr class="memdesc:a85b7ace61a985aca58f1db4ddc6a158a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the command with current parameter values.  <br /></td></tr>
 <tr class="separator:a85b7ace61a985aca58f1db4ddc6a158a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1SimpleCommand"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1SimpleCommand')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1SimpleCommand.html">SimpleCommand&lt; std::string &gt;</a></td></tr>
 <tr class="memitem:a766da9508fc662ac0d06bc400007a8f9 inherit pub_methods_classdrain_1_1SimpleCommand" id="r_a766da9508fc662ac0d06bc400007a8f9"><td class="memItemLeft" align="right" valign="top">
@@ -365,19 +366,34 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>lastParameters
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Run the command with current parameter values. </p>
+<p>Main title:</p><ul>
+<li>"NONE" – do not display</li>
+<li>"&lt;string&gt;" – (implicit) apply main title issued with <code>--gTitle</code> </li>
+<li>"AUTO" – apply automatic formatting</li>
+</ul>
+<p>Group title:</p><ul>
+<li>"NONE" – use grouping to rows or columns, but do not display group titles</li>
+<li>"AUTO:&lt;syntax-string&gt;" – apply group identifiers (<code>--gGroup</code> ) but use automatic formatting</li>
+<li>USER: apply group identifiers issued with <code>--gGroup</code> as group titles</li>
+</ul>
+<p>Image title:</p><ul>
+<li>NONE: display no titles</li>
+<li>TIME: display time and date (automatic formatting)</li>
+<li>LOCATION: display (automatic formatting)</li>
+<li>GENERAL: display metadata other than date, time or location (geographic information?) </li>
+</ul>
 
 <p>Reimplemented from <a class="el" href="classdrain_1_1Command.html#a951c3a8da6ec531137592b969a542cbb">Command</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>src/main/<b>fileio-svg.cpp</b></li>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/main/<a class="el" href="graphics-panel_8h_source.html">graphics-panel.h</a></li>
+<li>src/main/<b>graphics-panel.cpp</b></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

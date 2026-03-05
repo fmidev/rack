@@ -79,7 +79,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1TreePruner-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TreePruner&lt; T &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -121,9 +121,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af46553cf7f5d32397bc21754d47dd684" id="r_af46553cf7f5d32397bc21754d47dd684"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1TreePruner.html#af46553cf7f5d32397bc21754d47dd684">visitPostfix</a> (T &amp;tree, const typename T::path_t &amp;path) override</td></tr>
 <tr class="memdesc:af46553cf7f5d32397bc21754d47dd684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tasks to be executed after traversing child nodes.  <br /></td></tr>
 <tr class="separator:af46553cf7f5d32397bc21754d47dd684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5b9eceb106b01c2b9f56f1b62f1d81f" id="r_ae5b9eceb106b01c2b9f56f1b62f1d81f"><td class="memTemplParams" colspan="2"><a id="ae5b9eceb106b01c2b9f56f1b62f1d81f" name="ae5b9eceb106b01c2b9f56f1b62f1d81f"></a>
+template&lt;class ... TT&gt; </td></tr>
+<tr class="memitem:ae5b9eceb106b01c2b9f56f1b62f1d81f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setEmptinessCriterion</b> (typename T::node_data_t::xml_tag_t tag, const TT &amp;... args)</td></tr>
+<tr class="separator:ae5b9eceb106b01c2b9f56f1b62f1d81f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:ae9756c79856a660d2b8ca5165346e665" id="r_ae9756c79856a660d2b8ca5165346e665"><td class="memItemLeft" align="right" valign="top"><a id="ae9756c79856a660d2b8ca5165346e665" name="ae9756c79856a660d2b8ca5165346e665"></a>
 tag_selector_t&#160;</td><td class="memItemRight" valign="bottom"><b>tagSelector</b></td></tr>
 <tr class="separator:ae9756c79856a660d2b8ca5165346e665"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,7 +139,7 @@ class drain::TreePruner&lt; T &gt;</div><p>Example: </p><div class="fragment"><d
 <div class="line">textPruner.tagSelector[svg::TEXT]  = drain::XmlEmptiness::TEXT | drain::XmlEmptiness::CHILDREN;</div>
 <div class="line">textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT;</div>
 <div class="line">textPruner.tagSelector[svg::UNDEFINED] = 0;</div>
-<div class="ttc" id="aclassdrain_1_1TreePruner_html"><div class="ttname"><a href="classdrain_1_1TreePruner.html">drain::TreePruner</a></div><div class="ttdef"><b>Definition</b> TreeUtilsXML.h:104</div></div>
+<div class="ttc" id="aclassdrain_1_1TreePruner_html"><div class="ttname"><a href="classdrain_1_1TreePruner.html">drain::TreePruner</a></div><div class="ttdef"><b>Definition</b> TreeUtilsXML.h:106</div></div>
 </div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af46553cf7f5d32397bc21754d47dd684" name="af46553cf7f5d32397bc21754d47dd684"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af46553cf7f5d32397bc21754d47dd684">&#9670;&#160;</a></span>visitPostfix()</h2>

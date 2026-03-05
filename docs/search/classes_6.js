@@ -22,8 +22,9 @@ var searchData=
   ['gradienthorzop_19',['GradientHorzOp',['../classdrain_1_1image_1_1GradientHorzOp.html',1,'drain::image']]],
   ['gradientop_20',['GradientOp',['../classdrain_1_1image_1_1GradientOp.html',1,'drain::image']]],
   ['gradientvertop_21',['GradientVertOp',['../classdrain_1_1image_1_1GradientVertOp.html',1,'drain::image']]],
-  ['graphicscontext_22',['GraphicsContext',['../classrack_1_1GraphicsContext.html',1,'rack']]],
-  ['graphicsmodule_23',['GraphicsModule',['../classrack_1_1GraphicsModule.html',1,'rack']]],
-  ['graphicssection_24',['GraphicsSection',['../structrack_1_1GraphicsSection.html',1,'rack']]],
-  ['grayop_25',['GrayOp',['../classdrain_1_1image_1_1GrayOp.html',1,'drain::image']]]
+  ['graphic_22',['Graphic',['../classrack_1_1Graphic.html',1,'rack']]],
+  ['graphicscontext_23',['GraphicsContext',['../classrack_1_1GraphicsContext.html',1,'rack']]],
+  ['graphicsmodule_24',['GraphicsModule',['../classrack_1_1GraphicsModule.html',1,'rack']]],
+  ['graphicssection_25',['GraphicsSection',['../structrack_1_1GraphicsSection.html',1,'rack']]],
+  ['grayop_26',['GrayOp',['../classdrain_1_1image_1_1GrayOp.html',1,'drain::image']]]
 ];

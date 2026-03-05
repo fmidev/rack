@@ -70,6 +70,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <main/graphics-panel.h>
 #include "graphics.h"
+#include "graphics-panel.h"
 // #include <pthread.h>
 
 namespace rack {

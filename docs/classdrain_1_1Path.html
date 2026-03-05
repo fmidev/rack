@@ -105,7 +105,7 @@ Collaboration diagram for Path&lt; T, SEP, ALEAD, AREPEAT, ATRAIL &gt;:</div>
 <area shape="rect" title=" " alt="" coords="11,243,171,283"/>
 <area shape="rect" title=" " alt="" coords="5,155,85,180"/>
 <area shape="poly" title=" " alt="" coords="59,191,84,241,79,244,54,193"/>
-<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="109,155,261,180"/>
+<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="109,155,261,180"/>
 <area shape="poly" title=" " alt="" coords="166,191,112,244,108,241,162,188"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="109,80,261,105"/>
 <area shape="poly" title=" " alt="" coords="188,120,188,154,183,154,183,120"/>
@@ -171,18 +171,21 @@ template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:ac4fa55fc12b66762a87c118c0f8111d8" id="r_ac4fa55fc12b66762a87c118c0f8111d8"><td class="memTemplParams" colspan="2"><a id="ac4fa55fc12b66762a87c118c0f8111d8" name="ac4fa55fc12b66762a87c118c0f8111d8"></a>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:ac4fa55fc12b66762a87c118c0f8111d8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>append</b> (char c, const TT &amp;... args)</td></tr>
+<tr class="memdesc:ac4fa55fc12b66762a87c118c0f8111d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add elements, first of which is a character. Any string argument is handled as a path. <br /></td></tr>
 <tr class="separator:ac4fa55fc12b66762a87c118c0f8111d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd5753d248459e7cd0439ea0934280c5" id="r_acd5753d248459e7cd0439ea0934280c5"><td class="memTemplParams" colspan="2"><a id="acd5753d248459e7cd0439ea0934280c5" name="acd5753d248459e7cd0439ea0934280c5"></a>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:acd5753d248459e7cd0439ea0934280c5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>append</b> (const char *arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:acd5753d248459e7cd0439ea0934280c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add elements. Any string argument handled as a path. <br /></td></tr>
 <tr class="separator:acd5753d248459e7cd0439ea0934280c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6055d5e1385e10cc13b6f52aaf0e0250" id="r_a6055d5e1385e10cc13b6f52aaf0e0250"><td class="memTemplParams" colspan="2"><a id="a6055d5e1385e10cc13b6f52aaf0e0250" name="a6055d5e1385e10cc13b6f52aaf0e0250"></a>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:a6055d5e1385e10cc13b6f52aaf0e0250"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>append</b> (const std::string &amp;arg, const TT &amp;... args)</td></tr>
+<tr class="memdesc:a6055d5e1385e10cc13b6f52aaf0e0250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add elements. Any string argument handled as a path. <br /></td></tr>
 <tr class="separator:a6055d5e1385e10cc13b6f52aaf0e0250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cc89a498442c421275172ef7a616c67" id="r_a4cc89a498442c421275172ef7a616c67"><td class="memItemLeft" align="right" valign="top"><a id="a4cc89a498442c421275172ef7a616c67" name="a4cc89a498442c421275172ef7a616c67"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPath</b> (const char *p)</td></tr>
-<tr class="memdesc:a4cc89a498442c421275172ef7a616c67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specialized handler for strings (note, possibly: elem_t==std:string) <br /></td></tr>
+<tr class="memdesc:a4cc89a498442c421275172ef7a616c67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add path. Specialized handler for strings (note, possibly: elem_t==std:string) <br /></td></tr>
 <tr class="separator:a4cc89a498442c421275172ef7a616c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a165a8c281d963dd17232b172cf733901" id="r_a165a8c281d963dd17232b172cf733901"><td class="memItemLeft" align="right" valign="top"><a id="a165a8c281d963dd17232b172cf733901" name="a165a8c281d963dd17232b172cf733901"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPath</b> (const <a class="el" href="classdrain_1_1Path.html">path_t</a> &amp;p)</td></tr>
@@ -272,9 +275,9 @@ static const <a class="el" href="structdrain_1_1PathSeparatorPolicy.html">PathSe
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a25600135daa54f895a054078f531622a" id="r_a25600135daa54f895a054078f531622a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a25600135daa54f895a054078f531622a">_appendPath</a> (const std::string &amp;p, size_t start=0)</td></tr>
-<tr class="memdesc:a25600135daa54f895a054078f531622a"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Default" append function.  <br /></td></tr>
-<tr class="separator:a25600135daa54f895a054078f531622a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3eca5699c40b91aadd5cc952d94097e2" id="r_a3eca5699c40b91aadd5cc952d94097e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Path.html#a3eca5699c40b91aadd5cc952d94097e2">appendSubStr</a> (const std::string &amp;p, size_t start=0)</td></tr>
+<tr class="memdesc:a3eca5699c40b91aadd5cc952d94097e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Default" append function.  <br /></td></tr>
+<tr class="separator:a3eca5699c40b91aadd5cc952d94097e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad680a12a996d3e8e592d522751bffba6" id="r_ad680a12a996d3e8e592d522751bffba6"><td class="memItemLeft" align="right" valign="top"><a id="ad680a12a996d3e8e592d522751bffba6" name="ad680a12a996d3e8e592d522751bffba6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> ()</td></tr>
 <tr class="memdesc:ad680a12a996d3e8e592d522751bffba6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminal function for variadic templates. <br /></td></tr>
@@ -293,8 +296,8 @@ class drain::Path&lt; T, SEP, ALEAD, AREPEAT, ATRAIL &gt;</div><dl class="tparam
   </dd>
 </dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a25600135daa54f895a054078f531622a" name="a25600135daa54f895a054078f531622a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a25600135daa54f895a054078f531622a">&#9670;&#160;</a></span>_appendPath()</h2>
+<a id="a3eca5699c40b91aadd5cc952d94097e2" name="a3eca5699c40b91aadd5cc952d94097e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eca5699c40b91aadd5cc952d94097e2">&#9670;&#160;</a></span>appendSubStr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +308,7 @@ template&lt;class T , char SEP = '/', bool ALEAD = true, bool AREPEAT = false, b
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void _appendPath </td>
+          <td class="memname">void appendSubStr </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>p</em>, </td>

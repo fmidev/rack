@@ -257,17 +257,48 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>DRAIN_TYPENAME_T(Range,T);</div>
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>} <span class="comment">// namespace drain</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="foldopen" id="foldopen00170" data-start="{" data-end="};">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classdrain_1_1SteppedRange.html">  170</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,3&gt; {</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="preprocessor">#endif </span><span class="comment">/* RECTANGLE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keyword">typedef</span> <a class="code hl_class" href="classdrain_1_1Range.html">Range&lt;T&gt;</a> <a class="code hl_class" href="classdrain_1_1Range.html">range_t</a>;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    T &amp; step;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <a class="code hl_class" href="classdrain_1_1Range.html">range_t</a> range;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a>(T step=1, T min=0, T max=0) : <a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple&lt;T,3&gt;</a>(step, min, max),</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            step(this-&gt;next()), range(this-&gt;tuple(),1) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a> &amp; range) : <a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple&lt;T,3&gt;</a>(range),</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            step(this-&gt;next()), range(this-&gt;tuple(),1) {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a> &amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a> &amp; range){</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        this-&gt;set(range.tuple());</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>};</div>
+</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>DRAIN_TYPENAME_T(<a class="code hl_class" href="classdrain_1_1SteppedRange.html">SteppedRange</a>,T);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>} <span class="comment">// namespace drain</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="preprocessor">#endif </span><span class="comment">/* RECTANGLE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range</a></div><div class="ttdef"><b>Definition</b> Range.h:52</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html_a2447c3569ff5873341357ebf64e37d7d"><div class="ttname"><a href="classdrain_1_1Range.html#a2447c3569ff5873341357ebf64e37d7d">drain::Range::Range</a></div><div class="ttdeci">Range(T min=T(), T max=T())</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> Range.h:59</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html_a3e1914f9f5702cbbeaaf1ee9607918fa"><div class="ttname"><a href="classdrain_1_1Range.html#a3e1914f9f5702cbbeaaf1ee9607918fa">drain::Range::Range</a></div><div class="ttdeci">Range(const Range&lt; T &gt; &amp;r)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition</b> Range.h:64</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html_aa47cce9af6a835dbf5f1e69d529b3325"><div class="ttname"><a href="classdrain_1_1Range.html#aa47cce9af6a835dbf5f1e69d529b3325">drain::Range::operator=</a></div><div class="ttdeci">Range &amp; operator=(const Range&lt; T &gt; &amp;range)</div><div class="ttdoc">Default assignment operator.</div><div class="ttdef"><b>Definition</b> Range.h:84</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html_ae9e5ceaf19388ebf9bbf02966717b94a"><div class="ttname"><a href="classdrain_1_1Range.html#ae9e5ceaf19388ebf9bbf02966717b94a">drain::Range::Range</a></div><div class="ttdeci">Range(const Range&lt; T2 &gt; &amp;r)</div><div class="ttdoc">Copy constructor variants.</div><div class="ttdef"><b>Definition</b> Range.h:70</div></div>
+<div class="ttc" id="aclassdrain_1_1SteppedRange_html"><div class="ttname"><a href="classdrain_1_1SteppedRange.html">drain::SteppedRange</a></div><div class="ttdef"><b>Definition</b> Range.h:170</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition</b> UniTuple.h:65</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
 </div><!-- fragment --></div><!-- contents -->

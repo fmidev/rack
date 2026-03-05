@@ -102,8 +102,8 @@ Introduction</h1>
 <p>The overall data flow is illustrated below. <br  />
 </p>
 <div class="dotgraph">
-<img src="dot_inline_dotgraph_11.png" alt="dot_inline_dotgraph_11.png" border="0" usemap="#dot_inline_dotgraph_11.map"/>
-<map name="dot_inline_dotgraph_11.map" id="dot_inline_dotgraph_11.map"><area shape="rect" href="fileiopage.html" title="Input file\nHDF5 (or PNG+TXT)" alt="" coords="4,151,118,185"/>
+<img src="dot_inline_dotgraph_12.png" alt="dot_inline_dotgraph_12.png" border="0" usemap="#dot_inline_dotgraph_12.map"/>
+<map name="dot_inline_dotgraph_12.map" id="dot_inline_dotgraph_12.map"><area shape="rect" href="fileiopage.html" title="Input file\nHDF5 (or PNG+TXT)" alt="" coords="4,151,118,185"/>
 <area shape="rect" href="fileiopage.html" title="Input volume" alt="" coords="152,98,231,132"/>
 <area shape="rect" href="compositespage.html" title="Cartesian product" alt="" coords="858,118,958,153"/>
 <area shape="poly" href="andrepage.html" title="Anomaly detection\n and removal" alt="" coords="421,115,417,109,407,103,391,99,370,96,347,95,325,96,304,99,288,103,277,109,274,115,277,121,288,127,304,131,325,134,347,135,370,134,391,131,407,127,417,121"/>
@@ -156,7 +156,7 @@ Selecting data</h2>
 <p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;,&lt;timespan&gt;   (section: general)</div>
 <div class="line">  Data selector for the next computation</div>
 <div class="line">  - path () [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
-<div class="line">  - quantity () [DBZH|VRAD|RHOHV|...]</div>
+<div class="line">  - quantity () [DBZH:VRAD:RHOHV:...]</div>
 <div class="line">  - elangle (-90:90) [min[:max]]</div>
 <div class="line">  - count (4095)</div>
 <div class="line">  - order (DATA:MIN) [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
@@ -350,9 +350,9 @@ Default encoding of quantities</h2>
 <div class="line">    DBTV    radar_equivalent_reflectivity_factor_v  <span class="stringliteral">&quot;Total power V (uncorrected reflectivity)&quot;</span></div>
 <div class="line">    TH  radar_linear_equivalent_reflectivity_factor_h   <span class="stringliteral">&quot;Linear total power H (uncorrected reflectivity)&quot;</span></div>
 <div class="line">    TV  radar_linear_equivalent_reflectivity_factor_v   <span class="stringliteral">&quot;Linear total power V (uncorrected reflectivity)&quot;</span></div>
-<div class="line">  *C,<span class="stringliteral">&quot;what:gain&quot;</span>=0.5,<span class="stringliteral">&quot;what:nodata&quot;</span>=255,<span class="stringliteral">&quot;what:offset&quot;</span>=-32,<span class="stringliteral">&quot;what:type&quot;</span>=<span class="stringliteral">&quot;C&quot;</span>,<span class="stringliteral">&quot;what:undetect&quot;</span>=0 (min=-31.5)</div>
-<div class="line">   S,<span class="stringliteral">&quot;what:gain&quot;</span>=0.01,<span class="stringliteral">&quot;what:nodata&quot;</span>=65535,<span class="stringliteral">&quot;what:offset&quot;</span>=-327.68,<span class="stringliteral">&quot;what:type&quot;</span>=<span class="stringliteral">&quot;S&quot;</span>,<span class="stringliteral">&quot;what:undetect&quot;</span>=0 (min=-327.67)</div>
-<div class="line">   s,<span class="stringliteral">&quot;what:gain&quot;</span>=0.01,<span class="stringliteral">&quot;what:nodata&quot;</span>=32767,<span class="stringliteral">&quot;what:offset&quot;</span>=0,<span class="stringliteral">&quot;what:type&quot;</span>=<span class="stringliteral">&quot;s&quot;</span>,<span class="stringliteral">&quot;what:undetect&quot;</span>=-32768 (min=-327.67)</div>
+<div class="line">  *C,{what:type:<span class="stringliteral">&quot;C&quot;</span>,what:gain:0.5,what:offset:-32,what:undetect:0,what:nodata:255} (min=-31.5)</div>
+<div class="line">   S,{what:type:<span class="stringliteral">&quot;S&quot;</span>,what:gain:0.01,what:offset:-327.68,what:undetect:0,what:nodata:65535} (min=-327.67)</div>
+<div class="line">   s,{what:type:<span class="stringliteral">&quot;s&quot;</span>,what:gain:0.01,what:offset:0,what:undetect:-32768,what:nodata:32767} (min=-327.67)</div>
 <div class="line">    <span class="keyword">virtual</span> zero=-32</div>
 </div><!-- fragment --><p> where asterisk <code>*</code> marks the current default storage type and scaling.</p>
 <p>The full list of predefined quantity encodings are listed with </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --quantityConf <span class="stringliteral">&#39;&#39;</span></div>

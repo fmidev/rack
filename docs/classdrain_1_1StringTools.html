@@ -169,9 +169,9 @@ static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>trim</b
 <tr class="memitem:acb61794727d3578be74a55c2daa637a5" id="r_acb61794727d3578be74a55c2daa637a5"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#acb61794727d3578be74a55c2daa637a5">trimSymmetric</a> (const std::string &amp;s, const std::string &amp;leading=&quot;'\&quot;&quot;, const std::string &amp;trailing=&quot;&quot;)</td></tr>
 <tr class="memdesc:acb61794727d3578be74a55c2daa637a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coupled trimming: remove a single leading and trailing char, if both found.  <br /></td></tr>
 <tr class="separator:acb61794727d3578be74a55c2daa637a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98f3cde2adcacaf13731dc116bcec0da" id="r_a98f3cde2adcacaf13731dc116bcec0da"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a98f3cde2adcacaf13731dc116bcec0da">trimScan</a> (const std::string &amp;s, size_t &amp;pos1, size_t &amp;pos2, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
-<tr class="memdesc:a98f3cde2adcacaf13731dc116bcec0da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns indices to trimmed segment of s such that it can be extracted as s.substr(pos1, pos2-pos1).  <br /></td></tr>
-<tr class="separator:a98f3cde2adcacaf13731dc116bcec0da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15ac877cdfca1978bfb381d974832daa" id="r_a15ac877cdfca1978bfb381d974832daa"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a15ac877cdfca1978bfb381d974832daa">trimScan</a> (const std::string &amp;s, std::size_t &amp;pos1, std::size_t &amp;pos2, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
+<tr class="memdesc:a15ac877cdfca1978bfb381d974832daa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns indices to trimmed segment of s such that it can be extracted as s.substr(pos1, pos2-pos1).  <br /></td></tr>
+<tr class="separator:a15ac877cdfca1978bfb381d974832daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4a1b2ba4284410cccce2bf6839306c2" id="r_ab4a1b2ba4284410cccce2bf6839306c2"><td class="memTemplParams" colspan="2">template&lt;class T , class C &gt; </td></tr>
 <tr class="memitem:ab4a1b2ba4284410cccce2bf6839306c2"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#ab4a1b2ba4284410cccce2bf6839306c2">split</a> (const std::string &amp;s, T &amp;sequence, const C &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</td></tr>
 <tr class="memdesc:ab4a1b2ba4284410cccce2bf6839306c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits and trims a given std::string to a std Sequence.  <br /></td></tr>
@@ -962,8 +962,8 @@ template&lt;class T1 , class T2 , class C &gt; </div>
 
 </div>
 </div>
-<a id="a98f3cde2adcacaf13731dc116bcec0da" name="a98f3cde2adcacaf13731dc116bcec0da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98f3cde2adcacaf13731dc116bcec0da">&#9670;&#160;</a></span>trimScan()</h2>
+<a id="a15ac877cdfca1978bfb381d974832daa" name="a15ac877cdfca1978bfb381d974832daa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15ac877cdfca1978bfb381d974832daa">&#9670;&#160;</a></span>trimScan()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -980,13 +980,13 @@ template&lt;class T1 , class T2 , class C &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramtype">std::size_t &amp;&#160;</td>
           <td class="paramname"><em>pos1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t &amp;&#160;</td>
+          <td class="paramtype">std::size_t &amp;&#160;</td>
           <td class="paramname"><em>pos2</em>, </td>
         </tr>
         <tr>

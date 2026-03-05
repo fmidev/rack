@@ -127,7 +127,7 @@ Collaboration diagram for DataSelector:</div>
 <area shape="poly" title=" " alt="" coords="1078,67,1307,67,1307,72,1078,72"/>
 <area shape="rect" title=" " alt="" coords="496,57,719,82"/>
 <area shape="poly" title=" " alt="" coords="733,67,833,67,833,72,733,72"/>
-<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines if separators will be stored in the path." alt="" coords="531,106,683,131"/>
+<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="531,106,683,131"/>
 <area shape="poly" title=" " alt="" coords="697,103,860,79,861,85,698,108"/>
 <area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="233,106,385,131"/>
 <area shape="poly" title=" " alt="" coords="398,116,531,116,531,121,398,121"/>
@@ -700,21 +700,21 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>drain::ReferenceMap<
 <p>ALERT! NEW; EXPERIMENTAL! Does not use separate qualitySelector object but single, with DBHZ|QIND style.</p>
 <dl class="section return"><dt>Returns</dt><dd>true, if contained something accepted by tests</dd></dl>
 <p>Easy example: </p>
-<h1><a class="anchor" id="autotoc_md0"></a>
+<h1><a class="anchor" id="autotoc_md1"></a>
 DBZH/QIND - accept QIND which is under DBHZ</h1>
 <p>Then: </p>
-<h1><a class="anchor" id="autotoc_md1"></a>
-QIND - accept whichever QINDs, in the order of appearance</h1>
 <h1><a class="anchor" id="autotoc_md2"></a>
-/QIND - accept top-level QIND only</h1>
+QIND - accept whichever QINDs, in the order of appearance</h1>
 <h1><a class="anchor" id="autotoc_md3"></a>
+/QIND - accept top-level QIND only</h1>
+<h1><a class="anchor" id="autotoc_md4"></a>
 ?? QIND - accept top-level QIND only</h1>
 <p>Or: </p>
-<h1><a class="anchor" id="autotoc_md4"></a>
-/QIND - accept lower-level QIND only</h1>
 <h1><a class="anchor" id="autotoc_md5"></a>
-QIND/ - accept higher-level QIND only</h1>
+/QIND - accept lower-level QIND only</h1>
 <h1><a class="anchor" id="autotoc_md6"></a>
+QIND/ - accept higher-level QIND only</h1>
+<h1><a class="anchor" id="autotoc_md7"></a>
 QIND  - accept any QIND</h1>
 
 </div>

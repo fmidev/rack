@@ -247,13 +247,7 @@ public:
 			extractField(getField(field), converter, dst, crop);
 	}
 
-	void extractField(FieldType field, const AccumulationConverter & converter, Image & dst, const drain::Rectangle<int> & crop) const;
-	/*
-	{
-		extractField(getFieldChar(field), converter, dst, crop);
-	}
-	*/
-
+	void extractField(FieldType field, const AccumulationConverter & converter, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;
 
 	virtual
 	std::ostream & toStream(std::ostream & ostr) const;
