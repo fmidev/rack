@@ -63,7 +63,7 @@ public:
 	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
 	virtual inline
 	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
-		drain::Logger(__FILE__, __FUNCTION__).revised<LOG_NOTICE>("Fixed obvious bug (check output quantity");
+		drain::Logger(__FILE__, __FUNCTION__).revised<LOG_DEBUG>("Fixed obvious bug (check output quantity)");
 		if (!odim.quantity.empty())
 			return odim.quantity; //outputQuantity;
 		else
