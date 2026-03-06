@@ -809,9 +809,9 @@ public:
 };
  */
 
-
-#include "js/set_image_coord_tracker.h"
 #include "js/add_mouse_listeners.h"
+
+#include "js/image_coord_tracker.h"
 
 
 void CmdCoords::exec() const {
@@ -875,8 +875,8 @@ void CmdCoords::exec() const {
 	});
 	*/
 
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "add_mouse_listeners")     = add_mouse_listeners;
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "set_image_coord_tracker") = set_image_coord_tracker;
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "add_mouse_listeners") = add_mouse_listeners;
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
 
 	//
 	//TreeSVG & myJS = onloadJS[getName()](svg::JAVASCRIPT_SCOPE);
@@ -887,7 +887,7 @@ void CmdCoords::exec() const {
 }
 
 
-#include "js/set_image_value_tracker.h"
+#include "js/image_value_tracker.h"
 
 void CmdData::exec() const {
 
@@ -911,7 +911,7 @@ void CmdData::exec() const {
 	drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
 	img->addClass("MOUSE_VALUE");
 
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "set_image_value_tracker") = set_image_value_tracker;
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 
 	// std::cerr << koe << std::endl;
 	drain::image::TreeSVG & imgTest = imagePanelGroup["TEST"](svg::IMAGE);
