@@ -8,8 +8,12 @@
 #ifndef DRAIN_UTIL_JAVASCRIPT_H_
 #define DRAIN_UTIL_JAVASCRIPT_H_
 
+#include <cstdint>
+#include <cstring>
+
 #include <drain/Enum.h>
 #include <drain/Sprinter.h>
+
 
 namespace drain {
 
@@ -71,9 +75,29 @@ public:
 		Float64,
 	};
 
+	static
+	void convert(const std::vector<float> & data, std::vector<uint8_t> & bytes);
+
+	static
+	inline void append_float32_le(std::vector<uint8_t>& out, float v) {
+	    uint32_t u;
+	    static_assert(sizeof(float) == 4, "float must be 32-bit");
+	    std::memcpy(&u, &v, 4);
+
+	    // Write little-endian explicitly:
+	    out.push_back(uint8_t((u >> 0)  & 0xFF));
+	    out.push_back(uint8_t((u >> 8)  & 0xFF));
+	    out.push_back(uint8_t((u >> 16) & 0xFF));
+	    out.push_back(uint8_t((u >> 24) & 0xFF));
+	}
+
+	static
+	void base64_encode(const std::vector<uint8_t>& data, std::string & out);
+
 	template <typename T>
 	static
 	void createArray(const Outlet & code, const std::string & variableName, NumType type, const T & sequence);
+
 
 protected:
 

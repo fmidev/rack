@@ -38,13 +38,13 @@ static inline void append_float32_le(std::vector<uint8_t>& out, float v) {
 }
 
 
-static
-std::string base64_encode(const std::vector<uint8_t>& data) {
+//static
+void JavaScript::base64_encode(const std::vector<uint8_t>& data, std::string & out) {
 
 	static
 	const char* B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-	std::string out;
+	//std::string out;
     out.reserve(((data.size() + 2) / 3) * 4);
 
     size_t i = 0;
@@ -74,7 +74,15 @@ std::string base64_encode(const std::vector<uint8_t>& data) {
         }
     }
 
-    return out;
+    // return out;
+}
+
+
+void JavaScript::convert(const std::vector<float> & data, std::vector<uint8_t> & bytes){
+	bytes.reserve(data.size() * 4); // float
+	for (const auto & x: data) {
+		append_float32_le(bytes, x);
+	}
 }
 
 void super_test(){
@@ -85,9 +93,9 @@ void super_test(){
 	std::vector<float> lon(nx*ny);
 	std::vector<float> lat(nx*ny);
 	size_t row = 0;
-	for (int j = 0; j < ny; ++j) {
+	for (size_t j = 0; j < ny; ++j) {
 		row = j*nx;
-		for (int i = 0; i < nx; ++i) {
+		for (size_t i = 0; i < nx; ++i) {
 			lon.at(row + i) = (rand()&255)*0.04;
 			lon.at(row + i) = (rand()&255)*0.04;
 		}
@@ -102,11 +110,13 @@ void super_test(){
 	    append_float32_le(latBytes, lat[k]);
 	}
 
-	std::string lonB64 = base64_encode(lonBytes);
-	std::string latB64 = base64_encode(latBytes);
+	std::string lonB64;
+	JavaScript::base64_encode(lonBytes, lonB64);
+	std::string latB64;
+	JavaScript::base64_encode(latBytes, latB64);
 
 	//rain::VariableMap map;
-	printf("data-nx=\"%d\" data-ny=\"%d\" ", nx, ny);
+	printf("data-nx=\"%ld\" data-ny=\"%ld\" ", nx, ny);
 	printf("data-lon=\"%s\" data-lat=\"%s\" ", lonB64.c_str(), latB64.c_str());
 }
 
