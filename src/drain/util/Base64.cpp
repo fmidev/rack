@@ -10,21 +10,21 @@
 #include <vector>
 #include <cstring>
 
-#include "JavaScript.h"
+#include "Base64.h"
 
 namespace drain {
 
 
-
-DRAIN_ENUM_DICT(JavaScript::NumType) = {
-	DRAIN_ENUM_ENTRY(JavaScript::NumType, Int8),
-	DRAIN_ENUM_ENTRY(JavaScript::NumType, Int16),
-	DRAIN_ENUM_ENTRY(JavaScript::NumType, Int32),
-	DRAIN_ENUM_ENTRY(JavaScript::NumType, Float16),
-	DRAIN_ENUM_ENTRY(JavaScript::NumType, Float32),
-	DRAIN_ENUM_ENTRY(JavaScript::NumType, Float64),
+DRAIN_ENUM_DICT(Base64::NumType) = {
+	DRAIN_ENUM_ENTRY(Base64::NumType, Int8),
+	DRAIN_ENUM_ENTRY(Base64::NumType, Int16),
+	DRAIN_ENUM_ENTRY(Base64::NumType, Int32),
+	DRAIN_ENUM_ENTRY(Base64::NumType, Float16),
+	DRAIN_ENUM_ENTRY(Base64::NumType, Float32),
+	DRAIN_ENUM_ENTRY(Base64::NumType, Float64),
 };
 
+/*
 static inline void append_float32_le(std::vector<uint8_t>& out, float v) {
     uint32_t u;
     static_assert(sizeof(float) == 4, "float must be 32-bit");
@@ -36,10 +36,11 @@ static inline void append_float32_le(std::vector<uint8_t>& out, float v) {
     out.push_back(uint8_t((u >> 16) & 0xFF));
     out.push_back(uint8_t((u >> 24) & 0xFF));
 }
+*/
 
 
 //static
-void JavaScript::base64_encode(const std::vector<uint8_t>& data, std::string & out) {
+void Base64::base64_encode(const std::vector<uint8_t>& data, std::string & out) {
 
 	static
 	const char* B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -78,12 +79,16 @@ void JavaScript::base64_encode(const std::vector<uint8_t>& data, std::string & o
 }
 
 
-void JavaScript::convert(const std::vector<float> & data, std::vector<uint8_t> & bytes){
+/*
+void Base64::convert(const std::vector<float> & data, std::vector<uint8_t> & bytes){
 	bytes.reserve(data.size() * 4); // float
 	for (const auto & x: data) {
-		append_float32_le(bytes, x);
+		append_value_le(bytes, x);
+		//append_float32_le(bytes, x);
 	}
 }
+*/
+
 
 void super_test(){
 
@@ -106,14 +111,15 @@ void super_test(){
 	latBytes.reserve(lat.size() * 4);
 
 	for (size_t k = 0; k < lon.size(); k++) {
-	    append_float32_le(lonBytes, lon[k]);
-	    append_float32_le(latBytes, lat[k]);
+		// append_float32_le
+		Base64::append_value_le(lonBytes, lon[k]);
+		Base64::append_value_le(latBytes, lat[k]);
 	}
 
 	std::string lonB64;
-	JavaScript::base64_encode(lonBytes, lonB64);
+	Base64::base64_encode(lonBytes, lonB64);
 	std::string latB64;
-	JavaScript::base64_encode(latBytes, latB64);
+	Base64::base64_encode(latBytes, latB64);
 
 	//rain::VariableMap map;
 	printf("data-nx=\"%ld\" data-ny=\"%ld\" ", nx, ny);

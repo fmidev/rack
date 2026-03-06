@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(19,0)
+#define RACK_VERSION drain::Version<>(19,0,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -43,6 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Simplified tree path element handling (including lookup table)
  *  Version 19.0
  *  - Simple JavaScript coordinate monitor with --gCoord
+ *  Release 19.0.1
+ *  - JavaScript: experimental Base64 data
  *
  *  Version 18
  *  - SVG basic command set completed

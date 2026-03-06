@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Version.h>
 
-#include <drain/util/JavaScript.h>
+#include <drain/util/Base64.h>
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
 //#include <drain/util/TreeXML.h>
@@ -822,10 +822,13 @@ void CmdCoords::exec() const {
 
 	// GENERALIZE (start)
 	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
+	/*
 	const std::string onload_fnc_name = "rack_onload";
 	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
 	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
-	// GENERALIZE (end)
+	*/
+
+	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
 
 
 	RadarSVG radarSVG;
@@ -879,6 +882,64 @@ void CmdCoords::exec() const {
 	//TreeSVG & myJS = onloadJS[getName()](svg::JAVASCRIPT_SCOPE);
 	onloadJS["add_coord_tracker"] = drain::StringBuilder<>("add_coord_tracker();");
 
+
+
+}
+
+#include "js/set_image_value_tracker.h"
+//#include "js/base64ToFloat32ArrayLE.h"
+#include "js/base64ToArrayLE.h"
+
+void CmdData::exec() const {
+
+	using namespace drain::image;
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	// GENERALIZE (start)
+	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
+	/*
+	const std::string onload_fnc_name = "rack_onload";
+	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
+	*/
+
+	RadarSVG radarSVG;
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
+	overlayGroup->setId(); //
+	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
+	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
+	drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
+	img->addClass("MOUSE_VALUE");
+
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "set_image_value_tracker") = set_image_value_tracker;
+	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
+
+	std::string code;
+
+	//std::vector<float> v(33*33, 1.2345);
+	std::vector<float> v(11*11, 1.2345);
+	//std::vector<uint8_t> bytes;
+	drain::Base64 bytes;
+	drain::Base64::convert(v, bytes);
+	drain::Base64::base64_encode(bytes, code);
+
+	drain::image::TreeSVG & imgData = img[RackSVG::DATA_ARRAY](svg::METADATA);
+	imgData->set("data-values", code);
+
+	// std::vector<double> v(33*33, 1.2345); // = {0.01, 1.0, 1212122.0};
+	//drain::Base64::createArray(drain::Outlet(code), "i32", drain::Base64::Int32, v);
+
+	std::cerr << code << std::endl;
+	// std::cerr << koe << std::endl;
+	drain::image::TreeSVG & imgTest = imagePanelGroup["TEST"](svg::IMAGE);
+	imgTest->setFrame(100,100);
+	imgTest->setUrl(img->getUrl());
+	//drain::super_test();
+
+	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
+	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
+	onloadJS["image_value_tracker"] = "add_image_value_trackers();";
 
 
 }

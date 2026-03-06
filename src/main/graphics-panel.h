@@ -99,6 +99,10 @@ public:
 	static
 	drain::image::TreeSVG & getStyle(RackContext & ctx);
 
+	static
+	drain::image::TreeSVG & getOnLoadScript(RackContext & ctx);
+
+
 	/// returns timeformat
 	static
 	const std::string & guessFormat(const std::string & key);

@@ -225,6 +225,21 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 }
 
+drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	static const std::string onload_fnc_name = "rack_onload";
+
+	mout.experimental("Additing mouse interaction: SVG onload=", onload_fnc_name, "()");
+
+	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
+
+	return onloadJS;
+
+}
+
 const std::string & RackSVG::guessFormat(const std::string & key){
 
 		//v = attr.second.toStr();
