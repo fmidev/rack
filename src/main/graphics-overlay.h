@@ -283,6 +283,23 @@ public:
 	void exec() const override ;
 };
 
+class CmdTestData : public CmdPolarBase {
+
+public:
+
+	CmdTestData() : CmdPolarBase(__FUNCTION__, "SVG test product") {
+		// getParameters().link("name",   name, "label");
+		// getParameters().link("panel",  panel, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	}
+
+	CmdTestData(const CmdTestData & cmd) : CmdPolarBase(cmd) {
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	void exec() const override ;
+};
+
 
 
 class CmdDot : public CmdPolarBase { //  drain::BasicCommand,

@@ -924,6 +924,7 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	// DRAIN_CMD_INSTALL(Cmd, Coords)(); // .section = HIDDEN;
 	install<CmdCoords>().section = HIDDEN;
 	install<CmdData>().section = HIDDEN;
+	install<CmdTestData>().section = HIDDEN;
 
 	install<CmdAlignTest>();
 	install<CmdDebug>();

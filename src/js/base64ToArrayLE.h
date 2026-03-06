@@ -34,4 +34,20 @@ function base64ToArrayLE(b64, ArrayCls) {
 
     return out;
 }
+
+function demo_base64(){
+
+    const elems = document.querySelectorAll("metadata[data-base64]");
+
+    elems.forEach(elem => {
+	// set_image_value_tracker(elem)
+	console.info(elem)
+	window.metadata = elem
+	var b64 = elem.getAttribute("data-base64")
+	console.info(b64)
+	var arr = base64ToArrayLE(b64, Float32Array)
+	//base64ToFloat32ArrayLE(b64)
+	console.info(arr)
+    })
+}
 //]]>)JS";

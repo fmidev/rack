@@ -886,9 +886,8 @@ void CmdCoords::exec() const {
 
 }
 
+
 #include "js/set_image_value_tracker.h"
-//#include "js/base64ToFloat32ArrayLE.h"
-#include "js/base64ToArrayLE.h"
 
 void CmdData::exec() const {
 
@@ -913,6 +912,44 @@ void CmdData::exec() const {
 	img->addClass("MOUSE_VALUE");
 
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "set_image_value_tracker") = set_image_value_tracker;
+
+	// std::cerr << koe << std::endl;
+	drain::image::TreeSVG & imgTest = imagePanelGroup["TEST"](svg::IMAGE);
+	imgTest->setFrame(100,100);
+	imgTest->setUrl(img->getUrl());
+	//drain::super_test();
+
+	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
+	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
+	onloadJS["image_value_tracker"] = "add_image_value_trackers();";
+
+
+}
+
+//#include "js/base64ToFloat32ArrayLE.h"
+#include "js/base64ToArrayLE.h"
+
+void CmdTestData::exec() const {
+
+	using namespace drain::image;
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	// GENERALIZE (start)
+	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
+	/*
+	const std::string onload_fnc_name = "rack_onload";
+	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
+	*/
+
+	RadarSVG radarSVG;
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
+	overlayGroup->setId(); //
+	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
+	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
+	drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
+
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
 
 	std::string code;
@@ -925,21 +962,12 @@ void CmdData::exec() const {
 	drain::Base64::base64_encode(bytes, code);
 
 	drain::image::TreeSVG & imgData = img[RackSVG::DATA_ARRAY](svg::METADATA);
-	imgData->set("data-values", code);
-
-	// std::vector<double> v(33*33, 1.2345); // = {0.01, 1.0, 1212122.0};
-	//drain::Base64::createArray(drain::Outlet(code), "i32", drain::Base64::Int32, v);
-
+	imgData->set("data-base64", code);
 	std::cerr << code << std::endl;
-	// std::cerr << koe << std::endl;
-	drain::image::TreeSVG & imgTest = imagePanelGroup["TEST"](svg::IMAGE);
-	imgTest->setFrame(100,100);
-	imgTest->setUrl(img->getUrl());
-	//drain::super_test();
 
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
 	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
-	onloadJS["image_value_tracker"] = "add_image_value_trackers();";
+	onloadJS["demo_base64"] = "demo_base64();";
 
 
 }
