@@ -432,8 +432,8 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v
 }
 
 
-template <>
-const std::string TypeName<Castable>::name("Castable");
-
+//template <>
+//const std::string TypeName<Castable>::name("Castable");
+//DRAIN_TYPENAME_DEF
 
 }  // drain

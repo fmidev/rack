@@ -319,6 +319,7 @@ protected:
 	
 };
 
+DRAIN_TYPENAME(PJ_INFO);
 DRAIN_TYPENAME(Proj6);
 
 std::ostream & operator<<(std::ostream & ostr, const Proj6 &p);

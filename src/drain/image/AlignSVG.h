@@ -502,9 +502,6 @@ void AlignSVG::VertAlign::reset(){
 	pos  = AlignBase::Pos::UNDEFINED_POS;
 }
 
-DRAIN_TYPENAME(AlignSVG::HorzAlign);
-
-DRAIN_TYPENAME(AlignSVG::VertAlign);
 
 /// Dictionary of horizontal (LEFT,CENTER,RIGHT) flags
 /*
@@ -673,11 +670,10 @@ std::ostream & operator<<(std::ostream &ostr, const CompleteAlignment<AX,A> & ad
 
 
 
-
-
-
-
 }  // image::
+
+DRAIN_TYPENAME(image::AlignSVG::HorzAlign);
+DRAIN_TYPENAME(image::AlignSVG::VertAlign);
 
 }  // drain::
 

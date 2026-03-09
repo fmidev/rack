@@ -1317,9 +1317,9 @@ T & operator/=(T & x, const Castable &c){
 }
 
 
-
-template <>
-const std::string TypeName<Castable>::name;
+DRAIN_TYPENAME(Castable);
+// template <>
+// const std::string TypeName<Castable>::name;
 
 /*
 template <class T, size_t N=2>

@@ -29,15 +29,17 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#ifndef RACK_WIREFRAME_SVG
-#define RACK_WIREFRAME_SVG
+#ifndef RACK_SVG_OVERLAY
+#define RACK_SVG_OVERLAY
 
-// #include <string>
+//
+#include <vector>
+
 #include <drain/prog/Command.h>
+#include <drain/util/Base64.h>
 
 #include "hi5/Hi5.h"
 #include "resources.h" // ctx
-
 #include "graphics-radar.h" // ctx
 
 
@@ -283,21 +285,40 @@ public:
 	void exec() const override ;
 };
 
+
+
 class CmdTestData : public CmdPolarBase {
 
 public:
 
-	CmdTestData() : CmdPolarBase(__FUNCTION__, "SVG test product") {
-		// getParameters().link("name",   name, "label");
-		// getParameters().link("panel",  panel, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	CmdTestData() : CmdPolarBase(__FUNCTION__, "SVG test: store numeric data as arrays using Base64 encoding") {
 	}
 
 	CmdTestData(const CmdTestData & cmd) : CmdPolarBase(cmd) {
-		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	void exec() const override ;
+
+protected:
+
+	template <typename T>
+	void test(drain::image::TreeSVG & img, const std::vector<T> & v, drain::Logger & mout) const {
+
+		const std::string & typeName = drain::TypeName<T>::str();
+		mout.experimental<LOG_NOTICE>("Testing: vector of ", typeName);
+
+		drain::Base64 bytes;
+		bytes.convertFrom(v);
+		std::string code;
+		drain::Base64::base64_encode(bytes, code);
+		mout.experimental<LOG_INFO>("Code: ", code);
+
+		drain::image::TreeSVG & imgData = img[typeName](svg::METADATA);
+		imgData->set("data-base64", code);
+		imgData->set("data-basetype", typeName);
+
+	}
+
 };
 
 

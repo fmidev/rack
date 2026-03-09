@@ -77,8 +77,9 @@ See the documentation of drain::VariableT template specialized by drain::Variabl
 */
 typedef VariableT<ReferenceT<Castable> >  Reference;
 
-template <>
-const std::string TypeName<Reference>::name;
+//template <>
+//const std::string TypeName<Reference>::name;
+DRAIN_TYPENAME(Reference);
 
 template <>
 inline

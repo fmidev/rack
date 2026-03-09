@@ -45,7 +45,52 @@ function demo_base64(){
 	window.metadata = elem
 	var b64 = elem.getAttribute("data-base64")
 	console.info(b64)
-	var arr = base64ToArrayLE(b64, Float32Array)
+	var type = elem.getAttribute("data-basetype")
+	
+	switch (type){
+	case 'int8':
+	    type = Int8Array;
+	    break;
+	case 'uint8':
+	    type = Uint8Array;
+	    break;
+	//case 'Uint8Clamped':
+	//   type = Uint8ClampedArray;
+	//   break;
+	case 'int16':
+	case 'short':
+	    type = Int16Array;
+	    break;
+	case 'uint16':
+	case 'unsigned short':
+	    type = Uint16Array;
+	    break;
+	case 'int32':
+	    type = Int32Array;
+	    break;
+	case 'uint32':
+	    type = Uint32Array;
+	    break;
+	/*
+	case 'bigInt64':
+	    type = BigInt64Array;
+	    break;
+	case 'bigUint64':
+	    type = BigUint64Array;
+	    break;
+	*/
+	case 'float16':
+	    type = Float16Array;
+	    break;
+	case 'float': // ?x
+	case 'float32':
+	    type = Float32Array;
+	    break;
+	default:
+	    console.warn('base64 unsupported type:', type)
+	    type = null;
+	}
+	var arr = base64ToArrayLE(b64, type)
 	//base64ToFloat32ArrayLE(b64)
 	console.info(arr)
     })

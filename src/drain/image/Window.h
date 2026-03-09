@@ -146,7 +146,6 @@ protected:
 std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf);
 
 
-DRAIN_TYPENAME(WindowConfig);
 
 
 /// Container for source and target images, and their setters.
@@ -263,7 +262,7 @@ public:
 
 };
 
-DRAIN_TYPENAME(WindowCore);
+//DRAIN_TYPENAME(WindowCore);
 
 class WeightedWindowCore : public WindowCore {
 
@@ -296,7 +295,7 @@ public:
 
 };
 
-DRAIN_TYPENAME(WeightedWindowCore);
+// DRAIN_TYPENAME(WeightedWindowCore);
 
 
 class MultiChannelWindowCore : public drain::image::WeightedWindowCore {
@@ -697,6 +696,13 @@ struct TypeName<image::Window<P,R> > {
     }
 
 };
+
+//DRAIN_TYPENAME_T0<>;
+
+DRAIN_TYPENAME(image::WindowConfig);
+
+DRAIN_TYPENAME(image::WindowCore);
+DRAIN_TYPENAME(image::WeightedWindowCore);
 
 } // drain
 

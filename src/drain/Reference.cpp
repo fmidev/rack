@@ -52,8 +52,8 @@ bool Reference::requestSize(size_t elementCount){
 	return Castable::requestSize(elementCount);
 }
 
-template <>
-const std::string TypeName<Reference>::name("Reference");
+//template <>
+//const std::string TypeName<Reference>::name("Reference");
 
 } // drain::
 

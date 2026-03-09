@@ -59,10 +59,15 @@ public:
 		}
 	}
 
+	inline
+	void convertFrom(const std::vector<float> & data){
+		type = Float32;
+		convert(data, *this);
+	}
 
 	inline
-	void convert(const std::vector<float> & data){
-		type = Float32;
+	void convertFrom(const std::vector<uint16_t> & data){
+		type = Int16;  // uint!
 		convert(data, *this);
 	}
 

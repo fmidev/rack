@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+/*
 DRAIN_TYPENAME_DEF(void);
 DRAIN_TYPENAME_DEF(bool);
 DRAIN_TYPENAME_DEF(char);
@@ -54,6 +55,7 @@ DRAIN_TYPENAME_DEF(double);
 DRAIN_TYPENAME_DEF(char *);
 DRAIN_TYPENAME_DEF(const char *);
 DRAIN_TYPENAME_DEF(std::string);
+*/
 
 /*
 const drain::RegExp Type::trueRegExp("^[ ]*true[ ]*$", REG_EXTENDED | REG_ICASE ); // ignore case

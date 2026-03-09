@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(19,0,1)
+#define RACK_VERSION drain::Version<>(19,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Simple JavaScript coordinate monitor with --gCoord
  *  Release 19.0.1
  *  - JavaScript: experimental Base64 data
+ *  Version 19.1
+ *  - Experimental JavaScript data value monitor with --gData (server-based support only)
  *
  *  Version 18
  *  - SVG basic command set completed

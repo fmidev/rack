@@ -34,6 +34,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <stdexcept>
 #include <typeinfo>
+// #include <bits/types.h> // uint8, uint16 etc
+#include <cstdint>
 
 #include <list>
 #include <set>
@@ -540,6 +542,9 @@ template <typename T>
 struct TypeName
 {
 
+	static const std::string & str();
+
+	/*
     static const std::string & str(){
         return name;
     }
@@ -547,13 +552,23 @@ struct TypeName
 protected:
 
     static const std::string name;
+	*/
+	static const std::string nameOLD;
 
 };
 
+template <typename T>
+const std::string & TypeName<T>::str(){
+	static
+	const std::string name(typeid(T).name());
+	return name;
+}
+
 /// Default implementation: name returned by std::type_info::name()
+/*
 template <typename T>
 const std::string TypeName<T>::name(typeid(T).name());
-
+*/
 
 
 
@@ -570,28 +585,66 @@ std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
 
 
 /// Name declaration, for header files.
-#define DRAIN_TYPENAME(tname) template <>      const std::string TypeName<tname>::name
+//#define DRAIN_TYPENAME(tname) template <>        const std::string TypeName<tname>::name
 /// Name definition, for object files.
-#define DRAIN_TYPENAME_DEF(tname) template <>  const std::string TypeName<tname>::name(#tname)
+#define DRAIN_TYPENAME_DEF(tname) template <>    const std::string TypeName<tname>::nameOLD(#tname)
+
+//#define DRAIN_TYPENAME_DEF(tname) bool x;
+
 
 //#define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return name;}
-#define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return n;}}
+#define DRAIN_TYPENAME_T(cname,T)  template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return n;}}
+#define DRAIN_TYPENAME_T0(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=std::string(#cname)+'<'+drain::TypeName<T>::str()+'>'; return n;}}
 
 // NEW
 /// Simple functor redefinition, only
-#define DRAIN_TYPENAME_STR(tname) template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
+#define DRAIN_TYPENAME_STR(tname)   template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
+#define DRAIN_TYPENAME_STR_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;};
+
+// TEMPORARY FIX (fake)
+#define DRAIN_TYPENAME(tname)       template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
 
 
 /// Add a specialization for each type of those you want to support.
 //  (Unless the string returned by typeid is sufficient.)
 
 
-DRAIN_TYPENAME(void);
-DRAIN_TYPENAME(bool);
+// DRAIN_TYPENAME_STR(uint16_t);
+
+
+
+
+// NEW
+DRAIN_TYPENAME_STR(char);
+DRAIN_TYPENAME_STR_t(int8);
+DRAIN_TYPENAME_STR_t(uint8);
+DRAIN_TYPENAME_STR_t(int16);
+DRAIN_TYPENAME_STR_t(uint16);
+DRAIN_TYPENAME_STR_t(int32);
+DRAIN_TYPENAME_STR_t(uint32);
+DRAIN_TYPENAME_STR_t(int64);
+DRAIN_TYPENAME_STR_t(uint64);
+
+DRAIN_TYPENAME_STR(void);
+DRAIN_TYPENAME_STR(bool);
+DRAIN_TYPENAME_STR(float);
+DRAIN_TYPENAME_STR(double);
+// NEWOLD
+DRAIN_TYPENAME(char *);
+DRAIN_TYPENAME(const char *);  // why const separately...?
+DRAIN_TYPENAME(std::string);
+
+// OLD
+/*
 DRAIN_TYPENAME(char);
 DRAIN_TYPENAME(unsigned char);
 DRAIN_TYPENAME(short);
 DRAIN_TYPENAME(unsigned short);
+*/
+/*
+DRAIN_TYPENAME(void);
+DRAIN_TYPENAME(bool);
+
 DRAIN_TYPENAME(int);  // see what happend
 DRAIN_TYPENAME(unsigned int);
 DRAIN_TYPENAME(long);
@@ -601,8 +654,7 @@ DRAIN_TYPENAME(double);
 DRAIN_TYPENAME(char *);
 DRAIN_TYPENAME(const char *);  // why const separately...?
 DRAIN_TYPENAME(std::string);
-
-#define DRAIN_TYPENAME_T0(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=std::string(#cname)+'<'+drain::TypeName<T>::str()+'>'; return n;}}
+*/
 
 DRAIN_TYPENAME_T0(std::initializer_list, T);
 DRAIN_TYPENAME_T0(std::vector, T);

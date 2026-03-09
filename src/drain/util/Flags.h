@@ -202,11 +202,12 @@ protected:
 
 template <typename E>
 inline
-std::ostream & operator<<(std::ostream & ostr, const drain::SingleFlagger<E> & flagger) {
+std::ostream & operator<<(std::ostream & ostr, const SingleFlagger<E> & flagger) {
 	ostr << flagger.str();
 	return ostr;
 }
 
+DRAIN_TYPENAME_T0(SingleFlagger,E);
 
 ///
 /**
@@ -372,6 +373,7 @@ std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E,T> & 
 	return FlagResolver::keysToStream(flagger.getDict(), flagger.getValue(), ostr);
 }
 
+DRAIN_TYPENAME_T0(MultiFlagger,E);
 
 
 

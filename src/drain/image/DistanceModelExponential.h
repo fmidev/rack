@@ -82,10 +82,13 @@ protected:
 
 };
 
-DRAIN_TYPENAME(DistanceModelExponential);
 
+//DRAIN_TYPENAME(DistanceModelExponential);
 
 }
+
+DRAIN_TYPENAME(image::DistanceModelExponential);
+
 }
 	
 #endif

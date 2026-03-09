@@ -80,11 +80,11 @@ protected:
 
 };
 
-DRAIN_TYPENAME(DistanceModelLinear);
+//DRAIN_TYPENAME(DistanceModelLinear);
 
 } // image::
 
-//DRAIN_TYPENAME(image::DistanceModelLinear);
+DRAIN_TYPENAME(image::DistanceModelLinear);
 
 } // drain::
 	

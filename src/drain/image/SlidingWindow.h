@@ -624,6 +624,21 @@ typedef SlidingStripe<false,C,R> SlidingStripeVert;
 
 }
 
+
+template <class P, class R>
+struct TypeName<image::SlidingWindow<P,R> > {
+
+    static const std::string & str(){
+		static const std::string name = std::string("SlidingWindow<") + drain::TypeName<P>::str() + ',' + drain::TypeName<R>::str() + '>'; // todo: develop
+        return name;
+    }
+
+};
+
+
+//DRAIN_TYPENAME(image::SlidingWindow);
+
+
 }
 
 #endif /*SLIDINGWINDOWOP_H_*/

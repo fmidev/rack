@@ -54,19 +54,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-overlay.h"
 
 
-/*
-DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
-		DRAIN_ENUM_ENTRY(rack::Graphic, GRID),
-		DRAIN_ENUM_ENTRY(rack::Graphic, DOT),
-		DRAIN_ENUM_ENTRY(rack::Graphic, LABEL),
-		DRAIN_ENUM_ENTRY(rack::Graphic, RAY),
-		DRAIN_ENUM_ENTRY(rack::Graphic, SECTOR),
-		DRAIN_ENUM_ENTRY(rack::Graphic, ANNULUS),
-		DRAIN_ENUM_ENTRY(rack::Graphic, CIRCLE),
-};
+namespace drain {
 
-DRAIN_ENUM_OSTREAM(rack::Graphic::GRAPHIC);
-*/
+
+}
+
 
 namespace rack {
 /*
@@ -907,21 +899,74 @@ void CmdData::exec() const {
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
 	overlayGroup->setId(); //
 	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
-	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
-	drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
-	img->addClass("MOUSE_VALUE");
+	imagePanelGroup->addClass("MOUSE_VALUE");
+	drain::image::TreeSVG & dataImageElem = imagePanelGroup[RackSVG::ElemClass::DATA_ARRAY](svg::IMAGE);
+	dataImageElem->addClass("MOUSE_VALUE_DATA");  // RackSVG::ElemClass::COORD_TRACKER consider shared tracker plane!
 
+	drain::image::TreeSVG & valueMonitorElem = imagePanelGroup["MOUSE_VALUE_MONITOR"](svg::TEXT);
+	valueMonitorElem->setId();
+	valueMonitorElem->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
+	valueMonitorElem->setAlign(AlignSVG::RIGHT, AlignSVG::BOTTOM);
+	valueMonitorElem->addClass("MOUSE_VALUE_MONITOR");
+	// Associate with graphical "location" style
+	valueMonitorElem->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+	valueMonitorElem->setTextSafe("(value)");
+	valueMonitorElem->setFontSize(15,20);
+
+	const drain::image::Image & data = ctx.getCurrentGrayImage();
+
+	if (!data.isEmpty()){
+
+		mout.attention(data);
+		//drain::image::ImageT<uint8_t> dataImage;
+		//drain::image::ImageT<unsigned char> dataImage;
+		drain::image::Image dataImage(typeid(unsigned char));
+		dataImage.setGeometry(data.getWidth(), data.getHeight(), 3);
+		drain::image::Channel & red   = dataImage.getChannel(0);
+		drain::image::Channel & green = dataImage.getChannel(1);
+		//drain::image::Channel & blue  = dataImage.getChannel(2);
+
+		const std::type_info & type = data.getType();
+		if (type == typeid(unsigned short)){
+			//const size_t s = data.getArea();
+			drain::image::Channel::iterator rit = red.begin();
+			drain::image::Channel::iterator git = green.begin();
+			for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+				*rit = (static_cast<unsigned int>(*it))    & 0xff;
+				*git = (static_cast<unsigned int>(*it)>>8) & 0xff;
+				++rit;
+				++git;
+			}
+
+			//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
+			drain::image::FilePng::write(dataImage, ctx.outputPrefix + "data.png");
+
+		}
+		else {
+			mout.unimplemented<LOG_ERR>("type:", drain::Type::call<drain::simpleName>(type));
+		}
+
+		const drain::ValueScaling & scaling = data.getConf().getScaling();
+		dataImageElem->set("data-encoding", drain::StringBuilder<','>(scaling.scale, scaling.offset).str()); // todo: UNDETECT, NODATA
+		dataImageElem->setStyle("opacity", 0.5);
+		dataImageElem->setUrl("data.png");
+		dataImageElem->setFrame(100,100);
+		dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+
+		// radarSVG.geoFrame
+		/*
+		drain::image::ImageT<unsigned char> dataImage(width,height,3);
+		drain::image::Channel & lonChannel = coords.getChannel(0);
+		drain::image::Channel & latChannel = coords.getChannel(1);
+		*/
+
+	}
+
+	/// Ensure that the script is available.
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 
-	// std::cerr << koe << std::endl;
-	drain::image::TreeSVG & imgTest = imagePanelGroup["TEST"](svg::IMAGE);
-	imgTest->setFrame(100,100);
-	imgTest->setUrl(img->getUrl());
-	//drain::super_test();
-
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
-	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
-	onloadJS["image_value_tracker"] = "add_image_value_trackers();";
+	onloadJS["image_value_tracker"] = "image_value_tracker();";
 
 
 }
@@ -929,41 +974,35 @@ void CmdData::exec() const {
 //#include "js/base64ToFloat32ArrayLE.h"
 #include "js/base64ToArrayLE.h"
 
+
 void CmdTestData::exec() const {
 
 	using namespace drain::image;
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	// GENERALIZE (start)
-	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
-	/*
-	const std::string onload_fnc_name = "rack_onload";
-	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
-	*/
-
 	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	overlayGroup->setId(); //
+	//drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
 	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
-	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
 	drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
 
+	/// Ensure that the script is available.
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
 
-	std::string code;
+	// TEST 1: float vector
+	const std::vector<float> floatVector(11*11, 1.2345);
+	test(img, floatVector, mout);
 
-	//std::vector<float> v(33*33, 1.2345);
-	std::vector<float> v(11*11, 1.2345);
-	//std::vector<uint8_t> bytes;
-	drain::Base64 bytes;
-	drain::Base64::convert(v, bytes);
-	drain::Base64::base64_encode(bytes, code);
+	// TEST 2: short unsigned vector
+	const int N = 64;
+	std::vector<uint16_t> uint16Vector(N*N);
+	for (int j=0; j<N; ++j){
+		for (int i=0; i<N; ++i){
+			uint16Vector[j*N+i] = j*N+i;
+		}
+	}
+	test(img, uint16Vector, mout);
 
-	drain::image::TreeSVG & imgData = img[RackSVG::DATA_ARRAY](svg::METADATA);
-	imgData->set("data-base64", code);
-	std::cerr << code << std::endl;
 
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
 	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
