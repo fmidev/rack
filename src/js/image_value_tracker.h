@@ -65,12 +65,10 @@ async function set_image_value_tracker(imgElem, encoding, monitorElem){
 
     imgElem.addEventListener("mousemove", (ev) => {
 	const x = ev.clientX - bbox.left;
-	const y = h - (ev.clientY - bbox.top);
-	// console.info(grayAt(x, y))
+	const y = ev.clientY - bbox.top;
+	//const y = h - (ev.clientY - bbox.top);
 	// const i = x / bbox.width;
 	// const j = y / bbox.height;
-	// func(i,j)`The formatted number is ${number.toFixed(2)}`
-	// var value = grayAt(x,y);
 	// monitorElem.textContent = `...formatted ${value.toFixed(2)}`
 	monitorElem.textContent = '('+x+','+y+'): ' + grayAt(x,y); //.toFixed(2);
     })
