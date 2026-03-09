@@ -38,7 +38,7 @@ function base64ToArrayLE(b64, ArrayCls) {
 function demo_base64(){
 
     const elems = document.querySelectorAll("metadata[data-base64]");
-
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
     elems.forEach(elem => {
 	// set_image_value_tracker(elem)
 	console.info(elem)

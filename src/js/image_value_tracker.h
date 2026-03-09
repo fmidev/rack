@@ -58,19 +58,21 @@ async function set_image_value_tracker(imgElem, encoding, monitorElem){
 	const gain   = encoding.gain;
 	const offset = encoding.offset;
 	
-	if (x < 0 || y < 0 || x >= w || y >= h) return null;
+	if (x < 0 || y < 0 || x >= w || y >= h) return "";
 	const i = (y * w + x) * 4;
-	return gain*(data[i] + (data[i+1]<<8)) + offset;
+	return (gain*(data[i] + (data[i+1]<<8)) + offset).toFixed(2);
     }
 
     imgElem.addEventListener("mousemove", (ev) => {
 	const x = ev.clientX - bbox.left;
-	const y = ev.clientY - bbox.top;
-	//console.info(grayAt(x, y))
+	const y = h - (ev.clientY - bbox.top);
+	// console.info(grayAt(x, y))
 	// const i = x / bbox.width;
 	// const j = y / bbox.height;
-	//func(i,j)
-	monitorElem.textContent = grayAt(x,y);
+	// func(i,j)`The formatted number is ${number.toFixed(2)}`
+	// var value = grayAt(x,y);
+	// monitorElem.textContent = `...formatted ${value.toFixed(2)}`
+	monitorElem.textContent = '('+x+','+y+'): ' + grayAt(x,y); //.toFixed(2);
     })
     
     window.rackdata = data

@@ -948,7 +948,7 @@ void CmdData::exec() const {
 
 		const drain::ValueScaling & scaling = data.getConf().getScaling();
 		dataImageElem->set("data-encoding", drain::StringBuilder<','>(scaling.scale, scaling.offset).str()); // todo: UNDETECT, NODATA
-		dataImageElem->setStyle("opacity", 0.5);
+		dataImageElem->setStyle("opacity", 0.25);
 		dataImageElem->setUrl("data.png");
 		dataImageElem->setFrame(100,100);
 		dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
