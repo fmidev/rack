@@ -474,7 +474,13 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 
 	const drain::VariableMap & map = ctx.getStatusMap();
 
-	drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
+	// mout.warn(map);
+
+	// drain::FilePath filepath(ctx.getFormattedStatus("${outputPrefix}./${outputFile}${how:nodes}.png")); // format ${NOD}, for example
+	const std::string s(ctx.getFormattedStatus("${outputPrefix}${outputFile}")); // format ${NOD}, for example
+	drain::FilePath filepath(ctx.getFormattedStatus(s));
+	//drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
+	//drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
 
 	mout.experimental("external image panel request: ", filepath);
 

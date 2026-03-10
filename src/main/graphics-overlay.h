@@ -87,15 +87,6 @@ public:
 	static
 	const std::string DATA_ID; // "data-latest"
 
-	/**
-	 *
-	 *  circle=max RADAR_CIRCLE
-	 *  dot=0.0    RADAR_DOT
-	 *  label=${NOD}  RADAR_LABEL
-	 *
-	 *
-	 */
-
 
 	/**
 	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
@@ -120,6 +111,15 @@ public:
 
 	static
 	void resolveAzimuthRange(const drain::SteppedRange<double> & ownAzm, const drain::SteppedRange<double> & sharedAzm, drain::SteppedRange<double> & azm);
+
+	/// Add EPGS, bounding box, encoding, quantity
+	/**
+	 *
+	 */
+	static
+	void addGeoData(const drain::image::Image & imageData, drain::image::NodeSVG & node);
+
+
 
 };
 
@@ -272,17 +272,19 @@ class CmdData : public CmdPolarBase { //  drain::BasicCommand,
 
 public:
 
-	CmdData() : CmdPolarBase(__FUNCTION__, "SVG test product") {
-		// getParameters().link("name",   name, "label");
-		// getParameters().link("panel",  panel, "label");
-		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	CmdData() : CmdPolarBase(__FUNCTION__, "Save and link encoded data for mouse read.") {
+		getParameters().link("filename", filename, "PNG data file path");
 	}
 
 	CmdData(const CmdData & cmd) : CmdPolarBase(cmd) {
-		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
-	void exec() const override ;
+	void exec() const override;
+
+protected:
+
+	std::string filename;
 };
 
 
@@ -291,7 +293,7 @@ class CmdTestData : public CmdPolarBase {
 
 public:
 
-	CmdTestData() : CmdPolarBase(__FUNCTION__, "SVG test: store numeric data as arrays using Base64 encoding") {
+	CmdTestData() : CmdPolarBase(__FUNCTION__, "Test attaching numeric data as arrays using Base64 encoding") {
 	}
 
 	CmdTestData(const CmdTestData & cmd) : CmdPolarBase(cmd) {

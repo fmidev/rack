@@ -217,7 +217,8 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 		// const std::string projdef = comp.getProjection(); // otherwise gets "null"
 		geoFrame.setProjection(comp.getProjStr());
 		radarProj.setProjectionDst(comp.getProjStr()); // TEST
-		//mout.reject<LOG_WARNING>("No EPSG found, using: ", comp.getProjection());
+		mout.reject<LOG_WARNING>("No EPSG found, using: ", comp.getProjStr());
+		mout.reject<LOG_WARNING>(DRAIN_LOG(comp.getInputProjStr()));
 	}
 
 	// mout.reject<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxNat()));

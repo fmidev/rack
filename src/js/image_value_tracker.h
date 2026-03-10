@@ -4,6 +4,8 @@ const char* image_value_tracker = R"JS(<![CDATA[
 function Encoding(encoding){
     this.gain = 1.0;
     this.offset = 0.0;
+    this.nodata = null;
+    this.undetect = null;
 
     if (!encoding)
 	return;
@@ -13,7 +15,9 @@ function Encoding(encoding){
 	encoding = encoding.split(',');
 	switch (encoding.length){
 	case 4:
+	    this.undetect = parseFloat(encoding[3]);
 	case 3:
+	    this.nodata = parseFloat(encoding[2]);
 	case 2:
 	    this.offset = parseFloat(encoding[1]);
 	case 1:
@@ -55,12 +59,23 @@ async function set_image_value_tracker(imgElem, encoding, monitorElem){
     const data = imageData.data; 
 
     function grayAt(x, y) {
-	const gain   = encoding.gain;
-	const offset = encoding.offset;
+	//const gain   = encoding.gain;
+	//const offset = encoding.offset;
+	//const nodata = encoding.gain;
+	const e = encoding;
 	
 	if (x < 0 || y < 0 || x >= w || y >= h) return "";
 	const i = (y * w + x) * 4;
-	return (gain*(data[i] + (data[i+1]<<8)) + offset).toFixed(2);
+	const v = data[i] + (data[i+1]<<8);
+	if (v === e.nodata){
+	    return 'nodata';
+	}
+	else if (v === e.undetect){
+	    return 'undetect';
+	}
+	else {
+	    return (e.gain*v + e.offset).toFixed(2);
+	}
     }
 
     imgElem.addEventListener("mousemove", (ev) => {

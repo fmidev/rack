@@ -111,7 +111,6 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		// return;
 	}
 
-	//RadarSVG::getOverlayStyle(ctx.svgTrack);
 	Graphic::getGraphicStyle(ctx.svgTrack);
 
 	drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
@@ -129,8 +128,6 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		// mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
 		// mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
 		srcDsc = srcCurr[ODIMPathElem::WHAT].data.attributes["source"].toStr();
-		// overlayGroup->set("data-latest", srcCurr[ODIMPathElem::WHAT].data.attributes["source"]);
-		// overlayGroup[svg::DESC](svg::DESC)->setText();
 	}
 
 	// mout.note("Cartesian");
@@ -304,6 +301,23 @@ void CmdPolarBase::resolveAzimuthRange(const drain::SteppedRange<double> & ownAz
 	mout.accept<LOG_NOTICE>(DRAIN_LOG(azm));
 };
 
+
+void CmdPolarBase::addGeoData(const drain::image::Image & imageData, drain::image::NodeSVG & node){
+
+	CartesianODIM odim(ODIMPathElem::DATA|ODIMPathElem::ROOT); // Encoding + quantity + geo
+	odim.copyFrom(imageData);
+	// ODIM odim(ODIMPathElem::DATA); // Encoding + quantity
+	//mout.attention(DRAIN_LOG(myOdim));
+
+	node.set("data-epsg", odim.epsg);
+	node.set("data-bbox-deg", odim.bboxD.toStr(','));
+	node.set("data-bbox-nat", imageData.getProperties().get("where:BBOX_native","?"));
+
+	node.set("data-quantity", odim.quantity);
+	node.set("data-encoding",
+			drain::StringBuilder<','>(odim.scaling.scale, odim.scaling.offset, odim.nodata, odim.undetect).str()); // todo: UNDETECT, NODATA
+
+}
 
 
 } // rack
@@ -885,7 +899,7 @@ void CmdData::exec() const {
 
 	using namespace drain::image;
 	RackContext & ctx = getContext<RackContext>();
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
 	// GENERALIZE (start)
 	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
@@ -895,9 +909,9 @@ void CmdData::exec() const {
 	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
 	*/
 
-	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	overlayGroup->setId(); //
+	//RadarSVG radarSVG;
+	//drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
+	//overlayGroup->setId(); //
 	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
 	imagePanelGroup->addClass("MOUSE_VALUE");
 	drain::image::TreeSVG & dataImageElem = imagePanelGroup[RackSVG::ElemClass::DATA_ARRAY](svg::IMAGE);
@@ -918,6 +932,8 @@ void CmdData::exec() const {
 	if (!data.isEmpty()){
 
 		mout.attention(data);
+		// ???
+
 		//drain::image::ImageT<uint8_t> dataImage;
 		//drain::image::ImageT<unsigned char> dataImage;
 		drain::image::Image dataImage(typeid(unsigned char));
@@ -925,6 +941,10 @@ void CmdData::exec() const {
 		drain::image::Channel & red   = dataImage.getChannel(0);
 		drain::image::Channel & green = dataImage.getChannel(1);
 		//drain::image::Channel & blue  = dataImage.getChannel(2);
+
+		//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
+		const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
+		mout.special(DRAIN_LOG(filenameFinal));
 
 		const std::type_info & type = data.getType();
 		if (type == typeid(unsigned short)){
@@ -938,18 +958,18 @@ void CmdData::exec() const {
 				++git;
 			}
 
-			//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
-			drain::image::FilePng::write(dataImage, ctx.outputPrefix + "data.png");
+			drain::image::FilePng::write(dataImage, filenameFinal);
 
 		}
 		else {
 			mout.unimplemented<LOG_ERR>("type:", drain::Type::call<drain::simpleName>(type));
 		}
 
-		const drain::ValueScaling & scaling = data.getConf().getScaling();
-		dataImageElem->set("data-encoding", drain::StringBuilder<','>(scaling.scale, scaling.offset).str()); // todo: UNDETECT, NODATA
+		addGeoData(data, dataImageElem);
+
 		dataImageElem->setStyle("opacity", 0.25);
-		dataImageElem->setUrl("data.png");
+		//dataImageElem->setUrl("data.png");
+		dataImageElem->setUrl(filenameFinal);
 		dataImageElem->setFrame(100,100);
 		dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 

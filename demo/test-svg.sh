@@ -178,9 +178,7 @@ WRITE_DOC 'If generated products contain different metadata, titles will appear,
 WRITE_DOC 'For details, see \ref scripts and \ref templates .'
 RUN_TEST \\ $MAPFORMAT --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${NOD}.png'" \\ 'data/pvol_fi{anj,kor,kuo}.h5' \\  -o 'Three_radars,_with_automatic_titles'
 
-exit 0
-
-
+# exit 0
 
 
 
