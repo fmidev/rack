@@ -901,92 +901,99 @@ void CmdData::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
-	// GENERALIZE (start)
-	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
-	/*
-	const std::string onload_fnc_name = "rack_onload";
-	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
-	*/
-
-	//RadarSVG radarSVG;
-	//drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	//overlayGroup->setId(); //
-	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
-	imagePanelGroup->addClass("MOUSE_VALUE");
-	drain::image::TreeSVG & dataImageElem = imagePanelGroup[RackSVG::ElemClass::DATA_ARRAY](svg::IMAGE);
-	dataImageElem->addClass("MOUSE_VALUE_DATA");  // RackSVG::ElemClass::COORD_TRACKER consider shared tracker plane!
-
-	drain::image::TreeSVG & valueMonitorElem = imagePanelGroup["MOUSE_VALUE_MONITOR"](svg::TEXT);
-	valueMonitorElem->setId();
-	valueMonitorElem->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
-	valueMonitorElem->setAlign(AlignSVG::RIGHT, AlignSVG::BOTTOM);
-	valueMonitorElem->addClass("MOUSE_VALUE_MONITOR");
-	// Associate with graphical "location" style
-	valueMonitorElem->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
-	valueMonitorElem->setTextSafe("(value)");
-	valueMonitorElem->setFontSize(15,20);
-
 	const drain::image::Image & data = ctx.getCurrentGrayImage();
 
-	if (!data.isEmpty()){
-
-		mout.attention(data);
-		// ???
-
-		//drain::image::ImageT<uint8_t> dataImage;
-		//drain::image::ImageT<unsigned char> dataImage;
-		drain::image::Image dataImage(typeid(unsigned char));
-		dataImage.setGeometry(data.getWidth(), data.getHeight(), 3);
-		drain::image::Channel & red   = dataImage.getChannel(0);
-		drain::image::Channel & green = dataImage.getChannel(1);
-		//drain::image::Channel & blue  = dataImage.getChannel(2);
-
-		//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
-		const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
-		mout.special(DRAIN_LOG(filenameFinal));
-
-		const std::type_info & type = data.getType();
-		if (type == typeid(unsigned short)){
-			//const size_t s = data.getArea();
-			drain::image::Channel::iterator rit = red.begin();
-			drain::image::Channel::iterator git = green.begin();
-			for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-				*rit = (static_cast<unsigned int>(*it))    & 0xff;
-				*git = (static_cast<unsigned int>(*it)>>8) & 0xff;
-				++rit;
-				++git;
-			}
-
-			drain::image::FilePng::write(dataImage, filenameFinal);
-
-		}
-		else {
-			mout.unimplemented<LOG_ERR>("type:", drain::Type::call<drain::simpleName>(type));
-		}
-
-		addGeoData(data, dataImageElem);
-
-		dataImageElem->setStyle("opacity", 0.25);
-		//dataImageElem->setUrl("data.png");
-		dataImageElem->setUrl(filenameFinal);
-		dataImageElem->setFrame(100,100);
-		dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-
-		// radarSVG.geoFrame
-		/*
-		drain::image::ImageT<unsigned char> dataImage(width,height,3);
-		drain::image::Channel & lonChannel = coords.getChannel(0);
-		drain::image::Channel & latChannel = coords.getChannel(1);
-		*/
-
+	if (data.isEmpty()){
+		mout.warn("Could not find data for image (getCurrentGrayImage() failed)");
+		return;
 	}
+	// mout.attention(data);
 
-	/// Ensure that the script is available.
+	/// Ensure the script is available.
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 
+	/// Add listeners upon document loading
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
 	onloadJS["image_value_tracker"] = "image_value_tracker();";
+
+
+	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
+	// Add marker for 'image_value_tracker()'
+	imagePanelGroup->addClass("MOUSE_VALUE");
+
+	drain::image::TreeSVG & dataImageElem = imagePanelGroup[RackSVG::ElemClass::DATA_ARRAY](svg::IMAGE);
+	dataImageElem->addClass("MOUSE_VALUE_DATA");  // RackSVG::ElemClass::COORD_TRACKER consider shared tracker plane!
+	dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	dataImageElem->addClass(RackSVG::ElemClass::DATA_ARRAY);
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
+			{"opacity", 0.15},
+	});
+	addGeoData(data, dataImageElem);
+
+
+	drain::image::TreeSVG & coordMonitor = imagePanelGroup["MOUSE_COORD"](svg::TEXT);
+	coordMonitor->setId();
+	coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
+	coordMonitor->setAlign(AlignSVG::RIGHT, AlignSVG::BOTTOM);
+	coordMonitor->addClass("COORD_MONITOR");
+	coordMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::TIME); // check
+	coordMonitor->setTextSafe("(x,y)");
+	coordMonitor->setFontSize(15,20);
+
+	drain::image::TreeSVG & valueMonitor = imagePanelGroup["MOUSE_VALUE"](svg::TEXT);
+	valueMonitor->setId();
+	valueMonitor->setMyAlignAnchor("MOUSE_COORD");
+	valueMonitor->setAlign(AlignSVG::RIGHT);
+	valueMonitor->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+	valueMonitor->addClass("VALUE_MONITOR");
+	// Associate with graphical "location" style
+	valueMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::LOCATION);
+	valueMonitor->setTextSafe("(value)");
+	valueMonitor->setFontSize(15,20);
+
+	/*
+	TreeSVG & coordElem = group[RackSVG::ElemClass::LOCATION](svg::TEXT);
+		locationHeader->addClass(elemClass, RackSVG::ElemClass::LOCATION);
+		locationHeader->addClass(LayoutSVG::NEUTRAL); // testing LayoutSVG::NEUTRAL
+		locationHeader->setMyAlignAnchor(anchor);
+	*/
+
+
+	// ???
+
+
+	// Construct actual data and save it.
+
+	drain::image::ImageT<uint8_t> dataImage;
+	dataImage.setGeometry(data.getWidth(), data.getHeight(), 3);
+	drain::image::Channel & red   = dataImage.getChannel(0);
+	drain::image::Channel & green = dataImage.getChannel(1);
+	//drain::image::Channel & blue  = dataImage.getChannel(2);
+
+	//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
+	const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
+	mout.special(DRAIN_LOG(filenameFinal));
+	dataImageElem->setUrl(filenameFinal);
+
+	const std::type_info & type = data.getType();
+	if (type == typeid(unsigned short)){
+		//const size_t s = data.getArea();
+		drain::image::Channel::iterator rit = red.begin();
+		drain::image::Channel::iterator git = green.begin();
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			*rit = (static_cast<unsigned int>(*it))    & 0xff;
+			*git = (static_cast<unsigned int>(*it)>>8) & 0xff;
+			++rit;
+			++git;
+		}
+
+		drain::image::FilePng::write(dataImage, filenameFinal);
+
+	}
+	else {
+		mout.unimplemented<LOG_ERR>("type:", drain::Type::call<drain::simpleName>(type));
+	}
+
 
 
 }

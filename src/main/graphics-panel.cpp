@@ -231,7 +231,7 @@ drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
 
 	static const std::string onload_fnc_name = "rack_onload";
 
-	mout.experimental("Additing mouse interaction: SVG onload=", onload_fnc_name, "()");
+	mout.experimental<LOG_INFO>("Adding mouse interaction: SVG onload=", onload_fnc_name, "()");
 
 	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
 	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated

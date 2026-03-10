@@ -156,7 +156,7 @@ void GeoFrame::setBoundingBoxD(double lonLL,double latLL,double lonUR,double lat
 	if (projectionIsSet()){
 		updateBoundingBoxNat();
 		//mout.debug("Updated native bbox: ", bBoxNative);
-		mout.accept<LOG_WARNING>("Updated native bbox: ", bBoxNative);
+		mout.accept<LOG_DEBUG>("Updated native bbox: ", bBoxNative);
 	}
 	else {
 		//mout.warn("Projection should be set prior to bounding box");
