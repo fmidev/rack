@@ -30,15 +30,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <exception>
-#include <drain/image/ImageFile.h>
-#include <drain/Log.h>
-#include <drain/StringBuilder.h>
 #include <fstream>
 #include <iostream>
 
+#include <drain/image/ImageFile.h>
+#include <drain/Log.h>
+#include <drain/StringBuilder.h>
+
 #include "data/SourceODIM.h"
-#include "rack.h"
 #include "fileio-geotiff.h"
+#include "rack.h"
 
 namespace rack {
 
@@ -61,7 +62,7 @@ void CmdGeoTiff::exec() const {
 			drain::image::FileTIFF::defaultCompression = value;
 		}
 		else {
-			mout.fail("Multiple compression method: ", compression , " == ", value, " not supported, use: ", drain::image::FileGeoTIFF::compressionDict);
+			mout.fail("Multiple compression methods: ", compression , " == ", value, " not supported, use: ", drain::image::FileGeoTIFF::compressionDict);
 			mout.warn("Keeping:  <= '", drain::image::FileGeoTIFF::compressionDict.getKey(drain::image::FileTIFF::defaultCompression), "' (", drain::image::FileTIFF::defaultCompression, ')');
 		}
 
@@ -202,15 +203,24 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 		std::stringstream imageType;
 		imageType << "Weather Radar";
 		// imageType.setInputSeparator(' ');
-		if (odim.ACCnum > 2) // TODO: fix bug... acc=2 for one...
-			imageType << " Composite Image (" <<  odim.source << ") [#" << odim.ACCnum << "]"; // todo: check commas
+		if (odim.ACCnum > 2){ // TODO: fix bug... acc=2 for one...
+			//imageType << " Composite Image (" <<  odim.source << ") [#" << odim.ACCnum << "]"; // todo: check commas
+			imageType << " Composite Image (" << odim.ACCnum << " radars)"; // todo: check commas
+		}
 		else {
-			imageType << " Image [" << sourceODIM.getSourceCode() << "]";
+			imageType << " Image"; //  [" << sourceODIM.getSourceCode() << "]";
 		}
 		file.setGdal("IMAGETYPE", imageType.str());  // ["IMAGETYPE"] = imagetype;
 
 		std::stringstream imageTitle; //("Weather Radar");
-		imageTitle << sourceODIM.NOD << ' ' << '"' << sourceODIM.PLC << '"' << ' ';
+		//imageTitle << sourceODIM.NOD << ' ' << '"' << sourceODIM.PLC << '"' << ' ';
+		imageTitle << sourceODIM.NOD << ' ';
+		if (!sourceODIM.PLC.empty()){
+			imageTitle << '[' << sourceODIM.PLC << ']' << ' ';
+		}
+		if (!sourceODIM.CMT.empty()){
+			imageTitle << '"' << sourceODIM.CMT << " [" << sourceODIM.getSourceCode() << "]" << '"' << ' ';
+		}
 		imageTitle << odim.product;
 		if (!odim.prodpar.empty()){
 			imageTitle << '(' << odim.prodpar << ')';

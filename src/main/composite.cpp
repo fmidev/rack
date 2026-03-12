@@ -518,9 +518,9 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	}
 
 	composite.dataSelector.getPath(src, dataPath);
-	if (dataPath.back().is(ODIMPathElem::DATA))
+	if (dataPath.back().is(ODIMPathElem::DATA)){
 		dataPath.pop_back();
-	//composite.dataSelector.getPathNEW((ctx.cartesianHi5), dataPath, ODIMPathElem::DATASET); // NEW 2019/05
+	}
 	if (dataPath.empty()){
 		mout.warn("create composite: no group found with selector:" , composite.dataSelector );
 		ctx.statusFlags.set(drain::Status::DATA_ERROR);  // resources.dataOk = false;
@@ -584,19 +584,57 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	/// 3) time => --cTime  (applied by cTimeDecay)
 
 
-	/// If compositing scope is undefined, use that of the tile.
+	/// If compositing scope is undefined, use that of the input. (Sometimes it is a tile.)
 	if (!composite.isDefined()){
 
 		mout.info("Using input properties: " );
-		mout.info("\t --cProj '" , cartSrc.odim.projdef , "'" );
-		composite.setProjection(cartSrc.odim.projdef); // Projector::FORCE_CRS
+		if (cartSrc.odim.epsg > 0){
+			mout.revised("Setting composite projection using EPSG code: ", cartSrc.odim.epsg);
+			mout.info("\t --cProj '" , cartSrc.odim.epsg, "'");
+			composite.setProjectionEPSG(cartSrc.odim.epsg);
+		}
+		else {
+			mout.info("\t --cProj '" , cartSrc.odim.projdef , "'" );
+			// mout.revised("Setting composite projection using EPSG code: ", cartSrc.odim.epsg);
+			composite.setProjection(cartSrc.odim.projdef); // Projector::FORCE_CRS
+			if (!composite.getProj().isLongLat()){
+				// mout.advice("Metric projection: ", cartSrc.odim.projdef);
+				mout.advice("Metric projection: EPSG code should be used when possible");
+				mout.hint(  "Metric projection: --cProj <epsg>");
+				mout.hint(  "Metric projection: Enable where:epsg attribute with: rack --odim 2.4,RACK ...");
+			}
+		}
+
 
 		if (composite.getFrameWidth()*composite.getFrameHeight() == 0){
 			composite.setGeometry(cartSrc.odim.area.width, cartSrc.odim.area.height);
 			mout.info("\t --cSize '" , composite.getFrameWidth() , 'x' , composite.getFrameHeight() , "'" );
 		}
 
-		composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxDeg());
+		if (composite.getProj().isLongLat()){
+			composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxDeg());
+		}
+		else {
+			// mout.revised<LOG_WARNING>("Metric projection: -> cartSrc.odim.getBoundingBoxNative()");
+			mout.revised<LOG_WARNING>("Metric projection: using BBOX_native (1m resolution)");
+			// const drain::FlexibleVariable & BBOX_native = cartDataSetSrc.getWhere()["BBOX_native"];
+			//drain::Rectangle<double> bboxNat;
+			const RootData<CartesianSrc> cartRootSrc(src);
+			const drain::VariableMap & where = cartRootSrc.getWhere();
+			//std::vector<double> bboxNat;
+			std::vector<int> bboxNat;
+			where["BBOX_native"].toSequence(bboxNat, ',');
+			if (!bboxNat.empty()){
+				mout.accept<LOG_WARNING>(drain::sprinter(bboxNat));
+				composite.setBoundingBoxNat(bboxNat);
+			}
+			else {
+				mout.fail<LOG_WARNING>("undefined where:BBOX_native, using degrees in setting BBOX");
+				composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxDeg());
+			}
+		}
+
+
 		//composite.setBoundingBoxD(cartSrc.odim.LL_lon, cartSrc.odim.LL_lat, cartSrc.odim.UR_lon, cartSrc.odim.UR_lat);
 		mout.info("\t --cBBox '" , composite.getBoundingBoxDeg() , "' # degrees" );
 		//if (!composite.projGeo2Native.isLongLat()){

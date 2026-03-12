@@ -185,9 +185,11 @@ public:
 
 	/// Set projection using EPSG code. This is the recommended way.
 	/**
+	 *   \return - true, if projection was succesfully set.
+	 *
 	 *   See also:
 	 */
-	void setProjectionEPSG(short epsg);
+	bool setProjectionEPSG(short epsg);
 
 	/// Sets projection given in Proj.4 string format.
 	/**

@@ -69,13 +69,14 @@ std::string FileGeoTIFF::compliancy; // = FileGeoTIFF::flagger.str()
 // https://gdal.org/drivers/raster/gtiff.html#creation-options :
 // PROFILE=[GDALGeoTIFF/GeoTIFF/BASELINE]: Control what non-baseline tags are emitted by GDAL.
 
-template <>
-const drain::Enum<FileGeoTIFF::TiffCompliance>::dict_t drain::Enum<FileGeoTIFF::TiffCompliance>::dict = {
-		{"UNDEFINED",   drain::image::FileGeoTIFF::TiffCompliance::UNDEFINED},
-		{"TIFF",        drain::image::FileGeoTIFF::TiffCompliance::TIFF},
-		{"GEOTIFF",     drain::image::FileGeoTIFF::TiffCompliance::GEOTIFF},  // consider PROJ4 ?
-		{"EPSG",        drain::image::FileGeoTIFF::TiffCompliance::EPSG},
-		{"STRICT",      drain::image::FileGeoTIFF::TiffCompliance::STRICT}
+//template <>
+//const drain::Enum<FileGeoTIFF::TiffCompliance>::dict_t drain::Enum<FileGeoTIFF::TiffCompliance>::dict = {
+DRAIN_ENUM_DICT(FileGeoTIFF::TiffCompliance) = {
+		{"UNDEFINED", image::FileGeoTIFF::TiffCompliance::UNDEFINED},
+		{"TIFF",      image::FileGeoTIFF::TiffCompliance::TIFF},
+		{"GEOTIFF",   image::FileGeoTIFF::TiffCompliance::GEOTIFF},  // consider PROJ4 ?
+		{"EPSG",      image::FileGeoTIFF::TiffCompliance::EPSG},
+		{"STRICT",    image::FileGeoTIFF::TiffCompliance::STRICT}
 };
 
 /*
@@ -400,6 +401,7 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
 		if (epsg > 0){
 			mout.info("Using EPSG:", epsg, " 'directly'");
 			setProjectionEPSG(epsg);
+			// TODO: fallback (below)
 		}
 		else if (GTIFSetFromProj4(gtif, dstProj.c_str())){ // CHECK!!
 			mout.ok("GTIFSetFromProj4: ", dstProj);
@@ -424,13 +426,13 @@ void FileGeoTIFF::setProjection(const drain::Proj6 & proj){
  *  gdalsrsinfo EPSG:3857
  *  \endcode
  */
-void FileGeoTIFF::setProjectionEPSG(short epsg){
+bool FileGeoTIFF::setProjectionEPSG(short epsg){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (epsg == 4326){
 		setProjectionLongLat();
-		return;
+		return true;
 	}
 
 	//  GTIFKeySet(gtif, ProjectedCSTypeGeoKey, TYPE_SHORT, 1, epsg);
@@ -439,13 +441,16 @@ void FileGeoTIFF::setProjectionEPSG(short epsg){
 
 	if (FileGeoTIFF::compliancyFlagger.isSet(FileGeoTIFF::EPSG)){
 
-		mout.special("Applying extended configuration for EPSG:", epsg);
+		mout.special("Checking extended configuration for EPSG:", epsg);
 
 		setGeoTiffField(GTModelTypeGeoKey, ModelTypeProjected);
 		setGeoTiffField(GeogAngularUnitsGeoKey, Angular_Degree);
 		setGeoTiffField(ProjLinearUnitsGeoKey, Linear_Meter);
 
 		// For explanations, run: gdalsrsinfo EPSG:<code>
+		/**
+		 *   gdalsrsinfo EPSG:5130 | fgrep 'CRS['
+		 */
 		switch (epsg) {
 		case 3035:
 			setGeoTiffField(GTCitationGeoKey,   "ETRS89-extended / LAEA Europe");
@@ -475,20 +480,27 @@ void FileGeoTIFF::setProjectionEPSG(short epsg){
 			setGeoTiffField(GTCitationGeoKey,   "WGS 84 / Arctic Polar Stereographic");
 			setGeoTiffField(GeogCitationGeoKey, "WGS 84");
 			break;
+		case 5120:
+			setGeoTiffField(GTCitationGeoKey,   "ETRS89 / NTM zone 20");
+			setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+			break;
 		case 5125:
 			setGeoTiffField(GTCitationGeoKey,   "ETRS89 / NTM zone 25");
 			setGeoTiffField(GeogCitationGeoKey, "ETRS89");
 			break;
+		case 5130:
+			setGeoTiffField(GTCitationGeoKey,   "ETRS89 / NTM zone 30");
+			setGeoTiffField(GeogCitationGeoKey, "ETRS89");
+			break;
 		default:
-			/*
-			setGeoTiffField(GTCitationGeoKey,   "");
-			setGeoTiffField(GeogCitationGeoKey, "");
-			*/
 			mout.info("No extended configuration found for EPSG:", epsg);
+			return false;
 		}
 
 	}
+	// else return false/true?
 
+	return true;
 
 }
 

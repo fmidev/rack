@@ -95,6 +95,11 @@ public:
 		this->set(t);
 	};
 
+	template<typename S>
+	inline
+	UniTuple(const std::vector<S> & v) : start(this->arr), init(nullptr){
+		this->assignSequence(v);
+	};
 
 
 	template<typename S>

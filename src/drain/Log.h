@@ -510,7 +510,7 @@ public:
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
 	Logger & unimplemented(const TT &... args){
-		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::OVERLINE); // , 35);
+		static const Notification notif(__FUNCTION__, TextStyle::YELLOW, TextStyle::BOLD); // , 35); // , TextStyle::OVERLINE
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;

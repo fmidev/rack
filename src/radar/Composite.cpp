@@ -603,27 +603,83 @@ void Composite::updateGeoData(){
 
 	odim.updateGeoInfo(*this);
 
+	odim.camethod = getMethod().getName();
+
 	// Produces ...,12568,12579,bymin,dkbor,dkrom,dksin,...
 	odim.nodes = nodeMap.getKeys();
+
+	mout.attention(odim.nodes);
 
 	// if (odim.source.empty()) { // nodeMap.size() > 1){ // consider AccNUM
 
 	// ? this used to be commented
-	if (nodeMap.size() > 1){ // consider AccNUM
-		const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
+
+	if (nodeMap.size() > 0){ // consider AccNUM
+		//const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
+		const drain::RegExp nodSyntax("^(([a-z]{2})[a-z]{3})$"); // TODO: WMO / WGI index syntax
+		//const drain::RegExp nodSyntax("^([a-z]{5}?)$");
+		std::map<std::string,std::list<std::string> > producerMap;
+
+		for (const auto & entry: nodeMap){
+			if (nodSyntax.execute(entry.first) == 0){
+				// mout.attention(nodSyntax.result[2], " +", entry.first);
+				producerMap[nodSyntax.result[2]].push_back(entry.first);
+				// odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
+			}
+			else {
+				odim.source = "Multi-national";
+				return;
+			}
+		}
+
+		switch (producerMap.size()){
+		case 1:
+			// std::stringstream sstr("National (");
+			if (producerMap[nodSyntax.result[2]].size()==1){
+				odim.source = "NOD:" + nodSyntax.result[1] + ",ORG:" + nodSyntax.result[2] + ",CMT:Single-radar";
+				mout.info("Single-radar Cartesian: ", DRAIN_LOG(odim.source));
+			}
+			else {
+				odim.source = "ORG:" + nodSyntax.result[2] + ",CMT:National composite";  // "fikor,fikuo,fivih"
+				mout.info("National composite: ", DRAIN_LOG(odim.source));
+			}
+			// odim.source = "ORG:" + drain::sprinter(nodSyntax.result[2]).str();  // "fikor,fikuo,fivih"
+			// odim.source += ",ORG:"+nodSyntax.result[1]; // "fi"
+			break;
+		case 0:
+			odim.source = "Undefined";
+			mout.warn("Could no derive source key(s) from input metadata.", DRAIN_LOG(odim.source));
+			break;
+		default:
+			std::stringstream sstr;
+			sstr << "ORG";
+			char sep = ':';
+			//for (const auto & entry: nodeMap){
+			for (const auto & entry: producerMap){
+				sstr << sep << entry.first;
+				sep = '-';
+			}
+			// sstr << ')';
+			sstr << ",CMT:Multi-national composite";
+			odim.source = sstr.str();
+			mout.info("Multi-national composite: ", DRAIN_LOG(odim.source));
+		}
+
+		/*
 		if (nodSyntax.execute(odim.nodes) == 0){
 			odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
 		}
 		else {
 			mout.info("could not derive composite source NOD from nodes: " , odim.nodes );
 		}
+		*/
 	}
 	else {
 		//odim.source = "xx";
+		mout.warn("Could no derive source key(s) from input metadata.", DRAIN_LOG(odim.source));
 	}
 
-	odim.camethod = getMethod().getName(); //getNaMethod().name;
-
+	mout.attention(odim.source);
 
 }
 
@@ -697,228 +753,6 @@ double Composite::getTimeDifferenceMinute(const CartesianODIM & odimIn) const {
 	//weight = weight*pow(composite.decay, diffMins);
 	return static_cast<double>(abs(compositeTime.getTime() - tileTime.getTime()))/60.0;
 }
-
-
-
-
-// void Composite::extractNEW2(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields,  const drain::Rectangle<int> & cropArea, const std::string & encoding){
-/*
-void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	std::list<FieldType> fieldList;
-
-	// bool OLD_SYNTAX = false;
-
-	std::list<std::string> keys;
-	drain::StringTools::split(fields, keys, ','); // ':');
-	for (const std::string & key: keys){
-		int value = Composite::dict.getValue(key);
-		if (value > 0){
-			fieldList.push_back((FieldType)value);
-		}
-		else {
-			// OLD_SYNTAX = true;
-			if (fieldList.empty()){
-				mout.deprecating("Old fashioned field list (string): ");
-				createFieldList(fields, fieldList);
-			}
-			else {
-				mout.advice("Use either 'DATA,WEIGHT,...' or 'dw...'");
-				mout.error("Mixed-type field list ", fields);
-			}
-			break;
-		}
-	};
-
-	extract(dstProduct, fieldList, encoding, cropArea);
-
-}
-*/
-
-/*
-void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	for (FieldType field: fields) {
-
-		pdata_dst_t & dstData = extract(dstProduct, field, encoding, cropArea);
-
-		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS) && !legend.empty()){
-			mout.experimental("Copying (moving) legend for ", field);
-			dstData.getWhat()["legend"] = drain::sprinter(legend, "|", ",", ":").str();
-			legend.clear();
-		}
-	}
-
-
-}
-
-
-Composite::pdata_dst_t & Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field, const std::string & encoding, const drain::Rectangle<int> & cropArea){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	// Accumulator::extractField still uses char
-
-	// Old-fashioned char, to be changed later.
-	char fieldChar = (char)(((int)field)&127);
-	mout.attention("extracting FIELD: ", field, '=', fieldChar, '|', drain::image::Accumulator::getFieldChar(field));
-
-
-	//const std::type_info & t = drain::Type::getTypeInfo('C'); // drain::Type::getTypeInfo(odimOut.type);
-	if (!cropArea.empty()){
-		mout.note("Applying cropping: bbox=", cropArea, " [pix] from ", accArray.getGeometry()); // this->getFrameWidth(), 'x', this->getFrameHeight());
-	}
-
-	const QuantityMap & qm = getQuantityMap();
-
-	// Determines if quality is stored in
-	// *  /dataset1/quality1/
-	// *  or
-	// *  /dataset1/data1/quality1/
-
-	bool DATA_SPECIFIC_QUALITY = false;
-	//mout.experimental<LOG_NOTICE>("EncodingODIM THIS = ", this->odim);
-
-	ODIM odimData;
-	drain::SmartMapTools::updateValues(odimData, this->odim);
-
-	// This should be unneeded...
-	odimData.quantity = this->odim.quantity;
-	// mout.experimental<LOG_NOTICE>("EncodingODIM SRC  = ", EncodingODIM(odimData));
-
-	ODIM odimQuality;
-
-	{
-		mout.debug("extracting field ", field);
-
-		if (odimData.quantity.empty()){
-			odimData.quantity = "UNKNOWN"; // ok; for example --cPlotFile carries no information on quantity
-			mout.note("quantity=", odimData.quantity);
-		}
-
-		//PlainData<DstType<OD> >
-		mout.debug("searching dstData... DATA=", (field == DATA));
-		//pdata_dst_t & dstData = (field == DATA) ? dstProduct.getData(odimFinal.quantity) : dstProduct.getQualityData(odimQuality.quantity);
-		//mout .debug3() << "dstData: " << dstData << mout.endl;
-
-		//DataDst dstData(dataGroup); // FIXME "qualityN" instead of dataN creates: /dataset1/qualityN/quality1/data
-		//mout.warn("odimFinal: " , odimFinal );
-		DataCoder dataCoder(odimData, odimQuality); // (will use only either odim!)
-		//mout.experimental<LOG_NOTICE>("dataCoder SRC = ", odimData);
-		mout.debug("dataCoder = ", dataCoder);
-		mout.debug2("dataCoder - data: ", dataCoder.dataODIM);
-		mout.debug2("dataCoder - qind: ", dataCoder.qualityODIM);
-
-		/// Also available: if (type.isSet()) ...
-
-		// Note: encoding is used only for DATA to avoid ambiguous setting for multiple request of fields: DATA,WEIGHT,COUNT, ...
-		if (field == DATA){
-			mout.debug("extracting DATA/" , field, " [", odimData.quantity, ']');
-			if (!encoding.empty()){
-				mout.accept("User-defined encoding for data [", odimData.quantity, "]: ", encoding);
-				odimData.completeEncoding( encoding);
-			}
-			else if (!getTargetEncoding().empty()){
-				mout.ok<LOG_NOTICE>("Using previously stored encoding for data [", odimData.quantity, "]: ", getTargetEncoding());
-			}
-
-			pdata_dst_t & dstData = dstProduct.getData(odimData.quantity);
-			drain::SmartMapTools::updateValues(dstData.odim, odimData);
-			if (!dataCoder.dataODIM.isSet()){
-				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
-				mout.error("Target encoding unset: gain=", dataCoder.dataODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
-				return dstData;
-			}
-
-			dstData.data.setType(odimData.type);
-			mout.debug3("dstData: " , dstData );
-			//this->Accumulator::extractField(fieldChar, dataCoder, dstData.data, cropArea);
-			//this->Accumulator::
-			extractField(field, dataCoder, dstData.data, cropArea);
-
-			return dstData;
-		}
-		else {
-
-			switch (field){
-			case WEIGHT:
-				// odimQuality.type = "C";
-				odimQuality.quantity = "QIND";
-				break;
-			case COUNT:
-				// odimQuality.type = "C"; // actually, DataCoder will not use this!
-				odimQuality.quantity = "COUNT";
-				break;
-			case DEVIATION:
-				// odimQuality.type = "S"; // actually, DataCoder will not use this!
-				odimQuality.quantity = this->odim.quantity + "DEV";
-				break;
-			default:
-				mout.error("Unsupported field marker: ", field, "='", fieldChar, "'");
-				//mout.error("Unsupported field marker: ", FieldFlagger::getKeysNEW2(field));
-			}
-
-			mout.debug("extracting QUALITY/" , field, " [", odimQuality.quantity, ']');
-
-			if (qm.hasQuantity(odimQuality.quantity)){
-				qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
-				mout.accept<LOG_DEBUG>("found quantityConf[", odimQuality.quantity, "], type=", odimQuality.type);
-				mout.special<LOG_DEBUG>("Quality: ", EncodingODIM(odimQuality));
-				mout.special<LOG_DEBUG>("Quality: ", odimQuality);
-			}
-			else {
-				const std::type_info & t = drain::Type::getTypeInfo(odimQuality.type);
-				odimQuality.scaling.scale *= 20.0;  // ?
-				//const std::type_info & t = Type::getType(odimFinal.type);
-				odimQuality.scaling.offset = round(drain::Type::call<drain::typeMin, double>(t) + drain::Type::call<drain::typeMax, double>(t))/2.0;
-				//odimQuality.offset = round(drain::Type::call<drain::typeMax,double>(t) + drain::Type::getMin<double>(t))/2.0;  // same as data!
-				if (encoding.empty()){
-					mout.warn("quantyConf[" , odimQuality.quantity , "] not found, using somewhat arbitrary scaling:" );
-					mout.special("Quality: ", EncodingODIM(odimQuality));
-				}
-			}
-			// else auto-scale?
-
-			if (!encoding.empty()){
-				mout.accept<LOG_INFO>("User-defined encoding for quality [", odimQuality.quantity, "]: ", encoding);
-				odimQuality.completeEncoding( encoding);
-				mout.debug("User-defined encoding for QUALITY: -> ", odimQuality);
-			}
-			typedef QualityDataSupport<DstType<CartesianODIM> > q_support_t;
-			q_support_t & qualityOwner = (DATA_SPECIFIC_QUALITY) ? (q_support_t &) dstProduct.getData(odimData.quantity) : (q_support_t &) dstProduct;
-			pdata_dst_t & dstQuality = qualityOwner.getQualityData(odimQuality.quantity);
-			drain::SmartMapTools::updateValues(dstQuality.odim, odimQuality);
-
-			dstQuality.data.setType(odimQuality.type);
-			mout.debug3("dstData: " , dstQuality );
-
-			if (!dataCoder.qualityODIM.isSet()){
-				// Note: this is also checked by Accumulator, but better diagnostics (ODIM) here:
-				mout.error("Target encoding unset: gain=", dataCoder.qualityODIM.scaling.scale, ", type=", dataCoder.dataODIM.type);
-				return dstQuality;
-			}
-
-			this->Accumulator::extractField(fieldChar, dataCoder, dstQuality.data, cropArea);
-
-			return dstQuality;
-
-		}
-
-		// mout.debug("updating local tree attributes");
-
-	}
-
-
-	// mout.debug("updating local tree attributes" );
-	// mout.debug("finished" );
-
-}
-
-*/
 
 
 }

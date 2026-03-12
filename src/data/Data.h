@@ -265,10 +265,24 @@ class RootData : public TreeWrapper<DT> {
 
 public:
 
+	/*
 	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree) { // This could be good: odim(ODIMPathElem::ROOT) ... but failed with current design
 		// experimental
 		this->odim.copyFrom(tree.data.image); // <- works (only) if updateInternalAttributes() has been called?
 	};
+	*/
+
+	RootData(typename DT::tree_t & tree) : TreeWrapper<DT>(tree), odim(tree.data.image) { // This could be good: odim(ODIMPathElem::ROOT) ... but failed with current design
+		// experimental
+		// this->odim.copyFrom(tree.data.image); // <- works (only) if updateInternalAttributes() has been called?
+	};
+
+	/* error
+	RootData(const typename DT::tree_t & tree) : TreeWrapper<DT>(tree) { // This could be good: odim(ODIMPathElem::ROOT) ... but failed with current design
+		// experimental
+		this->odim.copyFrom(tree.data.image); // <- works (only) if updateInternalAttributes() has been called?
+	};
+	*/
 
 	virtual inline
 	~RootData(){

@@ -28,8 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef COMPOSITE2_H_
-#define COMPOSITE2_H_
+#ifndef RACK_COMPOSITE2
+#define RACK_COMPOSITE2
 
 #include <drain/image/AccumulationConverter.h>
 #include <drain/image/AccumulatorGeo.h>
@@ -102,28 +102,7 @@ class Composite : public RadarAccumulator<drain::image::AccumulatorGeo,Cartesian
 {
 public:
 
-	/*
-	enum FieldType {
-		DATA_SPECIFIC = 32,       // Ascii bit for lower-case chars, see below
-		QUALITY   = 256,		  // Marker for non-data
-		DATA      = 'd',          // Main data, of named quantity
-		WEIGHT    = 'w'|QUALITY,  // Quality
-		COUNT     = 'c'|QUALITY,  // Number of samples
-		DEVIATION = 's'|QUALITY,  // Separation: std.dev or difference
-		WEIGHT_DS = 'W'|QUALITY,  // Quality
-		COUNT_DS  = 'C'|QUALITY,  // Number of samples
-		DEVIATION_DS = 'S'|QUALITY  // Separation
-	};
-
-	typedef drain::Enum<FieldType>::dict_t dict_t;
-	static
-	const dict_t dict;
-	*/
-
 	// Possible future extension.
-	// Must choose between char-based or bit flagging (d,w,c,s will overlap).
-	// typedef drain::EnumFlagger<drain::MultiFlagger<FieldType> > FieldFlagger;
-
 	//typedef std::map<int,std::string> legend_t;
 	//legend_t legend;
 
@@ -134,23 +113,9 @@ public:
 	// To allow consecutive --cExtract calls (for --encoding )
 	bool extracting = false;
 
-	/*
-	inline
-	void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const std::string & fieldStr, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0}){
-		FieldList fields;
-		getFields(fieldStr, fields);
-		extract(dstProduct, fields, encoding, cropArea);
-	}
-
-	void extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
-
-	pdata_dst_t & extract(DataSet<DstType<CartesianODIM> > & dstProduct, FieldType field = DATA, const std::string & encoding="C", const drain::Rectangle<int> & cropArea={0,0});
-	*/
-
 	/// If cropping is set, calling addPolar() also crops the bounding box to intersection of radar area and original area.
 	/**
 	 *    Useful in tiling.
-	 *
 	 */
 	inline
 	void setCropping(bool cropping = true){ this->cropping = cropping; };
