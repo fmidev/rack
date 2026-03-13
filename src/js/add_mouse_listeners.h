@@ -1,6 +1,6 @@
 /** Automatically wrapped from " src/js/add_mouse_listeners.js " */
 
-const char* add_mouse_listeners = R"JS(<![CDATA[
+const char* add_mouse_listeners = R"JS(/*  src/js/add_mouse_listeners.js  */
 function add_coord_monitor(frame, monitor){
 
     
@@ -64,4 +64,4 @@ function add_coord_tracker(){
 
     })
 }
-//]]>)JS";
+)JS";

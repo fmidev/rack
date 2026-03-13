@@ -773,12 +773,12 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	// Print opening tag and attributes.
 	data.nodeToStream(ostr, mode);
 
-	if (data.isScript() && !tree.empty()){ // (mode==OPENING_TAG)
+	if (data.isScript() && !(tree.empty() && data.ctext.empty())){ // (mode==OPENING_TAG)
 		//std::string fill(2*indent, ' ');
 		ostr << "//<![CDATA[\n";
 	}
 
-
+	// TODO: consider unintended, "packed" class for TSPAN etc.
 
 	if (mode == EMPTY_TAG){
 		//ostr << "<!--ET-->";
@@ -927,8 +927,9 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	}
 
 	// ostr << "<!-- END "<< data.getId() << ' ' << data.getTag() << '(' << data.getType() << ')' << "-->";
-	if (data.isScript() && !tree.empty()){
-		//std::string fill(2*indent, ' ');
+	if (data.isScript() && !(tree.empty() && data.ctext.empty())){
+		ostr << '\n';
+		std::string fill(2*indent, ' ');
 		ostr << "//]]>";
 	}
 

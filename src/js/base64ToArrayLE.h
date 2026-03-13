@@ -1,6 +1,6 @@
 /** Automatically wrapped from " src/js/base64ToArrayLE.js " */
 
-const char* base64ToArrayLE = R"JS(<![CDATA[
+const char* base64ToArrayLE = R"JS(/*  src/js/base64ToArrayLE.js  */
 /**
  *  \param b64:string - base64 data 
  *  \param ArrayCls   - Array class, like Float32Array
@@ -95,4 +95,4 @@ function demo_base64(){
 	console.info(arr)
     })
 }
-//]]>)JS";
+)JS";

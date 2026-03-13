@@ -1,6 +1,6 @@
 /** Automatically wrapped from " src/js/image_value_tracker.js " */
 
-const char* image_value_tracker = R"JS(<![CDATA[
+const char* image_value_tracker = R"JS(/*  src/js/image_value_tracker.js  */
 function RadarDataEncoding(encoding){
 
     this.scale  = 1.0;
@@ -122,4 +122,4 @@ function image_value_tracker(){
     });
     
 }
-//]]>)JS";
+)JS";

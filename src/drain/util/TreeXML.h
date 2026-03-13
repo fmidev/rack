@@ -433,7 +433,8 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			ostr << "{\n";
 		}
 		else {
-			ostr << "}\n";
+			//ostr << "}\n";
+			ostr << "\n}";
 		}
 		return ostr;
 	}

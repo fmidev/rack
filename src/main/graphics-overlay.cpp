@@ -815,10 +815,27 @@ public:
 };
  */
 
-#include "js/add_mouse_listeners.h"
+// #include "js/add_mouse_listeners.h"
 
 #include "js/image_coord_tracker.h"
 
+drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & imagePanelGroup, const std::string & cls){
+
+	imagePanelGroup->setType(svg::TEXT); // ensure
+	imagePanelGroup->setAlign(AlignSVG::RIGHT);
+	imagePanelGroup->setFontSize(15,18);
+	imagePanelGroup->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+
+	drain::image::TreeSVG & coordDisplay = imagePanelGroup[cls](svg::TSPAN);
+	coordDisplay->addClass(cls);
+	// Associate with graphical "location" style
+	//coordDisplay->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+	coordDisplay->setTextSafe("*");
+	// coordDisplay->setFontSize(15,18);
+	// coordDisplay->setAlign(AlignSVG::RIGHT);
+	// return coordDisplay;
+	return imagePanelGroup;
+}
 
 void CmdCoords::exec() const {
 
@@ -826,15 +843,16 @@ void CmdCoords::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	// GENERALIZE (start)
-	// Raise to shared (static) name. Any code to be called upon HTML/SVG page load will be added here.
-	/*
-	const std::string onload_fnc_name = "rack_onload";
-	TreeSVG & onloadJS = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeated
-	*/
+	// Modify SVG header
+	// drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "add_mouse_listeners") = add_mouse_listeners;
+	TreeSVG & myJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker");
+	//myJS.addChild() = image_coord_tracker;
+	myJS = image_coord_tracker;
+	myJS.addChild() = "/* Added by Rack */";
+	myJS.addChild() = "var KOE=1.0;";
 
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
+	onloadJS["image_coord_tracker"] = drain::StringBuilder<>("image_coord_tracker();");
 
 
 	RadarSVG radarSVG;
@@ -857,38 +875,31 @@ void CmdCoords::exec() const {
 	//drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
 	//coordCatcher->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
 	drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
-	// Mark for coord monitoring
-	//coordCatcher->addClass("COORDS");
 	coordCatcher->setStyle("fill","red");
 	coordCatcher->setStyle("fill-opacity", 0.5);
 	coordCatcher->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	coordCatcher->set("data-bbox", bbox);
 
-	drain::image::TreeSVG & coordDisplay = imagePanelGroup[RackSVG::ElemClass::COORD_TRACKER](svg::TEXT);
-	coordDisplay->setId();
+	drain::image::TreeSVG & coordDisplay = imagePanelGroup["MONITOR"];
+	addCoordMonitor(coordDisplay, "MONITOR");
 	coordDisplay->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
-	coordDisplay->setAlign(AlignSVG::RIGHT, AlignSVG::TOP);
-	coordDisplay->addClass(RackSVG::ElemClass::MONITOR);
-	// Associate with graphical "location" style
-	coordDisplay->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
-	coordDisplay->setTextSafe("(lon,lat)");
-	coordDisplay->setFontSize(15,20);
+	coordDisplay->setAlign(AlignSVG::TOP);
+	// coordDisplay->setAlign(AlignSVG::RIGHT);
+	drain::image::TreeSVG & coordSpanDisplay = imagePanelGroup["MONITOR_RECT"];
+	coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
+	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+	addCoordMonitor(coordSpanDisplay, "MONITOR_DOWN");
+	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
+	addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
+	// CoordMonitor.prototype.updateDown
 
 	/*
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
-			{"fill", "red"},
-			{"opacity", 0.5},
-	});
+	TreeSVG & myMouseMove = drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, "myFunction","x", "y")[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	myMouseMove.addChild() = "x=1.0;";
+	myMouseMove.addChild() = "y=2.0;";
 	*/
-
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "add_mouse_listeners") = add_mouse_listeners;
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
-
-	//
-	//TreeSVG & myJS = onloadJS[getName()](svg::JAVASCRIPT_SCOPE);
-	onloadJS["add_coord_tracker"] = drain::StringBuilder<>("add_coord_tracker();");
-
-
+	// TreeSVG & myJs = ctx.svgTrack[]
+	// ctx.svgTrack;
 
 }
 

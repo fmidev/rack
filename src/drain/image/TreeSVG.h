@@ -580,20 +580,10 @@ template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
  */
 
-
 DRAIN_XML_EASY_TYPE(image::TreeSVG);
 
 DRAIN_XML_ENUM_KEY(image::TreeSVG, image::svg::tag_t);
 
-// NEW 2026/02/27 replacing many!?
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-inline
-const image::TreeSVG::key_t & image::TreeSVG::getKey(const image::svg::tag_t & type){
-	return Enum<image::svg::tag_t>::dict.getKey(type, false);
-}
-*/
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -611,54 +601,7 @@ const image::TreeSVG::key_t & image::TreeSVG::getKey(const drain::SelectXML<imag
 
 
 
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const;
-*/
-
-/*
-/// Automatic conversion of element type (enum value) to a string.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
-
-
-
-/// Automatic conversion of element type (enum value) to a string.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const ;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const ClassXML & cls) const;
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls);
-
-/// Automatic conversion of element type (enum value) to a string.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const ;
-
-*/
-
-/*
-template <>
-inline
-image::TreeSVG & image::TreeSVG::addChild(){
-	return UtilsXML::addChild(*this);
-}
-*/
-
-
 DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG);
-
-//template <>
-//const NodeXML<image::svg::tag_t>::xml_default_elem_map_t NodeXML<image::svg::tag_t>::xml_default_elems;
 
 /// Specialization of default child elements in SVG. For example, \c TEXT has \c TSPAN elements, by default.
 /**
@@ -666,39 +609,6 @@ DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG);
  */
 DRAIN_XML_DEFAULT_INIT(image::TreeSVG);
 
-/*
-template <>
-inline
-void image::TreeSVG::initChild(image::TreeSVG & child) const {
-	UtilsXML::initChildWithDefaultType(*this, child);
-}
-*/
-
-
-
-/*
-template <>
-template <class K>
-const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
-	return Enum<K>::dict.getKey(key, false);
-}
-*/
-
-/*  tested 2025/01/20 but caused problems with Hi5Tree("dataset2") etc.
-template <>
-template <typename K> // for K (path elem arg)
-const image::TreeSVG::key_t & image::TreeSVG::getKey(const K & key){
-	return Enum<K>::dict.getKey(key, false);
-}
-
-template <>
-template <> // for K (path elem arg)
-inline
-const image::TreeSVG::key_t & image::TreeSVG::getKey(const drain::StyleSelectorXML<image::NodeSVG> & selector){
-	return selector;
-}
-
-*/
 
 } // drain::
 
