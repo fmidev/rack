@@ -873,6 +873,7 @@ x	 *  \see clearData()
 	 *   \tparam E - class other than std:string
 	 */
 	template <typename E>
+	inline
 	tree_t & addChild(const E & key){
 		// Cast ensures forwarding to main function
 		//return addChild(static_cast<key_t>(getKey(key)));
@@ -887,10 +888,21 @@ x	 *  \see clearData()
 		return prependChild(key_t());
  	}
 
+
 	// Push in the front. This is only available for ordered trees.
- 	virtual
+	/// Converts argument to std:string and calls addChild()
+	/**
+	 *   \tparam E - class other than std:string
+	 */
+	template <typename E>
+	inline
+	tree_t & prependChild(const E & key){
+		return prependChild(getKey(key));
+	}
+
+
+	//virtual
 	tree_t & prependChild(const key_t & key){ // 2026/01 explicit arg
- 	// tree_t & prependChild(const key_t & key = key_t()){ // Added default empty 2024/04
 
 		#ifdef DRAIN_TREE_ORDERED
 

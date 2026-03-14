@@ -380,7 +380,7 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 		mask->set("maskUnits", "userSpaceOnUse");
 		mask->set("maskContentUnits", "userSpaceOnUse");
 		drain::image::TreeSVG & comment = mask.addChild()(svg::COMMENT);
-		comment->setText("RECT is also the reference for (width, height)");
+		comment->setText("This base RECT is also the reference for (width, height)");
 		drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
 		rect->setWidth(128);
 		rect->setHeight(128);
@@ -395,9 +395,10 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int width, int height, const NodeSVG & node){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
-	rect->setWidth(width);
-	rect->setHeight(height);
+	// drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
+	mask[svg::RECT]->setFrame(width, height);
+	// rect->setWidth(width);
+	// rect->setHeight(height);
 
 	// Punch hole
 	drain::image::TreeSVG & hole = mask.addChild();
@@ -414,6 +415,7 @@ drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int 
 }
 
 TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node){
+
 	const drain::FlexibleVariable & maskId = createMaskId(group);
 
 	std::string s; //  = drain::MapTools::get(group->getAttributes(), "data-latest", group->getId());
@@ -452,7 +454,8 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		const drain::image::TreeSVG & mask = getMask(tree, group->get(MASK_ID));
 
 		if (group->typeIs(drain::image::svg::GROUP)){
-			drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
+			//drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
+			drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
 			linkMask(mask, rect);
 		}
 		else {

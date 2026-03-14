@@ -848,8 +848,7 @@ void CmdCoords::exec() const {
 	TreeSVG & myJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker");
 	//myJS.addChild() = image_coord_tracker;
 	myJS = image_coord_tracker;
-	myJS.addChild() = "/* Added by Rack */";
-	myJS.addChild() = "var KOE=1.0;";
+	//myJS.addChild() = "var KOE=1.0;";
 
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
 	onloadJS["image_coord_tracker"] = drain::StringBuilder<>("image_coord_tracker();");
@@ -857,7 +856,7 @@ void CmdCoords::exec() const {
 
 	RadarSVG radarSVG;
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	overlayGroup->setId(); // visible
+	overlayGroup->setId("over", overlayGroup->getId()); // visible
 	std::string bbox = overlayGroup->get("data-bbox","");
 	if (!bbox.empty()){
 		mout.special("Attaching coordinate monitor to overlaygroup #", overlayGroup->getId());
@@ -869,6 +868,7 @@ void CmdCoords::exec() const {
 
 	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
 	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE); //  COORD_TRACKER
+	imagePanelGroup->setAttribute("data-mouse-plane", overlayGroup->getId());
 	// -> track IMAGE_BORDER
 	// -> write to COORDS
 
@@ -891,6 +891,46 @@ void CmdCoords::exec() const {
 	addCoordMonitor(coordSpanDisplay, "MONITOR_DOWN");
 	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
 	addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
+
+	const drain::ClassXML SELECT("SELECT");
+	drain::image::TreeSVG & selectRect = imagePanelGroup[SELECT](svg::RECT);
+	selectRect->addClass(SELECT, LayoutSVG::FIXED);
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, SELECT, {
+			{"fill", "none"},
+			{"stroke", "white"},
+			{"stroke-width", 2.0},
+			// {"opacity", 0.5}
+	});
+	selectRect->setLocation(200,100);
+	selectRect->setFrame(400,200);
+
+	/*
+	drain::image::TreeSVG & localMask = overlay[svg::MASK];
+	{
+		// drain::svgPATH elem(localMask); radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
+	}
+	const int w = radarSVG.geoFrame.getFrameWidth();
+	const int h = radarSVG.geoFrame.getFrameHeight();
+	MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+	localMask->setType(svg::COMMENT);
+	*/
+	const int w = radarSVG.geoFrame.getFrameWidth();
+	const int h = radarSVG.geoFrame.getFrameHeight();
+	//drain::image::TreeSVG & mask =
+	MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, selectRect);
+		//localMask->setType(svg::COMMENT);
+
+
+	/*
+	myJS.addChild() = "// Added by Rack \n";
+	drain::image::TreeSVG & myMouseUp = myJS["MOUSUO"]; // (svg::SCRIPT) <- nyt tajus/handlasi JAVASCRIPT_SCOPE:n
+	myMouseUp->setText("CoordMonitor.prototype.updateUp = function(x,y){}; //", myMouseUp->getNativeType(), "");
+	drain::image::TreeSVG & myMouseUpLine = myMouseUp[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	myMouseUpLine->setText("// test /\n");
+	myMouseUpLine["lapo"] = "console.log(x,y); console.warn(this.group.selectorRect);};\n";
+	myMouseUpLine.addChild() = "console.log(x,y); console.warn(this.group.selectorRect);};\n";
+	drain::TreeUtils::dump(myJS);
+	*/
 	// CoordMonitor.prototype.updateDown
 
 	/*

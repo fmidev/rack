@@ -256,13 +256,13 @@ class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
 public:
 
 	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
-		// getParameters().link("name",   name, "label");
+		getParameters().link("MASK", MASK, "Fill outside using CSS class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
 
 	CmdCoords(const CmdCoords & cmd) : CmdPolarBase(cmd) {
-		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
 	void exec() const override ;

@@ -207,7 +207,7 @@ RUN_TEST  \\ --gGroupTitle "'Grouping using radar name: \${PLC} (\${NOD})'"  \\ 
 
 
 WRITE_DOC 'The main title can be set explicitly with \c --gTitle command . The default value, \c AUTO , displays main title as in the examples above.'
-RUN_TEST \\ --gTitle "'My Main Title for \${what:date|%A, %d %B %Y}'"   --gGroupTitle "'Radar \${PLC}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ 'data-kiira/201708121?00_*{ika,kor,van}.h5'   \\  -o 'User-defined_title'
+RUN_TEST \\ --gTitle "'My Main Title for \${what:date|%A, %d %B %Y}'"   --gGroupTitle "'Radar [\${PLC}] \${NOD}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\ 'data-kiira/201708121?00_*{ika,kor,van}.h5'   \\  -o 'User-defined_title'
 
 # --gStyle .IMAGE_BORDER="'stroke:black;stroke-width:1'" 
 
