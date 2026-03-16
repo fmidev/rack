@@ -62,6 +62,7 @@ namespace drain {
 //class XML :  protected ReferenceMap2<FlexibleVariable> {
 //class XML :  protected ReferenceMap2<FlexibleVariable> {
 class XML :  protected std::map<std::string,FlexibleVariable> {
+
 public:
 
 	typedef std::map<std::string,FlexibleVariable> map_t;
@@ -119,13 +120,8 @@ public:
 	/// Characters to avoid in XML free text: <, >, {, },
 	static
 	const std::map<char,std::string> & getCTextConversionMap();
-
-
 	/// User may optionally filter attributes and CTEST with this using StringTools::replace(XML::encodingMap);
-	// OLD static	const std::map<char,std::string> encodingMap;
 
-
-public:
 
 	inline
 	XML(){};
@@ -212,6 +208,13 @@ public:
 	bool isStyle() const {
 		return type == STYLE;
 	}
+
+	/* HTML Only
+	inline
+	bool isLink() const {
+		return type == LINK;
+	}
+	*/
 
 	inline
 	bool isScript() const {
@@ -328,10 +331,16 @@ public:
 		return url;
 	}
 
-	inline
+	/**
+	 *  Virtual, because derived classes have different attribute names for the url.
+	 */
+	virtual inline
 	void setUrl(const std::string & s){
 		url = s;
-		// ctext = s;
+		if (isScript()){
+			getMap()["url"].link(url);
+			//  link("url", url);
+		}
 	}
 
 	template <class ...T>
@@ -773,7 +782,9 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	// Print opening tag and attributes.
 	data.nodeToStream(ostr, mode);
 
-	if (data.isScript() && !(tree.empty() && data.ctext.empty())){ // (mode==OPENING_TAG)
+	// Note: if tree has attributes, empty() == false.
+	//if (data.isScript() && !(tree.empty() && data.ctext.empty())){ // (mode==OPENING_TAG)
+	if (data.isScript() && (tree.hasChildren() || !data.ctext.empty())){
 		//std::string fill(2*indent, ' ');
 		ostr << "//<![CDATA[\n";
 	}
@@ -927,7 +938,9 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	}
 
 	// ostr << "<!-- END "<< data.getId() << ' ' << data.getTag() << '(' << data.getType() << ')' << "-->";
-	if (data.isScript() && !(tree.empty() && data.ctext.empty())){
+	// Note: if tree has attributes, empty() == false.
+	if (data.isScript() && (tree.hasChildren() || !data.ctext.empty())){
+		// if (data.isScript() && !(tree.empty() && data.ctext.empty())){
 		ostr << '\n';
 		std::string fill(2*indent, ' ');
 		ostr << "//]]>";

@@ -689,9 +689,28 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 }
 
+void metres2pix(const GeoFrame & frame, const drain::Point2D<double> & geo, drain::Point2D<int> & img){ // double x, double y, int & i, int & j){
+	/*
+	i = ::lround((x - frame.bBoxNative.lowerLeft.x) / frame.xScale); //  xOffset
+	j = frame.height-1 - ::lround((y - frame.bBoxNative.lowerLeft.y) / frame.yScale);
+	*/
+	const drain::Rectangle<double> & bn = frame.getBoundingBoxNat();
+	img.x = ::lround(frame.getFrameWidth()*(geo.x - bn.lowerLeft.x) / bn.getWidth()); // xOffset
+	img.y = frame.getFrameHeight()-1 - ::lround(frame.getFrameHeight()*(geo.y - bn.lowerLeft.y) / bn.getHeight());
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	mout.warn("echo $(( ", frame.getFrameWidth(), " * (",  geo.x, " - ", bn.lowerLeft.x, " / ", bn.getWidth(), ") ))");
+	mout.warn("echo $(( ", frame.getFrameHeight(), " * (", geo.y, " - ", bn.lowerLeft.y, " / ", bn.getHeight(), ") ))");
+
+
+}
+
 void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cropGeo, drain::Rectangle<int> & cropImage){
 
-	//const drain::BBox cropGeo(bboxGeo);
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	////const drain::BBox cropGeo(bboxGeo);
 
 	if (!cropGeo.empty()){
 		// mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
@@ -702,11 +721,27 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
 						drain::StringBuilder<>("Cannot crop long-lat composite with a metric bbox (", cropGeo,")"));
 				return;
 			}
+
+			// mout.attention(DRAIN_LOG(composite.getFrameWidth()));
+			// mout.attention(DRAIN_LOG(composite.getFrameHeight()));
 			// NOTE: vert coord swap
 			// composite.m2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
 			// composite.m2pix(cropGeo.upperRight.x, cropGeo.upperRight.y,  cropImage.upperRight.x, cropImage.lowerLeft.y );
 			composite.m2pix(cropGeo.lowerLeft,  cropImage.lowerLeft);
 			composite.m2pix(cropGeo.upperRight, cropImage.upperRight);
+			/*
+			mout.attention(DRAIN_LOG(cropImage.lowerLeft));
+			mout.attention(DRAIN_LOG(cropImage.upperRight));
+			mout.attention(cropImage.getWidth());
+			mout.attention(cropImage.getHeight());
+
+			metres2pix(composite, cropGeo.lowerLeft,  cropImage.lowerLeft);
+			metres2pix(composite, cropGeo.upperRight, cropImage.upperRight);
+			mout.attention(DRAIN_LOG(cropImage.lowerLeft));
+			mout.attention(DRAIN_LOG(cropImage.upperRight));
+			mout.attention(cropImage.getWidth());
+			mout.attention(cropImage.getHeight());
+			*/
 		}
 		else {
 			// composite.deg2pix(cropGeo.lowerLeft.x,  cropGeo.lowerLeft.y,   cropImage.lowerLeft.x,  cropImage.upperRight.y);
@@ -715,10 +750,11 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
 			composite.deg2pix(cropGeo.upperRight, cropImage.upperRight);
 		}
 
-		//++cropImage.upperRight.y;
+		// Contradictory...
+		/*
 		--cropImage.upperRight.x;
 		++cropImage.upperRight.y;
-
+		*/
 
 	}
 
@@ -734,6 +770,20 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
  *  - conditional (if unset): encoding
  *
  */
+
+void writeWhere(const drain::GeoFrame & composite, drain::VariableMap & where){
+
+	where["BBOX"].setType(typeid(double));
+	where["BBOX"] = composite.getBoundingBoxDeg().toVector();
+
+	if (!composite.isLongLat()){
+		// Set metric composite with 1m accuracy
+		where["BBOX_native"].setType(typeid(long int));
+	}
+
+	where["BBOX_native"] = composite.getBoundingBoxNat().tuple(); //toVector();
+
+}
 
 //void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
 // void Compositor::extract(Composite & composite, const std::string & channels, const std::string & crop) const {
@@ -796,40 +846,6 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 	composite.updateGeoData(); // TODO check if --plot cmds don't need
 
-	drain::Rectangle<int> cropImage; // Default: empty ()
-	if (!crop.empty()){
-
-		if (crop == "INPUT"){
-			prepareBBox(composite, bboxDataNat, cropImage);
-			mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", drain::sprinter(channels), ':',
-					drain::sprinter(bboxDataNat.tuple(), ","));
-		}
-		else if (crop == "OVERLAP"){
-			prepareBBox(composite, bboxDataOverlapNat, cropImage);
-			mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", drain::sprinter(channels), ':',
-					drain::sprinter(bboxDataOverlapNat.tuple(), drain::Sprinter::plainLayout) );
-		}
-		else {
-			std::vector<double> v;
-			//drain::StringTools::split(crop, v, ':');
-			drain::StringTools::split(crop, v, ',');
-
-			drain::BBox cropBBox;
-			cropBBox.assignSequence(v, false);
-
-			mout.special("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
-			prepareBBox(composite, cropBBox, cropImage);
-
-			if (cropImage.empty()){
-				mout.advice("crop argument should be INPUT, OVERLAP or a bounding box");
-				mout.error("crop area empty, check argument: '", crop, "' ");
-			}
-		}
-
-		mout.info("crop: ", cropImage, " (image coords)");
-		mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', -cropImage.getHeight());
-
-	}
 
 
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
@@ -845,6 +861,63 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 		// NEW 2020/06
 		RootData<CartesianDst> dstRoot(ctx.cartesianHi5);
+
+		drain::VariableMap & where = dstRoot.getWhere();
+
+
+		drain::Rectangle<int> cropImage; // Default: empty ()
+
+		if (!crop.empty()){
+			// TODO: simplify (copy bboxes)
+
+			drain::GeoFrame infoFrame;
+			if (composite.getEPSG()){
+				infoFrame.setProjectionEPSG(composite.getEPSG());
+			}
+			else {
+				infoFrame.setProjection(composite.getProjStr());
+			}
+
+			if (crop == "INPUT"){
+				prepareBBox(composite, bboxDataNat, cropImage);
+				infoFrame.setBoundingBoxNat(bboxDataNat);
+				mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", drain::sprinter(channels), ':',
+						drain::sprinter(bboxDataNat.tuple(), ","));
+			}
+			else if (crop == "OVERLAP"){
+				prepareBBox(composite, bboxDataOverlapNat, cropImage);
+				infoFrame.setBoundingBoxNat(bboxDataOverlapNat);
+				mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", drain::sprinter(channels), ':',
+						drain::sprinter(bboxDataOverlapNat.tuple(), drain::Sprinter::plainLayout) );
+			}
+			else {
+				std::vector<double> v;
+				//drain::StringTools::split(crop, v, ':');
+				drain::StringTools::split(crop, v, ',');
+
+				drain::BBox cropBBox;
+				cropBBox.assignSequence(v, false);
+				infoFrame.setBoundingBoxNat(cropBBox);
+
+				mout.special("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
+				prepareBBox(composite, cropBBox, cropImage);
+
+				if (cropImage.empty()){
+					mout.advice("crop argument should be INPUT, OVERLAP or a bounding box");
+					mout.error("crop area empty, check argument: '", crop, "' ");
+				}
+			}
+
+
+			mout.info("crop: ", cropImage, " (image coords)");
+			mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', -cropImage.getHeight());
+
+			infoFrame.setGeometry(cropImage.getWidth(), cropImage.getHeight());
+			mout.revised<LOG_WARNING>(DRAIN_LOG(infoFrame));
+			writeWhere(infoFrame, where);
+
+		}
+
 
 		// ODIM test(ODIMPathElem::ROOT);
 		// mout.special("dstRoot.odim: ", dstRoot.odim);
@@ -890,59 +963,59 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 			how["tags"] = composite.nodeMap.toStr(':');
 
-			// Non-standard
-			drain::VariableMap & where = dstRoot.getWhere();
+			/*
 			where["BBOX"].setType(typeid(double));
 			where["BBOX"] = composite.getBoundingBoxDeg().toVector();
 
 			if (!composite.isLongLat()){
-				// where["BBOX_native"].setType(typeid(double));
-				// else
+				// Set metric composite with 1m accuracy
 				where["BBOX_native"].setType(typeid(long int));
-				where["BBOX_input"].setType(typeid(long int));
-				where["BBOX_overlap"].setType(typeid(long int));
 			}
 
 			where["BBOX_native"] = composite.getBoundingBoxNat().tuple(); //toVector();
-			//where["BBOX_input"].setType(typeid(double));
-			//where["BBOX_input"] = bboxDataNat.tuple(); // in-place
-			where["BBOX_input"]   = bboxDataNat.tuple(); // toVector();
-			where["BBOX_overlap"] = bboxDataOverlapNat.tuple();
+			*/
 
-			mout.debug("composite INPUT bbox (nat): ", bboxDataNat.tuple());
+			if (cropImage.empty()){
 
-			drain::Rectangle<int> bboxDataPix;
-			composite.m2pix(bboxDataNat.lowerLeft, bboxDataPix.lowerLeft);
-			composite.m2pix(bboxDataNat.upperRight, bboxDataPix.upperRight);
+				mout.revised<LOG_WARNING>("Main composite, writing auxiliary BBOX info");
 
-			where["BBOX_input_pix"].setType(typeid(short int));
-			where["BBOX_input_pix"] = bboxDataPix.tuple(); // toVector();
-			where["SIZE_input"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+				writeWhere(composite, where);
 
-			composite.m2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
-			composite.m2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
-			// composite.deg2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
-			// composite.deg2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
-			//where["SIZE_overlap"].setType(typeid(short int));
-			where["SIZE_overlap"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+				if (!composite.isLongLat()){
+					// Set metric composite with 1m accuracy
+					where["BBOX_input"].setType(typeid(long int));
+					where["BBOX_overlap"].setType(typeid(long int));
+				}
 
-			if (!composite.isLongLat()){
-				/*
-				drain::Rectangle<double> bn;
-				composite.deg2m(bboxDataOverlapNat.lowerLeft,  bn.lowerLeft);
-				composite.deg2m(bboxDataOverlapNat.upperRight, bn.upperRight);
-				where["BBOX_overlap_native"].setType(typeid(int));
-				where["BBOX_overlap_native"] = bn.tuple();
-				*/
+				where["BBOX_input"]   = bboxDataNat.tuple(); // toVector();
+				where["BBOX_overlap"] = bboxDataOverlapNat.tuple();
+
+				mout.debug("composite INPUT bbox (nat): ", bboxDataNat.tuple());
+
+				drain::Rectangle<int> bboxDataPix;
+				composite.m2pix(bboxDataNat.lowerLeft, bboxDataPix.lowerLeft);
+				composite.m2pix(bboxDataNat.upperRight, bboxDataPix.upperRight);
+
+				where["BBOX_input_pix"].setType(typeid(short int));
+				where["BBOX_input_pix"] = bboxDataPix.tuple(); // toVector();
+				where["SIZE_input"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+
+				composite.m2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
+				composite.m2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
+				// composite.deg2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
+				// composite.deg2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
+				//where["SIZE_overlap"].setType(typeid(short int));
+				where["SIZE_overlap"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
+
+				if (composite.isLongLat()){
+					drain::Rectangle<double> bb;
+					composite.m2deg(bboxDataOverlapNat.lowerLeft,  bb.lowerLeft);
+					composite.m2deg(bboxDataOverlapNat.upperRight, bb.upperRight);
+					//where["BBOX_overlap_deg"].setType(typeid(int));
+					where["BBOX_overlap_deg"] = bb.tuple();
+				}
+
 			}
-			else {
-				drain::Rectangle<double> bb;
-				composite.m2deg(bboxDataOverlapNat.lowerLeft,  bb.lowerLeft);
-				composite.m2deg(bboxDataOverlapNat.upperRight, bb.upperRight);
-				//where["BBOX_overlap_deg"].setType(typeid(int));
-				where["BBOX_overlap_deg"] = bb.tuple();
-			}
-
 
 		}
 

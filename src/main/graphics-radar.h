@@ -59,6 +59,7 @@ public:
 		SECTOR,
 		ANNULUS,
 		CIRCLE,
+		RECTANGLE,  // Internal or External
 		SPOT,  // External
 		LABEL, // External
 	};

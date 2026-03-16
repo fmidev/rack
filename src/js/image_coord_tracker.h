@@ -8,71 +8,103 @@ function image_coord_tracker(){
 
     elems.forEach(panel => {
 
-	//panel.selectorRect = panel.querySelector(".SELECT");
 
 	// Mouse tracker
-	var plane_id = panel.getAttribute('data-mouse-plane');
+	const coordTracker = panel.querySelector(".COORD_TRACKER");
 
-	if (plane_id){
-	    console.warn(plane_id);
-	}
-	else {
-	    console.error("Mouse listener not found")
-	}
-	// Actaually "only" one level higher
-	const plane = document.querySelector('#'+plane_id);
-	if (plane){
-	    console.log(plane);
-	}
-	else {
-	    console.error("Mouse listener element #"+plane_id+" not found")
+	if (!coordTracker){
+	    console.info(panel);
+	    console.error("elem .MOUSE found without child .COORD_TRACKER");
+	    return;
 	}
 
+	// var precision = parseInt(coordTracker.getAttribute("data-precision")); // for rect
 	
 	// TODO: direct attr in frame
-	var metadata  = panel.querySelector(".SHARED");
 	var epsg = null;
+	var metadata  = panel.querySelector("metadata.SHARED");
 	if (metadata.hasAttribute('EPSG')){
 	    epsg = metadata.getAttribute('EPSG');
-	    console.info('EPSG='+epsg)
+	    console.info('EPSG='+epsg);
 	}
 
-	
 	
 	const BBOX_KEY='data-bbox';
 	var bbox = [0,0,1,1];
-	var frame   = panel.querySelector(".IMAGE_BORDER");
-	if (frame.hasAttribute(BBOX_KEY)){
-	    bbox = frame.getAttribute(BBOX_KEY).split(',');
+
+	if (coordTracker.hasAttribute(BBOX_KEY)){
+	    bbox = coordTracker.getAttribute(BBOX_KEY).split(',');
 	    console.log("data-bbox: ", bbox);
 	}
-	// TEST! So it was only for meta data?
-	frame = plane
-
-
-	// const frameBbox  = frame.getBoundingClientRect();
-
-	var monitor = null;
+	else {
+	    console.log("No attribute [data-bbox], bbox=", bbox);
+	}
 
 	
-	if (monitor = panel.querySelector('.MONITOR')){
-	    const m = new CoordMonitor(panel, frame, monitor, bbox);
-	    plane.addEventListener("mousemove", (ev) => {
-		m.updateMove(ev.clientX, ev.clientY);
+	/// Client rect will be updated (because the page may be scrolled)
+	const m = new CoordHandler(bbox, coordTracker.getBoundingClientRect());
+	m.setPrecision(coordTracker.getAttribute("data-resolution"));
+	
+	const selectionRect = panel.querySelector(".SELECT");
+
+	var monitorElem = null;
+	
+	if (monitorElem = panel.querySelector('.MONITOR')){
+
+	    const me = monitorElem; // This is the correct scope.
+
+	    coordTracker.addEventListener("mousemove", (ev) => {
+
+		m.readEvent(ev, m.curr, m.precisionFocus);
+		/*
+		if (!m.drag){
+
+		}
+		else {
+		    m.readEvent(ev, m.curr, m.precisionWidth);
+		    }
+		*/
+
+		// m.curr.readEvent(ev);
+		m.update(m.curr, me);
+		if (m.drag && selectionRect){
+		    m.updateSpan(selectionRect);
+		}
+	    })
+	    
+	}
+
+	
+	if (monitorElem = panel.querySelector('.MONITOR_DOWN')){
+	    const me = monitorElem;
+	    coordTracker.addEventListener("mousedown", (ev) => {
+		// m.bboxFrame = ev.target.getBoundingClientRect();
+		// console.warn(ev)
+		m.readEvent(ev, m.start, m.precisionFocus);
+		// m.start.readEvent(ev);
+		m.update(m.start, me);
+		// Restart drawing, so redraw both corners
+		// m.curr.readEvent(ev);
+		//m.readEvent(ev, m.curr);
+		m.curr.x = m.start.x;
+		m.curr.y = m.start.y;
+		m.update(m.curr, me);
+		m.drag = true;
+		// window.tauno = ev
 	    })
 	}
 
-	if (monitor = panel.querySelector('.MONITOR_DOWN')){
-	    const m = new CoordMonitor(panel, frame, monitor, bbox);
-	    plane.addEventListener("mousedown", (ev) => {
-		m.updateDown(ev.clientX, ev.clientY);
+	
+	if (monitorElem = panel.querySelector('.MONITOR_UP')){
+	    const me = monitorElem;
+	    coordTracker.addEventListener("mouseup", (ev) => {
+		m.readEvent(ev, m.curr, m.precisionFocus);
+		m.update(m.curr, me); // needed?
+		m.drag = false;
+		console.info([m.start.x, m.start.y, m.curr.x, m.curr.y].join(','));
+		console.info([].concat(m.getGeoPos(m.start.x, m.start.y), m.getGeoPos(m.curr.x, m.curr.y)).join(','));
 	    })
-	}
-	if (monitor = panel.querySelector('.MONITOR_UP')){
-	    const m = new CoordMonitor(panel, frame, monitor, bbox);
-	    plane.addEventListener("mouseup", (ev) => {
-		m.updateUp(ev.clientX, ev.clientY);
-	    })
+	    
 	}
 
 
@@ -80,102 +112,146 @@ function image_coord_tracker(){
 }
 
 function BBox(bbox){
-    /*
-    this.xLL = parseFloat(bbox[0]);
-    this.yLL = parseFloat(bbox[1]);
-    this.xUR = parseFloat(bbox[2]);
-    this.yUR = parseFloat(bbox[3]);
-    this.width  = this.xUR-this.xLL;
-    this.height = this.yLL-this.yUR;
-    */
-    this.left = parseFloat(bbox[0]);
-    this.top  = parseFloat(bbox[3]);
+    this.left   = parseFloat(bbox[0]);
+    this.top    = parseFloat(bbox[3]);
     this.width  = parseFloat(bbox[2]) - this.left;
-    this.height = parseFloat(bbox[1]) - this.top;
+    this.height = parseFloat(bbox[1]) - this.top;    
+}
+
+function Coord2D(){
+    this.x = 0;
+    this.y = 0;
+}
+
+/*
+Coord2D.prototype.readEvent = function(ev){
+    this.cbox = ev.target.getBoundingClientRect();
+    this.x = ev.clientX - this.cbox.left;
+    this.y = ev.clientY - this.cbox.top;
+    }
+    */
+
+// function CoordHandler(coordTracker, bbox){ // , group?
+function CoordHandler(bboxGeo, bboxFrame){ // , group?
+
+    this.bboxFrame = bboxFrame; // coordTracker.getBoundingClientRect();
+    this.bboxGeo    = new BBox(bboxGeo);
+
+    this.drag = false;
+    this.curr = new Coord2D()
+    this.start = new Coord2D()
+    // this.up   = new Coord2D()
+    // this.group = group;
+    // this.resolution = 0;
+}
+
+CoordHandler.prototype.readEvent = function(ev, coords, precision){
+    this.bboxFrame = ev.target.getBoundingClientRect();
+    coords.x = ev.clientX - this.bboxFrame.left; 
+    coords.y = ev.clientY - this.bboxFrame.top;
+    if (this.precisionFocus){
+	coords.x = precision*Math.round(coords.x/this.precisionFocus);
+	coords.y = precision*Math.round(coords.y/this.precisionFocus);
+    }
+}
+
+CoordHandler.prototype.update = function(coord, elem){
+    // elem.textContent = this.getPosString(coord.x, coord.y);x    
+    elem.textContent = this.getGeoPos(coord.x, coord.y);
+};
+
+CoordHandler.prototype.updateSpan = function(elem){
+    var width  = Math.abs(this.start.x - this.curr.x);
+    var height = Math.abs(this.start.y - this.curr.y);
+
+    if (this.precisionWidth){
+	width  = this.precisionWidth*Math.round(width  / this.precisionWidth);	
+	height = this.precisionWidth*Math.round(height / this.precisionWidth);	
+    }
+
+    if (width && height){
+	// toggle visible
+	elem.setAttribute("x", Math.min(this.start.x, this.curr.x));// - this.bboxFrame.left);
+	elem.setAttribute("y", Math.min(this.start.y, this.curr.y));// - this.bboxFrame.top);
+	elem.setAttribute("width",  width);
+	elem.setAttribute("height", height);
+	console.info("Size: ", width,',',height);
+    }
+    else {
+	elem.setAttribute("x", 0);
+	elem.setAttribute("y", 0);
+	elem.setAttribute("width",  0);
+	elem.setAttribute("height", 0);
+	// console.info('skip update: ', this.start,  ' ', this.curr, ' ', this.up)
+	// toggle invisible, or open up
+    }
+    //elem.textContent = this.getPosString(coord.x, coord.y);
+};
+
+CoordHandler.prototype.setPrecision = function(precision){
+    if (typeof(precision) === 'number'){
+	this.precisionFocus = precision;
+	this.precisionWidth = precision;
+    }
+    else if (typeof(precision) === 'string'){
+	precision = precision.split(RegExp('[,:]'))
+    }
+
+    console.log(precision)
     
+    switch (precision.length) {
+    case 2:
+	this.precisionFocus = parseInt(precision[0]);
+	this.precisionWidth = parseInt(precision[1]);
+	break;
+    case 1:
+	this.precisionFocus = parseInt(precision[0]);
+	this.precisionWidth = this.precisionFocus
+	break;
+    default:
+	this.precisionFocus = parseInt(precision[1]);
+	this.precisionWidth = precision;
+    }
 }
 
-function CoordMonitor(group, frame, monitor, bbox){
-    this.group = group;
-    window.superGroup = group;
-    this.bboxFrame = frame.getBoundingClientRect();
-    this.monitor = monitor;
-    this.bboxGeo    = new BBox(bbox);
+CoordHandler.prototype.getRelativeX = function(x){
+    //return (x - this.bboxFrame.left)/this.bboxFrame.width;
+    return x/this.bboxFrame.width;
 }
 
-CoordMonitor.prototype.getRelativeX = function(x){
-    return (x - this.bboxFrame.left)/this.bboxFrame.width;
+CoordHandler.prototype.getRelativeY = function(y){
+    // return (y - this.bboxFrame.top)/this.bboxFrame.height;
+    return y/this.bboxFrame.height;
 }
 
-CoordMonitor.prototype.getRelativeY = function(y){
-    return (y - this.bboxFrame.top)/this.bboxFrame.height;
-}
-
-CoordMonitor.prototype.getLongitude = function(xRel){
+CoordHandler.prototype.getLongitude = function(xRel){
     return this.bboxGeo.left + xRel*this.bboxGeo.width;
 }
 
-CoordMonitor.prototype.getLatitude = function(yRel){
+CoordHandler.prototype.getLatitude = function(yRel){
     return this.bboxGeo.top + (1.0-yRel)*this.bboxGeo.height;
 }
 
-
-/*
-CoordMonitor.prototype.rescaleX = function(x, bbox){
-    return (x - bbox.left)/bbox.width;
+/// Get longitude and latitude.
+CoordHandler.prototype.getGeoPos = function(x,y){
+    return [ Math.round(this.getLongitude(this.getRelativeX(x))),
+	     Math.round(this.getLatitude(this.getRelativeY(y))) ]
 }
 
-CoordMonitor.prototype.rescaleY = function(y, bbox){
-    return (y - bbox.top)/bbox.height;
-}
-
-CoordMonitor.prototype.rescaleYinv = function(y, bbox){
-    return (bbox.top - y)/bbox.height;
-}
-
-
-CoordMonitor.prototype.descaleX = function(x, bbox){
-    return bbox.left + bbox.width*x;
-}
-
-CoordMonitor.prototype.descaleY = function(y, bbox){
-    return bbox.top + bbox.height*y;
-}
-
-CoordMonitor.prototype.descaleYinv = function(y, bbox){
-    return bbox.top + (1.0-y)*bbox.height;
-}
-*/
-
-
-
-/// Default update function
-CoordMonitor.prototype.update = function(x,y){
-    var a = [];
-    a.push(x);
-    a.push(y);
-    var trans = a.join(',');
-    //this.monitor.setAttribute("chloroform",`translate(${trans})`);
-    var xRel = this.getRelativeX(x); //this.rescaleX(x, this.bboxFrame);
-    var yRel = this.getRelativeY(y); //1.0-this.rescaleY(y,this.bboxFrame);
-    //a.push(xRel);
-    //a.push(yRel);
-    // x = Math.round(this.bboxGeo.xLL + this.bboxGeo.width * x);
-    // y = Math.round(this.bboxGeo.yLL + this.bboxGeo.height* y);
-    // x = Math.round(this.descaleX(x, this.bboxGeo));
-    // y = Math.round(this.descaleY(y, this.bboxGeo));
+CoordHandler.prototype.getPosString = function(x,y){
+    var a = [x, y];
+    var xRel = this.getRelativeX(x); 
+    var yRel = this.getRelativeY(y); 
     x = Math.round(this.getLongitude(xRel));
     y = Math.round(this.getLatitude(yRel));
-    // x = this.rescaleX(x, this.bboxGeo);
-    // y = this.rescaleYinv(y, this.bboxGeo);
     a.push(x);
     a.push(y);
-    // a.push(Math.round(this.bboxGeo.xLL + this.bboxGeo.width * x));
-    // a.push(Math.round(this.bboxGeo.yLL + this.bboxGeo.height* y));
-    this.monitor.textContent = a.join(',')
-    
-    //this.monitor.textContent = ''+Math.round(this.bboxGeo.xLL + x*this.bboxGeo.width)+','+Math.round(this.bboxGeo.yLL + (1.0-y)*this.bboxGeo.height)
+    // a.push(this.drag);
+    return a.join(',')
 }
+
+
+
 /// Default actions. Can be overridden by C++ code XML::JAVASCRIPT_SCOPE (see below)
 /**
    Available "context variables":
@@ -183,8 +259,8 @@ CoordMonitor.prototype.update = function(x,y){
    this.bboxGeo: BBox object
    TODO: base-update for those above.
    And then store start (upon down) and end (upon up) in image coords 
+CoordHandler.prototype.updateMove = CoordHandler.prototype.update
+CoordHandler.prototype.updateDown = CoordHandler.prototype.update
+CoordHandler.prototype.updateUp   = CoordHandler.prototype.update
  */
-CoordMonitor.prototype.updateMove = CoordMonitor.prototype.update
-CoordMonitor.prototype.updateDown = CoordMonitor.prototype.update
-CoordMonitor.prototype.updateUp   = CoordMonitor.prototype.update
 )JS";

@@ -137,6 +137,7 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		mout.note("Using Cartesian product (meta data)");
 		//mout.note(DRAIN_LOG(srcCartesion));
 		const drain::VariableMap & whereCart = srcCurr[ODIMPathElem::WHERE].data.attributes;
+		// mout.note(DRAIN_LOG(whereCart));
 		radarSVG.updateCartesianConf(whereCart);
 		// Redesign multi-frame mosaick...
 		// overlayGroup->set("data-latest",
@@ -155,7 +156,29 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 	overlayGroup->set(DATA_ID, srcDsc); // Rack necessity.
 	// New. For mouse coords: // drain::Sprinter::plainLayout
 
-	overlayGroup->set("data-bbox", drain::sprinter(radarSVG.geoFrame.getBoundingBoxNat().tuple(), drain::Sprinter::plainLayout).str());
+	/*
+	mout.attention(DRAIN_LOG(radarSVG.geoFrame.getEPSG()));
+	mout.attention(DRAIN_LOG(radarSVG.radarProj.getSrc().getEPSG()));
+	mout.attention(DRAIN_LOG(radarSVG.radarProj.getDst().getEPSG()));
+	*/
+
+	// TODO: should these be in shared level? Also Overlays should be for each vertical "stack".
+	if (radarSVG.geoFrame.getEPSG()){
+		overlayGroup->set("data-epsg", radarSVG.geoFrame.getEPSG());
+	}
+
+	if (radarSVG.geoFrame.isLongLat()){
+		overlayGroup->set("data-bbox", drain::sprinter(radarSVG.geoFrame.getBoundingBoxDeg().tuple(), drain::Sprinter::plainLayout).str());
+
+	}
+	else {
+		std::vector<int> geoBBOX;
+		radarSVG.geoFrame.getBoundingBoxNat().toSequence(geoBBOX);
+		overlayGroup->set("data-bbox", drain::sprinter(geoBBOX, drain::Sprinter::plainLayout).str());
+	}
+
+
+
 	// DOES not work overlayGroup->set("data-epsg", radarSVG.geoFrame.getEPSG());
 
 	// overlayGroup->addClass("COORDS");
@@ -868,20 +891,16 @@ void CmdCoords::exec() const {
 
 	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
 	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE); //  COORD_TRACKER
-	imagePanelGroup->setAttribute("data-mouse-plane", overlayGroup->getId());
+	// imagePanelGroup->setAttribute("data-mouse-plane", overlayGroup->getId());
 	// -> track IMAGE_BORDER
 	// -> write to COORDS
-
-	//drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
-	//coordCatcher->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
-	drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
-	coordCatcher->setStyle("fill","red");
-	coordCatcher->setStyle("fill-opacity", 0.5);
-	coordCatcher->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	coordCatcher->set("data-bbox", bbox);
+	// drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
+	// coordCatcher->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
 
 	drain::image::TreeSVG & coordDisplay = imagePanelGroup["MONITOR"];
 	addCoordMonitor(coordDisplay, "MONITOR");
+	drain::ClassXML clsTest;
+	clsTest = "kks";
 	coordDisplay->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
 	coordDisplay->setAlign(AlignSVG::TOP);
 	// coordDisplay->setAlign(AlignSVG::RIGHT);
@@ -892,34 +911,52 @@ void CmdCoords::exec() const {
 	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
 	addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
 
-	const drain::ClassXML SELECT("SELECT");
+	// TODO: gRectangle -> RECTANGLE
+	//const drain::ClassXML SELECT(rack::Graphic::RECTANGLE);
+	const drain::ClassXML SELECT("SELECT");  // overlay sittenkin hyvä? Kunhan ei event
 	drain::image::TreeSVG & selectRect = imagePanelGroup[SELECT](svg::RECT);
 	selectRect->addClass(SELECT, LayoutSVG::FIXED);
 	drain::UtilsXML::ensureStyle(ctx.svgTrack, SELECT, {
 			{"fill", "none"},
-			{"stroke", "white"},
+			{"stroke", "darkgreen"},
 			{"stroke-width", 2.0},
 			// {"opacity", 0.5}
 	});
 	selectRect->setLocation(200,100);
 	selectRect->setFrame(400,200);
 
-	/*
-	drain::image::TreeSVG & localMask = overlay[svg::MASK];
-	{
-		// drain::svgPATH elem(localMask); radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
-	}
-	const int w = radarSVG.geoFrame.getFrameWidth();
-	const int h = radarSVG.geoFrame.getFrameHeight();
-	MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
-	localMask->setType(svg::COMMENT);
-	*/
-	const int w = radarSVG.geoFrame.getFrameWidth();
-	const int h = radarSVG.geoFrame.getFrameHeight();
-	//drain::image::TreeSVG & mask =
-	MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, selectRect);
-		//localMask->setType(svg::COMMENT);
+	/// Create yet another plane (RECT) to receive mouse events
+	drain::image::TreeSVG & coordTracker = imagePanelGroup[RackSVG::ElemClass::COORD_TRACKER](svg::RECT);
+	coordTracker->setMyAlignAnchor(svg::IMAGE);
+	coordTracker->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	/// Todo: move/share/generalize
+	coordTracker->set("data-bbox", bbox);
+	coordTracker->set("data-epsg", overlayGroup->get("data-epsg",""));
+	coordTracker->set("data-resolution", resolution.tuple());
+	coordTracker->addClass(RackSVG::ElemClass::COORD_TRACKER);
 
+	coordTracker->setStyle("fill", "white"); // TODO: transparent tracker
+	// coordTracker->setStyle("stroke", "green");
+	coordTracker->setStyle("opacity", 0.0001);
+
+	// If mask...
+	if (MASK && false){
+		const int w = radarSVG.geoFrame.getFrameWidth();
+		const int h = radarSVG.geoFrame.getFrameHeight();
+		//drain::image::TreeSVG & mask =
+		MaskerSVG::createMask(ctx.svgTrack, imagePanelGroup, w, h, coordTracker);
+	}
+
+	/*
+	drain::image::TreeSVG & myMouseUp = myJS["TEST1"]; // (svg::SCRIPT) <- nyt tajus/handlasi JAVASCRIPT_SCOPE:n
+	myMouseUp = "// TEST1;\n";
+	drain::image::TreeSVG & myMouseUp2 = myJS["TEST2"](svg::JAVASCRIPT_SCOPE); // (svg::SCRIPT) <- nyt tajus/handlasi JAVASCRIPT_SCOPE:n
+	myMouseUp2 = "// fct Here!;\n";
+	/// TODO: xml::toStream handler for svg::JAVASCRIPT_SCOPE ?
+	//  -> (pre-string: funct{} and explicit newline, or no translation
+	myMouseUp2.addChild() = "// TEST2;\n";
+	myMouseUp2.addChild() = "// TEST3;\n";
+		*/
 
 	/*
 	myJS.addChild() = "// Added by Rack \n";

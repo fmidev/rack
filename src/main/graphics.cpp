@@ -831,6 +831,25 @@ public:
 
 };
 
+class CmdJavaScript : public drain::SimpleCommand<std::string> {
+
+public:
+
+	inline
+	CmdJavaScript() : drain::SimpleCommand<std::string> (__FUNCTION__, "Link JavaScript URL to SVG document 'header'."){};
+
+
+	inline
+	void exec() const override {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+		drain::UtilsXML::ensureJavaScriptUrl(ctx.svgTrack, value);
+
+	}
+};
+
 /*
 class CmdLogo : public drain::BasicCommand { // drain::SimpleCommand<std::string> {
 
@@ -929,6 +948,8 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdAlignTest>();
 	install<CmdDebug>();
 	//install<CmdLogo>().section = HIDDEN;
+
+	install<CmdJavaScript>();
 
 };
 

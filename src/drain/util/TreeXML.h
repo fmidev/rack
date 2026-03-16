@@ -101,7 +101,8 @@ public:
 	 */
 	inline
 	NodeXML(){
-		drain::StringTools::import(++nextID, id);
+		id = drain::StringBuilder<>('e', ++nextID);
+		// drain::StringTools::import(++nextID, id);
 	};
 
 	//
@@ -222,6 +223,7 @@ public:
 		if (type == STYLE){
 			// Modify collection directly
 			drain::Logger mout(__FILE__, __FUNCTION__);
+			// Well, this should actually be ok, as it is in the standard?
 			mout.deprecating("Setting style as attributes of a STYLE element: ", key, ':', value);
 			setStyle(key, value);
 		}

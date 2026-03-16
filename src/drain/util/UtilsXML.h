@@ -247,17 +247,36 @@ public:
 
 		if (jsFunction.empty()){
 			jsFunction->setText("function ", name, '(', args..., ')');
-			//T & jsFunctionScope =
-			//jsFunction[XML::JAVASCRIPT_SCOPE](XML::JAVASCRIPT_SCOPE);
 		}
-		/*
-		if (jsFunction->get("type").empty()){
-			// Ensure code scope.
-			jsFunction->set("type", "text/javascript");
-			jsFunction->setText("function ", name, '(', args..., ')');
-		}
-		*/
+
 		return jsFunction; // [XML::JAVASCRIPT_SCOPE];
+	}
+
+	/**
+	 *  \param path
+	 */
+	template <typename N>
+	static
+	UnorderedMultiTree<N> & ensureJavaScriptUrl(UnorderedMultiTree<N> & root, const std::string & url){
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		typedef UnorderedMultiTree<N> T;
+
+		std::string id(url);
+		for (auto & c : id){
+			// drain::PathSeparatorPolicy
+			if (c == T::path_t::separator.character){
+				c = '|';
+			}
+		}
+		mout.note("mapped id:", id);
+
+		T & treeJS = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, id);
+
+		treeJS->setUrl(url);
+
+		return treeJS; // [XML::JAVASCRIPT_SCOPE];
 	}
 
 

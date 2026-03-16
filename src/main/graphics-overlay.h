@@ -256,6 +256,7 @@ class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
 public:
 
 	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
+		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true);
 		getParameters().link("MASK", MASK, "Fill outside using CSS class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
@@ -266,6 +267,10 @@ public:
 	}
 
 	void exec() const override ;
+
+	drain::Range<int> resolution;
+
+
 };
 
 class CmdData : public CmdPolarBase { //  drain::BasicCommand,

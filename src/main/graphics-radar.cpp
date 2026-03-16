@@ -49,8 +49,16 @@ DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
 		DRAIN_ENUM_ENTRY(rack::Graphic, SECTOR),
 		DRAIN_ENUM_ENTRY(rack::Graphic, ANNULUS),
 		DRAIN_ENUM_ENTRY(rack::Graphic, CIRCLE),
+		DRAIN_ENUM_ENTRY(rack::Graphic, RECTANGLE),
 };
 
+/*
+ *   ensureCSS(const T & jotain){
+ *   	Rack.RECTANGLE
+ *   	Rack.RECTANGLE.selector() -> ".RECTANGLE"
+ *   }
+ *
+ */
 
 namespace rack {
 
@@ -183,9 +191,11 @@ void RadarSVG::updateCartesianConf(const drain::VariableMap & where) {
 	// Todo: also support fully cartesian input (without single-site metadata)
 	// radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
 
-	const int epsg = where.get("epsg", 0); // non-standard
+	// NOTE: where["EPSG"] <-> where:epsg
+	//const int epsg = where.get("epsg", 0); // non-standard
+	const int epsg = where.get("EPSG", 0); // non-standard
 	if (epsg){
-		mout.attention("EPSG found: ", epsg);
+		mout.success<LOG_WARNING>("Setting projection using detected EPSG:", epsg);
 		geoFrame.setProjectionEPSG(epsg);
 		radarProj.setProjectionDst(epsg);
 	}
