@@ -349,8 +349,7 @@ bool RadarAccumulator<AC,OD>::checkCompositingMethod(const ODIM & dataODIM) cons
 }
 */
 template  <class AC, class OD>
-//void Composite::extract(DataSet<DstType<CartesianODIM> > & dstProduct, const FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
-void RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, const drain::image::Accumulator::FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea){
+void RadarAccumulator<AC,OD>::extract(DataSet<DstType<OD> > & dstProduct, const drain::image::Accumulator::FieldList & fields, const std::string & encoding, const drain::Rectangle<int> & cropArea) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 

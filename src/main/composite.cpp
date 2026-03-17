@@ -771,18 +771,18 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
  *
  */
 
-void writeWhere(const drain::GeoFrame & composite, drain::VariableMap & where){
+void writeWhere(const drain::GeoFrame & frame, drain::VariableMap & where){
 
 	where["BBOX"].setType(typeid(double));
-	where["BBOX"] = composite.getBoundingBoxDeg().toVector();
+	where["BBOX"] = frame.getBoundingBoxDeg().toVector();
 
-	if (!composite.isLongLat()){
+	if (!frame.isLongLat()){
 		// Set metric composite with 1m accuracy
 		where["BBOX_native"].setType(typeid(long int));
 	}
 
-	where["BBOX_native"] = composite.getBoundingBoxNat().tuple(); //toVector();
-
+	where["BBOX_native"] = frame.getBoundingBoxNat().tuple(); //toVector();
+	// where["UR_lat"] = 1234.56789;
 }
 
 //void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
@@ -844,89 +844,88 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 	mout.debug("Data BBOX minimal (union): ", bboxDataNat);
 	mout.debug("Data BBOX overlap (intersection): ", bboxDataOverlapNat);
 
-	composite.updateGeoData(); // TODO check if --plot cmds don't need
-
+	//composite.updateGeoData(); // TODO check if --plot cmds don't need
+	//composite.updateGeoData(composite);
 
 
 	Hi5Tree & dstGroup = ctx.cartesianHi5(path);
 
-	// Block dstProduct - essential for updateTree etc?
+	// Block for dstProduct and dstRoot
 	{
 
 		DataSet<CartesianDst> dstProduct(dstGroup);
 
-		// NEW 2024/05/17
-		// mout.debug3("update geodata ");
-		// composite.updateGeoData(); // TODO check if --plot cmds don't need
-
-		// NEW 2020/06
 		RootData<CartesianDst> dstRoot(ctx.cartesianHi5);
 
-		drain::VariableMap & where = dstRoot.getWhere();
 
+		// drain::VariableMap & where = dstRoot.getWhere(); // todo: remove
 
 		drain::Rectangle<int> cropImage; // Default: empty ()
 
-		if (!crop.empty()){
-			// TODO: simplify (copy bboxes)
+		// Override for subComposite
+		composite.updateGeoData();
+		drain::SmartMapTools::updateValues(dstRoot.odim, composite.odim);
 
-			drain::GeoFrame infoFrame;
-			if (composite.getEPSG()){
-				infoFrame.setProjectionEPSG(composite.getEPSG());
-			}
-			else {
-				infoFrame.setProjection(composite.getProjStr());
-			}
+		if (crop.empty()){
+			// composite.updateGeoData(composite); // frame
+			// composite.updateGeoData();
+		}
+		else {
+
+			// Cropping requested by user.
+
+			//drain::GeoFrame
+			Composite subComposite;
+			subComposite.setProjection(composite.getProj().getDst());
 
 			if (crop == "INPUT"){
-				prepareBBox(composite, bboxDataNat, cropImage);
-				infoFrame.setBoundingBoxNat(bboxDataNat);
+				subComposite.setBoundingBoxNat(bboxDataNat);
 				mout.advice<LOG_NOTICE>("Equivalent command: --cExtract ", drain::sprinter(channels), ':',
 						drain::sprinter(bboxDataNat.tuple(), ","));
 			}
 			else if (crop == "OVERLAP"){
-				prepareBBox(composite, bboxDataOverlapNat, cropImage);
-				infoFrame.setBoundingBoxNat(bboxDataOverlapNat);
+				subComposite.setBoundingBoxNat(bboxDataOverlapNat);
 				mout.advice<LOG_NOTICE>("Equivalent arguments: --cExtract ", drain::sprinter(channels), ':',
 						drain::sprinter(bboxDataOverlapNat.tuple(), drain::Sprinter::plainLayout) );
 			}
 			else {
 				std::vector<double> v;
-				//drain::StringTools::split(crop, v, ':');
 				drain::StringTools::split(crop, v, ',');
 
 				drain::BBox cropBBox;
 				cropBBox.assignSequence(v, false);
-				infoFrame.setBoundingBoxNat(cropBBox);
+				subComposite.setBoundingBoxNat(cropBBox);
 
 				mout.special("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
-				prepareBBox(composite, cropBBox, cropImage);
 
-				if (cropImage.empty()){
-					mout.advice("crop argument should be INPUT, OVERLAP or a bounding box");
-					mout.error("crop area empty, check argument: '", crop, "' ");
-				}
+			}
+
+			prepareBBox(composite, subComposite.getBoundingBoxNat(), cropImage);
+
+			if (cropImage.empty()){
+				mout.advice("crop argument should be INPUT, OVERLAP or a bounding box");
+				mout.error("crop area empty, check argument: '", crop, "' ");
 			}
 
 
-			mout.info("crop: ", cropImage, " (image coords)");
-			mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', -cropImage.getHeight());
+			mout.accept<LOG_NOTICE>("crop: ", cropImage, " (image coords)");
+			mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', cropImage.getHeight());
 
-			infoFrame.setGeometry(cropImage.getWidth(), cropImage.getHeight());
-			mout.revised<LOG_WARNING>(DRAIN_LOG(infoFrame));
-			writeWhere(infoFrame, where);
+			// Initialize!s (composite contains extensive meta data)
+			drain::SmartMapTools::updateValues(subComposite.odim, composite.odim);
+			mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
+
+			subComposite.setGeometry(cropImage.getWidth(), cropImage.getHeight());
+			//subComposite.setBoundingBoxNat(subComposite.getBoundingBoxNat());
+			mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
+			// writeWhere(subComposite, where); // becoming obsolete?
+
+			subComposite.updateGeoData();
+			drain::SmartMapTools::updateValues(dstRoot.odim, subComposite.odim);
+			mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
 
 		}
 
-
-		// ODIM test(ODIMPathElem::ROOT);
-		// mout.special("dstRoot.odim: ", dstRoot.odim);
-
-		// CartesianODIM rootOdim; // needed? yes, because Extract uses (Accumulator &), not Composite.
-		// CartesianODIM & rootOdim = dstRoot.odim; // TEST
-		// dstRoot.odim.updateFromMap(composite.odim);
-		// mout.attention("Upd...");
-		drain::SmartMapTools::updateValues(dstRoot.odim, composite.odim);
 
 		std::string & encoding = resources.baseCtx().targetEncoding;
 
@@ -934,8 +933,6 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		// mout.reject<LOG_NOTICE>("pre-extract EPSG:", composite.projGeo2Native.getDst().getEPSG());
 		// mout.reject<LOG_NOTICE>("pre-extract proj:", composite.projGeo2Native.getDst().getProjDef());
 
-		/// MAIN!composite.legend
-		// composite.extract(dstProduct, channels, cropImage, encoding);
 		composite.extract(dstProduct, channels, encoding, cropImage);
 		encoding.clear();
 
@@ -946,8 +943,7 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 			composite.legend.clear();
 		}
 		*/
-
-		// mout.warn("extracted data: " , dstProduct ); // .getFirstData().data
+		// mout.warn("extracted data: " , dstProduct );
 
 		/// Final step: write metadata
 		//  Note: dstRoot will write most of them upon destruction.
@@ -955,8 +951,11 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		drain::VariableMap & how = dstRoot.getHow();
 		ProductBase::setRackVersion(how);
 
-		composite.odim.version = ODIM::versionFlagger.str();
-		// drain::StringTools::replace(ODIM::versionFlagger, ".", "_", composite.odim.version);
+		// composite.odim.version = ODIM::versionFlagger.str();
+		// composite.updateGeoData(composite);
+		if (cropImage.empty()){
+			drain::SmartMapTools::updateValues(dstRoot.odim, composite.odim);
+		}
 
 		// Non-standard extensions
 		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
@@ -979,6 +978,8 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 				mout.revised<LOG_WARNING>("Main composite, writing auxiliary BBOX info");
 
+				drain::VariableMap & where = dstRoot.getWhere();
+				// composite.updateGeoData(composite);
 				writeWhere(composite, where);
 
 				if (!composite.isLongLat()){
@@ -1002,8 +1003,6 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 				composite.m2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
 				composite.m2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
-				// composite.deg2pix(bboxDataOverlapNat.lowerLeft,  bboxDataPix.lowerLeft);
-				// composite.deg2pix(bboxDataOverlapNat.upperRight, bboxDataPix.upperRight);
 				//where["SIZE_overlap"].setType(typeid(short int));
 				where["SIZE_overlap"] << bboxDataPix.getWidth() << -bboxDataPix.getHeight();
 
@@ -1024,7 +1023,8 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		//const short epsg = composite.projGeo2Native.getDst().getEPSG();
 		//if (epsg > 0){
 		//if (composite.projGeo2Native.getDst().getEPSG() > 0){
-		if (composite.getProj().getDst().getEPSG() > 0){
+		//if (composite.getProj().getDst().getEPSG() > 0){
+		if (composite.getEPSG() > 0){
 			mout.hint<LOG_DEBUG>("/how:EPSG migrated to /where:EPSG");
 		}
 
@@ -1077,11 +1077,9 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 	DataTools::updateInternalAttributes(ctx.cartesianHi5);
 
-	// mout.warn(composite.odim);
-
 	drain::VariableMap & statusMap = ctx.getStatusMap();
-	//drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
-	//mout.warn(statusMap);
+	// drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
+	// mout.warn(statusMap);
 
 	// NEW 2020/07
 	ctx.select.clear(); // CONSIDER STORING SELECT composites own selector?
@@ -1090,9 +1088,6 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 	statusMap.updateFromMap(composite.nodeMap);
 	statusMap.updateFromMap(composite.odim);
 	// statusMap.updateFromMap(composite.metadataMap);
-	// Spoils input.sh...
-	// std::cout << ctx.svg << '\n';
-	// mout.warn("updateInternalAttributes 2:",  ctx.cartesianHi5.data.attributes);
 
 }
 

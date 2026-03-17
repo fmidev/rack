@@ -43,19 +43,6 @@ namespace drain
 namespace image
 {
 
-/*
-const double GeoFrame::DEG2RAD(M_PI/180.0);
-const double GeoFrame::RAD2DEG(180.0/M_PI);
-const int    GeoFrame::EARTH_RADIUSi(6371000);
-const double GeoFrame::EARTH_RADIUS(6371000.0);
-*/
-
-/*
-static const double DEG2RAD = M_PI/180.0;
-static const double RAD2DEG = 180.0/M_PI;
-static const int   EARTH_RADIUSi = 6371000;
-static const double EARTH_RADIUS = 6371000.0;
-*/
 
 GeoFrame::GeoFrame(unsigned int frameWidth,unsigned int frameHeight) :
 				xScale(1), yScale(1) //, debug(false)
@@ -125,26 +112,6 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 }
 
 
-
-/*
-void GeoFrame::setBoundingBoxR(double lonLL,double latLL,double lonUR,double latUR) {
-
-	Logger mout(__FILE__, __FUNCTION__);
-
-	bBoxR.set(lonLL, latLL, lonUR, latUR);
-
-	updateBoundingBoxD();
-	if (projectionIsSet()){
-		updateBoundingBoxNat();
-	}
-	else {
-		//mout.warn() = "Projection should be set prior to bounding box";
-	}
-
-	updateScaling();
-
-}
-*/
 
 void GeoFrame::setBoundingBoxD(double lonLL,double latLL,double lonUR,double latUR) {
 
@@ -232,12 +199,14 @@ double GeoFrame::getYScale() const {
 }
 */
 /// Assuming up-to-date bbox [rad], adjust bbox [deg]
+/* Unused
 void GeoFrame::updateBoundingBoxD(){
 	bBoxD.lowerLeft.x  = RAD2DEG * bBoxR.lowerLeft.x;
 	bBoxD.lowerLeft.y  = RAD2DEG * bBoxR.lowerLeft.y;
 	bBoxD.upperRight.x = RAD2DEG * bBoxR.upperRight.x;
 	bBoxD.upperRight.y = RAD2DEG * bBoxR.upperRight.y;
 }
+*/
 
 /// Assuming up-to-date bbox [rad], adjust bbox [deg]
 void GeoFrame::updateBoundingBoxR(){
@@ -261,7 +230,7 @@ void GeoFrame::updateBoundingBoxNat(){
 		// mout.debug("could not (yet) set metric/native bbox" );
 		// warn?
 		if (isLongLat()){ // ie. native coords went radial above
-			mout.warn("Setting lat-lon as NATIVE coors" ); //  - could set R native bbox
+			mout.warn("Setting lat-lon as NATIVE coordinates" ); //  - could set R native bbox
 			bBoxNative.assignSequence(bBoxD);
 		}
 		else {
@@ -371,10 +340,10 @@ void GeoFrame::updateScaling()
 			yScale = (bBoxNative.upperRight.y - bBoxNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
 		}
 		//Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn() << "Tryng to update scaling prior to setting projection";
+		//mout.warn() << "Trying to update scaling prior to setting projection";
 	}
 
-	//mout.warn(" scaling " , xScale , ',' , yScale );
+	mout.warn(" scaling " , xScale , ',' , yScale );
 
 }
 

@@ -49,17 +49,17 @@ class AccumulatorGeo : public Accumulator,  public GeoFrame {
 public:
 
 	// Consider setFrameGeometry (protect this?)
-	virtual
-	inline
+	/*
+	virtual	inline
 	void setGeometry(unsigned int width, unsigned int height) {
 		GeoFrame::setGeometry(width, height);
 		// See allocate below, calling Accumulator::setGeometry(width, height);
 	}
+	*/
 
 
 	/// This should be called after setGeometry, unless the projection is used as a frame.
-	virtual
-	inline
+	virtual	inline
 	void allocate(){
 		//AccumulationArray::setGeometry(frameWidth,frameHeight);
 		if (!geometryIsSet()){

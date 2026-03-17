@@ -406,10 +406,7 @@ void CmdOutputFile::exec() const {
 		}
 		mout.info("File format: HDF5");
 
-		//src.data.attributes["Conventions"] = "ODIM_H5/V2_2"; // CHECK
 		drain::Variable & conventions = src.data.attributes["Conventions"];
-		// conventions = "";
-		// conventions.setSeparator(0);
 
 		for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
 			if (ODIM::versionFlagger.isSet(entry.second)){
@@ -426,57 +423,6 @@ void CmdOutputFile::exec() const {
 			mout.revised<LOG_NOTICE>("setting: ", DRAIN_LOG(conventions));
 		}
 
-
-		// const std::string & v = drain::Enum<rack::ODIM::Version>::dict.getKey((rack::ODIM::Version)ODIM::versionFlagger.getValue());
-		// mout.revised<LOG_WARNING>("Simplifying ODIM version: ", ODIM::versionFlagger, " => ", v);
-
-		/*
-		std::string version;
-		drain::StringTools::replace(ODIM::versionFlagger, ".", "_", version);
-
-		ODIM::VersionFlagger odimOnly = ODIM::versionFlagger;
-		odimOnly.unset();
-
-		mout.revised("Simplifying ODIM version: ", ODIM::versionFlagger);
-		*/
-
-		//conventions = "ODIM_H5/";
-
-		/*
-		for (const auto & entry: drain::Enum<rack::ODIM::Version>::dict){
-			if (static_cast<ODIM::VersionFlagger::storage_t>(entry.second) == ODIM::versionFlagger.getValue()){
-				conventions << entry.second;
-				break;
-			}
-		}
-
-		for (ODIM::Version v: {ODIM::Version::ODIM_2_4, ODIM::Version::ODIM_2_3, ODIM::Version::ODIM_2_2}){
-			if (ODIM::versionFlagger.isSet(v)){
-				conventions << "ODIM_H5/" << v;
-			}
-		}
-		*/
-
-
-
-		/*
-		if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_4)){
-			conventions << "2_4";
-		}
-		else if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_3)){
-			conventions << "V2_3";
-		}
-		else if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_2)){
-			conventions << "V2_2";
-		}
-		else {
-			mout.warn("Unrecognized ODIM version: ", ODIM::versionFlagger);
-			conventions = "ODIM_H5/ODIM_2_3";
-		}
-		*/
-
-		// mout.revised("Setting ODIM version: ", );
-		// conventions = std::string("ODIM_H5/") + version;
 
 		hi5::Writer::writeFile(filepath, src); //*ctx.currentHi5);
 		/*

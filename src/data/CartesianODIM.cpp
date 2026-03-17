@@ -60,10 +60,7 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("where:UR_lat", bboxD.upperRight.y = 0.0);
 		link("where:LL_lon", bboxD.lowerLeft.x = 0.0);
 		link("where:LL_lat", bboxD.lowerLeft.y = 0.0);
-		link("where:UL_lon", UL_lon = 0.0);
-		link("where:UL_lat", UL_lat = 0.0);
-		link("where:LR_lon", LR_lon = 0.0);
-		link("where:LR_lat", LR_lat = 0.0);
+
 		link("how:camethod", camethod = "");
 
 		link("how:nodes", nodes = "");
@@ -71,7 +68,15 @@ void CartesianODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 		link("how:ACCnum", ACCnum = 0);
 
 		// This should be conditional on --odim +RACK
-		link("where:EPSG", epsg = 0);
+		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
+			link("where:BBOX", bboxD.tuple());
+			link("where:UL_lon", UL_lon = 0.0);
+			link("where:UL_lat", UL_lat = 0.0);
+			link("where:LR_lon", LR_lon = 0.0);
+			link("where:LR_lat", LR_lat = 0.0);
+			link("where:EPSG", epsg = 0);
+		}
+
 	}
 
 
@@ -96,11 +101,13 @@ void CartesianODIM::setGeometry(size_t cols, size_t rows){
 
 	// std::cerr << "CartesianODIM::setGeometry (re)scaling. \n";
 
-	if (area.width > 0)
+	if (area.width > 0){
 		xscale *= static_cast<double>(area.width) / static_cast<double>(cols);
+	}
 
-	if (area.height > 0)
+	if (area.height > 0){
 		yscale *= static_cast<double>(area.height) / static_cast<double>(rows);
+	}
 
 	// or getScale
 	// xscale = geoFrame.getXScale();
@@ -134,18 +141,10 @@ void CartesianODIM::updateGeoInfo(const drain::image::GeoFrame & geoFrame){
 
 	}
 	*/
-	epsg = geoFrame.getProj().getDst().getEPSG();
-
+	epsg = geoFrame.getEPSG();
 	bboxD = geoFrame.getBoundingBoxDeg();
-	/*
-	const drain::Rectangle<double> &bboxD = geoFrame.getBoundingBoxDeg();
-	LL_lon = bboxD.lowerLeft.x;
-	LL_lat = bboxD.lowerLeft.y;
-	UR_lon = bboxD.upperRight.x;
-	UR_lat = bboxD.upperRight.y;
-	*/
 
-	/// Complete other cornerpoints (non-ODIM)
+	/// Complete other corner points (non-ODIM)
 	double x2,y2;
 	geoFrame.pix2LLdeg(0,-1, x2,y2); // (vertically outside)
 	UL_lon = x2;

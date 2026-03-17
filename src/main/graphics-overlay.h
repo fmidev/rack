@@ -240,6 +240,7 @@ public:
 	};
 
 	// Copy constructor
+	inline
 	CmdRadarLabel(const CmdRadarLabel & cmd) : CmdPolarBase(cmd) {
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
@@ -250,6 +251,41 @@ public:
 
 };
 
+enum MapUnits {
+	PIX,
+	M,
+	DEG
+};
+
+
+
+class CmdRect : public CmdPolarBase { //  drain::BasicCommand,
+
+public:
+
+	CmdRect() : CmdPolarBase(__FUNCTION__, "SVG test product", Graphic::GRAPHIC::RECTANGLE) {
+		getParameters().separator = ':';
+		getParameters().link("bbox", bbox.tuple(100,200,300,400), "xLL,yLL,xUR,yUR").setFill(false).setSeparator(',');
+		getParameters().link("bboxUnits", bboxUnits, "[PIX|M|DEG]");
+		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true).setSeparator(',');
+		getParameters().link("MASK", MASK, "Render outer region with style class '.MASK'");
+		// getParameters().link("panel",  panel, "label");
+		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
+	}
+
+	inline
+	CmdRect(const CmdRect & cmd) : CmdPolarBase(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	void exec() const override ;
+
+	drain::BBox bbox; //  = {100,200,300,400};
+	std::string bboxUnits = "PIX";
+	drain::Range<int> resolution;
+
+
+};
 
 class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
 
@@ -358,6 +394,11 @@ public:
 
 } // rack::
 
+namespace drain {
+
+DRAIN_ENUM_DICT(rack::MapUnits);
+
+}  // namespace drain
 
 #endif
 

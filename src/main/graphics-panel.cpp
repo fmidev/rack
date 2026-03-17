@@ -93,8 +93,9 @@ DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
 		// ---
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, COORD_TRACKER), // deprecating?
+		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
+		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, DATA_ARRAY),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SHARED_METADATA),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
@@ -202,6 +203,13 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"stroke-width", 1.0},
 		};
 
+		// User selection
+		style[ClassXML(RackSVG::SELECTOR)] = {
+				{"fill", "none"},
+				{"stroke", "white"},
+				// {"stroke-width", 1.0},
+		};
+
 		style[Select(svg::RECT,RackSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
 				{"fill", "black"},
 				{"stroke", "white"},
@@ -239,6 +247,39 @@ drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
 	// return onloadJS;
 
 }
+
+drain::image::TreeSVG & RackSVG::getJavaScriptDefs(RackContext & ctx){
+
+	drain::image::TreeSVG & scope = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "Rack");
+	if (scope.empty()){
+		scope->setText("const Rack = {cls:{}, test:{}};\n");
+	}
+
+	return scope;
+
+}
+
+/// key => Rack.cls.key = 'key';
+/**
+ *   TODO template
+ *
+ *   Is return value needed?
+ */
+drain::image::TreeSVG & RackSVG::addJavaScripsDef(RackContext & ctx, const std::string & key, const std::string & section){
+
+	std::string varName = section.empty() ? key : section+'.'+key;
+	drain::image::TreeSVG & line = getJavaScriptDefs(ctx)[varName](svg::CTEXT);
+
+	if (section == "cls"){
+		line->setText("Rack.", varName, '=', drain::sprinter("."+key, drain::Sprinter::jsLayout).str(), ";\n");
+	}
+	else {
+		line->setText("Rack.", varName, '=', drain::sprinter(key, drain::Sprinter::jsLayout).str(), ";\n");
+	}
+	return line;
+}
+
+
 
 const std::string & RackSVG::guessFormat(const std::string & key){
 
@@ -472,7 +513,8 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	const drain::VariableMap & map = ctx.getStatusMap();
+	// const drain::VariableMap & map =
+	ctx.getStatusMap();
 
 	// mout.warn(map);
 

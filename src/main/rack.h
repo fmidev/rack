@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(19,1,4)
+#define RACK_VERSION drain::Version<>(19,1,5)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -51,13 +51,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - JavaScript: --gData data.png bug fix
  *  Release 19.1.1
  *  - JavaScript coord bug fix
- *  Version 19.1.2
+ *  Release 19.1.2
  *  - Graphics: enhanced gCoord
- *  Version 19.1.3
+ *  Release 19.1.3
  *  - Tree::prependChild(T)
  *  - Graphics: --gCoord MASK
- *  Version 19.1.4
+ *  Release 19.1.4
  *  - Graphics: --gCoord (tilesize) --gLabel fixed
+ *  Release 19.1.5
+ *  - cExtract bbox: metadata fixed
+ *
  *
  *  Version 18
  *  - SVG basic command set completed

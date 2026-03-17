@@ -9,12 +9,11 @@ function image_coord_tracker(){
     elems.forEach(panel => {
 
 
-	// Mouse tracker
-	const coordTracker = panel.querySelector(".COORD_TRACKER");
-
+	// Plane listening to mouse events
+	const coordTracker = panel.querySelector(".MOUSE_TRACKER");
 	if (!coordTracker){
 	    console.info(panel);
-	    console.error("elem .MOUSE found without child .COORD_TRACKER");
+	    console.error("elem .MOUSE found without child .MOUSE_TRACKER");
 	    return;
 	}
 
@@ -45,64 +44,89 @@ function image_coord_tracker(){
 	const m = new CoordHandler(bbox, coordTracker.getBoundingClientRect());
 	m.setPrecision(coordTracker.getAttribute("data-resolution"));
 	
-	const selectionRect = panel.querySelector(".SELECT");
+	const selectionRect = panel.querySelector("rect.SELECTOR");
 
-	var monitorElem = null;
-	
-	if (monitorElem = panel.querySelector('.MONITOR')){
+	// Collective, to support cross-actions
+	const monitorMove = panel.querySelector('.MONITOR_MOVE');
+	const monitorDown = panel.querySelector('.MONITOR_DOWN');
+	const monitorUp   = panel.querySelector('.MONITOR_UP');
+	// Optional (move also the box)
+	const monitorBox  = panel.querySelector('.MONITOR_BOX');
 
-	    const me = monitorElem; // This is the correct scope.
+	if (monitorMove){
 
 	    coordTracker.addEventListener("mousemove", (ev) => {
-
-		m.readEvent(ev, m.curr, m.precisionFocus);
-		/*
-		if (!m.drag){
-
-		}
-		else {
-		    m.readEvent(ev, m.curr, m.precisionWidth);
-		    }
-		*/
-
-		// m.curr.readEvent(ev);
-		m.update(m.curr, me);
+		m.readEvent(ev, m.curr);
+		m.update(m.curr, monitorMove);
 		if (m.drag && selectionRect){
 		    m.updateSpan(selectionRect);
+		    if (monitorBox){
+			//var transX = 5;
+			if (m.curr.x > m.start.x){
+			    monitorBox.setAttribute("style", "text-anchor:start");
+			}
+			else {
+			    monitorBox.setAttribute("style", "text-anchor:end");
+			}
+			
+			if (m.curr.y > m.start.y){
+			    monitorBox.setAttribute("transform", "translate(0,+20)"); // retrieve STYLE/ font size?
+			}
+			else {
+			    monitorBox.setAttribute("transform", "translate(0,-10)"); // retrieve STYLE/ font size?
+			}
+		    }
 		}
 	    })
 	    
 	}
 
 	
-	if (monitorElem = panel.querySelector('.MONITOR_DOWN')){
-	    const me = monitorElem;
+	if (monitorDown){ 
 	    coordTracker.addEventListener("mousedown", (ev) => {
-		// m.bboxFrame = ev.target.getBoundingClientRect();
 		// console.warn(ev)
-		m.readEvent(ev, m.start, m.precisionFocus);
-		// m.start.readEvent(ev);
-		m.update(m.start, me);
+		m.readEvent(ev, m.start);
+		m.update(m.start, monitorDown);
 		// Restart drawing, so redraw both corners
-		// m.curr.readEvent(ev);
-		//m.readEvent(ev, m.curr);
 		m.curr.x = m.start.x;
 		m.curr.y = m.start.y;
-		m.update(m.curr, me);
+		m.update(m.curr, monitorDown);
 		m.drag = true;
-		// window.tauno = ev
+		if (monitorUp){
+		    // kludge
+		    monitorUp.textContent = '';
+		}
+		if (monitorBox){
+		    monitorBox.setAttribute("x", m.start.x);
+		    monitorBox.setAttribute("y", m.start.y);
+		    if (m.start.x > m.curr.x){
+		    }
+		}
 	    })
 	}
 
 	
-	if (monitorElem = panel.querySelector('.MONITOR_UP')){
-	    const me = monitorElem;
+	if (monitorUp){ //  = panel.querySelector('.MONITOR_UP')){
+
 	    coordTracker.addEventListener("mouseup", (ev) => {
-		m.readEvent(ev, m.curr, m.precisionFocus);
-		m.update(m.curr, me); // needed?
+		m.readEvent(ev, m.curr);
+		m.update(m.curr, monitorUp); // needed?
 		m.drag = false;
 		console.info([m.start.x, m.start.y, m.curr.x, m.curr.y].join(','));
-		console.info([].concat(m.getGeoPos(m.start.x, m.start.y), m.getGeoPos(m.curr.x, m.curr.y)).join(','));
+		console.info("Array size: ", Math.abs(m.curr.x-m.start.x), ',', Math.abs(m.curr.y-m.start.y));
+		var bb = m.getGeoBBOX();
+		console.info(bb.join(','));
+		console.info("Geo size: ", bb[2]-bb[0], ',', bb[3]-bb[1]);
+		/*
+		navigator.clipboard.writeText(bb).then(
+		    () => {
+			console.info(bb + ' copied to clipboard')
+		    },
+		    () => {
+			console.warn('clipboard write failed')
+		    },
+		    );
+		*/
 	    })
 	    
 	}
@@ -145,13 +169,13 @@ function CoordHandler(bboxGeo, bboxFrame){ // , group?
     // this.resolution = 0;
 }
 
-CoordHandler.prototype.readEvent = function(ev, coords, precision){
+CoordHandler.prototype.readEvent = function(ev, coords){
     this.bboxFrame = ev.target.getBoundingClientRect();
     coords.x = ev.clientX - this.bboxFrame.left; 
     coords.y = ev.clientY - this.bboxFrame.top;
     if (this.precisionFocus){
-	coords.x = precision*Math.round(coords.x/this.precisionFocus);
-	coords.y = precision*Math.round(coords.y/this.precisionFocus);
+	coords.x = this.precisionFocus*Math.round(coords.x/this.precisionFocus);
+	coords.y = this.precisionFocus*Math.round(coords.y/this.precisionFocus);
     }
 }
 
@@ -171,8 +195,8 @@ CoordHandler.prototype.updateSpan = function(elem){
 
     if (width && height){
 	// toggle visible
-	elem.setAttribute("x", Math.min(this.start.x, this.curr.x));// - this.bboxFrame.left);
-	elem.setAttribute("y", Math.min(this.start.y, this.curr.y));// - this.bboxFrame.top);
+	elem.setAttribute("x", Math.min(this.start.x, this.curr.x));
+	elem.setAttribute("y", Math.min(this.start.y, this.curr.y));
 	elem.setAttribute("width",  width);
 	elem.setAttribute("height", height);
 	console.info("Size: ", width,',',height);
@@ -238,6 +262,16 @@ CoordHandler.prototype.getGeoPos = function(x,y){
 	     Math.round(this.getLatitude(this.getRelativeY(y))) ]
 }
 
+CoordHandler.prototype.getGeoBBOX = function(){
+    var x0 = Math.min(this.start.x, this.curr.x)
+    var x  = Math.max(this.start.x, this.curr.x)
+    var y0 = Math.min(this.start.y, this.curr.y)
+    var y  = Math.max(this.start.y, this.curr.y)
+
+    return [].concat(this.getGeoPos(x0, y0 ),
+		     this.getGeoPos(x,  y  ))
+}
+
 CoordHandler.prototype.getPosString = function(x,y){
     var a = [x, y];
     var xRel = this.getRelativeX(x); 
@@ -249,6 +283,7 @@ CoordHandler.prototype.getPosString = function(x,y){
     // a.push(this.drag);
     return a.join(',')
 }
+
 
 
 

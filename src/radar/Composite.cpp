@@ -480,7 +480,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 				mout.info("Cropping returned empty area." );
 				mout.note("Data outside bounding box, returning" );
 				allocate(); // ?
-				updateGeoData();
+				updateGeoData(); // *this);
 				return;
 			}
 		}
@@ -597,10 +597,11 @@ void Composite::updateNodeMap(const std::string & node, int i, int j){
 	v << i << j;
 }
 
-void Composite::updateGeoData(){
+void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	// odim.updateGeoInfo(frame);
 	odim.updateGeoInfo(*this);
 
 	odim.camethod = getMethod().getName();
@@ -610,9 +611,6 @@ void Composite::updateGeoData(){
 
 	mout.attention(odim.nodes);
 
-	// if (odim.source.empty()) { // nodeMap.size() > 1){ // consider AccNUM
-
-	// ? this used to be commented
 
 	if (nodeMap.size() > 0){ // consider AccNUM
 		//const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
@@ -627,7 +625,7 @@ void Composite::updateGeoData(){
 				// odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
 			}
 			else {
-				odim.source = "Multi-national";
+				odim.source = "";
 				return;
 			}
 		}
@@ -679,7 +677,7 @@ void Composite::updateGeoData(){
 		mout.warn("Could no derive source key(s) from input metadata.", DRAIN_LOG(odim.source));
 	}
 
-	mout.attention(odim.source);
+	mout.revised(DRAIN_LOG(odim.source));
 
 }
 

@@ -940,6 +940,10 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	DRAIN_CMD_INSTALL(Cmd, Dot)();
 	linkRelatedCommands(RadarDot,Dot);
 
+	DRAIN_CMD_INSTALL(Cmd, Rect)();
+	linkRelatedCommands(Rect,Dot);
+	// TODO: marker!
+
 	// DRAIN_CMD_INSTALL(Cmd, Coords)(); // .section = HIDDEN;
 	install<CmdCoords>().section = HIDDEN;
 	install<CmdData>().section = HIDDEN;

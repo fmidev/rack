@@ -184,7 +184,7 @@ protected:
 	void updateBoundingBoxR(); //double lonLL, double latLL, double lonUR, double latUR);
 
 	/// Given BBox in geo coords [rad], adjust geo coords [deg]
-	void updateBoundingBoxD(); //double lonLL, double latLL, double lonUR, double latUR);
+	// void updateBoundingBoxD(); //double lonLL, double latLL, double lonUR, double latUR);
 
 	/// Given BBox in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale.
 	void updateBoundingBoxNat(); // double lonLL, double latLL, double lonUR, double latUR);
@@ -401,8 +401,16 @@ x	 *  \par i - horizontal image coordinate
 	}
 
 
-
-
+	inline
+	void setProjection(const Projector & proj){
+		if (proj.getEPSG() > 0){
+			projGeo2Native.setProjectionDst(proj.getEPSG());
+		}
+		else {
+			projGeo2Native.setProjectionDst(proj.getProjDef()); // variant?
+		}
+		updateProjection();
+	}
 
 	/// Sets the projection of the image as a Proj string.
 	inline

@@ -160,9 +160,11 @@ public:
 
 	/// Updates xscale, rscale and secondary Bounding Box attributes.
 	/**
+	 *   \param frame - the composite itself, of the frame of the cropped image.
+	 *
 	 *   Secondary BBOX means the minimum BBOX spanned by the data only.
 	 */
-	void updateGeoData();
+	void updateGeoData(); // const drain::image::GeoFrame & frame);
 
 	/// Node keys (like "fivan") associated with upper left corner pixel coordinates [int] of the "tile".
 	drain::VariableMap nodeMap;

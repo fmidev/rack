@@ -44,7 +44,7 @@ DRAIN_ENUM_DICT(rack::ODIM::Version) = {
 		{"RACK", rack::ODIM::RACK_EXTENSIONS},
 		{"KILOMETRES", rack::ODIM::KILOMETRES },
 };
-
+// DRAIN_ENUM_OSTREAM(rack::ODIM::Version);
 
 namespace rack {
 
@@ -63,14 +63,20 @@ void ODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
 	ACCnum = 0;
 
+
 	// TODO: consider attribs under ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW ?
 	if (initialize & ODIMPathElem::ROOT){
 		link("what:object", object = "");
-		link("what:version", version = "H5rad 2.2");
 		link("what:date", date = "");
 		link("what:time", time = "");
 		link("what:source", source = "");
 		link("how:ACCnum", ACCnum = 1); // for polar (non-ODIM-standard) and Cartesian
+		link("what:version", version);
+		for (ODIM::Version v: {ODIM::Version::ODIM_2_2, ODIM::Version::ODIM_2_3, ODIM::Version::ODIM_2_4}){
+			if (ODIM::versionFlagger.isSet(v)){
+				version = drain::StringBuilder<' '>("H5rad", drain::Enum<rack::ODIM::Version>::dict.getKey(v));
+			}
+		};
 	}
 
 	if (initialize & ODIMPathElem::DATASET){

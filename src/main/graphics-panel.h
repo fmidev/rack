@@ -83,8 +83,9 @@ public:
 		BORDER,          // Overall image border (RECT), invisible by default
 		// --
 		MOUSE,			 // A group marked for mouse event listeners
-		COORD_TRACKER,   // Area inside which mouse coordinates will be tracked.
+		MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
 		MONITOR,         // Display of interactive operations
+		SELECTOR,        // Interactive element illustrating a selection by the user
 		DATA_ARRAY,      // Image used as data array only, not to be displayed
 		// SHARED_METADATA, // Something that should not be repeated in panels.
 		// --- unused ? ---
@@ -101,6 +102,24 @@ public:
 
 	static
 	drain::image::TreeSVG & getOnLoadScript(RackContext & ctx);
+
+	/**
+	 * 	  // static
+	     Rack = {
+	     	 cls = {},
+
+	     }
+	     Rack.cls.SELECTOR = 'SELECTOR';
+	 */
+	static
+	drain::image::TreeSVG & getJavaScriptDefs(RackContext & ctx); //, const std::string & section="cls");
+
+	/// key => Rack.cls.key = 'key';
+	/**
+	 *   TODO template
+	 */
+	static
+	drain::image::TreeSVG & addJavaScripsDef(RackContext & ctx, const std::string & key, const std::string & section="cls");
 
 
 	/// returns timeformat
