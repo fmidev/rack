@@ -607,10 +607,13 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 	odim.camethod = getMethod().getName();
 
 	// Produces ...,12568,12579,bymin,dkbor,dkrom,dksin,...
-	odim.nodes = nodeMap.getKeys();
+	if (!nodeMap.empty()){
+		odim.nodes = nodeMap.getKeys();
+	}
 
 	mout.attention(odim.nodes);
 
+	// std::list<std::string> nodes;
 
 	if (nodeMap.size() > 0){ // consider AccNUM
 		//const drain::RegExp nodSyntax("^([a-z]{2})([a-z]{3}?)");
@@ -618,6 +621,7 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 		//const drain::RegExp nodSyntax("^([a-z]{5}?)$");
 		std::map<std::string,std::list<std::string> > producerMap;
 
+		// Consider keys 12514,12579,12220,sevar,sevil
 		for (const auto & entry: nodeMap){
 			if (nodSyntax.execute(entry.first) == 0){
 				// mout.attention(nodSyntax.result[2], " +", entry.first);
@@ -625,8 +629,8 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 				// odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
 			}
 			else {
-				odim.source = "";
-				return;
+				// Numeric code, like 12579
+				mout.revised<LOG_WARNING>("Could not parse NOD from '", entry.first, "'");
 			}
 		}
 
@@ -638,6 +642,7 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 				mout.info("Single-radar Cartesian: ", DRAIN_LOG(odim.source));
 			}
 			else {
+				// Pick leading 2 letters (like "fi")
 				odim.source = "ORG:" + nodSyntax.result[2] + ",CMT:National composite";  // "fikor,fikuo,fivih"
 				mout.info("National composite: ", DRAIN_LOG(odim.source));
 			}
@@ -646,7 +651,7 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 			break;
 		case 0:
 			odim.source = "Undefined";
-			mout.warn("Could no derive source key(s) from input metadata.", DRAIN_LOG(odim.source));
+			mout.warn("Could not derive source key(s) from input metadata: ", DRAIN_LOG(odim.source));
 			break;
 		default:
 			std::stringstream sstr;
@@ -663,6 +668,8 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 			mout.info("Multi-national composite: ", DRAIN_LOG(odim.source));
 		}
 
+		mout.revised(DRAIN_LOG(odim.source));
+
 		/*
 		if (nodSyntax.execute(odim.nodes) == 0){
 			odim.source = "NOD:"+nodSyntax.result[1]+",ORG:"+nodSyntax.result[1];
@@ -674,10 +681,9 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 	}
 	else {
 		//odim.source = "xx";
-		mout.warn("Could no derive source key(s) from input metadata.", DRAIN_LOG(odim.source));
+		mout.info("Composite input: ", DRAIN_LOG(odim.source), ' ', DRAIN_LOG(odim.nodes));
 	}
 
-	mout.revised(DRAIN_LOG(odim.source));
 
 }
 

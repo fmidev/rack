@@ -59,10 +59,11 @@ class GeoFrame  { //  See also
 
 public:
 
-	//typedef unsigned int icoord_t;
-
 	/// Default constructor.
-	GeoFrame(unsigned int width = 0, unsigned int height = 0);
+	GeoFrame();
+
+	///
+	GeoFrame(unsigned int width, unsigned int height);
 
 	virtual inline
 	~GeoFrame(){

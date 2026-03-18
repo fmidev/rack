@@ -221,6 +221,8 @@ int RegExp::execute(const std::string &src, T & result) const {
 
 }
 
+//#include "Type.h"
+
 } // drain
 
 

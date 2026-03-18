@@ -384,6 +384,9 @@ public:
 				//mout.log(criticality)
 				// << "too many (over "<< this->size() << ") params, run out of keys with entry=" << *pit << mout.endl;
 				if (STRICT){
+					mout.warn(DRAIN_LOG(sprinter(entries)));
+					mout.warn(DRAIN_LOG(sprinter(keys)));
+					mout.warn(DRAIN_LOG(sprinter(dst)));
 					mout.error("too many (over ", dst.size() , ") params, run out of keys with entry=" , entry );
 				}
 

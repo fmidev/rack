@@ -383,7 +383,8 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 
 	//const std::type_info & t = drain::Type::getTypeInfo('C'); // drain::Type::getTypeInfo(odimOut.type);
 	if (!cropArea.empty()){
-		mout.note("Applying cropping: bbox=", cropArea, " [pix] from ", this->accArray.getGeometry()); // this->getFrameWidth(), 'x', this->getFrameHeight());
+		mout.note("Cropping ", cropArea.getWidth(), "x", cropArea.getHeight(), " from original composite ", this->accArray.getGeometry()); // this->getFrameWidth(), 'x', this->getFrameHeight());
+		mout.info("Cropping window: (", cropArea.lowerLeft, ") (", cropArea.upperRight, ") from original composite ", this->accArray.getGeometry()); // this->getFrameWidth(), 'x', this->getFrameHeight());
 	}
 
 	const QuantityMap & qm = getQuantityMap();

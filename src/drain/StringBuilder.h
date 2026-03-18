@@ -111,6 +111,8 @@ std::ostream & operator<<(std::ostream &ostr, const StringBuilder<SEP> & strb){
 	return ostr << strb.str();
 }
 
+// DRAIN_TYPENAME(drain::RegExp);
+
 } // drain::
 
 #endif /* DRAIN_STRING_BUILDER_H_ */

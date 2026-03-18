@@ -598,37 +598,37 @@ std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
 
 // NEW
 /// Simple functor redefinition, only
-#define DRAIN_TYPENAME_STR(tname)   template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
-#define DRAIN_TYPENAME_STR_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;};
+// #define DRAIN_TYPENAME(tname)   template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
 
 // TEMPORARY FIX (fake)
 #define DRAIN_TYPENAME(tname)       template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
+#define DRAIN_TYPENAME_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;};
 
 
 /// Add a specialization for each type of those you want to support.
 //  (Unless the string returned by typeid is sufficient.)
 
 
-// DRAIN_TYPENAME_STR(uint16_t);
+// DRAIN_TYPENAME(uint16_t);
 
 
 
 
 // NEW
-DRAIN_TYPENAME_STR(char);
-DRAIN_TYPENAME_STR_t(int8);
-DRAIN_TYPENAME_STR_t(uint8);
-DRAIN_TYPENAME_STR_t(int16);
-DRAIN_TYPENAME_STR_t(uint16);
-DRAIN_TYPENAME_STR_t(int32);
-DRAIN_TYPENAME_STR_t(uint32);
-DRAIN_TYPENAME_STR_t(int64);
-DRAIN_TYPENAME_STR_t(uint64);
+DRAIN_TYPENAME(char);
+DRAIN_TYPENAME_t(int8);
+DRAIN_TYPENAME_t(uint8);
+DRAIN_TYPENAME_t(int16);
+DRAIN_TYPENAME_t(uint16);
+DRAIN_TYPENAME_t(int32);
+DRAIN_TYPENAME_t(uint32);
+DRAIN_TYPENAME_t(int64);
+DRAIN_TYPENAME_t(uint64);
 
-DRAIN_TYPENAME_STR(void);
-DRAIN_TYPENAME_STR(bool);
-DRAIN_TYPENAME_STR(float);
-DRAIN_TYPENAME_STR(double);
+DRAIN_TYPENAME(void);
+DRAIN_TYPENAME(bool);
+DRAIN_TYPENAME(float);
+DRAIN_TYPENAME(double);
 // NEWOLD
 DRAIN_TYPENAME(char *);
 DRAIN_TYPENAME(const char *);  // why const separately...?

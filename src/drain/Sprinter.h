@@ -643,9 +643,10 @@ Sprintlet<T> sprinter(const T & x, const char *arrayCaps, const char *mapCaps="{
 	return Sprintlet<T>(x, SprinterLayout(arrayCaps,mapCaps,pairCaps,stringCaps)); // copy const
 }
 
+// SprinterLayout
 template <class T>
 inline
-Sprintlet<T> sprinter(const T & x, const SprinterLayout & layout = SprinterLayout()){
+Sprintlet<T> sprinter(const T & x, const SprinterLayout & layout = Sprinter::jsonLayout){
 	return Sprintlet<T>(x, layout); // copy const
 }
 

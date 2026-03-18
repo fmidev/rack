@@ -417,7 +417,16 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 		// return false
 	}
 	else {
-		Rectangle<int> finalCropArea(0, accArray.getHeight()-1, accArray.getWidth()-1, 0);
+
+		/** Note coordinate mapping:
+		 *  GeoCoord refers to UPPER LEFT corner of a pixel.
+		 *  pix(0,0) <--> geo(xUL, yUL)
+		 *  pix(W,0) <--> geo(xUR, yUL)
+		 *  pix(0,H) <--> geo(xUL, yLR)
+		 *  pix(W,H) <--> geo(xLR, yLR)
+		 */
+		//Rectangle<int> finalCropArea(0, accArray.getHeight()-1, accArray.getWidth()-1, 0);
+		Rectangle<int> finalCropArea(0, accArray.getHeight(), accArray.getWidth(), 0);
 
 		if (cropArea == finalCropArea){
 			mout.warn("Crop area equals array scope (", finalCropArea, "), discarding it.");
@@ -437,7 +446,8 @@ void Accumulator::initDst(const AccumulationConverter & coder, Image & dst, drai
 		mout.special("Applying cropped (", cropArea ,") view of ", accArray.getGeometry());
 		const int w = ::abs(cropArea.getWidth());
 		const int h = ::abs(cropArea.getHeight());
-		dst.setGeometry(w+1, h+1);
+		//dst.setGeometry(w+1, h+1);
+		dst.setGeometry(w, h);
 		// mout.attention("Crop final geom: ", dst.getGeometry());
 
 	}

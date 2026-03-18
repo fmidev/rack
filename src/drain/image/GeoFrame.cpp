@@ -44,6 +44,13 @@ namespace image
 {
 
 
+
+
+GeoFrame::GeoFrame(): xScale(1), yScale(1) {
+	// projGeo2Native.setProjectionSrc(4326); CONSIDER?
+	projGeo2Native.setProjectionSrc("+proj=latlong +ellps=WGS84 +datum=WGS84 +type=crs");
+}
+
 GeoFrame::GeoFrame(unsigned int frameWidth,unsigned int frameHeight) :
 				xScale(1), yScale(1) //, debug(false)
 {
@@ -311,39 +318,29 @@ void GeoFrame::updateScaling()
 		projR2M.projectFwd(bBoxR.upperRight.x, bBoxR.upperRight.y, bBoxNative.upperRight.x, bBoxNative.upperRight.y);
 	}
 	*/
+	if (!geometryIsSet()){
+		mout.pending<LOG_DEBUG>("Could not set yScale/xScale before frame geometry is set.");
+		return;
+	}
 
-	//if (projR2M.isSet() && projR2M.isLongLat()){
-	if (false){
+	if (projGeo2Native.isSet() && projGeo2Native.isLongLat()){
 
 		// if (projR2M.isLongLat()){  // approximate!
 		drain::Rectangle<double> p;
 		getCenterPixel(p);
 		xScale = (p.upperRight.x-p.lowerLeft.x )/2.0 * DEG2RAD * EARTH_RADIUS * cos(DEG2RAD*(p.lowerLeft.y+p.upperRight.y)/2.0);
 		yScale = (p.lowerLeft.y -p.upperRight.y)/2.0 * DEG2RAD * EARTH_RADIUS;
-		// return (p.upperRight.x-p.lowerLeft.x )/2.0 * DEG2RAD * EARTH_RADIUS * cos(DEG2RAD*(p.lowerLeft.y+p.upperRight.y)/2.0);
-		// yScale = (pixelDeg.lowerLeft.y -pixelDeg.upperRight.y)/2.0 * DEG2RAD * EARTH_RADIUS;
-		//	}
-		/*
-			else {
-			// set metric bbox ?
-			projR2M.projectFwd(bBoxR.lowerLeft.x,  bBoxR.lowerLeft.y,  bBoxNative.lowerLeft.x,  bBoxNative.lowerLeft.y);
-			projR2M.projectFwd(bBoxR.upperRight.x, bBoxR.upperRight.y, bBoxNative.upperRight.x, bBoxNative.upperRight.y);
-			xScale = (bBoxNative.upperRight.x - bBoxNative.lowerLeft.x) / static_cast<double>(getFrameWidth());
-			yScale = (bBoxNative.upperRight.y - bBoxNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
-		}
-		*/
+
+		mout.accept<LOG_WARNING>("Lat-long projection: average scaling: ", xScale, ',', yScale, " [deg/pix]");
 
 	}
 	else {
-		if (geometryIsSet()){
-			xScale = (bBoxNative.upperRight.x - bBoxNative.lowerLeft.x) / static_cast<double>(getFrameWidth());
-			yScale = (bBoxNative.upperRight.y - bBoxNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
-		}
-		//Logger mout(__FILE__, __FUNCTION__);
-		//mout.warn() << "Trying to update scaling prior to setting projection";
+		xScale = (bBoxNative.upperRight.x - bBoxNative.lowerLeft.x) / static_cast<double>(getFrameWidth());
+		yScale = (bBoxNative.upperRight.y - bBoxNative.lowerLeft.y) / static_cast<double>(getFrameHeight());
+		mout.accept<LOG_DEBUG>("Scaling: ", xScale , ',' , yScale );
 	}
 
-	mout.warn(" scaling " , xScale , ',' , yScale );
+	// mout.warn("GeoFrame scaling " , xScale , ',' , yScale );
 
 }
 

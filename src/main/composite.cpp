@@ -615,17 +615,14 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 			composite.setBoundingBoxD(cartSrc.odim.getBoundingBoxDeg());
 		}
 		else {
-			// mout.revised<LOG_WARNING>("Metric projection: -> cartSrc.odim.getBoundingBoxNative()");
-			mout.revised<LOG_WARNING>("Metric projection: using BBOX_native (1m resolution)");
-			// const drain::FlexibleVariable & BBOX_native = cartDataSetSrc.getWhere()["BBOX_native"];
-			//drain::Rectangle<double> bboxNat;
+			//mout.revised<LOG_WARNING>("Metric projection: using BBOX_native (1m resolution)");
 			const RootData<CartesianSrc> cartRootSrc(src);
 			const drain::VariableMap & where = cartRootSrc.getWhere();
 			//std::vector<double> bboxNat;
 			std::vector<int> bboxNat;
 			where["BBOX_native"].toSequence(bboxNat, ',');
 			if (!bboxNat.empty()){
-				mout.accept<LOG_WARNING>(drain::sprinter(bboxNat));
+				mout.accept<LOG_WARNING>("Metric projection, BBOX_native=", drain::sprinter(bboxNat));
 				composite.setBoundingBoxNat(bboxNat);
 			}
 			else {
@@ -650,11 +647,6 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 
 	// At this stage, at latest, reserve memory for the accumulation array.
 	composite.allocate();
-	// mout.warn("Defined composite: " , composite );
-
-	// Update source list, time stamp etc needed also for time decay
-	// => in addCartesian()
-
 	mout.debug("Composite initialized: ", composite);
 
 	int i0,j0;
@@ -666,26 +658,7 @@ void Compositor::addCartesian(Composite & composite, const Hi5Tree & src) const 
 	composite.addCartesian(cartSrc, srcQuality, w, i0, j0);
 
 	// mout.attention("composite.odim: ", EncodingODIM(composite.odim));
-
-
 	ctx.setCurrentImages(cartSrc.data);
-	//mout.warn("composite: " , composite );
-	//drain::image::File::write(srcQuality.data, "srcQuality.png");
-
-	/*
-	if (ctx.svg.isEmpty()){
-		ctx.svg->setType(NodeSVG::SVG);
-		ctx.svg->set("width", 100);
-		ctx.svg->set("height", 200);
-	}
-
-	SourceODIM odim(cartSrc.odim.source);
-	TreeSVG & node = ctx.svg[odim.NOD];
-    node->setType(NodeSVG::RECT);
-    node->set("width",  cartSrc.odim.area.width);
-    node->set("height", cartSrc.odim.area.height);
-    node["title"]->setText(odim.NOD); //CTXX
-	*/
 
 }
 
@@ -716,9 +689,9 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
 		// mout.special("Cropping: ", cropGeo, cropGeo.isMetric() ? " [meters]": " [degrees]");
 		if (cropGeo.isMetric()){
 			if (composite.isLongLat()){
-				// mout.error("Cannot crop long-lat composite with a metric bbox (", bbox, ") ");
-				throw std::runtime_error(
-						drain::StringBuilder<>("Cannot crop long-lat composite with a metric bbox (", cropGeo,")"));
+				mout.error("Cannot crop long-lat composite with a metric bbox (", cropGeo, ") ");
+				// throw std::runtime_error(
+				//		drain::StringBuilder<>("Cannot crop long-lat composite with a metric bbox (", cropGeo,")"));
 				return;
 			}
 
@@ -771,20 +744,6 @@ void Compositor::prepareBBox(const Composite & composite, const drain::BBox & cr
  *
  */
 
-void writeWhere(const drain::GeoFrame & frame, drain::VariableMap & where){
-
-	where["BBOX"].setType(typeid(double));
-	where["BBOX"] = frame.getBoundingBoxDeg().toVector();
-
-	if (!frame.isLongLat()){
-		// Set metric composite with 1m accuracy
-		where["BBOX_native"].setType(typeid(long int));
-	}
-
-	where["BBOX_native"] = frame.getBoundingBoxNat().tuple(); //toVector();
-	// where["UR_lat"] = 1234.56789;
-}
-
 //void Compositor::extract(Composite & composite, const std::string & channels, const drain::Rectangle<double> & bbox) const {
 // void Compositor::extract(Composite & composite, const std::string & channels, const std::string & crop) const {
 void Compositor::extract(Composite & composite, const drain::image::Accumulator::FieldList & channels, const std::string & crop) const {
@@ -836,8 +795,6 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 	mout.debug("composite dst path: ", path );
 
 
-	mout.debug3("update geodata ");
-
 	const drain::Rectangle<double> & bboxDataNat = composite.getDataBBoxNat();
 	const drain::Rectangle<double> & bboxDataOverlapNat = composite.getDataOverlapBBoxNat();
 
@@ -858,24 +815,28 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		RootData<CartesianDst> dstRoot(ctx.cartesianHi5);
 
 
-		// drain::VariableMap & where = dstRoot.getWhere(); // todo: remove
+		drain::VariableMap & where = dstRoot.getWhere(); // todo: remove
+		if (!composite.isLongLat()){
+			// Set metric composite with 1m accuracy
+			where["BBOX_native"].setType(typeid(long int));
+			// Projection is the same for compositeCropped.
+		}
 
 		drain::Rectangle<int> cropImage; // Default: empty ()
+
+		//mout.attention(composite);
 
 		// Override for subComposite
 		composite.updateGeoData();
 		drain::SmartMapTools::updateValues(dstRoot.odim, composite.odim);
 
-		if (crop.empty()){
-			// composite.updateGeoData(composite); // frame
-			// composite.updateGeoData();
-		}
-		else {
+		// mout.attention(composite);
+
+		if (!crop.empty()){
 
 			// Cropping requested by user.
-
-			//drain::GeoFrame
-			Composite subComposite;
+			Composite subComposite; // todo: CompositeFrame (without frame)
+			// mout.attention("subComposite.setProjection...");
 			subComposite.setProjection(composite.getProj().getDst());
 
 			if (crop == "INPUT"){
@@ -896,8 +857,7 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 				cropBBox.assignSequence(v, false);
 				subComposite.setBoundingBoxNat(cropBBox);
 
-				mout.special("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
-
+				mout.special<LOG_INFO>("Cropping: ", cropBBox, cropBBox.isMetric() ? " [meters]": " [degrees]");
 			}
 
 			prepareBBox(composite, subComposite.getBoundingBoxNat(), cropImage);
@@ -906,23 +866,28 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 				mout.advice("crop argument should be INPUT, OVERLAP or a bounding box");
 				mout.error("crop area empty, check argument: '", crop, "' ");
 			}
-
-
-			mout.accept<LOG_NOTICE>("crop: ", cropImage, " (image coords)");
-			mout.advice<LOG_NOTICE>("Matching size: --cSize ", cropImage.getWidth(), ',', cropImage.getHeight());
+			else {
+				//mout.accept<LOG_WARNING>(DRAIN_LOG(cropImage));
+				mout.accept<LOG_NOTICE>("crop window: ", cropImage, " (image coords)");
+				mout.advice<LOG_DEBUG>("Matching size: --cSize ", cropImage.getWidth(), ',', cropImage.getHeight());
+			}
 
 			// Initialize!s (composite contains extensive meta data)
 			drain::SmartMapTools::updateValues(subComposite.odim, composite.odim);
-			mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
+			// mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
 
-			subComposite.setGeometry(cropImage.getWidth(), cropImage.getHeight());
-			//subComposite.setBoundingBoxNat(subComposite.getBoundingBoxNat());
-			mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
-			// writeWhere(subComposite, where); // becoming obsolete?
+			subComposite.setGeometry(::abs(cropImage.getWidth()), ::abs(cropImage.getHeight()));
 
 			subComposite.updateGeoData();
 			drain::SmartMapTools::updateValues(dstRoot.odim, subComposite.odim);
-			mout.revised<LOG_WARNING>(DRAIN_LOG(subComposite));
+			mout.revised<LOG_INFO>(DRAIN_LOG(subComposite));
+
+			drain::UniTuple<int,4> bboxNat(subComposite.getBoundingBoxNat());
+			mout.revised<LOG_WARNING>(DRAIN_LOG(bboxNat));
+			mout.revised<LOG_WARNING>("W ", DRAIN_LOG((bboxNat[2] - bboxNat[0])/1000.0), " km");
+			mout.revised<LOG_WARNING>("H ", DRAIN_LOG((bboxNat[3] - bboxNat[1])/1000.0), " km");
+
+			where["BBOX_native"] = subComposite.getBoundingBoxNat().tuple();
 
 		}
 
@@ -935,6 +900,8 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 		composite.extract(dstProduct, channels, encoding, cropImage);
 		encoding.clear();
+
+		mout.success<LOG_WARNING>("extracted!");
 
 		/*
 		if (!composite.legend.empty()){
@@ -962,25 +929,13 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 			how["tags"] = composite.nodeMap.toStr(':');
 
-			/*
-			where["BBOX"].setType(typeid(double));
-			where["BBOX"] = composite.getBoundingBoxDeg().toVector();
-
-			if (!composite.isLongLat()){
-				// Set metric composite with 1m accuracy
-				where["BBOX_native"].setType(typeid(long int));
-			}
-
-			where["BBOX_native"] = composite.getBoundingBoxNat().tuple(); //toVector();
-			*/
 
 			if (cropImage.empty()){
 
 				mout.revised<LOG_WARNING>("Main composite, writing auxiliary BBOX info");
 
 				drain::VariableMap & where = dstRoot.getWhere();
-				// composite.updateGeoData(composite);
-				writeWhere(composite, where);
+				where["BBOX_native"] = composite.getBoundingBoxNat().tuple();
 
 				if (!composite.isLongLat()){
 					// Set metric composite with 1m accuracy
