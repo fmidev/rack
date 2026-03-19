@@ -392,9 +392,11 @@ void CmdRadarDot::exec() const {
 				drain::svgPATH elem(localMask);
 				radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
 			}
+			// Copy this localMask to shared mask...
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
 			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+			// ... and "delete" the object.
 			localMask->setType(svg::COMMENT);
 		}
 
@@ -673,26 +675,39 @@ void CmdRadarLabel::exec() const  {
 				{"stroke-width", "0.2"},
 		});
 
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, ".DEBUG", {
+				//{"font-size", "12"},
+				{"fill", "white"},
+				{"fill-opacity", 0.1},
+				{"stroke", "red"},  // replace these with image-title etc soft transit
+				{"stroke-width", "2"},
+		});
 		// overlay.addChild()->setComment(clsNameLabel);
 
 		//drain::image::TreeSVG & rect = overlayGroup.addChild()(drain::image::svg::RECT);
-		drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
-		rect.node.addClass(drain::image::LayoutSVG::GroupType::FIXED);
-		rect.node.addClass(RackSVG::BACKGROUND_RECT);
-		drain::Point2D<int> imgPoint;
-		radarSVG.convert(0.0, 0.0, imgPoint); // radar center
-		rect.width  = 100.0;
-		rect.height = 50.0;
-		rect.x = imgPoint.x - 50.0;
-		rect.y = imgPoint.y - 25.0;
+		{
+			//drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
+			drain::svgRECT rect(overlay[RackSVG::BACKGROUND_RECT]);
+			rect.node.addClass(drain::image::LayoutSVG::GroupType::FIXED);
+			//rect.node.addClass(RackSVG::BACKGROUND_RECT);
+			rect.node.addClass("DEBUG");
+			drain::Point2D<int> imgPoint;
+			radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
+			mout.attention(DRAIN_LOG(imgPoint));
+			rect.width  = 100.0;
+			rect.height = 50.0;
+			rect.x = imgPoint.x - 50.0;
+			rect.y = imgPoint.y - 25.0;
+		}
 		//const std::string & rectId = rect.node.getId();
 
-		mout.special("formatting label");
 		// drain::StringTools::convertEscaped(label);
 
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(label, true); // convert escaped
 		const std::string formattedLabel = statusFormatter.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter); // XXX
+
+		mout.special(DRAIN_LOG(formattedLabel));
 
 
 
@@ -927,6 +942,22 @@ void CmdRect::exec() const {
 		mout.error("unknown unit: ", this->bboxUnits); // or trust false above?
 		break;
 	}
+
+	/* Tästä mallia:
+	drain::Point2D<double> coordsDeg;
+	// drain::Point2D<int> imageCoords;
+	if (drain::BBox::isMetric(coords)){
+		radarSVG.geoFrame.m2deg(coords, coordsDeg);
+		//radarSVG.geoFrame.m2pix(coords, imageCoords);
+		overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
+	}
+	else {
+		coordsDeg = coords;
+		//radarSVG.geoFrame.deg2pix(coords, imageCoords);
+	}
+	*/
+
+
 
 	RackSVG::addJavaScripsDef(ctx, "MONITOR2_BOX", "cls");
 

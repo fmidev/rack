@@ -323,7 +323,7 @@ void GeoFrame::updateScaling()
 		return;
 	}
 
-	if (projGeo2Native.isSet() && projGeo2Native.isLongLat()){
+	if (false){ //  (projGeo2Native.isSet() && projGeo2Native.isLongLat()){
 
 		// if (projR2M.isLongLat()){  // approximate!
 		drain::Rectangle<double> p;
