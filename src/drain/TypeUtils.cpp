@@ -29,10 +29,10 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
+#include <drain/TypeName.h>
 #include <cmath>
 #include <stdexcept>
 
-#include <drain/Type.h>
 #include <drain/TypeUtils.h>
 
 namespace drain {
