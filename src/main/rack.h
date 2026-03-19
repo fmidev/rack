@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(19,1,7)
+#define RACK_VERSION drain::Version<>(19,1,8)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -65,7 +65,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 19.1.7
  *  - Type/TypeName separation
  *  - Units class
- *
+ *  Release 19.1.8
+ *  - gRadarLabel, first version
  *
  *  Version 18
  *  - SVG basic command set completed

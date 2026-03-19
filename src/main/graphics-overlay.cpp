@@ -406,6 +406,147 @@ void CmdRadarDot::exec() const {
 };
 
 
+void CmdRadarLabel::exec() const  {
+
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	RadarSVG radarSVG;
+
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
+
+	// const std::string & clsNameBase = getName();
+
+
+	if (!label.empty()){
+
+		using namespace drain::image;
+
+		// const std::string clsNameLabel = clsNameBase+"_Label";
+		// const std::string & clsNameLabel = clsNameBase;
+
+		//// drain::image::TreeUtilsSVG\n drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+				//{"font-size", "12"},
+				{"fill", "red"},
+				{"stroke", "white"},  // replace these with image-title etc soft transit
+				{"stroke-width", "0.2"},
+		});
+
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, ".DEBUG", {
+				//{"font-size", "12"},
+				{"fill", "white"},
+				{"fill-opacity", 0.1},
+				{"stroke", "red"},  // replace these with image-title etc soft transit
+				{"stroke-width", "2"},
+		});
+		// overlay.addChild()->setComment(clsNameLabel);
+		drain::image::TreeSVG & curve = overlay["munDOT"](drain::image::svg::PATH);
+		//curve->addClass(DOT);
+		curve->addClass("DEBUG");
+
+		{
+			// Private scope, to call bezierElem destructor.
+			drain::svgPATH bezierElem(curve);
+			radarSVG.drawCircle(bezierElem, {0.0,50000.0});
+		}
+
+		drain::image::TreeSVG & myRect = overlay["myRect"];
+		myRect->addClass(LayoutSVG::GroupType::FIXED);
+		myRect->addClass(LayoutSVG::GroupType::NEUTRAL);
+		//myRect->setMyAlignAnchor("munDOT");
+		if (true){
+			// drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
+			drain::svgRECT rect(myRect);
+			// rect.node.addClass(drain::image::LayoutSVG::GroupType::FIXED);
+			// rect.node.addClass(RackSVG::BACKGROUND_RECT);
+
+			rect.node.addClass("DEBUG");
+			drain::Point2D<int> imgPoint;
+			radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
+			mout.attention(DRAIN_LOG(imgPoint));
+			rect.width  = 100.0;
+			rect.height = 50.0;
+			rect.x = imgPoint.x - 50.0;
+			rect.y = imgPoint.y - 25.0;
+		}
+		//const std::string & rectId = rect.node.getId();
+
+		// drain::StringTools::convertEscaped(label);
+
+		drain::StringMapper statusFormatter(RackContext::variableMapper);
+		statusFormatter.parse(label, true); // convert escaped
+		const std::string formattedLabel = statusFormatter.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter); // XXX
+
+		mout.special(DRAIN_LOG(formattedLabel));
+
+
+
+		std::list<std::string> lines;
+		drain::StringTools::split(formattedLabel, lines,'\n');
+		// const double fontSize  = 10.0;
+		// const double rowHeight = 1.2 * fontSize;
+		// double j = rowHeight * 0.5*(static_cast<double>(lines.size())-1.0);
+		for (std::string & line: lines){
+
+			drain::image::AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
+
+			if (line.empty()){
+				// TODO: allow empty line
+				continue;
+			}
+
+			std::list<std::string> parts;
+			drain::StringTools::split(line, parts, '|');
+			switch (parts.size()) {
+				case 1:
+					alignHorz.pos = AlignBase::Pos::MID;
+					break;
+				case 2:
+					alignHorz.pos = AlignBase::Pos::MAX;
+					break;
+				default:
+					mout.warn("Text contained several alignment markers '|'");
+					break;
+			}
+
+			// drain::image::TreeSVG & textMain = overlay.addChild()(drain::image::svg::TEXT);
+
+			for (const std::string & part: parts){
+				if (!part.empty()){
+					drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
+					//text->addClass(clsNameLabl, RackSVG::ElemClass::IMAGE);
+					text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+					text->addClass(LayoutSVG::GroupType::NEUTRAL);
+					text->setText(part);
+					// text->setStyle("text-anchor", textAnchor);
+					// text->setMyAlignAnchor<AlignBase::Axis::HORZ>(RackSVG::BACKGROUND_RECT);
+					text->setMyAlignAnchor("myRect");
+					text->setMyAlignAnchor<AlignBase::Axis::HORZ>("myRect");
+					text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS);
+					//text->setAlign(drain::image::AlignSVG::CENTER);
+					text->setAlign(alignHorz);
+					// Conditional
+					text->setAlign(drain::image::AlignSVG::BOTTOM,  drain::image::AlignSVG::OUTSIDE);
+					//text->setFontSize(ctx.svgPanelConf.fontSizes[1], ctx.svgPanelConf.boxHeights[1]);
+					text->setFontSize(ctx.svgPanelConf.fontSizes[1], ctx.svgPanelConf.fontSizes[1]);
+				}
+				alignHorz.pos = AlignBase::Pos::MIN;
+			}
+			// text->setHeight(10);
+			// text->setFontSize(16);
+			// j += rowHeight;
+		}
+
+	}
+
+};
+
+
+
+
 /**
  *
  *  See also: CmdGrid, CmdCartesianGrid
@@ -645,97 +786,6 @@ void CmdRadarRay::exec() const {
  *
  *
  */
-
-void CmdRadarLabel::exec() const  {
-
-	RackContext & ctx = getContext<RackContext>();
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	RadarSVG radarSVG;
-
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
-	// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
-
-	// const std::string & clsNameBase = getName();
-
-
-	if (!label.empty()){
-
-		using namespace drain::image;
-
-		// const std::string clsNameLabel = clsNameBase+"_Label";
-		// const std::string & clsNameLabel = clsNameBase;
-
-		//// drain::image::TreeUtilsSVG\n drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-				//{"font-size", "12"},
-				{"fill", "red"},
-				{"stroke", "white"},  // replace these with image-title etc soft transit
-				{"stroke-width", "0.2"},
-		});
-
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, ".DEBUG", {
-				//{"font-size", "12"},
-				{"fill", "white"},
-				{"fill-opacity", 0.1},
-				{"stroke", "red"},  // replace these with image-title etc soft transit
-				{"stroke-width", "2"},
-		});
-		// overlay.addChild()->setComment(clsNameLabel);
-
-		//drain::image::TreeSVG & rect = overlayGroup.addChild()(drain::image::svg::RECT);
-		{
-			//drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
-			drain::svgRECT rect(overlay[RackSVG::BACKGROUND_RECT]);
-			rect.node.addClass(drain::image::LayoutSVG::GroupType::FIXED);
-			//rect.node.addClass(RackSVG::BACKGROUND_RECT);
-			rect.node.addClass("DEBUG");
-			drain::Point2D<int> imgPoint;
-			radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
-			mout.attention(DRAIN_LOG(imgPoint));
-			rect.width  = 100.0;
-			rect.height = 50.0;
-			rect.x = imgPoint.x - 50.0;
-			rect.y = imgPoint.y - 25.0;
-		}
-		//const std::string & rectId = rect.node.getId();
-
-		// drain::StringTools::convertEscaped(label);
-
-		drain::StringMapper statusFormatter(RackContext::variableMapper);
-		statusFormatter.parse(label, true); // convert escaped
-		const std::string formattedLabel = statusFormatter.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter); // XXX
-
-		mout.special(DRAIN_LOG(formattedLabel));
-
-
-
-		std::list<std::string> lines;
-		drain::StringTools::split(formattedLabel, lines,'\n');
-		// const double fontSize  = 10.0;
-		// const double rowHeight = 1.2 * fontSize;
-		// double j = rowHeight * 0.5*(static_cast<double>(lines.size())-1.0);
-		for (const std::string & line: lines){
-			drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
-			//text->addClass(clsNameLabel, RackSVG::ElemClass::IMAGE);
-			text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
-			text->setText(line);
-			// text->setLocation(0.0, j);
-			text->setMyAlignAnchor<AlignBase::Axis::HORZ>(RackSVG::BACKGROUND_RECT);
-			text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS);
-			text->setAlign(drain::image::AlignSVG::CENTER);
-			text->setAlign(drain::image::AlignSVG::TOP);
-			text->setFontSize(ctx.svgPanelConf.fontSizes[1], ctx.svgPanelConf.boxHeights[1]);
-			// text->setHeight(10);
-			// text->setFontSize(16);
-			// j += rowHeight;
-		}
-
-	}
-
-};
-
 
 
 

@@ -283,12 +283,16 @@ public:
 	/// Splits and trims a given std::string to a std Sequence.
 	/**
 	 *
+	 *
 	 * \param s – string to be chopped
 	 * \param sequence –  target sequence; must implement end() and insert() operators.
 	 * \param separators – single char, array or string
 	 * \param trimChars – single char, array or string
+	 * \return count of trimchars found (not)
 	 *
 	 * Assumes that T::operator=(std::string) exists.
+	 *
+	 * If the input string starts or ends with a separator char, an empty string is inserted in the sequence.
 	 *
 	 * Given an empty std::string, returns a sequence containing an empty std::string. Hence, does not return an empty sequence.
 	 *
@@ -297,6 +301,7 @@ public:
 	template <class T, class C>
 	static
 	void split(const std::string & s, T & sequence, const C &separators, const std::string & trimChars=" \t\n");
+	// int
 
 	/// Splits and trims a given std::string to a std Sequence.
 	/*
@@ -477,7 +482,7 @@ private:
 
 };
 
-
+// TODO: consider (optional) skipping empties
 template <class T, class C>
 void StringTools::split(const std::string & str, T & sequence, const C & separators, const std::string & trimChars){
 
@@ -489,6 +494,9 @@ void StringTools::split(const std::string & str, T & sequence, const C & separat
 	std::string::size_type pos1 = 0; // Start of segment
 	std::string::size_type pos2 = n; // std::string::npos;  // End of segment (index of last char + 1)
 
+	// TODO: consider (optional) skipping empties
+	//int segmentCount=0;
+
 	if (false){ //separators.empty()){ // = no split! :-)
 
 		if (TRIM){
@@ -498,7 +506,7 @@ void StringTools::split(const std::string & str, T & sequence, const C & separat
 		else
 			appendString(sequence, str);
 
-		return;
+		return; //  0;
 	}
 	else {
 
@@ -511,15 +519,17 @@ void StringTools::split(const std::string & str, T & sequence, const C & separat
 			pos  = str.find_first_of(separators, pos);
 			if (pos == std::string::npos){
 				pos2 = n;
-				if (TRIM)
+				if (TRIM){
 					StringTools::trimScan(str, pos1, pos2, trimChars);
+				}
 				appendSubstring(sequence, str, pos1, pos2-pos1);
-				return;
+				return; //  segmentCount;
 			}
 			else {
 				pos2 = pos;
-				if (TRIM)
+				if (TRIM){
 					StringTools::trimScan(str, pos1, pos2, trimChars);
+				}
 				appendSubstring(sequence, str, pos1, pos2-pos1);
 				pos  = str.find_first_not_of(trimChars, pos+1); // if separator is space, or other also in trimChars
 				//pos  = str.find_last_not_of(trimChars, pos);
