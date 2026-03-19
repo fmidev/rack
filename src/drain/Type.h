@@ -499,13 +499,14 @@ public:
 
 	};
 
-protected:
+// protected:
 
 	/**
 	 *  \tparam T - base type
 	 *  \param  t - destination Type object
 	 */
-	struct typeSetter {
+	//static
+	struct typeSetterPROTE {
 
 		/**
 		 *  \tparam T - base type
@@ -518,6 +519,20 @@ protected:
 			target.setType<T>();
 		}
 
+	};
+
+	class typeSetter {
+	public:
+
+		/**
+		 *  \tparam S - target type
+		 *  \tparam T - type to be analyzed
+		 */
+		template <class S, class T>
+		static
+		void callback(T & target){
+			target.template setType<S>();
+		}
 	};
 
 	const std::type_info *currentType;
@@ -533,186 +548,17 @@ std::ostream & operator<<(std::ostream & ostr, const Type &t){
 }
 
 
-
-/// Default implementation
-/*
-
-*/
-template <typename T>
-struct TypeName
-{
-
-	static const std::string & str();
-
-	/*
-    static const std::string & str(){
-        return name;
-    }
-
-protected:
-
-    static const std::string name;
-	*/
-	static const std::string nameOLD;
-
-};
-
-template <typename T>
-const std::string & TypeName<T>::str(){
-	static
-	const std::string name(typeid(T).name());
-	return name;
-}
-
-/// Default implementation: name returned by std::type_info::name()
-/*
-template <typename T>
-const std::string TypeName<T>::name(typeid(T).name());
-*/
-
-
-
-/// Default implementation
-/*
-
-*/
-template <typename T>
-inline
-std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
-	ostr << t.str();
-	return ostr;
-}
-
-
-/// Name declaration, for header files.
-//#define DRAIN_TYPENAME(tname) template <>        const std::string TypeName<tname>::name
-/// Name definition, for object files.
-#define DRAIN_TYPENAME_DEF(tname) template <>    const std::string TypeName<tname>::nameOLD(#tname)
-
-//#define DRAIN_TYPENAME_DEF(tname) bool x;
-
-
-//#define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return name;}
-#define DRAIN_TYPENAME_T(cname,T)  template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return n;}}
-#define DRAIN_TYPENAME_T0(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=std::string(#cname)+'<'+drain::TypeName<T>::str()+'>'; return n;}}
-
-// NEW
-/// Simple functor redefinition, only
-// #define DRAIN_TYPENAME(tname)   template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
-
-// TEMPORARY FIX (fake)
-#define DRAIN_TYPENAME(tname)       template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
-#define DRAIN_TYPENAME_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;};
-
-
-/// Add a specialization for each type of those you want to support.
-//  (Unless the string returned by typeid is sufficient.)
-
-
-// DRAIN_TYPENAME(uint16_t);
-
-
-
-
-// NEW
-DRAIN_TYPENAME(char);
-DRAIN_TYPENAME_t(int8);
-DRAIN_TYPENAME_t(uint8);
-DRAIN_TYPENAME_t(int16);
-DRAIN_TYPENAME_t(uint16);
-DRAIN_TYPENAME_t(int32);
-DRAIN_TYPENAME_t(uint32);
-DRAIN_TYPENAME_t(int64);
-DRAIN_TYPENAME_t(uint64);
-
-DRAIN_TYPENAME(void);
-DRAIN_TYPENAME(bool);
-DRAIN_TYPENAME(float);
-DRAIN_TYPENAME(double);
-// NEWOLD
-DRAIN_TYPENAME(char *);
-DRAIN_TYPENAME(const char *);  // why const separately...?
-DRAIN_TYPENAME(std::string);
-
-// OLD
-/*
-DRAIN_TYPENAME(char);
-DRAIN_TYPENAME(unsigned char);
-DRAIN_TYPENAME(short);
-DRAIN_TYPENAME(unsigned short);
-*/
-/*
-DRAIN_TYPENAME(void);
-DRAIN_TYPENAME(bool);
-
-DRAIN_TYPENAME(int);  // see what happend
-DRAIN_TYPENAME(unsigned int);
-DRAIN_TYPENAME(long);
-DRAIN_TYPENAME(unsigned long);
-DRAIN_TYPENAME(float);
-DRAIN_TYPENAME(double);
-DRAIN_TYPENAME(char *);
-DRAIN_TYPENAME(const char *);  // why const separately...?
-DRAIN_TYPENAME(std::string);
-*/
-
-DRAIN_TYPENAME_T0(std::initializer_list, T);
-DRAIN_TYPENAME_T0(std::vector, T);
-
-/*
-template <typename T>
-struct TypeName<std::initializer_list<T> > {
-
-	static const std::string & str(){
-		static std::string name;
-		if (name.empty()){
-			name = "std::initializer_list<";
-			name += drain::TypeName<T>::str();
-			name += ">";
-			//name = drain::StringBuilder("std::initializer_list<", drain::TypeName<T>::get(), ">");
-		}
-		return name;
-	}
-
-};
-
-
-template <typename T>
-struct TypeName<std::vector<T> > {
-
-	static const std::string & str(){
-		static std::string name;
-		if (name.empty()){
-			name = "std::vector<"; // + drain::TypeName<T>::get() + ">";
-			name += drain::TypeName<T>::str();
-			name += ">";
-		}
-		return name;
-	}
-
-};
-*/
-
-/*
-namespace std {
-	template <typename K, typename V>
-	class map<K,V>;
-}
-*/
-
-
-
+#ifdef DRAIN_TYPENAME
 /// Returns the basic type (integer, float, bool, string, void) as a string.
 /**
  *  Usage:
  *  Type::call<drain::simpleName>(t)
  */
-class simpleName {
+class simpleNameOLD{
 
 public:
 
 	typedef std::string value_t;
-	// typedef const std::string & value_t;
 
 	/**
 	 *  \tparam S - type to be analyzed (argument)
@@ -721,12 +567,12 @@ public:
 	template <class S, class T>
 	static
 	T callback(){
-		//return TypeName<S>::get();
 		return TypeName<S>::str();
 	}
 
 
 };
+#endif
 
 
 

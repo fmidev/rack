@@ -33,6 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TUPLE_BASE
 #define DRAIN_TUPLE_BASE
 
+#include <drain/TypeName.h>  // TypeName
 #include <cstddef>
 #include <iostream>
 #include <sstream>
@@ -42,7 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <set>
 
 #include "StringBuilder.h"
-#include "Type.h"  // TypeName
 
 namespace drain {
 

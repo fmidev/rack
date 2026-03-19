@@ -31,9 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GEOFRAME_H_
 #define GEOFRAME_H_
 
+#include <drain/util/Units.h>
 #include "Geometry.h"
 #include "drain/util/BoundingBox.h"
-#include "drain/util/Geo.h"
 #include "drain/util/Proj6.h"  // for geographical projection of radar data bins
 
 

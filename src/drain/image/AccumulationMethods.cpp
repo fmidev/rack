@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/image/ImageFile.h>  // debugging
 #include <drain/Log.h>
-#include <drain/Type.h>
+#include <drain/TypeName.h>
 #include <drain/TypeUtils.h>
 #include "AccumulationMethods.h"
 

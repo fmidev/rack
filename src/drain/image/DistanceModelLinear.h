@@ -33,9 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
+#include <drain/TypeName.h>
 #include <math.h>
-
-#include <drain/Type.h>
 
 #include "DistanceModel.h"
 

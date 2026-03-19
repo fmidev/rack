@@ -32,7 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "drain/image/File.h"  // debugging
 
 #include <drain/Log.h>
-#include <drain/Type.h>
+#include <drain/TypeName.h>
 #include "Accumulator.h"
 
 DRAIN_ENUM_DICT(drain::image::Accumulator::FieldType) = {

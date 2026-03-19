@@ -35,12 +35,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <cstddef> // nullptr
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 #include <cmath>  // for NaN
 
 
+//#include "TypeName.h"
+//#include "TypeUtils.h" // for typesetter
 #include "Type.h"
-#include "TypeUtils.h" // for typesetter
-
 
 
 
@@ -117,7 +118,7 @@ public:
 	 */
 	inline
 	void setType(const std::type_info &t){
-		Type::call<drain::typesetter>(*this, t);
+		Type::call<drain::Type::typeSetter>(*this, t);
 	}
 
 	/// Sets pointers to the type-dependent conversion functions.

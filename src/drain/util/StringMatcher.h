@@ -37,8 +37,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 #include <stdexcept>
 
-#include <drain/Type.h>
 #include <drain/RegExp.h>
+#include <drain/TypeName.h>
 
 
 namespace drain {

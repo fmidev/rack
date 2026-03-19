@@ -772,8 +772,9 @@ public:
 
 	inline
 	Logger &operator<<(const std::type_info & type) {
-		if (level <= monitor.getVerbosity())
+		if (level <= monitor.getVerbosity()){
 			message << Type::call<simpleName>(type);
+		}
 		return *this;
 	}
 

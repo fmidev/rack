@@ -31,11 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TEXT_STYLE
 #define DRAIN_TEXT_STYLE
 
+#include <drain/TypeName.h>
 #include <iostream>
 #include <map>
 #include <set>
 
-#include "Type.h"
 //#include "Sprinter.h"
 //#include "StringBuilder.h"
 

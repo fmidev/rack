@@ -43,9 +43,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include <drain/StringTools.h>
-#include <drain/Type.h>
-
 #include <drain/Dictionary.h>
+#include <drain/TypeName.h>
 
 namespace drain {
 

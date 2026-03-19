@@ -22,59 +22,30 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
- */
+*/
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
- */
-
-//#include <algorithm>
-//#include <syslog.h>  // levels: LOG_ERROR etc.
-
-#include <drain/RegExp.h>
-#include <drain/Sprinter.h>
-#include <drain/TypeName.h>
-#include <drain/util/StringMatcher.h>
-
-namespace drain {
-
-const std::string StringMatcher::regExpSpecialChars = "^.?*[]()$"; // Notice: still missing: {:,|} (reserved for pipeline ops?)
+*/
+#ifndef DRAIN_UNITS
+#define DRAIN_UNITS
 
 
-void StringMatcher::set(const std::string & s){
-	reset();
-	isRegExp = false;
-	if (s.empty()){
-		return;
-	} // "^.?*[]()$"
-	else if (s.find_first_of(regExpSpecialChars) != std::string::npos){
-		isRegExp = true;
-		setExpression(s);
-	}
-	else {
-		isRegExp = false;
-		regExpString = s;
-	}
-}
 
-const std::string & StringMatcher::getType() const {
-	if (isRegExp)
-		return drain::TypeName<drain::RegExp>::str();
-	else
-		return drain::TypeName<std::string>::str();
-}
+namespace drain
+{
 
 
-bool StringMatcher::test(const std::string & s) const {
-	if (isRegExp){
-		return RegExp::test(s);
-	}
-	else {
-		return value == s; // string comparison
-	}
-}
+extern const double DEG2RAD;
+extern const double RAD2DEG;
 
-DRAIN_TYPENAME_DEF(StringMatcher);
+extern const int   EARTH_RADIUSi;
+extern const double EARTH_RADIUS;
 
-}  // rack::
+
+
+} // ::drain
+
+#endif // DRAIN_UNITS
+

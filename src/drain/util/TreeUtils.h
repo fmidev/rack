@@ -294,16 +294,8 @@ public:
 
 
 
-#ifdef DRAIN_TYPE_UTILS
+#ifdef DRAIN_TYPENAME
 DRAIN_TYPENAME(TreeUtils);
-/*
-template <>
-struct TypeName<TreeUtils> {
-	static const char* get(){
-		return "SuperTree";
-	}
-};
-*/
 #endif
 
 

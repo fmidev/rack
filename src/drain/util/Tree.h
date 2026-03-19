@@ -40,7 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/Log.h>
-#include <drain/Type.h>
+#include <drain/TypeName.h>
 #include <drain/TypeUtils.h>
 #include <drain/Variable.h>  // NEW 2025 to support several types of initializer_list, not only pair<char*,char*>
 

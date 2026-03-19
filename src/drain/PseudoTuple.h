@@ -42,10 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <set>
 
 #include <drain/StringBuilder.h>
-#include <drain/Type.h>  // Utils
-//   lower ==  cannot use Sprinter, as long as SprinterLayouit uses UniTuple...
-// #include <drain/VariableT.h> lower
-//#include <drain/Sprinter.h>
+#include <drain/TypeName.h>  // Utils
 #include "TupleBase.h"
 
 namespace drain {

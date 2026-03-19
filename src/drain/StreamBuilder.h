@@ -44,7 +44,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <sstream>
 
-#include "Type.h"
+#include <drain/TypeName.h>
+#include <drain/Type.h>
 
 namespace drain {
 
@@ -84,7 +85,11 @@ protected:
 	}
 
 	void append(const std::type_info & type) {
+		//#ifdef DRAIN_TYPE
 		*this << Type::call<simpleName>(type);
+		//#else
+		//*this << type.name();
+		// #endif
 		// *this << arg;
 	}
 

@@ -38,8 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <cmath> // isnan
 
 #include <drain/Log.h>
+#include <drain/TypeName.h>
 #include <drain/UniTuple.h>
-#include <drain/Type.h>
 #include <drain/util/Point.h> // for Box
 //#include "drain/util/Range.h"
 

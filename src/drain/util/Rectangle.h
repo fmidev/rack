@@ -39,12 +39,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_RECTANGLE2_H_
 
 //#include <ostream>
+#include <drain/TypeName.h>
 #include <drain/UniTuple.h>
 #include <cmath>
 #include <vector>
 
 #include <drain/util/Point.h>
-#include <drain/Type.h>
 // using namespace std;
 
 

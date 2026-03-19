@@ -29,7 +29,6 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 #include <drain/Log.h>
-#include <drain/Type.h>
 #include <drain/TypeUtils.h>
 #include <typeinfo>
 #include <stdexcept>
@@ -41,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Castable.h>
 #include <drain/CastableIterator.h>
+#include <drain/TypeName.h>
 
 #include "drain/util/Point.h"
 #include "drain/util/VariableMap.h"
