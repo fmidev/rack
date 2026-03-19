@@ -34,20 +34,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Base64.h>
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
-//#include <drain/util/TreeXML.h>
-//#include <drain/util/TreeHTML.h>
+#include <drain/util/Units.h>
+
 #include <drain/image/FilePng.h>
-//#include <drain/image/TreeSVG.h>
 #include <drain/image/TreeElemUtilsSVG.h>
-//#include <drain/image/TreeLayoutSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
 
-
-
-// #include <js/koe.h>
-
-
-//#include "radar/PolarSector.h"
 #include "graphics.h"
 #include "graphics-panel.h"
 #include "graphics-radar.h"
@@ -920,13 +912,13 @@ void CmdRect::exec() const {
 			// {"opacity", 0.5}
 	});
 	*/
-	MapUnits unit = drain::Enum<MapUnits>::dict.getValue(this->bboxUnits, false);
+	drain::Unit unit = drain::Enum<drain::Unit>::dict.getValue(this->bboxUnits, false);
 	switch (unit) {
-	case MapUnits::DEG:
+	case drain::Unit::DEGREE:
 		// break;
-	case MapUnits::M:
+	case drain::Unit::METRE:
 		break;
-	case MapUnits::PIX:
+	case drain::Unit::PIXEL:
 		selectRect->setLocation(this->bbox.lowerLeft.x, this->bbox.lowerLeft.y);
 		// mout.warn(this->bbox.getWidth(),'x', this->bbox.getHeight());
 		selectRect->setFrame(this->bbox.getWidth(), this->bbox.getHeight());
@@ -1311,12 +1303,6 @@ void CmdTestData::exec() const {
 } // namespace rack
 
 namespace drain {
-
-DRAIN_ENUM_DICT(rack::MapUnits) = {
-		DRAIN_ENUM_ENTRY(rack::MapUnits, DEG),
-		DRAIN_ENUM_ENTRY(rack::MapUnits, M),
-		DRAIN_ENUM_ENTRY(rack::MapUnits, PIX),
-};
 
 }  // namespace drain
 

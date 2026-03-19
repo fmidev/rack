@@ -31,7 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_UNITS
 #define DRAIN_UNITS
 
-
+#include "drain/Enum.h"
 
 namespace drain
 {
@@ -43,7 +43,46 @@ extern const double RAD2DEG;
 extern const int   EARTH_RADIUSi;
 extern const double EARTH_RADIUS;
 
+// Basically "extensible". Other enum lists may be used. Consider reflectivity (Z) and dBZ.
+enum Unit {
+	UNDEFINED = 0,
+	// SI units:
+	METRE, // Br.Eng.
+	RADIAN,   // degree
+	DEGREE,   // degree
+	// Other:
+	PIXEL, // screen pixel
+};
 
+class Units {
+public:
+
+
+	///
+	template <typename E=Unit>
+	static
+	E extract(const std::string & expr);
+
+
+};
+
+
+template <typename E>
+E Units::extract(const std::string & expr){
+
+	const size_t N = expr.length();
+	for (const auto & entry: Enum<E>::dict){
+		if (expr.find(entry.first, N-entry.first.length())){
+			return entry.second;
+		}
+	}
+
+	// Contract: enum type E must have an entry associated with int value zero.
+	return static_cast<E>(0);
+}
+
+
+DRAIN_ENUM_DICT(Unit);
 
 } // ::drain
 

@@ -251,11 +251,6 @@ public:
 
 };
 
-enum MapUnits {
-	PIX,
-	M,
-	DEG
-};
 
 
 
@@ -396,7 +391,7 @@ public:
 
 namespace drain {
 
-DRAIN_ENUM_DICT(rack::MapUnits);
+//DRAIN_ENUM_DICT(rack::MapUnits);
 
 }  // namespace drain
 

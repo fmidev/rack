@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/Fuzzy.h>
 #include <drain/util/Math.h>
-#include <drain/util/Geo.h>
+#include <drain/util/Units.h> // RAD2DEG
 
 
 
