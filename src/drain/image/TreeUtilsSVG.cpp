@@ -47,46 +47,6 @@ DRAIN_ENUM_DICT(TreeUtilsSVG::Roles) = {
 };
 
 
-// TreeSVG & TreeUtilsSVG::getDefaultObject(TreeSVG & root, svg::tag_t tag){
-// 	const std::string & key = Enum<svg::tag_t>::getKey(tag);
-/*
-TreeSVG & TreeUtilsSVG::getHeaderObject(TreeSVG & root, svg::tag_t tag, const std::string & key){
-
-	return UtilsXML::getHeaderObject(root, tag, key);
-
-	const std::string & finalKey = !key.empty() ? key : Enum<svg::tag_t>::getKey(tag);
-
-	if (!root.hasChild(finalKey)){
-		TreeSVG & child = root.prependChild(finalKey); // consider path type! getDefaultObject
-		child->setType(tag);
-		return child;
-	}
-	else {
-		return root[finalKey];
-	}
-
-};
-*/
-
-/// Create a new entry, unless already defined.
-/*
-
-TreeSVG & TreeUtilsSVG::ensureStyle(TreeSVG & root, const SelectXML<svg::tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
-
-	return UtilsXML::ensureStyle(root, selector, styleDef);
-
-	TreeSVG & style = getHeaderObject(root, svg::STYLE);
-
-	TreeSVG & styleEntry = style[selector];
-	if (styleEntry.empty()){
-		styleEntry = styleDef;
-		// styleEntry->setStyle(styleDef); WRONG (did not work)
-	}
-	return styleEntry;
-}
-	*/
-
-
 
 /*
 void surround(TreeSVG & group, const TreeSVG::path_elem_t & childKey){
@@ -104,17 +64,6 @@ void surround(TreeSVG & group, const TreeSVG::path_elem_t & childKey){
 
 }
 */
-
-
-
-
-
-
-
-
-
-// ---------------------------------------------------
-
 
 
 

@@ -41,6 +41,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/AlignAnchorSVG.h>
 #include <drain/util/EnumFlagger.h>
 
+#include "TreeSVG.h"
+
 namespace drain {
 
 namespace image {
@@ -144,6 +146,7 @@ protected:
 DRAIN_ENUM_DICT(image::LayoutSVG::Direction);
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
 
+DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
 
 }  // drain::
 
@@ -151,9 +154,8 @@ DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
 DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
 DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::GroupType);
 
-#include "TreeSVG.h"
 namespace drain {
-DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
+//DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
 }
 
 #endif // DRAIN_ALIGN_SVG_H_

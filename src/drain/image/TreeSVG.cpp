@@ -232,23 +232,16 @@ void NodeSVG::setAttribute(const std::string & key, const char *value){
 void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 	switch (getNativeType()) {
 		case svg::TEXT:
-			//case svg::TSPAN:
-			// elemHeight = (elemHeight>0.0) ? elemHeight : 1.5*size;
 			if (elemHeight > 0){
-				//setHeight(-elemHeight);
 				setHeight(elemHeight);
 			}
 			else if (getHeight() == 0.0){
-				//setHeight(-1.5*size);
 				setHeight(1.5*size);
 			}
 			setMargin(0.25*size);
-			// svg::coord_t
-			// transform.translate[0] = getMargin();
-			// transform.translate[1] = getHeight()-getMargin();
 			// no break
 		default:
-			setStyle("font-size", size);
+			setStyle("font-size", size, "px");
 			// elemHeight unused... warn if given?
 			break;
 	}

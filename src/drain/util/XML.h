@@ -423,12 +423,21 @@ public:
 		(*this)[key] = value; // -> handleString()
 	}
 
-	/// "Final" implementation.
+	/*
 	template <class V>
 	inline
 	void setAttribute(const std::string & key, const V & value){
 		(*this)[key] = value; // -> handleString()
 	}
+	*/
+
+	/// "Final" implementation.
+	template <class ... TT>
+	inline
+	void setAttribute(const std::string & key, const TT &... args){
+		(*this)[key] = StringBuilder<>(args...).str();
+	}
+
 
 
 	inline
@@ -537,16 +546,32 @@ public:
 	/// For element/class/id, assign ...
 	/**
 	 *
-	 */
-	template <class V>
+	template <typename ... TT>
 	inline
-	void setStyle(const std::string & key, const V & value){
+	void malli(const TT &... args) {
+		something(args...);
+	}
+	 */
+
+	/// Assing multiple values to a style.
+	/**
+	 *   Examples:
+	 *   \code
+	 *   node.setStyle("font-size", 20, "px");
+	 *   \endcode
+	 *
+	 *   TODO: handle units so that they become directly appended.
+	 */
+	template <class ... TT>
+	inline
+	void setStyle(const std::string & key, const TT &... args){
 
 		if (type == STYLE){
-			drain::Logger(__FILE__, __FUNCTION__).reject<LOG_WARNING>("Setting style of STYLE: ", key, "=", value);
+			drain::Logger(__FILE__, __FUNCTION__).reject<LOG_WARNING>("Setting style of STYLE: ", key, "=", args...);
 		}
 		else {
-			this->style[key] = value;
+			// In a variable map
+			this->style[key] = StringBuilder<>(args...).str();
 		}
 	}
 

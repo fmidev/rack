@@ -220,7 +220,9 @@ public:
 	template <class V>
 	inline
 	void set(const std::string & key, const V & value){
-		if (type == STYLE){
+
+		// if (type == STYLE){
+		if (this->isStyle()){
 			// Modify collection directly
 			drain::Logger mout(__FILE__, __FUNCTION__);
 			// Well, this should actually be ok, as it is in the standard?

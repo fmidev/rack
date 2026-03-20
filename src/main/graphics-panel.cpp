@@ -173,7 +173,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 		// Currently, image titles have no background RECT, but let's keep this for clarity.
 		style[Select(svg::TEXT, RackSVG::IMAGE_TITLE)] = {
-				{"font-size", 12.0},
+				{"font-size", "12px"},
 		};
 
 		// Date and time.
@@ -217,7 +217,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 		};
 
 		style[Select(svg::TEXT,RackSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
-				{"font-size", 12.0},
+				{"font-size", "12px"},
 				{"stroke", "none"},
 				{"fill", "white"},
 		};

@@ -182,7 +182,7 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 
 
 
-	if (!node.typeIs(svg::GROUP, svg::SVG, svg::RECT, svg::IMAGE, svg::TEXT)){
+	if (!node.typeIs(svg::GROUP, svg::SVG, svg::RECT, svg::IMAGE, svg::TEXT, svg::CIRCLE)){ // 2026/03
 		return;
 	}
 
@@ -681,7 +681,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	const bool IS_TEXT = node.typeIs(svg::TEXT);
 
 	// Elements with x and y attributes (typically declaring Upper Right corner, except for TEXT)
-	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT);
+	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT, svg::CIRCLE); // 2026/03
 
 	Box<svg::coord_t> & obox = node.getBoundingBox();
 
@@ -802,7 +802,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	const bool IS_TEXT = node.typeIs(svg::TEXT);
 
 	// Elements with x and y attributes (typically declaring Upper Right corner, except for TEXT)
-	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT);
+	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT, svg::CIRCLE); // 2026/03
 
 	svg::coord_t coord = 0;
 	AlignBase::Pos alignLoc;
