@@ -282,7 +282,7 @@ void CmdPolarBase::resolveDistance(const drain::SteppedRange<double> & ownDist, 
 		}
 	}
 
-	mout.accept<LOG_NOTICE>(DRAIN_LOG(dist));
+	mout.accept(DRAIN_LOG(dist));
 	// rescale max?
 
 };
@@ -368,8 +368,8 @@ void CmdRadarDot::exec() const {
 
 		// drain::image::TreeUtilsSVG\n
 		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-				{"fill", "red"},
-				{"stroke", "white"},
+				{"fill", "white"},
+				{"stroke", "black"},
 				{"stroke-width", 2.0},
 				// {"opacity", 0.5}
 		});
@@ -417,26 +417,32 @@ void CmdRadarLabel::exec() const  {
 
 	TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 	TreeSVG & overlay = getOverlay(overlayGroup);
-	// drain::image::TreeSVG & overlayGroup = prepareGeoGroup(ctx, radarSVG);
-
-	// const std::string & clsNameBase = getName();
 
 
 	if (!label.empty()){
 
 
-		// const std::string clsNameLabel = clsNameBase+"_Label";
-		// const std::string & clsNameLabel = clsNameBase;
-
-		//// drain::image::TreeUtilsSVG\n drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-				//{"font-size", "12"},
-				{"fill", "red"},
-				{"stroke", "white"},  // replace these with image-title etc soft transit
+		TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+				{"font-size", "12"},
+				// {"fill", "red"},
+				// {"stroke", "white"},  // replace these with image-title etc soft transit
+				{"stroke", "black"},
 				{"stroke-width", "0.2"},
+				{"stroke-opacity", "0.5"},
+				{"stroke-width", "0.3em"},
+				{"stroke-linejoin", "round"},
+				{"fill", "white"}, // debug
+				{"fill-opacity", "1"},
+				{"paint-order", "stroke"},
 		});
 
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, ".DEBUG", {
+		//
+		// mout.attention(DRAIN_LOG(style->getStyle()));
+		// drain::TreeUtils::dump(style, std::cout); //  DataTools::treeToStream); // CmdOutputTree::dataToStream);
+		//	drain::TreeUtils::dump(style["font-size"], std::cout); // , DataTools::treeToStream);
+		//mout.attention(style["font-size"]);
+
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, "DEBUG", {
 				//{"font-size", "12"},
 				{"fill", "white"},
 				{"fill-opacity", 0.1},
@@ -449,7 +455,7 @@ void CmdRadarLabel::exec() const  {
 		drain::Point2D<int> imgPoint;
 		radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
 
-		drain::image::TreeSVG & labelAnchor = overlay["labelAnchor"];
+		TreeSVG & labelAnchor = overlay["labelAnchor"];
 		labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
 		labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL);
 		labelAnchor->addClass("DEBUG");
@@ -473,34 +479,27 @@ void CmdRadarLabel::exec() const  {
 			rect.x = imgPoint.x - 10.0;
 			rect.y = imgPoint.y -  5.0;
 		}
-		//const std::string & rectId = rect.node.getId();
-
-		// drain::StringTools::convertEscaped(label);
 
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(label, true); // convert escaped
 		// mout.special(DRAIN_LOG(statusFormatter));
 
-		// ctx.getUpdatedStatusMap();
 		const std::string formattedLabel = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
-
-		// mout.special(DRAIN_LOG(ctx.getStatusMap()));
 		// mout.special(DRAIN_LOG(formattedLabel));
 
-		int fontSize=10;
+		// int fontSize=10;
+		mout.attention(drain::sprinter(style->getAttributes()));
+		int fontSize = style->get("font-size", 13);
+		mout.special(DRAIN_LOG(fontSize));
 
 		std::list<std::string> lines;
 		drain::StringTools::split(formattedLabel, lines,'\n');
-		// const double fontSize  = 10.0;
-		// const double rowHeight = 1.2 * fontSize;
-		// double j = rowHeight * 0.5*(static_cast<double>(lines.size())-1.0);
-		//labelAnchor->setHeight((fontSize*lines.size()) / 2);
 		labelAnchor->setLocation(imgPoint.x, imgPoint.y - int(fontSize*lines.size())/2);
 		labelAnchor->setFrame(0,0);
 
 		for (std::string & line: lines){
 
-			drain::image::AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
+			AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
 
 			if (line.empty()){
 				// TODO: allow empty line
@@ -522,14 +521,6 @@ void CmdRadarLabel::exec() const  {
 					break;
 			}
 
-			// drain::image::TreeSVG & textMain = overlay.addChild()(drain::image::svg::TEXT);
-			// drain::image::AlignSVG::VertAlign alignVert;
-
-			// AlignSVG::Topol vertTopol = drain::image::AlignSVG::OUTSIDE;
-			// AlignBase::Pos vertPos   = drain::image::AlignBase::Pos::MAX;
-			// AlignSVG::VertAlign vertAlign  = drain::image::AlignSVG::BOTTOM;
-			// AlignSVG::VertAlign vertAlign  = drain::image::AlignSVG::BOTTOM;
-			// vertAlign.pos = drain::image::AlignBase::Pos::MAX; //   = drain::image::AlignSVG::TOP;
 
 			CompleteAlignment<> alignVert(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 
@@ -538,17 +529,16 @@ void CmdRadarLabel::exec() const  {
 				if (!part.empty()){
 
 					drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
-					text->setFontSize(fontSize, fontSize);
+					text->setFontSize(fontSize, (15*fontSize)/10);
 					text->setText(part);
 					// drain::image::TreeSVG & text = overlay.addChild()(svg::RECT);
 					// text->setFrame(fontSize*2, fontSize);
-
-					text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+					text->addClass(this->cls);
+					//text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 					text->addClass(LayoutSVG::GroupType::NEUTRAL);
 					text->setMyAlignAnchor<AlignBase::Axis::HORZ>("labelAnchor");
-					text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS);
-					// text->setAlign(drain::image::AlignSVG::CENTER);
-					// text->setAlign(alignHorz);
+					text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS); // For the first element, this is "labelAnchor"
+
 					text->setAlign(alignHorz, drain::image::AlignSVG::OUTSIDE);
 					if (newline){
 						//text->setAlign(alignVert);
@@ -562,36 +552,10 @@ void CmdRadarLabel::exec() const  {
 					// text->setAlign(alignVert);
 					// alignVert.set(drain::image::AlignSVG::TOP, drain::image::AlignSVG::INSIDE);
 					text[svg::TITLE](svg::TITLE)->setText(part);
-					// text->setAlign(vertAlign, vertTopol);
-					// text->setAlign(drain::image::AlignSVG::BOTTOM, vertTopol);
-					// vertTopol = drain::image::AlignSVG::INSIDE;
-					// vertAlign.pos = AlignBase::Pos::MAX;
 				}
 				alignHorz.pos = AlignBase::Pos::MAX;
 			}
 
-			/*
-			for (const std::string & part: parts){
-				if (!part.empty()){
-					drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
-					//text->addClass(clsNameLabl, RackSVG::ElemClass::IMAGE);
-					text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
-					text->addClass(LayoutSVG::GroupType::NEUTRAL);
-					text->setText(part);
-					// text->setStyle("text-anchor", textAnchor);
-					// text->setMyAlignAnchor<AlignBase::Axis::HORZ>(RackSVG::BACKGROUND_RECT);
-					// text->setMyAlignAnchor("labelAnchor");
-					text->setMyAlignAnchor<AlignBase::Axis::HORZ>("labelAnchor");
-					text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS);
-					//text->setAlign(drain::image::AlignSVG::CENTER);
-					text->setAlign(alignHorz);
-					// Conditional
-					text->setAlign(drain::image::AlignSVG::BOTTOM,  drain::image::AlignSVG::OUTSIDE);
-					text->setFontSize(fontSize, 0.5*fontSize);
-				}
-				alignHorz.pos = AlignBase::Pos::MIN;
-			}
-			*/
 		}
 
 	}

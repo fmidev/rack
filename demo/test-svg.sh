@@ -71,12 +71,14 @@ function RUN_TEST(){
     # rack_cmd=${cmd//\/$TMPDIR/}
     cmd="${cmd/$DESC/$OUTFILE}"
     rack_cmd=${cmd//\\/\\$NEWLINE  }
+    rack_cmd="${rack_cmd//£/'\n'}"
     echo "${rack_cmd}" > $TMPDIR/$BASENAME.cmd
-    cmd=(`echo -e $cmd | tr -d '\\\'`)
-    #cmd=${cmd//\\/}
-    cmd="${cmd[*]}"
-    echo "# $cmd"
-    eval "${cmd}"
+    #cmd=(`echo -e $cmd | tr -d '\\\'`)
+    #cmd="${cmd[*]}"
+    #echo "# $cmd"
+    cat $TMPDIR/$BASENAME.cmd
+    #eval "${cmd}"
+    source $TMPDIR/$BASENAME.cmd
     if [ $? != 0 ]; then
 	echo "# $cmd"
 	echo "Rack command failed"
@@ -128,7 +130,21 @@ EOF
     fi
 }
 
+# NOtes:
+# Style should be nested with "'triple quotes'", because semicolon breaks the command 
 
+
+COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
+
+WRITE_DOC "Align text to each radar" 
+RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cAdd  --gRadarLabel \"\${what:date|%A, %d %B %Y}£\${NOD}|\${PLC}£\${what:time}\" '" \\ 'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5' \\   --cExtract DATA \\  --gLinkImage "'data-kiira/map-kiira.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" \\  -o composite3.png \\ -o "composite-Labels"
+
+
+WRITE_DOC "Align text to each radar, variant" 
+RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cAdd  --gRadarDot 30000 --gRadarLabel \"\${what:date|%A, %d %B %Y}£\${NOD}|\${PLC}£\${what:time}\" '" \\ 'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5' \\   --cExtract DATA \\  --gLinkImage "'data-kiira/map-kiira.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" \\  -o composite3.png \\ --gStyle .LABEL="'fill:white;stroke:forestgreen;font-size:10px'" -o "composite-Labels2"
+
+
+exit 0
 
 # --gTitles main=AUTO,groups=NONE|AUTO|ID,images=NONE
 # --gGroupId ''  # sets groups=ID
@@ -163,8 +179,6 @@ for i in RadarGrid_50000:1,15:180:240 RadarSector_radius=0:150000,azimuth=170:24
     
 done
 
-WRITE_DOC "Align text to each radar:" 
-RUN_TEST \\ --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 500,500 \\ --script "'-Q DBZH --cAdd  --gRadarDot 30000 --gRadarLabel \"\${what:date|%A, %d %B %Y}\n\${NOD}|\${PLC}\n\${what:time}\" '"    'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5'    --cExtract DATA    --gLinkImage "'data-kiira/map-kiira.png'"    --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" -o composite3.png -o 'composite-radarlabel'
 
 #exit 0
 

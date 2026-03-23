@@ -229,6 +229,11 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 	style[ClassXML(RackSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
 	style[ClassXML(RackSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
 
+	// Note: these can be accessed via:
+	/*
+	   style[ClassXML(RackSVG::IMAGE_TITLE)]->get("font-size", 10);
+	*/
+
 	return style;
 
 }
@@ -581,22 +586,24 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
  */
 void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath){ // what about prefix?
 
+	using namespace drain::image;
+
 	if (!applyInclusion(ctx, filepath)){
 		return;
 	}
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+
 	mout.debug("file path:", filepath);
 
-	//drain::image::TreeSVG & imagePanel = ctx.getImagePanelGroup(filepath); // getImagePanelGroup(ctx, filepath);
-	drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath); // getImagePanelGroup(ctx, filepath);
+	TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath); // getImagePanelGroup(ctx, filepath);
 	imagePanel->addClass(RackSVG::IMAGE_PANEL); // Add elems ^ here ^ ?
 
 	// problematic, as init value!
 	consumeAlignRequest(ctx, imagePanel);
 
-	drain::image::TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
+	TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
 	image->addClass(LayoutSVG::FIXED);
 	image->setLocation(0,0);
 	image->setFrame(src.getGeometry().area);
@@ -604,14 +611,14 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 
 
 	// Metadata:
-	drain::image::TreeSVG & metadata = imagePanel[svg::METADATA](svg::METADATA);
+	TreeSVG & metadata = imagePanel[svg::METADATA](svg::METADATA);
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
-		SourceODIM odim(src.properties.get("what:source",""));
-		metadata->set("NOD", odim.NOD);
-		metadata->set("PLC", odim.PLC);
-		mout.attention("SOURCE: ", odim);
+		SourceODIM odimSrc(src.properties.get("what:source",""));
+		metadata->set("NOD", odimSrc.NOD);
+		metadata->set("PLC", odimSrc.PLC);
+		mout.debug(DRAIN_LOG(odimSrc));
 	}
 
 	// TODO: 1) time formatting 2) priority (startdate, starttime)
@@ -634,7 +641,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 	}
 
 
-	drain::image::TreeSVG & description = image[svg::DESC](svg::DESC);
+	TreeSVG & description = image[svg::DESC](svg::DESC);
 	//description->getAttributes().importCastableMap(metadata->getAttributes());
 	description->set(metadata->getAttributes());
 	// todo: description  : prevCmdKey "what:product", "what:prodpar", "how:angles"
@@ -1057,7 +1064,10 @@ void CmdAlign::exec() const  {
 	}
 	ctx.anchorHorz = anchorHorz;
 	ctx.anchorVert = anchorVert;
-	mout.attention("new anchors: (", ctx.anchorHorz, '+', ctx.anchorVert, ')');
+
+	if (!(ctx.anchorHorz.empty() && ctx.anchorVert.empty())){
+		mout.accept<LOG_NOTICE>("new anchors: (", ctx.anchorHorz, '+', ctx.anchorVert, ')');
+	}
 
 	// Position
 	if (!position.empty()){
@@ -1065,7 +1075,7 @@ void CmdAlign::exec() const  {
 		std::list<std::string> args;
 		drain::StringTools::split(position, args, ':');
 
-		//CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
+		// CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
 		CompleteAlignment<> align(AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS);
 
 		for (const std::string & arg: args){

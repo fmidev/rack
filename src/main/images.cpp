@@ -322,8 +322,6 @@ public:
 		std::string s1;
 		std::string s2;
 		drain::StringTools::split2(ftor, s1, s2, "_");
-		//std::list<std::string> l;
-		//drain::StringTools::split(ftor, l, "_");
 
 		const drain::FunctorBank & functorBank = drain::getFunctorBank();
 
@@ -337,7 +335,12 @@ public:
 			//l.pop_front();
 
 			ftor2.setParameters(s2, '=', '_');
-			mout.special("functor: " , ftor2 );
+			if (ftor.empty()){
+				// identity functor
+			}
+			else {
+				mout.special(ftor, " -> ", DRAIN_LOG(ftor2));
+			}
 
 			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), ftor2, true);
 

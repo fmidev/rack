@@ -217,9 +217,9 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 	// Todo: also support fully Cartesian input (without single-site metadata)
 	// radarProj.setSiteLocationDeg(where["lon"], where["lat"]);
 
-	const int epsg = comp.getProj().getDst().getEPSG(); // non-standard
+	const int epsg = comp.getEPSG(); //  comp.getProj().getDst().getEPSG(); // non-standard
 	if (epsg){
-		mout.attention("EPSG found: ", epsg);
+		mout.success("EPSG found: ", epsg);
 		geoFrame.setProjectionEPSG(epsg);
 		radarProj.setProjectionDst(epsg); // TEST
 	}
