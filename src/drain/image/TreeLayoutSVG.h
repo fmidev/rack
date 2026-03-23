@@ -109,8 +109,13 @@ public:
 	void getAdjustedBBox(const NodeSVG & node, BBoxSVG & bbox) { //, bool debug = false){
 		//detectBoxNEW(group, debug);
 		bbox = node.getBoundingBox();
-		bbox.x += node.transform.translate.x;
-		bbox.y += node.transform.translate.y;
+		if (node.typeIs(svg::TEXT)){
+			bbox.width = 0;
+		}
+		else {
+			bbox.x += node.transform.translate.x;
+			bbox.y += node.transform.translate.y;
+		}
 	}
 
 	template <AlignBase::Axis AX>

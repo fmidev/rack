@@ -203,6 +203,17 @@ struct Alignment {
 		// return compare(ad) == 0;
 	}
 
+	/*
+	inline
+	Alignment<AX,A> & operator=(Alignment<AX,A> & align){
+		// axis = align.axis;
+		pos  = align.pos;
+		return *this;
+	}
+	*/
+
+
+
 
 };
 
@@ -225,7 +236,7 @@ std::ostream & operator<<(std::ostream &ostr, const Alignment<AX,V> & align){
  *   Designed to be contained by SVG elements.
  *   Considers two elements, or more specifically, the bounding boxes of two elements.
  *
- *
+ *   TODO: insert CompleteAlign above this
  */
 struct AlignSVG { // : protected Align {
 
@@ -376,6 +387,11 @@ struct AlignSVG { // : protected Align {
 		//const Alignment<> & a = Enum<Alignment<> >::getValue(align, false);
 		setAlign(a.axis, a.pos, t);
 	}
+
+	/* "TODO"
+	void setAlign(const CompleteAlignment<> & align){
+	}
+	*/
 
 	/// High-level, user friendly interface for setting the alignments for both OBJECT itself and its ANCHOR object.
 
@@ -540,9 +556,6 @@ const AlignBase::Pos & AlignSVG::getAlign(const OBJ & owner, const A & axis) con
 
 
 
-
-
-
 /// "Alternative" \e partial alignment configuration for single object. Partial means that either \c OBJECT itself or \c ANCHOR object is set.
 /**
  *  Extends Alignment with topology, \c Topol (\c INSIDE or \c OUTSIDE ).
@@ -667,6 +680,10 @@ template <typename AX, AlignBase::Axis A>
 std::ostream & operator<<(std::ostream &ostr, const CompleteAlignment<AX,A> & ad){
 	return ostr << ad.topol << '_' << ad.axis << ':' << ad.pos;
 }
+
+
+
+
 
 
 

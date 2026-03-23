@@ -22,13 +22,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-*/
+ */
 /*
 Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
-*/
- 
+ */
+
 /*
  * TreeSVG.cpp
  *
@@ -146,38 +146,38 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 	case image::svg::CTEXT:
 		break;
 	case image::svg::SVG:
-	  getMap()["width"].link(box.width); // = 0);
+		getMap()["width"].link(box.width); // = 0);
 		// link("width", box.width); // = 0);
-	  getMap()["height"].link(box.height); // = 0);
-	  getMap()["xmlns"].link(NodeSVG::svg_decl);
-	  getMap()["xmlns:svg"].link(NodeSVG::svg_decl);
-	  getMap()["xmlns:xlink"].link(NodeSVG::xlink);
+		getMap()["height"].link(box.height); // = 0);
+		getMap()["xmlns"].link(NodeSVG::svg_decl);
+		getMap()["xmlns:svg"].link(NodeSVG::svg_decl);
+		getMap()["xmlns:xlink"].link(NodeSVG::xlink);
 		break;
 	case image::svg::TITLE:
 		break;
 	case image::svg::GROUP:
-	  getMap()["data-pos"].link(box.getLocation().tuple());
-	  getMap()["data-frm"].link(box.getFrame().tuple());
+		getMap()["data-pos"].link(box.getLocation().tuple());
+		getMap()["data-frm"].link(box.getFrame().tuple());
 		break;
 	case image::svg::RECT:
-	  getMap()["x"].link(box.x = 0);
-	  getMap()["y"].link(box.y = 0);
-	  getMap()["width"].link(box.width); // = 0);
-	  getMap()["height"].link(box.height); // = 0);
+		getMap()["x"].link(box.x = 0);
+		getMap()["y"].link(box.y = 0);
+		getMap()["width"].link(box.width); // = 0);
+		getMap()["height"].link(box.height); // = 0);
 		break;
 	case image::svg::CIRCLE:
-	  getMap()["cx"].link(box.x = 0);
-	  getMap()["cy"].link(box.y = 0);
+		getMap()["cx"].link(box.x = 0);
+		getMap()["cy"].link(box.y = 0);
 		set("r", svg::coord_t(0));
 		// getMap()["r"].link(radius = 0);
 		break;
 	case image::svg::IMAGE:
-	  getMap()["x"].link(box.x = 0);
-	  getMap()["y"].link(box.y = 0);
-	  getMap()["width"].link(box.width); //  = 0);
-	  getMap()["height"].link(box.height); //  = 0);
+		getMap()["x"].link(box.x = 0);
+		getMap()["y"].link(box.y = 0);
+		getMap()["width"].link(box.width); //  = 0);
+		getMap()["height"].link(box.height); //  = 0);
 		// if (version == 1) {
-	  getMap()["xlink:href"].link(url); // text_anchor
+		getMap()["xlink:href"].link(url); // text_anchor
 		// if (version > 2.x ?) {
 		break;
 	case image::svg::PATH:
@@ -191,8 +191,8 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 		get("points").setSeparator(0);
 		break;
 	case image::svg::TEXT:
-	  getMap()["x"].link(box.x); //  = 0);
-	  getMap()["y"].link(box.y); //  = 0);
+		getMap()["x"].link(box.x); //  = 0);
+		getMap()["y"].link(box.y); //  = 0);
 		break;
 	case image::svg::TSPAN:
 		break;
@@ -217,7 +217,7 @@ bool NodeSVG::isSingular() const {
 			svg::CIRCLE,
 	);
 };
-*/
+ */
 
 /// Needed for handling units in strings, like "50%" or "640px".
 void NodeSVG::setAttribute(const std::string & key, const std::string &value){
@@ -231,19 +231,19 @@ void NodeSVG::setAttribute(const std::string & key, const char *value){
 
 void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 	switch (getNativeType()) {
-		case svg::TEXT:
-			if (elemHeight > 0){
-				setHeight(elemHeight);
-			}
-			else if (getHeight() == 0.0){
-				setHeight(1.5*size);
-			}
-			setMargin(0.25*size);
-			// no break
-		default:
-			setStyle("font-size", size, "px");
-			// elemHeight unused... warn if given?
-			break;
+	case svg::TEXT:
+		if (elemHeight > 0){
+			setHeight(elemHeight);
+		}
+		else if (getHeight() == 0.0){
+			setHeight(1.5*size);
+		}
+		setMargin(0.25*size);
+		// no break
+	default:
+		setStyle("font-size", size, "px");
+		// elemHeight unused... warn if given?
+		break;
 	}
 }
 
@@ -261,7 +261,7 @@ void NodeSVG::swapSVG(NodeSVG & node){
 	myAnchorVert.swap(node.myAnchorVert);
 	defaultAnchorHorz.swap(node.defaultAnchorHorz);
 	defaultAnchorVert.swap(node.defaultAnchorVert);
-	*/
+	 */
 };
 
 void NodeSVG::updateAlign(){
@@ -284,13 +284,13 @@ void NodeSVG::updateAlign(){
 	if ((!myAnchorHorz.empty()) || (!myAnchorVert.empty())){
 
 		if (myAnchorHorz == myAnchorVert){
-		  this->getMap()["data-anchor"].link(myAnchorHorz.str());
+			this->getMap()["data-anchor"].link(myAnchorHorz.str());
 		}
 		else if (!myAnchorHorz.empty()){
-		  this->getMap()["data-anchorHorz"].link(myAnchorHorz.str());
+			this->getMap()["data-anchorHorz"].link(myAnchorHorz.str());
 		}
 		else if (!myAnchorVert.empty()){
-		  this->getMap()["data-anchorVert"].link(myAnchorVert.str());
+			this->getMap()["data-anchorVert"].link(myAnchorVert.str());
 		}
 
 	}
@@ -302,13 +302,13 @@ void NodeSVG::updateAlign(){
 	if ((!defaultAnchorHorz.empty()) || (!defaultAnchorVert.empty())){
 
 		if (defaultAnchorHorz == defaultAnchorVert){
-		  this->getMap()["data-anchorDefault"].link(defaultAnchorHorz.str());
+			this->getMap()["data-anchorDefault"].link(defaultAnchorHorz.str());
 		}
 		else if (!defaultAnchorHorz.empty()){
-		  this->getMap()["data-anchorHorzDefault"].link(defaultAnchorHorz.str());
+			this->getMap()["data-anchorHorzDefault"].link(defaultAnchorHorz.str());
 		}
 		else if (!defaultAnchorVert.empty()){
-		  this->getMap()["data-anchorVertDefault"].link(defaultAnchorVert.str());
+			this->getMap()["data-anchorVertDefault"].link(defaultAnchorVert.str());
 		}
 
 	}
@@ -333,7 +333,7 @@ template <> // for K (path elem arg)
 bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
 	return hasChild(Enum<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
 }
-*/
+ */
 
 /// Set the type.
 /*
@@ -342,7 +342,7 @@ template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
 	return UtilsXML::setType(*this, type);
 }
-*/
+ */
 
 /// Automatic conversion of element type (enum value) to a string.
 /**
@@ -354,7 +354,7 @@ template <> // for K (path elem arg)
 image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
 	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
 }
-*/
+ */
 
 
 /// Automatic conversion of element type (enum value) to a string.
@@ -367,7 +367,7 @@ template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
 	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
 }
-*/
+ */
 
 /*
 template <> // for T (Tree class)
@@ -389,7 +389,7 @@ template <> // for K (path elem arg)
 const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const {
 	return (*this)[cls.strPrefixed()];
 }
-*/
+ */
 
 }  // drain::
 

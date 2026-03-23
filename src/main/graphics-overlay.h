@@ -235,7 +235,8 @@ protected:
 public:
 
 	CmdRadarLabel() : CmdPolarBase(__FUNCTION__, "Draw circle describing the radar range.", LABEL) {
-		getParameters().link("label", label, "string, supporting variables like ${where:lon}, ${NOD}, ${PLC}");
+		getParameters().separator = 0;
+		getParameters().link("label", label, "string, supporting variables like ${where:lon}, ${NOD}, ${PLC}"); //.setSeparator(0);
 		//getParameters().link("azimuth", azimuthDegrees.tuple(), "step:start:end (degrees)").fillArray = false;
 	};
 

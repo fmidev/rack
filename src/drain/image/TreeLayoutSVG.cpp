@@ -52,8 +52,6 @@ void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 
 	//warn("nesting SVG elem not handled");
 
-	// typedef svg::tag_t tag_t;
-
 	if (group->typeIs(svg::GROUP, svg::SVG)){
 
 		BBoxSVG bbox; // for <svg>
@@ -282,7 +280,9 @@ void CoordSpan<AlignBase::Axis::HORZ>::copyFrom(const NodeSVG & node){
 	const BBoxSVG & bbox = node.getBoundingBox();
 	if (bbox.isDefined()){
 		CoordSpan<AlignBase::Axis::HORZ>::copyFrom(bbox);
-		pos += node.transform.translate.x;
+		if (!node.typeIs(svg::TEXT)){
+			pos += node.transform.translate.x;
+		}
 	}
 };
 
@@ -292,7 +292,9 @@ void CoordSpan<AlignBase::Axis::VERT>::copyFrom(const NodeSVG & node){
 	const BBoxSVG & bbox = node.getBoundingBox();
 	if (bbox.isDefined()){
 		CoordSpan<AlignBase::Axis::VERT>::copyFrom(bbox);
-		pos += node.transform.translate.y;
+		if (!node.typeIs(svg::TEXT)){
+			pos += node.transform.translate.y;
+		}
 	}
 };
 
@@ -386,8 +388,13 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 	std::string id = NodePrinter(node).str();
 	// mout.note("NODE: ", id);
 
+	// Step 1: determine the anchor span
 	if (anchorElem.isPrevious() || !anchorElem.isSet()){
 		// using previous, given through argument anchorSpan
+		if (AX==AlignBase::Axis::VERT && !node.ctext.empty()){
+			// mout.note("Using PREVIOUS/UNSET ", anchorSpan, " of '",  NodePrinter(group).str(), "' for Aligning: ", node.ctext);
+		}
+
 	}
 	else if (anchorElem.isNone()){
 
@@ -430,10 +437,15 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 		mout.error("program error - illegal (", AX, ") anchor [", anchorElem, "] requested for ", id);
 	}
 
+
+	// Step 2: apply the determined span.
 	if (anchorSpan.isDefined()){
 		if (!anchorElem.isNone()){ // unless exclusively denied.
 			// mout.note("Using span(", AX, ") = ", anchorSpan, " for Aligning: ", id);
-			// mout.note("Using ", anchorSpan, " of '",  anchorElem, "' for Aligning: ", id);
+			if (AX==AlignBase::Axis::VERT && !node.ctext.empty()){
+				// mout.note("Using ", anchorSpan, " of '",  anchorElem, "' for Aligning: ", node.ctext);
+			}
+
 			realignObject(node, anchorSpan);
 			// mout.accept<LOG_NOTICE>("Current COMPOUND bbox: ", group->getBoundingBox());
 			// mout.accept<LOG_NOTICE>("Current span ", AX, ": ", anchorSpan);
@@ -457,7 +469,7 @@ std::ostream & operator<<(std::ostream & ostr, const drain::image::TransformSVG 
  *   Aligns each object which isAligned()
  *
  */
-void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -466,15 +478,8 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 		return;
 	}
 
-
-	// mout.attention("ACCEPT:", object->getTag());
-	// mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", group.data); //, object->getId(), " -> ", object->getBoundingBox());
-
-
-	// mout.pending<LOG_NOTICE>("start: extensiveBBox ", compoundBBox, " obj=", group.data);
-
 	// Starting point (indeed): origin.
-	// Basic idea: Stack-align objects on a "blanche", and finally adjust group if needed.
+	// Basic idea: Stack-align objects on a separate "board" group, and finally move the board if needed.
 
 
 	/// Ideally, each object (graphic element or compound object) should:
@@ -487,12 +492,7 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 	 *
 	 */
 
-	// std::set<TreeSVG::path_elem_t>  aligned;
-	// TreeSVG::path_elem_t anchorHorzRequest;
-	// TreeSVG::path_elem_t anchorVertRequest;
-
 	// std::list<TreeSVG::path_elem_t> alignWaitingForCollectiveBBox;
-
 
 	for (TreeSVG::pair_t & entry: group){
 
@@ -511,7 +511,7 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 		}
 		else { // COMPOUND - or require detectBox being already calculated?
 			// Unused at the moment?
-			mout.attention("detecting bbox of ", node);
+			mout.attention("COMPOUND - detecting bbox of ", node);
 			detectBox(entry.second, true); // only
 		}
 	}
@@ -526,9 +526,10 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 	// Future option / Iterative loop starts here
 
 	// Initial anchor box is actually just a point (0,0)
-	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz(0, 0);
+	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz(0, 0); // rename collective/compound ?
 	CoordSpan<AlignBase::Axis::VERT> anchorSpanVert(0, 0);
 
+	// mout.special("VERT: START");
 	for (TreeSVG::pair_t & entry: group){
 
 		NodeSVG & node = entry.second.data;
@@ -541,10 +542,15 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 			// skip moving/translating
 		}
 		else if (node.isAligned()){
-			// if (node.getMyAlignAnchor<AlignBase::HORZ>().)
+			// Horz
 			adjustLocation(group, node, anchorSpanHorz);
 			// if false (has store HORZ request) skip?
+			if (!node.ctext.empty()){
+				// mout.attention("Aligning: ", node.ctext, " with vert ", anchorSpanVert);
+			}
+			// Vert
 			adjustLocation(group, node, anchorSpanVert);
+			// mout.special("VERT: mid ", anchorSpanVert);
 		}
 
 		/*
@@ -572,8 +578,12 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 		else {
 			// Save the last one
 			anchorSpanHorz.copyFrom(node); // adjusted by transform.x
+			// mout.special("VERT: möd ", anchorSpanVert, " copying from: ", node.getBoundingBox());
 			anchorSpanVert.copyFrom(node); // adjusted by transform.y
+			// mout.special("VERT: mäd ", anchorSpanVert);
 		}
+
+		//mout.special("VERT: önd ", anchorSpanVert);
 
 
 		if (!node.hasClass(LayoutSVG::INDEPENDENT)){
@@ -597,6 +607,7 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){ //, const Point2D<svg::coord_t>
 			// mout.accept<LOG_NOTICE>("COMPOUND BBOX, now ", compoundBBox, " now, after: ", NodePrinter(node).str());
 		}
 
+		// mout.special("VERT: end ", anchorSpanVert);
 
 	}
 	// mout.accept<LOG_NOTICE>("compoundBBox   end:", group->getBoundingBox(), " obj=", group.data);
@@ -795,7 +806,6 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
  */
 template <>
 void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axis::VERT> & anchorSpan){
-// void TreeLayoutSVG::realignObjectVertNEW(NodeSVG & node, const Box<svg::coord_t> & anchorBoxVert){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -807,8 +817,8 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	svg::coord_t coord = 0;
 	AlignBase::Pos alignLoc;
 
-	// STEP 1: derive reference point at the ANCHOR
 
+	// STEP 1: derive reference point at the ANCHOR
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
@@ -838,8 +848,11 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	Box<svg::coord_t> & obox = node.getBoundingBox();
 
 	if (IS_TEXT){
-		coord += node.getHeight();
-		node.transform.translate.y = -node.getMargin();
+		// Treat a TEXT just like a RECT starting at upper left corner – so push it down by height.
+		//coord += node.getHeight();
+		// mout.attention("Adjusting translate y ", node.transform.translate.y, " -> ", -node.getMargin());
+		// This will stay
+		node.transform.translate.y = node.getHeight() - node.getMargin();
 	}
 
 	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){

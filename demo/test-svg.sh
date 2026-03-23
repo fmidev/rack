@@ -163,6 +163,9 @@ for i in RadarGrid_50000:1,15:180:240 RadarSector_radius=0:150000,azimuth=170:24
     
 done
 
+WRITE_DOC "Align text to each radar:" 
+RUN_TEST \\ --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 500,500 \\ --script "'-Q DBZH --cAdd  --gRadarDot 30000 --gRadarLabel \"\${what:date|%A, %d %B %Y}\n\${NOD}|\${PLC}\n\${what:time}\" '"    'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5'    --cExtract DATA    --gLinkImage "'data-kiira/map-kiira.png'"    --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" -o composite3.png -o 'composite-radarlabel'
+
 #exit 0
 
 WRITE_DOC "Align images horizontally (default):" 
@@ -259,6 +262,7 @@ for i in RadarGrid_50000:1,15:180:540 RadarSector_radius=0:150000; do
 #    RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --g$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "'composite-$CMD.svg'"  
     
 done
+
 
 
 ls -1t ${OUTFILES[*]//.png/.cmd}

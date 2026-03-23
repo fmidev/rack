@@ -611,6 +611,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 		SourceODIM odim(src.properties.get("what:source",""));
 		metadata->set("NOD", odim.NOD);
 		metadata->set("PLC", odim.PLC);
+		mout.attention("SOURCE: ", odim);
 	}
 
 	// TODO: 1) time formatting 2) priority (startdate, starttime)

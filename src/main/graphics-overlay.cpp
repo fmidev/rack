@@ -446,6 +446,8 @@ void CmdRadarLabel::exec() const  {
 
 
 		// TODO: group for all (font size etc)
+		drain::Point2D<int> imgPoint;
+		radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
 
 		drain::image::TreeSVG & labelAnchor = overlay["labelAnchor"];
 		labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
@@ -454,8 +456,8 @@ void CmdRadarLabel::exec() const  {
 		//labelAnchor->setMyAlignAnchor("munDOT");
 		if (false){
 			drain::svgCIRCLE circle(labelAnchor);
-			circle.cx = 0;
-			circle.cy = 0;
+			circle.cx = imgPoint.x;
+			circle.cy = imgPoint.y;
 			circle.r = 10.0;
 			// svgPATH has no "natural" origin...
 			// drain::svgPATH bezierElem(labelAnchor);
@@ -465,10 +467,8 @@ void CmdRadarLabel::exec() const  {
 			// drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
 			drain::svgRECT rect(labelAnchor);
 			// rect.node.addClass(RackSVG::BACKGROUND_RECT);
-			drain::Point2D<int> imgPoint;
-			radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
-			mout.attention(DRAIN_LOG(imgPoint));
-			rect.width  = 20.0;
+			// mout.attention(DRAIN_LOG(imgPoint));
+			rect.width  = 5.0;
 			rect.height = 10.0;
 			rect.x = imgPoint.x - 10.0;
 			rect.y = imgPoint.y -  5.0;
@@ -479,20 +479,24 @@ void CmdRadarLabel::exec() const  {
 
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(label, true); // convert escaped
-		mout.special(DRAIN_LOG(statusFormatter));
+		// mout.special(DRAIN_LOG(statusFormatter));
 
-		const std::string formattedLabel = statusFormatter.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter); // XXX
+		// ctx.getUpdatedStatusMap();
+		const std::string formattedLabel = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
 
-		mout.special(DRAIN_LOG(ctx.getStatusMap()));
-		mout.special(DRAIN_LOG(formattedLabel));
+		// mout.special(DRAIN_LOG(ctx.getStatusMap()));
+		// mout.special(DRAIN_LOG(formattedLabel));
 
-		int fontSize=20;
+		int fontSize=10;
 
 		std::list<std::string> lines;
 		drain::StringTools::split(formattedLabel, lines,'\n');
 		// const double fontSize  = 10.0;
 		// const double rowHeight = 1.2 * fontSize;
 		// double j = rowHeight * 0.5*(static_cast<double>(lines.size())-1.0);
+		//labelAnchor->setHeight((fontSize*lines.size()) / 2);
+		labelAnchor->setLocation(imgPoint.x, imgPoint.y - int(fontSize*lines.size())/2);
+		labelAnchor->setFrame(0,0);
 
 		for (std::string & line: lines){
 
@@ -513,28 +517,31 @@ void CmdRadarLabel::exec() const  {
 					alignHorz.pos = AlignBase::Pos::MIN;
 					break;
 				default:
+					alignHorz.pos = AlignBase::Pos::MIN;
 					mout.warn("Text contained several alignment markers '|'");
 					break;
 			}
 
 			// drain::image::TreeSVG & textMain = overlay.addChild()(drain::image::svg::TEXT);
-			drain::image::AlignSVG::VertAlign alignVert;
+			// drain::image::AlignSVG::VertAlign alignVert;
 
 			// AlignSVG::Topol vertTopol = drain::image::AlignSVG::OUTSIDE;
 			// AlignBase::Pos vertPos   = drain::image::AlignBase::Pos::MAX;
 			// AlignSVG::VertAlign vertAlign  = drain::image::AlignSVG::BOTTOM;
+			// AlignSVG::VertAlign vertAlign  = drain::image::AlignSVG::BOTTOM;
+			// vertAlign.pos = drain::image::AlignBase::Pos::MAX; //   = drain::image::AlignSVG::TOP;
+
+			CompleteAlignment<> alignVert(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+
 			bool newline=true;
 			for (const std::string & part: parts){
 				if (!part.empty()){
-					/*
+
 					drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
-					text->setFontSize(fontSize, 0.5*fontSize);
+					text->setFontSize(fontSize, fontSize);
 					text->setText(part);
-
-					*/
-
-					drain::image::TreeSVG & text = overlay.addChild()(svg::RECT);
-					text->setFrame(fontSize*2, fontSize);
+					// drain::image::TreeSVG & text = overlay.addChild()(svg::RECT);
+					// text->setFrame(fontSize*2, fontSize);
 
 					text->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 					text->addClass(LayoutSVG::GroupType::NEUTRAL);
@@ -544,12 +551,16 @@ void CmdRadarLabel::exec() const  {
 					// text->setAlign(alignHorz);
 					text->setAlign(alignHorz, drain::image::AlignSVG::OUTSIDE);
 					if (newline){
+						//text->setAlign(alignVert);
 						text->setAlign(drain::image::AlignSVG::BOTTOM, drain::image::AlignSVG::OUTSIDE);
+						//text->setAlign(alignVert., drain::image::AlignSVG::OUTSIDE);
 						newline = false;
 					}
 					else {
 						text->setAlign(drain::image::AlignSVG::TOP, drain::image::AlignSVG::INSIDE);
 					}
+					// text->setAlign(alignVert);
+					// alignVert.set(drain::image::AlignSVG::TOP, drain::image::AlignSVG::INSIDE);
 					text[svg::TITLE](svg::TITLE)->setText(part);
 					// text->setAlign(vertAlign, vertTopol);
 					// text->setAlign(drain::image::AlignSVG::BOTTOM, vertTopol);

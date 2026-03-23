@@ -382,7 +382,7 @@ public:
 	void setMargin(T w){
 		getMap()["data-margin"].link(box.width = w);
 		// link("data-margin", box.width);
-		box.width = w;
+		// box.width = w;
 	}
 
 	/// Get margin of a TEXT element (non-standard).
@@ -403,8 +403,7 @@ public:
 	inline
 	void setHeight(T h){
 		if (typeIs(svg::TEXT)){
-			//link("data-height", box.height);
-			getMap()["data-height"].link(box.height = h);
+			getMap()["data-height"].link(box.height);
 		}
 		box.height = h;
 	}
@@ -441,14 +440,8 @@ protected:
 	virtual
 	void updateAlign() override;
 
-	//drain::Box<coord_t> box;
+	// TODO: allowedUnits drain::Units
 	BBoxSVG box;
-	// consider:
-	// bool x_PERCENTAGE = false;
-	// bool y_PERCENTAGE = false;
-	// svg:
-
-	// int radius = 0;
 
 };
 

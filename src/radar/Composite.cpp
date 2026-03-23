@@ -638,8 +638,18 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 		case 1:
 			// std::stringstream sstr("National (");
 			if (producerMap[nodSyntax.result[2]].size()==1){
-				odim.source = "NOD:" + nodSyntax.result[1] + ",ORG:" + nodSyntax.result[2] + ",CMT:Single-radar";
-				mout.info("Single-radar Cartesian: ", DRAIN_LOG(odim.source));
+				// mout.attention(DRAIN_LOG(nodSyntax));
+				// At this point, source is something like:
+				// odim.source=WMO:02975,RAD:FI42,PLC:Vantaa,NOD:fivan
+				mout.revised<LOG_NOTICE>("Single-radar Cartesian, keeping metadata: ", DRAIN_LOG(odim.source));
+				/*
+				SourceODIM odim(odim.source);
+				if (odim.CMT.empty()){
+					odim.CMT = "Single-radar Cartesian";
+				}
+				*/
+				// odim.source = "NOD:" + nodSyntax.result[1] + ",ORG:" + nodSyntax.result[2] + ",CMT:Single-radar";
+				// mout.info("Single-radar Cartesian2: ", DRAIN_LOG(odim.source));
 			}
 			else {
 				// Pick leading 2 letters (like "fi")

@@ -298,21 +298,15 @@ public:
 		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[RackSVG::SIDE_PANEL](svg::GROUP);
 		group->setId(value);
 		group->addClass(RackSVG::SIDE_PANEL);
-		//group->setAlignAnchor(RackSVG::BACKGROUND_RECT);
 
 		RackSVG::consumeAlignRequest(ctx, group);
 
-
+		/*
 		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
 		rect->addClass(RackSVG::ElemClass::SIDE_PANEL);
 		rect->setWidth(frame.width);
 		rect->setHeight(frame.height);
-		/*
-		 does not work over
-		rect->setAlignAnchorVert("*");
-		rect->setAlign(AlignSVG::VERT_FILL);
-		 */
-		// rect->setAlign(AlignSVG::VERT_FILL);
+		*/
 
 		static std::string HEADER_RECT("headerRect");
 		drain::VariableMap & status = ctx.getStatusMap();
@@ -323,8 +317,9 @@ public:
 
 		{
 			rect2->addClass(RackSVG::ElemClass::SIDE_PANEL);
-			rect2->setMyAlignAnchor(RackSVG::BACKGROUND_RECT);
-			rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
+			//rect2->setMyAlignAnchor(RackSVG::BACKGROUND_RECT);
+			//rect2->setAlign(AlignSVG::TOP, AlignSVG::HORZ_FILL);
+			rect2->setWidth(frame.width);
 			rect2->setHeight(120);
 
 			drain::image::TreeSVG & text = group.addChild()(svg::TEXT);
@@ -372,33 +367,59 @@ public:
 			//time->setAlign(AlignSVG::CENTER);
 		}
 
+
+		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
+		rect->addClass(RackSVG::ElemClass::SIDE_PANEL);
+		// rect->setWidth(frame.width);
+		// rect->setHeight(frame.height);
+		rect->setMyAlignAnchor(HEADER_RECT);
+		rect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+		rect->setAlign(AlignSVG::HORZ_FILL);
+
 		std::string anchorVert(HEADER_RECT);
 
 		// "where:BBOX",
 		// svg::coord_t rotate = 0.0;
+		int lineCount = 0;
+		const int lineHeight = conf.boxHeights[1];
 		for (const auto key: {"what:object", "what:product", "what:prodpar", "what:quantity", "how:angles", "how:lowprf", "how:hiprf",  "where:EPSG"}){
 
 			std::string value = status.get(key, "");
 			if (!value.empty()){
-				// drain::image::TreeSVG & t = addTextElem(group, key);
+
+				++lineCount;
 
 				drain::image::TreeSVG & tkey = group[key](svg::TEXT);
 				tkey->setId(key);
 				tkey->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
 				tkey->setMyAlignAnchor<AlignBase::VERT>(anchorVert);
 				anchorVert.clear();
-				tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+				// tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+				// rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
+				tkey->setAlign(AlignSVG::Owner::ANCHOR, AlignBase::HORZ, AlignBase::Pos::MID);
+				tkey->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::MAX);
+				// tkey->setAlign(AlignSVG::Owner::OBJECT, AlignSVG::RIGHT);
+
 				tkey->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 				tkey->addClass(RackSVG::ElemClass::SIDE_PANEL);
-				tkey->setFontSize(conf.fontSizes[2], conf.boxHeights[1]);
-				tkey->setStyle("fill", "darkgray");
-				tkey->setText(key);
+				tkey->setStyle("fill", "gray");
+
+				std::string groupName, subkey;
+				if (drain::StringTools::split2(key, groupName, subkey, ':')){
+					tkey->setFontSize(conf.fontSizes[2], lineHeight);
+					tkey->setText(subkey);
+				}
+				else {
+					tkey->setFontSize(conf.fontSizes[1], lineHeight);
+					tkey->setText(key);
+				}
 
 				drain::image::TreeSVG & tval = group[tkey->getId()+"Value"](svg::TEXT);
-				tval->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
-				tval->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
-				tval->setMyAlignAnchor<AlignBase::VERT>(key);
-				tval->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
+				// tval->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
+				// tval->setAlign(AlignSVG::RIGHT, AlignSVG::INSIDE);
+				// tval->setMyAlignAnchor<AlignBase::VERT>(key);
+				tval->setAlign(AlignSVG::LEFT);
+				tval->setAlign(AlignSVG::BOTTOM); // , AlignSVG::INSIDE);
 				tval->addClass(RackSVG::ElemClass::SIDE_PANEL);
 				tval->setFontSize(conf.fontSizes[1], conf.boxHeights[1]);
 
@@ -416,10 +437,11 @@ public:
 			}
 		}
 
+		rect->setHeight(lineCount * lineHeight + 5);
 
 	}
 
-	// , const drain::VariableMap & vmap
+	/*
 	drain::image::TreeSVG & addTextElem(drain::image::TreeSVG & group, const std::string & key) const {
 		TreeSVG & t = group[key](svg::TEXT);
 		// t->addClass(RackSVG::ElemClass::SIDE_PANEL);
@@ -429,7 +451,7 @@ public:
 		t->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
 		return t;
 	}
-
+	*/
 };
 
 class CmdPanelTest : public drain::SimpleCommand<std::string> {
