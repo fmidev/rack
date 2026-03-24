@@ -80,7 +80,7 @@ $(function() {
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classdrain_1_1Type-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Type Class Reference</div></div>
 </div><!--header-->
@@ -95,7 +95,9 @@ $(function() {
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1Type_1_1isEnum.html">isEnum</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1Type_1_1typeSetter.html">typeSetter</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Type_1_1typeSetter.html">typeSetter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1Type_1_1typeSetterPROTE.html">typeSetterPROTE</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -178,8 +180,8 @@ static const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bot
 static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStreamFull</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1Type.html">Type</a> &amp;t)</td></tr>
 <tr class="separator:a821442e57a6bea7c8a4a1dab186661a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
 <tr class="memitem:acb459773fc1b47d1967e9cefdc5a4200" id="r_acb459773fc1b47d1967e9cefdc5a4200"><td class="memItemLeft" align="right" valign="top"><a id="acb459773fc1b47d1967e9cefdc5a4200" name="acb459773fc1b47d1967e9cefdc5a4200"></a>
 const std::type_info *&#160;</td><td class="memItemRight" valign="bottom"><b>currentType</b></td></tr>
 <tr class="separator:acb459773fc1b47d1967e9cefdc5a4200"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -346,7 +348,7 @@ template&lt;class F , class T &gt; </div>
   </table>
   </dd>
 </dl>
-<p>Example struct F: </p><div class="fragment"><div class="line"><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1typesetter.html">typesetter</a> {</div>
+<p>Example struct F: </p><div class="fragment"><div class="line"><span class="keyword">class </span>typesetter {</div>
 <div class="line"><span class="keyword">public</span>:</div>
 <div class="line">  <span class="comment">// param S - target type</span></div>
 <div class="line">  <span class="comment">// param T - type to be analyzed</span></div>
@@ -358,7 +360,6 @@ template&lt;class F , class T &gt; </div>
 <div class="line">};</div>
 <div class="line"> </div>
 <div class="line">Type::call&lt;typesetter&gt;(obj, <span class="keyword">typeid</span>(<span class="keywordtype">double</span>));</div>
-<div class="ttc" id="aclassdrain_1_1typesetter_html"><div class="ttname"><a href="classdrain_1_1typesetter.html">drain::typesetter</a></div><div class="ttdoc">Utility for implementing setType(const std::type_info &amp;t) in classes supporting setType&lt;T&gt;().</div><div class="ttdef"><b>Definition</b> TypeUtils.h:345</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

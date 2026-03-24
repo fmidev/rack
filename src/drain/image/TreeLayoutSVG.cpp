@@ -235,22 +235,22 @@ void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, 
 
 	if (orientation == drain::image::AlignBase::Axis::HORZ){
 		if (direction==LayoutSVG::Direction::INCR){
-			node.setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE);
+			node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
 		}
 		else {
-			node.setAlign(AlignSVG::LEFT, AlignSVG::OUTSIDE);
+			node.setAlign(AlignSVG::LEFT, MutualAlign::OUTSIDE);
 		}
 		// Assign "hanging"
-		node.setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // for some apps, could be BOTTOM as well?
+		node.setAlign(AlignSVG::TOP, MutualAlign::INSIDE); // for some apps, could be BOTTOM as well?
 	}
 	else {
 		if (direction==LayoutSVG::Direction::INCR){
-			node.setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			node.setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 		}
 		else {
-			node.setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+			node.setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 		}
-		node.setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // for some apps, could be RIGHT as well?
+		node.setAlign(AlignSVG::LEFT, MutualAlign::INSIDE); // for some apps, could be RIGHT as well?
 	}
 }
 
@@ -706,7 +706,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 	mout.debug("Adjusting ", ns, " with ", anchorSpan);
 
-	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
+	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
 		coord = anchorSpan.pos; // "+ 0%"
 		break;
@@ -733,11 +733,11 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 	// STEP 2: OBJECT itself – define the reference point of the object to be aligned, i.e. adjusted.
 
-	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
+	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "start");
-			node.transform.translate.x = +2.0*node.getMargin();
+			node.transform.translate.x = +1.0*node.getMargin();
 		}
 		break;
 	case AlignBase::Pos::MID:
@@ -751,7 +751,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "end");
-			node.transform.translate.x = -2.0*node.getMargin();
+			node.transform.translate.x = -1.0*node.getMargin();
 		}
 		else {
 			coord -= obox.width;
@@ -820,7 +820,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 	// STEP 1: derive reference point at the ANCHOR
 
-	switch (alignLoc = node.getAlign(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
+	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
 		coord = anchorSpan.pos;
 		break;
@@ -855,7 +855,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 		node.transform.translate.y = node.getHeight() - node.getMargin();
 	}
 
-	switch (alignLoc = node.getAlign(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
+	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::OBJECT, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
 		break;
 	case AlignBase::Pos::MID:

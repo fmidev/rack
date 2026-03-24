@@ -690,18 +690,19 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, SprinterLayout(arrayCaps,mapCaps,pairCaps,stringCaps)); <span class="comment">// copy const</span></div>
 <div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>}</div>
 <div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span> </div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>Sprintlet&lt;T&gt; sprinter(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> SprinterLayout &amp; layout = SprinterLayout()){</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, layout); <span class="comment">// copy const</span></div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>}</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="comment">// SprinterLayout</span></div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>Sprintlet&lt;T&gt; sprinter(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> SprinterLayout &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#af8f0689b7a24be4bcde36addd2e0d48a">Sprinter::jsonLayout</a>){</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, layout); <span class="comment">// copy const</span></div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>}</div>
 <div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>} <span class="comment">// drain</span></div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>} <span class="comment">// drain</span></div>
 <div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span> </div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span> </div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html"><div class="ttname"><a href="classdrain_1_1Sprinter.html">drain::Sprinter</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:199</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a0ca2b3b1888b2ca8c58e3fe9bec62ff6"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition</b> Sprinter.h:424</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a0f762e88bf4b149cf4dba0d340b57d7e"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a0f762e88bf4b149cf4dba0d340b57d7e">drain::Sprinter::mapPairToStream</a></div><div class="ttdeci">static std::ostream &amp; mapPairToStream(std::ostream &amp;ostr, const std::pair&lt; K, V &gt; &amp;x, const SprinterLayout &amp;layout)</div><div class="ttdoc">If (key,value) pairs needs specific layout in maps, use this. (Compare with list of tuples).</div><div class="ttdef"><b>Definition</b> Sprinter.h:301</div></div>

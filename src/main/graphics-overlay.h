@@ -261,8 +261,9 @@ public:
 
 	CmdRect() : CmdPolarBase(__FUNCTION__, "SVG test product", Graphic::GRAPHIC::RECTANGLE) {
 		getParameters().separator = ':';
-		getParameters().link("bbox", bbox.tuple(100,200,300,400), "xLL,yLL,xUR,yUR").setFill(false).setSeparator(',');
-		getParameters().link("bboxUnits", bboxUnits, "[PIX|M|DEG]");
+		//getParameters().link("bbox", bbox.tuple(100,200,300,400), "xLL,yLL,xUR,yUR").setFill(false).setSeparator(',');
+		getParameters().link("bbox", bbox, "xLL,yLL,xUR,yUR[px|m|deg]").setSeparator(',');
+		//getParameters().link("bboxUnits", bboxUnits, "[PIX|M|DEG]");
 		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true).setSeparator(',');
 		getParameters().link("MASK", MASK, "Render outer region with style class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
@@ -276,8 +277,9 @@ public:
 
 	void exec() const override ;
 
-	drain::BBox bbox; //  = {100,200,300,400};
-	std::string bboxUnits = "PIX";
+	//drain::BBox bbox; //  = {100,200,300,400};
+	//std::string bboxUnits = "PIX";
+	std::string bbox = "PIX";
 	drain::Range<int> resolution;
 
 

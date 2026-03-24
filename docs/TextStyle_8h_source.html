@@ -117,11 +117,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#ifndef DRAIN_TEXT_STYLE</span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#define DRAIN_TEXT_STYLE</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;set&gt;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &quot;Type.h&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &lt;drain/TypeName.h&gt;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">//#include &quot;Sprinter.h&quot;</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">//#include &quot;StringBuilder.h&quot;</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
@@ -199,11 +199,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>};</div>
 </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(<a class="code hl_class" href="classdrain_1_1TextStyle.html">TextStyle</a>);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>DRAIN_TYPENAME(<a class="code hl_class" href="classdrain_1_1TextStyle.html">TextStyle</a>);</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(TextStyle::Colour);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(TextStyle::Line);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(TextStyle::Style);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>DRAIN_TYPENAME(TextStyle::Colour);</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>DRAIN_TYPENAME(TextStyle::Line);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>DRAIN_TYPENAME(TextStyle::Style);</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="keyword">inline</span></div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1TextStyle.html">TextStyle</a> &amp;t){</div>
@@ -217,7 +217,6 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1TextStyle_html"><div class="ttname"><a href="classdrain_1_1TextStyle.html">drain::TextStyle</a></div><div class="ttdoc">Utility for scanning text segments.</div><div class="ttdef"><b>Definition</b> TextStyle.h:50</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
-<div class="ttc" id="anamespacedrain_html_af97d77a12a5ebd5aa5527613031a4963"><div class="ttname"><a href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">drain::DRAIN_TYPENAME</a></div><div class="ttdeci">DRAIN_TYPENAME(void)</div><div class="ttdoc">Add a specialization for each type of those you want to support.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

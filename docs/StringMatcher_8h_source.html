@@ -123,8 +123,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &lt;drain/Type.h&gt;</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;drain/RegExp.h&gt;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &lt;drain/RegExp.h&gt;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;drain/TypeName.h&gt;</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedrain.html">drain</a> {</div>
@@ -213,7 +213,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>}</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><a class="code hl_function" href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">DRAIN_TYPENAME</a>(StringMatcher);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>DRAIN_TYPENAME(StringMatcher);</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>} <span class="comment">// drain::</span></div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
@@ -221,12 +221,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1RegExp_html"><div class="ttname"><a href="classdrain_1_1RegExp.html">drain::RegExp</a></div><div class="ttdef"><b>Definition</b> RegExp.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1RegExp_html_a644718bb2fb240de962dc3c9a1fdf0dc"><div class="ttname"><a href="classdrain_1_1RegExp.html#a644718bb2fb240de962dc3c9a1fdf0dc">drain::RegExp::empty</a></div><div class="ttdeci">bool empty() const</div><div class="ttdoc">Returns true, if expression is empty.</div><div class="ttdef"><b>Definition</b> RegExp.h:99</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcher_html"><div class="ttname"><a href="classdrain_1_1StringMatcher.html">drain::StringMatcher</a></div><div class="ttdoc">General-purpose key matcher: tests string equality, or regExp, if defined as such.</div><div class="ttdef"><b>Definition</b> StringMatcher.h:58</div></div>
-<div class="ttc" id="aclassdrain_1_1StringMatcher_html_a2924f6cc1546444425b9f08c2ca42327"><div class="ttname"><a href="classdrain_1_1StringMatcher.html#a2924f6cc1546444425b9f08c2ca42327">drain::StringMatcher::set</a></div><div class="ttdeci">void set(const std::string &amp;s)</div><div class="ttdoc">Assign a string – which may be a literal or a regular expression.</div><div class="ttdef"><b>Definition</b> StringMatcher.cpp:46</div></div>
+<div class="ttc" id="aclassdrain_1_1StringMatcher_html_a2924f6cc1546444425b9f08c2ca42327"><div class="ttname"><a href="classdrain_1_1StringMatcher.html#a2924f6cc1546444425b9f08c2ca42327">drain::StringMatcher::set</a></div><div class="ttdeci">void set(const std::string &amp;s)</div><div class="ttdoc">Assign a string – which may be a literal or a regular expression.</div><div class="ttdef"><b>Definition</b> StringMatcher.cpp:45</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcher_html_a4f192cce90d42e8ef9f3356366259124"><div class="ttname"><a href="classdrain_1_1StringMatcher.html#a4f192cce90d42e8ef9f3356366259124">drain::StringMatcher::isRegExp</a></div><div class="ttdeci">bool isRegExp</div><div class="ttdoc">Checks if the key conforms to ODIM convention: DBZH, VRAD, etc. (capital letters, underscores)</div><div class="ttdef"><b>Definition</b> StringMatcher.h:141</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcher_html_ae8d5190a5683a14369410595af3513d2"><div class="ttname"><a href="classdrain_1_1StringMatcher.html#ae8d5190a5683a14369410595af3513d2">drain::StringMatcher::value</a></div><div class="ttdeci">const std::string &amp; value</div><div class="ttdoc">A visible reference to the current string / regExp.</div><div class="ttdef"><b>Definition</b> StringMatcher.h:66</div></div>
-<div class="ttc" id="aclassdrain_1_1StringMatcher_html_af07e823eb7afa02ed26d26862a1215df"><div class="ttname"><a href="classdrain_1_1StringMatcher.html#af07e823eb7afa02ed26d26862a1215df">drain::StringMatcher::test</a></div><div class="ttdeci">bool test(const std::string &amp;s) const</div><div class="ttdoc">Test with direct string matching or regExp, if defined.</div><div class="ttdef"><b>Definition</b> StringMatcher.cpp:70</div></div>
+<div class="ttc" id="aclassdrain_1_1StringMatcher_html_af07e823eb7afa02ed26d26862a1215df"><div class="ttname"><a href="classdrain_1_1StringMatcher.html#af07e823eb7afa02ed26d26862a1215df">drain::StringMatcher::test</a></div><div class="ttdeci">bool test(const std::string &amp;s) const</div><div class="ttdoc">Test with direct string matching or regExp, if defined.</div><div class="ttdef"><b>Definition</b> StringMatcher.cpp:69</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
-<div class="ttc" id="anamespacedrain_html_af97d77a12a5ebd5aa5527613031a4963"><div class="ttname"><a href="namespacedrain.html#af97d77a12a5ebd5aa5527613031a4963">drain::DRAIN_TYPENAME</a></div><div class="ttdeci">DRAIN_TYPENAME(void)</div><div class="ttdoc">Add a specialization for each type of those you want to support.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

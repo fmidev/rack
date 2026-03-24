@@ -226,7 +226,135 @@ std::ostream & operator<<(std::ostream &ostr, const Alignment<AX,V> & align){
 	return ostr << align.axis << '_' << align.pos;
 }
 
+struct MutualAlign {
 
+	enum Topol {
+		INSIDE = 0,
+		OUTSIDE = 1,
+		UNDEFINED_TOPOL = 2,
+	};
+
+
+};
+
+
+/// "Alternative" \e partial alignment configuration for single object. Partial means that either \c OBJECT itself or \c ANCHOR object is set.
+/**
+ *  Extends Alignment with topology, \c Topol (\c INSIDE or \c OUTSIDE ).
+ *
+ *  Essentially, a triplet of types <Topol,Axis,Coordinate>, out of which Axis may be const.
+ *
+ *
+ *  Designed to handle command line arguments, adjusting AlignSVG::HorzAlign and AlignSVG::VertAlign
+ *
+ *  \see AlignSVG::HorzAlign
+ *  \see AlignSVG::VertAlign
+ *
+ *
+ */
+template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
+struct CompleteAlignment : public Alignment<AX,A> {
+
+	MutualAlign::Topol topol = MutualAlign::Topol::INSIDE; // or undef?
+
+	/// Constructor not setting Axis.
+	template <class ...TT>
+	CompleteAlignment(const TT... args) : Alignment<AX,A>() {
+		set(args...);
+	}
+
+	inline
+	~CompleteAlignment(){};
+
+	virtual inline
+	bool isSet() const {
+		return (this->axis != AlignBase::Axis::UNDEFINED_AXIS) &&
+				(this->pos != AlignBase::Pos::UNDEFINED_POS) &&
+				(topol != MutualAlign::Topol::UNDEFINED_TOPOL);
+		// return Alignment<AX,A>::isSet() && (topol != MutualAlign::Topol::UNDEFINED_TOPOL);
+	}
+
+	inline
+	const MutualAlign::Topol & getOrDefault(const MutualAlign::Topol & defaultValue) const {
+		if (topol != MutualAlign::Topol::UNDEFINED_TOPOL){
+			return topol;
+		}
+		else {
+			return defaultValue;
+		}
+	}
+
+
+	// Sets all members to UNDEFINED state.
+	virtual inline
+	void reset(){
+		Alignment<AX,A>::reset();
+		topol = MutualAlign::Topol::UNDEFINED_TOPOL;
+		// this->updateAlign();
+	}
+
+
+	template <typename AX2, AlignBase::Axis A2, class ...TT>
+	void set(const Alignment<AX2,A2> & align, const TT... args){
+		this->axis = align.axis;
+		this->pos  = align.pos;
+		set(args...);
+	}
+
+	template <class ...TT>
+	void set(MutualAlign::Topol topol, const TT... args){
+		this->topol = topol;
+		set(args...);
+	}
+
+	template <class ...TT>
+	void set(AlignBase::Axis axis, const TT... args){
+		this->axis = axis;
+		set(args...);
+	}
+
+	template <class ...TT>
+	void set(AlignBase::Pos coord, const TT... args){
+		this->pos = coord;
+		set(args...);
+	}
+
+	template <class ...TT>
+	void set(const std::string & key, const TT... args){
+		if (Enum<MutualAlign::Topol>::setValue(key, topol)){
+			// ok
+		}
+		else if (Enum<Alignment<> >::setValue(key, *this)){ // RIGHT or?
+			// ok
+		}
+		else if (Enum<AlignBase::Axis>::setValue(key, this->axis)){
+			// ok
+		}
+		else if (Enum<AlignBase::Pos>::setValue(key, this->pos)){
+			// ok
+		}
+		else {
+			// Advice: keys
+			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found. Appeared in: ", args...));
+		}
+
+		set(args...);
+	}
+
+	template <class ...TT>
+	void set(const char *key, const TT... args){
+		set(std::string(key), args...);
+	}
+
+
+protected:
+
+	inline
+	void set(){
+		// this->updateAlign(); // ok?
+	}
+
+};
 
 
 //struct Alignment2;
@@ -295,11 +423,6 @@ struct AlignSVG { // : protected Align {
 	};
 
 
-	enum Topol {
-		INSIDE = 0,
-		OUTSIDE = 1,
-		UNDEFINED_TOPOL = 2,
-	};
 
 
 	/// Low-level, "atomic" setter of alignment for OBJECT itself or its ANCHOR object.
@@ -332,11 +455,11 @@ struct AlignSVG { // : protected Align {
 	 *
 	 */
 	inline
-	void setAlign(const AlignBase::Axis & axis, const AlignBase::Pos & pos, Topol topol=Topol::INSIDE){
+	void setAlign(const AlignBase::Axis & axis, const AlignBase::Pos & pos, MutualAlign::Topol topol=MutualAlign::Topol::INSIDE){
 		if (pos != AlignBase::FILL){
 			modifyAlign(ANCHOR, axis, pos);
 		}
-		modifyAlign(OBJECT, axis, (topol==INSIDE) ? pos : AlignBase::flip(pos));
+		modifyAlign(OBJECT, axis, (topol==MutualAlign::INSIDE) ? pos : AlignBase::flip(pos));
 		updateAlign();
 	}
 
@@ -365,9 +488,19 @@ struct AlignSVG { // : protected Align {
 	 */
 	template <typename AX1, AlignBase::Axis A1, typename AX2, AlignBase::Axis A2>
 	void setAlign(const Alignment<AX1,A1> & align1, const Alignment<AX2,A2> & align2){
-		setAlign(align1.axis, align1.pos, AlignSVG::Topol::INSIDE);
-		setAlign(align2.axis, align2.pos, AlignSVG::Topol::INSIDE);
+		setAlign(align1.axis, align1.pos, MutualAlign::Topol::INSIDE);
+		setAlign(align2.axis, align2.pos, MutualAlign::Topol::INSIDE);
 	}
+
+	// Convenience: set both horz and vert alignments (INSIDE)
+	/*
+	 */
+	template <typename AX1, AlignBase::Axis A1> // , typename AX2, AlignBase::Axis A2>
+	void setAlign(const CompleteAlignment<AX1,A1> & align1){
+		setAlign(align1.axis, align1.pos, align1.topol);
+		//setAlign(align2.axis, align2.pos, MutualAlign::Topol::INSIDE);
+	}
+
 
 	/// Compiler trap: unimplemented for two of same kind: either \c HorzAlign or \c VertAlign twice.
 	template <typename AX, AlignBase::Axis A>
@@ -383,7 +516,7 @@ struct AlignSVG { // : protected Align {
 	template <typename T>
 	void setAlign(const std::string & align, const T & topol){
 		const Alignment<> & a = Enum<Alignment<> >::getValue(align, false);
-		const Topol & t = Enum<AlignSVG::Topol>::getValue(topol, false);
+		const MutualAlign::Topol & t = Enum<MutualAlign::Topol>::getValue(topol, false);
 		//const Alignment<> & a = Enum<Alignment<> >::getValue(align, false);
 		setAlign(a.axis, a.pos, t);
 	}
@@ -414,7 +547,7 @@ struct AlignSVG { // : protected Align {
 	 *  \param axis - horizontal \c HORZ or vertical \c AXIS .
 	 */
 	template <typename P, typename A>
-	AlignBase::Pos & getAlign(const P & pos, const A & axis);
+	AlignBase::Pos & getAlignPos(const P & pos, const A & axis);
 
 
 	/// Return alignment setting of an object along horizontal or vertical axis  .
@@ -426,7 +559,7 @@ struct AlignSVG { // : protected Align {
 	 *
 	 */
 	template <typename P, typename A>
-	const AlignBase::Pos & getAlign(const P & pos, const A & axis) const;
+	const AlignBase::Pos & getAlignPos(const P & pos, const A & axis) const;
 
 	/**
 	 *  For some reason, toStream() conflicts with: drain::NodeXML<T>::toStream(std::ostream&, const T&, const string&, int)
@@ -463,7 +596,7 @@ protected:
 	/// Change alignment configuration without updating the alignStr.
 	template <typename P, typename A, typename V>
 	void modifyAlign(const P & owner, const A & axis,  const V &value){
-		getAlign(owner, axis) = Enum<AlignBase::Pos>::getValue(value, false);
+		getAlignPos(owner, axis) = Enum<AlignBase::Pos>::getValue(value, false);
 	}
 
 
@@ -500,9 +633,9 @@ DRAIN_ENUM_DICT(AlignSVG::Owner);
 DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
 
 //template <>
-//const drain::Enum<AlignSVG::Topol>::dict_t drain::Enum<AlignSVG::Topol>::dict;
-DRAIN_ENUM_DICT(AlignSVG::Topol);
-DRAIN_ENUM_OSTREAM(AlignSVG::Topol);
+//const drain::Enum<MutualAlign::Topol>::dict_t drain::Enum<MutualAlign::Topol>::dict;
+DRAIN_ENUM_DICT(MutualAlign::Topol);
+DRAIN_ENUM_OSTREAM(MutualAlign::Topol);
 
 template <>
 inline
@@ -541,138 +674,20 @@ DRAIN_ENUM_DICT(Alignment<>);
 
 
 template <typename OBJ, typename A>
-AlignBase::Pos & AlignSVG::getAlign(const OBJ & owner, const A & axis){
+AlignBase::Pos & AlignSVG::getAlignPos(const OBJ & owner, const A & axis){
 	const AlignSVG::Owner p = Enum<AlignSVG::Owner>::getValue(owner, false); // raise error
 	const AlignBase::Axis a = Enum<AlignBase::Axis>::getValue(axis, false); // raise error
 	return alignments[p][a];
 }
 
 template <typename OBJ, typename A>
-const AlignBase::Pos & AlignSVG::getAlign(const OBJ & owner, const A & axis) const {
+const AlignBase::Pos & AlignSVG::getAlignPos(const OBJ & owner, const A & axis) const {
 	const AlignSVG::Owner p  = Enum<AlignSVG::Owner>::getValue(owner, false); // raise error
 	const AlignBase::Axis a  = Enum<AlignBase::Axis>::getValue(axis, false); // raise error
 	return alignments[p][a];
 }
 
 
-
-/// "Alternative" \e partial alignment configuration for single object. Partial means that either \c OBJECT itself or \c ANCHOR object is set.
-/**
- *  Extends Alignment with topology, \c Topol (\c INSIDE or \c OUTSIDE ).
- *
- *  Essentially, a triplet of types <Topol,Axis,Coordinate>, out of which Axis may be const.
- *
- *
- *  Designed to handle command line arguments, adjusting AlignSVG::HorzAlign and AlignSVG::VertAlign
- *
- *  \see AlignSVG::HorzAlign
- *  \see AlignSVG::VertAlign
- *
- *
- */
-template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
-struct CompleteAlignment : public Alignment<AX,A> {
-
-	AlignSVG::Topol topol = AlignSVG::Topol::INSIDE; // or undef?
-
-	/// Constructor not setting Axis.
-	template <class ...TT>
-	CompleteAlignment(const TT... args) : Alignment<AX,A>() {
-		set(args...);
-	}
-
-	inline
-	~CompleteAlignment(){};
-
-	virtual inline
-	bool isSet() const {
-		return (this->axis != AlignBase::Axis::UNDEFINED_AXIS) &&
-				(this->pos != AlignBase::Pos::UNDEFINED_POS) &&
-				(topol != AlignSVG::Topol::UNDEFINED_TOPOL);
-		// return Alignment<AX,A>::isSet() && (topol != AlignSVG::Topol::UNDEFINED_TOPOL);
-	}
-
-	inline
-	const AlignSVG::Topol & getOrDefault(const AlignSVG::Topol & defaultValue) const {
-		if (topol != AlignSVG::Topol::UNDEFINED_TOPOL){
-			return topol;
-		}
-		else {
-			return defaultValue;
-		}
-	}
-
-
-	// Sets all members to UNDEFINED state.
-	virtual inline
-	void reset(){
-		Alignment<AX,A>::reset();
-		topol = AlignSVG::Topol::UNDEFINED_TOPOL;
-		// this->updateAlign();
-	}
-
-
-	template <typename AX2, AlignBase::Axis A2, class ...TT>
-	void set(const Alignment<AX2,A2> & align, const TT... args){
-		this->axis = align.axis;
-		this->pos  = align.pos;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(AlignSVG::Topol topol, const TT... args){
-		this->topol = topol;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(AlignBase::Axis axis, const TT... args){
-		this->axis = axis;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(AlignBase::Pos coord, const TT... args){
-		this->pos = coord;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(const std::string & key, const TT... args){
-		if (Enum<AlignSVG::Topol>::setValue(key, topol)){
-			// ok
-		}
-		else if (Enum<Alignment<> >::setValue(key, *this)){ // RIGHT or?
-			// ok
-		}
-		else if (Enum<AlignBase::Axis>::setValue(key, this->axis)){
-			// ok
-		}
-		else if (Enum<AlignBase::Pos>::setValue(key, this->pos)){
-			// ok
-		}
-		else {
-			// Advice: keys
-			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found. Appeared in: ", args...));
-		}
-
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(const char *key, const TT... args){
-		set(std::string(key), args...);
-	}
-
-
-protected:
-
-	inline
-	void set(){
-		// this->updateAlign(); // ok?
-	}
-
-};
 
 
 

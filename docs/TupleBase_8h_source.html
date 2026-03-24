@@ -119,16 +119,16 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#ifndef DRAIN_TUPLE_BASE</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#define DRAIN_TUPLE_BASE</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &lt;sstream&gt;</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;typeinfo&gt;</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">//#include &lt;set&gt;</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;StringBuilder.h&quot;</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;Type.h&quot;</span>  <span class="comment">// TypeName</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &lt;drain/TypeName.h&gt;</span>  <span class="comment">// TypeName</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &lt;cstddef&gt;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#include &lt;sstream&gt;</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &lt;typeinfo&gt;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">//#include &lt;set&gt;</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;StringBuilder.h&quot;</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedrain.html">drain</a> {</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
@@ -480,12 +480,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    <span class="keyword">static</span> <span class="keyword">const</span> std::string &amp; str(){</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        <span class="keywordflow">if</span> (N == 0){</div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>            <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code hl_variable" href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a> = <a class="code hl_class" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(<span class="stringliteral">&quot;PseudoTuple&lt;&quot;</span>, <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="charliteral">&#39;,&#39;</span> , <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="stringliteral">&quot;&gt;&quot;</span>);</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>;</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>            <span class="keyword">static</span> <span class="keyword">const</span> std::string name = <a class="code hl_class" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(<span class="stringliteral">&quot;PseudoTuple&lt;&quot;</span>, <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="charliteral">&#39;,&#39;</span> , <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="stringliteral">&quot;&gt;&quot;</span>);</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>            <span class="keywordflow">return</span> name;</div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>        }</div>
 <div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>        <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>            <span class="keyword">static</span> <span class="keyword">const</span> std::string <a class="code hl_variable" href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a> = <a class="code hl_class" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(<span class="stringliteral">&quot;PseudoTuple&lt;&quot;</span>, <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="charliteral">&#39;,&#39;</span> , <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="charliteral">&#39;,&#39;</span> , N, <span class="stringliteral">&quot;&gt;&quot;</span>);</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>            <span class="keywordflow">return</span> <a class="code hl_variable" href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>;</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>            <span class="keyword">static</span> <span class="keyword">const</span> std::string name = <a class="code hl_class" href="classdrain_1_1StringBuilder.html">drain::StringBuilder&lt;&gt;</a>(<span class="stringliteral">&quot;PseudoTuple&lt;&quot;</span>, <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="charliteral">&#39;,&#39;</span> , <a class="code hl_struct" href="structdrain_1_1TypeName.html">drain::TypeName&lt;S&gt;::str</a>(),<span class="charliteral">&#39;,&#39;</span> , N, <span class="stringliteral">&quot;&gt;&quot;</span>);</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>            <span class="keywordflow">return</span> name;</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        }</div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>    }</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span> </div>
@@ -517,8 +517,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="astructdrain_1_1TupleType_html"><div class="ttname"><a href="structdrain_1_1TupleType.html">drain::TupleType</a></div><div class="ttdef"><b>Definition</b> TupleBase.h:52</div></div>
 <div class="ttc" id="astructdrain_1_1TupleType_html_aafa6fe1b3bc30ec31c633900f34da06b"><div class="ttname"><a href="structdrain_1_1TupleType.html#aafa6fe1b3bc30ec31c633900f34da06b">drain::TupleType::neutral_value</a></div><div class="ttdeci">static const S neutral_value</div><div class="ttdoc">Zero, by default. For enum types, must be explicitly given.</div><div class="ttdef"><b>Definition</b> TupleBase.h:63</div></div>
-<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdoc">Default implementation.</div><div class="ttdef"><b>Definition</b> Type.h:541</div></div>
-<div class="ttc" id="astructdrain_1_1TypeName_html_ac673bc430bdc3fdaa09f7becf98ef267"><div class="ttname"><a href="structdrain_1_1TypeName.html#ac673bc430bdc3fdaa09f7becf98ef267">drain::TypeName::name</a></div><div class="ttdeci">static const std::string name</div><div class="ttdoc">Default implementation: name returned by std::type_info::name()</div><div class="ttdef"><b>Definition</b> Type.h:549</div></div>
+<div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdoc">Default implementation.</div><div class="ttdef"><b>Definition</b> TypeName.h:57</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

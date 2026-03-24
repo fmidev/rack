@@ -87,7 +87,7 @@ $(function() {
 <p>SVG support for creating aligned image panels.  
  <a href="classrack_1_1RackSVG.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="graphics_8h_source.html">graphics.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="graphics-panel_8h_source.html">graphics-panel.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -108,6 +108,12 @@ Public Types</h2></td></tr>
 , <b>SIDE_PANEL</b>
 , <br />
 &#160;&#160;<b>BORDER</b>
+, <b>MOUSE</b>
+, <b>MOUSE_TRACKER</b>
+, <b>MONITOR</b>
+, <br />
+&#160;&#160;<b>SELECTOR</b>
+, <b>DATA_ARRAY</b>
 <br />
  }</td></tr>
 <tr class="separator:a064dd6903edf7f9e2f353b8c336db620"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,6 +123,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af4ddfe50407c12284aed9a99a61da449" id="r_af4ddfe50407c12284aed9a99a61da449"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#af4ddfe50407c12284aed9a99a61da449">getStyle</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
 <tr class="memdesc:af4ddfe50407c12284aed9a99a61da449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned.  <br /></td></tr>
 <tr class="separator:af4ddfe50407c12284aed9a99a61da449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8849f1d0329537735f5b87631b1733d" id="r_aa8849f1d0329537735f5b87631b1733d"><td class="memItemLeft" align="right" valign="top"><a id="aa8849f1d0329537735f5b87631b1733d" name="aa8849f1d0329537735f5b87631b1733d"></a>
+static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getOnLoadScript</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
+<tr class="separator:aa8849f1d0329537735f5b87631b1733d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7caa2b31908f1d281c8e9bc8aa9c35ed" id="r_a7caa2b31908f1d281c8e9bc8aa9c35ed"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a7caa2b31908f1d281c8e9bc8aa9c35ed">getJavaScriptDefs</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
+<tr class="separator:a7caa2b31908f1d281c8e9bc8aa9c35ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06be656d43a2e9414257cf5ef9e6cf97" id="r_a06be656d43a2e9414257cf5ef9e6cf97"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a06be656d43a2e9414257cf5ef9e6cf97">addJavaScripsDef</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const std::string &amp;key, const std::string &amp;section=&quot;cls&quot;)</td></tr>
+<tr class="memdesc:a06be656d43a2e9414257cf5ef9e6cf97"><td class="mdescLeft">&#160;</td><td class="mdescRight">key =&gt; Rack.cls.key = 'key';  <br /></td></tr>
+<tr class="separator:a06be656d43a2e9414257cf5ef9e6cf97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadbef20d9d69dc9e79097ad49eeac0b4" id="r_aadbef20d9d69dc9e79097ad49eeac0b4"><td class="memItemLeft" align="right" valign="top"><a id="aadbef20d9d69dc9e79097ad49eeac0b4" name="aadbef20d9d69dc9e79097ad49eeac0b4"></a>
 static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>guessFormat</b> (const std::string &amp;key)</td></tr>
 <tr class="memdesc:aadbef20d9d69dc9e79097ad49eeac0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns timeformat <br /></td></tr>
@@ -359,6 +373,53 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
 
 </div>
 </div>
+<a id="a06be656d43a2e9414257cf5ef9e6cf97" name="a06be656d43a2e9414257cf5ef9e6cf97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06be656d43a2e9414257cf5ef9e6cf97">&#9670;&#160;</a></span>addJavaScripsDef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">drain::image::TreeSVG &amp; addJavaScripsDef </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>section</em> = <code>&quot;cls&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>key =&gt; Rack.cls.key = 'key'; </p>
+<p>TODO template</p>
+<p>TODO template</p>
+<p>Is return value needed? </p>
+
+</div>
+</div>
 <a id="a019e3a1bd06d80934d7e4b8d2027d924" name="a019e3a1bd06d80934d7e4b8d2027d924"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a019e3a1bd06d80934d7e4b8d2027d924">&#9670;&#160;</a></span>addTitleBox()</h2>
 
@@ -484,6 +545,34 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
 
 </div>
 </div>
+<a id="a7caa2b31908f1d281c8e9bc8aa9c35ed" name="a7caa2b31908f1d281c8e9bc8aa9c35ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7caa2b31908f1d281c8e9bc8aa9c35ed">&#9670;&#160;</a></span>getJavaScriptDefs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">drain::image::TreeSVG &amp; getJavaScriptDefs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>// static Rack = { cls = {},</p>
+<p>} Rack.cls.SELECTOR = 'SELECTOR'; </p>
+
+</div>
+</div>
 <a id="af4ddfe50407c12284aed9a99a61da449" name="af4ddfe50407c12284aed9a99a61da449"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4ddfe50407c12284aed9a99a61da449">&#9670;&#160;</a></span>getStyle()</h2>
 
@@ -509,13 +598,14 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
 </div><div class="memdoc">
 
 <p>Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned. </p>
+<p>Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)</p>
 <p>Initialize styles, if undone. </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/main/<a class="el" href="graphics_8h_source.html">graphics.h</a></li>
-<li>src/main/<b>graphics.cpp</b></li>
+<li>src/main/<a class="el" href="graphics-panel_8h_source.html">graphics-panel.h</a></li>
+<li>src/main/<b>graphics-panel.cpp</b></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

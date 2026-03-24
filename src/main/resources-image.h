@@ -126,8 +126,8 @@ public:
 	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
 
 	// Here AlignSVG::HorzAlign and AlignSVG::VertAlign unused, as they contain no Topol(ogy).
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {MutualAlign::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {MutualAlign::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
 
 	AlignAnchorSVG::anchor_t anchorHorz;
 	AlignAnchorSVG::anchor_t anchorVert;

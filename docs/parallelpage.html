@@ -103,8 +103,8 @@ Scheme 1: invoking predefined script for every input</h2>
 </div><!-- fragment --><p>Within braces, <code>[&ndash;inputFile] &lt;file&gt;</code> command will trigger the defined script in a separate, parallel thread.</p>
 <p>More schematically, consider a command line invocation of <b>Rack</b> </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --cmd --cmd ...  --sript <span class="stringliteral">&#39;--cmd --cmd ...&#39;</span>  [ --CMD1 --cmd2 --CMD3 --CMD4 -cmd5 ... ]  --cmd --cmd ...</div>
 </div><!-- fragment --><p> marking thread-triggering commands with <code>CMD</code> and other commands with <code>cmd</code>. A schematic decomposition of such a line is shown below: </p><div class="dotgraph">
-<img src="dot_inline_dotgraph_9.png" alt="dot_inline_dotgraph_9.png" border="0" usemap="#dot_inline_dotgraph_9.map"/>
-<map name="dot_inline_dotgraph_9.map" id="dot_inline_dotgraph_9.map"><area shape="rect" href="" title="Script definition |&lt;i&gt; &#45;&#45;sript &#39;&#45;&#45;cmd &#45;&#45;cmd...&#39; " alt="" coords="212,19,381,71"/>
+<img src="dot_inline_dotgraph_7.png" alt="dot_inline_dotgraph_7.png" border="0" usemap="#dot_inline_dotgraph_7.map"/>
+<map name="dot_inline_dotgraph_7.map" id="dot_inline_dotgraph_7.map"><area shape="rect" href="" title="Script definition |&lt;i&gt; &#45;&#45;sript &#39;&#45;&#45;cmd &#45;&#45;cmd...&#39; " alt="" coords="212,19,381,71"/>
 <area shape="rect" href="productspage.html" title="Basic commands (cmd...) and \n script triggering commands (CMD..) |&lt;i&gt;[ &#45;&#45;CMD1 &#45;&#45;cmd2 &#45;&#45;CMD3 &#45;&#45;CMD4 &#45;cmd5 ... ] " alt="" coords="429,5,749,72"/>
 </map>
 </div>
@@ -112,8 +112,8 @@ Scheme 1: invoking predefined script for every input</h2>
  Especially, a composite (accumulation array) initialized in the main thread will serve the threads as a shared resource unless (until) a new composite is initialized or loaded in the thread. Commands use internal logic in selecting data.</p>
 <p>The following picture illustrates how the above command line structure is actually computed.</p>
 <div class="dotgraph">
-<img src="dot_inline_dotgraph_10.png" alt="dot_inline_dotgraph_10.png" border="0" usemap="#dot_inline_dotgraph_10.map"/>
-<map name="dot_inline_dotgraph_10.map" id="dot_inline_dotgraph_10.map"><area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD1|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,83,867,132"/>
+<img src="dot_inline_dotgraph_8.png" alt="dot_inline_dotgraph_8.png" border="0" usemap="#dot_inline_dotgraph_8.map"/>
+<map name="dot_inline_dotgraph_8.map" id="dot_inline_dotgraph_8.map"><area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD1|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,83,867,132"/>
 <area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD3|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,156,867,205"/>
 <area shape="rect" href="" title="{&lt;i&gt;&#45;&#45;CMD4|&lt;s&gt; &#45;&#45;cmd &#45;&#45;cmd ...}" alt="" coords="672,229,867,279"/>
 </map>

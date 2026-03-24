@@ -424,8 +424,6 @@ void CmdRadarLabel::exec() const  {
 
 		TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
 				{"font-size", "12"},
-				// {"fill", "red"},
-				// {"stroke", "white"},  // replace these with image-title etc soft transit
 				{"stroke", "black"},
 				{"stroke-width", "0.2"},
 				{"stroke-opacity", "0.5"},
@@ -499,12 +497,19 @@ void CmdRadarLabel::exec() const  {
 
 		for (std::string & line: lines){
 
-			AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
-
 			if (line.empty()){
 				// TODO: allow empty line
 				continue;
 			}
+
+			// AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
+			// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignBase::Pos::MID); // , MutualAlign::INSIDE);
+			// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+			// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignBase::Pos::MAX, MutualAlign::OUTSIDE);
+
+			CompleteAlignment<AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
+			CompleteAlignment<AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+
 
 			std::list<std::string> parts;
 			drain::StringTools::split(line, parts, '|');
@@ -522,9 +527,9 @@ void CmdRadarLabel::exec() const  {
 			}
 
 
-			CompleteAlignment<> alignVert(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			// CompleteAlignment<> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 
-			bool newline=true;
+			// bool newline=true;
 			for (const std::string & part: parts){
 				if (!part.empty()){
 
@@ -539,16 +544,21 @@ void CmdRadarLabel::exec() const  {
 					text->setMyAlignAnchor<AlignBase::Axis::HORZ>("labelAnchor");
 					text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS); // For the first element, this is "labelAnchor"
 
-					text->setAlign(alignHorz, drain::image::AlignSVG::OUTSIDE);
+					//text->setAlign(alignHorz, MutualAlign::OUTSIDE);
+					text->setAlign(alignHorz);
+					text->setAlign(alignVert);
+					alignVert.set(AlignSVG::TOP, MutualAlign::INSIDE);
+					/*
 					if (newline){
 						//text->setAlign(alignVert);
-						text->setAlign(drain::image::AlignSVG::BOTTOM, drain::image::AlignSVG::OUTSIDE);
+						text->setAlign(drain::image::AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 						//text->setAlign(alignVert., drain::image::AlignSVG::OUTSIDE);
 						newline = false;
 					}
 					else {
-						text->setAlign(drain::image::AlignSVG::TOP, drain::image::AlignSVG::INSIDE);
+						text->setAlign(drain::image::AlignSVG::TOP, MutualAlign::INSIDE);
 					}
+					*/
 					// text->setAlign(alignVert);
 					// alignVert.set(drain::image::AlignSVG::TOP, drain::image::AlignSVG::INSIDE);
 					text[svg::TITLE](svg::TITLE)->setText(part);
@@ -979,7 +989,7 @@ void CmdRect::exec() const {
 	drain::image::TreeSVG & coordSpanDisplay = imagePanelGroup["MONITOR_BOX"];
 	coordSpanDisplay->addClass("MONITOR_BOX");
 	coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
-	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 	addCoordMonitor(coordSpanDisplay, "MONITOR_DOWN");
 	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
 	addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
@@ -995,21 +1005,48 @@ void CmdRect::exec() const {
 			// {"opacity", 0.5}
 	});
 	*/
-	drain::Unit unit = drain::Enum<drain::Unit>::dict.getValue(this->bboxUnits, false);
+	drain::Unit unit = drain::Units::extract<drain::Unit>(this->bbox);
+	mout.attention(DRAIN_LOG(this->bbox));
+	mout.attention(DRAIN_LOG(unit));
+
+	mout.attention("Unit=", unit);
+
+	//drain::image::BBoxSVG finalBBox;
+	//drain::UniTuple<double,4> bb;
+	// drain::Reference ref(finalBbox.tuple());
+	std::vector<double> bb;
+	drain::StringTools::split(this->bbox, bb, ',');
+	mout.attention(drain::sprinter(bb));
+
+
+	//drain::BBox finalBBox;
+	drain::Rectangle<int> imgBBox;
+	// finalBBox.set(bb[0], bb[1], bb[2], bb[3]);
+
 	switch (unit) {
 	case drain::Unit::DEGREE:
-		// break;
-	case drain::Unit::METRE:
+		radarSVG.geoFrame.deg2pix(bb[0], bb[1], imgBBox.lowerLeft.x, imgBBox.lowerLeft.y);
+		radarSVG.geoFrame.deg2pix(bb[2], bb[3], imgBBox.upperRight.x, imgBBox.upperRight.y);
 		break;
+	case drain::Unit::METRE:
+		radarSVG.geoFrame.m2pix(bb[0], bb[1], imgBBox.lowerLeft.x, imgBBox.lowerLeft.y);
+		radarSVG.geoFrame.m2pix(bb[2], bb[3], imgBBox.upperRight.x, imgBBox.upperRight.y);
+		//finalBBox.set(bb[0], bb[1], bb[2], bb[3]);
+		break;
+	case drain::Unit::UNDEFINED:
 	case drain::Unit::PIXEL:
-		selectRect->setLocation(this->bbox.lowerLeft.x, this->bbox.lowerLeft.y);
-		// mout.warn(this->bbox.getWidth(),'x', this->bbox.getHeight());
-		selectRect->setFrame(this->bbox.getWidth(), this->bbox.getHeight());
+		imgBBox.set(bb[0], bb[1], bb[2], bb[3]);
 		break;
 	default:
-		mout.error("unknown unit: ", this->bboxUnits); // or trust false above?
+		mout.error("unknown unit: ", this->bbox); // or trust false above?
 		break;
 	}
+	mout.attention(DRAIN_LOG(imgBBox));
+
+
+	selectRect->setLocation(std::min(imgBBox.lowerLeft.x, imgBBox.upperRight.x), std::min(imgBBox.lowerLeft.y, imgBBox.upperRight.y));
+	// mout.warn(this->bbox.getWidth(),'x', this->bbox.getHeight());
+	selectRect->setFrame(::abs(imgBBox.getWidth()), ::abs(imgBBox.getHeight()));
 
 	/* Tästä mallia:
 	drain::Point2D<double> coordsDeg;
@@ -1104,7 +1141,7 @@ void CmdCoords::exec() const {
 	// coordDisplay->setAlign(AlignSVG::RIGHT);
 	drain::image::TreeSVG & coordSpanDisplay = imagePanelGroup["MONITOR_RECT"];
 	coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
-	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 	addCoordMonitor(coordSpanDisplay, "MONITOR_DOWN");
 	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
 	addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
@@ -1229,7 +1266,7 @@ void CmdData::exec() const {
 	valueMonitor->setId();
 	valueMonitor->setMyAlignAnchor("MOUSE_COORD");
 	valueMonitor->setAlign(AlignSVG::RIGHT);
-	valueMonitor->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+	valueMonitor->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 	valueMonitor->addClass("VALUE_MONITOR");
 	// Associate with graphical "location" style
 	valueMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::LOCATION);

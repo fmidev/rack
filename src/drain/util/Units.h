@@ -33,8 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "drain/Enum.h"
 
-namespace drain
-{
+namespace drain {
 
 
 extern const double DEG2RAD;
@@ -72,8 +71,11 @@ E Units::extract(const std::string & expr){
 
 	const size_t N = expr.length();
 	for (const auto & entry: Enum<E>::dict){
-		if (expr.find(entry.first, N-entry.first.length())){
-			return entry.second;
+		const size_t n =  entry.first.length();
+		if (n>0){ // empty is ok (typically UNDEFINED etc), but skipped.
+			if (expr.substr(N-n) == entry.first){ // find(entry.first, N-n)
+				return entry.second;
+			}
 		}
 	}
 
@@ -83,6 +85,7 @@ E Units::extract(const std::string & expr){
 
 
 DRAIN_ENUM_DICT(Unit);
+DRAIN_ENUM_OSTREAM(Unit);
 
 } // ::drain
 

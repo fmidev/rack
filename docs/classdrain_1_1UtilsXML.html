@@ -134,6 +134,13 @@ template&lt;typename T &gt; </td></tr>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a186cea698eb48de73f293c0a966866b2"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ensureStyle</b> (T &amp;root, const <a class="el" href="classdrain_1_1SelectXML.html">SelectXML</a>&lt; typename T::node_data_t::xml_tag_t &gt; &amp;selector, const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; &amp;styleDef)</td></tr>
 <tr class="separator:a186cea698eb48de73f293c0a966866b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acce9826574037683bb7fe747a6b4109e" id="r_acce9826574037683bb7fe747a6b4109e"><td class="memTemplParams" colspan="2"><a id="acce9826574037683bb7fe747a6b4109e" name="acce9826574037683bb7fe747a6b4109e"></a>
+template&lt;typename N , typename ... TT&gt; </td></tr>
+<tr class="memitem:acce9826574037683bb7fe747a6b4109e"><td class="memTemplItemLeft" align="right" valign="top">static UnorderedMultiTree&lt; N &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ensureJavaScriptFunction</b> (UnorderedMultiTree&lt; N &gt; &amp;root, const std::string &amp;name, const TT &amp;...args)</td></tr>
+<tr class="separator:acce9826574037683bb7fe747a6b4109e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af30f97eb3106cf12f6f9ffd9659803d3" id="r_af30f97eb3106cf12f6f9ffd9659803d3"><td class="memTemplParams" colspan="2">template&lt;typename N &gt; </td></tr>
+<tr class="memitem:af30f97eb3106cf12f6f9ffd9659803d3"><td class="memTemplItemLeft" align="right" valign="top">static UnorderedMultiTree&lt; N &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1UtilsXML.html#af30f97eb3106cf12f6f9ffd9659803d3">ensureJavaScriptUrl</a> (UnorderedMultiTree&lt; N &gt; &amp;root, const std::string &amp;url)</td></tr>
+<tr class="separator:af30f97eb3106cf12f6f9ffd9659803d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for <a class="el" href="classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;">XML</a> "nodes", to be data elements T for drain::Tree&lt;T&gt; </p>
@@ -361,6 +368,50 @@ template&lt;typename TX &gt; </div>
 <p>When assigning a string, create new element unless the element itself is of type CTEXT. </p>
 <dl class="section return"><dt>Returns</dt><dd>- text element (CTEXT): current or child element of the current element</dd></dl>
 <p>Forward definition – type can be set only upon construction of a complete class </p>
+
+</div>
+</div>
+<a id="af30f97eb3106cf12f6f9ffd9659803d3" name="af30f97eb3106cf12f6f9ffd9659803d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af30f97eb3106cf12f6f9ffd9659803d3">&#9670;&#160;</a></span>ensureJavaScriptUrl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename N &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static UnorderedMultiTree&lt; N &gt; &amp; ensureJavaScriptUrl </td>
+          <td>(</td>
+          <td class="paramtype">UnorderedMultiTree&lt; N &gt; &amp;&#160;</td>
+          <td class="paramname"><em>root</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>url</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

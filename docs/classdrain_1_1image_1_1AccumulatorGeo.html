@@ -218,8 +218,6 @@ Collaboration diagram for AccumulatorGeo:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a70ea179dbe04ebb19601deedc3d54c1b" id="r_a70ea179dbe04ebb19601deedc3d54c1b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1AccumulatorGeo.html#a70ea179dbe04ebb19601deedc3d54c1b">setGeometry</a> (unsigned int width, unsigned int height)</td></tr>
-<tr class="separator:a70ea179dbe04ebb19601deedc3d54c1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebf10040b3705678312103be1f94b90b" id="r_aebf10040b3705678312103be1f94b90b"><td class="memItemLeft" align="right" valign="top"><a id="aebf10040b3705678312103be1f94b90b" name="aebf10040b3705678312103be1f94b90b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>allocate</b> ()</td></tr>
 <tr class="memdesc:aebf10040b3705678312103be1f94b90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This should be called after setGeometry, unless the projection is used as a frame. <br /></td></tr>
@@ -278,14 +276,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>add</b> (const size_t
 <tr class="memitem:a7ddf91084622542ef0f2a0df5b414791 inherit pub_methods_classdrain_1_1image_1_1Accumulator" id="r_a7ddf91084622542ef0f2a0df5b414791"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Accumulator.html#a7ddf91084622542ef0f2a0df5b414791">extractField</a> (char field, const <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a> &amp;converter, <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;dst, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;crop) const</td></tr>
 <tr class="memdesc:a7ddf91084622542ef0f2a0df5b414791 inherit pub_methods_classdrain_1_1image_1_1Accumulator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts the accumulated quantity or secondary quantities like weight and standard deviation.  <br /></td></tr>
 <tr class="separator:a7ddf91084622542ef0f2a0df5b414791 inherit pub_methods_classdrain_1_1image_1_1Accumulator"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6094f858cd747dc8b8feb6094b79af5 inherit pub_methods_classdrain_1_1image_1_1Accumulator" id="r_ac6094f858cd747dc8b8feb6094b79af5"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>extractField</b> (<a class="el" href="classdrain_1_1image_1_1Accumulator.html#aa01498a3ceb2fa74dc9536c16caef1da">FieldType</a> field, const <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a> &amp;converter, <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;dst, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;crop) const</td></tr>
-<tr class="separator:ac6094f858cd747dc8b8feb6094b79af5 inherit pub_methods_classdrain_1_1image_1_1Accumulator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12a553994027be8160d91aba2c90d717 inherit pub_methods_classdrain_1_1image_1_1Accumulator" id="r_a12a553994027be8160d91aba2c90d717"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>extractField</b> (<a class="el" href="classdrain_1_1image_1_1Accumulator.html#aa01498a3ceb2fa74dc9536c16caef1da">FieldType</a> field, const <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a> &amp;converter, <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;dst, const <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;crop={0, 0, 0, 0}) const</td></tr>
+<tr class="separator:a12a553994027be8160d91aba2c90d717 inherit pub_methods_classdrain_1_1image_1_1Accumulator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1GeoFrame"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1GeoFrame')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a></td></tr>
-<tr class="memitem:a58c00a921ef0e1eb68e51abfdccabd5c inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a58c00a921ef0e1eb68e51abfdccabd5c"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>GeoFrame</b> (unsigned int width=0, unsigned int height=0)</td></tr>
-<tr class="memdesc:a58c00a921ef0e1eb68e51abfdccabd5c inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
-<tr class="separator:a58c00a921ef0e1eb68e51abfdccabd5c inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a162ab098fb0b3aa64da8bae597172a1c inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a162ab098fb0b3aa64da8bae597172a1c"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>GeoFrame</b> ()</td></tr>
+<tr class="memdesc:a162ab098fb0b3aa64da8bae597172a1c inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
+<tr class="separator:a162ab098fb0b3aa64da8bae597172a1c inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc4603b3522d134c81ed222920ae4290 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_adc4603b3522d134c81ed222920ae4290"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>GeoFrame</b> (unsigned int width, unsigned int height)</td></tr>
+<tr class="separator:adc4603b3522d134c81ed222920ae4290 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad20897c5c8bd47f5d4005989bead0e55 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_ad20897c5c8bd47f5d4005989bead0e55"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>reset</b> ()</td></tr>
 <tr class="separator:ad20897c5c8bd47f5d4005989bead0e55 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -303,6 +304,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>geometryIsSet</b> () 
 <tr class="memitem:aaa1d139fcb55b1f038ab29d736d07f3d inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_aaa1d139fcb55b1f038ab29d736d07f3d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#aaa1d139fcb55b1f038ab29d736d07f3d">isDefined</a> () const</td></tr>
 <tr class="memdesc:aaa1d139fcb55b1f038ab29d736d07f3d inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if the projection, array area and geographical extent bounding box has been set.  <br /></td></tr>
 <tr class="separator:aaa1d139fcb55b1f038ab29d736d07f3d inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40880c1b6fbd524dc43a8b66be971376 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a40880c1b6fbd524dc43a8b66be971376"><td class="memItemLeft" align="right" valign="top">
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (unsigned int width, unsigned int height)</td></tr>
+<tr class="separator:a40880c1b6fbd524dc43a8b66be971376 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc01437ca668a32de7149aa56850ba50 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_afc01437ca668a32de7149aa56850ba50"><td class="memItemLeft" align="right" valign="top">
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getFrameWidth</b> () const</td></tr>
 <tr class="memdesc:afc01437ca668a32de7149aa56850ba50 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the nominal width, not the width of the memory array which does not have to be allocated. <br /></td></tr>
@@ -414,19 +418,21 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>m2deg</b> (co
 <tr class="memitem:a0ffeb836c83c2e4683dcaf2795beaca8 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a0ffeb836c83c2e4683dcaf2795beaca8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a0ffeb836c83c2e4683dcaf2795beaca8">m2pix</a> (double x, double y, int &amp;i, int &amp;j) const</td></tr>
 <tr class="memdesc:a0ffeb836c83c2e4683dcaf2795beaca8 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales geographic map coordinates to image coordinates.  <br /></td></tr>
 <tr class="separator:a0ffeb836c83c2e4683dcaf2795beaca8 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c0fad970b28d5d92e9d7fc839e80dbd inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a4c0fad970b28d5d92e9d7fc839e80dbd"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>m2pix</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMetric, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;pImage) const</td></tr>
-<tr class="separator:a4c0fad970b28d5d92e9d7fc839e80dbd inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a553b5784fc38ecd95f078aeaabab7918 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a553b5784fc38ecd95f078aeaabab7918"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>m2pix</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMetric, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;pImage) const</td></tr>
+<tr class="separator:a553b5784fc38ecd95f078aeaabab7918 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a979950a9529d451528c6cbb8dc29c667 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a979950a9529d451528c6cbb8dc29c667"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a979950a9529d451528c6cbb8dc29c667">pix2m</a> (int i, int j, double &amp;x, double &amp;y) const</td></tr>
-<tr class="memdesc:a979950a9529d451528c6cbb8dc29c667 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to map coordinates (x,y) in the pixel <b>centres</b>.  <br /></td></tr>
+<tr class="memdesc:a979950a9529d451528c6cbb8dc29c667 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to map coordinates (x,y) in the center of the pixel.  <br /></td></tr>
 <tr class="separator:a979950a9529d451528c6cbb8dc29c667 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07974ce46ddee5b28ad7b5e045537e0b inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a07974ce46ddee5b28ad7b5e045537e0b"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>pix2m</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;pImage, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMetric) const</td></tr>
-<tr class="memdesc:a07974ce46ddee5b28ad7b5e045537e0b inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to map coordinates (x,y) in the pixel <b>centres</b>. <br /></td></tr>
+<tr class="memitem:a07974ce46ddee5b28ad7b5e045537e0b inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a07974ce46ddee5b28ad7b5e045537e0b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a07974ce46ddee5b28ad7b5e045537e0b">pix2m</a> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;pImage, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;pMetric) const</td></tr>
+<tr class="memdesc:a07974ce46ddee5b28ad7b5e045537e0b inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to map coordinates (x,y) in the center of the pixel.  <br /></td></tr>
 <tr class="separator:a07974ce46ddee5b28ad7b5e045537e0b inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f08867054145b3269b835678d05564b inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_a8f08867054145b3269b835678d05564b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a8f08867054145b3269b835678d05564b">pix2LLm</a> (int i, int j, double &amp;x, double &amp;y) const</td></tr>
-<tr class="memdesc:a8f08867054145b3269b835678d05564b inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to map coordinates (x,y) of the lower left corner pixel.  <br /></td></tr>
+<tr class="memdesc:a8f08867054145b3269b835678d05564b inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Scales image coordinates (i,j) to map coordinates (x,y) of the lower left corner of the pixel.  <br /></td></tr>
 <tr class="separator:a8f08867054145b3269b835678d05564b inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae867d6549322b6758069a864925bb00f inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_ae867d6549322b6758069a864925bb00f"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjection</b> (const <a class="el" href="classdrain_1_1Projector.html">Projector</a> &amp;proj)</td></tr>
+<tr class="separator:ae867d6549322b6758069a864925bb00f inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc75a90901beaaaae8e17375515160e9 inherit pub_methods_classdrain_1_1image_1_1GeoFrame" id="r_acc75a90901beaaaae8e17375515160e9"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setProjection</b> (const std::string &amp;projDef)</td></tr>
 <tr class="memdesc:acc75a90901beaaaae8e17375515160e9 inherit pub_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the projection of the image as a Proj string. <br /></td></tr>
@@ -516,19 +522,14 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>getFields</b> 
 <tr class="memdesc:adbf998fba65219824a59ca2f74735ce7 inherit pub_attribs_classdrain_1_1image_1_1Accumulator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Todo: export. <br /></td></tr>
 <tr class="separator:adbf998fba65219824a59ca2f74735ce7 inherit pub_attribs_classdrain_1_1image_1_1Accumulator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1Accumulator"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1Accumulator')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1Accumulator.html">Accumulator</a></td></tr>
-<tr class="memitem:a6d7916a1f0ee8635977f33a236277b2d inherit pro_methods_classdrain_1_1image_1_1Accumulator" id="r_a6d7916a1f0ee8635977f33a236277b2d"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initDst</b> (const <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a> &amp;coder, <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;dst, <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;cropArea) const</td></tr>
+<tr class="memitem:a6d7916a1f0ee8635977f33a236277b2d inherit pro_methods_classdrain_1_1image_1_1Accumulator" id="r_a6d7916a1f0ee8635977f33a236277b2d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Accumulator.html#a6d7916a1f0ee8635977f33a236277b2d">initDst</a> (const <a class="el" href="structdrain_1_1image_1_1AccumulationConverter.html">AccumulationConverter</a> &amp;coder, <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;dst, <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; int &gt; &amp;cropArea) const</td></tr>
 <tr class="separator:a6d7916a1f0ee8635977f33a236277b2d inherit pro_methods_classdrain_1_1image_1_1Accumulator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1GeoFrame"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1GeoFrame')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a></td></tr>
 <tr class="memitem:a490b577e72fd32b6f0831b1697f04f77 inherit pro_methods_classdrain_1_1image_1_1GeoFrame" id="r_a490b577e72fd32b6f0831b1697f04f77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a490b577e72fd32b6f0831b1697f04f77">updateBoundingBoxR</a> ()</td></tr>
 <tr class="memdesc:a490b577e72fd32b6f0831b1697f04f77 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Proj 6 NEW: Given <a class="el" href="classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ...">BBox</a> in geo coords [deg], adjust geo coords [rad].  <br /></td></tr>
 <tr class="separator:a490b577e72fd32b6f0831b1697f04f77 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49da90ba5af6261dc68ca11ae4740a04 inherit pro_methods_classdrain_1_1image_1_1GeoFrame" id="r_a49da90ba5af6261dc68ca11ae4740a04"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a49da90ba5af6261dc68ca11ae4740a04">updateBoundingBoxD</a> ()</td></tr>
-<tr class="memdesc:a49da90ba5af6261dc68ca11ae4740a04 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given <a class="el" href="classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ...">BBox</a> in geo coords [rad], adjust geo coords [deg].  <br /></td></tr>
-<tr class="separator:a49da90ba5af6261dc68ca11ae4740a04 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade737837679adafe6db680b10f0ddef6 inherit pro_methods_classdrain_1_1image_1_1GeoFrame" id="r_ade737837679adafe6db680b10f0ddef6"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateBoundingBoxNat</b> ()</td></tr>
-<tr class="memdesc:ade737837679adafe6db680b10f0ddef6 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given <a class="el" href="classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ...">BBox</a> in geo coords [rad], adjust metric bounding box. Do not update xScale or yScale. <br /></td></tr>
+<tr class="memitem:ade737837679adafe6db680b10f0ddef6 inherit pro_methods_classdrain_1_1image_1_1GeoFrame" id="r_ade737837679adafe6db680b10f0ddef6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ade737837679adafe6db680b10f0ddef6">updateBoundingBoxNat</a> ()</td></tr>
+<tr class="memdesc:ade737837679adafe6db680b10f0ddef6 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given <a class="el" href="classdrain_1_1BBox.html" title="Container for geographical extent spanned by lowerLeft(x,y) and upperRight(x,y). Assumes longitude=x ...">BBox</a> in geo coords [rad], adjust geo coords [deg].  <br /></td></tr>
 <tr class="separator:ade737837679adafe6db680b10f0ddef6 inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28f8306f05beb2f699ce9ebb423c500e inherit pro_methods_classdrain_1_1image_1_1GeoFrame" id="r_a28f8306f05beb2f699ce9ebb423c500e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a28f8306f05beb2f699ce9ebb423c500e">updateScaling</a> ()</td></tr>
 <tr class="memdesc:a28f8306f05beb2f699ce9ebb423c500e inherit pro_methods_classdrain_1_1image_1_1GeoFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geometric scaling.  <br /></td></tr>
@@ -581,44 +582,6 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>yScale</b> = 0.0</t
 <tr class="separator:af38d3cd09352bd0cfea997d9352b8263 inherit pro_attribs_classdrain_1_1image_1_1GeoFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a70ea179dbe04ebb19601deedc3d54c1b" name="a70ea179dbe04ebb19601deedc3d54c1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70ea179dbe04ebb19601deedc3d54c1b">&#9670;&#160;</a></span>setGeometry()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void setGeometry </td>
-          <td>(</td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>height</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a>.</p>
-
-</div>
-</div>
 <a id="ad3b601f11b6fa853b5a79424eae4dd26" name="ad3b601f11b6fa853b5a79424eae4dd26"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3b601f11b6fa853b5a79424eae4dd26">&#9670;&#160;</a></span>toStream()</h2>
 

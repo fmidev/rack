@@ -34,7 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 DRAIN_ENUM_DICT(Unit) = {
-		//{"", Unit::UNDEFINED},
+		{"",    Unit::UNDEFINED}, // problem?
 		{"deg", Unit::DEGREE},
 		{"rad", Unit::RADIAN},
 		{"m",   Unit::METRE},

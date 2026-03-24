@@ -181,9 +181,9 @@ template&lt;class T &gt; </td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeoMetaData</b> (const <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> &amp;frame)</td></tr>
 <tr class="memdesc:a50b82e0f609c5f08e6edbd7b81b5a288"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets projection and bounding box. Adjusts spatial resolution accordingly. <br /></td></tr>
 <tr class="separator:a50b82e0f609c5f08e6edbd7b81b5a288"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b18964babc2517632cd077ae9938802" id="r_a6b18964babc2517632cd077ae9938802"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a6b18964babc2517632cd077ae9938802">setProjectionEPSG</a> (short epsg)</td></tr>
-<tr class="memdesc:a6b18964babc2517632cd077ae9938802"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set projection using EPSG code. This is the recommended way.  <br /></td></tr>
-<tr class="separator:a6b18964babc2517632cd077ae9938802"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26316fb2ff3ca683beb411eb6979a532" id="r_a26316fb2ff3ca683beb411eb6979a532"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#a26316fb2ff3ca683beb411eb6979a532">setProjectionEPSG</a> (short epsg)</td></tr>
+<tr class="memdesc:a26316fb2ff3ca683beb411eb6979a532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set projection using EPSG code. This is the recommended way.  <br /></td></tr>
+<tr class="separator:a26316fb2ff3ca683beb411eb6979a532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acecc39fc7721662f43ce0bb21aa6417e" id="r_acecc39fc7721662f43ce0bb21aa6417e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileGeoTIFF.html#acecc39fc7721662f43ce0bb21aa6417e">setProjection</a> (const std::string &amp;proj)</td></tr>
 <tr class="memdesc:acecc39fc7721662f43ce0bb21aa6417e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets projection given in Proj.4 string format.  <br /></td></tr>
 <tr class="separator:acecc39fc7721662f43ce0bb21aa6417e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -480,14 +480,14 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a6b18964babc2517632cd077ae9938802" name="a6b18964babc2517632cd077ae9938802"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b18964babc2517632cd077ae9938802">&#9670;&#160;</a></span>setProjectionEPSG()</h2>
+<a id="a26316fb2ff3ca683beb411eb6979a532" name="a26316fb2ff3ca683beb411eb6979a532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26316fb2ff3ca683beb411eb6979a532">&#9670;&#160;</a></span>setProjectionEPSG()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void setProjectionEPSG </td>
+          <td class="memname">bool setProjectionEPSG </td>
           <td>(</td>
           <td class="paramtype">short&#160;</td>
           <td class="paramname"><em>epsg</em></td><td>)</td>
@@ -497,9 +497,11 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Set projection using EPSG code. This is the recommended way. </p>
+<dl class="section return"><dt>Returns</dt><dd>- true, if projection was succesfully set.</dd></dl>
 <p>See also:</p>
 <div class="fragment"><div class="line">gdalsrsinfo EPSG:3857</div>
-</div><!-- fragment --> 
+</div><!-- fragment --> <p>gdalsrsinfo EPSG:5130 | fgrep 'CRS['</p>
+
 </div>
 </div>
 <a id="ab899ee24af4d1d30d65a9e72b36f2e75" name="ab899ee24af4d1d30d65a9e72b36f2e75"></a>

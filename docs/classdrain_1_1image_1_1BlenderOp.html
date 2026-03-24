@@ -408,10 +408,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initializeAlp
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Smoothes image and mixes the result with the original. </p>
 <p>Example. With <code>loops=2</code> and smooth mixing with <code>coeff=c</code> (instead of maximum), this operator produces  </p><p class="formulaDsp">
-<picture><source srcset="form_151_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_150_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
 F2 = (1-c)F + cM\{ (1-c)F + cM\{F\} \}
   = (1-c)F + (1-c)cM{F} + c^2M^2{F}
-\]" src="form_151.png"/></picture>
+\]" src="form_150.png"/></picture>
 </p>
 <p> where <picture><source srcset="form_44_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$F$" src="form_44.png" width="10" height="9"/></picture> is an image, <picture><source srcset="form_45_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$M\{\}$" src="form_45.png" width="25" height="14"/></picture> is a FastAverage operator of size <picture><source srcset="form_46_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$W \times H$" src="form_46.png" width="40" height="10"/></picture>, and <picture><source srcset="form_47_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$c$" src="form_47.png" width="5" height="6"/></picture> is the mixing coefficient between 0.0 and 1.0.</p>
 <div class="fragment"><div class="line">drainage shapes.png --iBlender 25,mix=0.25 -o hazy25a.png</div>

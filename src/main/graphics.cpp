@@ -149,7 +149,7 @@ public:
 		rectTitle->setStyle("fill", "green");
 		rectTitle->setStyle("opacity", 0.5);
 		rectTitle->setId("textRect");
-		rectTitle->setAlign(AlignSVG::TOP, AlignSVG::INSIDE);
+		rectTitle->setAlign(AlignSVG::TOP, MutualAlign::INSIDE);
 		rectTitle->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::FILL);
 		//rectTitle->setAlign(AlignSVG::HORZ_FILL);
 
@@ -158,7 +158,7 @@ public:
 		rectV->setStyle("fill", "red");
 		rectV->setStyle("opacity", 0.5);
 		rectV->setId("textV");
-		rectV->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
+		rectV->setAlign(AlignSVG::LEFT, MutualAlign::INSIDE);
 		rectV->setAlign(AlignSVG::Owner::OBJECT, AlignBase::VERT, AlignBase::Pos::FILL);
 
 		/*
@@ -170,7 +170,7 @@ public:
 		drain::image::AlignBase::Pos horzPos = textGroup->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
 		 */
 
-		drain::image::AlignBase::Pos horzPos = group->getAlign(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
+		drain::image::AlignBase::Pos horzPos = group->getAlignPos(drain::image::AlignSVG::Owner::ANCHOR, drain::image::AlignBase::Axis::HORZ);
 		// AlignSVG alignSvg;
 
 
@@ -194,10 +194,10 @@ public:
 
 			// Set horz alignment for every element
 			if (horzPos != AlignBase::Pos::UNDEFINED_POS){
-				text->setAlign(AlignBase::HORZ, horzPos, AlignSVG::Topol::INSIDE);
+				text->setAlign(AlignBase::HORZ, horzPos, MutualAlign::Topol::INSIDE);
 			}
 			else {
-				text->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // AlignSVG::LEFT);
+				text->setAlign(AlignSVG::LEFT, MutualAlign::INSIDE); // AlignSVG::LEFT);
 			}
 
 			// Set verthorz alignment for every element
@@ -207,7 +207,7 @@ public:
 			}
 			else {
 				// Row after row
-				text->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+				text->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 			}
 
 			mout.accept<LOG_NOTICE>("TEXT ", s, " aligned: ", text->getAlignStr());
@@ -331,7 +331,7 @@ public:
 			text->setText(status["PLC"]);
 
 			drain::image::TreeSVG & text2 = group.addChild()(svg::TEXT);
-			text2->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+			text2->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 			text2->setAlign(AlignSVG::CENTER);
 			text2->addClass(RackSVG::ElemClass::SIDE_PANEL);
 			text2->setFontSize(conf.fontSizes[0], conf.boxHeights[0]);
@@ -342,7 +342,7 @@ public:
 			drain::image::TreeSVG & date = group["date"](svg::TEXT); //addTextElem(group, "date");
 			date->setMyAlignAnchor(HEADER_RECT);
 			// date->setAlign(AlignSVG::MIDDLE, AlignSVG::RIGHT); // CENTER);
-			date->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
+			date->setAlign(AlignSVG::BOTTOM, MutualAlign::INSIDE);
 			date->setAlign(AlignSVG::CENTER);
 			date->addClass(RackSVG::ElemClass::TIME);
 			date->setStyle("fill", "gray");
@@ -354,7 +354,7 @@ public:
 			drain::image::TreeSVG & time = group["time"](svg::TEXT); // addTextElem(group, "time");
 			time->setMyAlignAnchor<AlignBase::Axis::HORZ>(HEADER_RECT);
 			//time->setAlign(AlignSVG::BOTTOM, AlignSVG::INSIDE);
-			time->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE); // over ["date"]
+			time->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE); // over ["date"]
 			time->setAlign(AlignSVG::CENTER);
 			time->setStyle("fill", "white");
 			time->setFontSize(conf.fontSizes[0], conf.boxHeights[0]);
@@ -373,7 +373,7 @@ public:
 		// rect->setWidth(frame.width);
 		// rect->setHeight(frame.height);
 		rect->setMyAlignAnchor(HEADER_RECT);
-		rect->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+		rect->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 		rect->setAlign(AlignSVG::HORZ_FILL);
 
 		std::string anchorVert(HEADER_RECT);
@@ -400,7 +400,7 @@ public:
 				tkey->setAlign(AlignSVG::Owner::OBJECT, AlignBase::HORZ, AlignBase::Pos::MAX);
 				// tkey->setAlign(AlignSVG::Owner::OBJECT, AlignSVG::RIGHT);
 
-				tkey->setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
+				tkey->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 				tkey->addClass(RackSVG::ElemClass::SIDE_PANEL);
 				tkey->setStyle("fill", "gray");
 
@@ -482,12 +482,12 @@ public:
 
 
 		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
-			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
-			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
+			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, MutualAlign::OUTSIDE);
+			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, MutualAlign::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
 		}
 		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
-			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, AlignSVG::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
-			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, AlignSVG::OUTSIDE);
+			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, MutualAlign::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
+			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, MutualAlign::OUTSIDE);
 		}
 
 

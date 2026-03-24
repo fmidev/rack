@@ -617,9 +617,9 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A detector for widespread electromagnetic interference. </p>
 <p>Detects smooth, widespread interference. Based on fitting a function that models how radar receives external emitters:  </p><p class="formulaDsp">
-<picture><source srcset="form_139_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_138_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
   dbz = b_1 + b_1x + b_2*\log(x);
-\]" src="form_139.png"/></picture>
+\]" src="form_138.png"/></picture>
 </p>
  </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aeb9d58f9c9ea5ef7fcb6414299d33947" name="aeb9d58f9c9ea5ef7fcb6414299d33947"></a>
@@ -805,29 +805,29 @@ static unsigned short int&#160;</td><td class="memItemRight" valign="bottom"><b>
       </table>
 </div><div class="memdoc">
 <p>Curvature is computed as a maximum difference between the fitted 2nd order polynomial curve  </p><p class="formulaDsp">
-<picture><source srcset="form_140_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_139_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
    \hat{y_2}(x) = b_0 + b_1x + b_2x^2
- \]" src="form_140.png"/></picture>
+ \]" src="form_139.png"/></picture>
 </p>
 <p> and the direct line crossing its point values, <picture><source srcset="form_6_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$(0,b_0)$" src="form_6.png" width="31" height="14"/></picture> and <picture><source srcset="form_7_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$(w,\hat{y_2}(w))$" src="form_7.png" width="54" height="14"/></picture> where <picture><source srcset="form_8_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$w$" src="form_8.png" width="10" height="6"/></picture> is the maximum of <picture><source srcset="form_9_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$x$" src="form_9.png" width="8" height="6"/></picture>. Denote <picture><source srcset="form_10_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$d_y=\hat{y_2}(w)-\hat{y_2}(0)$" src="form_10.png" width="101" height="14"/></picture>. Then, the line is  </p><p class="formulaDsp">
-<picture><source srcset="form_141_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_140_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
    \hat{y_1}(x) = b_0 + \frac{x}{w}d_y
- \]" src="form_141.png"/></picture>
+ \]" src="form_140.png"/></picture>
 </p>
 <p> and the difference  </p><p class="formulaDsp">
-<picture><source srcset="form_142_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_141_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
    d(x) = \hat{y_2}(x) - \hat{y_1}(x) = x(b_1 - \frac{d_y}{w}) + b_2x^2
- \]" src="form_142.png"/></picture>
+ \]" src="form_141.png"/></picture>
 </p>
 <p> and its derivative is  </p><p class="formulaDsp">
-<picture><source srcset="form_143_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_142_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
    d'(x) = b_1 - \frac{d_y}{w} + 2b_2x .
- \]" src="form_143.png"/></picture>
+ \]" src="form_142.png"/></picture>
 </p>
 <p> Setting <picture><source srcset="form_14_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$d'(x)=0$" src="form_14.png" width="49" height="14"/></picture> we get  </p><p class="formulaDsp">
-<picture><source srcset="form_144_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<picture><source srcset="form_143_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
    x = (\frac{d_y}{w}-b_1)/2b_2
- \]" src="form_144.png"/></picture>
+ \]" src="form_143.png"/></picture>
 </p>
 <p><picture><source srcset="form_6_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$(0,b_0)$" src="form_6.png" width="31" height="14"/></picture> and <picture><source srcset="form_16_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$(x_w,b_0 + b_1x_w + b_2x_w^2)$" src="form_16.png" width="123" height="15"/></picture> where <picture><source srcset="form_17_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$x_w$" src="form_17.png" width="15" height="9"/></picture> is the maximum of x. </p>
 

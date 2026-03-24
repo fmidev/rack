@@ -398,9 +398,9 @@ public:
 	CmdAlign() : drain::BasicCommand(__FUNCTION__, "Alignment of the next element"){
 
 		getParameters().link("position", position,
-				drain::sprinter(drain::Enum<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+				drain::sprinter(drain::Enum<MutualAlign::Topol>::dict.getKeys(), {"|"}).str() + ':' +
 				drain::sprinter(drain::Enum<AlignSVG::HorzAlign>::dict.getKeys(), {"|"}).str() + ',' +
-				drain::sprinter(drain::Enum<AlignSVG::Topol>::dict.getKeys(), {"|"}).str() + ':' +
+				drain::sprinter(drain::Enum<MutualAlign::Topol>::dict.getKeys(), {"|"}).str() + ':' +
 				drain::sprinter(drain::Enum<AlignSVG::VertAlign>::dict.getKeys(), {"|"}).str()
 		).setSeparator(':');
 

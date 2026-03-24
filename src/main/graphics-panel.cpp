@@ -334,22 +334,22 @@ void RackSVG::consumeAlignRequest(RackContext & ctx, drain::image::NodeSVG & nod
 
 	//if (ctx.alignHorz.pos != AlignBase::UNDEFINED_POS){
 	if (ctx.alignHorz.isSet()){ // experimental...
-		node.setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.getOrDefault(AlignSVG::INSIDE));  // simplify
+		node.setAlign(AlignBase::HORZ, ctx.alignHorz.pos, ctx.alignHorz.getOrDefault(MutualAlign::INSIDE));  // simplify
 		node.addClass(LayoutSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
 		// mout.attention("updated Horz align: ",  node); // , " -> all:", node.getAlignStr()
 		ctx.alignHorz.reset();
-		ctx.alignHorz.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
+		ctx.alignHorz.set(AlignBase::UNDEFINED_POS, MutualAlign::INSIDE);
 		//mout.attention(" HORZ state now: ", ctx.alignHorz);
 	}
 
 
 	//if (ctx.alignVert.pos != AlignBase::UNDEFINED_POS){
 	if (ctx.alignVert.isSet()){ // experimental...
-		node.setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.getOrDefault(AlignSVG::INSIDE)); // simplify
+		node.setAlign(AlignBase::VERT, ctx.alignVert.pos, ctx.alignVert.getOrDefault(MutualAlign::INSIDE)); // simplify
 		node.addClass(LayoutSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
 		// mout.attention("updated Vert align: ",  node); //  " -> all:", node.getAlignStr()
 		ctx.alignVert.reset();
-		ctx.alignVert.set(AlignBase::UNDEFINED_POS, AlignSVG::INSIDE);
+		ctx.alignVert.set(AlignBase::UNDEFINED_POS, MutualAlign::INSIDE);
 		// mout.attention(" VERT state now: ", ctx.alignVert);
 	}
 
@@ -709,11 +709,11 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 	switch (elemClass) {
 	case RackSVG::ElemClass::MAIN_TITLE:
 		backgroundRect->setId(RackSVG::ElemClass::MAIN_TITLE);
-		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+		backgroundRect->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 		backgroundRect->setHeight(conf.boxHeights[0]);
 		break;
 	case RackSVG::ElemClass::GROUP_TITLE:
-		backgroundRect->setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
+		backgroundRect->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 		backgroundRect->setHeight(conf.boxHeights[1]);
 		break;
 	default:
@@ -1076,7 +1076,7 @@ void CmdAlign::exec() const  {
 		drain::StringTools::split(position, args, ':');
 
 		// CompleteAlignment<> align(AlignSVG::Topol::UNDEFINED_TOPOL, AlignBase::Pos::UNDEFINED_POS);
-		CompleteAlignment<> align(AlignSVG::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS);
+		CompleteAlignment<> align(MutualAlign::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS);
 
 		for (const std::string & arg: args){
 

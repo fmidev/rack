@@ -185,7 +185,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 			bitShift = (owner == Owner::OBJECT) ? 0 : 4;
 
-			const AlignBase::Pos & pos = getAlign(owner, axis);
+			const AlignBase::Pos & pos = getAlignPos(owner, axis);
 
 			if (pos != AlignBase::UNDEFINED_POS){
 
@@ -241,10 +241,6 @@ void AlignSVG::swapAlign(AlignSVG & align){
 
 // template <>
 // const drain::Enum<AlignSVG::Topol>::dict_t drain::Enum<AlignSVG::Topol>::dict
-DRAIN_ENUM_DICT(drain::image::AlignSVG::Topol)= {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Topol, INSIDE),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Topol, OUTSIDE),
-};
 
 
 
@@ -270,6 +266,11 @@ bool AlignSVG::isAligned() const {
 
 
 }  // image::
+
+DRAIN_ENUM_DICT(image::MutualAlign::Topol)= {
+		DRAIN_ENUM_ENTRY(image::MutualAlign::Topol, INSIDE),
+		DRAIN_ENUM_ENTRY(image::MutualAlign::Topol, OUTSIDE),
+};
 
 }  // drain::
 

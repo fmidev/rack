@@ -83,7 +83,36 @@ Automatical generation of SVG files</h1>
 <p>The internal SVG structure is lightweight, so maintaining it in the background is neither time nor memory consuming. In addition, some processing - like alignment of elements - takes places only if an SVG file is actually written out.</p>
 <h2><a class="anchor" id="svg_example"></a>
 Examples of SVG panels</h2>
-<p><b>Illustrations</b> applying graphic commands for each input – inside a script. <code>--gRadarDot</code> 30000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<p>Align text to each radar </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --inputPrefix $PWD/ \</div>
+<div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
+<div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarLabel &quot;${what:date|%A, %d %B %Y}\n${NOD}|${PLC}\n${what:time}&quot; &#39;</span> \</div>
+<div class="line">   data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5 \</div>
+<div class="line">   --cExtract DATA \</div>
+<div class="line">   --gLinkImage <span class="stringliteral">&#39;data-kiira/map-kiira.png&#39;</span> \</div>
+<div class="line">   --gAlign HORZ_FILL:VERT_FILL -P --imageTransp <span class="stringliteral">&#39;&#39;</span> \</div>
+<div class="line">   -o composite3.png \</div>
+<div class="line">   -o composite-labels.svg</div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+</div><!-- fragment --><div class="image">
+<img src="composite-labels.png" alt=""/>
+<div class="caption">
+SVG panel example: composite-Labels.</div></div>
+ Align text to each radar, variant </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --inputPrefix $PWD/ \</div>
+<div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
+<div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 30000 --gRadarLabel &quot;${what:date|%A, %d %B %Y}\n${NOD}|${PLC}\n${what:time}&quot; &#39;</span> \</div>
+<div class="line">   data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5 \</div>
+<div class="line">   --cExtract DATA \</div>
+<div class="line">   --gLinkImage <span class="stringliteral">&#39;data-kiira/map-kiira.png&#39;</span> \</div>
+<div class="line">   --gAlign HORZ_FILL:VERT_FILL -P --imageTransp <span class="stringliteral">&#39;&#39;</span> \</div>
+<div class="line">   -o composite3.png \</div>
+<div class="line">   --gStyle .LABEL=<span class="stringliteral">&#39;fill:white;stroke:forestgreen;font-size:10px&#39;</span> -o composite-labels2.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="composite-labels2.png" alt=""/>
+<div class="caption">
+SVG panel example: composite-Labels2.</div></div>
+ <b>Illustrations</b> applying graphic commands for each input – inside a script. <code>--gRadarDot</code> 30000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 30000,MASK=true&#39;</span> \</div>
@@ -94,7 +123,6 @@ Examples of SVG panels</h2>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarDot.png \</div>
 <div class="line">   --gStyle <span class="stringliteral">&#39;.COVER=fill:blue;opacity:0.5&#39;</span> \</div>
 <div class="line">   -o composite-radardot-30000.svg</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --><div class="image">
 <img src="composite-radardot-30000.png" alt=""/>
 <div class="caption">
@@ -268,7 +296,7 @@ SVG panel example: Without group titles.</div></div>
 <div class="caption">
 SVG panel example: Grouping by site codes.</div></div>
  The main title can be set explicitly with <code>--gTitle</code> command . The default value, <code>AUTO</code> , displays main title as in the examples above. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
-<div class="line">   --gTitle <span class="stringliteral">&#39;My Main Title for ${what:date|%A, %d %B %Y}&#39;</span> --gGroupTitle <span class="stringliteral">&#39;Radar ${PLC}&#39;</span> \</div>
+<div class="line">   --gTitle <span class="stringliteral">&#39;My Main Title for ${what:date|%A, %d %B %Y}&#39;</span> --gGroupTitle <span class="stringliteral">&#39;Radar [${PLC}] ${NOD}&#39;</span> \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c  --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   data-kiira/201708121?00_*{ika,kor,van}.h5 \</div>
 <div class="line">   -o user-defined_title.svg</div>

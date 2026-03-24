@@ -1,19 +1,19 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="Node000000" title=" " alt="" coords="5,169,64,194"/>
 <area shape="rect" id="Node000001" href="$classdrain_1_1StringWrapper.html" title=" " alt="" coords="112,5,324,45"/>
-<area shape="poly" id="edge764_Node000000_Node000001" title=" " alt="" coords="43,154,68,104,87,78,110,55,130,43,133,48,114,59,91,81,73,107,48,157"/>
+<area shape="poly" id="edge768_Node000000_Node000001" title=" " alt="" coords="43,154,68,104,87,78,110,55,130,43,133,48,114,59,91,81,73,107,48,157"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1EnumWrapper.html" title=" " alt="" coords="115,70,321,95"/>
-<area shape="poly" id="edge765_Node000000_Node000002" title=" " alt="" coords="52,156,78,129,111,104,138,93,140,98,113,109,81,133,56,160"/>
+<area shape="poly" id="edge769_Node000000_Node000002" title=" " alt="" coords="52,156,78,129,111,104,138,93,140,98,113,109,81,133,56,160"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1MultiEnumWrapper.html" title=" " alt="" coords="145,119,291,145"/>
-<area shape="poly" id="edge766_Node000000_Node000003" title=" " alt="" coords="76,164,111,153,156,142,157,147,113,159,78,169"/>
+<area shape="poly" id="edge770_Node000000_Node000003" title=" " alt="" coords="76,164,111,153,156,142,157,147,113,159,78,169"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1StringBuilder.html" title=" " alt="" coords="138,169,298,194"/>
-<area shape="poly" id="edge768_Node000000_Node000005" title=" " alt="" coords="78,179,138,179,138,184,78,184"/>
+<area shape="poly" id="edge772_Node000000_Node000005" title=" " alt="" coords="78,179,138,179,138,184,78,184"/>
 <area shape="rect" id="Node000006" href="$classdrain_1_1StringWrapper.html" title="String&#45;like object easily supporting conversion from other types, like Enum values." alt="" coords="141,218,295,243"/>
-<area shape="poly" id="edge769_Node000000_Node000006" title=" " alt="" coords="78,192,113,203,162,215,160,221,111,208,76,197"/>
+<area shape="poly" id="edge773_Node000000_Node000006" title=" " alt="" coords="78,192,113,203,162,215,160,221,111,208,76,197"/>
 <area shape="rect" id="Node000007" href="$classdrain_1_1Stringlet.html" title="A helper class for StringMapper." alt="" coords="179,267,257,293"/>
-<area shape="poly" id="edge770_Node000000_Node000007" title=" " alt="" coords="56,203,82,229,113,252,146,266,180,273,178,278,145,271,111,257,78,233,52,207"/>
+<area shape="poly" id="edge774_Node000000_Node000007" title=" " alt="" coords="56,203,82,229,113,252,146,266,180,273,178,278,145,271,111,257,78,233,52,207"/>
 <area shape="rect" id="Node000008" href="$structdrain_1_1image_1_1AnchorElem.html" title=" " alt="" coords="168,317,268,342"/>
-<area shape="poly" id="edge771_Node000000_Node000008" title=" " alt="" coords="47,206,72,255,91,281,114,302,140,315,168,323,167,328,138,320,110,306,87,284,68,258,43,208"/>
+<area shape="poly" id="edge775_Node000000_Node000008" title=" " alt="" coords="47,206,72,255,91,281,114,302,140,315,168,323,167,328,138,320,110,306,87,284,68,258,43,208"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1ClassXML.html" title="A wrapper marking string an CSS effect." alt="" coords="372,119,457,145"/>
-<area shape="poly" id="edge767_Node000003_Node000004" title=" " alt="" coords="305,129,371,129,371,135,305,135"/>
+<area shape="poly" id="edge771_Node000003_Node000004" title=" " alt="" coords="305,129,371,129,371,135,305,135"/>
 </map>
