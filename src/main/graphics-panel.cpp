@@ -1102,13 +1102,13 @@ void CmdAlign::exec() const  {
 
 			switch (align.axis) {
 			case AlignBase::Axis::HORZ:
-				ctx.alignHorz.set(align.topol, align.pos); // AlignBase::Axis::HORZ,
-				mout.accept<LOG_NOTICE>(align.topol, AlignBase::Axis::HORZ, align.pos, " -> ", ctx.alignHorz.topol, '/', ctx.alignHorz.axis, '/', ctx.alignHorz);
+				ctx.alignHorz.set(align.topol, align.pos);
+				mout.accept<LOG_DEBUG>(align.topol, AlignBase::Axis::HORZ, align.pos, " -> ", ctx.alignHorz.topol, '/', ctx.alignHorz.axis, '/', ctx.alignHorz);
 				// ctx.alignHorz.set(align);
 				break;
 			case AlignBase::Axis::VERT:
-				ctx.alignVert.set(align.topol, align.pos); // AlignBase::Axis::VERT,
-				mout.accept<LOG_NOTICE>(align.topol, AlignBase::Axis::VERT, align.pos, " -> ", ctx.alignVert.topol, '/', ctx.alignVert.axis, '/', ctx.alignVert);
+				ctx.alignVert.set(align.topol, align.pos);
+				mout.accept<LOG_DEBUG>(align.topol, AlignBase::Axis::VERT, align.pos, " -> ", ctx.alignVert.topol, '/', ctx.alignVert.axis, '/', ctx.alignVert);
 				// ctx.alignVert(align);
 				break;
 			case AlignBase::Axis::UNDEFINED_AXIS:
@@ -1170,14 +1170,19 @@ void CmdLinkImage::exec() const {
 	const Composite & composite = ctx.getComposite(RackContext::CURRENT|RackContext::PRIVATE|RackContext::SHARED);
 
 	drain::Frame2D<double> frame(composite.getFrameWidth(), composite.getFrameHeight());
+	if (frame.empty()){
+		drain::VariableMap & statusMap = ctx.getUpdatedStatusMap(); // for variables in file path
+		// mout.note(DRAIN_LOG(statusMap));
+		frame.set(statusMap.get("where:xsize", 0), statusMap.get("where:ysize", 0));
+		mout.note("Current Cartesian data size: ", frame);
+	}
 
 	if (frame.empty()){
-		mout.advice("Ensure --cSize <width>,<height> is called prior to this command (", getName(), ")");
-		mout.hint("Use  '--format FMI-MAP --outputFile -' to obtain a background map.");
-		mout.warn("Including (linking) image file without (width x height) information. Using 320x200");
 		frame.set(320,200);
+		mout.warn("Including (linking) image file without (width x height) information. Using:", DRAIN_LOG(frame));
+		mout.advice("Consider reading a Cartesian (HDF5) or issue --cSize <width>,<height> prior to this command (", getName(), ")");
+		mout.hint("Use  '--format FMI-MAP --outputFile -' to obtain a background map.");
 	}
-	ctx.getUpdatedStatusMap(); // for variables in file path
 	drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
 	mout.note("linking: ", filePath);
 	RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::INDEPENDENT));

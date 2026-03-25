@@ -927,13 +927,12 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 
 	const drain::bank_section_t HIDDEN = drain::Static::get<drain::HiddenSection>().index;
 
-	install<CmdLinkImage>(); //
-	// install<CmdLayout>();  // Could be "CmdMainAlign", but syntax is so different. (HORZ,INCR etc)
-	// install<CmdAlign>();
 	DRAIN_CMD_INSTALL(Cmd, Align)();
-	// DRAIN_CMD_INSTALL(Cmd, Anchor)();
 	DRAIN_CMD_INSTALL(Cmd, Layout)();
 	linkRelatedCommands(Align, Layout);
+
+	DRAIN_CMD_INSTALL(Cmd, LinkImage)();
+	linkRelatedCommands(Align, LinkImage);
 
 	install<CmdFontSizes>();
 	//install<CmdGroupTitle>();
@@ -951,7 +950,6 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdPanel>();
 	install<CmdPanelFoo>().section = HIDDEN; // addSection(i);
 	install<CmdPanelTest>().section = HIDDEN;  // addSection(i);
-	// install<CmdImageTitle>(); consider
 	install<CmdStyle>();
 
 	DRAIN_CMD_INSTALL(Cmd, RadarDot)();

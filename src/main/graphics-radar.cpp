@@ -110,6 +110,7 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	});
 	*/
 
+	/*
 	static
 	const std::string OVERLAY_STYLE = "OVERLAY_STYLE"; // TODO enum
 
@@ -118,62 +119,63 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		// Ensure element position at the beginning of the doc.
 		svgDoc.prependChild(OVERLAY_STYLE);
 	}
+	*/
 
 
 	//TreeSVG & style = svgDoc[OVERLAY_STYLE];
 	//TreeSVG & style = drain::UtilsXML::getHeaderObject(svgDoc, svg::STYLE, OVERLAY_STYLE);
 
-	if (true || style->isUndefined()){
+	// if (true || style->isUndefined()){
 
-		// mout.debug("initializing style");
+	// mout.debug("initializing style");
 
-		style->setType(svg::STYLE);
+	style->setType(svg::STYLE);
 
-		typedef SelectXML<svg::tag_t> Select;
-		// These could be
-		/*
+	typedef SelectXML<svg::tag_t> Select;
+	// These could be
+	/*
 		Select("polygon");
 		Select(ClassXML("GRID"));
 		Select(ClassXML(GRID));
 		Select select;
 		select.set("polygon");
-		*/
+	 */
 
-		style[Select(GRID)] -> set({
-				//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
-				{"stroke", "white"},
-				{"stroke-width", 3.0},
-				{"fill", "none"}, // debug
-				//{"fill-opacity", 0.35},
-		});
+	style[Select(GRID)] -> set({
+		//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
+		{"stroke", "white"},
+		{"stroke-width", 3.0},
+		{"fill", "none"}, // debug
+		//{"fill-opacity", 0.35},
+	});
 
 
-		style[Select(svg::TEXT, GRID)] -> set({
-				{"text-anchor", "middle"},
-				{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
-				// {"font-size", 20.0},
-				{"paint-order", "stroke"},
-				{"stroke", "black"},
-				{"stroke-opacity", "0.5"},
-				{"stroke-width", "0.3em"},
-				{"stroke-linejoin", "round"},
-				{"fill", "white"}, // debug
-				{"fill-opacity", "1"},
-		});
+	style[Select(svg::TEXT, GRID)] -> set({
+		{"text-anchor", "middle"},
+		{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
+		// {"font-size", 20.0},
+		{"paint-order", "stroke"},
+		{"stroke", "black"},
+		{"stroke-opacity", "0.5"},
+		{"stroke-width", "0.3em"},
+		{"stroke-linejoin", "round"},
+		{"fill", "white"}, // debug
+		{"fill-opacity", "1"},
+	});
 
-		style[Select(HIGHLIGHT, PseudoClassCSS::hover)] -> set({
-				//{"display", "block"},
-				{"opacity", 1.0},
-		});
+	style[Select(HIGHLIGHT, PseudoClassCSS::hover)] -> set({
+		//{"display", "block"},
+		{"opacity", 1.0},
+	});
 
-		style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] -> set({
-				{"font-size", "larger"},
-		});
+	style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] -> set({
+		{"font-size", "larger"},
+	});
 
-		style[Select(svg::PATH, HIGHLIGHT, PseudoClassCSS::hover)] -> set({
-				{"stroke-width", 5.0},
-		});
-	}
+	style[Select(svg::PATH, HIGHLIGHT, PseudoClassCSS::hover)] -> set({
+		{"stroke-width", 5.0},
+	});
+	//}
 
 	return style;
 }

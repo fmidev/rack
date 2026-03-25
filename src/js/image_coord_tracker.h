@@ -222,7 +222,7 @@ CoordHandler.prototype.setPrecision = function(precision){
 	precision = precision.split(RegExp('[,:]'))
     }
 
-    console.log(precision)
+    console.log("precision: ", precision)
     
     switch (precision.length) {
     case 2:
