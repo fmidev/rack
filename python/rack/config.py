@@ -1,9 +1,15 @@
 
 import json
 import sys # sys.stderr
+import re
+import shlex
+
 from pathlib import Path
 
-
+import logging
+logging.basicConfig(format='%(levelname)s:\tconfig: %(message)s')
+logger = logging.getLogger() 
+logger.setLevel(logging.INFO)
 
 def add_parameters(parser, path_prefix=None):
     """ Creates registry of supported options of this script
@@ -48,7 +54,42 @@ def read(filename, lenient=False): # todo path prefix?
             raise Exception(msg)
     with open(path, "r") as f:
         return json.load(f)
+    
 
+def parse(lines: list, dst: object) -> dict:
+    """ Try to parse text lines primarily as JSON and then with key=value syntax.
+    """
+
+    KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
+    conf={}
+        
+    if lines[0].strip().startswith('{'):
+        try:
+            logger.debug("Parsing as JSON")
+            jsonDecoder = json.JSONDecoder()
+            text = "".join(lines)
+            conf = jsonDecoder.decode(text)
+        except json.JSONDecodeError as e:
+            logger.error(e)
+            exit(-1)
+    else:
+        logger.debug("Parsing as key=value pairs")
+        for line in lines:
+            m = KEY_VALUE_RE.match(line)
+            if m:
+                key = m.group('key')
+                value = m.group('value')
+                #logger.debug(f"{key} = {value}")
+                value = shlex.split(value, comments=True)
+                logger.warning(value)
+                value = " ".join(value)
+                conf[key] = value # todo auto type detect?
+            else:
+                logger.error(f"could not parse: {line}")
+    if dst: # dangerous?
+        vars(dst).update(conf)
+    return conf
+    #logger.info(f"JSON conf({block.arg}): {conf}")
 
 def write(filename, conf:dict, exclude=[]):
 

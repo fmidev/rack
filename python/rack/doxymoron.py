@@ -14,9 +14,13 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple
 
+import rack.config
+
 import logging
-logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
-logger = logging.getLogger(Path(__file__).stem) 
+#logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
+logging.basicConfig(format='%(levelname)s:\t %(message)s')
+#logger = logging.getLogger(Path(__file__).stem) 
+logger = logging.getLogger() 
 logger.setLevel(logging.INFO)
     
 @dataclass
@@ -73,7 +77,7 @@ CONF_START_RE = re.compile(r"^\\~(?P<kind>cliconf|pyconf)\s*$")
 CONF_END_RE = re.compile(r"^\\~\s*$")
 
 # Recognizes code block: \code ... \endcode
-CODE_START_RE = re.compile(r"^\\code(?:\{(?P<brace>[^}]*)\})?\s*$")
+CODE_START_RE = re.compile(r"^\\code(?:\{(?P<arg>[^}]*)\})?\s*$")
 CODE_END_RE = re.compile(r"^\\endcode\s*$")
 
 # SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[^}]*))?\s*$")
@@ -82,23 +86,31 @@ CODE_END_RE = re.compile(r"^\\endcode\s*$")
 # Recognizes \example and \include commands
 SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include)))\s*(?:(?P<arg>.+))?$")
 
+#KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
+
 # Accept either a plain command line, or a line prefixed with "$ "
 CLI_LINE_RE = re.compile(r"^\s*(?:\$\s+)?(?P<cmd>.+?)\s*$")
 
 #EXEC_START_RE = re.compile(r"^\\~exec\s*$")
 #SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
-SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<subkind>[^}]*)\})?\s*$")
+SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<arg>[^}]*)\})?\s*$")
 SPECIAL_END_RE = re.compile(r"^\\~\s*$")
 
 
 @dataclass
 class Block:
     kind: str                 # "cli" or "py" (later: "cpp")
-    brace: Optional[str]      # content inside \code{...}
+    arg: Optional[str]      # content inside \code{...}
     content: List[str]
     start_line: int
 
 import subprocess
+
+"""
+
+TODO: run also \\ example, if conf["run_example"] = True;
+"""
+
 
 def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
     """
@@ -106,15 +118,6 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
       ("cliconf", List[str])  - raw lines inside config
       ("pyconf",  List[str])
       ("block",   Block)
-    """
-
-    """ 
-    text = path.read_text(encoding="utf-8")
-    try:
-        conf = json.loads(text)
-        return [("json", conf)] 
-    except json.JSONDecodeError:
-        pass  # Not a JSON file, proceed with normal Doxygen parsing    
     """
 
     lines = path.read_text(encoding="utf-8").splitlines()
@@ -133,73 +136,67 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         if m:
             kind = m.group("cmd")
             arg = m.group("arg")
+            # Future option: \example and \include files can be tested (implies support of Confs)
             if kind in ("example", "include") and arg:
                 yield (kind, arg.strip())
-            print(f"[debug] added line {i}: cmd: {kind} arg={arg}")
+                logger.debug(f"line {i}: {kind}({arg})")
             i += 1
             continue
 
-        # Detect \~cliconf or \~pyconf block  
-        m = CONF_START_RE.match(line.strip()) # keep strip here
-        if m and False:
-            kind = m.group("kind")
-            buf = []
-            i += 1
-            
-            # Scan until end of config block
-            while i < doc_lines and not CONF_END_RE.match(lines[i].strip()):
-                buf.append(lines[i])
-                i += 1
-            
-            if i >= doc_lines:
-                raise ValueError(f"Unterminated config block \\~{kind} starting near line {i}")
-            
-            try:
-                conf = json.loads("\n".join(buf))
-                print(f"[DEBUG] Parsed JSON config for {kind} at lines {i-len(buf)}-{i}")
-                yield (kind, conf)
-            except json.JSONDecodeError:
-                yield (kind, buf)  # yield raw lines if not valid JSON
-                #raise ValueError(f"Invalid JSON in config block \\~{kind} starting near line {i}")
-            #yield (kind, conf)
-            i += 1
-            continue
 
-        # Detect \code block  
+        # Detect \code ... \endcode block  
         m = CODE_START_RE.match(line.strip())
         if m:
-            brace = m.group("brace")
+            arg = m.group("arg")
             start_line = i + 1
             buf = []
             i += 1
+            line_buf=''
             while i < doc_lines and not CODE_END_RE.match(lines[i].strip()):
-                buf.append(lines[i])
+                if lines[i].endswith('\\'):
+                    line_buf += lines[i].rstrip('\\')+' '
+                elif line_buf:
+                    # Last line concatenated with '\' 
+                    buf.append(line_buf+lines[i])
+                    line_buf=''
+                else:                    
+                    buf.append(lines[i])
                 i += 1
             if i >= doc_lines: # len(lines):
                 raise ValueError(f"Unterminated \\code block starting near line {start_line}")
             # Determine type
             kind = "cli"
-            if brace and ".py" in brace:
+            if arg and ".py" in arg:
                 kind = "py"
-            yield ("block", Block(kind=kind, brace=brace, content=buf, start_line=start_line))
+            yield ("block", Block(kind=kind, arg=arg, content=buf, start_line=start_line))
             i += 1
             continue
 
+        # Detect \~<kind>{arg}  \~ block  
         m = SPECIAL_START_RE.match(line.strip())
         if m:
             kind = m.group("kind")
-            subkind = m.group("subkind")
-            logger.info(f"[~{kind} subtype={subkind}]")
-            logger.info(f"user defined block (line {i})")
+            if kind=='stop':
+                raise InterruptedError(f"stopped on line: {i}")
+            arg = m.group("arg")
+            logger.info(f"line {i}: ~{kind}[{arg}]")
             start_line = i + 1
             buf = []
             i += 1
+            line_buf=''
             while i < doc_lines and not SPECIAL_END_RE.match(lines[i].strip()):
-                buf.append(lines[i])
+                if lines[i].endswith('\\'):
+                    line_buf += lines[i].rstrip('\\')+' '
+                elif line_buf:
+                    # Last line concatenated with '\' 
+                    buf.append(line_buf+lines[i])
+                    line_buf=''
+                else:                    
+                    buf.append(lines[i])
                 i += 1
             if i >= doc_lines: # len(lines):
-                raise ValueError(f"Unterminated \\~exec block starting near line {start_line}")
-            yield ("other", Block(kind=kind, brace=None, content=buf, start_line=start_line))
+                raise ValueError(f"Unterminated '{kind}' block starting near line {start_line}")
+            yield ("special", Block(kind=kind, arg=arg, content=buf, start_line=start_line))
             i += 1
             continue
 
@@ -211,7 +208,13 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Run and validate \\code blocks inside a Doxygen .dox file.")
     ap.add_argument("docfile", type=Path)
     ap.add_argument("-v", "--verbose", action="store_true")
+    ap.add_argument("--debug", action="store_true")
     args = ap.parse_args()
+
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
+    elif args.verbose:
+        logger.setLevel(logging.INFO)
 
     cliconf = CliConf()
     pyconf = PyConf()
@@ -224,7 +227,7 @@ def main() -> int:
         if 'head' in conf:
             print("[HEAD] " + "\n[HEAD] ".join(conf['head']))
 
-        print ('kind: ', kind)
+        #print ('kind: ', kind)
 
         if kind == "jsonUNUSED":
             # This is a special case for when the entire .dox file is just a JSON config blob
@@ -244,14 +247,24 @@ def main() -> int:
             print(f"[{kind.upper()}] {obj}")
             conf[kind] = obj
             # You could implement logic here to run the example and capture CLI commands it emits
-        #elif kind == "include":
-        #    print(f"[INCLUDE] {obj}")
+            #elif kind == "include":
+            #    print(f"[INCLUDE] {obj}")
             # You could implement logic here to read the included file and process it as a separate .dox
-        elif kind == "other":
+        elif kind == "special":
             block: Block = obj 
-            print(f"[NOTE] Handling [{block.kind}]")
+            logger.warning(f"Handling {block.kind}[{block.arg}]")
             #lines = 
-            if block.kind == 'exec':
+            if block.kind == 'conf':
+                obj = None
+                if block.arg == 'cli':
+                    obj = CliConf()
+                logger.info(obj)
+                logger.info(block)
+                conf = rack.config.parse(block.content, dst=obj)
+                logger.info(f"JSON conf({block.arg}): {conf}")            
+                logger.info(obj)
+                pass
+            elif block.kind == 'exec':
                 logger.warning("executing: " + "\n".join(block.content))
                 # TODO: backslash handling?
                 # cmd = ["echo", "koe", "$PYTHONPATH", '"$PYTHONPATH"']
@@ -275,8 +288,10 @@ def main() -> int:
                     print("--- stdout --- \n", result.stdout)
                     print("--- stdout --- ")
                     if result.returncode != 0:
-                        logger.error("execution of '{prog[0]}' failed")
-                        print("STDERR:", result.stderr)
+                        logger.error(f"execution of '{cmd[0]}' failed")
+                        print("--- stderr --- ")
+                        print(result.stderr)
+                        print("--- stderr --- ")
                 exit(1)
 
             #print(f"Executing code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
