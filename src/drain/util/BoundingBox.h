@@ -31,8 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_BOUNDING_BOX_H_
 #define DRAIN_BOUNDING_BOX_H_
 
-
+#include <cmath>
 #include "Rectangle.h"
+#include "Units.h"
 
 namespace drain
 {
@@ -74,11 +75,14 @@ public:
 		return isMetric(p.x, 180.0) || isMetric(p.y, 90.0);
 	}
 
+
 	/// Checks if a coordinate looks like metric, that is, beyond [-90,+90] or [-180,+180]
 	static inline
 	bool isMetric(double x, double limit){
 		return (x < -limit) || (x > limit);
 	}
+
+
 
 	/// Check if this Bounding Box has metric coordinates, instead of degrees.
 	/**
@@ -87,6 +91,31 @@ public:
 	inline
 	bool isMetric() const {
 		return isMetric(lowerLeft) || isMetric(upperRight);
+	}
+
+
+	static inline
+	Unit guessUnit(double x, double y){
+		/*
+		if (isWithin(x, -1.0,+1.0)){
+			return Unit::RADIAN;
+		}
+		*/
+		if (isWithin(x, -M_PI,+M_PI) && isWithin(y, -M_PI,+M_PI)){
+			return Unit::RADIAN;
+		}
+		else if (isWithin(x, -180.0,+180.0) && isWithin(y, -90.0,+90.0)){
+			return Unit::DEGREE;
+		}
+		else {
+			return Unit::METRE;
+		}
+
+	}
+
+	static inline
+	bool isWithin(double x, double min, double max){
+		return (x > min) && (x < max);
 	}
 
 

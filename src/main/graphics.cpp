@@ -50,8 +50,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "radar/PolarSector.h"
 //#include "fileio-svg.h"
 
-#include "graphics-panel.h"
 #include "graphics.h"
+#include "graphics-panel.h"
+#include "graphics-overlay.h"
+#include "graphics-interactive.h"
+
 
 
 

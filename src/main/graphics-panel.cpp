@@ -210,6 +210,16 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				// {"stroke-width", 1.0},
 		};
 
+		//style[Select(svg::TEXT,ClassXML(RackSVG::SELECTOR))] = {
+
+		style[Select(svg::TEXT, RackSVG::SELECTOR)] = {
+				{"fill", "white"},
+				{"stroke", "none"},
+				{"font-size", "x-large"},
+				// {"stroke-width", 1.0},
+		};
+
+
 		style[Select(svg::RECT,RackSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
 				{"fill", "black"},
 				{"stroke", "white"},

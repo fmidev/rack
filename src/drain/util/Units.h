@@ -62,6 +62,8 @@ public:
 	static
 	E extract(const std::string & expr);
 
+	//static
+	// Unit guessMetric(double x, double y);
 
 };
 
@@ -72,7 +74,7 @@ E Units::extract(const std::string & expr){
 	const size_t N = expr.length();
 	for (const auto & entry: Enum<E>::dict){
 		const size_t n =  entry.first.length();
-		if (n>0){ // empty is ok (typically UNDEFINED etc), but skipped.
+		if ((n>0) && (n<=N)){ // empty is ok (typically UNDEFINED etc), but skipped.
 			if (expr.substr(N-n) == entry.first){ // find(entry.first, N-n)
 				return entry.second;
 			}

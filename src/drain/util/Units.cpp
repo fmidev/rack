@@ -28,7 +28,8 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-
+#include <cmath>
+#include "Range.h"
 #include "Units.h"
 
 namespace drain {
@@ -40,6 +41,16 @@ DRAIN_ENUM_DICT(Unit) = {
 		{"m",   Unit::METRE},
 		{"px",  Unit::PIXEL}, // CSS notation
 };
+
+
+/*
+Unit guessUnit(double x, double y){
+
+	static const Range<double> normalized(0.0, 1.0);
+	static const Range<double> radial(-2.0*M_PI, +2.0*M_PI);
+	static const Range<double> degrees(-180, +180);
+}
+*/
 
 /*
 Unit Units::extract(const std::string & expr){

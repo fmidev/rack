@@ -74,6 +74,42 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	using namespace drain;
 	using namespace drain::image;
 
+	typedef SelectXML<svg::tag_t> Select;
+
+	TreeSVG & style = UtilsXML::getHeaderObject(svgDoc, svg::STYLE);
+
+	/*
+	styleX[Select(svg::POLYGON, "LAUNO")]->set({
+		{"stroke-linejoin", "round"},
+		{"paint-order", "stroke"},
+	});
+
+	styleX[Select("TAUNO")]->set({
+		{"stroke-linejoin", "tound"},
+		{"paint-order", "toke"},
+	});
+
+	UtilsXML::ensureStyle(svgDoc, Select(svg::POLYGON, "LAUNO"), {
+			{"stroke-linejoin", "round"},
+			{"paint-order", "stroke"},
+	});
+
+	UtilsXML::ensureStyle(svgDoc, Select(ClassXML("MAUNO")), {
+			{"stroke-linejoin", "bound"},
+			{"paint-order", "strike"},
+	});
+
+	UtilsXML::ensureStyle(svgDoc, Select("TAUNO"), {
+			{"stroke-linejoin", "bound"},
+			{"paint-order", "strike"},
+	});
+
+	UtilsXML::ensureStyle(svgDoc, "KAUNO", {
+			{"stroke-linejoin", "bound"},
+			{"paint-order", "strike"},
+	});
+	*/
+
 	static
 	const std::string OVERLAY_STYLE = "OVERLAY_STYLE"; // TODO enum
 
@@ -84,10 +120,10 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	}
 
 
-	TreeSVG & style = svgDoc[OVERLAY_STYLE];
+	//TreeSVG & style = svgDoc[OVERLAY_STYLE];
 	//TreeSVG & style = drain::UtilsXML::getHeaderObject(svgDoc, svg::STYLE, OVERLAY_STYLE);
 
-	if (style->isUndefined()){
+	if (true || style->isUndefined()){
 
 		// mout.debug("initializing style");
 
@@ -103,16 +139,16 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		select.set("polygon");
 		*/
 
-		style[Select(GRID)] = {
+		style[Select(GRID)] -> set({
 				//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
 				{"stroke", "white"},
 				{"stroke-width", 3.0},
 				{"fill", "none"}, // debug
 				//{"fill-opacity", 0.35},
-		};
+		});
 
 
-		style[Select(svg::TEXT, GRID)] = {
+		style[Select(svg::TEXT, GRID)] -> set({
 				{"text-anchor", "middle"},
 				{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
 				// {"font-size", 20.0},
@@ -123,20 +159,20 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 				{"stroke-linejoin", "round"},
 				{"fill", "white"}, // debug
 				{"fill-opacity", "1"},
-		};
+		});
 
-		style[Select(HIGHLIGHT, PseudoClassCSS::hover)] = {
+		style[Select(HIGHLIGHT, PseudoClassCSS::hover)] -> set({
 				//{"display", "block"},
 				{"opacity", 1.0},
-		};
+		});
 
-		style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] = {
+		style[Select(svg::TEXT, HIGHLIGHT, PseudoClassCSS::hover)] -> set({
 				{"font-size", "larger"},
-		};
+		});
 
-		style[Select(svg::PATH, HIGHLIGHT, PseudoClassCSS::hover)] = {
+		style[Select(svg::PATH, HIGHLIGHT, PseudoClassCSS::hover)] -> set({
 				{"stroke-width", 5.0},
-		};
+		});
 	}
 
 	return style;

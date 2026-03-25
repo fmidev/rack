@@ -58,6 +58,7 @@ function image_coord_tracker(){
 	    coordTracker.addEventListener("mousemove", (ev) => {
 		m.readEvent(ev, m.curr);
 		m.update(m.curr, monitorMove);
+		// console.log(m.curr)
 		if (m.drag && selectionRect){
 		    m.updateSpan(selectionRect);
 		    if (monitorBox){

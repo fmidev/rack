@@ -86,9 +86,9 @@ SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include)))\s*(?:(?P<arg>.+))
 CLI_LINE_RE = re.compile(r"^\s*(?:\$\s+)?(?P<cmd>.+?)\s*$")
 
 #EXEC_START_RE = re.compile(r"^\\~exec\s*$")
-#OTHER_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
-OTHER_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<subkind>[^}]*)\})?\s*$")
-OTHER_END_RE = re.compile(r"^\\~\s*$")
+#SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
+SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<subkind>[^}]*)\})?\s*$")
+SPECIAL_END_RE = re.compile(r"^\\~\s*$")
 
 
 @dataclass
@@ -185,7 +185,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
             i += 1
             continue
 
-        m = OTHER_START_RE.match(line.strip())
+        m = SPECIAL_START_RE.match(line.strip())
         if m:
             kind = m.group("kind")
             subkind = m.group("subkind")
@@ -194,7 +194,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
             start_line = i + 1
             buf = []
             i += 1
-            while i < doc_lines and not OTHER_END_RE.match(lines[i].strip()):
+            while i < doc_lines and not SPECIAL_END_RE.match(lines[i].strip()):
                 buf.append(lines[i])
                 i += 1
             if i >= doc_lines: # len(lines):

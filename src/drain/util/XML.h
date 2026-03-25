@@ -577,7 +577,8 @@ public:
 
 	inline
 	void setStyle(const std::initializer_list<std::pair<const char *,const drain::Variable> > &args){
-		drain::SmartMapTools::setValues(style, args);
+		//drain::SmartMapTools::setValues(style, args);
+		drain::MapTools::setValues(style, args);
 	}
 
 	template <class V>
