@@ -690,29 +690,50 @@ class CommandSequence:
 
         return "\n".join(result)
 
+from typing import Protocol
+
+class RackModule(Protocol):
+    def compose_command(args) -> CommandSequence:
+        ...
+
+    def build_parser() -> argparse.ArgumentParser:
+        ...
 
 class Composer():
     """ Relies that a module has the following commands:
         - build_parser()
         - compose_command(self.args)
         where args are obtained as self.args = parser.parse_args()
-        
+
     """
 
-    args = None
     module = None
+    parser = None
+    args = None
 
-    def __init__(self, module):
+    def __init__(self, module:RackModule):
         self.module = module
-        parser:argparse.ArgumentParser = module.build_parser()
-        self.args = parser.parse_args()
+        self.parser:argparse.ArgumentParser = module.build_parser()
+        
+        known_args, unknown_args = self.parser.parse_known_args()
+        self.args = known_args
+        #logger.warning(known_args)
+        #logger.warning(unknown_args)
+        #try:
+        #    self.args = parser.parse_args()
+        #except Exception as e:
+        #    print(e) 
 
     def set(self, **argv):
+        if not self.args:
+            raise RuntimeError("args undefined")
         vars(self.args).update(argv)
 
     def get_prog(self) -> List[Command]:
         return self.module.compose_command(self.args)
-        
+    
+    def get_defaults(self):
+        return {a.dest: a.default for a in self.parser._actions if a.dest != 'help'}    
 
 class RackFormatter(Formatter):
     """A formatter for Rack commands (command line arguments). Overrides some of the default formatting rules."""

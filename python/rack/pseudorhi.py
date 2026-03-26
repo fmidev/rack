@@ -20,7 +20,7 @@ from matplotlib import lines, scale
 from numpy import size
 
 from rack import script
-from rack.composite import handle_prod
+#from rack.composite import handle_prod
 import rack.log
 import rack.prog
 import rack.select

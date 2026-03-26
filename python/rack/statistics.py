@@ -33,7 +33,10 @@ import rack.gnuplot  # GnuPlotCommand, GnuPlotCommandSequence
 #logger.name = pathlib.Path(__file__).name
 logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 
-def build_parser():
+
+def build_parser() -> argparse.ArgumentParser:
+    """ 'Implements' rack.prog.RackModule and hence supports rack.prog.Composer(rack.statistics)
+    """
 
     log = logger.getChild("build_parser")
     log.debug("parsing")

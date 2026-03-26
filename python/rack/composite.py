@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 import os
 import re # GEOCONF filename-KEY extraction
-import logging
+#import logging
 
-from types import SimpleNamespace
+#from types import SimpleNamespace
 
 import rack.log
 import rack.prog
@@ -34,7 +34,7 @@ class scheme:
     TILED = "TILED"
     DEFAULT = ""
 
-def build_parser():
+def build_parser() -> argparse.ArgumentParser:
     """ Creates registry of supported options of this script
     """
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
@@ -358,6 +358,12 @@ def read_geoconf(args): #, parser):
 
 
 def extract_prefix(paths: list, shortPaths=None) -> str:
+    if not list:
+        return ""
+    if not isinstance(paths, list):
+        raise ValueError(f"Argument paths={paths} is not a list")
+    if len(paths)==1:
+        return ""
     str_paths = [str(p) for p in paths]
     prefix = os.path.commonpath(str_paths)
     if prefix:
@@ -390,6 +396,7 @@ def expand_string(inputSet, key, values):
     
 
 def handle_tilepath_defaults(dirpath, filepath) -> tuple:
+    #print (dirpath, filepath)
     if not filepath:
         filepath = default_tilename
     else:
@@ -413,6 +420,7 @@ def handle_tilepath_defaults(dirpath, filepath) -> tuple:
     if not dirpath:
         dirpath = default_tiledir
             
+    #print (dirpath, filepath)
     return (str(dirpath).removesuffix('/')+'/', str(filepath))
 
 def handle_geoconf(args, Rack: rack.core.Rack):
@@ -506,7 +514,7 @@ def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core
 def handle_infile(args, progBuilder: rack.core.Rack):
     
     logger.debug(f"INFILE {args.INFILE}")
-
+        
     if type(args.INFILE) == str:
         args.INFILE = [ args.INFILE ]
         
@@ -514,7 +522,12 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     if (args.INDIR == 'AUTO'):
         args.INDIR = extract_prefix(args.INFILE, shortPaths)
     
+    #print("check! "+args.INDIR)
     if args.INDIR:
+        if not args.INDIR.endswith('/'):
+            args.INDIR+'/'
+            logger.info("added '/' to INDIR")
+        #print("HEY! "+args.INDIR)
         progBuilder.inputPrefix(args.INDIR)
 
     args.INFILE = shortPaths
