@@ -48,9 +48,9 @@ def handle_parameters(args):
 
     """
     
-    if (args.debug):
+    if args.debug:
         args.log_level = str(logging.DEBUG)
-    elif (args.verbose):
+    elif args.verbose:
         args.log_level = str(logging.INFO)
     
     if not args.log_level:

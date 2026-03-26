@@ -56,6 +56,9 @@ class CliConf:
 @dataclass
 class PyConf:
     python: str = sys.executable
+    imports: List[str] = None
+    # Last \include argument, if <filename>.py
+    include: str = ""
     workdir: Optional[Path] = None
     replacements: List[ReplaceRule] = field(default_factory=list)
     # Lines that should be injected before the snippet (optional)
@@ -202,6 +205,70 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
 
         i += 1
 
+import tempfile
+
+# , cliconf: CliConf, verbose: bool
+def run_py_block(block: Block, pyconf: PyConf) -> None:
+    
+    # Apply replacements to python snippet text (often handy for file names).
+    #code_lines = [pyconf.apply_replacements(l) for l in block.content]
+    #if pyconf.prepend_code:
+    #    code_lines = list(pyconf.prepend_code) + [""] + code_lines
+    code_lines = []
+    
+    if isinstance(pyconf.imports, str):
+        pyconf.imports = pyconf.imports.split(",") 
+    
+    if isinstance(pyconf.imports, (list,tuple)):
+        for i in pyconf.imports:
+            code_lines.append(f"import {i}")
+
+    code_lines.extend(block.content)
+
+    if pyconf.append:
+       code_lines.extend(pyconf.append)
+        
+
+    code = "\n".join(code_lines) + "\n"
+
+    with tempfile.TemporaryDirectory(prefix="doxpy_") as td:
+    #script_file = "/tmp/snippet.py"
+    #with open("/tmp/snippet.py", "w") as script:
+        
+        tdpath = Path(td)
+        script = tdpath / "snippet.py"
+        script.write_text(code, encoding="utf-8")
+        #script.writelines(code_lines)
+        
+        logger.warning(f"executing PYTHON: {script}")
+        print(code)
+
+        logger.warning("Double check:")
+        #with open(script, "r") as f:
+        #    for line in f:
+        #        print(line)
+
+        #cp = subprocess.run(['python3', script_file], 
+        cp = subprocess.run(['python3', str(script)], 
+            cwd=pyconf.workdir,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            )
+        
+        if cp.returncode == 0:
+            print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
+            logger.info("✅ Success!")
+        else:
+            #logger.warning()
+            #with open(script, "r") as f:
+            #    for line in f:
+            #        print(line)
+            raise AssertionError(
+                f"Python snippet failed (line {block.start_line})\n"
+                f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}"
+            )
+
 
 def main() -> int:
 
@@ -219,33 +286,24 @@ def main() -> int:
     cliconf = CliConf()
     pyconf = PyConf()
 
-    conf = {}
+    mainConf = {}
 
     total_blocks = 0
     for kind, obj in scan_dox(args.docfile):
 
-        if 'head' in conf:
-            print("[HEAD] " + "\n[HEAD] ".join(conf['head']))
+        #if 'head' in conf:
+        #    print("[HEAD] " + "\n[HEAD] ".join(conf['head']))
 
         #print ('kind: ', kind)
 
-        if kind == "jsonUNUSED":
-            # This is a special case for when the entire .dox file is just a JSON config blob
-            # (instead of Doxygen markup). We can directly parse it into our conf objects.
-            conf_dict = obj
-            if "cliconf" in conf_dict:
-                cliconf = CliConf(**conf_dict["cliconf"])
-                if args.verbose:
-                    print("[CFG] loaded cliconf from JSON")
-            if "pyconf" in conf_dict:
-                pyconf = PyConf(**conf_dict["pyconf"])
-                if args.verbose:
-                    print("[CFG] loaded pyconf from JSON")
-            continue
-        elif kind in {"example", "include"}:
+        if kind in {"example", "include"}:
             # Handle example command, e.g. by running the example script and capturing its output
             print(f"[{kind.upper()}] {obj}")
-            conf[kind] = obj
+            p = Path(obj)
+            if p.suffix == 'py':
+                pyconf.include = obj
+            
+            #mainConf[kind] = obj
             # You could implement logic here to run the example and capture CLI commands it emits
             #elif kind == "include":
             #    print(f"[INCLUDE] {obj}")
@@ -255,9 +313,12 @@ def main() -> int:
             logger.warning(f"Handling {block.kind}[{block.arg}]")
             #lines = 
             if block.kind == 'conf':
-                obj = None
+                #obj = None
+                obj = mainConf
                 if block.arg == 'cli':
-                    obj = CliConf()
+                    obj = cliconf
+                elif block.arg == 'py':
+                    obj = pyconf
                 logger.info(obj)
                 logger.info(block)
                 conf = rack.config.parse(block.content, dst=obj)
@@ -323,8 +384,8 @@ def main() -> int:
                 if 'head' in conf:
                     script.extend(conf['head'])
                 script.extend(block.content)
-                print(f"[PY ] Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
-                #run_py_block(block, pyconf, cliconf, args.verbose)
+                logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
+                run_py_block(block, pyconf)
             else:
                 if args.verbose:
                     print(f"[SKIP] unknown block kind {block.kind} at line {block.start_line}")

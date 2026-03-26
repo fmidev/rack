@@ -7,7 +7,7 @@ import shlex
 from pathlib import Path
 
 import logging
-logging.basicConfig(format='%(levelname)s:\tconfig: %(message)s')
+logging.basicConfig(format='%(levelname)s:\t: %(message)s')
 logger = logging.getLogger() 
 logger.setLevel(logging.INFO)
 
@@ -70,6 +70,10 @@ def parse(lines: list, dst: object) -> dict:
             text = "".join(lines)
             conf = jsonDecoder.decode(text)
         except json.JSONDecodeError as e:
+            i=1
+            for line in lines:
+                print(f"{i} {line}")
+                i += 1
             logger.error(e)
             exit(-1)
     else:
@@ -81,12 +85,14 @@ def parse(lines: list, dst: object) -> dict:
                 value = m.group('value')
                 #logger.debug(f"{key} = {value}")
                 value = shlex.split(value, comments=True)
-                logger.warning(value)
+                #logger.warning(value)
                 value = " ".join(value)
                 conf[key] = value # todo auto type detect?
             else:
                 logger.error(f"could not parse: {line}")
-    if dst: # dangerous?
+    if isinstance(dst, dict): # dangerous?
+        dst.update(conf)
+    else:
         vars(dst).update(conf)
     return conf
     #logger.info(f"JSON conf({block.arg}): {conf}")

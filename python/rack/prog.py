@@ -665,8 +665,54 @@ class CommandSequence:
         
         return "\n".join(result)
 
+    def to_python(self, prefix='') -> list:        
+        result = []
+        fmt = ParamFormatter()
+        for cmd in self.commands:
+            # result.append((cmd.name, cmd.args, cmd.expl_keys))
+            #result.append(f"{cmd.name}, {cmd.args}, {cmd.expl_keys}")
+            #result.append(cmd.to_string(fmt)) # quote 
+            #for k in cmd.expl_keys:
+            #    s += k+'='+cmd.args[k]
+            print(cmd.get_args(fmt))
+            args = []
+            for k in cmd.expl_keys:
+                v = cmd.args[k]
+                if isinstance(v, str):
+                    args.append(f"{k}='{v}'")
+                else:
+                    args.append(f"{k}={v}")
+            #args = [f'{k}={cmd.args[k]}' for k in cmd.expl_keys]  
+            if cmd.get_name():
+                result.append(prefix+cmd.get_name()+'(' + ",".join(args) +')')
+            else:
+                result.append(prefix+cmd.name+'(' + ",".join(args) +')')
+
+        return "\n".join(result)
 
 
+class Composer():
+    """ Relies that a module has the following commands:
+        - build_parser()
+        - compose_command(self.args)
+        where args are obtained as self.args = parser.parse_args()
+        
+    """
+
+    args = None
+    module = None
+
+    def __init__(self, module):
+        self.module = module
+        parser:argparse.ArgumentParser = module.build_parser()
+        self.args = parser.parse_args()
+
+    def set(self, **argv):
+        vars(self.args).update(argv)
+
+    def get_prog(self) -> List[Command]:
+        return self.module.compose_command(self.args)
+        
 
 class RackFormatter(Formatter):
     """A formatter for Rack commands (command line arguments). Overrides some of the default formatting rules."""
@@ -730,9 +776,12 @@ class RackFormatter(Formatter):
 
             return result
 
+#import rack.composite
 
 def main():
 
+    #bd = Composer(rack.composite)
+    #print(bd)
     
     class MyRegister(Register):
 
