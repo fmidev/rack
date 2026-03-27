@@ -19,6 +19,7 @@ import re # GEOCONF filename-KEY extraction
 import rack.log
 import rack.prog
 import rack.core
+import rack.cmdline
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -602,7 +603,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
     scriptBuilder = rack.core.Rack(script)
-    scriptFmt = rack.prog.RackFormatter(params_format='"{params}"')
+    scriptFmt = rack.cmdline.RackFormatter(params_format='"{params}"')
 
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
@@ -698,7 +699,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
     """
 
 def get_fmt(cmd_separator=" ", **kwargs):
-    return rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=cmd_separator, **kwargs)
+    return rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=cmd_separator, **kwargs)
     
 
   
@@ -742,13 +743,13 @@ def main():
         args.print = args.print.replace(r'\n','\n')
         logger.info("# Command line:")
         #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
         # print(cmdList.to_string(" \\\n"))
 
     if args.exec:
         logger.info("# Executing...")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'")
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
         print(prog.to_string(fmt))
         os.system(prog.to_string(fmt))
 

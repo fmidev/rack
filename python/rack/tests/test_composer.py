@@ -41,6 +41,7 @@ class TestComposer(unittest.TestCase):
         prog:rack.prog.CommandSequence = prog
         print (prog.to_string(self.fmtCLI))
         print (prog.to_list(self.fmtCLI))
+        print (composer.get_module_cmd_line())
 
     def test_simple(self):
 

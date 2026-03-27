@@ -63,6 +63,8 @@ class PyConf:
     replacements: List[ReplaceRule] = field(default_factory=list)
     # Lines that should be injected before the snippet (optional)
     prepend_code: List[str] = field(default_factory=list)
+    append_code: List[str] = field(default_factory=list)
+    
     # How python emits CLI commands to stdout
     emit_prefix: str = "$ "
 
@@ -75,9 +77,6 @@ class PyConf:
 # Parsing helpers
 # ----------------------------
 
-# Recognizes conf block: \~cliconf or \~pyconf ... \endcode
-CONF_START_RE = re.compile(r"^\\~(?P<kind>cliconf|pyconf)\s*$")
-CONF_END_RE = re.compile(r"^\\~\s*$")
 
 # Recognizes code block: \code ... \endcode
 CODE_START_RE = re.compile(r"^\\code(?:\{(?P<arg>[^}]*)\})?\s*$")
@@ -95,9 +94,14 @@ SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include)))\s*(?:(?P<arg>.+))
 CLI_LINE_RE = re.compile(r"^\s*(?:\$\s+)?(?P<cmd>.+?)\s*$")
 
 #EXEC_START_RE = re.compile(r"^\\~exec\s*$")
-#SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
-SPECIAL_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<arg>[^}]*)\})?\s*$")
-SPECIAL_END_RE = re.compile(r"^\\~\s*$")
+#BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
+BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<arg>[^}]*)\})?\s*$")
+BLOCK_END_RE = re.compile(r"^\\~\s*$")
+
+# Recognizes conf block: \~cliconf or \~pyconf ... \endcode
+# Deprecating
+CONF_START_RE = re.compile(r"^\\~(?P<kind>cliconf|pyconf)\s*$")
+CONF_END_RE = re.compile(r"^\\~\s*$")
 
 
 @dataclass
@@ -134,7 +138,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         line = lines[i]
         # line = line.strip()
 
-        # Detect \include or \example
+        # Detect single-line command, like \include or \example
         m = SIMPLE_CMD_RE.match(line.strip()) # keep strip here
         if m:
             kind = m.group("cmd")
@@ -149,7 +153,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
 
         # Detect \code ... \endcode block  
         m = CODE_START_RE.match(line.strip())
-        if m:
+        if True and m:
             arg = m.group("arg")
             start_line = i + 1
             buf = []
@@ -176,7 +180,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
             continue
 
         # Detect \~<kind>{arg}  \~ block  
-        m = SPECIAL_START_RE.match(line.strip())
+        m = BLOCK_START_RE.match(line.strip())
         if m:
             kind = m.group("kind")
             if kind=='stop':
@@ -187,7 +191,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
             buf = []
             i += 1
             line_buf=''
-            while i < doc_lines and not SPECIAL_END_RE.match(lines[i].strip()):
+            while i < doc_lines and not BLOCK_END_RE.match(lines[i].strip()):
                 if lines[i].endswith('\\'):
                     line_buf += lines[i].rstrip('\\')+' '
                 elif line_buf:
@@ -223,10 +227,15 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         for i in pyconf.imports:
             code_lines.append(f"import {i}")
 
-    code_lines.extend(block.content)
+    if pyconf.prepend_code:
+       code_lines.extend(pyconf.prepend_code)
 
-    if pyconf.append:
-       code_lines.extend(pyconf.append)
+    code_lines.append("# Start snippet  --------------")
+    code_lines.extend(block.content)
+    code_lines.append("# End snippet -----------------")
+
+    if pyconf.append_code:
+       code_lines.extend(pyconf.append_code)
         
 
     code = "\n".join(code_lines) + "\n"

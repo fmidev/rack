@@ -280,7 +280,11 @@ class Register:
         """ Creates a command. The name will be the caller function
         
         Each explicitly given argument will be stored if its value differs from the default one.
+        See rack.core 
+        Typical usage, inside a function that identifies with a command: cmd = self.make_cmd(locals())
+
         """
+        
         local_vars.pop('self')
        
         # typelist = [type(v) for v in local_vars.values()]
@@ -392,7 +396,7 @@ class Register:
     
     @classmethod
     def publish_func(self, func: callable, parser: argparse.ArgumentParser = None, key: str = None, name_mapper = None):
-        """ Export function arguments to an argparse parser. The function name will be the command name,
+        """ Exports, "explodes" function arguments to an argparse parser. The function name will be the command name,
             and the arguments will be the command arguments.
         
         :param self: Description
@@ -401,6 +405,9 @@ class Register:
         :param parser: Description
         :type parser: argparse.ArgumentParser
         :param name_mapper: Description
+
+        Consider --pPseudoRHI range=...,height=.... 
+        Separate commands --RANGE... --HEIGHT=...
         """
         
         logger.info(f"Exporting args for {func.__name__}")
@@ -665,7 +672,10 @@ class CommandSequence:
         
         return "\n".join(result)
 
-    def to_python(self, prefix='') -> list:        
+    def to_python(self, prefix='') -> list:
+        """ Create Python API code.
+            Returning a list instead of a string allows later smart formatting. 
+        """        
         result = []
         fmt = ParamFormatter()
         for cmd in self.commands:
@@ -690,52 +700,7 @@ class CommandSequence:
 
         return "\n".join(result)
 
-from typing import Protocol
-
-class RackModule(Protocol):
-    def compose_command(args) -> CommandSequence:
-        ...
-
-    def build_parser() -> argparse.ArgumentParser:
-        ...
-
-class Composer():
-    """ Relies that a module has the following commands:
-        - build_parser()
-        - compose_command(self.args)
-        where args are obtained as self.args = parser.parse_args()
-
-    """
-
-    module = None
-    parser = None
-    args = None
-
-    def __init__(self, module:RackModule):
-        self.module = module
-        self.parser:argparse.ArgumentParser = module.build_parser()
-        
-        known_args, unknown_args = self.parser.parse_known_args()
-        self.args = known_args
-        #logger.warning(known_args)
-        #logger.warning(unknown_args)
-        #try:
-        #    self.args = parser.parse_args()
-        #except Exception as e:
-        #    print(e) 
-
-    def set(self, **argv):
-        if not self.args:
-            raise RuntimeError("args undefined")
-        vars(self.args).update(argv)
-
-    def get_prog(self) -> List[Command]:
-        return self.module.compose_command(self.args)
-    
-    def get_defaults(self):
-        return {a.dest: a.default for a in self.parser._actions if a.dest != 'help'}    
-
-class RackFormatter(Formatter):
+class RackFormatterFOO(Formatter):
     """A formatter for Rack commands (command line arguments). Overrides some of the default formatting rules."""
     
     def fmt_name(self, name:str) -> str :
