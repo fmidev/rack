@@ -55,9 +55,14 @@ def read(filename, lenient=False): # todo path prefix?
     with open(path, "r") as f:
         return json.load(f)
     
+PARSE_ERROR  = -1
+PARSE_SKIP   =  0
+PARSE_APPEND = 1
 
-def parse(lines: list, dst: object) -> dict:
+def parse(lines: list, dst: object=None, handleMissing = PARSE_SKIP) -> dict:
     """ Try to parse text lines primarily as JSON and then with key=value syntax.
+
+        param strict: if True, raise error if
     """
 
     KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
@@ -90,10 +95,18 @@ def parse(lines: list, dst: object) -> dict:
                 conf[key] = value # todo auto type detect?
             else:
                 logger.error(f"could not parse: {line}")
-    if isinstance(dst, dict): # dangerous?
-        dst.update(conf)
-    else:
-        vars(dst).update(conf)
+
+    if dst:
+
+        if not isinstance(dst, dict): # dangerous?
+            dst = vars(dst)
+
+        for (k,v) in conf.items():
+            if (k in dst) or (handleMissing==PARSE_APPEND):
+                dst[k] = v
+            elif (handleMissing==PARSE_ERROR):
+                raise KeyError(f"Key '{k}' not found")
+        logger.warning(dst)
     return conf
     #logger.info(f"JSON conf({block.arg}): {conf}")
 

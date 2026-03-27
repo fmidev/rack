@@ -22,7 +22,13 @@ logging.basicConfig(format='%(levelname)s:\t %(message)s')
 #logger = logging.getLogger(Path(__file__).stem) 
 logger = logging.getLogger() 
 logger.setLevel(logging.INFO)
-    
+
+import rack.style
+handler = logging.StreamHandler()
+handler.setFormatter(rack.style.Style.LogFormatter("%(levelname)s: %(message)s"))
+logger.addHandler(handler)
+
+
 @dataclass
 class ReplaceRule:
     src: str
@@ -58,7 +64,8 @@ class PyConf:
     python: str = sys.executable
     imports: List[str] = None
     # Last \include argument, if <filename>.py
-    include: str = ""
+    include_py_sh: str = ""
+    include_rack_sh: str = ""
     workdir: Optional[Path] = None
     replacements: List[ReplaceRule] = field(default_factory=list)
     # Lines that should be injected before the snippet (optional)
@@ -211,6 +218,12 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
 
 import tempfile
 
+def save_example_py(composer:rack.cmdline.Composer, filename: str):
+    #with open(file=Path.resolve("out", filename), mode='w') as file:
+    with open(f"out/{filename}", mode='w') as file:
+        line = composer.get_module_cmd_line()
+        file.write(line)
+
 # , cliconf: CliConf, verbose: bool
 def run_py_block(block: Block, pyconf: PyConf) -> None:
     
@@ -220,10 +233,16 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
     #    code_lines = list(pyconf.prepend_code) + [""] + code_lines
     code_lines = []
     
-    if isinstance(pyconf.imports, str):
-        pyconf.imports = pyconf.imports.split(",") 
-    
-    if isinstance(pyconf.imports, (list,tuple)):
+    if pyconf.imports:
+
+        if isinstance(pyconf.imports, str):
+            pyconf.imports = pyconf.imports.split(",") 
+
+        # remove duplicates
+        pyconf.imports = set(pyconf.imports)
+        # Utils for saving docs
+        pyconf.imports.add("rack.doxymoron")
+        #if isinstance(pyconf.imports, (list,tuple)):
         for i in pyconf.imports:
             code_lines.append(f"import {i}")
 
@@ -235,8 +254,10 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
     code_lines.append("# End snippet -----------------")
 
     if pyconf.append_code:
-       code_lines.extend(pyconf.append_code)
+        code_lines.extend(pyconf.append_code)
         
+    if pyconf.include_py_sh:
+        code_lines.append(f"rack.doxymoron.save_example_py(composer, '{pyconf.include_py_sh}')")
 
     code = "\n".join(code_lines) + "\n"
 
@@ -258,12 +279,13 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         #        print(line)
 
         #cp = subprocess.run(['python3', script_file], 
-        cp = subprocess.run(['python3', str(script)], 
-            cwd=pyconf.workdir,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            )
+        default_args = {
+            "cwd": pyconf.workdir,
+            "stdout": subprocess.PIPE,
+            "stderr": subprocess.PIPE,
+            "text": True,
+        }
+        cp = subprocess.run(['python3', str(script)], **default_args)
         
         if cp.returncode == 0:
             print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
@@ -308,9 +330,13 @@ def main() -> int:
         if kind in {"example", "include"}:
             # Handle example command, e.g. by running the example script and capturing its output
             print(f"[{kind.upper()}] {obj}")
-            p = Path(obj)
-            if p.suffix == 'py':
-                pyconf.include = obj
+            #p = Path(obj)
+            p = str(obj)
+            #if p.suffix == 'py':
+            if p.endswith('_py.sh'):
+                pyconf.include_py_sh = p
+            elif p.endswith('_rack.sh'):
+                pyconf.include_rack_sh = p
             
             #mainConf[kind] = obj
             # You could implement logic here to run the example and capture CLI commands it emits
@@ -330,7 +356,7 @@ def main() -> int:
                     obj = pyconf
                 logger.info(obj)
                 logger.info(block)
-                conf = rack.config.parse(block.content, dst=obj)
+                conf = rack.config.parse(block.content, obj, rack.config.PARSE_ERROR)
                 logger.info(f"JSON conf({block.arg}): {conf}")            
                 logger.info(obj)
                 pass
