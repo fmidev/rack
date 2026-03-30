@@ -16,18 +16,29 @@ from typing import Iterable, List, Optional, Tuple
 
 import rack.config
 
+#import rack.style
+from rack.style import *
+
 import logging
 #logging.basicConfig(format='%(levelname)s\t %(name)s: %(message)s')
-logging.basicConfig(format='%(levelname)s:\t %(message)s')
-#logger = logging.getLogger(Path(__file__).stem) 
-logger = logging.getLogger() 
+#logging.basicConfig(format='%(levelname)s:\t %(message)s')
+logger = logging.getLogger(__file__) 
 logger.setLevel(logging.INFO)
 
-import rack.style
 handler = logging.StreamHandler()
-handler.setFormatter(rack.style.Style.LogFormatter("%(levelname)s: %(message)s"))
+#handler.setFormatter(logging.Formatter())
+handler.setFormatter(rack.style.LogFormatter("%(levelname)s: %(message)s"))
 logger.addHandler(handler)
+logger.propagate = False
 
+
+"""
+logger = logging.getLogger("demo")
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
+logger.addHandler(handler)
+"""
 
 @dataclass
 class ReplaceRule:
@@ -70,45 +81,54 @@ class PyConf:
     replacements: List[ReplaceRule] = field(default_factory=list)
     # Lines that should be injected before the snippet (optional)
     prepend_code: List[str] = field(default_factory=list)
-    append_code: List[str] = field(default_factory=list)
+    append_code:  List[str] = field(default_factory=list)
     
     # How python emits CLI commands to stdout
-    emit_prefix: str = "$ "
+    # emit_prefix: str = "$ "
 
     def apply_replacements(self, s: str) -> str:
         for r in self.replacements:
             s = r.apply(s)
         return s
+    
+    def reset(self):
+        self.include_py_sh = None
+        self.include_rack_sh = None
+        self.prepend_code: None
+        self.append_code: None
+
 
 # ----------------------------
 # Parsing helpers
 # ----------------------------
 
-
-# Recognizes code block: \code ... \endcode
-CODE_START_RE = re.compile(r"^\\code(?:\{(?P<arg>[^}]*)\})?\s*$")
-CODE_END_RE = re.compile(r"^\\endcode\s*$")
-
-# SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[^}]*))?\s*$")
-# SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[a-zA-Z0-9_]+))\s*(?:(?P<arg>.+))?$")
-
 # Recognizes \example and \include commands
 SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include)))\s*(?:(?P<arg>.+))?$")
 
 #KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
-
 # Accept either a plain command line, or a line prefixed with "$ "
 CLI_LINE_RE = re.compile(r"^\s*(?:\$\s+)?(?P<cmd>.+?)\s*$")
 
-#EXEC_START_RE = re.compile(r"^\\~exec\s*$")
-#BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
-BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<arg>[^}]*)\})?\s*$")
+# Recognizes code block: \code ... \endcode
+#CODE_START_RE = re.compile(r"^\\code(?:\{(?P<arg>[^}]*)\})?\s*$")
+#CODE_END_RE = re.compile(r"^\\endcode\s*$")
+
+# SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[^}]*))?\s*$")
+# SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[a-zA-Z0-9_]+))\s*(?:(?P<arg>.+))?$")
+
+# EXEC_START_RE = re.compile(r"^\\~exec\s*$")
+# BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
+# BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<arg>[^}]*)\})?\s*$")
+#BLOCK_START_RE = re.compile(r"^\\(?:(?:~(?P<user>conf|exec|stop))|(?P<code>code))(?:\{(?P<arg>[^}]*)\})?\s*$")
+BLOCK_START_RE = re.compile(r"^\\(?P<key>code|~conf|~exec|~stop)(?:\{(?P<arg>[^}]*)\})?\s*$")
+#BLOCK_START_RE = re.compile(r"^\\(?:~(?P<kind>[a-z]+))|(?P<kind2>code)(?:\{(?P<arg>[^}]*)\})?\s*$")
 BLOCK_END_RE = re.compile(r"^\\~\s*$")
+CODE_END_RE = re.compile(r"^\\endcode\s*$")
 
 # Recognizes conf block: \~cliconf or \~pyconf ... \endcode
 # Deprecating
-CONF_START_RE = re.compile(r"^\\~(?P<kind>cliconf|pyconf)\s*$")
-CONF_END_RE = re.compile(r"^\\~\s*$")
+# CONF_START_RE = re.compile(r"^\\~(?P<kind>cliconf|pyconf)\s*$")
+# CONF_END_RE = re.compile(r"^\\~\s*$")
 
 
 @dataclass
@@ -148,57 +168,41 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         # Detect single-line command, like \include or \example
         m = SIMPLE_CMD_RE.match(line.strip()) # keep strip here
         if m:
-            kind = m.group("cmd")
+            cmd = m.group("cmd")
             arg = m.group("arg")
             # Future option: \example and \include files can be tested (implies support of Confs)
-            if kind in ("example", "include") and arg:
-                yield (kind, arg.strip())
-                logger.debug(f"line {i}: {kind}({arg})")
-            i += 1
-            continue
-
-
-        # Detect \code ... \endcode block  
-        m = CODE_START_RE.match(line.strip())
-        if True and m:
-            arg = m.group("arg")
-            start_line = i + 1
-            buf = []
-            i += 1
-            line_buf=''
-            while i < doc_lines and not CODE_END_RE.match(lines[i].strip()):
-                if lines[i].endswith('\\'):
-                    line_buf += lines[i].rstrip('\\')+' '
-                elif line_buf:
-                    # Last line concatenated with '\' 
-                    buf.append(line_buf+lines[i])
-                    line_buf=''
-                else:                    
-                    buf.append(lines[i])
-                i += 1
-            if i >= doc_lines: # len(lines):
-                raise ValueError(f"Unterminated \\code block starting near line {start_line}")
-            # Determine type
-            kind = "cli"
-            if arg and ".py" in arg:
-                kind = "py"
-            yield ("block", Block(kind=kind, arg=arg, content=buf, start_line=start_line))
+            if cmd in ("example", "include") and arg:
+                yield (cmd, arg.strip())
+                logger.debug(f"line {i}: handling  {cmd}({arg})")
+            else:
+                logger.debug(f"line {i}: bypassing {cmd}({arg})")
             i += 1
             continue
 
         # Detect \~<kind>{arg}  \~ block  
         m = BLOCK_START_RE.match(line.strip())
         if m:
-            kind = m.group("kind")
-            if kind=='stop':
-                raise InterruptedError(f"stopped on line: {i}")
+
+            key = m.group("key")
+            if key=='~stop':
+                logger.warning(f"{Emoji.STOP.value}  Stopped by {key} on line: {i}")
+                exit(0)
+                #raise InterruptedError(f"stopped by {key} on line: {i}")
+
+            END_RE = BLOCK_END_RE
+            if key == "code":
+                END_RE = CODE_END_RE
+
             arg = m.group("arg")
-            logger.info(f"line {i}: ~{kind}[{arg}]")
+            logger.debug(f"Line {i}: {key}[{arg}]")
             start_line = i + 1
             buf = []
             i += 1
             line_buf=''
-            while i < doc_lines and not BLOCK_END_RE.match(lines[i].strip()):
+            while i < doc_lines and not END_RE.match(lines[i].strip()):
+                if lines[i].startswith('\\'):
+                    logger.error(lines[i])
+                    raise ValueError(f"Line inside a block starts with backslash '\\' near line {start_line}")
                 if lines[i].endswith('\\'):
                     line_buf += lines[i].rstrip('\\')+' '
                 elif line_buf:
@@ -209,12 +213,13 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
                     buf.append(lines[i])
                 i += 1
             if i >= doc_lines: # len(lines):
-                raise ValueError(f"Unterminated '{kind}' block starting near line {start_line}")
-            yield ("special", Block(kind=kind, arg=arg, content=buf, start_line=start_line))
+                raise ValueError(f"Unterminated '{key}' block starting near line {start_line}")
+            yield (key, Block(kind=key, arg=arg, content=buf, start_line=start_line))
             i += 1
             continue
 
         i += 1
+
 
 import tempfile
 
@@ -223,6 +228,20 @@ def save_example_py(composer:rack.cmdline.Composer, filename: str):
     with open(f"out/{filename}", mode='w') as file:
         line = composer.get_module_cmd_line()
         file.write(line)
+
+@staticmethod
+def dump_subprocess_output(
+        result: subprocess.CompletedProcess[str],
+        styleStdErr = Style(Color.YELLOW, Effect.DIM),
+        styleStdOut = Style(Color.LIGHT_GRAY, Effect.ITALIC)
+        ):
+    #if result.returncode == 0:
+    print(f"--- stdout ---")
+    styleStdOut.sprint(result.stdout)
+    #print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
+    print(f"--- stderr ---")
+    styleStdErr.sprint(result.stderr)
+    #logger.info(Emoji.SUCCESS + "Success!")
 
 # , cliconf: CliConf, verbose: bool
 def run_py_block(block: Block, pyconf: PyConf) -> None:
@@ -246,18 +265,30 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         for i in pyconf.imports:
             code_lines.append(f"import {i}")
 
+    #logger.info(f"{Emoji.RUN.value}  Executing Python code from line {block.start_line}:")
+
+    styleCode    = Style(Color.DEFAULT, Effect.BOLD)
+    styleWrapper = Style(rack.style.Effect.DIM, Effect.ITALIC)    
     if pyconf.prepend_code:
        code_lines.extend(pyconf.prepend_code)
+       styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.prepend_code))
 
     code_lines.append("# Start snippet  --------------")
     code_lines.extend(block.content)
     code_lines.append("# End snippet -----------------")
+    #print("".join(f"  {line}\n" for line in block.content))
+    styleCode.sprint("\n".join(f"  {line}" for line in block.content))
 
     if pyconf.append_code:
         code_lines.extend(pyconf.append_code)
+        styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.append_code))
         
     if pyconf.include_py_sh:
         code_lines.append(f"rack.doxymoron.save_example_py(composer, '{pyconf.include_py_sh}')")
+
+    # logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
+    
+    
 
     code = "\n".join(code_lines) + "\n"
 
@@ -270,10 +301,10 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         script.write_text(code, encoding="utf-8")
         #script.writelines(code_lines)
         
-        logger.warning(f"executing PYTHON: {script}")
-        print(code)
+        logger.debug(f"Running PYTHON: {script}")
+        logger.debug(code)
 
-        logger.warning("Double check:")
+        # logger.warning("Double check:")
         #with open(script, "r") as f:
         #    for line in f:
         #        print(line)
@@ -288,8 +319,18 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         cp = subprocess.run(['python3', str(script)], **default_args)
         
         if cp.returncode == 0:
-            print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
-            logger.info("✅ Success!")
+            dump_subprocess_output(cp)
+            logger.info(Emoji.SUCCESS + " Success!")
+            """
+            print(f"--- stdout ---")
+            gray = Style(Color.LIGHT_GRAY, Effect.ITALIC)
+            gray.sprint(cp.stdout)
+            #print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
+            print(f"--- stderr ---")
+            styleStdErr = Style(Color.YELLOW, Effect.DIM)
+            styleStdErr.sprint(cp.stderr)
+            logger.info(Emoji.SUCCESS + "Success!")
+            """
         else:
             #logger.warning()
             #with open(script, "r") as f:
@@ -317,22 +358,25 @@ def main() -> int:
     cliconf = CliConf()
     pyconf = PyConf()
 
+    styleDebug = Style(Color.LIGHT_GRAY, Effect.DIM)
     mainConf = {}
 
     total_blocks = 0
-    for kind, obj in scan_dox(args.docfile):
+    for key, obj in scan_dox(args.docfile):
 
         #if 'head' in conf:
         #    print("[HEAD] " + "\n[HEAD] ".join(conf['head']))
 
         #print ('kind: ', kind)
 
-        if kind in {"example", "include"}:
+        if key in {"example", "include"}:
             # Handle example command, e.g. by running the example script and capturing its output
-            print(f"[{kind.upper()}] {obj}")
+            # print(f"[{key.upper()}] {obj}")
+            
+            logger.debug(f"[{key}] {obj}")
             #p = Path(obj)
-            p = str(obj)
             #if p.suffix == 'py':
+            p = str(obj)
             if p.endswith('_py.sh'):
                 pyconf.include_py_sh = p
             elif p.endswith('_rack.sh'):
@@ -343,25 +387,48 @@ def main() -> int:
             #elif kind == "include":
             #    print(f"[INCLUDE] {obj}")
             # You could implement logic here to read the included file and process it as a separate .dox
-        elif kind == "special":
+        elif key == '~conf':
             block: Block = obj 
-            logger.warning(f"Handling {block.kind}[{block.arg}]")
+            dst = mainConf
+            if block.arg == 'cli':
+                dst = cliconf
+            elif block.arg == 'py':
+                dst = pyconf
+            #logger.info(obj)
+            conf = rack.config.parse(block.content, dst, rack.config.PARSE_ERROR)
+            #logger.info(f"parsed conf({block.arg}): {conf}")            
+            #logger.info(obj)
+            logger.info(f"{Emoji.SUCCESS.value} Parsed conf[{block.arg}] on line {block.start_line}")
+            #json.str() # dump(conf, sys.stderr, indent=2)
+            #logger.debug(styleDebug.str(json.JSONEncoder(indent=2).encode(conf)))
+            logger.debug(json.JSONEncoder(indent=2).encode(conf))
+            #print(json.str(), file=sys.stderr)
+            
+            pass   
+        elif key == 'code':
+            block: Block = obj 
+            #print(f"[PY ] block at line {block.start_line}")
+            if block.arg == '.py':
+                script = []
+                if 'head' in mainConf: # ???
+                    script.extend(mainConf['head'])
+                script.extend(block.content)
+                #logger.info(f"Executing Python code")
+                logger.info(f"{Emoji.RUN.value}  Executing Python code from line {block.start_line}:")
+                #logger.info(f"Executing Python code from line {block.start_line}:") #\n" + "\n".join(f"  {line}" for line in block.content))
+                #gray = Style(Color.DEFAULT, Effect.ITALIC)
+                #rack.style.Style.sprint(gray, "\n".join(f"  {line}" for line in block.content))
+                run_py_block(block, pyconf)
+                pyconf.reset()   
+            else:
+                logger.warning(f"unknown code arg='{block.arg}' at line {block.start_line}")
+            pass
+        elif key == "~exec":
+            block: Block = obj 
+            logger.warning(f"Handling special {block.kind}[{block.arg}]")
             #lines = 
-            if block.kind == 'conf':
-                #obj = None
-                obj = mainConf
-                if block.arg == 'cli':
-                    obj = cliconf
-                elif block.arg == 'py':
-                    obj = pyconf
-                logger.info(obj)
-                logger.info(block)
-                conf = rack.config.parse(block.content, obj, rack.config.PARSE_ERROR)
-                logger.info(f"JSON conf({block.arg}): {conf}")            
-                logger.info(obj)
-                pass
-            elif block.kind == 'exec':
-                logger.warning("executing: " + "\n".join(block.content))
+            if block.kind == '~exec':
+                logger.warning(f" {Emoji.EXPLOSION.value} executing: " + "\n".join(block.content))
                 # TODO: backslash handling?
                 # cmd = ["echo", "koe", "$PYTHONPATH", '"$PYTHONPATH"']
                 # cmd = ["python3", "-m", "rack.composer", "-h"]
@@ -389,25 +456,13 @@ def main() -> int:
                         print(result.stderr)
                         print("--- stderr --- ")
                 exit(1)
+            else:
+                 logger.error(f"Unknown block type '{block.kind}' under key: {key}")
 
             #print(f"Executing code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
                 
                 #print("\n".join(f"  {line}" for line in obj))
-        elif kind == "cliconf":
-            #update_conf(cliconf, parse_kv_lines(obj))  # type: ignore[arg-type]
-            if args.verbose:
-                print("[CFG] updated cliconf:")
-                print("\n".join(f"  {line}" for line in obj))
-        elif kind == "pyconf":
-            #update_conf(pyconf, parse_kv_lines(obj))    # type: ignore[arg-type]
-            if args.verbose:
-                print("[CFG] updated pyconf")
-            if isinstance(obj, list):   
-                print("\n".join(f"  {line}" for line in obj))
-            else:
-                print(json.dumps(obj, indent=2))
-                conf.update(obj)  # merge into main conf dict
-        elif kind == "block":
+        elif key == "~block":
             block: Block = obj  # type: ignore[assignment]
             total_blocks += 1
             if block.kind == "cli":
@@ -419,13 +474,13 @@ def main() -> int:
                 if 'head' in conf:
                     script.extend(conf['head'])
                 script.extend(block.content)
-                logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
+                #logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
                 run_py_block(block, pyconf)
             else:
                 if args.verbose:
                     print(f"[SKIP] unknown block kind {block.kind} at line {block.start_line}")
         else:
-            raise RuntimeError(kind)
+            raise RuntimeError(f"Unknown key: {key}")
 
     if args.verbose:
         print(f"[OK ] processed {total_blocks} code block(s)")
