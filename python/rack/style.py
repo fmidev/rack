@@ -162,6 +162,8 @@ class Emoji(str, Enum):
     CHARS = "🔡"
 
     # Network / System
+    DISC  = "💿"
+    DISC2 = "💿"
     NETWORK = "🛜"
     WORLD = "🌍"
     LOCK = "🔒"
@@ -175,7 +177,8 @@ class Emoji(str, Enum):
     # Misc
     TRIANGLE = "📐"
 
-
+    def __str__(self):
+        return self.value
 
 
 class Style:

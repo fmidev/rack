@@ -61,8 +61,11 @@ class Composer():
         """
         line = rack.args.args_to_cli(self.parser, self.args)
         logger.debug(f"Command line: {line}")
-        logger.warning(self.module.__str__)
+        logger.debug(self.module.__str__)
         return line
+    
+    def get_module_name(self) -> str:
+        return self.module.__name__
 
 class RackFormatter(Formatter):
     """A formatter for Rack commands (command line arguments). Overrides some of the default formatting rules."""

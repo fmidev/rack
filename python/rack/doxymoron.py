@@ -9,13 +9,13 @@ import re
 import shlex
 import subprocess
 import sys
-# import tempfile
+import tempfile
+
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple
 
 import rack.config
-
 #import rack.style
 from rack.style import *
 
@@ -26,11 +26,9 @@ logger = logging.getLogger(__file__)
 logger.setLevel(logging.INFO)
 
 handler = logging.StreamHandler()
-#handler.setFormatter(logging.Formatter())
 handler.setFormatter(rack.style.LogFormatter("%(levelname)s: %(message)s"))
 logger.addHandler(handler)
 logger.propagate = False
-
 
 """
 logger = logging.getLogger("demo")
@@ -72,20 +70,22 @@ class CliConf:
 
 @dataclass
 class PyConf:
+    
+    # This Python(3.x) interpreter
     python: str = sys.executable
+    # For example rack.composer
+    # module: str = "" 
+
     imports: List[str] = None
     # Last \include argument, if <filename>.py
-    include_py_sh: str = ""
+    include_py_sh:   str = ""
     include_rack_sh: str = ""
     workdir: Optional[Path] = None
-    replacements: List[ReplaceRule] = field(default_factory=list)
     # Lines that should be injected before the snippet (optional)
     prepend_code: List[str] = field(default_factory=list)
     append_code:  List[str] = field(default_factory=list)
     
-    # How python emits CLI commands to stdout
-    # emit_prefix: str = "$ "
-
+    replacements: List[ReplaceRule] = field(default_factory=list)
     def apply_replacements(self, s: str) -> str:
         for r in self.replacements:
             s = r.apply(s)
@@ -138,7 +138,6 @@ class Block:
     content: List[str]
     start_line: int
 
-import subprocess
 
 """
 
@@ -221,13 +220,35 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         i += 1
 
 
-import tempfile
 
 def save_example_py(composer:rack.cmdline.Composer, filename: str):
     #with open(file=Path.resolve("out", filename), mode='w') as file:
-    with open(f"out/{filename}", mode='w') as file:
-        line = composer.get_module_cmd_line()
-        file.write(line)
+    styleExample = Style(Color.CYAN)
+    filepath=f"out/{filename}"
+    module_name = composer.get_module_name()
+    logger.info(f"")
+    logger.info(f"{Emoji.DISC}  writing {filepath}")
+    cmd = f'{sys.executable} -m {module_name}  '
+    cmd += composer.get_module_cmd_line() + " --print ' \\\\n  ' # or --exec"
+    logger.info(f"Example: " + styleExample.str(cmd))
+    cmd += '\n' # Ensure newline
+    with open(filepath, mode='w') as file:
+        file.write(cmd)
+        
+
+def save_example_rack(composer:rack.cmdline.Composer, filename: str):
+    prog = composer.get_prog()
+    fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+    cmd = prog.to_string(fmt)
+    filepath=f"out/{filename}"
+    logger.info(f"{Emoji.DISC}  writing {filepath}")
+    #logger.info(f"Example: {cmd}")
+    styleExample = Style(Color.CYAN)
+    logger.info(f"Example: " + styleExample.str(cmd))
+    cmd += '\n' # Ensure newline
+    with open(filepath, mode='w') as file:
+        file.write(cmd)
+        #file.write('\n')
 
 @staticmethod
 def dump_subprocess_output(
@@ -235,14 +256,11 @@ def dump_subprocess_output(
         styleStdErr = Style(Color.YELLOW, Effect.DIM),
         styleStdOut = Style(Color.LIGHT_GRAY, Effect.ITALIC)
         ):
-    #if result.returncode == 0:
     print(f"--- stdout ---")
     styleStdOut.sprint(result.stdout)
-    #print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
     print(f"--- stderr ---")
     styleStdErr.sprint(result.stderr)
-    #logger.info(Emoji.SUCCESS + "Success!")
-
+    
 # , cliconf: CliConf, verbose: bool
 def run_py_block(block: Block, pyconf: PyConf) -> None:
     
@@ -267,42 +285,45 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
 
     #logger.info(f"{Emoji.RUN.value}  Executing Python code from line {block.start_line}:")
 
-    styleCode    = Style(Color.DEFAULT, Effect.BOLD)
-    styleWrapper = Style(rack.style.Effect.DIM, Effect.ITALIC)    
+    #styleCode    = Style(Color.DEFAULT, Effect.BOLD)
+    #styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
     if pyconf.prepend_code:
        code_lines.extend(pyconf.prepend_code)
-       styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.prepend_code))
+       #styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.prepend_code))
 
-    code_lines.append("# Start snippet  --------------")
+    code_lines.append("# -------------- start snippet ")
     code_lines.extend(block.content)
-    code_lines.append("# End snippet -----------------")
-    #print("".join(f"  {line}\n" for line in block.content))
-    styleCode.sprint("\n".join(f"  {line}" for line in block.content))
+    code_lines.append("# -------------- end snippet ")
+    #styleCode.sprint("\n".join(f"  {line}" for line in block.content))
 
     if pyconf.append_code:
         code_lines.extend(pyconf.append_code)
-        styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.append_code))
+        #styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.append_code))
         
     if pyconf.include_py_sh:
-        code_lines.append(f"rack.doxymoron.save_example_py(composer, '{pyconf.include_py_sh}')")
+        code_lines.append(
+            f"rack.doxymoron.save_example_py(composer, '{pyconf.include_py_sh}')")
+
+    if pyconf.include_rack_sh:
+        code_lines.append(
+            f"rack.doxymoron.save_example_rack(composer, '{pyconf.include_rack_sh}')")
 
     # logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
-    
-    
 
     code = "\n".join(code_lines) + "\n"
 
     with tempfile.TemporaryDirectory(prefix="doxpy_") as td:
-    #script_file = "/tmp/snippet.py"
-    #with open("/tmp/snippet.py", "w") as script:
+        #script_file = "/tmp/snippet.py"
+        #with open("/tmp/snippet.py", "w") as script:
         
         tdpath = Path(td)
         script = tdpath / "snippet.py"
         script.write_text(code, encoding="utf-8")
         #script.writelines(code_lines)
         
-        logger.debug(f"Running PYTHON: {script}")
-        logger.debug(code)
+        logger.debug(f"Running PYTHON script: {script}")
+        styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
+        logger.info(f"{Emoji.SCRIPT.value} script:\n  " + styleWrapper.str("\n  ".join(code_lines)))
 
         # logger.warning("Double check:")
         #with open(script, "r") as f:
@@ -316,29 +337,15 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
             "stderr": subprocess.PIPE,
             "text": True,
         }
-        cp = subprocess.run(['python3', str(script)], **default_args)
+        result = subprocess.run(['python3', str(script)], **default_args)
         
-        if cp.returncode == 0:
-            dump_subprocess_output(cp)
+        if result.returncode == 0:
+            dump_subprocess_output(result)
             logger.info(Emoji.SUCCESS + " Success!")
-            """
-            print(f"--- stdout ---")
-            gray = Style(Color.LIGHT_GRAY, Effect.ITALIC)
-            gray.sprint(cp.stdout)
-            #print(f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}")
-            print(f"--- stderr ---")
-            styleStdErr = Style(Color.YELLOW, Effect.DIM)
-            styleStdErr.sprint(cp.stderr)
-            logger.info(Emoji.SUCCESS + "Success!")
-            """
         else:
-            #logger.warning()
-            #with open(script, "r") as f:
-            #    for line in f:
-            #        print(line)
+            dump_subprocess_output(result, styleStdErr=Style(Color.RED, Effect.BOLD))
             raise AssertionError(
                 f"Python snippet failed (line {block.start_line})\n"
-                f"--- stdout ---\n{cp.stdout}\n--- stderr ---\n{cp.stderr}"
             )
 
 

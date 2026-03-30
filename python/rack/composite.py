@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 import os
 import re # GEOCONF filename-KEY extraction
-#import logging
+import logging
 
 #from types import SimpleNamespace
 
@@ -141,7 +141,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         "--EXTRACT",
-        default='',
+        default='DATA,WEIGHT',
         metavar="DATA,WEIGHT",
         help="Comma separated list of fields to copy from compositing array") 
 
@@ -217,9 +217,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--print", "-p",   
         metavar="<line_separator>",
-        default=None,
+        default="",
         #action='store_true',
-        help="print parsed command")
+        help="print command line with parameter separator, like ' \\n  '")
 
     parser.add_argument(
         "--test",
@@ -514,11 +514,16 @@ def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core
 
 def handle_infile(args, progBuilder: rack.core.Rack):
     
+    # TODO: glob handling/bypassing support 
     logger.debug(f"INFILE {args.INFILE}")
         
     if type(args.INFILE) == str:
         args.INFILE = [ args.INFILE ]
-        
+    
+    if not args.INFILE:
+        logger.warning("No input files?")
+        return
+
     shortPaths=[]
     if (args.INDIR == 'AUTO'):
         args.INDIR = extract_prefix(args.INFILE, shortPaths)
@@ -528,10 +533,11 @@ def handle_infile(args, progBuilder: rack.core.Rack):
         if not args.INDIR.endswith('/'):
             args.INDIR+'/'
             logger.info("added '/' to INDIR")
-        #print("HEY! "+args.INDIR)
         progBuilder.inputPrefix(args.INDIR)
 
-    args.INFILE = shortPaths
+    if shortPaths:
+        args.INFILE = shortPaths
+
     for i in args.INFILE:
         progBuilder.inputFile(i)
 
@@ -607,7 +613,13 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
-    progBuilder.verbose(level=verbosityKey)
+    if verbosityKey != logging.INFO:
+        progBuilder.verbose(level=verbosityKey)
+
+    #logger.info("# args %s", args)
+    if isinstance(args.INFILE, str):
+        # Todo: if args.GLOB -> expand
+        args.INFILE = [args.INFILE]
 
     logger.info("# args %s", args)
     handle_geoconf(args, progBuilder)
@@ -639,8 +651,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
         # script <- cAdd
         scriptBuilder.cAdd()
         progBuilder.script(script.to_string(scriptFmt))
-        # prog   <- @(inputPrefix) input(s)
-        handle_infile(args, progBuilder)        
+        handle_infile(args, progBuilder)
+        progBuilder.cExtract(args.EXTRACT)
         # prog   <- (outputPrefix) output(s)
         handle_outfiles(args, progBuilder)
     elif (args.SCHEME == ''):
@@ -652,9 +664,21 @@ def compose_command(args) -> rack.prog.CommandSequence:
         handle_select(args, scriptBuilder)
         handle_prod(args, scriptBuilder)
         scriptBuilder.cAdd()
-        progBuilder.script(script.to_string(scriptFmt))
+        if len(args.INFILE) > 1:
+            logger.info("Several inputs, hence defining a script")
+            progBuilder.script(script.to_string(scriptFmt))
+            handle_infile(args, progBuilder)
+        else:
+            logger.info("Single input - not using script")
+            handle_infile(args, progBuilder)
+            for cmd in script.commands:
+                logger.warning(f"adding {cmd}")
+                prog.add(cmd)
+
+        progBuilder.cExtract(args.EXTRACT)
+        # progBuilder.script(script.to_string(scriptFmt))
         # prog   <- (inputPrefix) input(s)
-        handle_infile(args, progBuilder)        
+        # handle_infile(args, progBuilder)        
         # prog   <- (outputPrefix) output(s)
         handle_outfiles(args, progBuilder)
     else:
