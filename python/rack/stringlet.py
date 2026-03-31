@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 import rack.log
 logger = rack.log.logger.getChild(os.path.splitext(os.path.basename(__file__))[0])
 
-import rack.time
+import rack.racktime
 
 """
 # --- helper: our safe UTC-aware strftime ---
@@ -80,14 +80,14 @@ class Var(Token):
 
             if hasattr(value, "strftime"):
                 if filt.startswith("%"):
-                    value = rack.time.utc_strftime(value, filt)
+                    value = rack.racktime.utc_strftime(value, filt)
                     continue
                 elif filt.startswith("floor:") or filt.startswith("round:") or filt.startswith("ceil:"):
                     # mod = filt.removeprefix("mod:")
                     # mod = filt.split(':') #.removeprefix("mod:")
                     # mod.split(':')
                     # create new rounded time object
-                    value = rack.time.datetime_truncate(value, *filt.split(':'))
+                    value = rack.racktime.datetime_truncate(value, *filt.split(':'))
                     continue
                     """
                     if (len(mod) == 1):

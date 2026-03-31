@@ -6,14 +6,15 @@ import numbers
 
 #from collections import OrderedDict
 import rack.base
-from rack.formatter import Formatter, ParamFormatter
+import rack.args
 
+from rack.formatter import Formatter, ParamFormatter
 from rack.prog import Command, CommandSequence
 
 logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 from typing import Protocol
 
-#import rack.prog
+
 
 class RackModule(Protocol):
     def compose_command(args) -> CommandSequence:
@@ -22,7 +23,6 @@ class RackModule(Protocol):
     def build_parser() -> argparse.ArgumentParser:
         ...
 
-import rack.args
 
 class Composer():
     """ Relies that a module has the following commands:
@@ -43,7 +43,7 @@ class Composer():
         known_args, unknown_args = self.parser.parse_known_args()
         self.args = known_args
         #logger.warning(known_args)
-        logger.debug("unknown_args: {unknown_args}")
+        logger.debug(f"unknown_args: {unknown_args}")
 
     def set(self, **argv):
         if not self.args:

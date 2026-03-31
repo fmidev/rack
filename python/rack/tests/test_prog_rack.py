@@ -5,7 +5,7 @@ import rack.core
 
 class TestCommand(unittest.TestCase):
 
-    fmt = rack.prog.RackFormatter(params_format="'{params}'")
+    fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
 
     def test_command_plain(self):
         """
@@ -75,7 +75,7 @@ class TestCommand(unittest.TestCase):
         """
         Given a dict of arguments and a list of keys, only respective values appear, in that order.
         """
-        fmt = rack.prog.RackFormatter(params_format="'{params}'")
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
         rackProg = rack.prog.CommandSequence(programName='rack', quote="'")
         Rack = rack.core.Rack(rackProg)
         Rack.inputFile('volume.h5')

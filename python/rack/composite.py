@@ -20,6 +20,7 @@ import rack.log
 import rack.prog
 import rack.core
 import rack.cmdline
+import rack.config
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -301,7 +302,7 @@ def export_defaults_to_json(parser, args, filename="config_template.json"):
     logger.info(f"✅ Config template written to: {filename}")
 
 
-def load_config(filename):
+def load_config_OLD(filename):
     """Load JSON config if it exists."""
     path = Path(filename)
     if not path.is_file():
@@ -320,7 +321,7 @@ def read_default_args(parser):
     args, remaining_argv = parser.parse_known_args()
 
     if args.config:
-        config = load_config(args.config)
+        config = rack.config.read(args.config)
         parser.set_defaults(**config)
 
     # Re-parse all args with updated defaults
@@ -346,16 +347,10 @@ def read_geoconf(args): #, parser):
 
     
     logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
-    geoconf = load_config(filepath)
+    # Notice: no control if variables other than BBOX, PROJ, SIZE are given 
+    geoconf = rack.config.read(filepath)
     vars(args).update(geoconf)
     return geoconf
-    
-    # parser.set_defaults(**geoconf)
-    
-    # print ("GEOCONF: ", args.GEOCONF, " = ", filepath)
-
-    
-
 
 
 
@@ -689,42 +684,9 @@ def compose_command(args) -> rack.prog.CommandSequence:
         
     return prog
 
-    handle_cartesian(args, scriptBuilder, progBuilder)
-
-    # On the command line, reserve a slot for the script. 
-    scr = progBuilder.script()
-
-    # First call, for the script (SCHEME=TILE)
-    handle_outfile(args, scriptBuilder) 
-    # now scipt should have content...
-    scr.set_args(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
-    # progBuilder.script(script.to_string(rack.prog.RackFormatter(params_format='"{params}"')))
-
-    handle_infile(args, progBuilder)
-
-    # handle_extract = 
-    if args.EXTRACT:
-        progBuilder.cExtract(args.EXTRACT)
-
-    # Second call, now for progBuilder
-    handle_outfile(args, progBuilder) 
-    
-    # if args.OUTFILE:
-    # handle_output_formats
-    # progBuilder.outputFile(args.OUTFILE)
-
-
-    return prog
-    """
-    #arg_vars = vars(args)
-    print(vars(args))
-    logger.debug("🔧 Final configuration:")
-    for key, value in vars(args).items():
-        logger.debug(f"  {key}: {value}")
-    """
-
-def get_fmt(cmd_separator=" ", **kwargs):
-    return rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=cmd_separator, **kwargs)
+# USAGE: rack/composer-test.py:    print(prog.to_string(rack.composite.get_fmt()))
+#def get_fmt(cmd_separator=" ", **kwargs):
+#    return rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=cmd_separator, **kwargs)
     
 
   
@@ -732,22 +694,28 @@ def exec_command(args):
     cmdList = compose_command(args)
     os.system(cmdList)  # subprocess!
 
+"""
 def test():
     cmds = {
         "INPUTS" 
     }
     compose_command("")
+"""
 
 def main():
 
     parser = build_parser()
 
-    read_default_args(parser)
+    # read_default_args(parser)
+    # More readable:
+    args, unknown_args = parser.parse_known_args()
+    if args.config:
+        config = rack.config.read(args.config)
+        parser.set_defaults(**config)
 
     args = parser.parse_args()
 
     # Selected commands only for direct command line use
-
     # Needs parser for arg definitions, args for current values
 
     # Export template if user requests it
@@ -755,10 +723,12 @@ def main():
         export_defaults_to_json(parser, args, args.export_config)
         sys.exit(0)
 
+    """
     if args.test:
         logger.info("Running tests..")
         test()
         sys.exit(0)
+    """
 
     logger.info("# args %s", type(args))
     prog = compose_command(args)
@@ -767,13 +737,12 @@ def main():
         args.print = args.print.replace(r'\t','\t')
         args.print = args.print.replace(r'\n','\n')
         logger.info("# Command line:")
-        #fmt = rack.prog.RackFormatter(params_format="'{params}'", c)
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
         # print(cmdList.to_string(" \\\n"))
 
     if args.exec:
-        logger.info("# Executing...")
+        logger.info("# Executing with os.system(...)")
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
         print(prog.to_string(fmt))
         os.system(prog.to_string(fmt))

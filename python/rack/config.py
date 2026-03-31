@@ -8,7 +8,7 @@ from pathlib import Path
 
 import logging
 logging.basicConfig(format='%(levelname)s:\t: %(message)s')
-logger = logging.getLogger() 
+logger = logging.getLogger(__name__) 
 logger.setLevel(logging.INFO)
 
 def add_parameters(parser, path_prefix=None):
@@ -27,7 +27,7 @@ def add_parameters(parser, path_prefix=None):
         help="Save configuration to file")
 
 
-# No good
+# No good (why so?)
 def read_defaults(parser):
     """Parse args with precedence:
        CLI > JSON config > defaults
@@ -42,18 +42,30 @@ def read_defaults(parser):
 
         
 
-def read(filename, lenient=False): # todo path prefix?
-    """Load JSON config if it exists."""
+def read(filename, lenient=False) -> dict: # todo path prefix?
+    """Load config file.
+    
+        Parse the file as either JSON file or simple "key=value" file.
+    """
     path = Path(filename)
+    
     if not path.is_file():
-        msg = f"⚠️  File not found: {filename}"
+        msg = f"File not found: {filename}"
         if lenient:
-            print(msg, file=sys.stderr)
+            logger.warning(msg)
             return {}
         else:
+            logger.error(msg)
             raise Exception(msg)
+        
     with open(path, "r") as f:
-        return json.load(f)
+        lines = f.readlines()
+        return parse(lines)
+        #return json.load(f)
+    
+    logger.warning(f"Reading file failed")
+    return {}
+    
     
 PARSE_ERROR  = -1
 PARSE_SKIP   =  0

@@ -4,6 +4,7 @@ import unittest
 
 import rack.prog
 import rack.composite
+import rack.cmdline
 import argparse
 
 import logging
@@ -18,7 +19,7 @@ class TestComposer(unittest.TestCase):
         of rack.prog.RackModule 
     """
 
-    fmtCLI = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+    fmtCLI = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
 
     def test_basic(self):
         logger.warning("How!")
@@ -33,7 +34,7 @@ class TestComposer(unittest.TestCase):
 
     def test_empty(self):
 
-        composer = rack.prog.Composer(rack.composite)
+        composer = rack.cmdline.Composer(rack.composite)
         composer.set(INFILE='volume.h5')
         composer.set(OUTFILE='out.h5')
         prog = composer.get_prog()        
@@ -45,12 +46,12 @@ class TestComposer(unittest.TestCase):
 
     def test_simple(self):
 
-        cmdline = rack.prog.Composer(rack.composite)
+        cmdline = rack.cmdline.Composer(rack.composite)
         cmdline.set(INDIR='/tmp/', OUTFILE='out.h5')
         cmdline.set(SCHEME='TILED')
         cmdline.set(INFILE='volume.h5')
         prog:rack.prog.CommandSequence = cmdline.get_prog()
-        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
         print (prog.to_string(fmt))
         self.assertEqual(0, 0)  
 
