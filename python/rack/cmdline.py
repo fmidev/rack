@@ -56,10 +56,10 @@ class Composer():
     def get_defaults(self):
         return {a.dest: a.default for a in self.parser._actions if a.dest != 'help'}  
 
-    def get_module_cmd_line(self) -> str:
+    def get_module_cmd_line(self, separator=" ") -> str:
         """ Return module-specific command line
         """
-        line = rack.args.args_to_cli(self.parser, self.args)
+        line = rack.args.args_to_cli(self.parser, self.args, separator=separator)
         logger.debug(f"Command line: {line}")
         logger.debug(self.module.__str__)
         return line

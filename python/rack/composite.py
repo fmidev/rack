@@ -305,7 +305,8 @@ def load_config(filename):
     """Load JSON config if it exists."""
     path = Path(filename)
     if not path.is_file():
-        print(f"⚠️ File not found: {filename}", file=sys.stderr)
+        logger.error(f"File not found: {filename}")
+        raise FileNotFoundError(f"Config file not found: {filename}")
         return {}
     with open(path, "r") as f:
         return json.load(f)
@@ -766,7 +767,7 @@ def main():
         args.print = args.print.replace(r'\t','\t')
         args.print = args.print.replace(r'\n','\n')
         logger.info("# Command line:")
-        #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        #fmt = rack.prog.RackFormatter(params_format="'{params}'", c)
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
         # print(cmdList.to_string(" \\\n"))

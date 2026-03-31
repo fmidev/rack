@@ -228,8 +228,11 @@ def save_example_py(composer:rack.cmdline.Composer, filename: str):
     module_name = composer.get_module_name()
     logger.info(f"")
     logger.info(f"{Emoji.DISC}  writing {filepath}")
-    cmd = f'{sys.executable} -m {module_name}  '
-    cmd += composer.get_module_cmd_line() + " --print ' \\\\n  ' # or --exec"
+    python = Path(sys.executable).name
+    #cmd = f'{sys.executable} -m {module_name}  '
+    cmd = f'{python} -m {module_name}  '
+    # Separator does not work yet... separator=" \\\n\t"
+    cmd += composer.get_module_cmd_line(separator=" ") + " --print ' \\\\n  ' # or --exec"
     logger.info(f"Example: " + styleExample.str(cmd))
     cmd += '\n' # Ensure newline
     with open(filepath, mode='w') as file:
@@ -238,7 +241,10 @@ def save_example_py(composer:rack.cmdline.Composer, filename: str):
 
 def save_example_rack(composer:rack.cmdline.Composer, filename: str):
     prog = composer.get_prog()
-    fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+    fmt = rack.cmdline.RackFormatter(
+        params_format="'{params}'", 
+        cmd_separator=" \\\n\t"
+        ) 
     cmd = prog.to_string(fmt)
     filepath=f"out/{filename}"
     logger.info(f"{Emoji.DISC}  writing {filepath}")
@@ -432,7 +438,9 @@ def main() -> int:
             pass
         elif key == "~exec":
             block: Block = obj 
-            logger.warning(f"Handling special {block.kind}[{block.arg}]")
+            #logger.warning(f"Handling special {block.kind}[{block.arg}]")
+            logger.warning(f"Skipping {block.kind}[{block.arg}]")
+            continue
             #lines = 
             if block.kind == '~exec':
                 logger.warning(f" {Emoji.EXPLOSION.value} executing: " + "\n".join(block.content))

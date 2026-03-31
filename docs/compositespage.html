@@ -288,11 +288,39 @@ Tiled compositing</h3>
 <area shape="rect" href="fileiopage.html" title="&lt;i&gt;Saving tile | &#45;&#45;outputFile " alt="" coords="770,15,859,60"/>
 </map>
 </div>
-<p>For example, creation of a tile:</p>
-<div class="fragment"><div class="line">rack      \</div>
-<div class="line"> --cProj &#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39; \</div>
-<div class="line"> --cSize 500,750 --cBBox 17,57.7,33,69.5     \</div>
-<div class="line">     data-20140525/201405251200_radar.polar.fivim.h5   --pCappi 1000   --cCreateTile -o tiles/201405251200_radar.polar.fivim-tile.h5</div>
+<p>For example, a tile can be created as follows:</p>
+<div class="fragment"><div class="line">rack \</div>
+<div class="line">    --verbose &#39;INFO&#39; \</div>
+<div class="line">    --cSize &#39;512,614&#39; \</div>
+<div class="line">    --cProj &#39;3067&#39; \</div>
+<div class="line">    --cBBox &#39;-208000,6390000,1072000,7926000&#39; \</div>
+<div class="line">    --cMethod &#39;MAXIMUM&#39; \</div>
+<div class="line">    --outputPrefix &#39;tiles/&#39; \</div>
+<div class="line">    --script &#39;--cCreateTile --outputFile &quot;tile-fikor.h5&quot;&#39; \</div>
+<div class="line">    --inputPrefix &#39;data-20140525/&#39; \</div>
+<div class="line">    &#39;201405251200_radar.polar.fikor.h5&#39;</div>
+</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> : </p><div class="fragment"><div class="line">python3 -m rack.composite  201405251200_radar.polar.fikor.h5 --OUTFILE tile-fikor.h5 --GEOCONF WRAPTEST --BBOX -208000,6390000,1072000,7926000 --PROJ 3067 --SIZE 512,614 --SCHEME TILE --INDIR data-20140525/ --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
+</div><!-- fragment --><p>Or using Python API, as follows:</p>
+<div class="fragment"><div class="line"><span class="comment"># Initialize command line generator.</span></div>
+<div class="line">composer = rack.cmdline.Composer(rack.composite)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Set parameters</span></div>
+<div class="line">composer.set(SCHEME=<span class="stringliteral">&quot;TILE&quot;</span>)</div>
+<div class="line">composer.set(INDIR=<span class="stringliteral">&#39;data-20140525/&#39;</span>)</div>
+<div class="line">composer.set(INFILE=f<span class="stringliteral">&#39;201405251200_radar.polar.{SITE}.h5&#39;</span>) </div>
+<div class="line">composer.set(OUTFILE=f<span class="stringliteral">&#39;tile-{SITE}.h5&#39;</span>)</div>
+<div class="line"><span class="comment"># Reads BBOX, SIZE and PROJ from geoconf/geoconf-WRAPTEST.json</span></div>
+<div class="line">composer.set(GEOCONF=<span class="stringliteral">&#39;WRAPTEST&#39;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Extract command sequence</span></div>
+<div class="line">prog = composer.get_prog()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Apply formatting </span></div>
+<div class="line">fmt = rack.cmdline.RackFormatter(params_format=<span class="stringliteral">&quot;&#39;{params}&#39;&quot;</span>) </div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Extract as a single string (suited to os.system call).</span></div>
+<div class="line">rack_cmd = prog.to_string(fmt)</div>
+<div class="line">os.system(rack_cmd)</div>
 </div><!-- fragment --><div class="dotgraph">
 </div>
 <p>Then, tiles are collectively added to composite with a single command. Notice that the composite definitions should be exactly the same as in the tile creation:</p>

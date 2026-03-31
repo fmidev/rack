@@ -330,10 +330,11 @@ class Register:
                     if (len(numerics) == len(arg_numerics)):
                         similar_sig = {(t1==t2) for (t1,t2) in zip(numerics, arg_numerics)}
                         if (True in similar_sig) and not (False in similar_sig): 
-                            logger.info(f"Expanding sequence to args : {caller_name} {v}")
-                            #cmd = Command(caller_name, args=v)
-                            args=v
-                            break
+                            logger.warning(f"Skipping expanding sequence to args : {caller_name} {v}")
+                            logger.warning(f"SEPARATOR: {separator}")
+                            #logger.info(f"Expanding sequence to args : {caller_name} {v}")
+                            #args=v
+                            #break
                 explicit_args[k]=v
             FIRST=False
         
@@ -635,9 +636,13 @@ class CommandSequence:
     def to_string(self, fmt:Formatter=None) -> str:
         """ Compose a single string of commands.
 
-        Typically, this format is suited to command line use.
-        
-        fmt.CMD_SEPARATOR can also be '\\\n\t' for example.
+        This format is suited to command line use.
+        String produced by this command is also a valid parameter for
+        Python shell invocation command os.system(...)
+
+        For examples in documentation and tutorials, command lines
+        are more readable if they on separate lines. Then, consider
+        fmt.CMD_SEPARATOR='\\\n\t' for example.
         """
         #prog = [str(k) for k in ]
         if not fmt:
