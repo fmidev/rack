@@ -308,8 +308,13 @@ Tiled compositing</h3>
 <div class="line">composer.set(SCHEME=<span class="stringliteral">&quot;TILE&quot;</span>)</div>
 <div class="line">composer.set(INDIR=<span class="stringliteral">&#39;data-20140525/&#39;</span>)</div>
 <div class="line">composer.set(INFILE=f<span class="stringliteral">&#39;201405251200_radar.polar.{SITE}.h5&#39;</span>) </div>
+<div class="line">composer.set(SCHEME=<span class="stringliteral">&quot;TILE&quot;</span>)</div>
 <div class="line">composer.set(OUTFILE=f<span class="stringliteral">&#39;tile-{SITE}.h5&#39;</span>)</div>
-<div class="line"><span class="comment"># Reads BBOX, SIZE and PROJ from geoconf/geoconf-WRAPTEST.json</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Several options can be set once</span></div>
+<div class="line"><span class="comment"># composer.set(SIZE=&quot;512,614&quot;, PROJ=3067, BBOX=&quot;-208000,6390000,1072000,7926000&quot;)</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Alternatively, reads BBOX, SIZE and PROJ from geoconf/geoconf-WRAPTEST.json :</span></div>
 <div class="line">composer.set(GEOCONF=<span class="stringliteral">&#39;WRAPTEST&#39;</span>)</div>
 <div class="line"> </div>
 <div class="line"><span class="comment"># Extract command sequence</span></div>
