@@ -22,6 +22,12 @@ def add_parameters(parser, path_prefix=None):
         help="Strip prefix (--OUTDIR) from image links (for WWW usage)")
 
     parser.add_argument(
+        "--svgBackGround",
+        default = "",
+        metavar = "<file>",
+        help="Add map etc. under actual data image layer")
+
+    parser.add_argument(
         "--svgOutputs",
         default = None,
         metavar = "auto|DATA,WEIGHT,...",

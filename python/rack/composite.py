@@ -21,6 +21,7 @@ import rack.prog
 import rack.core
 import rack.cmdline
 import rack.config
+import rack.svg
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -131,8 +132,8 @@ def build_parser() -> argparse.ArgumentParser:
     # parser.add_argument("--PROCESSES", default='4', help="Apply ") 
     parser.add_argument(
         "--FORMAT",
-        default='h5',
-        help="One or several file formats (h5, png, tif)") 
+        default="",
+        help="Set formats (h5, png, tif, svg) explicitly") 
 
     parser.add_argument(
         "--SCHEME",
@@ -161,6 +162,10 @@ def build_parser() -> argparse.ArgumentParser:
         metavar="<path>|AUTO",
         default=None,
         help="Common path of output files.")
+
+
+    # SVG related
+    rack.svg.add_parameters(parser)
 
     """
     parser.add_argument(
@@ -474,9 +479,8 @@ def handle_select(args, scriptBuilder: rack.core.Rack):
     if args:
         scriptBuilder.select(",".join(value))
 
+""" Compositing
 def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core.Rack):
-    """ Compositing
-    """
     if args.SCHEME in ['TILE','TILED']:
         if not args.GEOCONF:
             # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
@@ -485,12 +489,12 @@ def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core
     
     if (args.SCHEME == 'TILE'):
         (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
-        #logger.debug(dirpath)
-        #logger.debug(filepath)
-        # args.OUTDIR  = dirpath # .removesuffix('/')
         filepath = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-        #cmdList.append(f"--outputPrefix '{args.OUTDIR}'")
-        progBuilder.outputPrefix(dirpath)
+        #progBuilder.outputPrefix(dirpath)
+        if dirpath:
+            if dirpath != args.OUTDIR:
+                logger.warning(f"replacing output prefix OUTDIR: {args.OUTDIR} -> {dirpath}")    
+            args.OUTDIR = dirpath # NEw 2026/04
         scriptBuilder.cCreateTile()
         scriptBuilder.outputFile(filepath)
         if args.EXTRACT:
@@ -506,6 +510,13 @@ def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core
         if not args.EXTRACT:
             args.EXTRACT = 'DATA,WEIGHT'
         scriptBuilder.cAdd()
+
+    if args.OUTDIR:
+        logger.warning(f"Adding OUTDIR: {args.OUTDIR}")
+        progBuilder.outputPrefix(args.OUTDIR)
+    else:
+        logger.warning(f"No OUTDIR: {args.OUTDIR}")
+"""
 
 
 def handle_infile(args, progBuilder: rack.core.Rack):
@@ -537,34 +548,61 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     for i in args.INFILE:
         progBuilder.inputFile(i)
 
+"""
 def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
-    """Light adjustments to args.OUTFILE"""
-
+    
     if args.SCHEME == 'TILE':
-        args.OUTFILE = None
+        args.OUTFILE = None # ???
+        return
+    
+    if not args.OUTFILE:
+        args.OUTFILE = 'out.h5'
+
+    if args.svgOutputs:
+        if args.svgOutputs == True:
+            args.svgOutputs = args.EXTRACT
+        rack.svg.handle_outfile(args, cmdBuilder)    
+
+    if cmdBuilder:
+        cmdBuilder.outputFile(args.OUTFILE)
     else:
-        if not args.OUTFILE:
-            args.OUTFILE = 'out.h5'
-        if cmdBuilder:
-            cmdBuilder.outputFile(args.OUTFILE)
-        else:
-            logger.error("No cmdBuilder set")
+        logger.error("No cmdBuilder set")
+"""
 
 def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
-    # Assumes prefix has been handled
     
-    output_basename = args.OUTFILE
-    fmt = args.OUTFILE.split('.').pop()
-    #logger.warning(f"format: {fmt}")
-    output_basename = output_basename.removesuffix(f".{fmt}")
+    if args.OUTDIR:
+        logger.warning(f"Adding OUTDIR: {args.OUTDIR}")
+        if not args.OUTDIR.endswith('/'):
+            args.OUTDIR += '/'
+        cmdBuilder.outputPrefix(args.OUTDIR)
+    #else:
+    #    logger.warning(f"No OUTDIR: {args.OUTDIR}")
+
+    
+    # Assumes prefix has been handled
+    outfile = Path(args.OUTFILE)
+    
+    #output_basename = args.OUTFILE
+    #fmt = args.OUTFILE.split('.').pop()
+    #output_basename = output_basename.removesuffix(f".{fmt}")
+    output_basename = outfile.stem
+    fmt = outfile.suffix
 
     if args.FORMAT:
         formats = args.FORMAT.strip().split(',')
     else:
-        formats = {fmt}
+        formats = {fmt[1:]}
 
     logger.debug(f"formats: {formats}")
-        
+
+
+    if args.svgOutputs:
+        if args.svgOutputs == True:
+            args.svgOutputs = args.EXTRACT
+        rack.svg.handle_outfile(args, cmdBuilder)    
+
+
     if 'h5' in formats:
         cmdBuilder.outputFile(f"{output_basename}.h5")
         formats.remove('h5')
@@ -579,7 +617,14 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
         # transparency?
         cmdBuilder.outputFile(f"{output_basename}.png")
         formats.remove('png')
-    
+
+    if 'svg' in formats:
+        # cmdBuilder.paletteDefault()
+        # transparency?
+        cmdBuilder.outputFile(f"{output_basename}.svg")
+        formats.remove('svg')
+
+
     if (formats):
         raise Exception('Unhandled formats:', formats)
         
@@ -629,8 +674,15 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
         (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
         #logger.debug(dirpath)
-        if dirpath:
+        #if dirpath:
+        #    progBuilder.outputPrefix(dirpath)
+        if dirpath:# NEw 2026/04
+            if args.OUTDIR and (dirpath != args.OUTDIR):
+                logger.warning(f"replacing output prefix OUTDIR: {args.OUTDIR} -> {dirpath}")
             progBuilder.outputPrefix(dirpath)
+            #args.OUTDIR = dirpath # NEw 2026/04
+        args.OUTDIR = ""
+
         #logger.debug(filepath)
         args.OUTFILE = filepath.replace('{GEOCONF}', str(args.GEOCONF))
         
@@ -681,6 +733,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         # raise
         pass
 
+    
         
     return prog
 
@@ -733,6 +786,15 @@ def main():
     logger.info("# args %s", type(args))
     prog = compose_command(args)
 
+    if args.exec:
+        logger.info("# Executing with os.system(...)")
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
+        print(prog.to_string(fmt))
+        os.system(prog.to_string(fmt))
+
+    # Useful in this order: execute first (with perhaps verbous logging)
+    # ... and then print what was done:
+
     if args.print != "":
         args.print = args.print.replace(r'\t','\t')
         args.print = args.print.replace(r'\n','\n')
@@ -741,11 +803,6 @@ def main():
         print(prog.to_string(fmt))
         # print(cmdList.to_string(" \\\n"))
 
-    if args.exec:
-        logger.info("# Executing with os.system(...)")
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
-        print(prog.to_string(fmt))
-        os.system(prog.to_string(fmt))
 
     
 

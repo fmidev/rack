@@ -226,6 +226,15 @@ class Style:
         """
         return Style(self._color, self._effects)
     
+
+    def add(self, *args):
+        """  Returns a modified copy.
+             Calls copy() and after that, modify(args)
+        """    
+        s = self.copy()
+        s.modify(*args)
+        return s
+
     def color(self, arg):
         """  Returns a modified copy
         """
@@ -256,7 +265,7 @@ class Style:
     def emojis(self, *args):
         s = self.copy()
         s.modify(*args) # lazy
-        
+        return s
 
     def __str__(self):
         result = []
