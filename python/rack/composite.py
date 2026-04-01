@@ -569,7 +569,7 @@ def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
         logger.error("No cmdBuilder set")
 """
 
-def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
+def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     
     if args.OUTDIR:
         logger.warning(f"Adding OUTDIR: {args.OUTDIR}")
@@ -600,7 +600,7 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     if args.svgOutputs:
         if args.svgOutputs == True:
             args.svgOutputs = args.EXTRACT
-        rack.svg.handle_outfile(args, cmdBuilder)    
+        rack.svg.handle_outfiles(args, cmdBuilder)    
 
 
     if 'h5' in formats:
@@ -654,8 +654,11 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
-    if verbosityKey != logging.INFO:
+    if verbosityKey != "INFO": # "logging.INFO:
+        logger.info(f"Adding explicit verbosity level: {logging.INFO}")
         progBuilder.verbose(level=verbosityKey)
+
+    rack.svg.handle_conf(args, progBuilder)
 
     #logger.info("# args %s", args)
     if isinstance(args.INFILE, str):

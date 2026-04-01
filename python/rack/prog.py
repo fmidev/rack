@@ -191,6 +191,23 @@ class Command:
         else:
             return None
 
+    def get_key_list(self, count=-1) -> list:
+        """
+            If flexible>0, retrieve also N=(flexible) non-explicit keys,
+            
+        """
+        if self.args:
+            key_list = list(range(0,self.ordered_args_count))
+            key_list.extend(self.expl_keys)
+            if (len(key_list)==0) and (count!=0):
+                # Show at least one arg.
+                # key_list = [0]
+                key_list = list(self.args.keys())
+                if (count > 0):
+                    key_list = key_list[0:count]
+            return key_list
+        else: 
+            return None
 
     def get_args(self, fmt:Formatter=None) -> str:
         
@@ -203,14 +220,16 @@ class Command:
                 # logger.debug(f"{self.name}: using default format: {fmt}")
                 fmt = Formatter()
 
- 
-        if self.args:
-            key_list = list(range(0,self.ordered_args_count))
-            key_list.extend(self.expl_keys)
-            if len(key_list) == 0:
+        # Ensure at least 1 explicit argument key (i.e. the first one)
+        key_list = self.get_key_list(count=1)
+        if key_list:
+            #key_list = list(range(0,self.ordered_args_count))
+            #key_list.extend(self.expl_keys)
+            #if len(key_list) == 0:
                 # Show at least one arg.
                 # key_list = [0]
-                key_list = list(self.args.keys())
+            #    key_list = list(self.args.keys())
+            #    key_list = [key_list[0]]
             return fmt.fmt_params(self.args, key_list)
         else:
             return None
