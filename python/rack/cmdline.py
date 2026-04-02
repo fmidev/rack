@@ -5,11 +5,12 @@ from typing import Any, List, Dict, Union
 import numbers
 
 #from collections import OrderedDict
+from rack.command import Command
 import rack.base
 import rack.args
 
 from rack.formatter import Formatter, ParamFormatter
-from rack.prog import Command, CommandSequence
+from rack.command import CommandSequence
 
 logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
 from typing import Protocol
@@ -50,7 +51,7 @@ class Composer():
             raise RuntimeError("args undefined")
         vars(self.args).update(argv)
 
-    def get_prog(self) -> List[rack.prog.Command]:
+    def get_prog(self) -> List[Command]:
         return self.module.compose_command(self.args)
     
     def get_defaults(self):

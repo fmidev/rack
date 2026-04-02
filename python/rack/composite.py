@@ -479,44 +479,6 @@ def handle_select(args, scriptBuilder: rack.core.Rack):
     if args:
         scriptBuilder.select(",".join(value))
 
-""" Compositing
-def handle_cartesian(args, scriptBuilder: rack.core.Rack, progBuilder: rack.core.Rack):
-    if args.SCHEME in ['TILE','TILED']:
-        if not args.GEOCONF:
-            # raise Exception('Compositing SCHEME=[TILE|TILED] requires GEOCONF for labelling tile files')
-            # print('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]', file=sys.stderr)
-            logger.note('Using --GEOCONF recommended if compositing SCHEME=[TILE|TILED]')
-    
-    if (args.SCHEME == 'TILE'):
-        (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
-        filepath = filepath.replace('{GEOCONF}', str(args.GEOCONF))
-        #progBuilder.outputPrefix(dirpath)
-        if dirpath:
-            if dirpath != args.OUTDIR:
-                logger.warning(f"replacing output prefix OUTDIR: {args.OUTDIR} -> {dirpath}")    
-            args.OUTDIR = dirpath # NEw 2026/04
-        scriptBuilder.cCreateTile()
-        scriptBuilder.outputFile(filepath)
-        if args.EXTRACT:
-            logger.warning(f"compositing SCHEME='TILE', discarding EXTRACT='{args.EXTRACT}' ")
-    else:
-        if (args.SCHEME == 'TILED'):
-            (dirpath,filepath) = handle_tilepath_defaults(args.INDIR, args.INFILE)
-            if not args.INDIR:
-                args.INDIR = dirpath # default_tiledir
-            args.INDIR = args.INDIR.removesuffix('/') # ???
-            if not args.INFILE:
-                args.INFILE = filepath #default_tilename.replace('{GEOCONF}', args.GEOCONF)
-        if not args.EXTRACT:
-            args.EXTRACT = 'DATA,WEIGHT'
-        scriptBuilder.cAdd()
-
-    if args.OUTDIR:
-        logger.warning(f"Adding OUTDIR: {args.OUTDIR}")
-        progBuilder.outputPrefix(args.OUTDIR)
-    else:
-        logger.warning(f"No OUTDIR: {args.OUTDIR}")
-"""
 
 
 def handle_infile(args, progBuilder: rack.core.Rack):
@@ -548,26 +510,6 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     for i in args.INFILE:
         progBuilder.inputFile(i)
 
-"""
-def handle_outfile(args, cmdBuilder: rack.core.Rack = None):
-    
-    if args.SCHEME == 'TILE':
-        args.OUTFILE = None # ???
-        return
-    
-    if not args.OUTFILE:
-        args.OUTFILE = 'out.h5'
-
-    if args.svgOutputs:
-        if args.svgOutputs == True:
-            args.svgOutputs = args.EXTRACT
-        rack.svg.handle_outfile(args, cmdBuilder)    
-
-    if cmdBuilder:
-        cmdBuilder.outputFile(args.OUTFILE)
-    else:
-        logger.error("No cmdBuilder set")
-"""
 
 def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     
@@ -628,7 +570,27 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     if (formats):
         raise Exception('Unhandled formats:', formats)
         
-            
+def create_script(args) -> rack.prog.CommandSequence:
+    """ 
+        Creates and initializes a script to be extended.  
+    """
+
+    #script = rack.prog.CommandSequence(quote=rack.prog.get_secondary_quote())
+    script = rack.prog.CommandSequence(quote="'") # check! Or shlex?
+    script.fmt = rack.cmdline.RackFormatter(params_format='"{params}"')   
+    
+    # This part is common for both TILE and default SCHEME.
+    scriptBuilder = rack.core.Rack(script)
+    handle_select(args, scriptBuilder)
+    handle_prod(args, scriptBuilder)
+    
+    return scriptBuilder
+    # And then:
+    # scriptBuilder.cCreateTile()
+    # scriptBuilder.cAdd() or scriptBuilder.cAddWeighted()
+
+
+
 
 def compose_command(args) -> rack.prog.CommandSequence:
     """Main library entry point.
@@ -648,9 +610,6 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # Command registry, "factory" for adding command to the program sequence.
     progBuilder = rack.core.Rack(prog)
 
-    script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
-    scriptBuilder = rack.core.Rack(script)
-    scriptFmt = rack.cmdline.RackFormatter(params_format='"{params}"')
 
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
@@ -669,10 +628,11 @@ def compose_command(args) -> rack.prog.CommandSequence:
     handle_geoconf(args, progBuilder)
 
     if (args.SCHEME == 'TILE'):
-        # prog   <- GEOCONF
-        # script <- select, pprod, CreateTile,  @(outputPrefix) output(s)
-        handle_select(args, scriptBuilder)
-        handle_prod(args, scriptBuilder)
+
+        if len(args.INFILE) > 1:
+            logger.warning("Several inputs, check that outputs have syntax")
+
+        scriptBuilder = create_script(args)
         scriptBuilder.cCreateTile()
 
         (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
@@ -691,51 +651,53 @@ def compose_command(args) -> rack.prog.CommandSequence:
         
         #scriptBuilder.outputFile(filepath)
         handle_outfiles(args, scriptBuilder)
-        progBuilder.script(script.to_string(scriptFmt))
+        #progBuilder.script(script.to_string(scriptFmt))
+        progBuilder.script(scriptBuilder.getCmdSequence().to_string())
         # prog   <- (inputPrefix) input(s)
         handle_infile(args, progBuilder)
-    elif (args.SCHEME == 'TILED'):
-        # prog   <- GEOCONF
-        # cInit
+    elif (args.SCHEME == 'old-TILED'):
+        # ELSE!
         if args.BBOX and args.PROJ and args.SIZE:
             progBuilder.cInit()
-        # script <- cAdd
+
         scriptBuilder.cAdd()
-        progBuilder.script(script.to_string(scriptFmt))
+
+        progBuilder.script(scriptBuilder.getCmdSequence().to_string())
         handle_infile(args, progBuilder)
         progBuilder.cExtract(args.EXTRACT)
-        # prog   <- (outputPrefix) output(s)
         handle_outfiles(args, progBuilder)
-    elif (args.SCHEME == ''):
-        # prog   <- GEOCONF
-        # cInit
+
+    else: #if (args.SCHEME == ''):
+
         if args.BBOX and args.PROJ and args.SIZE:
             progBuilder.cInit()
-        # script <- select, pprod, cAdd
-        handle_select(args, scriptBuilder)
-        handle_prod(args, scriptBuilder)
-        scriptBuilder.cAdd()
+
         if len(args.INFILE) > 1:
             logger.info("Several inputs, hence defining a script")
-            progBuilder.script(script.to_string(scriptFmt))
+            
+            scriptBuilder = create_script(args)
+            #script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
+            #scriptBuilder = rack.core.Rack(script)
+            #scriptFmt = rack.cmdline.RackFormatter(params_format='"{params}"')
+            #handle_select(args, scriptBuilder)
+            #handle_prod(args, scriptBuilder)
+            scriptBuilder.cAdd()
+            #progBuilder.script(script.to_string(scriptFmt))
+            progBuilder.script(scriptBuilder.getCmdSequence().to_string()) # script.to_string())
+
             handle_infile(args, progBuilder)
         else:
             logger.info("Single input - not using script")
+            # Hence, here input first.
             handle_infile(args, progBuilder)
-            for cmd in script.commands:
-                logger.warning(f"adding {cmd}")
-                prog.add(cmd)
+            # Then, product generation and mapping to Cartesian.
+            handle_select(args, progBuilder)
+            handle_prod(args, progBuilder)
+            progBuilder.cAdd()
 
         progBuilder.cExtract(args.EXTRACT)
-        # progBuilder.script(script.to_string(scriptFmt))
-        # prog   <- (inputPrefix) input(s)
-        # handle_infile(args, progBuilder)        
-        # prog   <- (outputPrefix) output(s)
         handle_outfiles(args, progBuilder)
-    else:
-        # raise
-        pass
-
+    
     
         
     return prog

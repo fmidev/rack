@@ -318,7 +318,7 @@ public:
 		radarFtor.nodataValue   = limit(dstMax*nodata);
 		radarFtor.undetectValue = limit(dstMax*undetect);
 
-
+		// First, try functor: "Functor" or "Functor_Args"
 		std::string s1;
 		std::string s2;
 		drain::StringTools::split2(ftor, s1, s2, "_");
@@ -328,21 +328,22 @@ public:
 		if (functorBank.has(s1)){
 
 			drain::LocalCloner<drain::UnaryFunctor> localBank(functorBank);
-
 			//mout.special("list " , drain::sprinter(l) );
 
-			drain::UnaryFunctor & ftor2 = localBank.getCloned(s1);
-			//l.pop_front();
+			drain::UnaryFunctor & functor = localBank.getCloned(s1);
 
-			ftor2.setParameters(s2, '=', '_');
+			functor.setParameters(s2, '=', '_');
 			if (ftor.empty()){
+				mout.special<LOG_DEBUG>("Using identity functor");
 				// identity functor
 			}
 			else {
-				mout.special(ftor, " -> ", DRAIN_LOG(ftor2));
+				mout.special(ftor, " -> ", DRAIN_LOG(functor));
 			}
 
-			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), ftor2, true);
+			//mout.special(ftor, " -> ", DRAIN_LOG(functor));
+
+			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), functor, true);
 
 		}
 		else {
@@ -374,7 +375,7 @@ public:
 
 			fuzzyStep.set(range, 1.0);
 
-			mout.debug("fuzzy: "  , fuzzyStep );
+			mout.special("Applying fuzzy: "  , fuzzyStep );
 
 			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), fuzzyStep, true);
 
@@ -1093,8 +1094,8 @@ public:
 
 				TreeSVG svg;
 				palette.exportSVGLegend(svg, true);
-				drain::Output ofstr(filepath.str());
-				NodeSVG::toStream(ofstr, svg);
+				drain::Output output(filepath.str());
+				NodeSVG::toStream(output.getStream(), svg);
 
 				// OLD: create a new image panel
 				// RackSVG::addImage(ctx, svg, filepath);
@@ -1114,7 +1115,7 @@ public:
 			mout.warn("user defined format, extension not checked: ", ctx.formatStr);
 			//drain::Output output(ctx.outputPrefix + value);
 			drain::Output output(filepath);
-			palette.exportFMT(output, ctx.formatStr);
+			palette.exportFMT(output.getStream(), ctx.formatStr);
 		}
 
 	}
