@@ -2618,7 +2618,7 @@ MainModule::MainModule(){ //
 	drain::CmdExecFile execFile(cmdBank);
 	install(execFile);
 
-	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)();
+	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)('X');
 	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
 	linkRelatedCommands(script, execFile, ExecScript);
 	linkRelatedSection(script, drain::Static::get<drain::TriggerSection>());

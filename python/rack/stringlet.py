@@ -158,7 +158,7 @@ class Stringlet:
 
 
     # --- tokenizer ---
-    def parse_template(self, template: str):
+    def parse_template(self, template: str) -> list:
         """Split template into tokens (Literals and Vars."""
         self.tokens = []
         pos = 0
@@ -225,8 +225,9 @@ class Stringlet:
 def render_template(template: str, data: dict) -> str:
     """Render parsed template using given data."""
     stringlet = Stringlet()
-    tokens = stringlet.parse_template(template) 
-    return stringlet.tokens_tostring(data)
+    # tokens = 
+    stringlet.parse_template(template) 
+    return stringlet.string(data)
     #return tokens_tostring(parse_template(template), data)
 
 
@@ -261,7 +262,7 @@ def main():
     
     logger.info(f"TEMPLATE: {args.template}")
     logger.info(f"TOKENS:  {tokens} ")
-    vars = stringlet.get_vars(tokens)
+    vars = stringlet.get_vars()
     logger.info(f"VARS: {vars} ") 
     rendered = render_template(args.template, data)
     logger.info(f"RENDERED: {rendered} ")

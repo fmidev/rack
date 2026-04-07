@@ -3,7 +3,7 @@ import pathlib
 import datetime as dt
 
 import rack.log
-logger = rack.base.logger.getChild(pathlib.Path(__file__).stem)
+logger = rack.log.logger.getChild(pathlib.Path(__file__).stem)
 
 def parse_step(s, fmt="") -> int:
     """
