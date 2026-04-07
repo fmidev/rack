@@ -104,13 +104,15 @@ void GeoFrame::setBoundingBox(double lonLL, double latLL, double lonUR, double l
 		}
 
 		setBoundingBoxNat(lonLL, latLL, lonUR, latUR); // essentially modifies BoxR and BoxD
-
-		mout.special("setting metric bbox: " , getBoundingBoxNat() ); // << resources.bbox
+		std::vector<int> bb;
+		getBoundingBoxNat().toSequence(bb);
+		//mout.special("Setting metric bbox: " , getBoundingBoxNat() ); // << resources.bbox
+		mout.special("Setting metric bbox: " , sprinter(bb)); // << resources.bbox
 
 	}
 	else {
 
-		mout.special("setting deg bbox: ",lonLL,' ',latLL,' ',lonUR,' ',latUR);
+		mout.special("Setting deg bbox: ",lonLL,' ',latLL,' ',lonUR,' ',latUR);
 		setBoundingBoxD(lonLL, latLL, lonUR, latUR);
 
 	}
