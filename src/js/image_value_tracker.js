@@ -101,15 +101,6 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
 
     }
 
-    /*
-    imgElem.addEventListener("mousemove", (ev) => {
-	var my_bbox  = imgElem.getBoundingClientRect();
-	var x = Math.floor(ev.clientX - my_bbox.left);
-	var y = Math.floor(ev.clientY - my_bbox.top);
-	coordMonitorElem.textContent = '('+x+','+y+')'; //.toFixed(2);
-	valueMonitorElem.textContent = grayAt(x,y); //.toFixed(2);
-	})
-    */
     imgElem.addEventListener("mousemove", (ev) => {
 
 	// svg - doc root linked above
