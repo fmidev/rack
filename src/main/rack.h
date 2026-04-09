@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(19,2,1)
+#define RACK_VERSION drain::Version<>(19,3,"beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -75,6 +75,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Python3 (.py) edits only
  *  Version 19.2.1
  *  - --sample: added automatic variable ${<quantity>_raw} to see values "under" undetect / nodata.
+ *  Version 19.3
+ *  --gData coordinate rounding fixed
+ *  --histogram for signed short
  *
  *  Version 18
  *  - SVG basic command set completed

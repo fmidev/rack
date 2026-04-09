@@ -521,6 +521,8 @@ void Histogram::compute(const T & dst, const std::type_info & type, const UniTup
 
 	}
 
+	mout.info("Physical range of the histogram: ", this->scaling.getPhysicalRange());
+
 	if (isSmallInt(type)){
 		const unsigned short histBits = getBitShift(size);
 		if (size == (1<<histBits)){ //
@@ -537,6 +539,14 @@ void Histogram::compute(const T & dst, const std::type_info & type, const UniTup
 		}
 		else {
 			mout.advice("Consider histogram size of 2^N, e.g.", (1<<histBits));
+		}
+		return;
+	}
+	else {
+		mout.warn("Type not unsigned short or uchar: ", drain::TypeName<T>::str());
+		mout.warn("Handling as int ");
+		for (typename T::const_iterator it = dst.begin(); it != dst.end(); ++it){
+			this->incrementRaw(static_cast<int>(*it));
 		}
 		return;
 	}

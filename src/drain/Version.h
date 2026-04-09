@@ -39,7 +39,87 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+
+/**
+ *   Version must start with a number, then can consist of any components
+ *
+ */
 template<typename V=void, char SEP='.'>
+struct Version {
+
+
+	template<typename ... TT>
+	Version(int i, const TT &... args){
+		set(i, args...);
+	}
+
+
+	inline
+	const std::string & str() const {
+		return _str;
+	}
+
+	inline
+	std::ostream & toStream(std::ostream & ostr) const {
+		ostr << _str;
+		return ostr;
+	}
+
+	inline
+	operator const std::string &() const {
+		return _str;
+	}
+
+	template<typename ... TT>
+	inline
+	void set(TT... args){
+		std::stringstream sstr;
+		build(sstr, args...);
+		_str = sstr.str();
+	};
+
+
+protected:
+
+	//std::stringstream sstr;
+	std::string _str;
+
+
+	template<typename T, typename ... TT>
+	inline
+	void build(std::stringstream & sstr, const T & arg, TT... args){
+		if (SEP && (sstr.tellp() > 0)){
+			sstr << SEP;
+		}
+		sstr << arg;
+		build(sstr, args...);
+	};
+
+	template<typename ... TT>
+	inline
+	void build(std::stringstream & sstr, const char *arg, TT... args){
+		if (SEP && (sstr.tellp() > 0)){
+			sstr << SEP;
+		}
+		sstr << arg;
+		build(sstr, args...);
+	};
+
+	inline
+	void build(std::stringstream & sstr){
+	};
+
+
+};
+
+template<typename V>
+std::ostream & operator<<(std::ostream & ostr, const Version<V> & version){
+	version.toStream(ostr);
+	return ostr;
+}
+
+/*
+ * template<typename V=void, char SEP='.'>
 struct Version {
 
 	typedef unsigned short index_t;
@@ -111,12 +191,8 @@ private:
 	std::string idStr;
 
 };
-
-template<typename V>
-std::ostream & operator<<(std::ostream & ostr, const Version<V> & version){
-	version.toStream(ostr);
-	return ostr;
-}
+ *
+ */
 
 } // drain
 

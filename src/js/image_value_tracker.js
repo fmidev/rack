@@ -55,24 +55,27 @@ RadarDataEncoding.prototype.decode = function(value){
 
 async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valueMonitorElem){
 
+    const svg = document.querySelector("svg");
+    
     await imgElem.decode();
     const bbox  = imgElem.getBoundingClientRect();
     console.log('bbox: ', bbox);
     // const w = imgElem.naturalWidth  | 1;
     // const h = imgElem.naturalHeight | 1;
-    const w = bbox.width;
-    const h = bbox.height;
+    const w = Math.round(bbox.width);
+    const h = Math.round(bbox.height);
     const canvas = new OffscreenCanvas(w, h);
     console.info(canvas)
     
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     
     // Expose for debugging
-    window.rackster = { imgElem, w, h, canvas, ctx };
+    // window.rackster = { imgElem, w, h, canvas, ctx };
     
     // Draw and read
     ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(imgElem, 0, 0);
+    // ctx.drawImage(imgElem, 0, 0);
+    ctx.drawImage(imgElem, 0, 0, w, h);
 
     
     
@@ -80,30 +83,53 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
     const imageData = ctx.getImageData(0, 0, w, h);
     const data = imageData.data; 
 
-    console.warn(imageData)
+    // console.warn(imageData)
     
     function grayAt(x, y) {
 
 	const e = encoding;
+
+	//x = Math.floor(x)
+	//y = Math.floor(y)
 	
 	if (x < 0 || y < 0 || x >= w || y >= h) return "";
 	const i = (y * w + x) * 4;
 	// Red: higher bits, Green: lower bits
 	const v = (data[i]<<8) + data[i+1];
-	return ""+(data[i])+'+'+data[i+1] + " = " + e.decode(v);
-	// return e.decode(v);
+	// return ""+(data[i])+'+'+data[i+1] + " = " + e.decode(v);
+	return e.decode(v);
 
     }
 
+    /*
     imgElem.addEventListener("mousemove", (ev) => {
 	var my_bbox  = imgElem.getBoundingClientRect();
-	var x = ev.clientX - my_bbox.left;
-	var y = ev.clientY - my_bbox.top;
+	var x = Math.floor(ev.clientX - my_bbox.left);
+	var y = Math.floor(ev.clientY - my_bbox.top);
+	coordMonitorElem.textContent = '('+x+','+y+')'; //.toFixed(2);
+	valueMonitorElem.textContent = grayAt(x,y); //.toFixed(2);
+	})
+    */
+    imgElem.addEventListener("mousemove", (ev) => {
+
+	// svg - doc root linked above
+	/*
+	// This worked badly, if browser zoom applied.
+	const pt = svg.createSVGPoint();
+	pt.x = ev.clientX;
+	pt.y = ev.clientY;
+	const p = pt.matrixTransform(imgElem.getScreenCTM().inverse());
+	const x = Math.floor(p.x);
+	const y = Math.floor(p.y);
+	*/
+	var my_bbox  = imgElem.getBoundingClientRect();
+	var x = Math.floor(ev.clientX - my_bbox.left);
+	var y = Math.floor(ev.clientY - my_bbox.top);
 	coordMonitorElem.textContent = '('+x+','+y+')'; //.toFixed(2);
 	valueMonitorElem.textContent = grayAt(x,y); //.toFixed(2);
     })
     
-    window.rackdata = data
+    // window.rackdata = data
 
 }
 

@@ -524,7 +524,7 @@ void CmdData::exec() const {
 	dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	dataImageElem->addClass(RackSVG::ElemClass::DATA_ARRAY);
 	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
-			{"opacity", 0.15},
+			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
 	});
 	addGeoData(data, dataImageElem);
 

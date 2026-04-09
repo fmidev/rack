@@ -85,12 +85,7 @@ protected:
 	}
 
 	void append(const std::type_info & type) {
-		//#ifdef DRAIN_TYPE
 		*this << Type::call<simpleName>(type);
-		//#else
-		//*this << type.name();
-		// #endif
-		// *this << arg;
 	}
 
 
