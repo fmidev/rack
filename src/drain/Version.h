@@ -44,7 +44,7 @@ namespace drain {
  *   Version must start with a number, then can consist of any components
  *
  */
-template<typename V=void, char SEP='.'>
+template <typename V=void, char SEP='.'>
 struct Version {
 
 
@@ -81,8 +81,15 @@ struct Version {
 
 protected:
 
-	//std::stringstream sstr;
 	std::string _str;
+
+	/*
+	template <typename T>
+	inline
+	bool addSeparator(){
+		return (SEP != 0);
+	}
+	*/
 
 
 	template<typename T, typename ... TT>
@@ -95,12 +102,26 @@ protected:
 		build(sstr, args...);
 	};
 
+	template <typename ... TT>
+	inline
+	void build(std::stringstream & sstr, const std::string &arg, TT... args){
+		// No separator for strings
+		sstr << arg;
+		build(sstr, args...);
+	};
+
+	template <typename ... TT>
+	inline
+	void build(std::stringstream & sstr, char arg, TT... args){
+		// No separator for strings
+		sstr << arg;
+		build(sstr, args...);
+	};
+
 	template<typename ... TT>
 	inline
 	void build(std::stringstream & sstr, const char *arg, TT... args){
-		if (SEP && (sstr.tellp() > 0)){
-			sstr << SEP;
-		}
+		// No separator for strings
 		sstr << arg;
 		build(sstr, args...);
 	};
@@ -112,7 +133,16 @@ protected:
 
 };
 
-template<typename V>
+/*
+template <typename V=void, char SEP='.'>
+template <>
+inline
+bool Version<V,SEP>::addSeparator<std::string>(){
+	return false;
+}
+*/
+
+template <typename V>
 std::ostream & operator<<(std::ostream & ostr, const Version<V> & version){
 	version.toStream(ostr);
 	return ostr;
