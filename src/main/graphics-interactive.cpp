@@ -454,13 +454,52 @@ void CmdCoords::exec() const {
 
 #include "js/image_value_tracker.h"
 
+template <typename T>
+void encodeToRGBAimage(const Image & data, drain::image::ImageT<uint8_t> & dataImage){
+
+	dataImage.setGeometry(data.getWidth(), data.getHeight(), 3);
+
+	drain::image::Channel & red   = dataImage.getChannel(0);
+	drain::image::Channel & green = dataImage.getChannel(1);
+
+	const int bias = std::numeric_limits<T>::min();
+	const int bits = 8 * sizeof(T);
+	int value;
+
+	drain::image::Channel::iterator rit = red.begin();
+	drain::image::Channel::iterator git = green.begin();
+
+	if (bits = 8){
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			value = static_cast<int>(*it) - bias;
+			*rit = (value>>8) & 0xff;
+			*git =  value     & 0xff;
+			++rit;
+			++git;
+		}
+	}
+	else if (bits = 16){
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			value = static_cast<int>(*it) - bias;
+			*rit =  value     & 0xff;
+			*git =  0;
+			++rit;
+			++git;
+		}
+	}
+	else {
+		drain::Logger( __FILE__, __FUNCTION__, __LINE__).error("unsupported bit depth:", bits);
+	}
+
+}
+
 void CmdData::exec() const {
 
 	using namespace drain::image;
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
-	const drain::image::Image & data = ctx.getCurrentGrayImage();
+	const Image & data = ctx.getCurrentGrayImage();
 
 	if (data.isEmpty()){
 		mout.warn("Could not find data for image (getCurrentGrayImage() failed)");
@@ -523,25 +562,103 @@ void CmdData::exec() const {
 
 	// Construct actual data and save it.
 
+	const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
+	mout.special(DRAIN_LOG(filenameFinal));
+	dataImageElem->setUrl(filenameFinal);
+
 	drain::image::ImageT<uint8_t> dataImage;
+
+
 	dataImage.setGeometry(data.getWidth(), data.getHeight(), 3);
 	drain::image::Channel & red   = dataImage.getChannel(0);
 	drain::image::Channel & green = dataImage.getChannel(1);
 	//drain::image::Channel & blue  = dataImage.getChannel(2);
 
-	//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
-	const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
-	mout.special(DRAIN_LOG(filenameFinal));
-	dataImageElem->setUrl(filenameFinal);
-
 	const std::type_info & type = data.getType();
-	if (type == typeid(unsigned short)){
-		//const size_t s = data.getArea();
+
+	// const int bias = std::numeric_limits<T>::min();
+	const int bias = drain::Type::call<drain::typeMin, int>(type);
+	const int bits = 8 * drain::Type::call<drain::sizeGetter>(type);
+	// const int bits = 8 * sizeof(T);
+	int value;
+	mout.attention(DRAIN_LOG(bits), ' ', DRAIN_LOG(bias));
+
+	drain::image::Channel::iterator rit = red.begin();   // More significant bits
+	drain::image::Channel::iterator git = green.begin(); // Less significant bits
+
+	if (bits == 8){
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			value = static_cast<int>(*it) - bias;
+			*rit =  value     & 0xff;
+			*git =  0;
+			++rit;
+			++git;
+		}
+	}
+	else if (bits == 16){
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			value = static_cast<int>(*it) - bias;
+			*rit = (value>>8) & 0xff;
+			*git =  value     & 0xff;
+			++rit;
+			++git;
+		}
+	}
+	else {
+		mout.error(__LINE__, "unsupported bit depth:", bits);
+	}
+
+	drain::image::FilePng::write(dataImage, filenameFinal);
+
+	return;
+
+	//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
+
+	/*
+
+	if (type == typeid(unsigned char)){
+
+		typedef unsigned char T;
+		const T bias = std::numeric_limits<T>::min();
+		T value;
 		drain::image::Channel::iterator rit = red.begin();
 		drain::image::Channel::iterator git = green.begin();
 		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-			*rit = (static_cast<unsigned int>(*it))    & 0xff;
-			*git = (static_cast<unsigned int>(*it)>>8) & 0xff;
+			value = static_cast<T>(*it) - bias;
+			*rit =  value     & 0xff;
+			//*git = (value>>8) & 0xff;
+			++rit;
+			//++git;
+		}
+
+		drain::image::FilePng::write(dataImage, filenameFinal);
+
+	}
+	else if (type == typeid(unsigned short int)){
+		drain::image::Channel::iterator rit = red.begin();
+		drain::image::Channel::iterator git = green.begin();
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			*rit = (static_cast<unsigned short int>(*it))    & 0xff;
+			*git = (static_cast<unsigned short int>(*it)>>8) & 0xff;
+			++rit;
+			++git;
+		}
+
+		drain::image::FilePng::write(dataImage, filenameFinal);
+
+	}
+	else if (type == typeid(signed short int)){
+
+		mout.unimplemented<LOG_WARNING>("unscaled handling of signed type:", drain::Type::call<drain::simpleName>(type));
+		typedef signed short int T;
+		const T bias = std::numeric_limits<T>::min();
+		T value;
+		drain::image::Channel::iterator rit = red.begin();
+		drain::image::Channel::iterator git = green.begin();
+		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
+			value = static_cast<T>(*it) - bias;
+			*rit =  value     & 0xff;
+			*git = (value>>8) & 0xff;
 			++rit;
 			++git;
 		}
@@ -552,7 +669,7 @@ void CmdData::exec() const {
 	else {
 		mout.unimplemented<LOG_ERR>("type:", drain::Type::call<drain::simpleName>(type));
 	}
-
+	*/
 
 
 }

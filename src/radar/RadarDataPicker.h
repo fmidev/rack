@@ -86,11 +86,31 @@ public:
 	// setPosition(i,j) in derived classes.
 
 	/// Reads a value, and scales it unless \c nodata or \c undetect.
+	// If returns true, also raw value should be stored.
 	inline
 	bool getValue(const data_t & data, double & value) const {
 
 		value = data.data.template get<double>(this->current_i,this->current_j);
-		if ((value != data.odim.nodata) && (value != data.odim.undetect)){
+
+		return true;
+
+		//if ((value != data.odim.nodata) && (value != data.odim.undetect)){
+		/*
+		if (data.odim.isValue(value)){
+			value = data.odim.scaleForward(value);
+			return true;
+		}
+		else {
+			// Keep raw, maybe odd marker values of nodata/undetect!
+			// value = 0.0;
+			return false;
+		}*/
+	}
+
+	///  Returns false, is value is invalid
+	inline
+	bool handleValue(const data_t & data, double & value) const  {
+		if (data.odim.isValue(value)){
 			value = data.odim.scaleForward(value);
 			return true;
 		}
@@ -99,6 +119,7 @@ public:
 			// value = 0.0;
 			return false;
 		}
+		return true;
 	}
 
 	/// Prints images geometry, buffer size and type information.

@@ -302,7 +302,7 @@ QuantityMap & getQuantityMap() {
 					{
 							{'C', 0.5, -32.0},
 							{'S', 0.01, -0.01*(128*256)},
-							{'s', 0.01, 0.0}
+							{'s', 0.01, 0.0}  // gain=0.01, offset=0, nodata=-32768, undetect=-32767
 					},
 					-32.0 // "virtual" zero
 			}
@@ -407,6 +407,16 @@ QuantityMap & getQuantityMap() {
 					{
 							{'C'},
 							{'S'}
+					}
+			}
+			},
+			{"LDR", {
+					"Dual-pol ratio", {
+							{"LDR", "Radar_..", "Ratio..."},
+					},
+					's',
+					{
+							{'s', 0.01, 0.0} // gain=0.01, offset=0, nodata=-32768, undetect=-32767
 					}
 			}
 			},

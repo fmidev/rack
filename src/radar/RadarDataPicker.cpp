@@ -165,28 +165,3 @@ void CartesianDataPicker::setPosition(int i, int j) const {
 }  // rack::
 
 
-namespace drain {
-
-/** This policy suggests typedef + spacialization for the actual classes, as well.
- *
- */
-
-DRAIN_TYPENAME_DEF(rack::RadarDataPicker<rack::PolarODIM>);
-DRAIN_TYPENAME_DEF(rack::RadarDataPicker<rack::CartesianODIM>);
-
-/*
-template <>
-const std::string TypeName<rack::RadarDataPicker<rack::PolarODIM> >:: name("PolarDataPicker");
-
-template <>
-const std::string TypeName<rack::RadarDataPicker<rack::CartesianODIM> >:: name("CartesianDataPicker");
-*/
-
-/*
-template <>
-const std::string TypeName<rack::PolarDataPicker>:: name("PolarDataPicker");
-
-template <>
-const std::string TypeName<rack::CartesianDataPicker>:: name("CartesianDataPicker");
- */
-}

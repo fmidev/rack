@@ -103,13 +103,6 @@ void CmdOutputFile::writeSamples(const Hi5Tree & src, const std::string & filena
 
 		mout.info("Sampling path: " , path );
 
-		/*
-		double d = NAN;
-		double f = NAN;
-		std::cerr << "NONNI " << NAN << ',' << d << ',' << f <<  std::endl;
-		*/
-		//std::cerr << "NONNI " << NAN <<  std::endl;
-
 		const Hi5Tree & srcDataSet = src(path);
 
 		/// Sampling parameters have been set by --sample (CmdSample)

@@ -330,7 +330,7 @@ void CmdPolarBase::addGeoData(const drain::image::Image & imageData, drain::imag
 
 	node.set("data-quantity", odim.quantity);
 	node.set("data-encoding",
-			drain::StringBuilder<','>(odim.scaling.scale, odim.scaling.offset, odim.nodata, odim.undetect).str()); // todo: UNDETECT, NODATA
+			drain::StringBuilder<','>(odim.type,odim.scaling.scale, odim.scaling.offset, odim.nodata, odim.undetect).str());
 
 }
 
@@ -450,7 +450,6 @@ void CmdRadarLabel::exec() const  {
 
 		TreeSVG & labelAnchor = overlay["labelAnchor"];
 		labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
-		labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL);
 		labelAnchor->addClass("DEBUG");
 		//labelAnchor->setMyAlignAnchor("munDOT");
 		if (false){

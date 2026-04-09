@@ -131,6 +131,11 @@ public:
 		variableMap.link("j2", current_j2 = 0);
 	}
 
+	/**
+	 *
+	 *  Should not be virtual, as data may have metadata members.
+	 *
+	 */
 	inline
 	bool getValue(const ImageFrame & image, double & value) const {
 		//value = image.get<double>(current_i, current_j);
@@ -138,6 +143,14 @@ public:
 		value = image.getScaled(current_i, current_j);
 		//value = image.get<double>(current_i, current_j);
 		//std::cerr << current_i << ',' << current_j << '\t' << value << '\n';
+		return true;
+	}
+
+	/**
+	 *  Data is needed also here, for metadata (encoding etc)
+	 */
+	inline
+	bool handleValue(const ImageFrame & data, double & value) const {
 		return true;
 	}
 
@@ -249,6 +262,7 @@ public:
 		for (typename std::map<std::string, D>::const_iterator it = images.begin(); it != images.end(); ++it){
 			const std::string & key = it->first;
 			mout.debug2("referencing: " , key , ',' , minusStr , key );
+			variableMap.link(key+"_raw", values[key+"_raw"]=0);
 			variableMap.link(key, values[key]=0);
 			variableMap.link(minusStr+key, values[minusStr+key]=0);
 		}
@@ -337,12 +351,30 @@ public:
 				for (typename std::map<std::string, D>::const_iterator it = images.begin(); it != images.end(); ++it){
 					const std::string & quantity = it->first;
 					const D & data = it->second;
+
+					/* OLD:
 					if (!picker.getValue(data, x)){
 						dataOk = false;
 						if (MARK_VOID){
 							x = voidMarker;
 						}
 					}
+					 */
+
+
+					if (picker.getValue(data, x)){
+						// If returns true, also raw value should be stored.
+						values[quantity+"_raw"] = x;
+					}
+
+					if (!picker.handleValue(data, x)){
+						// If returns false, value was invalid
+						dataOk = false;
+						if (MARK_VOID){
+							x = voidMarker;
+						}
+					}
+
 					//else if (x != 0) std::cerr << x << '\t';
 
 					values[quantity] = x;
