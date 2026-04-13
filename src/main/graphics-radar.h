@@ -51,17 +51,17 @@ class Graphic  {
 public:
 
 	enum GRAPHIC {
-		VECTOR_OVERLAY, // this is more for group ID/name
+		VECTOR_OVERLAY, // Standard subgroup name inside IMAGE_PANEL group.
 		HIGHLIGHT,      // CSS: activated on tool tip
 		GRID,           // overlapping with element class?
-		DOT,
-		RAY,
-		SECTOR,
-		ANNULUS,
-		CIRCLE,
-		RECTANGLE,  // Internal or External
-		SPOT,  // External
-		LABEL, // External
+		DOT,		// Marker for radar location
+		RAY,		// Line illustrating radar beam
+		SECTOR,		// Radar sector
+		ANNULUS,	// Radar range, optionally not starting from radar.
+		CIRCLE,		// Circe illustrating maximal radar range. Not filled.
+		RECTANGLE,  // Box, freely located or located at radar site
+		SPOT,       // External
+		LABEL, 		// External
 	};
 
 	const drain::ClassXML cls;

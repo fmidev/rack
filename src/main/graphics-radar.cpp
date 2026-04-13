@@ -44,6 +44,7 @@ DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
 		DRAIN_ENUM_ENTRY(rack::Graphic, GRID),
 		/* Graphic objects */
 		DRAIN_ENUM_ENTRY(rack::Graphic, DOT),
+		DRAIN_ENUM_ENTRY(rack::Graphic, SPOT),
 		DRAIN_ENUM_ENTRY(rack::Graphic, LABEL),
 		DRAIN_ENUM_ENTRY(rack::Graphic, RAY),
 		DRAIN_ENUM_ENTRY(rack::Graphic, SECTOR),

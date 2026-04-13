@@ -377,7 +377,16 @@ void CmdRadarDot::exec() const {
 			// Private scope, to call bezierElem destructor.
 			drain::svgPATH bezierElem(curve);
 			radarSVG.drawCircle(bezierElem, dist.range);
+
 		}
+
+		drain::StringMapper statusFormatter(RackContext::variableMapper);
+		statusFormatter.parse("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}", true); // convert escaped
+		// mout.special(DRAIN_LOG(statusFormatter));
+
+		const std::string info = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
+		drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
+		title->setText(info);
 
 		if (MASK){
 			// Note: mask is full 100% range.

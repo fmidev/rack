@@ -81,7 +81,10 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 
 		if (drain::StringTools::startsWith(imagePath, dir)){
 			// Strip directory part from the imagePath, replace with prefix
-			imageNode->setUrl(prefix + imagePath.substr(dir.size()));
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			std::string p = prefix + imagePath.substr(dir.size());
+			mout.attention("Modifying: ", imagePath, " -> ", p);
+			imageNode->setUrl(p);
 		}
 		else {
 			// mout.attention("could not set relative path: ", p, " href:", imagePath);

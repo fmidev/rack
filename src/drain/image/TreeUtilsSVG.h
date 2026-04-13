@@ -93,7 +93,14 @@ DRAIN_ENUM_DICT(TreeUtilsSVG::Roles);
 DRAIN_ENUM_OSTREAM(TreeUtilsSVG::Roles);
 
 
-
+/**
+ *  Usage:
+ *  \code
+ *  RelativePathSetterSVG pathSetter(path.dir, prefix); // consider "file://"
+ *
+ *  \endcode
+ *
+ */
 class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
 
 public:

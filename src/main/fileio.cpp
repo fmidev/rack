@@ -434,6 +434,7 @@ void CmdOutputFile::exec() const {
 	else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
 		// This is the simple version. See image commands (--iXxxxx)
+		// drain::image::
 
 		mout.info("File format: image");
 
@@ -442,7 +443,7 @@ void CmdOutputFile::exec() const {
 		// mout.pending<LOG_WARNING>(__FUNCTION__, " quantity1: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
-		const drain::image::Image & srcImage = ctx.updateCurrentImage();
+		const Image & srcImage = ctx.updateCurrentImage();
 
 		//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
@@ -472,14 +473,14 @@ void CmdOutputFile::exec() const {
 			drain::StringMapper statusFormatter(RackContext::variableMapper);
 
 			statusFormatter.parse(ctx.formatStr, true);
-			drain::image::Image &dst = (drain::image::Image &)srcImage; // violence...
+			Image &dst = (Image &)srcImage; // violence...
 			dst.properties[""] = statusFormatter.toStr(ctx.getStatusMap(), 0, RackContext::variableFormatter); // XXX
 			ctx.formatStr.clear(); // OK?
 		}
 
 		if (IMAGE_PNG || IMAGE_PNM){
 			mout.debug("PNG or PGM format, using ImageFile::write");
-			drain::image::ImageFile::write(srcImage, filepath);
+			ImageFile::write(srcImage, filepath);
 		}
 		else if (IMAGE_TIF) {
 #ifndef USE_GEOTIFF_NO
@@ -506,7 +507,7 @@ void CmdOutputFile::exec() const {
 	}
 	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
-		drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx);
+		TreeSVG & svgGroup = RackSVG::getMainGroup(ctx);
 
 		svgGroup->set("id", path.tail);
 		if (!ctx.outputPrefix.empty()){
@@ -515,11 +516,11 @@ void CmdOutputFile::exec() const {
 
 		mout.experimental("writing SVG file: ", path);
 
-		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(drain::image::FileSVG::PathPolicy::ABSOLUTE)){
+		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
-			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(drain::image::FileSVG::PathPolicy::PREFIXED) ? "./" : "";
-			drain::image::RelativePathSetterSVG psetter(path.dir, prefix); // consider "file://"
-			drain::TreeUtils::traverse(psetter, ctx.svgTrack);
+			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::PREFIXED) ? "./" : "";
+			RelativePathSetterSVG pathSetter(path.dir, prefix); // consider "file://"
+			drain::TreeUtils::traverse(pathSetter, ctx.svgTrack);
 			// TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
 		}
 		else {
@@ -529,7 +530,7 @@ void CmdOutputFile::exec() const {
 		if (ctx.svgTrack->get("data-version") == 2){
 			mout.attention("skipping alignment");
 
-			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
+			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 				// Finalize view box
 			ctx.svgTrack->setViewBox(bb);
@@ -543,7 +544,7 @@ void CmdOutputFile::exec() const {
 			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
 			*/
 			//
-			drain::image::MetaDataCollectorSVG metadataPruner;
+			MetaDataCollectorSVG metadataPruner;
 			drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
 
 			//  RackSVG::completeSVG(ctx);
@@ -561,12 +562,12 @@ void CmdOutputFile::exec() const {
 			// OLD
 			// TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 
-			const drain::image::BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
+			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 			ctx.svgTrack->setViewBox(bb);
 
 			{
-				using namespace drain::image;
+				// using namespace drain::image;
 				typedef svg::tag_t tag_t;
 				TreeSVG & subGroup = ctx.svgTrack["BORDER"];
 				NodeSVG::Elem<tag_t::RECT> frame(subGroup);

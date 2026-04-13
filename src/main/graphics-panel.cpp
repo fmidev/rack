@@ -43,39 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-panel.h"
 
 
-namespace drain {
-
-/**
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const {
-	// std::string(".")+
-	return hasChild(Enum<rack::RackSVG::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
-}
-
-
-/// Automatic conversion of elem classes to strings.
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & value) const {
-	// std::string(".")+
-	return (*this)[Enum<rack::RackSVG::ElemClass>::dict.getKey(value, false)];
-}
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key){
-	// std::string(".")+
-	return (*this)[Enum<rack::RackSVG::ElemClass>::dict.getKey(key, false)];
-}
-*/
-
-
-}
-
 DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, NONE),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MAIN_TITLE),
@@ -121,7 +88,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	using namespace drain;
 
-	if (style->isUndefined()){
+	//if (style->isUndefined()){
 
 		style->setType(svg::STYLE);
 
@@ -232,7 +199,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 				{"fill", "white"},
 		};
 
-	}
+	// }
 
 	mout.debug("Setting font sizes: ", ctx.svgPanelConf.fontSizes);
 	style[ClassXML(RackSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
@@ -1183,7 +1150,12 @@ void CmdLinkImage::exec() const {
 		mout.advice("Consider reading a Cartesian (HDF5) or issue --cSize <width>,<height> prior to this command (", getName(), ")");
 		mout.hint("Use  '--format FMI-MAP --outputFile -' to obtain a background map.");
 	}
-	drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
+
+	// drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
+	if (!ctx.inputPrefix.empty()){
+		mout.note("Not using input prefix (", ctx.inputPrefix, ") with this command");
+	}
+	drain::FilePath filePath(ctx.getFormattedStatus(this->value));
 	mout.note("linking: ", filePath);
 	RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
 	// RackSVG::addImage(ctx, frame, filePath, drain::StringBuilder<>(LayoutSVG::INDEPENDENT));

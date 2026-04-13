@@ -154,6 +154,7 @@ protected:
 };
 
 
+// Not interactive...
 
 class CmdDot : public CmdPolarBase { //  drain::BasicCommand,
 
