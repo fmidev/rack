@@ -37,10 +37,20 @@ class scheme:
     TILED = "TILED"
     DEFAULT = ""
 
+import rack.maps
+
 def build_parser() -> argparse.ArgumentParser:
     """ Creates registry of supported options of this script
     """
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
+
+    rack.maps.add_arguments(parser)
+
+    add_arguments(parser)
+
+    return parser
+
+def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
     """
     parser.add_argument("--host", default="localhost", help="Server hostname")
@@ -63,7 +73,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     """ Geographical information
 
-    """
     parser.add_argument(
         "--GEOCONF",
         metavar="<KEY>|<filepath>-<KEY>.json>",
@@ -76,16 +85,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="Bounding box [cBBox]")  # FMI Scandinavia
 
     parser.add_argument(
-        "--PROJ",
-        metavar="[<epsg>|<proj_str>]",
-        #default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
-        help="")   # Same as epsg:4326
-
-    parser.add_argument(
         "--SIZE",
         #default="800,800",
         metavar="<width>[,<height>]",
         help="") 
+    
+    parser.add_argument(
+        "--PROJ",
+        metavar="[<epsg>|<proj_str>]",
+        dest="EPSG",
+        #default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+        help="")   # Same as epsg:4326
+    """
 
     parser.add_argument(
         "--METHOD",

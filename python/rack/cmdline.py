@@ -46,10 +46,19 @@ class Composer():
         #logger.warning(known_args)
         logger.debug(f"unknown_args: {unknown_args}")
 
-    def set(self, **argv):
+    def set(self, strict=True,**argv): # strict=False): # todo strict=True: only allow keys defined in parser
         if not self.args:
             raise RuntimeError("args undefined")
-        vars(self.args).update(argv)
+        v = vars(self.args)
+        for k in argv:
+            if k not in v:
+                msg = f"Unknown argument '{k}'." # It is not defined in the parser."
+                if strict:
+                    raise ValueError(msg)
+                else:
+                    logger.warning(msg)
+        v.update(argv)
+        #vars(self.args).update(argv)
 
     def get_prog(self) -> List[Command]:
         return self.module.compose_command(self.args)

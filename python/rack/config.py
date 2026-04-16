@@ -96,6 +96,10 @@ def parse(lines: list, dst: object=None, handleMissing = PARSE_SKIP) -> dict:
     else:
         logger.debug("Parsing as key=value pairs")
         for line in lines:
+            line = line.split("#", 1)[0] # Remove comments
+            line = line.strip()
+            if not line:
+                continue
             m = KEY_VALUE_RE.match(line)
             if m:
                 key = m.group('key')
