@@ -22,7 +22,7 @@ import rack.log
 import rack.config
 import rack.stringlet
 import rack.files  # SmartFileManager
-import rack.time  # rounding
+import rack.racktime  # rounding
 
 
 # from rack.formatter import smart_format
@@ -366,9 +366,9 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             time       = info['TIME']#.timestamp()
             time_start = info['TIME_START']#.timestamp()
             time_end   = info['TIME_END']#.timestamp()
-            info['TIME_START_MOD30'] = rack.time.datetime_mod(time,       1800) # int(30*60)
-            info['TIME_START_MOD30'] = rack.time.datetime_mod(time_start, 1800) # int(30*60)
-            info['TIME_END_MOD30']   = rack.time.datetime_mod(time_end,   1800)
+            info['TIME_START_MOD30'] = rack.racktime.datetime_mod(time,       1800) # int(30*60)
+            info['TIME_START_MOD30'] = rack.racktime.datetime_mod(time_start, 1800) # int(30*60)
+            info['TIME_END_MOD30']   = rack.racktime.datetime_mod(time_end,   1800)
             info['TIME_START_REL']   = dt.datetime.fromtimestamp(time_start.timestamp() - time.timestamp(), dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
             info['TIME_END_REL']     = dt.datetime.fromtimestamp(time_end.timestamp()   - time.timestamp(), dt.timezone.utc) #.replace(tzinfo=dt.timezone.utc)
             #info['TIME_START_MOD30'] = rack.time.datetime_floor(time_start, 30, "%M")
