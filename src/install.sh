@@ -4,7 +4,7 @@
 # VERSION=$( $TARGET --version | head -1 )
 # VERSION=$( fgrep __RACK_VERSION__ main/rack.h | cut -d' ' -f 3 | tr -d '"' )
 # VERSION=$( fgrep RACK_VERSION main/rack.h | tr '(),' '\t\t.' | cut -f2 )
-VERSION=$( fgrep RACK_VERSION src/main/rack.h | tr '(,)' '|.|' | tr -d \'\" | cut -d'|' -f 2)
+VERSION=$( fgrep RACK_VERSION main/rack.h | tr '(,)' '|.|' | tr -d \'\" | cut -d'|' -f 2)
 RACK_LATEST="rack-${VERSION}"
 
 
