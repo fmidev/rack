@@ -8,7 +8,7 @@ VERSION=$( fgrep RACK_VERSION src/main/rack.h | tr '(,)' '|.|' | tr -d \'\" | cu
 RACK_LATEST="rack-${VERSION}"
 
 
-echo "# Installing '$RACK' "
+echo "# Installing '$RACK' (rack-${VERSION}) "
 
 CONF='install-rack.cnf'
 if [ -f $CONF ]; then
