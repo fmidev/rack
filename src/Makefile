@@ -121,7 +121,8 @@ help:
 
 # ---- Version (from source) ----------------------------------------------------
 VERSION := $(shell fgrep RACK_VERSION main/rack.h 2>/dev/null | \
-               tr '(,)' '|.|' | cut -d'|' -f 2)
+               tr '(,)' '|.|' | tr -d \'\" | cut -d'|' -f 2)
+#               tr '(,)' '|.|' | tr -d \'\" | cut -d'|' -f 2)
 
 # ---- Docker targets (preserved from original Makefile) -----------------------
 BASE_IMAGE      := ubuntu20
