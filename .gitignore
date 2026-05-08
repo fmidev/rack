@@ -6,3 +6,6 @@
 /rack-extras/
 *~
 *.bak
+*.d
+*.o
+.vscode/
