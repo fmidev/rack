@@ -32,8 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define GEOMETRY_H_
 
 #include <drain/UniTuple.h>
-#include <iostream>
-#include <vector>
 
 #include "drain/util/Frame.h"
 

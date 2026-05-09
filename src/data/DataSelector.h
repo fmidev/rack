@@ -33,24 +33,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_DATASELECTOR
 
 #include <data/QuantitySelector.h>
-#include <set>
 #include <list>
-#include <map>
-#include <stdexcept>
 
-#include <drain/RegExp.h>
-#include <drain/Sprinter.h>
-#include <drain/Type.h>
 #include <drain/util/BeanLike.h>
 #include <drain/util/Range.h>
 #include <drain/util/ReferenceMap.h>
-#include <drain/util/StringMatcherList.h>
 //#include <drain/util/Variable.h>
 
 #include "ODIM.h"
 #include "ODIMPathTools.h"
 #include "ODIMPathMatcher.h"
-#include "PolarODIM.h" // elangle
 
 
 namespace rack {

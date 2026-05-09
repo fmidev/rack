@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ImageT.h"
 #include "CoordinatePolicy.h"
 #include "AccumulationArray.h"
+#include "AccumulationConverter.h"
 
 /** See also radar::Compositor
  * 

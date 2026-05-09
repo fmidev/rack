@@ -30,12 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/image/ImageFile.h>
-#include "drain/util/Fuzzy.h"
 #include "FastOpticalFlowOp.h"
 #include "FunctorOp.h"
 #include "DifferentialOp.h"
 #include "PixelVectorOp.h"
-#include "BlenderOp.h"
 
 
 #include "ImageModifierPack.h"

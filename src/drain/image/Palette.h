@@ -31,16 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PALETTE
 #define DRAIN_PALETTE
 
-#include "drain/UniTuple.h"
-#include "drain/util/BeanLike.h"
 #include "drain/util/JSON.h"
 #include "drain/Dictionary.h"
 
-#include "ImageFile.h"
 #include "Geometry.h"
 #include "TreeSVG.h"
 #include "TreeSLD.h"
-#include "Legend.h"
 #include "PaletteEntry.h"
 
 

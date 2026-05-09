@@ -30,15 +30,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/util/Fuzzy.h>
-#include <drain/image/ImageFile.h>
 #include <drain/imageops/SlidingWindowMedianOp.h>
 #include "NonMetOp.h"
 #include "FuzzyDetectorOp.h"
 
 
-#include <drain/imageops/SlidingWindowOp.h>
-#include "radar/Analysis.h"
-#include "radar/Doppler.h"
 
 namespace rack {
 

@@ -41,7 +41,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <ostream>
 
 #include <drain/Sprinter.h>
-#include <drain/FlexibleVariable.h>
 
 #include "ReferenceMap.h"
 

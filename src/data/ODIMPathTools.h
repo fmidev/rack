@@ -32,22 +32,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ODIMPATH_TOOLS_H_
 #define ODIMPATH_TOOLS_H_
 
-#include <set>
-#include <list>
 #include <map>
-#include <stdexcept>
 
-#include <drain/util/BeanLike.h>
-#include <drain/util/Range.h>
 //#include <drain/util/ReferenceMap.h>
 //#include <drain/util/RegExp.h>
 //#include <drain/util/Sprinter.h>
 
 //#include <drain/util/Variable.h>
 #include "ODIM.h"
-#include "PolarODIM.h" // elangle
 
-#include "ODIMPathMatcher.h"
 
 
 namespace rack {

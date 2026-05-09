@@ -28,13 +28,10 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <typeinfo>
-#include <stdexcept>
 #include <iostream>
 
 
 #include "Castable.h"
-#include "Convert.h"
 #include "Sprinter.h"
 
 #include "VariableT.h"

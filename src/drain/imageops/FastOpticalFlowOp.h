@@ -31,14 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SLIDING_WINDOW_OPTICALFLOW_OP_H_
 #define SLIDING_WINDOW_OPTICALFLOW_OP_H_
 
-#include <drain/image/ImageFile.h>
-#include <sstream>
 #include <math.h>
 
 //#include "drain/image/ImageTray.h"
+#include "drain/image/SlidingWindow.h"
 #include "SlidingWindowOp.h"
 //#include "QuadraticSmootherOp.h"
-#include "DifferentialOp.h"
 #include "BlenderOp.h"
 
 

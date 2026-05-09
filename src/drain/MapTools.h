@@ -33,9 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <iostream>
 #include <string>
-#include <set>
 #include <list>
-#include <vector>
 #include <map>
 // #include <stdlib.h>
 // #include <sys/syslog.h>

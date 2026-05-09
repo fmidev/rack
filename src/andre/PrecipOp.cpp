@@ -33,7 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "PrecipOp.h"
 
-#include "radar/Geometry.h"
 #include "radar/Analysis.h"
 
 

@@ -34,14 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <iostream>
 #include <string>
-#include <set>
 #include <list>
-#include <vector>
 #include <map>
-#include <sys/syslog.h>
 #include <syslog.h>
 
-#include <drain/Castable.h>
 #include <drain/SmartMapTools.h>
 #include <drain/Sprinter.h>
 #include <drain/StringTools.h>

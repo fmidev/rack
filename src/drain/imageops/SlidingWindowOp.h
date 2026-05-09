@@ -31,9 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SLIDINGWINDOWOP13_H_
 #define SLIDINGWINDOWOP13_H_
 
-#include "drain/image/SlidingWindow.h"
 
-#include "CopyOp.h"
 #include "WindowOp.h"
 
 namespace drain

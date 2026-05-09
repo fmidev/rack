@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include "radar/Geometry.h"
 //#include "radar/Analysis.h"
-#include "data/DataCoder.h"
 
 
 using namespace drain::image;

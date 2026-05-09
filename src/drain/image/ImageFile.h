@@ -35,9 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-#include "ImageChannel.h"
 #include "Image.h"
-#include "ImageT.h"
 
 // #include "drain/util/MetaDataReader.h"
 

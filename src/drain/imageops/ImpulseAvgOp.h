@@ -31,16 +31,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ImpulseAvgOp_H
 #define ImpulseAvgOp_H
 
-#include <drain/image/CoordinatePolicy.h>
 #include <drain/UniTuple.h>
-#include <sstream>
-#include <ostream>
 
 
-#include "drain/image/FilePng.h"
 //#include "drain/image/SegmentProber.h"
 
-#include "ImageOp.h"
 #include "ImpulseResponseOp.h"
 
 namespace drain

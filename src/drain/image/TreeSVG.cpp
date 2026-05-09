@@ -36,7 +36,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include "drain/util/UtilsXML.h"
 #include "TreeSVG.h"
 
 namespace drain {

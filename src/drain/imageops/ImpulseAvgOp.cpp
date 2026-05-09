@@ -29,12 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include <drain/image/CoordinatePolicy.h>
-#include <sstream>
-#include <ostream>
-#include "drain/image/FilePng.h"
 
-#include "ImageOp.h"
 #include "ImpulseAvgOp.h"
 
 namespace drain

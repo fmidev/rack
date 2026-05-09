@@ -43,7 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <ostream>
 // #include <drain/StringBuilder.h>
 #include <drain/StringWrapper.h>
-#include <drain/Converter.h>
 #include "ClassXML.h"
 
 namespace drain {

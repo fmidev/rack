@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 
 #include "drain/util/Bank.h"
-#include "drain/util/Flags.h"
+#include "drain/util/StringMapper.h"
 #include "Command.h"
 #include "Program.h"
 

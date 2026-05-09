@@ -29,7 +29,6 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/image/ImageFile.h>
 #include <algorithm>
 
 #include <drain/util/FunctorPack.h>
@@ -44,7 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/imageops/SegmentAreaOp.h>
 #include <drain/imageops/RunLengthOp.h>
 //#include <drain/imageops/BasicFunctors.h>
-#include <drain/imageops/DistanceTransformOp.h>
 //#include <drain/imageops/FuzzyOp.h>
 #include <drain/imageops/FunctorOp.h>
 

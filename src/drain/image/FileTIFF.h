@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/FileInfo.h"
 #include "drain/Dictionary.h"
 #include "drain/util/Time.h"
-#include "GeoFrame.h"
 #include "Image.h"
 
 #ifndef USE_GEOTIFF_NO

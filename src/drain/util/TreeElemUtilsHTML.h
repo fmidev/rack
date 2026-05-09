@@ -39,7 +39,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_TREE_ELEM_UTILS_HTML
 
 
-#include <drain/util/XML.h>
 #include <drain/util/TreeXML.h>
 
 #include "TreeHTML.h"

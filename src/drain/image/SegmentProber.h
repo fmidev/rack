@@ -32,12 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define SEGMENT_PROBER_H
 
 #include <drain/image/ProbingControl.h>  // Control
-#include <sstream>
 #include <ostream>
 
 #include "drain/util/ReferenceMap.h"
 #include "CoordinateHandler.h"
-#include "FilePng.h"
 
 
 namespace drain

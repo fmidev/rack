@@ -32,7 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define GEOMETRY_RADAR_H_
 
 
-#include <sstream>
 #include <vector>
 //#include <drain/util/Proj4.h>
 #include <drain/image/GeoFrame.h>

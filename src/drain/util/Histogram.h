@@ -40,7 +40,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <vector>
 #include <iostream>
 #include <stdexcept>
-#include <map>
 
 #include "ValueScaling.h"
 

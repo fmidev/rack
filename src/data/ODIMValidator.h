@@ -31,9 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ODIM_VALIDATOR
 #define ODIM_VALIDATOR
 
-#include <drain/Type.h>
 #include <string>
-#include <typeinfo>
 
 #include <hdf5.h>
 
@@ -41,7 +39,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Dictionary.h>
 
 
-#include "ODIMPath.h"
 
 
 namespace rack {

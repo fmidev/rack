@@ -31,10 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_PROJ6_H_
 #define DRAIN_PROJ6_H_
 
-#include <cstddef>
 #include <iostream>
-#include <set>
-#include <stdexcept>
 #include <string>
 
 #include <drain/Log.h>

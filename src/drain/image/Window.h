@@ -34,7 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/Frame.h"
 #include "drain/util/Functor.h"
 #include "drain/util/FunctorBank.h"
-#include "drain/util/Static.h"
 #include "ImageView.h"
 #include "ImageTray.h"
 #include "CoordinateHandler.h"

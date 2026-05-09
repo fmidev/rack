@@ -32,10 +32,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef QualityCombiner_SEGMENT_OP_H_
 #define QualityCombiner_SEGMENT_OP_H_
 
-#include <drain/image/ImageFile.h>
 #include <drain/util/Functor.h>
 
-#include "product/PolarProductOp.h" // why
 #include "AndreOp.h"
 
 

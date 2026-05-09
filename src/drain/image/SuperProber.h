@@ -33,11 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/image/EdgeTracker.h>
-#include <drain/PseudoTuple.h>
 
 #include "Direction.h"
-#include "FilePng.h"
-#include "ImageFile.h"
 
 #include "SegmentProber.h"
 #include "TreeSVG.h"

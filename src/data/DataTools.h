@@ -32,14 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_DATATOOLS_H
 #define RACK_DATATOOLS_H
 
-#include <set>
-#include <list>
 #include <map>
 
 
-#include <drain/RegExp.h>
 #include <drain/image/CoordinatePolicy.h>
-#include <drain/util/BeanLike.h>
 #include <drain/util/ReferenceMap.h>
 
 

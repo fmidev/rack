@@ -29,26 +29,11 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/Log.h>
-#include <drain/image/ImageChannel.h>
-#include <drain/image/ImageLike.h>
-#include <drain/image/Window.h>
-#include <drain/imageops/CopyOp.h>
-#include <drain/imageops/FunctorOp.h>
 // RAISED
-#include <drain/util/FunctorPack.h>
-#include <drain/util/Fuzzy.h>
-#include <drain/imageops/SlidingWindowOp.h>
 
-#include "data/DataSelector.h"
-#include "data/DataTools.h"
-#include "data/PolarODIM.h"
-#include "data/QuantityMap.h"
 
 //#include <drain/util/RegExp.h>
 
-#include "radar/Analysis.h"
-#include "radar/Doppler.h"
 #include "DualPolBioMetOp.h"
 
 

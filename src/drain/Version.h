@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_VERSION_T
 
 #include <sstream>
-#include <vector>
 
 namespace drain {
 

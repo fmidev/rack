@@ -34,12 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include <cmath>
 
-#include <vector>
 #include <iostream>
 #include <stdexcept>
 #include <map>
 
-#include <drain/Log.h>
 #include <drain/StringBuilder.h>
 //#include <drain/VariableAssign.h>
 // #include "Variable.h"

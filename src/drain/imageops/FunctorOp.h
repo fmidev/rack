@@ -32,9 +32,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define FUNCTOROP_H_
 
 
-#include <drain/image/ImageFile.h>
 //#include "drain/Type.h"
-#include "drain/TypeName.h"
 #include "drain/Type.h"
 #include "drain/util/Functor.h"
 #include "ImageOp.h"

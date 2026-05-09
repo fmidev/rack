@@ -38,7 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "GaussianAverageOp.h"
 #include "ResizeOp.h"
 
-#include "ImageModifierPack.h"
 
 
 #include "FastOpticalFlowOp2.h"

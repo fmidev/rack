@@ -33,9 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define AnDReOP_H_
 
 
-#include "radar/Geometry.h"
 #include "hi5/Hi5.h"
-#include "data/ODIM.h"
 // #include "data/EchoClass.h"
 #include "product/VolumeTraversalOp.h"
 

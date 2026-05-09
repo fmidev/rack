@@ -38,7 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_PRODUCT_CONF
 #define RACK_PRODUCT_CONF "ProductConf"
 
-#include <drain/Enum.h>
 #include <string>
 
 /*

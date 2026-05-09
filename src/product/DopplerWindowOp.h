@@ -48,13 +48,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include <drain/util/LookUp.h>
 #include <drain/image/Geometry.h>
 #include <drain/image/Image.h>
-#include <drain/image/ImageChannel.h>
 #include <drain/image/Window.h>
 #include <drain/imageops/SlidingWindowOp.h>
 #include "radar/Doppler.h"
 #include <drain/util/Fuzzy.h>
-#include <drain/util/SmartMap.h>
-#include <product/RadarProductOp.h>
 #include "DopplerOp.h"
 //#include <cmath>
 #include <string>

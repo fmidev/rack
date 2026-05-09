@@ -32,15 +32,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef STRINGMAPPER_H_
 #define STRINGMAPPER_H_
 
-#include <drain/Log.h>
 #include <map>
 #include <list>
-#include <iterator>
 #include <sstream>
 
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
-#include <drain/StringTools.h>
 
 #include "IosFormat.h"
 #include "Time.h"

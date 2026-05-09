@@ -31,9 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef Vertical_ODIM
 #define Vertical_ODIM
 
-#include <ostream>
 #include <cmath>
-#include <set>
 //#include <drain/util/Options.h>
 #include <drain/util/ReferenceMap.h>
 

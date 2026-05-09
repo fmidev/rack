@@ -31,7 +31,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // #include "drain/util/Time.h"
 #include <drain/StringBuilder.h>
-#include <sstream>
 #include "FileInfo.h"
 
 namespace drain

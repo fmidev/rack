@@ -32,12 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FRAME_H_
 #define DRAIN_FRAME_H_
 
-#include <stdexcept>
 #include <ostream>
 #include <limits>
 #include <cmath> // isnan
 
-#include <drain/Log.h>
 #include <drain/TypeName.h>
 #include <drain/UniTuple.h>
 #include <drain/util/Point.h> // for Box

@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <geotiffio.h>
 #include <geo_normalize.h>
 
-#include <drain/Enum.h>
+#include "GeoFrame.h"
 #include "TreeXML-GDAL.h"
 
 

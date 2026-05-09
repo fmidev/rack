@@ -31,7 +31,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FUNCTOR_BANK_H_
 #define DRAIN_FUNCTOR_BANK_H_
 
-#include <drain/Log.h>
 #include "Functor.h"
 //#include "Cloner.h"
 #include "Bank.h"

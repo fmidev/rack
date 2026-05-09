@@ -39,9 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include "drain/util/BeanLike.h"
-#include "drain/util/Flags.h"
 #include "drain/util/ReferenceMap.h"
-#include "drain/util/VariableMap.h"
 
 //#include "drain/util/Cloner.h"
 #include "Context.h"

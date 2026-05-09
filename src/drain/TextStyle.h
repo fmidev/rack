@@ -33,7 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/TypeName.h>
 #include <iostream>
-#include <map>
 #include <set>
 
 //#include "Sprinter.h"

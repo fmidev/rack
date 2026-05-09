@@ -31,7 +31,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RUNLENGTHOP_H_
 #define RUNLENGTHOP_H_
 
-#include <stdexcept>
 
 
 #include "ImageOp.h"

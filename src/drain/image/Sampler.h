@@ -32,12 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_SAMPLER_H_
 
 
-#include <vector>
 #include <iostream>
-#include <sstream>
 #include <string>
 
-#include <drain/FlexibleVariable.h>
 
 
 #include "drain/util/BeanLike.h"

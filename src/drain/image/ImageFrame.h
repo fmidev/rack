@@ -33,12 +33,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <stddef.h>  // size_t
 
-#include "drain/TypeUtils.h"
 #include "drain/Sprinter.h"
 #include "drain/util/ValueScaling.h"
 #include "drain/util/VariableMap.h"
 
-#include "CoordinatePolicy.h"
 #include "Geometry.h"
 #include "ImageLike.h"
 

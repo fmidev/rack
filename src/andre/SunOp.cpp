@@ -34,7 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Geo.h>
 
 #include "SunOp.h"
-#include "radar/Geometry.h"
 #include "radar/Sun.h"
 
 

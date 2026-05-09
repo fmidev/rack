@@ -31,7 +31,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef STATISTICS_PROBER_H
 #define STATISTICS_PROBER_H
 
-#include <sstream>
 #include <ostream>
 #include <cmath>
 //#include "ImageOp.h"

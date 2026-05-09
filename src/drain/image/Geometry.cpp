@@ -29,9 +29,9 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <algorithm>
 #include <sstream>
 
+#include <drain/Log.h>
 #include "Geometry.h"
 //#include "DistanceTransformOp.h"
 

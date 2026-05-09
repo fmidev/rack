@@ -32,13 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_FILES_H_
 #define DRAIN_FILES_H_
 
-#include <stdexcept>
 #include <iostream>
-#include <list>
-#include <iterator>
 #include <iostream>
 #include <sstream>
-#include <list>
 #include <sys/stat.h>
 
 

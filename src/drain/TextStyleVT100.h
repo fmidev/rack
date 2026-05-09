@@ -33,7 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <iostream>
 #include <map>
-#include <set>
 
 #include "StringBuilder.h"
 #include "TextStyle.h"

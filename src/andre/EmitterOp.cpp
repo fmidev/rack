@@ -35,11 +35,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/FunctorPack.h>
 #include <drain/util/Fuzzy.h>
 // debugging
-#include <drain/image/ImageFile.h>
 #include <drain/imageops/DistanceTransformOp.h>
 #include <drain/imageops/HighPassOp.h>
-#include <drain/imageops/MarginalStatisticOp.h>
-#include <drain/imageops/SlidingWindowMedianOp.h>
 
 //#include "radar/ODIM.h"
 #include "EmitterOp.h"

@@ -31,11 +31,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_ANALYSIS_H
 #define RACK_ANALYSIS_H
 
-#include <drain/Log.h>
-#include <drain/TypeUtils.h>
 #include <math.h>
-
 #include <drain/util/Fuzzy.h>
+
 
 //#include <drain/image/FuzzyOp.h>
 
@@ -50,9 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //#include <drain/image/SequentialImageOp.h>
 
-#include "data/ODIM.h"
 #include "data/PolarODIM.h"
-#include "data/Quantity.h"
 // #include "VolumeOp.h"
 
 

@@ -32,7 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RACK_POLAR_WINDOW
 
 
-#include <sstream>
 
 #include <drain/image/GaussianWindow.h>
 

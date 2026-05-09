@@ -36,7 +36,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // g++ deer_regexp.cpp -o deer_regexp
 
-#include "Math.h"
 
 // // using namespace std;
 

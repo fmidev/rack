@@ -33,10 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //
 #include <iostream>
-#include <map>
 
 
-#include <drain/RegExp.h>
 
 #include "drain/util/Bank.h"
 #include "drain/util/FunctorPack.h"
@@ -44,7 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ImageOp.h"
 #include "FunctorOp.h"
 
-#include "drain/prog/Command.h"
 #include "drain/prog/CommandBank.h"
 
 #include "drain/util/Cloner.h"
@@ -76,7 +73,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "MotionExtrapolatorOp.h"
 //#include "MotionIllustratorOp.h"
 #include "MultiThresholdOp.h"
-#include "PaletteOp.h"
 #include "PixelVectorOp.h"
 #include "QualityMixerOp.h"
 #include "QualityOverrideOp.h"
@@ -87,7 +83,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "SegmentStatisticsOp.h"
 #include "SlidingWindowHistogramOp.h"
 #include "SlidingWindowMedianOp.h"
-#include "SlidingWindowOp.h"
 #include "TransposeOp.h"
 
 //#include "drain/image/SegmentProber.h"

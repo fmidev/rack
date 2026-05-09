@@ -32,12 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define TEXT_DECORATOR_H_
 
 #include <iostream>
-#include <sstream>
 #include <list>
 #include <string>
 
 #include <drain/TextStyle.h>
-#include <drain/TypeUtils.h>
 
 #include "EnumFlagger.h"
 

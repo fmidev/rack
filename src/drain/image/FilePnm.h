@@ -34,8 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 #include <iostream>
-#include <fstream>
-#include <exception>
 
 
 #include "drain/util/FileInfo.h"

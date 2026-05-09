@@ -33,18 +33,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_FLAGS
 
 #include <iostream>
-#include <list>
-#include <iterator>
 #include <iostream>
-#include <list>
-#include <sstream>
-#include <stdexcept>
 //#include <typeinfo>
 #include <stdlib.h>
 
 #include <drain/Log.h>
-#include <drain/StringTools.h>
-#include <drain/Dictionary.h>
 #include <drain/TypeName.h>
 
 #include "FlagBase.h"

@@ -42,13 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "resources.h"  // for RackContext?
 #include "composite.h"  // for cmdFormat called by
-#include "cartesian-add.h"
-#include "cartesian-extract.h"
-#include "cartesian-bbox.h"
-#include "cartesian-create.h"
-#include "cartesian-grid.h"
-#include "cartesian-motion.h"
-#include "cartesian-plot.h"
 
 namespace rack {
 

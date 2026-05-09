@@ -37,7 +37,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <ctime>
 #include <string>
-#include <stdexcept>
 #include <iostream>
 
 #ifndef TIME_H_

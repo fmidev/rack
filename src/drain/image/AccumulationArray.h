@@ -31,23 +31,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ACCUMULATIONARRAY_H_
 #define ACCUMULATIONARRAY_H_
 
-#include <limits>
 #include <math.h>
 
-#include <stdexcept>
 
 //#include "drain/util/Data.h"
 //#include "drain/util/Variable.h"
 //#include "drain/util/DataScaling.h"
 
-#include "drain/util/Point.h"
 #include "ImageT.h"
 //#include "Coordinates.h"
 #include "CoordinateHandler.h"
 
 //#include "AccumulationRules.h"
 
-#include "AccumulationConverter.h"
 
 
 // TODO: image/

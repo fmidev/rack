@@ -36,9 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <map>
 
-#include <drain/Sprinter.h>
 
-#include "Registry.h"
 #include "Cloner.h"
 #include "Flags.h"
 #include "Static.h"

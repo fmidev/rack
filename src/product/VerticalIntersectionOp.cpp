@@ -35,11 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
-#include <set>
-#include <drain/image/ImageT.h>
-#include "radar/Constants.h"
-#include "radar/Geometry.h"
-#include "VerticalIntersectionOp.h"
 
 namespace rack {
 

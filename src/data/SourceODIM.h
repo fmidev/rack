@@ -31,17 +31,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef SOURCE_ODIM_STRUCT
 #define SOURCE_ODIM_STRUCT
 
-#include <ostream>
 #include <cmath>
 #include <string>
-#include <set>
 //#include <drain/util/Options.h>
 #include <drain/util/ReferenceMap.h>
-#include <drain/util/Rectangle.h>
 #include <drain/util/Time.h>
 
 #include "hi5/Hi5.h"
-#include "radar/Constants.h"
 
 namespace rack {
 

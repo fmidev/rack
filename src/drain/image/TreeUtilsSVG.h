@@ -41,11 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 
 #include <drain/Enum.h>
-#include <drain/util/Frame.h>
-#include <drain/util/Rectangle.h>
 
-#include "AlignAnchorSVG.h"
-#include "LayoutSVG.h"
 #include "TreeSVG.h"
 
 namespace drain {

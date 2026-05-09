@@ -32,10 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_KEY_MATCHER
 #define DRAIN_KEY_MATCHER
 
-#include <set>
-#include <list>
-#include <map>
-#include <stdexcept>
 
 #include <drain/RegExp.h>
 #include <drain/TypeName.h>

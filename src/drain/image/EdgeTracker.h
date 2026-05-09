@@ -34,7 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/ProbingControl.h>
 #include <list>
 
-#include "CoordinateHandler.h"
 #include "Direction.h"
 #include "ImageChannel.h"
 #include "ImageFile.h"

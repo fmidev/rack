@@ -33,14 +33,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_TREE_UTILS
 #define DRAIN_TREE_UTILS "2.1"
 
-#include <cstddef> // nullptr
-#include <iterator>
 #include <string>
-#include <map>
 
 #include <drain/Log.h>
-#include <drain/StringTools.h>
-#include "Path.h"
 
 namespace drain {
 

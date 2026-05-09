@@ -32,7 +32,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define RADAR_POLAR_SECTOR_H
 
 
-#include <sstream>
 
 #include <drain/util/BeanLike.h>
 #include <drain/util/Range.h>

@@ -45,9 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/imageops/SlidingWindowOp.h>
 #include "product/ProductOp.h"
 */
-#include <drain/Log.h>
 #include "radar/Doppler.h"
-#include <drain/util/Fuzzy.h>
 #include "DopplerWindowOp.h"
 //#include <cmath>
 #include <string>

@@ -34,12 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <iostream>
 #include <list>
-#include <iterator>
 #include <iostream>
 #include <list>
 #include <sstream>
-#include <stdexcept>
-#include <typeinfo>
 
 #include <drain/Log.h>
 #include <drain/StringTools.h>

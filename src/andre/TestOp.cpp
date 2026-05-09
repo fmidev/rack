@@ -30,8 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include <drain/image/ImageFile.h>
-#include <drain/util/Fuzzy.h>
 #include <drain/imageops/ImageModifierPack.h>
 
 #include "hi5/Hi5Write.h"

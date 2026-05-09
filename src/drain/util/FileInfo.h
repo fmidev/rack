@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //
 #include <drain/RegExp.h>
 
-#include "BeanLike.h"
 #include "FilePath.h"
 #include "Registry.h"
 

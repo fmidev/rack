@@ -30,7 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
 //#include <sstream>
-#include <drain/TypeUtils.h>
 #include <ostream>
 #include <stdexcept>
 

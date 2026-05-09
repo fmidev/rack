@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "ReferenceT.h"
 #include "VariableT.h"
-#include "Variable.h"
 
 namespace drain {
 

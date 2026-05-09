@@ -31,22 +31,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_SMARTMAP_TOOLS_H
 #define DRAIN_SMARTMAP_TOOLS_H
 
-#include <drain/Log.h>
 #include <drain/Reference.h>
-#include <iostream>
 #include <string>
-#include <set>
 #include <list>
-#include <vector>
 #include <map>
 //#include <stdlib.h>
-#include <sys/syslog.h>
 #include <syslog.h>
 
 #include "Castable.h"
 #include "Reference.h"
-#include "Sprinter.h"
-#include "StringTools.h"
 #include "Variable.h"
 
 #include "MapTools.h"

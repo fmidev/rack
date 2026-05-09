@@ -38,7 +38,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_LAYOUT_SVG
 #define DRAIN_LAYOUT_SVG
 
-#include <drain/image/AlignAnchorSVG.h>
 #include <drain/util/EnumFlagger.h>
 
 #include "TreeSVG.h"

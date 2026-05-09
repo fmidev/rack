@@ -28,16 +28,11 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#include <drain/Log.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
-#include <time.h>
-#include <sys/types.h>
 #include <limits.h>
 
-#include "Geometry.h"
 #include "Sun.h"
 
 

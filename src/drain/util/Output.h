@@ -42,7 +42,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_OUTPUT
 #define DRAIN_OUTPUT
 
-#include <drain/Log.h>
 #include <drain/util/FilePath.h>
 
 namespace drain {

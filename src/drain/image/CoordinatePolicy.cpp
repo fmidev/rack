@@ -30,8 +30,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/image/CoordinatePolicy.h>
-#include <drain/Log.h>
-#include "drain/util/Static.h"
 
 
 

@@ -29,11 +29,8 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <sstream>
 #include <list>
 
-#include "drain/util/FilePath.h"
-#include "drain/util/StringMapper.h"
 //
 #include "drain/util/Output.h"
 

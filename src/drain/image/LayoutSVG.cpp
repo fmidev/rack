@@ -91,7 +91,6 @@ void LayoutSVG::setStackAlignment(AlignBase::Axis orientation, LayoutSVG::Direct
 }  // drain::
 
 
-#include "TreeSVG.h"
 /*
 template <> // for T (Tree class)
 template <> // for K (path elem arg)

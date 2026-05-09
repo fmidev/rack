@@ -13,7 +13,6 @@
 
 #include <drain/Enum.h>
 //#include <drain/Sprinter.h>
-#include "Outlet.h"
 
 namespace drain {
 

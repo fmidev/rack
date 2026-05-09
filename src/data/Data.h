@@ -34,13 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DATA_H_
 
 #include <data/QuantitySelector.h>
-#include <set>
 #include <list>
 #include <map>
 
-#include <drain/RegExp.h>
 #include <drain/util/ReferenceMap.h>
-#include <drain/util/StringMatcherList.h>
 
 #include "DataSelector.h"
 #include "DataTools.h"

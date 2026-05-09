@@ -30,12 +30,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include <drain/StringBuilder.h>
 #include <drain/util/Output.h> // Debugging
-#include <drain/util/Point.h>
 
 #include "TransformSVG.h"
-#include "TreeUtilsSVG.h"
 #include "TreeLayoutSVG.h"
 
 namespace drain {

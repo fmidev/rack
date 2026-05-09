@@ -31,19 +31,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ENC_ODIM_STRUCT
 #define ENC_ODIM_STRUCT
 
-#include <ostream>
 #include <cmath>
 #include <string>
-#include <set>
-#include <algorithm>
 //#include <drain/util/Options.h>
 #include <drain/util/ReferenceMap.h>
-#include <drain/util/Rectangle.h>
 #include <drain/util/Time.h>
 #include <drain/util/ValueScaling.h>
 
 #include "hi5/Hi5.h"
-#include "radar/Constants.h"
 #include "ODIMPath.h"
 
 namespace rack {

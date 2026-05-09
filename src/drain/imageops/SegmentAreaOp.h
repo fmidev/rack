@@ -33,7 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <math.h>
 
-#include "drain/util/FunctorBank.h"
 #include "drain/image/SegmentProber.h"
 
 //#include "ImageOp.h"

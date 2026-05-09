@@ -32,13 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_TYPE_NAME
 
 #include <iostream>
-#include <stdexcept>
 #include <typeinfo>
 // #include <bits/types.h> // uint8, uint16 etc
 #include <cstdint>
 
-#include <list>
-#include <set>
 #include <vector>
 
 

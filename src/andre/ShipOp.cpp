@@ -29,23 +29,17 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
-#include <drain/image/ImageFile.h>
 #include "ShipOp.h"
 
 #include <drain/util/FunctorPack.h>
 #include <drain/util/Fuzzy.h>
 
-#include <drain/imageops/SlidingWindowMedianOp.h>
-#include <drain/imageops/FastAverageOp.h>
-#include <drain/imageops/HighPassOp.h>
 #include <drain/imageops/DifferentialOp.h>
 #include <drain/imageops/SegmentAreaOp.h>
-#include <drain/imageops/RunLengthOp.h>
 #include <drain/imageops/DistanceTransformOp.h>
 
 // temp debugging
 #include "radar/Analysis.h"
-#include "radar/Geometry.h"
 
 
 //using namespace drain::image;

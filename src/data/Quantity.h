@@ -33,12 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <data/QuantitySelector.h>
 #include <ostream>
-#include <stdexcept>
 
-#include <drain/Log.h>
-#include <drain/Type.h>
 #include <drain/util/ReferenceMap.h>
-#include <drain/util/StringMatcherList.h>
 #include <drain/util/Range.h>
 
 #include "EncodingODIM.h"
