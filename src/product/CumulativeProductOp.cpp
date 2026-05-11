@@ -96,46 +96,73 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 	// Consider EchoTop, with DBZH input and HGHT output; but CAPPI should adapt to input quantity
 	//const std::string dstQuantity = odim.quantity.empty() ? quantity : odim.quantity;
-	const std::string dstQuantity = getOutputQuantity(srcQuantity);
+	//const std::string dstQuantity = getOutputQuantity(srcQuantity);
+	const std::string & dstQuantity = getOutputQuantity(srcQuantity); // RISKY? If this->odim changes...
 
 	mout.special("output quantity: ", dstQuantity);
 	Data<PolarDst> & dstData = dstProduct.getData(dstQuantity); // User may change it below
 
-	/// NEW, focused! 2026/03
-	if (!targetEncoding.empty()){ // good
-		/** If targetEncoding has been defined, use it.
-		 *  It should have at least type (or quantity in some rare cases).
-		 *  TODO: there should actually be warning, if scaling is given without type.
-		 */
-		setEncodingNEW(dstData, getOutputQuantity(srcQuantity), targetEncoding);
-		mout.accept<LOG_NOTICE>("Quantity=", dstQuantity, " + user-defined: ", targetEncoding);
-		if (dstData.odim.quantity != dstQuantity){
-			mout.attention("For data /", dstQuantity, "/, quantity (metadata) changed to [", dstData.odim.quantity, "]");
-		}
-	}
-	else if (!odim.quantity.empty()){ // explicit!
-		/**
-		 *   If no user encoding was defined, use that defined by the operator itself.
-		 *   The current implementation relies on quantity and type –
-		 *   scaling is not assumed to be operator-specific but universal (from QuantityMap).
-		 *   TODO: also type from QuantityMap (default type) or from input?
-		 *   This will probably change. ->setEncodingNEW(dstData, odim).
-		 */
-		if (dstData.odim.type.empty()){
-			mout.attention("Using op quantity: ", odim.quantity, ", default type");
-		}
-		setEncodingNEW(dstData, odim.quantity, odim.type);  // scaling?
-	}
-	else if (!odim.type.empty()){
-		/**  Use input quantity, but different storage type. (Rare?)
-		 */
-		// TODO: what if (also) quantity set - could be checked here (instead of getOutputQuantity(...) above
-		setEncodingNEW(dstData, srcData.odim.quantity, odim.type);
+	// NEW 2026/05
+	/*
+	dstData.odim.quantity = dstQuantity;
+	if (targetEncoding){
+		dstData.odim.completeEncoding(targetEncoding);
 	}
 	else {
-		// Use input encoding (TODO: scaling!)
-		// TODO: setEncodingNEW(dstData, srcData.odim)
-		setEncodingNEW(dstData, srcData.odim.quantity, srcData.odim.type);
+		dstData.odim.updateLenient(srcData.odim);
+	}
+	*/
+
+	if (true){
+		/// NEW, focused! 2026/03
+		if (!targetEncoding.empty()){ // good
+			/* If targetEncoding has been defined, use it.
+		  	  It should have at least type (or quantity in some rare cases).
+		  	  TODO: there should actually be warning, if scaling is given without type.
+			 */
+			//setEncodingNEW(dstData, getOutputQuantity(srcQuantity), targetEncoding);
+			setEncodingNEW(dstData, dstQuantity, targetEncoding);
+			mout.accept<LOG_NOTICE>("Quantity=", dstQuantity, " + user-defined: ", targetEncoding);
+			if (dstData.odim.quantity != dstQuantity){
+				mout.attention("For data /", dstQuantity, "/, quantity (metadata) changed to [", dstData.odim.quantity, "]");
+			}
+		}
+		else if (!odim.quantity.empty()){ // explicit!
+			/**
+			 *   If no user encoding was defined, use that defined by the operator itself.
+			 *   The current implementation relies on quantity and type –
+			 *   scaling is not assumed to be operator-specific but universal (from QuantityMap).
+			 *   TODO: also type from QuantityMap (default type) or from input?
+			 *   This will probably change. ->setEncodingNEW(dstData, odim).
+			 */
+			if (dstData.odim.type.empty()){
+				mout.attention("Using op quantity: ", odim.quantity, ", default type");
+			}
+			setEncodingNEW(dstData, odim.quantity, odim.type);  // scaling?
+		}
+		else if (!odim.type.empty()){
+			/**  Use input quantity, but different storage type. (Rare?)
+			 */
+			// TODO: what if (also) quantity set - could be checked here (instead of getOutputQuantity(...) above
+			//setEncodingNEW(dstData, srcData.odim.quantity, odim.type);
+			mout.info("setting type '", odim.type, "' for [", dstQuantity, "]");
+			setEncodingNEW(dstData, dstQuantity, odim.type);
+		}
+		else {
+			// Use input encoding (TODO: scaling!)
+			// TODO: setEncodingNEW(dstData, srcData.odim)
+			// srcData.odim.quantity
+			if ((!odim.type.empty()) && (odim.type != srcData.odim.type)){
+				mout.note("Type change '", srcData.odim.type, "'->'", odim.type, "' requested for [", dstQuantity, "]");
+				setEncodingNEW(dstData, dstQuantity, odim.type);
+			}
+			else {
+				mout.info("copying input quantity [", dstQuantity, "], and type: '", srcData.odim.type, "'");
+				dstData.copyEncoding(srcData.odim);
+				// setEncoding(srcData.odim, dstData); // check
+			}
+			// setEncodingNEW(dstData, dstQuantity, srcData.odim.type);
+		}
 	}
 
 	/*
@@ -169,6 +196,9 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	//dstData.odim.NI =
 	srcData.odim.getNyquist(); // to prevent warning in the next cmd
 	dstData.odim.updateLenient(odim); // product
+
+	mout.pending<LOG_WARNING>(DRAIN_LOG(dstData.odim));
+
 	// dstData.odim.updateLenient(srcData.odim); // date, time, etc MOVED INSIDE LOOP 2024/03/+03
 	// dstData.odim.prodpar = getParameters().getValues();
 	//dstData.odim.prodpar = getLastArguments() + " #" + getParameters().getValues();
@@ -178,6 +208,8 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	//dstData.odim.angles.resize(0); // DO NOT USE clear(), it changes address of 1st elem
 
 	mout.debug("main loop, quantity=" , srcQuantity );
+
+
 
 	//for (DataSetMap<PolarSrc>::const_iterator it = srcSweeps.begin(); it != srcSweeps.end(); ++it){
 	for (const auto & entry: srcSweeps){
@@ -199,6 +231,8 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 		// mout.attention("elangle <<<", srcData.odim.elangle);
 
 	}
+
+	mout.accept<LOG_WARNING>(DRAIN_LOG(dstData.odim));
 
 	// drain::image::FilePng::write(accumulator.accArray.data, "debug.png");
 	// mout.warn("eka: " , drain::sprinter(dstData.odim.angles) );
@@ -233,6 +267,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	//@= dstProduct.updateTree(dstData.odim);
 
 
+	// mout.attention(DRAIN_LOG(dstData.odim));
 }
 
 
