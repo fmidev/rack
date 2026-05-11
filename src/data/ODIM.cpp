@@ -352,7 +352,14 @@ void ODIM::completeEncoding(const std::string & encoding){
 		mout.debug("empty encoding request, ok");
 	}
 
+	if (quantity.empty()){
+		mout.revised<LOG_ERR>("quantity (still) empty..." , DRAIN_LOG(encoding));
+	}
 
+	if (isSet()){
+		mout.revised("Encoding seems complete, returning...");
+		return;
+	}
 
 	//mout.warn("quantity [" , dstODIM.quantity , "]" );
 	const QuantityMap & qmap = getQuantityMap();

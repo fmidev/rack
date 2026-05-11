@@ -308,8 +308,11 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 				composite.odim.type = "";
 
+				//mout.accept<LOG_WARNING>(polarSrc.odim);
 				composite.odim.updateLenient(polarSrc.odim);
 				//composite.odim.updateFromMap(polarSrc.odim); // REMOVED. Overwrites time
+
+				// mout.accept<LOG_WARNING>("PRE: ", DRAIN_LOG(composite.odim));
 
 				const std::string & encoding = composite.getTargetEncoding();
 				if (!encoding.empty()){
@@ -413,6 +416,8 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 
 		} // OMP CRITICAL
 
+		// mout.accept<LOG_WARNING>(DRAIN_LOG(composite.odim));
+
 
 		double w = weight;
 
@@ -489,7 +494,7 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 		mout.warn(e.what() );
 	}
 
-
+	// mout.accept<LOG_WARNING>(__FUNCTION__, DRAIN_LOG(composite.odim));
 }
 
 

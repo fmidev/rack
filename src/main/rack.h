@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,0)
+#define RACK_VERSION drain::Version<>(20,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -44,8 +44,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
  *  - VsCode support for C++11, and revised Makefile
- *  Release 20.0
+ *  Version 20.0
  *  - Pruned #include:s
+ *  Version 20.1
+ *  - addPolar: fixed default encoding
  * 
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

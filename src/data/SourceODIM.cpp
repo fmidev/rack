@@ -31,6 +31,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include "SourceODIM.h"
+#include "ODIM.h" // Version
 
 namespace rack {
 
@@ -71,11 +72,19 @@ void SourceODIM::init(){
 	(*this)["CTY"].link(CTY);
 	(*this)["PLC"].link(PLC);
 	(*this)["CMT"].link(CMT);
+	if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_4)){
+		(*this)["WIGOS"].link(WIGOS);
+	}
 }
 
 
 const std::string & SourceODIM::getSourceCode() const {
-	return getPreferredSourceCode(NOD, RAD, WMO, WIGOS, ORG, CTY, PLC);
+	if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_4)){
+		return getPreferredSourceCode(NOD, RAD, WMO, WIGOS, ORG, CTY, PLC);
+	}
+	else {
+		return getPreferredSourceCode(NOD, RAD, WMO, ORG, CTY, PLC);
+	}
 }
 
 const std::string & SourceODIM::getPreferredSourceCode() const {
