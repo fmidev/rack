@@ -61,27 +61,8 @@ class CumulativeProductOp : public PolarProductOp {
 public:
 
 	/// Returns the primary output quantity (ODIM \c what:quantity , like DBZH)
-	virtual inline
-	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
-		mout.revised<LOG_DEBUG>("Fixed obvious bug (check output quantity)");
-		if (!odim.quantity.empty()){
-			return odim.quantity; //outputQuantity;
-		}
-		else {
-			if (inputQuantity.empty()){
-				mout.warn(DRAIN_LOG(inputQuantity));
-			}
-			return inputQuantity;
-		}
-		/*
-		if (!inputQuantity.empty())
-			return inputQuantity; //outputQuantity;
-		else
-			return odim.quantity;
-			*/
-	}
+	virtual
+	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const;
 
 	// Public for ConvOp
 	virtual

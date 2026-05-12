@@ -125,11 +125,12 @@ public:
 
 
 // Special command for bookkeeping of products and outputQUantities.
+/*
 class CmdOutputQuantity : public drain::SimpleCommand<> {
 
 public:
 
-	CmdOutputQuantity() : drain::SimpleCommand<>(__FUNCTION__, "Return default outout quantity","productCmd") {
+	CmdOutputQuantity() : drain::SimpleCommand<>(__FUNCTION__, "Return default output quantity", "productCmd") {
 	};
 
 	typedef std::map<std::string,std::string> map_t;
@@ -163,7 +164,7 @@ public:
 };
 
 CmdOutputQuantity::map_t CmdOutputQuantity::quantityMap;
-
+*/
 
 
 
@@ -220,9 +221,9 @@ public:
 
 		mout.special<LOG_DEBUG>("My data selector: ", this->bean.getDataSelector() );
 
-		mout.accept<LOG_WARNING>("My polar selector: azm=", ctx.polarSelector.azimuth, " radius=", ctx.polarSelector.radius);
+		mout.accept<LOG_INFO>("My polar selector: azm=", ctx.polarSelector.azimuth, " radius=", ctx.polarSelector.radius);
 		this->bean.setPolarSelector(ctx.polarSelector);
-		mout.accept<LOG_WARNING>(this->getName(), " params: ", this->getParameters());
+		mout.accept<LOG_INFO>(this->getName(), " params: ", this->getParameters());
 		//mout.accept<LOG_WARNING>(this->getName(), " last pars: ", this->getLastParameters());
 
 
@@ -324,7 +325,7 @@ drain::Command & ProductModule::install(char alias){  // = 0 TODO: EMBED "instal
 	cmd.section = getSection().index;
 	// drain::Logger mout(__FILE__, __FUNCTION__);
 	// mout.special(name , "\n -> " , op.getOutputQuantity() , "\t test:" , op.getOutputQuantity("TEST") );
-	CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
+	// CmdOutputQuantity::quantityMap[name] =  op.getOutputQuantity();
 	return cmd;
 }
 
@@ -409,9 +410,10 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	*/
 
 	// Special command
+	/*
 	static CmdOutputQuantity outputQuantityCmd;
 	cmdBank.addExternal(PREFIX, outputQuantityCmd).section = SECTION;
-
+	*/
 }
 
 
