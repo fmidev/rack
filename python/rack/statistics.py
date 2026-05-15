@@ -660,7 +660,7 @@ class TitleMagic:
 
 
 
-def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
+def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> tuple:
 
     log = logger.getChild("create_gnuplot_script")
     
@@ -745,6 +745,9 @@ def create_gnuplot_script(files: list, settings=dict(), columns=(1,2)) -> str:
     prog_plot = rack.gnuplot.PlotSequence()
     reg_plot  = rack.gnuplot.Registry(prog_plot)
     reg_plot.plot(*plots)
+
+    #log.warning(prog_conf.fmt) 
+    log.warning(prog_plot.fmt) 
 
     return (prog_conf, prog_plot)
     
@@ -834,17 +837,15 @@ def run(args):
 
         (settings, plots) = create_gnuplot_script(args.INFILE, conf, columns=col_indices)
 
+        
+        log.info(f"GnuPlot settings: \n{settings.to_string()}")
+        script = settings.to_string() + "\n" + plots.to_string()
+        log.info(f"GnuPlot script:\n{script}")
+
         if not args.gnuplot_script:
             pass
-        
-        script = settings.to_string() + "\n" + plots.to_string()
-        # log.info(f"GnuPlot script:\n{script}")
-        
-        if args.gnuplot_script == '-':
+        elif args.gnuplot_script == '-':
             print(script)
-            # settings.to_string()
-            # for i in plots.to_list():
-            #    print(i)
         else:
             log.info(f"writing GnuPlot script: {args.gnuplot_script}")
             with open(args.gnuplot_script, 'w') as f:

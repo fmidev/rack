@@ -33,6 +33,8 @@ class TestGnuPlot(unittest.TestCase):
     #conf = gp.Registry(prog_conf)
     reg = gp.Registry()
 
+    seqfmt = gp.ConfSequence().fmt
+    pltfmt = gp.PlotSequence().fmt
 
     # Test set commands and their formatting
 
@@ -57,7 +59,7 @@ class TestGnuPlot(unittest.TestCase):
             raise Exception(f"type(cmd) = {type(cmd)}, must be a function or a string")
         # cmd = getattr(self.conf, cmdName)(*args, **kwargs)
         cmd = cmd(*args, **kwargs)
-        self.assertEqual(cmd.to_string(gp.ConfSequence.fmt), expected_str)
+        self.assertEqual(cmd.to_string(self.seqfmt), expected_str)
 
     def test_set_terminal(self):
         """
@@ -246,7 +248,7 @@ class TestGnuPlot(unittest.TestCase):
         #logger.warning("Checking plot command with args=%s, kwargs=%s", args, kwargs)
         print(f'\n --> {expected_str}')
         cmd = self.reg.plot(*args, **kwargs)
-        self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
+        self.assertEqual(cmd.to_string(self.pltfmt), expected_str)
 
     def test_plot_sin(self):
         self.check_plot_command('plot sin(x) ', "sin(x)") # TODO: trailing space?
@@ -281,7 +283,7 @@ class TestGnuPlot(unittest.TestCase):
  
         cmd = self.reg.plot(e1, e2)
         expected_str = 'plot random(x) with linesdots,\n  "my_file.dat" with dots color "brown"'
-        self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)  
+        self.assertEqual(cmd.to_string(self.pltfmt), expected_str)  
 
 
     def test_plot_expr_and_datafile_fail(self):

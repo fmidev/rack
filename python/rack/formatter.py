@@ -221,14 +221,11 @@ class ParamFormatter:
 
 
 class Formatter(ParamFormatter):
+    """
+    Formatting command parameters and commands.
+    """
 
     NAME_FORMAT='{name}'
-    # KEY_FORMAT ='{key}'
-    # VALUE_FORMAT='{value}'
-    # VALUE_SEPARATOR=':'
-    # VALUE_ASSIGN='='
-    # PARAM_SEPARATOR=','
-    # PARAMS_FORMAT='{params}'
     CMD_ASSIGN=' '
     CMD_SEPARATOR=' '
 
@@ -247,6 +244,11 @@ class Formatter(ParamFormatter):
         # self.PARAMS_FORMAT   = params_format
         self.CMD_ASSIGN      = cmd_assign
         self.CMD_SEPARATOR   = cmd_separator
+        # logger.warning(f"Formatter initialized with name_format='{self.NAME_FORMAT}', key_format='{self.KEY_FORMAT}', value_format='{self.VALUE_FORMAT}', value_separator='{self.VALUE_SEPARATOR}', value_assign='{self.VALUE_ASSIGN}', param_separator='{self.PARAM_SEPARATOR}', params_format='{self.PARAMS_FORMAT}', cmd_assign='{self.CMD_ASSIGN}', cmd_separator='{self.CMD_SEPARATOR}'")
 
     def fmt_name(self, name:str)->str :
         return self.NAME_FORMAT.format(name=name)
+
+    def __repr__(self):
+        return super().__repr__()
+    

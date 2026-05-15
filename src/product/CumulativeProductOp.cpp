@@ -149,28 +149,22 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 		}
 		setEncodingNEW(dstData, odim.quantity, odim.type);  // scaling?
 	}
+	/**  Use input quantity, but different storage type. (Rare?)
 	else if (!odim.type.empty()){
-		/**  Use input quantity, but different storage type. (Rare?)
-		 */
 		// TODO: what if (also) quantity set - could be checked here (instead of getOutputQuantity(...) above
 		//setEncodingNEW(dstData, srcData.odim.quantity, odim.type);
 		mout.info("setting type '", odim.type, "' for [", dstQuantity, "]");
 		setEncodingNEW(dstData, dstQuantity, odim.type);
 	}
+    */
+	else if (odim.type.empty() || (odim.type == srcData.odim.type)){
+		mout.info("copying input quantity [", dstQuantity, "], and type: '", srcData.odim.type, "'");
+		dstData.copyEncoding(srcData.odim);
+		// setEncoding(srcData.odim, dstData); // check
+	}
 	else {
-		// Use input encoding (TODO: scaling!)
-		// TODO: setEncodingNEW(dstData, srcData.odim)
-		// srcData.odim.quantity
-		if ((!odim.type.empty()) && (odim.type != srcData.odim.type)){
-			mout.note("Type change '", srcData.odim.type, "'->'", odim.type, "' requested for [", dstQuantity, "]");
-			setEncodingNEW(dstData, dstQuantity, odim.type);
-		}
-		else {
-			mout.info("copying input quantity [", dstQuantity, "], and type: '", srcData.odim.type, "'");
-			dstData.copyEncoding(srcData.odim);
-			// setEncoding(srcData.odim, dstData); // check
-		}
-		// setEncodingNEW(dstData, dstQuantity, srcData.odim.type);
+		mout.note("Storage type change '", srcData.odim.type, "'->'", odim.type, "' requested for [", dstQuantity, "]");
+		setEncodingNEW(dstData, dstQuantity, odim.type);
 	}
 
 	// mout.attention(DRAIN_LOG(EncodingODIM(dstData.odim)));

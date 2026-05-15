@@ -56,7 +56,7 @@ class GnuPlotFormatter(rack.prog.Formatter):
 
     def __init__(self, value_separator=',', param_separator=' '):
         super().__init__(cmd_separator=';\n', value_assign=' ', value_separator=value_separator, param_separator=param_separator)
-        #self.VALUE_ASSIGN=' '
+        # logger.warning(f"GnuPlotFormatter initialized with cmd_separator='{self.CMD_SEPARATOR}'")
         
     def fmt_value(self, value:str) -> str :
         #if isinstance(value, (Enum,Expr)):
@@ -459,7 +459,11 @@ class Style(Enum):
 
 class ConfSequence(rack.prog.CommandSequence):
     
-    fmt = GnuPlotFormatter(param_separator=' ', value_separator=',')
+    #fmt = GnuPlotFormatter(param_separator=' ', value_separator=',') #, cmd_separator=';\n')
+
+    def __init__(self):
+        super().__init__()
+        self.fmt = GnuPlotFormatter(param_separator=' ', value_separator=',') #, cmd_separator=';\n')
 
     def to_stringFOO(self, fmt = None):
         if not fmt:
@@ -468,7 +472,11 @@ class ConfSequence(rack.prog.CommandSequence):
 
 class PlotSequence(rack.prog.CommandSequence):
     
-    fmt = GnuPlotFormatter(param_separator=',\n  ')
+    #fmt = GnuPlotFormatter(param_separator=',\n  ') # , cmd_separator=';\n'
+
+    def __init__(self):
+        super().__init__()
+        self.fmt = GnuPlotFormatter(param_separator=',\n  ')
 
     def to_stringFOO(self, fmt = None):
         if not fmt:
