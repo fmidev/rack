@@ -125,7 +125,7 @@ class TestGnuPlot(unittest.TestCase):
 
     def test_set_title(self):
         """
-        Ensure that 'set' command is formatted correctly.
+        Ensure that 'set title' uses quotes around the title string.
         """
         # cmd = self.reg.title("statistics 00min 20140525-1200")
         # expected_str = 'set title "statistics 00min 20140525-1200"'
@@ -134,7 +134,7 @@ class TestGnuPlot(unittest.TestCase):
 
     def test_set_xlabel(self):
         """
-        Ensure that 'set' command is formatted correctly.
+        Ensure that 'set xlabel' uses quotes around the label string.
         """
         #cmd = self.reg.xlabel("TIME START REL")
         #expected_str = 'set xlabel "TIME START REL"'
@@ -143,7 +143,7 @@ class TestGnuPlot(unittest.TestCase):
 
     def test_set_ylabel(self):
         """
-        Ensure that 'set' command is formatted correctly.
+        Ensure that 'set ylabel' uses quotes around the label string.
         """
         #cmd = self.reg.ylabel("ELANGLE")
         #expected_str = 'set ylabel "ELANGLE"'
@@ -152,7 +152,7 @@ class TestGnuPlot(unittest.TestCase):
 
     def test_set_key(self):
         """
-        Ensure that 'set' command is formatted correctly.
+        Ensure that 'set key' allows multiple position keywords and without quotes.
         """
         self.check_set_command('set key outside', self.reg.key, "outside")
         self.check_set_command('set key outside', self.reg.key, gp.Key.OUTSIDE)
@@ -189,7 +189,7 @@ class TestGnuPlot(unittest.TestCase):
 
         self.reg.import_commands(commands)
 
-        return True
+        # return True
 
         """
         for k,v in commands.items():
@@ -251,9 +251,13 @@ class TestGnuPlot(unittest.TestCase):
         self.assertEqual(cmd.to_string(self.pltfmt), expected_str)
 
     def test_plot_sin(self):
+        """Ensure that 'plot' does not add quotes around expressions.
+        """
         self.check_plot_command('plot sin(x) ', "sin(x)") # TODO: trailing space?
 
     def test_plot_cos(self):
+        """Ensure that 'plot' does not add quotes around expressions or style definitions.
+        """
         self.check_plot_command('plot cos(x) with lines', "cos(x)", style=gp.Style.LINES)
         #self.assertEqual(cmd.to_string(gp.PlotSequence.fmt), expected_str)
 
@@ -274,13 +278,11 @@ class TestGnuPlot(unittest.TestCase):
         """
 
         e1 = self.reg.plot_entry(expr="random(x)", style=gp.Style.LINES_DOTS)
-        #expected_str = 'random(x) with linesdots'
-        #self.assertEqual(e1.to_string(gp.PlotSequence.fmt), expected_str)
+        self.check_plot_command('plot random(x) with linesdots', e1)
 
         e2 = self.reg.plot_entry(filename="my_file.dat", style=gp.Style.DOTS, color="brown")
-        #expected_str = '"my_file.dat" with dots color brown'
-        #self.assertEqual(e2.to_string(gp.PlotSequence.fmt), expected_str)   
- 
+        self.check_plot_command('plot "my_file.dat" with dots color "brown"', e2)
+
         cmd = self.reg.plot(e1, e2)
         expected_str = 'plot random(x) with linesdots,\n  "my_file.dat" with dots color "brown"'
         self.assertEqual(cmd.to_string(self.pltfmt), expected_str)  
@@ -297,15 +299,9 @@ class TestGnuPlot(unittest.TestCase):
 if __name__ == "__main__":
     
     prog_conf = gp.ConfSequence()
-
-    #conf = gp.Registry(prog_conf)
-    #cmd = conf.terminal(gp.Terminal.PNG, size=(800, 600))
-    #print(cmd.to_string())
-
+    # conf = gp.Registry(prog_conf)
+    # cmd = conf.terminal(gp.Terminal.PNG, size=(800, 600))
+    # print(cmd.to_string())
     # test_set_from_conf 
     tester = TestGnuPlot()
-    # tester.te st_set_from_conf()
     tester.check_set_command('set key outside top', tester.reg.key, [gp.Key.OUTSIDE, gp.Key.TOP])
-
-
-    #unittest.main() 

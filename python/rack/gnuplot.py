@@ -75,6 +75,9 @@ class GnuPlotFormatter(rack.prog.Formatter):
         else:
             value = str(value)
         return value
+    
+    def __repr__(self):
+        return f"GnuPlotFormatter(cmd_separator='{self.CMD_SEPARATOR}', value_assign='{self.VALUE_ASSIGN}', value_separator='{self.VALUE_SEPARATOR}', param_separator='{self.PARAM_SEPARATOR}')"
 
         
 class Mika:
@@ -145,10 +148,12 @@ class Registry(rack.prog.Register):
     """ Collection of GnuPlot 'set' and 'plot' commands.
     """
 
-
+    # Static formatter for 'set' commands, with space as parameter separator and comma as value separator (for lists)
     fmtConf = GnuPlotFormatter(param_separator=' ', value_separator=',')
     
-    fmtPlot = GnuPlotFormatter(param_separator=',\n  ')
+    # Static formatter for 'plot' commands, with comma and newline as parameter separator (to separate multiple plot items) 
+    # and comma as value separator (for lists)
+    fmtPlot = GnuPlotFormatter(param_separator=',\\\n  ')
 
 
     # Helper to create 'set' commands
@@ -355,6 +360,13 @@ class Registry(rack.prog.Register):
                 else:
                     logger.warning(f"Unsupported filetype '{filetype}' for plot entry with filename='{filename}'")
 
+            if "using" in opts:
+                using = opts.pop("using")
+                if isinstance(using, (tuple, list)):
+                    using = ",".join(map(str, using))
+                self.opts["using"] = Literal(using)
+
+
             if (style):
                 self.opts["with"] = style
             elif opts:
@@ -463,7 +475,8 @@ class ConfSequence(rack.prog.CommandSequence):
 
     def __init__(self):
         super().__init__()
-        self.fmt = GnuPlotFormatter(param_separator=' ', value_separator=',') #, cmd_separator=';\n')
+        self.fmt = Registry.fmtConf
+        # self.fmt = GnuPlotFormatter(param_separator=' ', value_separator=',') #, cmd_separator=';\n')
 
     def to_stringFOO(self, fmt = None):
         if not fmt:
@@ -476,7 +489,10 @@ class PlotSequence(rack.prog.CommandSequence):
 
     def __init__(self):
         super().__init__()
-        self.fmt = GnuPlotFormatter(param_separator=',\n  ')
+        # self.fmt = GnuPlotFormatter(param_separator=',\\\n  ')
+        self.fmt = Registry.fmtPlot
+        #self.fmt = GnuPlotFormatter(param_separator=',\\\n  ')
+        #self.fmt.KEY_FORMAT="**{key}**"  # Just for testing, to see the effect of custom key formatting
 
     def to_stringFOO(self, fmt = None):
         if not fmt:
