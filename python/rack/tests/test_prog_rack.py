@@ -44,7 +44,7 @@ class TestCommand(unittest.TestCase):
         Plain arguments are joined correctly?        
         """
         cmd = rack.prog.Command("select", ["/dataset1:5", "elangle=0:15.0", "prf=ANY"])
-        print(f"HEY-A: {cmd.ordered_args_count}")
+        #print(f"HEY-A: {cmd.ordered_args_count}")
         expected_str = "--select '/dataset1:5,elangle=0:15.0,prf=ANY'"
         self.assertEqual(cmd.to_string(self.fmt), expected_str)
 
@@ -53,7 +53,7 @@ class TestCommand(unittest.TestCase):
         All the dict arguments appear, in order. 
         """
         cmd = rack.prog.Command("select", {"quantity":'DBZH', "elangle":(0.5,10.0), "prf": "ANY" })
-        print(f"HEY-B: ordered: {cmd.ordered_args_count} + expl: {cmd.expl_keys}")
+        #print(f"HEY-B: ordered: {cmd.ordered_args_count} + expl: {cmd.expl_keys}")
 
         expected_str = "--select 'DBZH,0.5:10.0,ANY'" # Note colon separator for range
         self.assertEqual(cmd.to_string(self.fmt), expected_str)
