@@ -303,15 +303,16 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     #log.debug(var_map)
     log.info(var_map)
 
-    (keys, values) = zip(*var_map)
+    (keys, fmts) = zip(*var_map)
     # log.debug(values)
-    fmt = values
+    # fmt = values
     # fmt = list(variables.values())
 
-    fmt = SEPARATOR.join(fmt)
+    fmt = SEPARATOR.join(fmts)
     log.info(f"fmt = {fmt}")
 
     shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
+    variable_keys = variables.keys()
 
     # Main loop 1: traverse HDF5 files
     for INFILE in INFILES:
@@ -334,7 +335,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             line = i.split(SEPARATOR)
             
             # quantity-wise info
-            info = dict(zip(variables.keys(), i.split(SEPARATOR)))
+            info = dict(zip(variable_keys, i.split(SEPARATOR)))
             # logger.info(info)
             
             dataset_id = "{SITECODE}-{TIME_START}".format(**info)
@@ -392,7 +393,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             prfs.sort()
             m['PRF_MODE'] = f"{len(prfs)}PRF"            
             m['PRF'] = prfs
-            log.debug(m)
+            #log.debug(m)
+            log.warning(m)
 
     log.debug("end")
         
