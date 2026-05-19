@@ -150,6 +150,13 @@ public:
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
+		if (format.empty()){
+			//std::string s;
+			//drain::Convert2<T>::convert(value, s);
+			ostr << value;
+			return true;
+		}
+
 		const char firstChar = format.at(0);
 		const char lastChar = format.at(format.size()-1);
 

@@ -34,6 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+const int StringMapper::KEEP_MISSING_VARIABLE = -1;
+const int StringMapper::REMOVE_MISSING_VARIABLE = 0;
+
 
 StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 

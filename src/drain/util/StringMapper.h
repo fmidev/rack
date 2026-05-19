@@ -366,15 +366,19 @@ public:
 
 	IosFormat iosFormat;
 
+	static const int KEEP_MISSING_VARIABLE;
+	static const int REMOVE_MISSING_VARIABLE;
+
 
 	/// Expands the variables in the last
 	/**
 	 *  \par ostr - output stream
 	 *  \par m    - map containing variable values
-	 *  \par clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
+	 *  \par replace - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableFormatter<T> &formatter = VariableFormatter<T>()) const {
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = REMOVE_MISSING_VARIABLE,
+			const VariableFormatter<T> &formatter = VariableFormatter<T>()) const {
 
 		for (const Stringlet & stringlet: *this){
 
@@ -384,9 +388,8 @@ public:
 					// std::cerr << __FILE__ << " ok stringlet variable: " << stringlet << std::endl;
 					// ok, accepted and handled!
 				}
-				else if (replace){
-					//else if (keepUnknowns){ // = "recycle", add back "${variable}";
-					if (replace < 0)
+				else if (replace != REMOVE_MISSING_VARIABLE){ // (replace){
+					if (replace != KEEP_MISSING_VARIABLE) // (replace < 0)
 						ostr <<  stringlet; // is Variable -> use layout  "${variable}";
 					else
 						ostr << (char)replace;
