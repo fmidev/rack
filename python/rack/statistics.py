@@ -303,9 +303,9 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     var_map = [(k,v.get('rack_expr','AUTO')) for (k,v) in variables.items()]
     #log.debug(var_map)
-    log.info(var_map)
-    for (k,v) in var_map:
-        log.info(f"Variable '{k}': rack_expr='{v}'")
+    # log.info(var_map)
+    # for (k,v) in var_map:
+    #    log.info(f"Variable '{k}': rack_expr='{v}'")
 
     (keys, fmts) = zip(*var_map)
     # log.debug(values)
@@ -323,7 +323,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     # Main loop 1: traverse HDF5 files
     for INFILE in INFILES:
         log.debug(f'reading {INFILE}') # rack echoes it, so skip here
-        
+        # logger.info(INFILE)
+            
         # Todo: better cmd creator
         cmd = ['rack', INFILE ]
         cmd.extend(shared_cmd_args)
@@ -333,8 +334,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         result = result.stdout.decode('utf-8')
         # Note: several lines, for each data<N> group!
-        logger.warning(result)
-        logger.warning('\n')
+        #logger.warning(result)
+        #logger.warning('\n')
 
         lines = result.splitlines()
         # debug line count
@@ -343,7 +344,6 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
         m = None
         for i in lines: # split by NEWline_syntax
 
-            logger.info(INFILE)
             # logger.info(i)
 
             line = i.split(SEPARATOR)
@@ -351,8 +351,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             # quantity-wise info
             info = dict(zip(variable_keys, i.split(SEPARATOR)))
 
-            for (k,v) in info.items():
-                log.info(f"{k}: '{v}'")
+            # for (k,v) in info.items():
+            #    log.info(f"{k}: '{v}'")
             # logger.info(info)
             
             dataset_id = "{SITECODE}-{TIME_START}".format(**info)
