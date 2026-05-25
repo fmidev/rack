@@ -313,15 +313,16 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     # fmt = list(variables.values())
 
     fmt = SEPARATOR.join(fmts)
-    #log.info(f"fmt = {fmt}")
+    # log.info(f"fmt = {fmt}")
 
     # shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
     shared_cmd_args = ['--select','data:', '--format', f'{fmt}\\n', '-o', '-']
-    #shared_cmd_args = ['--select','dataset1/data3', '--format', f'{fmt}\n', '-o', '-']
+    # shared_cmd_args = ['--select','dataset1/data3', '--format', f'{fmt}\n', '-o', '-']
     variable_keys = variables.keys()
 
     # Main loop 1: traverse HDF5 files
     for INFILE in INFILES:
+
         log.debug(f'reading {INFILE}') # rack echoes it, so skip here
         # logger.info(INFILE)
             
@@ -411,8 +412,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             prfs.sort()
             m['PRF_MODE'] = f"{len(prfs)}PRF"            
             m['PRF'] = prfs
-            #log.debug(m)
-            log.warning(m)
+            # log.debug(m)
+            # log.warning(m)
 
     log.debug("end")
         

@@ -48,6 +48,7 @@ namespace drain {
 /**
  *  Deprecating, see Converter.
  */
+/*
 class Convert {
 
 public:
@@ -83,6 +84,7 @@ public:
 
 
 };
+*/
 
 /// Utility class with static conversions
 /**

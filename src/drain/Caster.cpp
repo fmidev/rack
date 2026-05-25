@@ -66,14 +66,32 @@ void Caster::put(void *p, const char * x) const {
 			}
 			else if (t == typeid(bool)){
 				// TODO: test against "true" and "TRUE"
+				/*
 				if (TypeUtils::trueRegExp.test(x)){
 					(this->putBool)(p, true);
 				}
 				else if (TypeUtils::falseRegExp.test(x)){
 					(this->putBool)(p, false);
 				}
-				else
+				else {
 					(this->putBool)(p, atof(x));
+				}
+				*/
+				//static const std::list<std::string> trues = {"true", "True", "TRUE"};
+				for (std::string s: {"true", "True", "TRUE"}){
+					if (s == x){
+						(this->putBool)(p, true);
+						return;
+					}
+				}
+				for (std::string s: {"false", "False", "FALSE"}){
+					if (s == x){
+						(this->putBool)(p, false);
+						return;
+					}
+				}
+				// else try to interpret as a number:
+				(this->putBool)(p, atof(x));
 			}
 			else {
 				long y = 0;

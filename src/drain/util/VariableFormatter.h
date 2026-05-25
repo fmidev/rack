@@ -99,19 +99,19 @@ public:
 			return false;
 		}
 
-
+		const T & value = it->second;
 		if (format.empty()){
 			iosFormat.copyTo(ostr);
-			//vostr.width(width);
-			//vstd::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-			//vstd::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-			ostr <<  it->second;
+			// vostr.width(width);
+			// vstd::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
+			// vstd::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
+			ostr <<  value;
 			return true;
 		}
 		else {
     		// mout.attention("delegating '", k, "' to formatVariable: ", format);
-			//return formatVariable(k, variables, format, ostr);
-			return formatVariable(k, it->second, format, ostr);
+			// return formatVariable(k, variables, format, ostr);
+			return formatVariable(k, value, format, ostr);
 		}
 
 	}
@@ -143,6 +143,17 @@ public:
 
 	/// Given a value, print it formatted to stream.
 	/**
+	 *  Formatting options are defined by the first character
+	 *
+	 *  Colon ':' selects substring like in bash, with syntax :<n>[:<startpos>].
+	 *  Examples:
+	 *  - ':3' selects 3 first letters
+	 *  - ':4:2' selects 4 letters, starting from 2nd character
+	 *
+	 *  Percentage '%' formats numbers as printf() function in C.
+	 *  Examples, given x = 1.4142135623
+	 *  - '%05.1f' returns 001.4
+	 *  - '%04d'   returns 0001
 	 *
 	 */
 	static
@@ -250,7 +261,7 @@ public:
 			case 'X':
 			{
 				int i = 0;
-				drain::Convert::convert(value, i);
+				drain::Convert2<T>::convert(value, i);
 				// drain::convertAny(variable, i);
 				// drain::StringTools::import(variable, i);
 				// drain::MapTools::get(variables, key, i);
