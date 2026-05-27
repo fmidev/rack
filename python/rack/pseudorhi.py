@@ -23,7 +23,8 @@ from rack import script
 #from rack.composite import handle_prod
 import rack.log
 import rack.prog
-import rack.select
+#import rack.select
+import rack.cmdline
 import rack.gnuplot
 import rack.core
 
@@ -583,16 +584,16 @@ def main():
     if args.print:
         args.print = args.print.replace(r'\t','\t')
         args.print = args.print.replace(r'\n','\n')
-        logger.info("# Command line:")
+        logger.info("# Rack cmd line:")
         #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
         print(prog.to_python(prefix="Rack."))
         # print(cmdList.to_string(" \\\n"))
 
     if args.exec:
         logger.info("# Executing Rack...")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'")
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
         print(prog.to_string(fmt))
         os.system(prog.to_string(fmt))
 
@@ -601,7 +602,7 @@ def main():
 
     line = rack.args.args_to_cli(parser, args)
     # "Rectified" command line
-    logger.info(f"Command line: {line}")
+    logger.info(f"Python command line args: {line}")
 
 
 if __name__ == "__main__":

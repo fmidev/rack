@@ -290,6 +290,9 @@ variables = {
 
 
 def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
+    """ This does not construct Rack command line using this package.
+    Instead, the cmd line is created directly as a list of arguments supplied to subprocess().
+    """
 
     log = logger.getChild("extract_metadata")
     #

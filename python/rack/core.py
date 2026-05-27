@@ -1113,7 +1113,7 @@ class Rack(rack.prog.Register):
         path:str
           [/]dataset<i>[/data<j>|/quality<j>]
         quantity:str
-          DBZH|VRAD|RHOHV|...
+          DBZH:VRAD:RHOHV:...
         elangle:list
           min[:max]
         count:int
@@ -1361,9 +1361,32 @@ class Rack(rack.prog.Register):
         return cmd
 
 
-    def gCoords(self):
+    def gCoords(self,
+        resolution:list=[0,0],
+        MASK:bool=False):
         """ SVG test product. CSS classes: GRID,GRID
 
+        Parameters
+        ----------
+        resolution:list
+          pixel
+        MASK:bool
+          Fill outside using CSS class '.MASK'
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gData(self,
+        filename:str=''):
+        """ Save and link encoded data for mouse read.. CSS classes: GRID,GRID
+
+        Parameters
+        ----------
+        filename:str
+          PNG data file path
 
         """
 
@@ -1465,6 +1488,21 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         include:str
+          
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gJavaScript(self,
+        value:str=''):
+        """ Link JavaScript URL to SVG document 'header'.
+
+        Parameters
+        ----------
+        value:str
           
 
         """
@@ -1647,6 +1685,29 @@ class Rack(rack.prog.Register):
         return cmd
 
 
+    def gRect(self,
+        bbox:str='',
+        resolution:list=[0,0],
+        MASK:bool=False):
+        """ Draw rectangle or circle. CSS classes: GRID,RECTANGLE
+
+        Parameters
+        ----------
+        bbox:str
+          xLL,yLL,xUR,yUR[px|m|deg] or xLL,yLL,r
+        resolution:list
+          pixel
+        MASK:bool
+          Render outer region with style class '.MASK'
+
+        """
+
+        cmd = self.make_cmd(locals())
+        # note: separator ':'
+        cmd.set_separators(':', ',')
+        return cmd
+
+
     def gStyle(self,
         value:str=''):
         """ Add or modify CSS entry
@@ -1655,6 +1716,16 @@ class Rack(rack.prog.Register):
         ----------
         value:str
           
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gTestData(self):
+        """ Test attaching numeric data as arrays using Base64 encoding. CSS classes: GRID,GRID
+
 
         """
 
@@ -3185,7 +3256,7 @@ class Rack(rack.prog.Register):
         path:str
           [/]dataset<i>[/data<j>|/quality<j>]
         quantity:str
-          DBZH|VRAD|RHOHV|...
+          DBZH:VRAD:RHOHV:...
         elangle:list
           min[:max]
         count:int
@@ -3900,21 +3971,6 @@ class Rack(rack.prog.Register):
         return cmd
 
 
-    def pOutputQuantity(self,
-        productCmd:str=''):
-        """ Return default outout quantity
-
-        Parameters
-        ----------
-        productCmd:str
-          
-
-        """
-
-        cmd = self.make_cmd(locals())
-        return cmd
-
-
     def pPlot(self,
         lon:float=0,
         lat:float=0,
@@ -3981,8 +4037,8 @@ class Rack(rack.prog.Register):
     def pPseudoRhi(self,
         az_angle:float=0,
         range:list=[0,0],
-        height:list=[0,10000],
-        size:list=[500,250],
+        height:list=[0,12000],
+        size:list=[800,600],
         beamWidth:float=0.25,
         beamThreshold:float=0.01):
         """ Computes vertical intersection in a volume in the beam direction.
@@ -4266,8 +4322,8 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95258e-310,
-        b:float=0):
+        a:float=6.953e-310,
+        b:float=1.4822e-323):
         """ Precip rate from KDP
 
         Parameters
@@ -4284,9 +4340,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95258e-310,
-        b:float=0,
-        c:float=6.08801e-310):
+        a:float=6.953e-310,
+        b:float=1.4822e-323,
+        c:float=6.953e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
@@ -4477,7 +4533,7 @@ class Rack(rack.prog.Register):
         path:str
           [/]dataset<i>[/data<j>|/quality<j>]
         quantity:str
-          DBZH|VRAD|RHOHV|...
+          DBZH:VRAD:RHOHV:...
         elangle:list
           min[:max]
         count:int

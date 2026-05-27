@@ -13,3 +13,6 @@
 all build configure install install-python test-python clean compdb cppcheck help \
 docker-image docker-image-test docker-image-push docker-clean:
 	$(MAKE) -C src $@
+
+release:
+	cd python && rack --python rack/core.py
