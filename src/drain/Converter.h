@@ -50,7 +50,7 @@ namespace drain {
  *  For now, just a StringConverter, other types are future options.
  */
 template <typename T>
-class Converter {
+class ConverterOLD {
 public:
 
 	static

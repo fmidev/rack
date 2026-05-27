@@ -899,7 +899,7 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		composite.extract(dstProduct, channels, encoding, cropImage);
 		encoding.clear();
 
-		mout.success<LOG_WARNING>("extracted!");
+		mout.success<LOG_DEBUG>("extracted!");
 
 		/*
 		if (!composite.legend.empty()){

@@ -134,6 +134,26 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 		return;
 	}
 
+	// NEW: parameter checking
+	if ((odim.az_angle < -360.0) || (odim.az_angle > +360.0)){
+		//double a = az_angle
+		mout.suspicious(DRAIN_LOG(odim.az_angle), " not correcting... ");
+	}
+
+	if ((odim.area.width > 10000) || (odim.area.height > 10000)){
+		mout.suspicious(DRAIN_LOG(odim.area));
+		// todo scales? -> warn / error
+		return;
+	}
+
+	if (odim.range.width() < 0){
+		mout.error("negative ", DRAIN_LOG(odim.range));
+		// todo scales? -> warn / error
+		return;
+	}
+
+
+
 	const DataSet<PolarSrc> & srcDataSet = src.begin()->second;
 	const Data<PolarSrc> & srcData = srcDataSet.getFirstData();
 	const std::string & quantity = srcData.odim.quantity;
@@ -469,11 +489,13 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 
 	} // for i
 
+	// METADATA
 	dstData.odim.angles.clear();
 	dstData.odim.angles.reserve(src.size());
 	std::set<double> angles;
 	for (const auto & entry: src){
-		mout.accept<LOG_WARNING>(entry.first, ": ", entry.second.getFirstData().odim.elangle);
+		const auto & data = entry.second.getFirstData();
+		mout.accept<LOG_NOTICE>(entry.first, ": ", data.odim.elangle, "\t [", data.odim.lowprf, ',' , data.odim.highprf, "]");
 		dstData.odim.angles.insert(dstData.odim.angles.end(), entry.second.getFirstData().odim.elangle);
 		angles.insert(entry.second.getFirstData().odim.elangle);
 	}

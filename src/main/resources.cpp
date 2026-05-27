@@ -49,7 +49,8 @@ RackContext::RackContext() : drain::SmartContext(__FUNCTION__) {
 
 RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
 	drain::Logger mout( __FILE__, __FUNCTION__);
-	mout.special("copying ", __FUNCTION__);
+
+	mout.special("Copy constr ", __FUNCTION__, "(..), ID=", getId());
 
 	// , xmlTrack(drain::image::BaseSVG::SVG)
 	svgTrack->setType(drain::image::svg::SVG);

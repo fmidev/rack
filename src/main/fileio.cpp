@@ -421,7 +421,7 @@ void CmdOutputFile::exec() const {
 			mout.warn("Unrecognized ODIM version: '", ODIM::versionFlagger, "' , setting: ", conventions);
 		}
 		else {
-			mout.revised<LOG_NOTICE>("setting: ", DRAIN_LOG(conventions));
+			mout.revised<LOG_INFO>("setting: ", DRAIN_LOG(conventions));
 		}
 
 

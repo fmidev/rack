@@ -124,10 +124,10 @@ public:
 		}
 	}
 
-	/// Define the list of accepted quantities.
+	/// Define the list of accepted keys.
 	/**
 	 *
-	 *  \param arg  - this first arg can be also a comma-separated list of quantities - literals or regExps.
+	 *  \param arg  - literal, regExp or several mixed, as a comma-separated list
 	 *  \param args - separate list of quantities - literals or regExps.
 	 */
 	template <typename ...TT>
@@ -140,7 +140,6 @@ public:
 
 	/// Append keys to existing list.matcher_t
 	template <typename ...TT>
-	//void addKey(const std::string & arg, const TT & ... args){
 	void addKey(const matcher_t & arg, const TT & ... args){
 		adaptKey(arg);
 		addKey(args...);

@@ -39,10 +39,23 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 
+template <>
+struct Converter<VariableLike> {
+
+	template <class U>
+	static void to(const VariableLike & src, U & dst){
+		dst = (const U) src;
+	}
+
+	static void to(const VariableLike & src, std::string & dst){
+		dst = src.toStr();
+	}
+};
+
 
 
 /// VariableFormatter uses this. Consider stringstream?
-
+/*
 template <>
 template <class D>
 inline
@@ -65,6 +78,6 @@ void Convert2<VariableLike>::convert(const S &src, VariableLike & dst){
 	dst = src;
 	// std::cerr << __FILE__ << ':' << __FUNCTION__ << ':' << __LINE__ << ':' << src << ':' << drain::TypeName<S>::str() << " -> vlike:" << dst << '\n';
 }
-
+*/
 
 }

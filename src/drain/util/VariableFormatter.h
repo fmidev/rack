@@ -162,8 +162,6 @@ public:
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		if (format.empty()){
-			//std::string s;
-			//drain::Convert2<T>::convert(value, s);
 			ostr << value;
 			return true;
 		}
@@ -176,7 +174,7 @@ public:
 			mout.attention<LOG_DEBUG>("substring extraction: ", format);
 
 			std::string s;
-			drain::Convert2<T>::convert(value, s);
+			drain::Convert::convert(value, s);
 			//drain::StringTools::import(variable, s);
 
 			std::vector<size_t> v;
@@ -220,7 +218,7 @@ public:
 			case 's':
 			{
 				std::string s;
-				drain::Convert2<T>::convert(value, s);
+				drain::Convert::convert(value, s);
 				// drain::StringTools::import(variable, s);
 				n = std::sprintf(buffer, format.c_str(), s.c_str());
 			}
@@ -228,7 +226,7 @@ public:
 			case 'c':
 			{
 				std::string s;
-				drain::Convert2<T>::convert(value, s);
+				drain::Convert::convert(value, s);
 				//drain::StringTools::import(variable, s);
 				n = std::sprintf(buffer, format.c_str(), s.at(0)); // ?
 			}
@@ -246,7 +244,7 @@ public:
 			case 'G':
 			{
 				double d = NAN; //nand()
-				drain::Convert2<T>::convert(value, d);
+				drain::Convert::convert(value, d);
 				// drain::StringTools::import(variable, d);
 				//drain::MapTools::get(variables, key, d);
 				// ostr << d << "=>"; // debugging
@@ -261,7 +259,7 @@ public:
 			case 'X':
 			{
 				int i = 0;
-				drain::Convert2<T>::convert(value, i);
+				drain::Convert::convert(value, i);
 				// drain::convertAny(variable, i);
 				// drain::StringTools::import(variable, i);
 				// drain::MapTools::get(variables, key, i);

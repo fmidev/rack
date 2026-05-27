@@ -32,7 +32,7 @@ TIMESTAMP="${TIME:0:4}/${TIME:4:2}/${TIME:6:2} ${TIME:8:2}:${TIME:10:2}"
 #
 
 SITE=${SITE:-$3}
-SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
+SITE=${SITE:-`rack $VOLUME --echo '${NOD}'`}
 if [ "$SITE" == '' ]; then
     echo "# ERROR: SITE not given, and could not be derived from data. Exiting..."
     echo 
@@ -43,6 +43,7 @@ fi
 BASENAME=$BASENAME${QUANTITY:+"-$QUANTITY"}
 
 MAP=map-$SITE.png
+echo "#SITE=$SITE"
 make $MAP
 
 
@@ -58,16 +59,35 @@ else
     palette="--palette ''"
 fi
 
+echo "# $TIMESTAMP $SITE $MAP"
 #cmd="rack $VOLUME $select -o $BASENAME.png --cSize 500,500 $select  -c $palette --target 'C,0.2,-32,1,100' --imageAlpha -o $BASENAME-cart-rgb.png"
-cmd="rack $VOLUME $select --encoding C,0.4 -o $BASENAME.png --cSize 500 $select -c $palette --iPhysical false --imageTransp 0.1:0.3 -o $BASENAME-cart-rgb.png"
+#cmd="rack $VOLUME $select --encoding C,0.4 -o $BASENAME.png --cSize 500 $select -c $palette --iPhysical false --imageTransp 0.1:0.3 -o $BASENAME-cart-rgb.png"
+
+# NEW (SVG)
+bgmap=''
+if [ -f $PWD/$MAP ]; then
+    bgmap="--gLinkImage '$PWD/$MAP' --gAlign 'HORZ_FILL:VERT_FILL'"
+else
+    echo "# MAP '$MAP' not found, $PWD/$MAP"
+fi
+
+cmd="rack $VOLUME --gLayout VERT,DECR --outputPrefix $PWD/ $select --encoding C,0.4 -o $BASENAME.png --cSize 500 $bgmap  $select -c $palette --iPhysical false --imageTransp 0.1:0.3 -o $BASENAME-cart-rgb.png -o $BASENAME-cart-rgb.svg"
 echo "$cmd"
 eval "$cmd"
 
+cmd="convert $BASENAME-cart-rgb.svg $PANEL"
+echo "$cmd"
+eval "$cmd"
 
-echo $TIMESTAMP $SITE $MAP
+exit $?
 
 
-#if [ -s $BASENAME-cart-map.png ]; then
+
+# rack volume-anom-sea-remover,0.25.h5 --gLayout VERT,DECR  --outputPrefix $PWD/ -Q DBZH --encoding C,0.4 -o anom-sea.png --cSize 500,500  --gLinkImage $PWD/map-fikor.png --gAlign 'HORZ_FILL:VERT_FILL'  -Q DBZH -c --palette '' --iPhysical false --imageTransp 0.1:0.3 -o anom-sea-cart-rgb.png -o foo.svg && display foo.svg
+
+
+
+
 if [ -f $MAP ]; then
     #RGB1=tmp1.tif
     TMP2=tmp2.tif

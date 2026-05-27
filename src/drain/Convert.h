@@ -37,61 +37,136 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iterator>
 #include <sstream>
 
-//#include "Log.h"
-//#include "MapTools.h"
-//#include "Sprinter.h"
-// #include "StringTools.h"
 
 namespace drain {
 
 /// Utility class with static conversions
-/**
- *  Deprecating, see Converter.
- */
-/*
+
+
+/// Conversion traits — specialize this for custom source types.
+/** Default: trivial copy for same type, stringstream for different types. */
+template <class T>
+struct Converter {
+
+	static void to(const T & src, T & dst){
+		dst = src;
+	}
+
+	template <class U>
+	static void to(const T & src, U & dst){
+		std::stringstream sstr;
+		sstr << std::boolalpha << src;
+		sstr >> dst;
+	}
+};
+
+/// String source: trivial copy, bool parse, or stream parse.
+template <>
+struct Converter<std::string> {
+
+	static void to(const std::string & src, std::string & dst){ dst = src; }
+
+	static void to(const std::string & src, bool & dst){
+		dst = (src == "true" || src == "True" || src == "TRUE");
+	}
+
+	template <class U>
+	static void to(const std::string & src, U & dst){
+		std::stringstream sstr(src);
+		sstr >> dst;
+	}
+};
+
+/// const char* source: delegate to Converter<std::string>.
+template <>
+struct Converter<const char *> {
+	template <class U>
+	static void to(const char * src, U & dst){
+		Converter<std::string>::to(std::string(src), dst);
+	}
+};
+
+/// char* source (string literals deduce through const T& as char[N], decaying to char*).
+template <>
+struct Converter<char *> {
+	template <class U>
+	static void to(const char * src, U & dst){
+		Converter<const char *>::to(src, dst);
+	}
+};
+
+/// Bool source: "true"/"false" for strings, 1/0 for numerics.
+template <>
+struct Converter<bool> {
+
+	static void to(const bool & src, bool & dst){ dst = src; }
+
+	static void to(const bool & src, std::string & dst){ dst = src ? "true" : "false"; }
+
+	template <class U>
+	static
+	typename std::enable_if<std::is_arithmetic<U>::value && !std::is_same<U, bool>::value>::type
+	to(const bool & src, U & dst){
+		dst = static_cast<U>(src);
+	}
+};
+
+
+
 class Convert {
 
 public:
 
-	/// Trivial case: source and destination are of same class.
+	/// General case: dispatch to Converter<T1> traits.
+	/** std::decay ensures array types (e.g. const char[N]) map to their pointer specialization.
+	template <class T1, class T2>
+	static void convert(const T1 & src, T2 & dst){
+		Converter<typename std::decay<T1>::type>::to(src, dst);
+	}
+	*/
+
+	/// General case: dispatch to Converter<T1> traits.
+	template <class T1, class T2>
+	static void convert(const T1 & src, T2 & dst){
+		Converter<T1>::to(src, dst);
+	}
+
+	template <class T2>
+	static void convert(const char *src, T2 & dst){
+		Converter<const char *>::to(src, dst);
+	}
+
+	/// Numeric -> bool: zero is false, any other value is true.
 	template <class T>
 	static
-	void convert(const T & src, T & dst){
-		dst = src;
+	typename std::enable_if<std::is_arithmetic<T>::value && !std::is_same<T, bool>::value>::type
+	convert(const T & src, bool & dst){
+		dst = (src != T(0));
 	}
 
-
-	template <class S, class D>
-	static
-	void convert(const S & src, D & dst){
-		//std::ostringstream / std::istringstream,
-		std::stringstream sstr;
-		sstr << src;
-		sstr >> dst;
+	/// Formatted output.
+	template <class T>
+	static void convert(const T & src, std::ostream & ostr, const char * format){
+		std::stringstream sstr(src);
+		ostr << sstr.str();
 	}
 
-	template <class D>
-	static
-	void convert(const char * src, D & dst){
-		std::ostringstream sstr(src);
-		//sstr << src;
-		sstr >> dst;
-		if (sstr.failbit){
-			std::cerr << __FILE__ << " read of " << src << " failed with " << sstr.failbit << std::endl;
-		}
+	template <class T>
+	static void convert(const T & src, std::ostream & ostr, const std::string & format){
+		convert(src, ostr, format.c_str());
 	}
-
-
 
 };
-*/
+
+
+
 
 /// Utility class with static conversions
 /**
  *
  */
 template <class T>
-class Convert2 {
+class ConvertOld {
 
 public:
 

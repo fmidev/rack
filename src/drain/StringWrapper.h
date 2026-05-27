@@ -33,7 +33,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_WRAPPER
 
 
-#include "Converter.h"
+//#include "Converter.h"
+#include "Convert.h"
 
 namespace drain {
 
@@ -118,13 +119,15 @@ public:
 	//template <typename T2>
 	inline
 	void set(const T & x){
-		Converter<T>::convert(x, *this);
+		//Converter<T>::convert(x, *this);
+		Convert::convert(x, *this);
 	};
 
 	inline
 	bool operator==(const T & x){
 		std::string s;
-		Converter<T>::convert(x, s);
+		//Converter<T>::convert(x, s);
+		Convert::convert(x, s);
 		return *this == s;
 	}
 
@@ -135,5 +138,5 @@ public:
 
 } // drain::
 
-#endif /* STRING_H_ */
+#endif
 

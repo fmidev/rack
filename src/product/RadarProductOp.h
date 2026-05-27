@@ -329,7 +329,7 @@ void RadarProductOp<MS,MD>::setEncoding(const ODIM & inputODIM, PlainData<dst_t>
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.unimplemented<LOG_WARNING>("Does not set data storarge type?");
+	//mout.unimplemented<LOG_WARNING>("Does not set data storage type?");
 
 	// Set actual scaling up to date with metadata)
 	dst.data.setScaling(dst.odim.scaling);

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,3,"beta")
+#define RACK_VERSION drain::Version<>(20,3)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -52,6 +52,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 20.2
  *  - CumulativeProductOp: fixed encoding (when using src)
  *  - Removed CmdOutputQuantity
+ *  Version 20.3
+ *  - Convert re-factored
  * 
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

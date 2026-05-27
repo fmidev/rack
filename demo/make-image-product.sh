@@ -68,7 +68,9 @@ fi
 #OUTFILE_PROD=$OPERATOR-$QUANTITY-rgb-leg.png
 ID='tmp-${what:product}-${what:quantity}'
 
-OUTFILE=${OUTFILE:-$OPERATOR-$QUANTITY-${NICK:+"$NICK-"}panel.png}
+NICK=${NICK:+"$NICK-"}
+#OUTFILE=${OUTFILE:-$OPERATOR-$QUANTITY-${NICK:+"$NICK-"}panel.png}
+OUTFILE=${OUTFILE:-${NICK}${OPERATOR}-${QUANTITY}-panel.png}
 
 
 quality=${PROD:+"-Q QIND -o '$ID-QIND.png'"}
@@ -80,12 +82,12 @@ prodsel="$select$product"
 prodsel=${prodsel:+"$select $product"}
 
 TMP_DIR="$PWD/out"
-TMP_FILE_SVG="panel-$NICK.svg"
+TMP_FILE_SVG="${NICK}panel.svg"
 mkdir --parents $TMP_DIR
 
 style="--gStyle .BORDER='stroke:darkslateblue;stroke-width:1px' --gStyle .IMAGE_BORDER='stroke:slateblue;stroke-width:1px' \\"
 
-cmd="rack $INPUT \\ --outputPrefix $TMP_DIR/ \\ $style $prodsel --cSize 500,500 --select quantity=$QUANTITY -c \\ --paletteDefault -o '$ID-rgb.png' \\$quality --paletteOut '$ID-legend.svg'\\ -o $TMP_FILE_SVG"
+cmd="rack $INPUT \\ --outputPrefix $TMP_DIR/ \\ $style $prodsel --cSize 500,500 --select quantity=$QUANTITY -c \\ --paletteDefault -o '$ID-rgb.png' \\$quality --outputPalette '$ID-legend.svg'\\ -o $TMP_FILE_SVG"
 
 
 echo ${cmd//\\/ }
