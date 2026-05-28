@@ -20,6 +20,7 @@ from types import SimpleNamespace
 
 from matplotlib import lines, scale
 from numpy import size
+from sympy import arg
 
 from rack import script
 #from rack.composite import handle_prod
@@ -395,7 +396,7 @@ def handle_prhi(args, progBuilder: rack.core.Rack):
 """
 
 
-def handle_gnuplot(args, progBuilder: rack.core.Rack, **kw_args): #range_m:tuple=None, height_m:tuple=None):
+def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
 
     # from rack.gnuplot import Terminal, Datafile, Format, PlotSequence, ConfSequence, Registry
     
@@ -440,6 +441,7 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack, **kw_args): #range_m:tuple
     confCmdReg.unset("tics")
     confCmdReg.grid(rack.gnuplot.Tics.XTICS, rack.gnuplot.Tics.YTICS)
     confCmdReg.unset("border")
+    confCmdReg.unset("key") # legend 
 
     # consider single command with multiple parameters for margins, e.g. margin left 10, right 20, top 30, bottom 40
     """
@@ -460,8 +462,31 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack, **kw_args): #range_m:tuple
     # script.extend(gpl_plot.to_list())
     # print(gpl_plot.to_string())  # ";\n
     # gpl_plot.clear() # Clear plot sequence to separate it from background image plot in the output
-    xrange = tuple(kw_args.get('xrange', (-250000, 250000)))
-    yrange = tuple(kw_args.get('yrange', (0, 8000)))
+    
+    range_args = {
+        "xrange": args.range,
+        "yrange": args.height
+    }
+    for (k,v) in range_args.items():
+        if type(v) == list:
+            v = tuple(v)
+        elif type(v) == str:
+            v = [int(i) for i in str(v).strip().split(':')]
+        range_args[k] = v
+
+    """
+    for arg in ["range", "height"]:
+        value = rack.prog.Register.get_default(rack.core.Rack.pPseudoRhi, 'range')
+        value = prhi.args.get(arg, value)
+        if type(value) == list:
+            value = tuple(value)
+        elif type(value) == str:
+            value = [int(i) for i in str(value).strip().split(':')]
+        gnuplot_args[arg] = value
+    """
+    
+    xrange = tuple(range_args.get('xrange', (-250000, 250000)))
+    yrange = tuple(range_args.get('yrange', (0, 8000)))
 
     confCmdReg.xrange(xrange)
     confCmdReg.yrange(yrange)
@@ -541,24 +566,9 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # removed for debugging
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
 
-    prhi = rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi)
+    prhi = rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi, True)
 
-    # Derive GnuPlot XRANGE and YRANGE from pPseudoRhi arguments, with fallback to defaults if not provided. 
-    # This is a bit hacky, but it allows us to keep the GnuPlot configuration in sync with the pPseudoRhi parameters without requiring the user to specify them twice.
-    gnuplot_args = {}
-    for arg in ["range", "height"]:
-        value = rack.prog.Register.get_default(rack.core.Rack.pPseudoRhi, 'range')
-        value = prhi.args.get(arg, value)
-        if type(value) == list:
-            value = tuple(value)
-        elif type(value) == str:
-            value = [int(i) for i in str(value).strip().split(':')]
-        gnuplot_args[arg] = value
-    
-    #print(f"range_m: {range_m}, height_m: {height_m}")
-    print(f"range and height: {gnuplot_args}")
-
-    handle_gnuplot(args, rackCmdReg, xrange=gnuplot_args.get('range'), yrange=gnuplot_args.get('height'))
+    handle_gnuplot(args, rackCmdReg)
 
     # Rack outfiles (only)
     handle_outfiles(args, rackCmdReg)

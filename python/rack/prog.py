@@ -225,10 +225,10 @@ class Register:
 
         # Function signature
         sig = inspect.signature(func)
-        params = list(sig.parameters.values())
+        sig_params = list(sig.parameters.values())
         # Remove 'self' if it exists in the source signature
-        if params and params[0].name == "self":
-            params = params[1:]
+        if sig_params and sig_params[0].name == "self":
+            sig_params = sig_params[1:]
 
         # Function name 
         if parser:
@@ -257,7 +257,7 @@ class Register:
         if not name_mapper:
             return
 
-        for v in params:
+        for v in sig_params:
             name = v.name
             logger.debug(f"{func.__name__}: arg {v.name} default: {v.default}")
             if name_mapper:
@@ -293,7 +293,7 @@ class Register:
     
 
     # @classmethod
-    def handle_published_cmd_args(self, args: argparse.Namespace, cmd_func: callable) -> Command:
+    def handle_published_cmd_args(self, args: argparse.Namespace, cmd_func: callable, write_back=False) -> Command:
         """
         Docstring for handle_exploded_command
         
@@ -303,7 +303,7 @@ class Register:
         """
     
         sig = inspect.signature(cmd_func)
-        params = list(sig.parameters.values())
+        sig_params = list(sig.parameters.values())
 
         var_args = vars(args)
         # logger.warning(f"Handling exploded command {cmd_func.__name__}")
@@ -324,7 +324,7 @@ class Register:
 
         # explicit args. Notice that they are given as --cmd_func arg=value, 
         # so they are in var_args with key cmd_func and value "arg=value,..."
-        for v in params:
+        for v in sig_params:
             #name = v.name
             if v.name == "self":
                 continue
@@ -341,6 +341,13 @@ class Register:
         
         cmd.set_args(*pos_args, **kw_args)
         logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
+
+        # cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
+        # print("Final explicit args: ", pos_args, kw_args)
+        if write_back:
+            # Write back to args, for example, for use in other commands or for logging
+            for k,v in kw_args.items():
+                setattr(args, k, v)
 
         return cmd
 
