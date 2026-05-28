@@ -66,6 +66,16 @@ class Register:
             return False
         else:
             return value==param.default
+        
+    def get_default(func, key):
+        """ Return the default value for a given key in a function, or None if no default value is defined.
+        """
+        sig = inspect.signature(func)
+        param = sig.parameters[key]
+        if param.default is inspect._empty:
+            return None
+        else:
+            return param.default
 
 
     def make_cmd(self, local_vars:dict, separator:str="") -> Command:
@@ -289,9 +299,7 @@ class Register:
         
         :param args: Namespace of arguments, typically from argparse. The keys should match the parameter names of cmd_func.
         :param cmd_func: The function to call with the arguments. Typically, this is a method of the Rack class, e.g., Rack.select or Rack.pPseudoRhi.
-        :param exec: If True, the command will be executed (i.e., cmd_func will be called with the arguments).
-        :type exec: bool
-        :return: If exec is True, returns the result of cmd_func. Otherwise, returns a dict of arguments that would be passed to cmd_func.
+        :return: The result of cmd_func - a Command object.
         """
     
         sig = inspect.signature(cmd_func)
@@ -314,7 +322,8 @@ class Register:
         #
         logger.debug(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
 
-        # explicit args. Notice that they are given as --cmd_func arg=value, so they are in var_args with key cmd_func and value "arg=value,..."
+        # explicit args. Notice that they are given as --cmd_func arg=value, 
+        # so they are in var_args with key cmd_func and value "arg=value,..."
         for v in params:
             #name = v.name
             if v.name == "self":
@@ -325,18 +334,13 @@ class Register:
                 # default is studied "locally"
                 if value != v.default:
                     logger.debug(f"Argument {v.name} has value {value} different from default {v.default}, including in command")
+                    # If the value is a tuple, format it as "min,max" -> "min:max" 
                     kw_args[v.name] = str(value).strip().replace(cmd.fmt.PARAM_SEPARATOR, cmd.fmt.VALUE_SEPARATOR) 
-                    #.strip('"').strip("'") # TODO: strip quotes if any, for example, value.strip('"').strip("'") or similar
-                    #logger.info(f"{cmd_func.__name__}: adding argument {v.name}={value}")
             else:
                 logger.warning(f"Argument {v.name} not found in args or is None, skipping for {cmd_func.__name__}")
         
         cmd.set_args(*pos_args, **kw_args)
         logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
-
-        # if exec:
-        # logger.warning(f"Executing '{cmd_func.__name__}' with explicit args: {kw_args}")
-        # cmd = cmd_func(self, free_args, **dict_args)
 
         return cmd
 

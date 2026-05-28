@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 import os
 import re # GEOCONF filename-KEY extraction
+import inspect
 import logging
 
 from types import SimpleNamespace
@@ -139,6 +140,12 @@ def build_parser():
         metavar="<filename>",
         default=None,
         help="Generate GnuPlot image (e.g. 'png')")
+
+    parser.add_argument(
+        "--gnuplot_script",   
+        metavar="<filename>",
+        default=None,
+        help="Explicit name for GnuPlot script (e.g. 'plot.gnu')")
 
     parser.add_argument(
         "--title",   
@@ -388,7 +395,7 @@ def handle_prhi(args, progBuilder: rack.core.Rack):
 """
 
 
-def handle_gnuplot(args, progBuilder: rack.core.Rack):
+def handle_gnuplot(args, progBuilder: rack.core.Rack, **kw_args): #range_m:tuple=None, height_m:tuple=None):
 
     # from rack.gnuplot import Terminal, Datafile, Format, PlotSequence, ConfSequence, Registry
     
@@ -453,19 +460,19 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     # script.extend(gpl_plot.to_list())
     # print(gpl_plot.to_string())  # ";\n
     # gpl_plot.clear() # Clear plot sequence to separate it from background image plot in the output
+    xrange = tuple(kw_args.get('xrange', (-250000, 250000)))
+    yrange = tuple(kw_args.get('yrange', (0, 8000)))
 
-    xrange = (-220000, +240000)
-    yrange = (100, 8000)
-
-    confCmdReg.xrange(*xrange)
+    confCmdReg.xrange(xrange)
     confCmdReg.yrange(yrange)
+
     confCmdReg.set("border") # see above unset border, to remove default border and tics, and then add custom border back with margins
     #confCmdReg
     confCmdReg.set("tics out nomirror scale 2")
     confCmdReg.set("mxtics 5")
     #confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
-    confCmdReg.xlabel(f'Range {xrange}')
-    confCmdReg.ylabel(f'Altitude {yrange}')
+    confCmdReg.xlabel(f'Range {xrange[0]} – {xrange[1]} m')
+    confCmdReg.ylabel(f'Altitude {yrange[0]} – {yrange[1]} m')
     #script.extend(gpl_conf.to_list())
 
 
@@ -479,10 +486,13 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     
     # Always write the GnuPlot script to a file, even if not executing it,
     # for debugging and user reference. The filename is derived from the --gnuplot argument.
-    script_filename = f"{args.gnuplot}.gnu" # TODO replace .png -> -png.gnu, .svg -> -svg.gnu, etc.
-    with open(script_filename, "w") as f:
+    if not args.gnuplot_script:
+        args.gnuplot_script = f"{args.gnuplot}.gnu" 
+    #args.gnuplot_script = get_background_filename(args, prefixed=False).removesuffix(f".{terminal}") + ".gnu"
+    #script_filename = f"{args.gnuplot}.gnu" # TODO replace .png -> -png.gnu, .svg -> -svg.gnu, etc.
+    with open(args.gnuplot_script, "w") as f:
         f.write(script)
-    logger.info(f"GnuPlot script written to: {script_filename}")
+    logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
     return script
 
 
@@ -531,15 +541,24 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # removed for debugging
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
 
-    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi)
+    prhi = rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi)
 
-    #handle_prhi(args, progBuilder)
+    # Derive GnuPlot XRANGE and YRANGE from pPseudoRhi arguments, with fallback to defaults if not provided. 
+    # This is a bit hacky, but it allows us to keep the GnuPlot configuration in sync with the pPseudoRhi parameters without requiring the user to specify them twice.
+    gnuplot_args = {}
+    for arg in ["range", "height"]:
+        value = rack.prog.Register.get_default(rack.core.Rack.pPseudoRhi, 'range')
+        value = prhi.args.get(arg, value)
+        if type(value) == list:
+            value = tuple(value)
+        elif type(value) == str:
+            value = [int(i) for i in str(value).strip().split(':')]
+        gnuplot_args[arg] = value
+    
+    #print(f"range_m: {range_m}, height_m: {height_m}")
+    print(f"range and height: {gnuplot_args}")
 
-    # Note: progBuilder is passed to handle_gnuplot, but it doesn't actually modify the progBuilder, just generates a separate GnuPlot script.
-    # This is a bit hacky, but allows us to keep all command handling in one place for now.
-    #
-    # Currently not used: gnuplot_script = 
-    handle_gnuplot(args, rackCmdReg)
+    handle_gnuplot(args, rackCmdReg, xrange=gnuplot_args.get('range'), yrange=gnuplot_args.get('height'))
 
     # Rack outfiles (only)
     handle_outfiles(args, rackCmdReg)
@@ -608,9 +627,9 @@ def main():
         #os.system(prog.to_string(fmt))
         
         fmt = rack.cmdline.RackFormatter()
-        args = prog.to_token_list(fmt)
+        cmd = prog.to_token_list(fmt)
         #logger.debug(f"Executing command: {args}")
-        result = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if result.returncode != 0:
             if result.stdout:
                 logger.info(f"stdout:\n{result.stdout.rstrip()}")
@@ -619,7 +638,12 @@ def main():
             logger.error(f"Command exited with code {result.returncode}")
         # os.system(prog.to_string(fmt))  # subprocess! 
         
-
+        if args.gnuplot_script:
+            cmd = ["gnuplot", args.gnuplot_script]
+            logger.info(f"Executing GnuPlot script: {cmd}")
+            result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            #, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    
         #logger.info("# Executing GnuPlot script...")
         #os.system(f"gnuplot {script_filename}") 
 
