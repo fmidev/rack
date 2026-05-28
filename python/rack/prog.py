@@ -324,10 +324,18 @@ class Register:
 
         # explicit args. Notice that they are given as --cmd_func arg=value, 
         # so they are in var_args with key cmd_func and value "arg=value,..."
+        
+        # check pos_args with index:
+        i = 0
         for v in sig_params:
             #name = v.name
             if v.name == "self":
                 continue
+
+            if i < len(pos_args):
+                if write_back:
+                    setattr(args, v.name, pos_args[i])    
+            i += 1
 
             if v.name in var_args and var_args[v.name] is not None:
                 value = var_args[v.name]
