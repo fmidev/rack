@@ -18,6 +18,13 @@ from typing import Protocol
 
 
 class RackModule(Protocol):
+    """ Protocol for Rack modules. A Rack module is a Python module that defines a set of commands 
+    and a way to compose them into a command sequence. 
+    
+    It should have the following methods:
+    - compose_command(args) -> CommandSequence: takes the parsed arguments and returns a CommandSequence
+    - build_parser() -> argparse.ArgumentParser: returns an ArgumentParser for the module-specific arguments.
+    """
     def compose_command(args) -> CommandSequence:
         ...
 

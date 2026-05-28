@@ -396,12 +396,7 @@ class CommandSequence:
         result = []
         fmt = ParamFormatter()
         for cmd in self.commands:
-            # result.append((cmd.name, cmd.args, cmd.expl_keys))
-            #result.append(f"{cmd.name}, {cmd.args}, {cmd.expl_keys}")
-            #result.append(cmd.to_string(fmt)) # quote 
-            #for k in cmd.expl_keys:
-            #    s += k+'='+cmd.args[k]
-            print(cmd.get_args(fmt))
+            # debug: print(cmd.get_args(fmt))
             args = []
             for k in cmd.expl_keys:
                 v = cmd.args[k]
