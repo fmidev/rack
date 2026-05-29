@@ -306,11 +306,10 @@ class Register:
         sig_params = list(sig.parameters.values())
 
         var_args = vars(args)
-        # logger.warning(f"Handling exploded command {cmd_func.__name__}")
         # logger.warning(f"Handling exploded command {cmd_func.__name__} with args: {var_args}") # too verbose...
 
         # First, create the command with default args, then override with explicit args, and finally parse free args if any.
-        cmd = cmd_func(self)
+        cmd:Command = cmd_func(self)
         # logger.warning(f"Building command {cmd_func.__name__}: {cmd.to_string()}")
 
         pos_args = []
@@ -318,8 +317,7 @@ class Register:
         if not cmd.fmt:
             cmd.set_separators()        
         cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
-        #cmd.set_args(*pos_args, **kw_args)
-        #
+        
         logger.debug(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
 
         # explicit args. Notice that they are given as --cmd_func arg=value, 
@@ -334,7 +332,8 @@ class Register:
 
             if i < len(pos_args):
                 if write_back:
-                    setattr(args, v.name, pos_args[i])    
+                    var_args[v.name] = pos_args[i]
+                    # = setattr(args, v.name, pos_args[i])    
             i += 1
 
             if v.name in var_args and var_args[v.name] is not None:

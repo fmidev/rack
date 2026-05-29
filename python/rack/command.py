@@ -329,6 +329,7 @@ class CommandSequence:
 
 
     def to_token_list(self, fmt:Formatter=None) -> list:
+        """Produces a list compatible with subprocess calls"""
 
         if not fmt:
             fmt = self.fmt

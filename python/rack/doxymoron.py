@@ -338,6 +338,8 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
 
     result = None
 
+    script += "-o foo.h5 --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
+
     # Note: shlex.split does not handle backslashes well, so we do it ourselves above.
     if shell:
         # In shell mode, we pass the whole script as a single string to subprocess.run with shell=True.
@@ -358,7 +360,7 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
         dump_subprocess_output(result, styleStdErr=Style(Color.RED, Effect.BOLD))
         exit(1) 
 
-    logger.info(Emoji.SUCCESS + " Success!")    
+    logger.info(Emoji.SUCCESS + " Executed with success!")    
 
 
 
@@ -383,6 +385,9 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
     logger.info(f"{Emoji.RUN.value} Executing shell script: {cmd}")
 
     # run_shell_system(cmd)
+    # "Proctocol" for maps: if BBOX, PROJ and SIZE are present, ensure the map is downloaded before running the script. This allows to use {BBOX}, {PROJ} and {SIZE} in the script, for example, to pass them to a map server.
+    cmd += "--format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
+     # Example of using conf values in the script, if needed.
     run_shell_subprocess(cmd, cliconf.shell)
     
 
@@ -521,12 +526,13 @@ def main() -> int:
             elif block.arg == 'py':
                 dst = pyconf
             #logger.info(obj)
+            logger.info(f"Parsing conf[{block.arg}] on line {block.start_line}")
             conf = rack.config.parse(block.content, dst, rack.config.PARSE_ERROR)
-            #logger.info(f"parsed conf({block.arg}): {conf}")            
-            logger.info(f"{Emoji.SUCCESS.value} Parsed conf[{block.arg}] on line {block.start_line}")
+            # logger.info(f"parsed conf({block.arg}): {conf}")            
             # json.str() # dump(conf, sys.stderr, indent=2)
             # logger.debug(styleDebug.str(json.JSONEncoder(indent=2).encode(conf)))
             logger.debug(json.JSONEncoder(indent=2).encode(conf))
+            logger.info(f"{Emoji.SUCCESS.value} parsed")
             # print(json.str(), file=sys.stderr)
 
         elif key == 'code':
@@ -540,6 +546,8 @@ def main() -> int:
                 logger.info(f"{Emoji.RUN.value}  Handling shell code from line {block.start_line}")
                 run_shell(block, cliconf)
                 cliconf.reset()
+            elif block.arg == None:
+                logger.warning(f"Skipping code{{}} at line {block.start_line}")
             else:
                 logger.warning(f"unknown code arg='{block.arg}' at line {block.start_line}")
             

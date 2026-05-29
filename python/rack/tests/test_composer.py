@@ -33,6 +33,9 @@ class TestComposer(unittest.TestCase):
             logger.error(e)
 
     def test_empty(self):
+        """
+        Test empty configuration
+        """
 
         composer = rack.cmdline.Composer(rack.composite)
         composer.set(INFILE='volume.h5')
@@ -41,20 +44,36 @@ class TestComposer(unittest.TestCase):
         self.assertTrue(isinstance(prog, rack.prog.CommandSequence))
         prog:rack.prog.CommandSequence = prog
         print (prog.to_string(self.fmtCLI))
-        print (prog.to_list(self.fmtCLI))
+        #print (prog.to_list(self.fmtCLI))
         print (composer.get_module_cmd_line())
 
     def test_simple(self):
+        """ 
+        Test simple configuration with some parameters.
 
+        """
         cmdline = rack.cmdline.Composer(rack.composite)
         cmdline.set(INDIR='/tmp/', OUTFILE='out.h5')
         cmdline.set(SCHEME='TILED')
         cmdline.set(INFILE='volume.h5')
         prog:rack.prog.CommandSequence = cmdline.get_prog()
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
-        print (prog.to_string(fmt))
+        #fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        print (prog.to_string(self.fmtCLI))
         self.assertEqual(0, 0)  
 
+    def test_composite(self):
+        """ 
+        Several inputs.
+        """
+        cmdline = rack.cmdline.Composer(rack.composite)
+        #cmdline.set(INDIR='/tmp/', OUTFILE='out.h5')
+        cmdline.set(OUTFILE='out.h5')
+        cmdline.set(SCHEME='TILED')
+        cmdline.set(INFILE=['data-kiira/201708121600_radar.polar.fi???.h5'])
+        prog:rack.prog.CommandSequence = cmdline.get_prog()
+        #fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
+        print (prog.to_string(self.fmtCLI))
+        self.assertEqual(0, 0)  
 
 
 if __name__ == "__main__":

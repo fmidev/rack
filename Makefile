@@ -16,3 +16,6 @@ docker-image docker-image-test docker-image-push docker-clean:
 
 release:
 	cd python && rack --python rack/core.py
+
+include Makefile-doxygen
+

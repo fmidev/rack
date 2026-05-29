@@ -72,6 +72,10 @@ def build_parser():
 
     rack.prog.Register.publish_func(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
 
+    parser.add_argument(
+        "--PRODUCT",
+        default=None,
+        help="Compute also a meteorogical product and save it in Cartesian coordinates.")
 
     parser.add_argument(
         "--PALETTE",
@@ -361,40 +365,13 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
 
     if formats:
         raise Exception('Unhandled formats:', formats)
-        
-"""
-import inspect
-def handle_prhi(args, progBuilder: rack.core.Rack):
- 
 
-    if args.rhi:
-        progBuilder.pPseudoRhi(args.rhi)
-        return
-    
-    #value = []
-    #svalue.append(args.AZIMUTH)
-    sig = inspect.signature(progBuilder.pPseudoRhi)
-    params = list(sig.parameters.values())
-    # Remove 'self' if it exists in the source signature
-    #    if params and params[0].name == "self":
-    #params = params[1:]
+def handle_product(args, progBuilder: rack.core.Rack):
 
-    var_args = vars(args)
-    dict_args = {}
-    for v in params:
-        name = v.name
-        if name in var_args and var_args[name] is not None:
-            value = var_args[name]
-            #value.append(f"{name}={value}")
-            dict_args[v.name] = value
+    if args.PRODUCT:
+        progBuilder.product(args.PRODUCT)
 
-    logger.warning(f"Calling pPseudoRhi with args: {dict_args}")
-
-    progBuilder.pPseudoRhi(**dict_args)
-
-    return
-"""
-
+    pass    
 
 def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
 
@@ -434,14 +411,13 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
         confCmdReg.title(args.title)
     elif args.select:
         confCmdReg.title(f"Pseudo-RHI [{args.select}] {args.az_angle} deg")
-    else:
+    elif args.title is None:
         confCmdReg.title(f"Pseudo-RHI {args.az_angle} deg")
 
 
     confCmdReg.unset("tics")
     confCmdReg.grid(rack.gnuplot.Tics.XTICS, rack.gnuplot.Tics.YTICS)
     confCmdReg.unset("border")
-    confCmdReg.unset("key") # legend 
 
     # consider single command with multiple parameters for margins, e.g. margin left 10, right 20, top 30, bottom 40
     """
@@ -459,9 +435,6 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
     plotCmdReg.comment("Plotting the background image (radar beams)")
     plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), filetype="png", 
                     style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
-    # script.extend(gpl_plot.to_list())
-    # print(gpl_plot.to_string())  # ";\n
-    # gpl_plot.clear() # Clear plot sequence to separate it from background image plot in the output
     
     range_args = {
         "xrange": args.range,
@@ -471,19 +444,9 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
         if type(v) == list:
             v = tuple(v)
         elif type(v) == str:
-            v = [int(i) for i in str(v).strip().split(':')]
+            v = tuple(int(i) for i in str(v).strip().split(':'))
         range_args[k] = v
 
-    """
-    for arg in ["range", "height"]:
-        value = rack.prog.Register.get_default(rack.core.Rack.pPseudoRhi, 'range')
-        value = prhi.args.get(arg, value)
-        if type(value) == list:
-            value = tuple(value)
-        elif type(value) == str:
-            value = [int(i) for i in str(value).strip().split(':')]
-        gnuplot_args[arg] = value
-    """
     
     xrange = tuple(range_args.get('xrange', (-250000, 250000)))
     yrange = tuple(range_args.get('yrange', (0, 8000)))
@@ -491,15 +454,16 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
     confCmdReg.xrange(xrange)
     confCmdReg.yrange(yrange)
 
-    confCmdReg.set("border") # see above unset border, to remove default border and tics, and then add custom border back with margins
-    #confCmdReg
+    # See above unset border, to remove default border and tics,
+    # and then add custom border back with margins
+    confCmdReg.set("border") 
     confCmdReg.set("tics out nomirror scale 2")
     confCmdReg.set("mxtics 5")
-    #confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
+    # confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
     confCmdReg.xlabel(f'Range {xrange[0]} – {xrange[1]} m')
     confCmdReg.ylabel(f'Altitude {yrange[0]} – {yrange[1]} m')
-    #script.extend(gpl_conf.to_list())
-
+    # script.extend(gpl_conf.to_list())
+    confCmdReg.unset("key") # legend 
 
     plotCmdReg.comment("Plotting a dummy line (to ensure gnuplot output is not empty)")
     plotCmdReg.plot('x*0', style=rack.gnuplot.Style.LINES) # linecolor='rgb "gray"', linewidth=1)
@@ -560,13 +524,9 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # RHI specific
     handle_infile(args, rackCmdReg)
 
-    # RHI specific here
-    # handle_outfile(args, rackCmdReg)
-
-    # removed for debugging
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
 
-    prhi = rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi, True)
+    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi, True)
 
     handle_gnuplot(args, rackCmdReg)
 

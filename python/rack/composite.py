@@ -17,10 +17,11 @@ import logging
 #from types import SimpleNamespace
 
 import rack.log
-import rack.prog
-import rack.core
 import rack.cmdline
 import rack.config
+import rack.core
+import rack.maps
+import rack.prog
 import rack.svg
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
@@ -37,7 +38,6 @@ class scheme:
     TILED = "TILED"
     DEFAULT = ""
 
-import rack.maps
 
 def build_parser() -> argparse.ArgumentParser:
     """ Creates registry of supported options of this script
@@ -70,33 +70,6 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         default="",
         help="Output file (basename). See --FORMAT")
     
-
-    """ Geographical information
-
-    parser.add_argument(
-        "--GEOCONF",
-        metavar="<KEY>|<filepath>-<KEY>.json>",
-        help="Read BBOX, PROJ, SIZE from file, default: geoconf/geoconf-<KEY>.json")  # FMI Scandinavia
-
-    parser.add_argument(
-        "--BBOX",
-        #default='6,51.3,49,70.2',
-        metavar="<lonLL,latLL,lonUR,latUR>",
-        help="Bounding box [cBBox]")  # FMI Scandinavia
-
-    parser.add_argument(
-        "--SIZE",
-        #default="800,800",
-        metavar="<width>[,<height>]",
-        help="") 
-    
-    parser.add_argument(
-        "--PROJ",
-        metavar="[<epsg>|<proj_str>]",
-        dest="EPSG",
-        #default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
-        help="")   # Same as epsg:4326
-    """
 
     parser.add_argument(
         "--METHOD",
