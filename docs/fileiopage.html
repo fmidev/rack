@@ -115,14 +115,13 @@ Reading and writing text files</h1>
 <div class="line">dataset1/data1/how</div>
 <div class="line">dataset1/data1/how:LOG=2.5</div>
 </div><!-- fragment --><p>Note that strings are presented in double quotes and arrays as comma-separated values in brackets.</p>
-<p>Based on metadata, it is often handy to automatically compose filenames. This is possible using <code>--expandVariables</code> as follows. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --expandVariables -o <span class="stringliteral">&#39;incoming-${NOD}_${what:date}-${what:time}.txt&#39;</span></div>
+<p>Based on metadata, it is often handy to automatically compose filenames. </p><div class="fragment"><div class="line">rack volume.h5  -o &#39;incoming-${NOD}_${what:date}-${what:time}.txt&#39;</div>
 </div><!-- fragment --><p> For using format templates and hadling multiple files on a single command line, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a>.</p>
 <p>Volume can be also created using a text file like the one created above, that is, with the desired structure and data types. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.txt -o volume-<span class="keyword">new</span>.h5</div>
 </div><!-- fragment --><p>One can modify the metadata directly from the command line by means of <code>--setODIM</code> <code>&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; command.</p>
-<div class="fragment"><div class="line">--setODIM &lt;assignment&gt;   (section: general)</div>
+<div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (Section: general)</div>
 <div class="line">  Set data properties (ODIM). Works also directly: --/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]. See --completeODIM</div>
-<div class="line">  - assignment () [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
-<div class="line"> </div>
+<div class="line">    assignment= [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
 </div><!-- fragment --><p>The command has a special shorthand <code>--/&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; . For example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=myValue          -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=123.456          -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset2/data3/what:quantity=<span class="stringliteral">&quot;PROB&quot;</span> -o volume-<span class="keyword">new</span>.h5</div>
@@ -227,14 +226,12 @@ Writing HTML files</h1>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --pCappi 1500 -c --encoding quantity=<span class="stringliteral">&#39;DBZH&#39;</span>  --palette <span class="stringliteral">&#39;default&#39;</span> -o pCappi-1500m-RGB.html</div>
 </div><!-- fragment --><h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
-<div class="fragment"><div class="line">--histogram &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;,&lt;commentChar&gt;   (section: general)</div>
-<div class="line">  Histogram. Optionally --format using keys index,range,range.min,range.max,count,label</div>
-<div class="line">  - count (0)</div>
-<div class="line">  - range (0:0)</div>
-<div class="line">  - filename () [&lt;filename&gt;.txt|-]</div>
-<div class="line">  - attribute (histogram) [&lt;attribute_key&gt;]</div>
-<div class="line">  - commentChar (#) [Prefix for header and postfix for labels]</div>
-<div class="line"> </div>
+<div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;  (Section: general)</div>
+<div class="line">  Histogram. Optionally --format using keys index,range,count,label</div>
+<div class="line">    count=0 </div>
+<div class="line">    range=0:0 </div>
+<div class="line">    filename= [&lt;filename&gt;.txt|-]</div>
+<div class="line">    attribute=histogram [&lt;attribute_key&gt;]</div>
 </div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=TH&#39;</span> --histogram filename=histogram.dat</div>
 </div><!-- fragment --><p>The resulting file consists of lines containing values and counts </p><div class="fragment"><div class="line"># ${index}   =${count} #${label} [${range}[ </div>
 <div class="line"># [0,256] [-327.68,327.68]</div>
@@ -313,7 +310,7 @@ Illustrating data structure</h1>
 Data structure illustrations creating by means of <code>dot</code> file output.</div></div>
 <h1><a class="anchor" id="file_quality"></a>
 Reading and combining quality data</h1>
-<p>In an operative environment, two parallel processes may perform quality control. <b>Rack</b> intelligently combines the resulting files using the following logic:</p>
+<p>In an operative environment, two parallel processes may perform quality control. <b>Rack</b> combines the resulting files using the following logic:</p>
 <ul>
 <li>The main quality field (<code>quantity=QIND</code> ) is updated, based on either target class field (<code>quantity=CLASS</code>) or (<code>quantity=&lt;class-name&gt;</code> ):<ol type="1">
 <li>If overall classification (<code>quantity=CLASS</code>) is provided, <code>QIND</code> and <code>CLASS</code> will be updated directly from those.</li>
@@ -343,7 +340,8 @@ Reading and combining quality data</h1>
 <div class="line">dataset1/quality1/what:quantity=<span class="stringliteral">&quot;QIND&quot;</span></div>
 <div class="line">dataset1/quality2/what:quantity=<span class="stringliteral">&quot;CLASS&quot;</span></div>
 <div class="line">dataset1/quality3/what:quantity=<span class="stringliteral">&quot;NOISE.SPECKLE&quot;</span></div>
-</div><!-- fragment --><p>These files can be combined simply with </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume-det1.h5 volume-det2.h5  -o volume-det-combined.h5</div>
+</div><!-- fragment --><p>These files can be combined simply with</p>
+<div class="fragment"><div class="line">rack volume-det1.h5 volume-det2.h5  -o volume-det-combined.h5 &gt;&gt; /tmp/foo</div>
 </div><!-- fragment --><p>The resulting file contains structure as follows: </p><div class="fragment"><div class="line">dataset1/data2/quality1/what:quantity=<span class="stringliteral">&quot;QIND&quot;</span></div>
 <div class="line">dataset1/data2/quality2/what:quantity=<span class="stringliteral">&quot;CLASS&quot;</span></div>
 <div class="line">dataset1/data2/quality3/what:quantity=<span class="stringliteral">&quot;EMITTER.LINE&quot;</span></div>

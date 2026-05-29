@@ -234,165 +234,178 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    };</div>
 </div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structdrain_1_1Enum.html#a8facdbb525590e31f97fdcb7a0fe097d">convert</a>(<span class="keyword">const</span> std::string &amp;s, E &amp; value){</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="comment">// std::cerr &lt;&lt; &quot;Using inv EnumConverter&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        value = dict.<a class="code hl_function" href="classdrain_1_1Dictionary.html#a6e778797e86f98f8491cf1141ccfcb2b">getValue</a>(s);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    };</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="comment">// tmp hack for DRAIN_ENUM</span></div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="keywordtype">void</span> to(<span class="keyword">const</span> E &amp; value, std::string &amp;s){</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        <a class="code hl_function" href="structdrain_1_1Enum.html#a8facdbb525590e31f97fdcb7a0fe097d">convert</a>(value, s);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    }</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>};</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structdrain_1_1Enum.html#a8facdbb525590e31f97fdcb7a0fe097d">convert</a>(<span class="keyword">const</span> std::string &amp;s, E &amp; value){</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="comment">// std::cerr &lt;&lt; &quot;Using inv EnumConverter&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>        value = dict.<a class="code hl_function" href="classdrain_1_1Dictionary.html#a6e778797e86f98f8491cf1141ccfcb2b">getValue</a>(s);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    };</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="comment">// tmp hack for DRAIN_ENUM</span></div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keyword">static</span> <span class="keyword">inline</span></div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keywordtype">void</span> to(<span class="keyword">const</span> std::string &amp; s, E &amp; value){</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <a class="code hl_function" href="structdrain_1_1Enum.html#a8facdbb525590e31f97fdcb7a0fe097d">convert</a>(s, value);</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    }</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>};</div>
 </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">/*</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">template &lt;class EnumType&gt;</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">class EnumConverter {</span></div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="comment">public:</span></div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="comment"></span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="comment">    static</span></div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="comment">    void convert(const EnumType &amp; value, std::string &amp;s){</span></div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="comment">        // std::cerr &lt;&lt; &quot;Using fwd EnumConverter&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span><span class="comment">        s.assign(drain::Enum&lt;EnumType&gt;::dict.getKey(value));</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">    };</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment"></span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment">    static</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">    void convert(const std::string &amp;s, EnumType &amp; value){</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">        // std::cerr &lt;&lt; &quot;Using inv EnumConverter&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">        value = drain::Enum&lt;EnumType&gt;::dict.getValue(s);</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">    };</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment"></span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">};</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> E, <span class="keywordtype">bool</span> STRICT=true&gt;</div>
-<div class="foldopen" id="foldopen00223" data-start="{" data-end="};">
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno"><a class="line" href="classdrain_1_1EnumWrapper.html">  223</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1EnumWrapper.html">EnumWrapper</a> : <span class="keyword">public</span> std::string { <span class="comment">// StringWrapper&lt;E&gt; {</span></div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">/*</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">template &lt;class EnumType&gt;</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="comment">class EnumConverter {</span></div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span><span class="comment">public:</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment"></span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="comment">    static</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">    void convert(const EnumType &amp; value, std::string &amp;s){</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">        // std::cerr &lt;&lt; &quot;Using fwd EnumConverter&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment">        s.assign(drain::Enum&lt;EnumType&gt;::dict.getKey(value));</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">    };</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment"></span> </div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">    static</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">    void convert(const std::string &amp;s, EnumType &amp; value){</span></div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">        // std::cerr &lt;&lt; &quot;Using inv EnumConverter&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="comment">        value = drain::Enum&lt;EnumType&gt;::dict.getValue(s);</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="comment">    };</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="comment"></span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">};</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">*/</span></div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    <a class="code hl_class" href="classdrain_1_1EnumWrapper.html">EnumWrapper</a>(<span class="keyword">const</span> std::string &amp; s=<span class="stringliteral">&quot;&quot;</span>){ <span class="comment">//  : std::string(s){</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        set(s);</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    };</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="comment">// what about: const char *</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keyword">inline</span></div>
-<div class="foldopen" id="foldopen00236" data-start="{" data-end="}">
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">  236</a></span>    <a class="code hl_function" href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">EnumWrapper</a>(<span class="keyword">const</span> E &amp; x){</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        set(x);</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    };</div>
-</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> E, <span class="keywordtype">bool</span> STRICT=true&gt;</div>
+<div class="foldopen" id="foldopen00236" data-start="{" data-end="};">
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="classdrain_1_1EnumWrapper.html">  236</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1EnumWrapper.html">EnumWrapper</a> : <span class="keyword">public</span> std::string { <span class="comment">// StringWrapper&lt;E&gt; {</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> T &amp; value){</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <span class="comment">// handle empty with default enum value?</span></div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        assign(<a class="code hl_struct" href="structdrain_1_1Enum.html">drain::Enum&lt;E&gt;::dict</a>.getKey(value, !STRICT));</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    }</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment">    virtual inline</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">    void setSpecial(const E &amp; x) override {</span></div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">        assign(drain::Enum&lt;E&gt;::dict.getKey(x, !STRICT));</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment">    };</span></div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <a class="code hl_class" href="classdrain_1_1EnumWrapper.html">EnumWrapper</a>(<span class="keyword">const</span> std::string &amp; s=<span class="stringliteral">&quot;&quot;</span>){ <span class="comment">//  : std::string(s){</span></div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        set(s);</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    };</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="comment">// what about: const char *</span></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00249" data-start="{" data-end="}">
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">  249</a></span>    <a class="code hl_function" href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">EnumWrapper</a>(<span class="keyword">const</span> E &amp; x){</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        set(x);</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    };</div>
+</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>};</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> T &amp; value){</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="comment">// handle empty with default enum value?</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        assign(<a class="code hl_struct" href="structdrain_1_1Enum.html">drain::Enum&lt;E&gt;::dict</a>.getKey(value, !STRICT));</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    }</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">    virtual inline</span></div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment">    void setSpecial(const E &amp; x) override {</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment">        assign(drain::Enum&lt;E&gt;::dict.getKey(x, !STRICT));</span></div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="comment">    };</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>};</div>
 </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="foldopen" id="foldopen00260" data-start="{" data-end="};">
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno"><a class="line" href="classdrain_1_1MultiEnumWrapper.html">  260</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1MultiEnumWrapper.html">MultiEnumWrapper</a> : <span class="keyword">public</span> std::string { <span class="comment">// StringWrapper&lt;E&gt; {</span></div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    <a class="code hl_class" href="classdrain_1_1MultiEnumWrapper.html">MultiEnumWrapper</a>(<span class="keyword">const</span> std::string &amp; s=<span class="stringliteral">&quot;&quot;</span>) : std::string(s){</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    };</div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <a class="code hl_class" href="classdrain_1_1MultiEnumWrapper.html">MultiEnumWrapper</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s) : std::string(s){</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    };</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="comment">// inline</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="comment">// MultiEnumWrapper(const MultiEnumWrapper &amp; wrapper) : std::string(wrapper){</span></div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="comment">// };</span></div>
+<div class="foldopen" id="foldopen00273" data-start="{" data-end="};">
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="classdrain_1_1MultiEnumWrapper.html">  273</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1MultiEnumWrapper.html">MultiEnumWrapper</a> : <span class="keyword">public</span> std::string { <span class="comment">// StringWrapper&lt;E&gt; {</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keyword">inline</span></div>
-<div class="foldopen" id="foldopen00280" data-start="{" data-end="}">
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno"><a class="line" href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">  280</a></span>    <a class="code hl_function" href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">MultiEnumWrapper</a>(<span class="keyword">const</span> T &amp; arg){</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        set(arg);</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    };</div>
-</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <a class="code hl_class" href="classdrain_1_1MultiEnumWrapper.html">MultiEnumWrapper</a>(<span class="keyword">const</span> std::string &amp; s=<span class="stringliteral">&quot;&quot;</span>) : std::string(s){</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    };</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span> </div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <a class="code hl_class" href="classdrain_1_1MultiEnumWrapper.html">MultiEnumWrapper</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *s) : std::string(s){</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    };</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> std::string &amp;arg){</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        assign(arg);</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    }</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span> </div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> <span class="keywordtype">char</span> * arg){</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        assign(arg);</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    }</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> MultiEnumWrapper &amp;arg){</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        assign(arg);</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    }</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="comment">// inline</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="comment">// MultiEnumWrapper(const MultiEnumWrapper &amp; wrapper) : std::string(wrapper){</span></div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="comment">// };</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00293" data-start="{" data-end="}">
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">  293</a></span>    <a class="code hl_function" href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">MultiEnumWrapper</a>(<span class="keyword">const</span> T &amp; arg){</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        set(arg);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    };</div>
+</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> T &amp; value){</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        assign(<a class="code hl_struct" href="structdrain_1_1Enum.html">drain::Enum&lt;T&gt;::dict</a>.getKey(value, <span class="keyword">false</span>));</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> std::string &amp;arg){</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        assign(arg);</div>
 <div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    }</div>
 <div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>};</div>
-</div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> <span class="keywordtype">char</span> * arg){</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        assign(arg);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>    }</div>
 <div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="comment">/* Perhaps useful!</span></div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="comment">template &lt;class E&gt;</span></div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span><span class="comment">class EnumKey {</span></div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span><span class="comment"></span> </div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="comment">public:</span></div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span><span class="comment"></span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="comment">    inline</span></div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="comment">    EnumKey(const E &amp; value) : key(Enum&lt;E&gt;::dict.getKey(value)){</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span><span class="comment">    };</span></div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span><span class="comment"></span> </div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="comment">    inline</span></div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span><span class="comment">    operator const std::string &amp; () const {</span></div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span><span class="comment">        return key;</span></div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment">    }</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="comment"></span> </div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="comment">protected:</span></div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> MultiEnumWrapper &amp;arg){</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>        assign(arg);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>    }</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>    <span class="keywordtype">void</span> set(<span class="keyword">const</span> T &amp; value){</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>        assign(<a class="code hl_struct" href="structdrain_1_1Enum.html">drain::Enum&lt;T&gt;::dict</a>.getKey(value, <span class="keyword">false</span>));</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>    }</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>};</div>
+</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="comment">/* Perhaps useful!</span></div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="comment">template &lt;class E&gt;</span></div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span><span class="comment">class EnumKey {</span></div>
 <div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="comment"></span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment">    const std::string &amp; key;</span></div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment">};</span></div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment">*/</span></div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span> </div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="preprocessor">#define DRAIN_ENUM_CONV(enumtype) template &lt;&gt; class Converter&lt;enumtype&gt; : public Enum&lt;enumtype&gt; {}</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>} <span class="comment">// drain::</span></div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="preprocessor">#define DRAIN_ENUM_DICT(enumtype)        template &lt;&gt; const drain::Enum&lt;enumtype&gt;::dict_t drain::Enum&lt;enumtype&gt;::dict</span></div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="preprocessor">#define DRAIN_ENUM_DICT2(enumtype,owner) template &lt;&gt; const drain::Enum&lt;enumtype,owner&gt;::dict_t drain::Enum&lt;enumtype,owner&gt;::dict</span></div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span><span class="comment">public:</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span><span class="comment"></span> </div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="comment">    inline</span></div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="comment">    EnumKey(const E &amp; value) : key(Enum&lt;E&gt;::dict.getKey(value)){</span></div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="comment">    };</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="comment"></span> </div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span><span class="comment">    inline</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span><span class="comment">    operator const std::string &amp; () const {</span></div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment">        return key;</span></div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment">    }</span></div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment"></span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment">protected:</span></div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment"></span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment">    const std::string &amp; key;</span></div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment">};</span></div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span><span class="comment">*/</span></div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span> </div>
 <div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
-<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="preprocessor">#define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}</span></div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span><span class="preprocessor">#define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const enumtype &amp; e){return ostr &lt;&lt; drain::Enum&lt;enumtype&gt;::dict.getKey(e);}</span></div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span> </div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition</b> Dictionary.h:63</div></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html_a3212b1fd935320f1b60f82b40ff4800a"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a3212b1fd935320f1b60f82b40ff4800a">drain::Dictionary::getKey</a></div><div class="ttdeci">const K &amp; getKey(const V &amp;value, bool lenient=true) const</div><div class="ttdoc">Identity mapping useful for type deduction of template arguments in functions.</div><div class="ttdef"><b>Definition</b> Dictionary.h:172</div></div>
-<div class="ttc" id="aclassdrain_1_1Dictionary_html_a6e778797e86f98f8491cf1141ccfcb2b"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a6e778797e86f98f8491cf1141ccfcb2b">drain::Dictionary::getValue</a></div><div class="ttdeci">const V &amp; getValue(const K &amp;key, bool lenient=true) const</div><div class="ttdoc">Given a key, return the first value associated with it.</div><div class="ttdef"><b>Definition</b> Dictionary.h:149</div></div>
-<div class="ttc" id="aclassdrain_1_1EnumWrapper_html"><div class="ttname"><a href="classdrain_1_1EnumWrapper.html">drain::EnumWrapper</a></div><div class="ttdef"><b>Definition</b> Enum.h:223</div></div>
-<div class="ttc" id="aclassdrain_1_1EnumWrapper_html_a3225696584521b3b718afe90a553183a"><div class="ttname"><a href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">drain::EnumWrapper::EnumWrapper</a></div><div class="ttdeci">EnumWrapper(const E &amp;x)</div><div class="ttdoc">All the other constructors, including default constructor.</div><div class="ttdef"><b>Definition</b> Enum.h:236</div></div>
-<div class="ttc" id="aclassdrain_1_1MultiEnumWrapper_html"><div class="ttname"><a href="classdrain_1_1MultiEnumWrapper.html">drain::MultiEnumWrapper</a></div><div class="ttdef"><b>Definition</b> Enum.h:260</div></div>
-<div class="ttc" id="aclassdrain_1_1MultiEnumWrapper_html_af1cc96ce310d0402665e51d227180995"><div class="ttname"><a href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">drain::MultiEnumWrapper::MultiEnumWrapper</a></div><div class="ttdeci">MultiEnumWrapper(const T &amp;arg)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> Enum.h:280</div></div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span><span class="preprocessor">#define DRAIN_ENUM_CONV(enumtype) template &lt;&gt; class Converter&lt;enumtype&gt; : public Enum&lt;enumtype&gt; {}</span></div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span> </div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>} <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="preprocessor">#define DRAIN_ENUM_DICT(enumtype)        template &lt;&gt; const drain::Enum&lt;enumtype&gt;::dict_t drain::Enum&lt;enumtype&gt;::dict</span></div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="preprocessor">#define DRAIN_ENUM_DICT2(enumtype,owner) template &lt;&gt; const drain::Enum&lt;enumtype,owner&gt;::dict_t drain::Enum&lt;enumtype,owner&gt;::dict</span></div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="preprocessor">#define DRAIN_ENUM_ENTRY(nspace, key) {#key, nspace::key}</span></div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="preprocessor">#define DRAIN_ENUM_OSTREAM(enumtype) inline std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const enumtype &amp; e){return ostr &lt;&lt; drain::Enum&lt;enumtype&gt;::dict.getKey(e);}</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition</b> Dictionary.h:61</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html_a3212b1fd935320f1b60f82b40ff4800a"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a3212b1fd935320f1b60f82b40ff4800a">drain::Dictionary::getKey</a></div><div class="ttdeci">const K &amp; getKey(const V &amp;value, bool lenient=true) const</div><div class="ttdoc">Identity mapping useful for type deduction of template arguments in functions.</div><div class="ttdef"><b>Definition</b> Dictionary.h:170</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html_a6e778797e86f98f8491cf1141ccfcb2b"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a6e778797e86f98f8491cf1141ccfcb2b">drain::Dictionary::getValue</a></div><div class="ttdeci">const V &amp; getValue(const K &amp;key, bool lenient=true) const</div><div class="ttdoc">Given a key, return the first value associated with it.</div><div class="ttdef"><b>Definition</b> Dictionary.h:147</div></div>
+<div class="ttc" id="aclassdrain_1_1EnumWrapper_html"><div class="ttname"><a href="classdrain_1_1EnumWrapper.html">drain::EnumWrapper</a></div><div class="ttdef"><b>Definition</b> Enum.h:236</div></div>
+<div class="ttc" id="aclassdrain_1_1EnumWrapper_html_a3225696584521b3b718afe90a553183a"><div class="ttname"><a href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">drain::EnumWrapper::EnumWrapper</a></div><div class="ttdeci">EnumWrapper(const E &amp;x)</div><div class="ttdoc">All the other constructors, including default constructor.</div><div class="ttdef"><b>Definition</b> Enum.h:249</div></div>
+<div class="ttc" id="aclassdrain_1_1MultiEnumWrapper_html"><div class="ttname"><a href="classdrain_1_1MultiEnumWrapper.html">drain::MultiEnumWrapper</a></div><div class="ttdef"><b>Definition</b> Enum.h:273</div></div>
+<div class="ttc" id="aclassdrain_1_1MultiEnumWrapper_html_af1cc96ce310d0402665e51d227180995"><div class="ttname"><a href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">drain::MultiEnumWrapper::MultiEnumWrapper</a></div><div class="ttdeci">MultiEnumWrapper(const T &amp;arg)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> Enum.h:293</div></div>
 <div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
 <div class="ttc" id="astructdrain_1_1Enum_html"><div class="ttname"><a href="structdrain_1_1Enum.html">drain::Enum</a></div><div class="ttdoc">A container for a static dictionary of enumeration values.</div><div class="ttdef"><b>Definition</b> Enum.h:51</div></div>
 <div class="ttc" id="astructdrain_1_1Enum_html_a0210f5aa9ff74a54391d4b5dc9d3c67f"><div class="ttname"><a href="structdrain_1_1Enum.html#a0210f5aa9ff74a54391d4b5dc9d3c67f">drain::Enum::getValue</a></div><div class="ttdeci">static E getValue(const char *key, bool lenient=true)</div><div class="ttdoc">Convenience for object.set(...) like commands.</div><div class="ttdef"><b>Definition</b> Enum.h:116</div></div>

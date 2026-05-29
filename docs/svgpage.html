@@ -89,7 +89,7 @@ Examples of SVG panels</h2>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarLabel &quot;${what:date|%A, %d %B %Y}\n${NOD}|${PLC}\n${what:time}&quot; &#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage <span class="stringliteral">&#39;data-kiira/map-kiira.png&#39;</span> \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign HORZ_FILL:VERT_FILL -P --imageTransp <span class="stringliteral">&#39;&#39;</span> \</div>
 <div class="line">   -o composite3.png \</div>
 <div class="line">   -o composite-labels.svg</div>
@@ -104,7 +104,7 @@ SVG panel example: composite-Labels.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 30000 --gRadarLabel &quot;${what:date|%A, %d %B %Y}\n${NOD}|${PLC}\n${what:time}&quot; &#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage <span class="stringliteral">&#39;data-kiira/map-kiira.png&#39;</span> \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign HORZ_FILL:VERT_FILL -P --imageTransp <span class="stringliteral">&#39;&#39;</span> \</div>
 <div class="line">   -o composite3.png \</div>
 <div class="line">   --gStyle .LABEL=<span class="stringliteral">&#39;fill:white;stroke:forestgreen;font-size:10px&#39;</span> -o composite-labels2.svg</div>
@@ -118,7 +118,7 @@ SVG panel example: composite-Labels2.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 30000,MASK=true&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarDot.png \</div>
 <div class="line">   --gStyle <span class="stringliteral">&#39;.COVER=fill:blue;opacity:0.5&#39;</span> \</div>
@@ -133,7 +133,7 @@ SVG panel example: composite-RadarDot-30000.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 20000:30000,MASK=true&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarDot.png \</div>
 <div class="line">   --gStyle <span class="stringliteral">&#39;.COVER=fill:blue;opacity:0.5&#39;</span> \</div>
@@ -148,7 +148,7 @@ SVG panel example: composite-RadarDot-20000:30000.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarSector 25000:125000,MASK=true&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarSector.png \</div>
 <div class="line">   --gStyle <span class="stringliteral">&#39;.COVER=fill:blue;opacity:0.5&#39;</span> \</div>
@@ -163,7 +163,7 @@ SVG panel example: composite-RadarSector-25000:125000.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarSector 1.0,MASK=true&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarSector.png \</div>
 <div class="line">   --gStyle <span class="stringliteral">&#39;.COVER=fill:blue;opacity:0.5&#39;</span> \</div>
@@ -178,7 +178,7 @@ SVG panel example: composite-RadarSector-1.0.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarGrid.png \</div>
 <div class="line">   --gRadarGrid 50000:1,15:180:240,MASK=<span class="keyword">true</span> --gStyle <span class="stringliteral">&#39;.COVER=fill:black;opacity:0.75&#39;</span> \</div>
@@ -193,7 +193,7 @@ SVG panel example: composite-RadarGrid-50000:1,15:180:240.</div></div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarSector.png \</div>
 <div class="line">   --gRadarSector radius=0:150000,azimuth=170:240,MASK=<span class="keyword">true</span> --gStyle <span class="stringliteral">&#39;.COVER=fill:black;opacity:0.75&#39;</span> \</div>
@@ -208,7 +208,7 @@ SVG panel example: composite-RadarSector-radius=0:150000,azimuth=170:240.</div><
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarSector.png \</div>
 <div class="line">   --gRadarSector radius=0:250000,azimuth=135:140,MASK=<span class="keyword">true</span> --gStyle <span class="stringliteral">&#39;.COVER=fill:black;opacity:0.75&#39;</span> \</div>
@@ -223,7 +223,7 @@ SVG panel example: composite-RadarSector-radius=0:250000,azimuth=135:140.</div><
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 \</div>
 <div class="line">   --cExtract DATA \</div>
-<div class="line">   --gLinkImage data-kiira/map-kiira.png \</div>
+<div class="line">   --gLinkImage $PWD/data-kiira/map-kiira.png \</div>
 <div class="line">   --gAlign <span class="stringliteral">&#39;HORZ_FILL:VERT_FILL&#39;</span> \</div>
 <div class="line">   -P --imageTransp <span class="stringliteral">&#39;&#39;</span> -o foo-RadarSector.png \</div>
 <div class="line">   --gRadarSector radius=100000:175000,azimuth=300:370,MASK=<span class="keyword">true</span> --gStyle <span class="stringliteral">&#39;.COVER=fill:black;opacity:0.75&#39;</span> \</div>
@@ -349,7 +349,7 @@ SVG panel example: Metadata panel.</div></div>
  <b>Background</b> maps. External images can be linked with <code>--gLinkImage</code>. For example, maps can be included, aligning the following radar image on top of it with <code>--gAlign</code> <code>HORZ_FILL</code>,VERT_FILL . </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --gGroupTitle <span class="stringliteral">&#39;${NOD} – ${PLC}&#39;</span> \</div>
-<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign &#39;</span>HORZ_FILL:VERT_FILL<span class="stringliteral">&#39;  -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o adding_background_maps.svg</div>
+<div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage $PWD/maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png  --imageTransp 0.0:0.1,0,1 --palette default --gAlign &#39;</span>HORZ_FILL:VERT_FILL<span class="stringliteral">&#39;  -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o adding_background_maps.svg</div>
 </div><!-- fragment --><div class="image">
 <img src="adding_background_maps.png" alt=""/>
 <div class="caption">

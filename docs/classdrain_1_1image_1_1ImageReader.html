@@ -125,9 +125,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2d8860a66bf53fbd4a5e52530f7caa1f" id="r_a2d8860a66bf53fbd4a5e52530f7caa1f"><td class="memItemLeft" align="right" valign="top"><a id="a2d8860a66bf53fbd4a5e52530f7caa1f" name="a2d8860a66bf53fbd4a5e52530f7caa1f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ImageReader</b> (<a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt;&gt; &amp;ref)</td></tr>
 <tr class="separator:a2d8860a66bf53fbd4a5e52530f7caa1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab03aeb3c8120ce25a193ca8be2f0dba2" id="r_ab03aeb3c8120ce25a193ca8be2f0dba2"><td class="memItemLeft" align="right" valign="top"><a id="ab03aeb3c8120ce25a193ca8be2f0dba2" name="ab03aeb3c8120ce25a193ca8be2f0dba2"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, double &amp;value) const</td></tr>
+<tr class="memitem:ab03aeb3c8120ce25a193ca8be2f0dba2" id="r_ab03aeb3c8120ce25a193ca8be2f0dba2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageReader.html#ab03aeb3c8120ce25a193ca8be2f0dba2">getValue</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;image, double &amp;value) const</td></tr>
 <tr class="separator:ab03aeb3c8120ce25a193ca8be2f0dba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4b218b0bdced912d2071060781d376c" id="r_aa4b218b0bdced912d2071060781d376c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageReader.html#aa4b218b0bdced912d2071060781d376c">handleValue</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;data, double &amp;value) const</td></tr>
+<tr class="separator:aa4b218b0bdced912d2071060781d376c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structdrain_1_1image_1_1SamplePicker"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdrain_1_1image_1_1SamplePicker')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdrain_1_1image_1_1SamplePicker.html">SamplePicker</a></td></tr>
 <tr class="memitem:a7012468af4978fa5608ad9e177588515 inherit pub_methods_structdrain_1_1image_1_1SamplePicker" id="r_a7012468af4978fa5608ad9e177588515"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1SamplePicker.html#a7012468af4978fa5608ad9e177588515">SamplePicker</a> (<a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt;&gt; &amp;<a class="el" href="structdrain_1_1image_1_1SamplePicker.html#a1f3c0486f929b078f5715ab196c21d06">variableMap</a>)</td></tr>
 <tr class="separator:a7012468af4978fa5608ad9e177588515 inherit pub_methods_structdrain_1_1image_1_1SamplePicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,7 +168,82 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b> = 0</td></t
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Reads image channels, returning scaled (physical) values. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab03aeb3c8120ce25a193ca8be2f0dba2" name="ab03aeb3c8120ce25a193ca8be2f0dba2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab03aeb3c8120ce25a193ca8be2f0dba2">&#9670;&#160;</a></span>getValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Should not be virtual, as data may have metadata members. </p>
+
+</div>
+</div>
+<a id="aa4b218b0bdced912d2071060781d376c" name="aa4b218b0bdced912d2071060781d376c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4b218b0bdced912d2071060781d376c">&#9670;&#160;</a></span>handleValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool handleValue </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Data is needed also here, for metadata (encoding etc) </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/drain/image/<a class="el" href="Sampler_8h_source.html">Sampler.h</a></li>
 </ul>
 </div><!-- contents -->

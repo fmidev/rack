@@ -82,32 +82,75 @@ $(function() {
   <div class="headertitle"><div class="title">Convert Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Utility class with static conversions.  
- <a href="classdrain_1_1Convert.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="Convert_8h_source.html">Convert.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a776e5123e132b6e1b41df5f054faa4cf" id="r_a776e5123e132b6e1b41df5f054faa4cf"><td class="memTemplParams" colspan="2"><a id="a776e5123e132b6e1b41df5f054faa4cf" name="a776e5123e132b6e1b41df5f054faa4cf"></a>
+<tr class="memitem:a13ecaf9d544d3106e525ec8d08f513b3" id="r_a13ecaf9d544d3106e525ec8d08f513b3"><td class="memTemplParams" colspan="2">template&lt;class T1 , class T2 &gt; </td></tr>
+<tr class="memitem:a13ecaf9d544d3106e525ec8d08f513b3"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Convert.html#a13ecaf9d544d3106e525ec8d08f513b3">convert</a> (const T1 &amp;src, T2 &amp;dst)</td></tr>
+<tr class="memdesc:a13ecaf9d544d3106e525ec8d08f513b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">General case: dispatch to Converter&lt;T1&gt; traits.  <br /></td></tr>
+<tr class="separator:a13ecaf9d544d3106e525ec8d08f513b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a598a905a91e1bfe74b2b491be8b76a8c" id="r_a598a905a91e1bfe74b2b491be8b76a8c"><td class="memTemplParams" colspan="2"><a id="a598a905a91e1bfe74b2b491be8b76a8c" name="a598a905a91e1bfe74b2b491be8b76a8c"></a>
+template&lt;class T2 &gt; </td></tr>
+<tr class="memitem:a598a905a91e1bfe74b2b491be8b76a8c"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const char *src, T2 &amp;dst)</td></tr>
+<tr class="separator:a598a905a91e1bfe74b2b491be8b76a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33c81b6d9218878a54d012a5c8945745" id="r_a33c81b6d9218878a54d012a5c8945745"><td class="memTemplParams" colspan="2"><a id="a33c81b6d9218878a54d012a5c8945745" name="a33c81b6d9218878a54d012a5c8945745"></a>
 template&lt;class T &gt; </td></tr>
-<tr class="memitem:a776e5123e132b6e1b41df5f054faa4cf"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const T &amp;src, T &amp;dst)</td></tr>
-<tr class="memdesc:a776e5123e132b6e1b41df5f054faa4cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trivial case: source and destination are of same class. <br /></td></tr>
-<tr class="separator:a776e5123e132b6e1b41df5f054faa4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1484d8e1f86d0ea43885d4750e162e99" id="r_a1484d8e1f86d0ea43885d4750e162e99"><td class="memTemplParams" colspan="2"><a id="a1484d8e1f86d0ea43885d4750e162e99" name="a1484d8e1f86d0ea43885d4750e162e99"></a>
-template&lt;class S , class D &gt; </td></tr>
-<tr class="memitem:a1484d8e1f86d0ea43885d4750e162e99"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const S &amp;src, D &amp;dst)</td></tr>
-<tr class="separator:a1484d8e1f86d0ea43885d4750e162e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e4a2c8ac1fe25a8ff71ad2f2fd61d76" id="r_a3e4a2c8ac1fe25a8ff71ad2f2fd61d76"><td class="memTemplParams" colspan="2"><a id="a3e4a2c8ac1fe25a8ff71ad2f2fd61d76" name="a3e4a2c8ac1fe25a8ff71ad2f2fd61d76"></a>
-template&lt;class D &gt; </td></tr>
-<tr class="memitem:a3e4a2c8ac1fe25a8ff71ad2f2fd61d76"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const char *src, D &amp;dst)</td></tr>
-<tr class="separator:a3e4a2c8ac1fe25a8ff71ad2f2fd61d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33c81b6d9218878a54d012a5c8945745"><td class="memTemplItemLeft" align="right" valign="top">static std::enable_if&lt; std::is_arithmetic&lt; T &gt;::value &amp;&amp;!std::is_same&lt; T, bool &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const T &amp;src, bool &amp;dst)</td></tr>
+<tr class="memdesc:a33c81b6d9218878a54d012a5c8945745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Numeric -&gt; bool: zero is false, any other value is true. <br /></td></tr>
+<tr class="separator:a33c81b6d9218878a54d012a5c8945745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4b5a5a0d4dafaec19af6810c06dcf5f" id="r_aa4b5a5a0d4dafaec19af6810c06dcf5f"><td class="memTemplParams" colspan="2"><a id="aa4b5a5a0d4dafaec19af6810c06dcf5f" name="aa4b5a5a0d4dafaec19af6810c06dcf5f"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:aa4b5a5a0d4dafaec19af6810c06dcf5f"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const T &amp;src, std::ostream &amp;ostr, const char *format)</td></tr>
+<tr class="memdesc:aa4b5a5a0d4dafaec19af6810c06dcf5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formatted output. <br /></td></tr>
+<tr class="separator:aa4b5a5a0d4dafaec19af6810c06dcf5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e5db3fb277585319127c60c1d0cb195" id="r_a9e5db3fb277585319127c60c1d0cb195"><td class="memTemplParams" colspan="2"><a id="a9e5db3fb277585319127c60c1d0cb195" name="a9e5db3fb277585319127c60c1d0cb195"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a9e5db3fb277585319127c60c1d0cb195"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>convert</b> (const T &amp;src, std::ostream &amp;ostr, const std::string &amp;format)</td></tr>
+<tr class="separator:a9e5db3fb277585319127c60c1d0cb195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Utility class with static conversions. </p>
-<p>Deprecating, see <a class="el" href="classdrain_1_1Converter.html" title="Utility class with static conversions.">Converter</a>. </p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a13ecaf9d544d3106e525ec8d08f513b3" name="a13ecaf9d544d3106e525ec8d08f513b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13ecaf9d544d3106e525ec8d08f513b3">&#9670;&#160;</a></span>convert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T1 , class T2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void convert </td>
+          <td>(</td>
+          <td class="paramtype">const T1 &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T2 &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>General case: dispatch to Converter&lt;T1&gt; traits. </p>
+<p>std::decay ensures array types (e.g. const char[N]) map to their pointer specialization. template &lt;class T1, class T2&gt; static void <a class="el" href="classdrain_1_1Convert.html#a13ecaf9d544d3106e525ec8d08f513b3" title="General case: dispatch to Converter&lt;T1&gt; traits.">convert(const T1 &amp; src, T2 &amp; dst)</a>{ <a class="el" href="structdrain_1_1Converter.html" title="Utility class with static conversions.">Converter</a>&lt;typename std::decay&lt;T1&gt;::type&gt;::to(src, dst); } General case: dispatch to Converter&lt;T1&gt; traits. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/drain/<a class="el" href="Convert_8h_source.html">Convert.h</a></li>
 </ul>
 </div><!-- contents -->
