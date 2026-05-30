@@ -13,7 +13,7 @@ import tempfile
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Iterable, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import rack.config
 #import rack.style
@@ -59,6 +59,10 @@ class ValidationRule:
 class BaseConf:
     stdoutToFile: Optional[Path] = None
     stderrToFile: Optional[Path] = None
+    #tests = {}
+
+    #def __init__(self):
+    #    self.tests = {}
 
 
 @dataclass
@@ -91,6 +95,7 @@ class PyConf(BaseConf):
     # module: str = "" 
 
     imports: List[str] = None
+    tests: Dict[str,Any] = None
     # Last \include argument, if <filename>.py
     include_py_sh:   str = ""
     include_rack_sh: str = ""
@@ -100,6 +105,10 @@ class PyConf(BaseConf):
     append_code:  List[str] = field(default_factory=list)
     
     replacements: List[ReplaceRule] = field(default_factory=list)
+
+    #def __init__(self):
+    #    self.tests = {}
+
     def apply_replacements(self, s: str) -> str:
         for r in self.replacements:
             s = r.apply(s)
@@ -266,36 +275,33 @@ def ensure_map(composer:rack.cmdline.Composer):
     logger.info(f"Debug geo.py: " + cmd)   
     """
     
-def save_example_py(composer:rack.cmdline.Composer, filename: str):
-    #with open(file=Path.resolve("out", filename), mode='w') as file:
-    styleExample = Style(Color.CYAN)
+def save_example_py(composer: rack.cmdline.Composer, filename: str):
     filepath=f"out/{filename}"
     module_name = composer.get_module_name()
     logger.info(f"")
     logger.info(f"{Emoji.DISC}  writing {filepath}")
     python = Path(sys.executable).name
-    #cmd = f'{sys.executable} -m {module_name}  '
     cmd = f'{python} -m {module_name}  '
     # Separator does not work yet... separator=" \\\n\t"
     cmd += composer.get_module_cmd_line(separator=" ") + " --print ' \\\\n  ' # or --exec"
-    logger.info(f"Example: " + styleExample.str(cmd))
+    logger.info(f"Example (python): " + Style(Color.CYAN).str(cmd))
     cmd += '\n' # Ensure newline
     with open(filepath, mode='w') as file:
         file.write(cmd)
         
 
-def save_example_rack(composer:rack.cmdline.Composer, filename: str):
+def save_example_rack(composer:rack.cmdline.Composer, filename: str, dirname="out"):
     prog = composer.get_prog()
     fmt = rack.cmdline.RackFormatter(
         params_format="'{params}'", 
         cmd_separator=" \\\n\t"
         ) 
     cmd = prog.to_string(fmt)
-    filepath=f"out/{filename}"
+    
+    filepath = Path(dirname, filename)  #  f"out/{filename}"
     logger.info(f"{Emoji.DISC}  writing {filepath}")
-    #logger.info(f"Example: {cmd}")
-    styleExample = Style(Color.CYAN)
-    logger.info(f"Example: " + styleExample.str(cmd))
+    # styleExample = Style(Color.CYAN)
+    logger.info(f"Example (rack cmd line): " + Style(Color.CYAN).str(cmd))
     cmd += '\n' # Ensure newline
     with open(filepath, mode='w') as file:
         file.write(cmd)
@@ -388,6 +394,8 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
     # "Proctocol" for maps: if BBOX, PROJ and SIZE are present, ensure the map is downloaded before running the script. This allows to use {BBOX}, {PROJ} and {SIZE} in the script, for example, to pass them to a map server.
     cmd += "--format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
      # Example of using conf values in the script, if needed.
+    logger.warning(f"{Emoji.RUN.value} Executing shell script: {cmd}")
+
     run_shell_subprocess(cmd, cliconf.shell)
     
 
@@ -436,15 +444,15 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
 
     if pyconf.include_rack_sh:
         code_lines.append(
-            f"rack.doxymoron.save_example_rack(composer, '{pyconf.include_rack_sh}')")
+            f"rack.doxymoron.save_example_rack(composer, '{pyconf.include_rack_sh}', 'out')")
+
+            
 
     # logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
 
     code = "\n".join(code_lines) + "\n"
 
     with tempfile.TemporaryDirectory(prefix="doxpy_") as td:
-        #script_file = "/tmp/snippet.py"
-        #with open("/tmp/snippet.py", "w") as script:
         
         tdpath = Path(td)
         script = tdpath / "snippet.py"
@@ -454,11 +462,6 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         logger.debug(f"Running PYTHON script: {script}")
         styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
         logger.info(f"{Emoji.SCRIPT.value} script:\n  " + styleWrapper.str("\n  ".join(code_lines)))
-
-        # logger.warning("Double check:")
-        #with open(script, "r") as f:
-        #    for line in f:
-        #        print(line)
 
         #cp = subprocess.run(['python3', script_file], 
         default_args = {
@@ -477,6 +480,20 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
             raise AssertionError(
                 f"Python snippet failed (line {block.start_line})\n"
             )
+
+    #    if pyconf.include_rack_sh and pyconf.tests and ('rack.sh' in pyconf.tests):
+    if pyconf.tests:
+        # logger.warning("TEST! " + pyconf.include_rack_sh)
+        for (k,v) in pyconf.tests.items():
+            logger.warning(f"{k} = {v}")
+            if k == "rack.sh":
+                if pyconf.include_rack_sh:
+                    logger.warning("Executing {pyconf.include_rack_sh}")
+                    filepath = Path("out", pyconf.include_rack_sh)
+                    os.chmod(filepath, 0o755) # Ensure it's executable
+                    result = subprocess.run([str(filepath)], **default_args)
+                else:
+                    logger.warning("shell test '{k}' requested but no script (pyconf.include_rack_sh)")
 
 
 def main() -> int:
@@ -507,11 +524,9 @@ def main() -> int:
 
         if key in {"example", "include"}:
             # Handle example command, e.g. by running the example script and capturing its output
-            # print(f"[{key.upper()}] {obj}")
             
             logger.debug(f"[{key}] {obj}")
-            #p = Path(obj)
-            #if p.suffix == 'py':
+
             p = str(obj)
             if p.endswith('_py.sh'):
                 pyconf.include_py_sh = p
@@ -540,7 +555,7 @@ def main() -> int:
             #print(f"[PY ] block at line {block.start_line}")
             if block.arg == '.py':
                 logger.info(f"{Emoji.RUN.value}  Handling Python code from line {block.start_line}:")
-                run_py_block(block, pyconf)
+                run_py_block(block, pyconf) # Todo: flag to also run the generated command line.
                 pyconf.reset()   
             elif block.arg == '.sh':
                 logger.info(f"{Emoji.RUN.value}  Handling shell code from line {block.start_line}")

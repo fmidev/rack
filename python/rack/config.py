@@ -121,6 +121,7 @@ def parse(lines: list, dst: object=None, handleMissing = PARSE_SKIP) -> dict:
             if (k in dst) or (handleMissing==PARSE_APPEND):
                 dst[k] = v
             elif (handleMissing==PARSE_ERROR):
+                logger.error(f"dst = {dst}")
                 raise KeyError(f"Key '{k}' not found")
         logger.warning(dst)
     return conf
