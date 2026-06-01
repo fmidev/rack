@@ -281,9 +281,9 @@ def save_example_py(composer: rack.cmdline.Composer, filename: str):
     logger.info(f"")
     logger.info(f"{Emoji.DISC}  writing {filepath}")
     python = Path(sys.executable).name
-    cmd = f'{python} -m {module_name}  '
-    # Separator does not work yet... separator=" \\\n\t"
-    cmd += composer.get_module_cmd_line(separator=" ") + " --print ' \\\\n  ' # or --exec"
+    option_separator=" \\\n  "
+    cmd = f'{python} -m {module_name} {option_separator}'
+    cmd += composer.get_module_cmd_line(separator=option_separator) + " --print ' \\\\n  ' # or --exec"
     logger.info(f"Example (python): " + Style(Color.CYAN).str(cmd))
     cmd += '\n' # Ensure newline
     with open(filepath, mode='w') as file:
