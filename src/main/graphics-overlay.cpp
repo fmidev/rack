@@ -459,6 +459,7 @@ void CmdRadarLabel::exec() const  {
 
 		TreeSVG & labelAnchor = overlay["labelAnchor"];
 		labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
+		labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL); // IMPORTANT! Else, other elems of the same group (like DOTS) become translated...
 		labelAnchor->addClass("DEBUG");
 		//labelAnchor->setMyAlignAnchor("munDOT");
 		if (false){
