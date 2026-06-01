@@ -491,7 +491,14 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
                     logger.warning("Executing {pyconf.include_rack_sh}")
                     filepath = Path("out", pyconf.include_rack_sh)
                     os.chmod(filepath, 0o755) # Ensure it's executable
-                    result = subprocess.run([str(filepath)], **default_args)
+                    #result = subprocess.run(['ls',str(filepath)], **default_args)
+                    #result = subprocess.run([str(filepath)], **default_args)
+                    result = subprocess.run(['bash', str(filepath)], **default_args)
+                    if 'returncode' in v and result.returncode != v['returncode']:
+                        logger.error(f"Executing '{filepath}' returned {result.returncode}")
+                        dump_subprocess_output(result, styleStdErr=Style(Color.RED, Effect.BOLD))
+                        raise AssertionError(f"Executed '{filepath}', return code={result.returncode}")
+                    dump_subprocess_output(result, styleStdErr=Style(Color.RED, Effect.BOLD))
                 else:
                     logger.warning("shell test '{k}' requested but no script (pyconf.include_rack_sh)")
 

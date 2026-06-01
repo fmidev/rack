@@ -40,13 +40,24 @@ def read_defaults(parser):
         args.config = None
         parser.set_defaults(**config)
 
-        
+
+def read_if_found(filename, formats:list = []) -> dict: # todo path prefix?
+    for fmt in formats:
+        path = Path(filename).with_suffix(fmt)
+        logger.info(f"Checking config file: {path}")
+        if path.is_file():
+            logger.info(f"Found config file: {path}")
+            return read(path, False)
+    logger.warning(f"No config file found for {filename} with formats {formats}")
+    return {}
+
 
 def read(filename, lenient=False) -> dict: # todo path prefix?
     """Load config file.
     
         Parse the file as either JSON file or simple "key=value" file.
     """
+
     path = Path(filename)
     
     if not path.is_file():
@@ -63,7 +74,8 @@ def read(filename, lenient=False) -> dict: # todo path prefix?
         return parse(lines)
         #return json.load(f)
     
-    logger.warning(f"Reading file failed")
+    logger.error(f"Reading file failed")
+    # raise Exception(msg)
     return {}
     
     

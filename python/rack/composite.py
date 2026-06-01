@@ -322,22 +322,28 @@ def read_geoconf(args): #, parser):
     # First, assume it is a full path.
     filepath = Path(args.GEOCONF)
     args.GEOCONF = str(filepath.name)
-    
+
+    geoconf = {}
+
     m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', args.GEOCONF)
     if m:
         if args.GEOCONF == m.group(1):
             # Nothing removed - plain key given.
-            filepath = Path(f'geoconf/geoconf-{args.GEOCONF}.json')
+            filepath = Path(f'geoconf/geoconf-{args.GEOCONF}')
+            formats = ['.json', '.cnf']
+            logger.info(f"Reading geoconfs '{args.GEOCONF}' -> {filepath}{formats}")
+            geoconf = rack.config.read_if_found(filepath, formats)
         else:
             # Adopt keyword "reduced" from filepath.
             args.GEOCONF = m.group(1)
+            logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
+            # Notice: does not check if variables other than BBOX, PROJ, SIZE are given 
+            geoconf = rack.config.read(filepath)
+    
     else:
         Exception(f'--GEOCONF: could not extract KEY from argument: {args.GEOCONF}')
 
     
-    logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
-    # Notice: no control if variables other than BBOX, PROJ, SIZE are given 
-    geoconf = rack.config.read(filepath)
     vars(args).update(geoconf)
     return geoconf
 
@@ -716,6 +722,11 @@ def main():
         parser.set_defaults(**config)
 
     args = parser.parse_args()
+
+    # check if no args given, then print help and exit
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
 
     # Selected commands only for direct command line use
     # Needs parser for arg definitions, args for current values
