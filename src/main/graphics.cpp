@@ -485,12 +485,12 @@ public:
 
 
 		if (ctx.mainOrientation == drain::image::AlignBase::Axis::HORZ){
-			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, MutualAlign::OUTSIDE);
+			group->setAlign(AlignBase::Axis::HORZ, (ctx.mainDirectionHorz==LayoutSVG::DirectionHorz::LEFT) ? AlignBase::MAX : AlignBase::MIN, MutualAlign::OUTSIDE);
 			group->setAlign(AlignBase::Axis::VERT, AlignBase::MIN, MutualAlign::INSIDE); // drain::image::AlignSVG::VertAlignBase::TOP);
 		}
 		else { // VERT  -> ASSERT? if (ctx.mainOrientation == drain::image::AlignBase::Axis::VERT){
 			group->setAlign(AlignBase::Axis::HORZ, AlignBase::MIN, MutualAlign::INSIDE); // drain::image::AlignSVG::HorzAlignBase::LEFT);
-			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirection==LayoutSVG::Direction::INCR) ? AlignBase::MAX : AlignBase::MIN, MutualAlign::OUTSIDE);
+			group->setAlign(AlignBase::Axis::VERT, (ctx.mainDirectionVert==LayoutSVG::DirectionVert::DOWN) ? AlignBase::MAX : AlignBase::MIN, MutualAlign::OUTSIDE);
 		}
 
 
@@ -801,7 +801,7 @@ public:
 		// BBoxSVG bbox;
 		// TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
 		mout.attention("Stacking: ", ctx.svgTrack.data);
-		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 		mout.attention("Aligning: ", ctx.svgTrack.data);
 		TreeLayoutSVG::superAlign(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 

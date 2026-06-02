@@ -1001,12 +1001,44 @@ void CmdLayout::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-	drain::Enum<orientation_enum>::setValue(orientation, ctx.mainOrientation);
-	drain::Enum<direction_enum>::setValue(direction,     ctx.mainDirection);
+	// drain::StringTools::replace(orientation, '-', '_', orientation);
+
+	if (not drain::Enum<orientation_enum>::setValue(orientation, ctx.mainOrientation)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(orientation));
+	}
+
+	drain::StringTools::replace(directionVert, '-', '_', directionVert);
+	if (not drain::Enum<dir_vert_enum>::setValue(directionVert, ctx.mainDirectionVert)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(directionVert));
+	}
+
+	// drain::StringTools::replace(directionHorz, ':', ',', directionHorz);
+	drain::StringTools::replace(directionHorz, '-', '_', directionHorz);
+	if (not drain::Enum<dir_horz_enum>::setValue(directionHorz, ctx.mainDirectionHorz)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(directionHorz));
+	}
+
+	/*
+	drain::image::LayoutSVG::DirectionFlagger dirFlagger;
+	dirFlagger.set(direction);
+	ctx.mainDirection = dirFlagger.getValue();
+	direction = dirFlagger.str();
+	*/
+	/*
+	if (not drain::Enum<direction_enum>::setValue(direction, ctx.mainDirection)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(direction));
+	}
+	*/
+
+	mout.accept<LOG_WARNING>(DRAIN_LOG(orientation), ',', DRAIN_LOG(ctx.mainOrientation));
+	//mout.accept<LOG_WARNING>(DRAIN_LOG(direction),   ',', DRAIN_LOG(ctx.mainDirection));
+	mout.accept<LOG_WARNING>(DRAIN_LOG(directionVert), ':', DRAIN_LOG(ctx.mainDirectionVert) );
+	mout.accept<LOG_WARNING>(DRAIN_LOG(directionHorz), ',', DRAIN_LOG(ctx.mainDirectionHorz) );
 
 	// reset
 	orientation = drain::Enum<orientation_enum>::dict.getKey(orientation_enum::HORZ);
-	direction   = drain::Enum<direction_enum>::dict.getKey(direction_enum::INCR);
+	//direction   = drain::Enum<direction_enum>::dict.getKey(direction_enum::INCR);
+
 
 }
 
@@ -1136,9 +1168,12 @@ void CmdLinkImage::exec() const {
 
 	const Composite & composite = ctx.getComposite(RackContext::CURRENT|RackContext::PRIVATE|RackContext::SHARED);
 
+	// Should update! Background map may use metadata, like site name (${NOD})
+	const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap(); // for variables in file path
+
+
 	drain::Frame2D<double> frame(composite.getFrameWidth(), composite.getFrameHeight());
 	if (frame.empty()){
-		drain::VariableMap & statusMap = ctx.getUpdatedStatusMap(); // for variables in file path
 		// mout.note(DRAIN_LOG(statusMap));
 		frame.set(statusMap.get("where:xsize", 0), statusMap.get("where:ysize", 0));
 		mout.note("Current Cartesian data size: ", frame);

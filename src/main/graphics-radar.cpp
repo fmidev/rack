@@ -188,9 +188,13 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 	TreeSVG & overlayGroup = group[Graphic::VECTOR_OVERLAY]; // (svg::GROUP);
 
+	mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " for group ", group->getId());
+
 	//if (!group.hasChild(VECTOR_OVERLAY)){
 	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
 	if (overlayGroup->isUndefined()){ //  && overlayGroup.hasChildren()
+
+		mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " ADDING for group ", group->getId());
 
 		using namespace drain::image;
 		overlayGroup->setType(svg::GROUP);
@@ -198,6 +202,9 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 		//overlayGroup->addClass(StyleClasses::GRID);
 		overlayGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
+		overlayGroup->setId(Graphic::VECTOR_OVERLAY, '_', group->getId());
+		group.addChild(svg::COMMENT)(svg::COMMENT)->setTextSafe("Above: slot reserved for VECTOR OVERLAY");
+
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
 	}
 

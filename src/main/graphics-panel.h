@@ -340,8 +340,10 @@ public:
 
 		getParameters().link("orientation", orientation="HORZ",
 				drain::sprinter(drain::Enum<orientation_enum>::dict.getKeys(), {"|"}).str());
-		getParameters().link("direction", direction="INCR",
-				drain::sprinter(drain::Enum<direction_enum>::dict.getKeys(), {"|"}).str());
+		getParameters().link("directionVert", directionVert="DOWN",
+				drain::sprinter(drain::Enum<dir_vert_enum>::dict.getKeys(), {"|"}).str());
+		getParameters().link("directionHorz", directionHorz="RIGHT",
+				drain::sprinter(drain::Enum<dir_horz_enum>::dict.getKeys(), {"|"}).str());
 
 	}
 
@@ -356,7 +358,8 @@ public:
 protected:
 
 	typedef drain::image::AlignBase::Axis orientation_enum;
-	typedef drain::image::LayoutSVG::Direction direction_enum;
+	typedef drain::image::LayoutSVG::DirectionVert dir_vert_enum;
+	typedef drain::image::LayoutSVG::DirectionHorz dir_horz_enum;
 
 	//volatile
 	mutable
@@ -364,7 +367,10 @@ protected:
 
 	// volatile
 	mutable
-	std::string direction;
+	std::string directionVert;
+
+	mutable
+	std::string directionHorz;
 
 
 };

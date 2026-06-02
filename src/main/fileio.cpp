@@ -556,8 +556,8 @@ void CmdOutputFile::exec() const {
 			drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 
 			// NEW:
-
-			TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
+			TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
+			// TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 			TreeLayoutSVG::superAlign(ctx.svgTrack);
 
 			// OLD

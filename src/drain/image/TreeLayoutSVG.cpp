@@ -169,7 +169,9 @@ void surround(TreeSVG & group, const TreeSVG::path_elem_t & childKey){
 /**
  *  MOVE
  */
-void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction, unsigned short depth){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+//void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::Direction direction, unsigned short depth){ //, const Point2D<svg::coord_t> & offset){ // offsetInit
+
+void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation, LayoutSVG::DirectionHorz dirHorz, LayoutSVG::DirectionVert dirVert, unsigned short depth){
 
 	Logger mout(__FILE__, __FUNCTION__);
 
@@ -198,7 +200,8 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 		//mout.special("Overriding Align for: ", object.data);
 	}
 	else if (!node.hasClass(LayoutSVG::ADAPTER)){
-		setStackLayout(node, orientation, direction);
+		//setStackLayout(node, orientation, direction);
+		setStackLayout(node, orientation, dirHorz, dirVert);
 	}
 
 
@@ -214,7 +217,8 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 		}
 
 		for (TreeSVG::pair_t & entry: object){
-			addStackLayout(entry.second, orientation, direction, depth);
+			addStackLayout(entry.second, orientation, dirHorz, dirVert, depth);
+			//addStackLayout(entry.second, orientation, direction, depth);
 			/*
 			if (entry.second->typeIs(svg::IMAGE)){
 				// steal DESC and TITLE
@@ -228,25 +232,46 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 
 }
 
-void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction){
+//void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction){
+void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::DirectionHorz dirHorz, LayoutSVG::DirectionVert dirVert){
+
+	// LayoutSVG::DirectionFlagger dirFlagger(direction);
 
 	if (orientation == drain::image::AlignBase::Axis::HORZ){
+		if (dirHorz == LayoutSVG::DirectionHorz::RIGHT){
+			node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
+		}
+		else {
+			node.setAlign(AlignSVG::LEFT, MutualAlign::OUTSIDE);
+		}
+		/*
 		if (direction==LayoutSVG::Direction::INCR){
 			node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
 		}
 		else {
 			node.setAlign(AlignSVG::LEFT, MutualAlign::OUTSIDE);
 		}
+		*/
+		// node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
 		// Assign "hanging"
 		node.setAlign(AlignSVG::TOP, MutualAlign::INSIDE); // for some apps, could be BOTTOM as well?
 	}
 	else {
+		//if (dirFlagger.isSet(LayoutSVG::Direction::DOWN)){
+		if (dirVert == LayoutSVG::DirectionVert::DOWN){
+			node.setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+		}
+		else {
+			node.setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
+		}
+		/*
 		if (direction==LayoutSVG::Direction::INCR){
 			node.setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 		}
 		else {
 			node.setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 		}
+		*/
 		node.setAlign(AlignSVG::LEFT, MutualAlign::INSIDE); // for some apps, could be RIGHT as well?
 	}
 }

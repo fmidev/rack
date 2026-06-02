@@ -124,7 +124,9 @@ public:
 	ConfSVG svgPanelConf; // under constr
 
 	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
-	LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	//LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
+	LayoutSVG::DirectionHorz mainDirectionHorz = LayoutSVG::DirectionHorz::RIGHT;
+	LayoutSVG::DirectionVert mainDirectionVert = LayoutSVG::DirectionVert::DOWN;
 
 	// Here AlignSVG::HorzAlign and AlignSVG::VertAlign unused, as they contain no Topol(ogy).
 	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {MutualAlign::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
