@@ -357,8 +357,9 @@ void ODIM::completeEncoding(const std::string & encoding){
 	}
 
 	if (isSet()){
-		mout.revised("Encoding seems complete, returning...");
-		return;
+		mout.revised("Now modifying Encoding...");
+		//mout.revised("Encoding seems complete, returning...");
+		//return;
 	}
 
 	//mout.warn("quantity [" , dstODIM.quantity , "]" );

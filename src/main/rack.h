@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,4)
+#define RACK_VERSION drain::Version<>(20,4,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -56,7 +56,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Convert re-factored
  *  Version 20.4
  *  - gLayout HORZ,INCR_HORZ:DECR_VERT -> gLayout HORZ,UP,RIGHT
- * 
+ *  Release 20.4.1
+ *  - encoding: type change
+ *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)
  *  Version 19.0
