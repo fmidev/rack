@@ -21,7 +21,7 @@ var searchData=
   ['generation_20combined_18',['Anomaly detection and product generation combined',['../parallelpage.html#parallel_anom_products',1,'']]],
   ['generation_20for_20each_20volume_19',['Example: product generation for each volume.',['../scriptspage.html#script_sites',1,'']]],
   ['generation_20of_20svg_20files_20',['Automatical generation of SVG files',['../svgpage.html#fileio_svg',1,'']]],
-  ['geoframe_21',['geoframe',['../classdrain_1_1image_1_1GeoFrame.html',1,'GeoFrame'],['../classdrain_1_1image_1_1GeoFrame.html#a162ab098fb0b3aa64da8bae597172a1c',1,'drain::image::GeoFrame::GeoFrame()'],['../classrack_1_1RadarSVG.html#a1240e07a8bcc6cd9f35a8de24ad45beb',1,'rack::RadarSVG::geoFrame']]],
+  ['geoframe_21',['geoframe',['../classdrain_1_1image_1_1GeoFrame.html',1,'GeoFrame'],['../classrack_1_1RadarSVG.html#a1240e07a8bcc6cd9f35a8de24ad45beb',1,'rack::RadarSVG::geoFrame'],['../classdrain_1_1image_1_1GeoFrame.html#a162ab098fb0b3aa64da8bae597172a1c',1,'drain::image::GeoFrame::GeoFrame()']]],
   ['geographical_22',['Geographical',['../structrack_1_1Geographical.html',1,'rack']]],
   ['geographical_20scope_23',['Does a radar overlap with a given geographical scope?',['../miscbook.html#checkscope',1,'']]],
   ['geoinfo_24',['GeoInfo',['../classdrain_1_1image_1_1GeoInfo.html',1,'drain::image']]],

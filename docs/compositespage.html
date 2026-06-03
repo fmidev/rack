@@ -234,7 +234,41 @@ Direct compositing</h3>
 <li><code>DEVIATION</code> - difference or discrepancy of data (if more than one radar contributed)</li>
 </ul>
 <p>The desired combination is given as a comma-separated list of above keywords. Notice that the command <code>–cCreate</code> for creating single radar "composite" is equivalent to <code>--cAdd</code> <code>cExtract</code> <code>DATA</code>,WEIGHT . For example:</p>
-<p>Upon initialisation of teh compositing array, <code>Rack</code> stores the encoding parameters – storage type, scaling and marker values (<code>undetect</code> , <code>nodata</code>) – given explicitly or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so encoding of the output can be also set upon extraction. Reusing the above single-radar example, as follows: <br  />
+<p>A more complex command could be:</p>
+<div class="fragment"><div class="line">rack \</div>
+<div class="line">    --cSize &#39;800,800&#39; \</div>
+<div class="line">    --cProj &#39;3067&#39; \</div>
+<div class="line">    --cMethod &#39;MAXIMUM&#39; \</div>
+<div class="line">    &#39;volume.h5&#39; \</div>
+<div class="line">    --select &#39;quantity=DBZH&#39; \</div>
+<div class="line">    --cAdd \</div>
+<div class="line">    --cExtract channels=DATA,WEIGHT:bbox= \</div>
+<div class="line">    --outputFile &#39;composite-single0.h5&#39;</div>
+</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> :</p>
+<div class="fragment"><div class="line">python3 -m rack.composite  \</div>
+<div class="line">  volume.h5 \</div>
+<div class="line">  --OUTFILE composite-single0.h5 \</div>
+<div class="line">  --QUANTITY DBZH \</div>
+<div class="line">  --INDIR &#39;&#39; \</div>
+<div class="line">  --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="comment"># Initialize command line generator.</span></div>
+<div class="line">composer = rack.cmdline.Composer(rack.composite)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Set parameters</span></div>
+<div class="line">composer.set(INFILE=<span class="stringliteral">&#39;volume.h5&#39;</span>) </div>
+<div class="line">composer.set(QUANTITY=<span class="stringliteral">&#39;DBZH&#39;</span>) </div>
+<div class="line">composer.set(OUTFILE=<span class="stringliteral">&#39;cartesian-single.h5&#39;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Extract command sequence</span></div>
+<div class="line">prog = composer.get_prog()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Apply formatting </span></div>
+<div class="line">fmt = rack.cmdline.RackFormatter(params_format=<span class="stringliteral">&quot;&#39;{params}&#39;&quot;</span>) </div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Extract as a single string (suited to os.system call).</span></div>
+<div class="line">rack_cmd = prog.to_string(fmt)</div>
+<div class="line">os.system(rack_cmd)</div>
+</div><!-- fragment --><p>Upon initialisation of the compositing array, <code>Rack</code> stores the encoding parameters – storage type, scaling and marker values (<code>undetect</code> , <code>nodata</code>) – given explicitly or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so encoding of the output can be also set upon extraction. Reusing the above single-radar example, as follows: <br  />
 </p>
 <p>The encoding is applied to the first field (like <code>DATA</code> ) listed; the remaining field (typically quality fields) use their default encodings. But if desired, encoding of each field can be set, for example as follows:</p>
 <p>For now, the old syntax is also supported: a string composed of single letters (<code>d</code> ), weight, (<code>w</code> ), deviation (std.dev., <code>s</code> ) and count of radars (<code>c</code> ).</p>
@@ -260,7 +294,17 @@ Tiled compositing</h3>
 </map>
 </div>
 <p>For example, a tile can be created as follows:</p>
-<div class="fragment"></div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> : </p><div class="fragment"><div class="line">python3 -m rack.composite  --BBOX -208000,6390000,1072000,7926000 --SIZE 512,614 --GEOCONF WRAPTEST 201405251200_radar.polar.fikor.h5 --OUTFILE tile-fikor.h5 --SCHEME TILE --INDIR data-20140525/ --OUTDIR &#39;&#39; --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
+<div class="fragment"><div class="line">rack \</div>
+<div class="line">    --outputConf &#39;svg:paths=ABSOLUTE&#39; \</div>
+<div class="line">    --cSize &#39;512,614&#39; \</div>
+<div class="line">    --cProj &#39;3067&#39; \</div>
+<div class="line">    --cBBox &#39;-208000,6390000,1072000,7926000&#39; \</div>
+<div class="line">    --cMethod &#39;MAXIMUM&#39; \</div>
+<div class="line">    --outputPrefix &#39;tiles/&#39; \</div>
+<div class="line">    --script &#39;--cCreateTile --outputFile &quot;tile-fikor.h5&quot;&#39; \</div>
+<div class="line">    --inputPrefix &#39;data-20140525/&#39; \</div>
+<div class="line">    &#39;201405251200_radar.polar.fikor.h5&#39;</div>
+</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> : </p><div class="fragment"><div class="line">python3 -m rack.composite  --BBOX -208000,6390000,1072000,7926000 --SIZE 512,614 --GEOCONF WRAPTEST 201405251200_radar.polar.fikor.h5 --OUTFILE tile-fikor.h5 --SCHEME TILE --INDIR data-20140525/ --OUTDIR &#39;&#39; --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
 </div><!-- fragment --><p>Or using Python API, as follows:</p>
 <div class="fragment"><div class="line"><span class="comment"># Initialize command line generator.</span></div>
 <div class="line">composer = rack.cmdline.Composer(rack.composite)</div>

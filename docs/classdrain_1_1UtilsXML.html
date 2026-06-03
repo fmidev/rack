@@ -130,10 +130,14 @@ template&lt;typename T &gt; </td></tr>
 template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a5e86838f9f48083092da96a67d096d86"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getHeaderObject</b> (T &amp;root, typename T::node_data_t::xml_tag_t tag, const typename T::path_elem_t &amp;key=typename T::path_elem_t())</td></tr>
 <tr class="separator:a5e86838f9f48083092da96a67d096d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a186cea698eb48de73f293c0a966866b2" id="r_a186cea698eb48de73f293c0a966866b2"><td class="memTemplParams" colspan="2"><a id="a186cea698eb48de73f293c0a966866b2" name="a186cea698eb48de73f293c0a966866b2"></a>
+<tr class="memitem:abb4b54df32b164be3a2e5f9dbabccc75" id="r_abb4b54df32b164be3a2e5f9dbabccc75"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:abb4b54df32b164be3a2e5f9dbabccc75"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1UtilsXML.html#abb4b54df32b164be3a2e5f9dbabccc75">ensureStyleElem</a> (T &amp;elem)</td></tr>
+<tr class="memdesc:abb4b54df32b164be3a2e5f9dbabccc75"><td class="mdescLeft">&#160;</td><td class="mdescRight">If element is of type STYLE, return it. If not, return header object of type STYLE.  <br /></td></tr>
+<tr class="separator:abb4b54df32b164be3a2e5f9dbabccc75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0629d47ad1ab188d794f2fbebde908ff" id="r_a0629d47ad1ab188d794f2fbebde908ff"><td class="memTemplParams" colspan="2"><a id="a0629d47ad1ab188d794f2fbebde908ff" name="a0629d47ad1ab188d794f2fbebde908ff"></a>
 template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a186cea698eb48de73f293c0a966866b2"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ensureStyle</b> (T &amp;root, const <a class="el" href="classdrain_1_1SelectXML.html">SelectXML</a>&lt; typename T::node_data_t::xml_tag_t &gt; &amp;selector, const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; &amp;styleDef)</td></tr>
-<tr class="separator:a186cea698eb48de73f293c0a966866b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0629d47ad1ab188d794f2fbebde908ff"><td class="memTemplItemLeft" align="right" valign="top">static T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ensureStyle</b> (T &amp;elem, const <a class="el" href="classdrain_1_1SelectXML.html">SelectXML</a>&lt; typename T::node_data_t::xml_tag_t &gt; &amp;selector, const std::initializer_list&lt; std::pair&lt; const char *, const <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; &amp;styleDef)</td></tr>
+<tr class="separator:a0629d47ad1ab188d794f2fbebde908ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acce9826574037683bb7fe747a6b4109e" id="r_acce9826574037683bb7fe747a6b4109e"><td class="memTemplParams" colspan="2"><a id="acce9826574037683bb7fe747a6b4109e" name="acce9826574037683bb7fe747a6b4109e"></a>
 template&lt;typename N , typename ... TT&gt; </td></tr>
 <tr class="memitem:acce9826574037683bb7fe747a6b4109e"><td class="memTemplItemLeft" align="right" valign="top">static UnorderedMultiTree&lt; N &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ensureJavaScriptFunction</b> (UnorderedMultiTree&lt; N &gt; &amp;root, const std::string &amp;name, const TT &amp;...args)</td></tr>
@@ -409,6 +413,49 @@ template&lt;typename N &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abb4b54df32b164be3a2e5f9dbabccc75" name="abb4b54df32b164be3a2e5f9dbabccc75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb4b54df32b164be3a2e5f9dbabccc75">&#9670;&#160;</a></span>ensureStyleElem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static T &amp; ensureStyleElem </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>elem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If element is of type STYLE, return it. If not, return header object of type STYLE. </p>
+<p>The header object is in standard</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- <a class="el" href="classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;">XML</a> tree type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">elem</td><td></td></tr>
   </table>
   </dd>
 </dl>
