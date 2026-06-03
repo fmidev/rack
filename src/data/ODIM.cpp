@@ -356,10 +356,10 @@ void ODIM::completeEncoding(const std::string & encoding){
 		mout.revised<LOG_ERR>("quantity (still) empty..." , DRAIN_LOG(encoding));
 	}
 
-	if (isSet()){
-		mout.revised("Now modifying Encoding...");
-		//mout.revised("Encoding seems complete, returning...");
-		//return;
+	if (isSet() && encoding.empty()){
+		// mout.revised("Now modifying Encoding...");
+		mout.revised("Encoding seems complete, returning...");
+		return;
 	}
 
 	//mout.warn("quantity [" , dstODIM.quantity , "]" );

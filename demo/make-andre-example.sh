@@ -21,7 +21,8 @@ if [ ! -f $VOLUME ]; then
     exit
 fi
 
-SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
+SITE=${SITE:-`rack $VOLUME --echo '${NOD}'`}
+#SITE=${SITE:-`rack $VOLUME --format '${NOD}' -o -`}
 
 # VOLUME_IMG=${VOLUME%%.*}.png
 # VOLUME_IMG_PANEL=${NICK}${SITE:+"-$SITE"}-panel.png # GOOD
@@ -33,18 +34,18 @@ VOLUME_IMG_PANEL=${NICK}-panel.png # DBZH?
 
 
 
-#cmd="QUANTITY=$QUANTITY ./make-panel.sh $NICK $VOLUME $SITE"
-cmd="make $VOLUME_IMG_PANEL"
-echo "$cmd" 
-if [ -f $VOLUME_IMG_PANEL ]; then
-    echo "# $VOLUME_IMG_PANEL exists, ok (not running above cmd)"
-else
-    eval "$cmd"
-    if [ $? != 0 ]; then
-	echo "Making '$VOLUME_IMG_PANEL' Failed.."
-	exit 1
-    fi
-fi
+# cmd="QUANTITY=$QUANTITY ./make-panel.sh $NICK $VOLUME $SITE"
+# cmd="make $VOLUME_IMG_PANEL"
+#echo "$cmd" 
+#if [ -f $VOLUME_IMG_PANEL ]; then
+#    echo "# $VOLUME_IMG_PANEL exists, ok (not running above cmd)"
+#else
+#    eval "$cmd"
+#    if [ $? != 0 ]; then
+#	echo "Making '$VOLUME_IMG_PANEL' Failed.."
+#	exit 1
+#    fi
+#fi
 
 shift 
 MULTIPLE=''
@@ -55,7 +56,9 @@ echo $MULTIPLE
 
 CMD="rack $VOLUME \\\\\n  $MULTIPLE\\\\\n"
 
-cmd_base="rack $VOLUME  --gLayout HORZ,UP,RIGHT --outputPrefix $PWD/ --gGroupId 'Orig'  -Q DBZH -o polar-$NICK.png -Q DBZH -c --paletteDefault  -o cart-$NICK.png "
+#STYLE="--gStyle .IMAGE_BORDER='stroke:darkslateblue;stroke-width:1px'"
+STYLE="--gStyle .IMAGE_BORDER='stroke:gray;stroke-width:1px'"
+cmd_base="rack $VOLUME  --gLayout HORZ,UP,RIGHT $STYLE --outputPrefix $PWD/ --gGroupId 'Orig' --gGroupTitle 'DBZH' -Q DBZH -o polar-$NICK.png -Q DBZH -c --paletteDefault  -o cart-$NICK.png "
 
 while [ ${#*} != 0 ]; do
 
@@ -100,11 +103,14 @@ while [ ${#*} != 0 ]; do
 	
 	echo "# NEW Trial " # -o $VOLUME_IMG
 	select="-Q '.*${QUANTITY}.*'" # +"OP"
-	cmd="$cmd_base --gGroupId 'Detection'  --store INTERMEDIATE --$aDETECTOR '$VALUES' $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART -o ${ANOM_IMG_PANEL_SVG}"
+	cmd="$cmd_base --gGroupTitle '\${what:quantity}' --gGroupId 'Detection' --store INTERMEDIATE --$aDETECTOR '$VALUES' $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART -o ${ANOM_IMG_PANEL_SVG}"
 	echo "$cmd"
 	eval "$cmd"
 
-	cmd="convert ${ANOM_IMG_PANEL_SVG} ${ANOM_IMG_PANEL}"
+	IMG_PANEL="result-$NICK-$DETLABEL.png"
+	
+	#cmd="convert ${ANOM_IMG_PANEL_SVG} ${ANOM_IMG_PANEL}"
+	cmd="convert ${ANOM_IMG_PANEL_SVG} ${IMG_PANEL}"
 	echo "$cmd"
 	eval "$cmd"
 
@@ -122,7 +128,7 @@ while [ ${#*} != 0 ]; do
 	convert -append -frame 1 $ANOM_IMG_CART tmp.png $ANOM_IMG_PANEL
 
 
-	IMG_PANEL="result-$NICK-$DETLABEL.png"
+	#IMG_PANEL="result-$NICK-$DETLABEL.png"
 	annotate="-pointsize 10 -draw 'text 10,35 \"$NICK\"'"
 	convert +append -frame 1 $VOLUME_IMG_PANEL $ANOM_IMG_PANEL  -resize 600x600 -draw 'text 8,342 "'$NICK'"'  $IMG_PANEL
 
