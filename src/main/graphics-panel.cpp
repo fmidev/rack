@@ -84,120 +84,124 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	TreeSVG & style = ctx.svgTrack[svg::STYLE]; // convention: main style section in the document
+	//TreeSVG & style = ctx.svgTrack[svg::STYLE]; // convention: main style section in the document
+
+	TreeSVG & style = ctx.svgTrack[svg::STYLE](svg::STYLE); // convention: main style section in the document
 
 	using namespace drain;
 
-	//if (style->isUndefined()){
+	//style->setType(svg::STYLE);
+	typedef SelectXML<svg::tag_t> Select;
 
-		style->setType(svg::STYLE);
+	UtilsXML::ensureStyle(style, svg::TEXT, {
+			{"font-family","Helvetica, Arial, sans-serif"},
+			{"stroke", "none"},
+	});
 
-		// mout.debug("initializing style");
-		typedef SelectXML<svg::tag_t> Select;
+	UtilsXML::ensureStyle(style, svg::TEXT, {
+			{"font-family","Helvetica, Arial, sans-serif"},
+			{"stroke", "none"},
+	});
 
-		style[svg::TEXT] = {
-				{"font-family","Helvetica, Arial, sans-serif"},
-				{"stroke", "none"},
-		};
+	UtilsXML::ensureStyle(style, ClassXML(BACKGROUND_RECT), {
+			{"stroke", "none"},
+	});
 
-		style[ClassXML(BACKGROUND_RECT)] = {
-				{"stroke", "none"},
-		};
-
-		style[Select(svg::TEXT, RackSVG::IMAGE_TITLE)] = {
-				{"stroke", "white"},
-				{"stroke-opacity", "0.75"},
-				{"stroke-width", "0.3em"},
-				{"fill-opacity", "1"},
-				{"paint-order", "stroke"},
-				{"stroke-linejoin", "round"}
-		};
-
-		style[Select(svg::RECT, RackSVG::GROUP_TITLE)] = {
-				{"fill", "gray"},
-				{"stroke", "white"},
-				{"stroke-width", "1px"},
-				{"opacity", 1.0},
-		};
-
-		style[Select(svg::TEXT, RackSVG::GROUP_TITLE)] = {
-				// {"font-size", 20}, dynamic, see below
-				{"fill", "black"},
-				//{"stroke", "white"},
-		};
-
-		style[Select(svg::RECT, RackSVG::MAIN_TITLE)] = {
-				{"fill", "darkblue"},
-				//{"fill", "gray"},
-				{"opacity", 1.0},
-		};
-
-		style[Select(svg::TEXT, RackSVG::MAIN_TITLE)] = {
-				//
-				{"fill", "white"},
-				// {"stroke", "black"},
-		};
-
-		// Currently, image titles have no background RECT, but let's keep this for clarity.
-		style[Select(svg::TEXT, RackSVG::IMAGE_TITLE)] = {
-				{"font-size", "12px"},
-		};
-
-		// Date and time.
-		style[ClassXML(RackSVG::TIME)] = {
-				{"fill", "darkred"}
-		};
-
-		// Radar site
-		style[ClassXML(RackSVG::LOCATION)] = {
-				{"fill", "darkblue"}
-		};
-
-		// Option: set stroke to make borders appear. Future option: borders OUTSIDE the image.
-		style[ClassXML(RackSVG::IMAGE_BORDER)] = {
-				{"fill", "none"},
-				{"stroke", "none"},
-				// {"stroke-opacity", 0.0},
-				{"stroke-width", 1.0},
-				// {"stroke-dasharray", {2,5,3}},
-		};
-
-		// Overall image border
-		style[ClassXML(RackSVG::BORDER)] = {
-				{"fill", "none"},
-				{"stroke", "none"},
-				// {"stroke-opacity", 0.0},
-				{"stroke-width", 1.0},
-		};
-
-		// User selection
-		style[ClassXML(RackSVG::SELECTOR)] = {
-				{"fill", "none"},
-				{"stroke", "white"},
-				// {"stroke-width", 1.0},
-		};
-
-		//style[Select(svg::TEXT,ClassXML(RackSVG::SELECTOR))] = {
-
-		style[Select(svg::TEXT, RackSVG::SELECTOR)] = {
-				{"fill", "white"},
-				{"stroke", "none"},
-				{"font-size", "x-large"},
-				// {"stroke-width", 1.0},
-		};
+	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::IMAGE_TITLE), {
+			{"stroke", "white"},
+			{"stroke-opacity", "0.75"},
+			{"stroke-width", "0.3em"},
+			{"fill-opacity", "1"},
+			{"paint-order", "stroke"},
+			{"stroke-linejoin", "round"}
+	});
 
 
-		style[Select(svg::RECT,RackSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
-				{"fill", "black"},
-				{"stroke", "white"},
-				{"stroke-width", 2.0},
-		};
+	UtilsXML::ensureStyle(style, Select(svg::RECT, RackSVG::GROUP_TITLE), {
+			{"fill", "gray"},
+			{"stroke", "white"},
+			{"stroke-width", "1px"},
+			{"opacity", 1.0},
+	});
 
-		style[Select(svg::TEXT,RackSVG::SIDE_PANEL)] = { // TODO: add leading '.' ?
-				{"font-size", "12px"},
-				{"stroke", "none"},
-				{"fill", "white"},
-		};
+	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::GROUP_TITLE), {
+			// {"font-size", 20}, dynamic, see below
+			{"fill", "black"},
+			//{"stroke", "white"},
+	});
+
+	UtilsXML::ensureStyle(style, Select(svg::RECT, RackSVG::MAIN_TITLE), {
+			{"fill", "darkblue"},
+			//{"fill", "gray"},
+			{"opacity", 1.0},
+	});
+
+	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::MAIN_TITLE), {
+			//
+			{"fill", "white"},
+			// {"stroke", "black"},
+	});
+
+	// Currently, image titles have no background RECT, but let's keep this for clarity.
+	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::IMAGE_TITLE), {
+			{"font-size", "12px"},
+	});
+
+	// Date and time.
+	UtilsXML::ensureStyle(style, ClassXML(RackSVG::TIME), {
+			{"fill", "darkred"}
+	});
+
+	// Radar site
+	UtilsXML::ensureStyle(style, ClassXML(RackSVG::LOCATION), {
+			{"fill", "darkblue"}
+	});
+
+	// Option: set stroke to make borders appear. Future option: borders OUTSIDE the image.
+	UtilsXML::ensureStyle(style, ClassXML(RackSVG::IMAGE_BORDER), {
+			{"fill", "none"},
+			{"stroke", "none"},
+			// {"stroke-opacity", 0.0},
+			{"stroke-width", 1.0},
+			// {"stroke-dasharray", {2,5,3}},
+	});
+
+	// Overall image border
+	UtilsXML::ensureStyle(style, ClassXML(RackSVG::BORDER), {
+			{"fill", "none"},
+			{"stroke", "none"},
+			// {"stroke-opacity", 0.0},
+			{"stroke-width", 1.0},
+	});
+
+	// User selection
+	UtilsXML::ensureStyle(style, ClassXML(RackSVG::SELECTOR), {
+			{"fill", "none"},
+			{"stroke", "white"},
+			// {"stroke-width", 1.0},
+	});
+
+	//style[Select(svg::TEXT,ClassXML(RackSVG::SELECTOR))] = {
+
+	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::SELECTOR), {
+			{"fill", "white"},
+			{"stroke", "none"},
+			{"font-size", "x-large"},
+			// {"stroke-width", 1.0},
+	});
+
+
+	UtilsXML::ensureStyle(style, Select(svg::RECT,RackSVG::SIDE_PANEL), { // TODO: add leading '.' ?
+			{"fill", "black"},
+			{"stroke", "white"},
+			{"stroke-width", 2.0},
+	});
+
+	UtilsXML::ensureStyle(style, Select(svg::TEXT,RackSVG::SIDE_PANEL), { // TODO: add leading '.' ?
+			{"font-size", "12px"},
+			{"stroke", "none"},
+			{"fill", "white"},
+	});
 
 	// }
 
@@ -219,7 +223,7 @@ drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	static const std::string onload_fnc_name = "rack_onload";
+	static const std::string onload_fnc_name("rack_onload");
 
 	mout.experimental<LOG_INFO>("Adding mouse interaction: SVG onload=", onload_fnc_name, "()");
 
@@ -1001,12 +1005,44 @@ void CmdLayout::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-	drain::Enum<orientation_enum>::setValue(orientation, ctx.mainOrientation);
-	drain::Enum<direction_enum>::setValue(direction,     ctx.mainDirection);
+	// drain::StringTools::replace(orientation, '-', '_', orientation);
+
+	if (not drain::Enum<orientation_enum>::setValue(orientation, ctx.mainOrientation)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(orientation));
+	}
+
+	drain::StringTools::replace(directionVert, '-', '_', directionVert);
+	if (not drain::Enum<dir_vert_enum>::setValue(directionVert, ctx.mainDirectionVert)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(directionVert));
+	}
+
+	// drain::StringTools::replace(directionHorz, ':', ',', directionHorz);
+	drain::StringTools::replace(directionHorz, '-', '_', directionHorz);
+	if (not drain::Enum<dir_horz_enum>::setValue(directionHorz, ctx.mainDirectionHorz)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(directionHorz));
+	}
+
+	/*
+	drain::image::LayoutSVG::DirectionFlagger dirFlagger;
+	dirFlagger.set(direction);
+	ctx.mainDirection = dirFlagger.getValue();
+	direction = dirFlagger.str();
+	*/
+	/*
+	if (not drain::Enum<direction_enum>::setValue(direction, ctx.mainDirection)){
+		mout.reject<LOG_ERR>(DRAIN_LOG(direction));
+	}
+	*/
+
+	mout.accept<LOG_WARNING>(DRAIN_LOG(orientation), ',', DRAIN_LOG(ctx.mainOrientation));
+	//mout.accept<LOG_WARNING>(DRAIN_LOG(direction),   ',', DRAIN_LOG(ctx.mainDirection));
+	mout.accept<LOG_WARNING>(DRAIN_LOG(directionVert), ':', DRAIN_LOG(ctx.mainDirectionVert) );
+	mout.accept<LOG_WARNING>(DRAIN_LOG(directionHorz), ',', DRAIN_LOG(ctx.mainDirectionHorz) );
 
 	// reset
 	orientation = drain::Enum<orientation_enum>::dict.getKey(orientation_enum::HORZ);
-	direction   = drain::Enum<direction_enum>::dict.getKey(direction_enum::INCR);
+	//direction   = drain::Enum<direction_enum>::dict.getKey(direction_enum::INCR);
+
 
 }
 
@@ -1136,9 +1172,12 @@ void CmdLinkImage::exec() const {
 
 	const Composite & composite = ctx.getComposite(RackContext::CURRENT|RackContext::PRIVATE|RackContext::SHARED);
 
+	// Should update! Background map may use metadata, like site name (${NOD})
+	const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap(); // for variables in file path
+
+
 	drain::Frame2D<double> frame(composite.getFrameWidth(), composite.getFrameHeight());
 	if (frame.empty()){
-		drain::VariableMap & statusMap = ctx.getUpdatedStatusMap(); // for variables in file path
 		// mout.note(DRAIN_LOG(statusMap));
 		frame.set(statusMap.get("where:xsize", 0), statusMap.get("where:ysize", 0));
 		mout.note("Current Cartesian data size: ", frame);

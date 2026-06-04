@@ -99,19 +99,19 @@ public:
 			return false;
 		}
 
-
+		const T & value = it->second;
 		if (format.empty()){
 			iosFormat.copyTo(ostr);
-			//vostr.width(width);
-			//vstd::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-			//vstd::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-			ostr <<  it->second;
+			// vostr.width(width);
+			// vstd::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
+			// vstd::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
+			ostr <<  value;
 			return true;
 		}
 		else {
     		// mout.attention("delegating '", k, "' to formatVariable: ", format);
-			//return formatVariable(k, variables, format, ostr);
-			return formatVariable(k, it->second, format, ostr);
+			// return formatVariable(k, variables, format, ostr);
+			return formatVariable(k, value, format, ostr);
 		}
 
 	}
@@ -143,12 +143,28 @@ public:
 
 	/// Given a value, print it formatted to stream.
 	/**
+	 *  Formatting options are defined by the first character
+	 *
+	 *  Colon ':' selects substring like in bash, with syntax :<n>[:<startpos>].
+	 *  Examples:
+	 *  - ':3' selects 3 first letters
+	 *  - ':4:2' selects 4 letters, starting from 2nd character
+	 *
+	 *  Percentage '%' formats numbers as printf() function in C.
+	 *  Examples, given x = 1.4142135623
+	 *  - '%05.1f' returns 001.4
+	 *  - '%04d'   returns 0001
 	 *
 	 */
 	static
 	bool formatValue(const T & value, const std::string & format, std::ostream & ostr) {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		if (format.empty()){
+			ostr << value;
+			return true;
+		}
 
 		const char firstChar = format.at(0);
 		const char lastChar = format.at(format.size()-1);
@@ -158,7 +174,7 @@ public:
 			mout.attention<LOG_DEBUG>("substring extraction: ", format);
 
 			std::string s;
-			drain::Convert2<T>::convert(value, s);
+			drain::Convert::convert(value, s);
 			//drain::StringTools::import(variable, s);
 
 			std::vector<size_t> v;
@@ -202,7 +218,7 @@ public:
 			case 's':
 			{
 				std::string s;
-				drain::Convert2<T>::convert(value, s);
+				drain::Convert::convert(value, s);
 				// drain::StringTools::import(variable, s);
 				n = std::sprintf(buffer, format.c_str(), s.c_str());
 			}
@@ -210,7 +226,7 @@ public:
 			case 'c':
 			{
 				std::string s;
-				drain::Convert2<T>::convert(value, s);
+				drain::Convert::convert(value, s);
 				//drain::StringTools::import(variable, s);
 				n = std::sprintf(buffer, format.c_str(), s.at(0)); // ?
 			}
@@ -228,7 +244,7 @@ public:
 			case 'G':
 			{
 				double d = NAN; //nand()
-				drain::Convert2<T>::convert(value, d);
+				drain::Convert::convert(value, d);
 				// drain::StringTools::import(variable, d);
 				//drain::MapTools::get(variables, key, d);
 				// ostr << d << "=>"; // debugging

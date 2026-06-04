@@ -343,9 +343,8 @@ const <a class="el" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>trimPathMatcher</b> ()</td></tr>
 <tr class="memdesc:aa648b72fc9830c47bae0d23449e83187"><td class="mdescLeft">&#160;</td><td class="mdescRight">"Drop leading slashes", ie. remove leading empty elements. <br /></td></tr>
 <tr class="separator:aa648b72fc9830c47bae0d23449e83187"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30eccaa8ad96962759b84db2e7a623bf" id="r_a30eccaa8ad96962759b84db2e7a623bf"><td class="memItemLeft" align="right" valign="top"><a id="a30eccaa8ad96962759b84db2e7a623bf" name="a30eccaa8ad96962759b84db2e7a623bf"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setQuantities</b> (const std::string &amp;s)</td></tr>
-<tr class="memdesc:a30eccaa8ad96962759b84db2e7a623bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets basic quantities and quality quantities. These sets are separated by '/'. <br /></td></tr>
+<tr class="memitem:a30eccaa8ad96962759b84db2e7a623bf" id="r_a30eccaa8ad96962759b84db2e7a623bf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">setQuantities</a> (const std::string &amp;s)</td></tr>
+<tr class="memdesc:a30eccaa8ad96962759b84db2e7a623bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets basic quantities and quality quantities. These sets are separated by '/'.  <br /></td></tr>
 <tr class="separator:a30eccaa8ad96962759b84db2e7a623bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa60f8ea5712598e8f1e2c3d2e91d5955" id="r_aa60f8ea5712598e8f1e2c3d2e91d5955"><td class="memItemLeft" align="right" valign="top"><a id="aa60f8ea5712598e8f1e2c3d2e91d5955" name="aa60f8ea5712598e8f1e2c3d2e91d5955"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>quantityIsSet</b> () const</td></tr>
@@ -1178,6 +1177,39 @@ QIND  - accept any QIND</h1>
 
 <p>Collect paths with all the criteria: path, elevation(range), PRF, quantity... </p>
 <p>PRESELECT. </p>
+
+</div>
+</div>
+<a id="a30eccaa8ad96962759b84db2e7a623bf" name="a30eccaa8ad96962759b84db2e7a623bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30eccaa8ad96962759b84db2e7a623bf">&#9670;&#160;</a></span>setQuantities()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setQuantities </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets basic quantities and quality quantities. These sets are separated by '/'. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>- a comma-separated list of quantities - literals or regExps</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Examples:</p><ul>
+<li>"DBZH"</li>
+<li>"DBZ,DBZH,DBZV"</li>
+<li>"^DBZ[HV]?$"</li>
+<li>"DBZH/QIND"</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1StringMatcherList.html#ac5b3fa0eef7690a296f59e2a1212fb84" title="Replace current list with a new one.">drain::StringMatcherList::setKeys()</a> </dd></dl>
 
 </div>
 </div>

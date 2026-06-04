@@ -1305,7 +1305,7 @@ public:
 			mout.info("several Data groups, using: " , this->begin()->first );
 			// no break;
 		case 1:
-			mout.debug("updating from 1st data: " , this->begin()->first );
+			mout.debug2("updating from 1st data: " , this->begin()->first );
 
 
 			const typename DT::odim_t & odim = this->getFirstData().odim;

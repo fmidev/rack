@@ -36,6 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <list>
 #include <sstream>
 
+#include <drain/Enum.h>
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
 
@@ -51,8 +52,6 @@ namespace drain {
  *   literals and variables, in turn.
  *   The result is stored in a list.
  */
-//template<class T>
-// Todo: rename VariableMapper
 class Stringlet: public std::string {
 public:
 
@@ -94,179 +93,22 @@ std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
 
 
 
-/*
-template <class T>
-class VariableHandler {
-
-public:
-
-	inline virtual
-	~VariableHandler(){};
-
-	IosFormat iosFormat;
-
-
-	/// Searches given key in a map, and if found, processes (formats) the value to ostream.  Return false, if variable not found.
-	//  Return false, if variable not found.
-	//  Then, further processors may handle the variable tag (remove, change, leave it).
-	virtual
-	bool handle(const std::string & key, const std::map<std::string,T> & variables, std::ostream & ostr) const {
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
-		std::string k,format;
-		drain::StringTools::split2(key, k, format, '|');
-		// mout.attention("split '", key, "' to ", k, " + ", format);
-
-		const typename std::map<std::string,T>::const_iterator it = variables.find(k);
-		if (it == variables.end()) {
-			return false;
-		}
-
-
-		if (format.empty()){
-			iosFormat.copyTo(ostr);
-			//vostr.width(width);
-			//vstd::cerr << __FILE__ << " assign -> " << stringlet << std::endl;
-			//vstd::cerr << __FILE__ << " assign <---- " << mit->second << std::endl;
-			ostr <<  it->second;
-			return true;
-		}
-		else {
-    		// mout.attention("delegating '", k, "' to formatVariable: ", format);
-			return formatVariable(k, variables, format, ostr);
-		}
-
-	}
 
 
 
-	// NOTE: must return false, if not found. Then, further processors may handle the variable tag (remove, change, leave it).
-	virtual
-	bool formatVariable(const std::string & key, const std::map<std::string,T> & variables, const std::string & format, std::ostream & ostr) const {
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
-
-		const char firstChar = format.at(0);
-		const char lastChar = format.at(format.size()-1);
-
-    	if (firstChar == ':'){
-
-    		// mout.attention("substring extraction:", format);
-
-    		std::string s;
-    		drain::MapTools::get(variables, key, s);
-
-    		std::vector<size_t> v;
-    		drain::StringTools::split(format, v, ':');
-    		size_t pos   = 0;
-    		size_t count = s.size();
-
-    		switch (v.size()) {
-				case 3:
-					count = v[2];
-					// no break
-				case 2:
-					pos = v[1];
-					if (pos >= s.size()){
-						mout.warn("index ", pos, " greater than size (", s.size(), ") of string value '", s, "' of '", key, "'");
-						return true;
-					}
-					count = std::min(count, s.size()-pos);
-					ostr << s.substr(v[1], count);
-					break;
-				default:
-					mout.warn("unsupported formatting '", format, "' for variable '", key, "'");
-					mout.advice("use :startpos or :startpos:count for substring extraction");
-			}
-    		return true;
-
-    	}
-    	else if (firstChar == '%'){
-
-    		// mout.attention("string formatting: ", format);
-
-        	//else if (format.find('%') != std::string::npos){
-    		std::string s;
-    		drain::MapTools::get(variables, key, s);
-
-    		const size_t BUFFER_SIZE = 256;
-    		char buffer[BUFFER_SIZE];
-    		buffer[0] = '\0';
-    		size_t n = 0;
-
-    		switch (lastChar){
-    		case 's':
-    			n = std::sprintf(buffer, format.c_str(), s.c_str());
-    			break;
-    		case 'c':
-    			n = std::sprintf(buffer, format.c_str(), s.at(0)); // ?
-    			break;
-    		case 'p':
-    			mout.unimplemented("pointer type: ", format);
-    			break;
-    		case 'f':
-    		case 'F':
-    		case 'e':
-    		case 'E':
-    		case 'a':
-    		case 'A':
-    		case 'g':
-    		case 'G':
-    		{
-    			double d = NAN; //nand();
-    			drain::MapTools::get(variables, key, d);
-    			// ostr << d << '=';
-    			n = std::sprintf(buffer, format.c_str(), d);
-    		}
-    		break;
-    		case 'd':
-    		case 'i':
-    		case 'o':
-    		case 'u':
-    		case 'x':
-    		case 'X':
-    		{
-    			int i = 0;
-    			drain::MapTools::get(variables, key, i);
-    			ostr << i << '=';
-    			n = std::sprintf(buffer, format.c_str(), i);
-    		}
-    		break;
-    		default:
-    			mout.warn("formatting '", format, "' requested for '", key, "' : unsupported type key: ", lastChar);
-    		}
-
-    		ostr << buffer;
-    		if (n > BUFFER_SIZE){
-    			mout.fail("formatting with '", format, "' exceeded buffer size (", BUFFER_SIZE, ')');
-    		}
-
-    		// mout.warn("time formatting '", format, "' requested for '", k, "' not ending with 'time' or 'date'!");
-    	}
-
-    	return true;
-	}
-
-
-};
-*/
-
-
-
-/**  Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string.
- *   StringMapper parses a given std::string, it splits the std::string into segments containing
- *   literals and variables in turn.
- *   The result is stored in a list of Stringlet:s. The variables are provided to a StringMap
- *   by means of a std::map<std::string,T> .
- *
- *   \example StringMapper-example.cpp
- */
-/// A tool for expanding variables embedded in a std::string to literals.
-/** The input variables are provided as a map, which is allowed to change dynamically.
+/// Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string.
+/**
+ *  A tool for expanding variables embedded in a std::string to literals.
+ *  The input variables are provided as a map, which is allowed to change dynamically.
  *  The input std::string, issued with parse(), contains the variables as "$key" or "${key}", a
  *  format familiar in Unix shell.
+ *
+ *  StringMapper parses a given std::string, it splits the std::string into segments containing
+ *  literals and variables in turn.
+ *  The result is stored in a list of Stringlet:s. The variables are provided to a StringMap
+ *  by means of a std::map<std::string,T> .
+ *
+ *  \example StringMapper-example.cpp
  *
  */
 class StringMapper : public std::list<Stringlet> {
@@ -366,15 +208,22 @@ public:
 
 	IosFormat iosFormat;
 
+	// static const int KEEP_MISSING_VARIABLE;
+	// static const int REMOVE_MISSING_VARIABLE;
+	enum handleMissing {
+		REMOVE_MISSING_VARIABLE, //=0,
+		KEEP_MISSING_VARIABLE // =1,
+	};
 
 	/// Expands the variables in the last
 	/**
 	 *  \par ostr - output stream
 	 *  \par m    - map containing variable values
-	 *  \par clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
+	 *  \par replace - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
-	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = 0, const VariableFormatter<T> &formatter = VariableFormatter<T>()) const {
+	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = REMOVE_MISSING_VARIABLE,
+			const VariableFormatter<T> &formatter = VariableFormatter<T>()) const {
 
 		for (const Stringlet & stringlet: *this){
 
@@ -382,25 +231,15 @@ public:
 
 				if (formatter.handle(stringlet, variables, ostr)){
 					// std::cerr << __FILE__ << " ok stringlet variable: " << stringlet << std::endl;
-					// ok, accepted and handled!
+					// Variable found and assigned.
 				}
-				else if (replace){
-					//else if (keepUnknowns){ // = "recycle", add back "${variable}";
-					if (replace < 0)
-						ostr <<  stringlet; // is Variable -> use layout  "${variable}";
-					else
-						ostr << (char)replace;
-					// if zero, skip silently (replace with empty string)
-					/*
-					if (replaceChar<0)
-						ostr << '#' <<  *it << '$'; // is Variable -> use layout  "${variable}";
-					else if (replaceChar>1)
-						ostr << (char)replaceChar;
-					*/
+				else if (replace == KEEP_MISSING_VARIABLE){ // (replace < 0)
+					ostr <<  stringlet; // is Variable -> use layout  "${variable}";
 				}
-				else { // replace == 0
-					// Skip unknown (unfound) key
+				else if (replace != REMOVE_MISSING_VARIABLE){
+					ostr << (char)replace;
 				}
+				// else: silently skip the variable.
 			}
 			else
 				ostr << stringlet;
@@ -464,26 +303,6 @@ public:
 			ostr << '\n';
 		};
 
-		/*
-		for (StringMapper::const_iterator it = begin(); it != end(); it++){
-			//ostr << *it;
-			ostr << '\t';
-			if (it->isVariable()){
-				//ostr << "VAR: ";
-				typename std::map<std::string, T >::const_iterator mit = m.find(*it);
-				if (mit != m.end())
-					ostr << "\"" <<  mit->second << "\"";
-				else
-					ostr << *it;
-			}
-			else {
-				ostr << "'"<<  *it << "'";
-				//ostr << "LIT: '" << *it << "'\n";
-			}
-			ostr << '\n';
-			//ostr << '\n';
-		}
-		*/
 		return ostr;
 	}
 
@@ -516,6 +335,15 @@ inline
 std::ostream & operator<<(std::ostream & ostr, const StringMapper & strmap){
 	return strmap.toStream(ostr);
 }
+
+// DRAIN_ENUM_DICT(StringMapper::KEEP_MISSING_VARIABLE);
+// template <> const drain::Enum<enumtype,owner>::dict_t drain::Enum<enumtype,owner>::dict
+// template <>
+// const drain::Enum<int,StringMapper>::dict_t drain::Enum<int,StringMapper>::dict;
+DRAIN_TYPENAME(StringMapper::handleMissing);
+
+DRAIN_ENUM_DICT(StringMapper::handleMissing);
+// DRAIN_ENUM_OSTREAM(StringMapper::handleMissing);
 
 
 } // NAMESPACE

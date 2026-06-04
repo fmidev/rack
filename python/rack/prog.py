@@ -1,6 +1,7 @@
 import argparse
 import inspect
 import pathlib
+import re
 from typing import Any, Dict, Union
 import numbers
 
@@ -65,6 +66,16 @@ class Register:
             return False
         else:
             return value==param.default
+        
+    def get_default(func, key):
+        """ Return the default value for a given key in a function, or None if no default value is defined.
+        """
+        sig = inspect.signature(func)
+        param = sig.parameters[key]
+        if param.default is inspect._empty:
+            return None
+        else:
+            return param.default
 
 
     def make_cmd(self, local_vars:dict, separator:str="") -> Command:
@@ -214,10 +225,10 @@ class Register:
 
         # Function signature
         sig = inspect.signature(func)
-        params = list(sig.parameters.values())
+        sig_params = list(sig.parameters.values())
         # Remove 'self' if it exists in the source signature
-        if params and params[0].name == "self":
-            params = params[1:]
+        if sig_params and sig_params[0].name == "self":
+            sig_params = sig_params[1:]
 
         # Function name 
         if parser:
@@ -246,7 +257,7 @@ class Register:
         if not name_mapper:
             return
 
-        for v in params:
+        for v in sig_params:
             name = v.name
             logger.debug(f"{func.__name__}: arg {v.name} default: {v.default}")
             if name_mapper:
@@ -282,26 +293,23 @@ class Register:
     
 
     # @classmethod
-    def handle_published_cmd_args(self, args: argparse.Namespace, cmd_func: callable) -> Command:
+    def handle_published_cmd_args(self, args: argparse.Namespace, cmd_func: callable, write_back=False) -> Command:
         """
         Docstring for handle_exploded_command
         
         :param args: Namespace of arguments, typically from argparse. The keys should match the parameter names of cmd_func.
         :param cmd_func: The function to call with the arguments. Typically, this is a method of the Rack class, e.g., Rack.select or Rack.pPseudoRhi.
-        :param exec: If True, the command will be executed (i.e., cmd_func will be called with the arguments).
-        :type exec: bool
-        :return: If exec is True, returns the result of cmd_func. Otherwise, returns a dict of arguments that would be passed to cmd_func.
+        :return: The result of cmd_func - a Command object.
         """
     
         sig = inspect.signature(cmd_func)
-        params = list(sig.parameters.values())
+        sig_params = list(sig.parameters.values())
 
         var_args = vars(args)
-        # logger.warning(f"Handling exploded command {cmd_func.__name__}")
         # logger.warning(f"Handling exploded command {cmd_func.__name__} with args: {var_args}") # too verbose...
 
         # First, create the command with default args, then override with explicit args, and finally parse free args if any.
-        cmd = cmd_func(self)
+        cmd:Command = cmd_func(self)
         # logger.warning(f"Building command {cmd_func.__name__}: {cmd.to_string()}")
 
         pos_args = []
@@ -309,33 +317,44 @@ class Register:
         if not cmd.fmt:
             cmd.set_separators()        
         cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
-        #cmd.set_args(*pos_args, **kw_args)
-        #
+        
         logger.debug(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
 
-        # explicit args. Notice that they are given as --cmd_func arg=value, so they are in var_args with key cmd_func and value "arg=value,..."
-        for v in params:
+        # explicit args. Notice that they are given as --cmd_func arg=value, 
+        # so they are in var_args with key cmd_func and value "arg=value,..."
+        
+        # check pos_args with index:
+        i = 0
+        for v in sig_params:
             #name = v.name
             if v.name == "self":
                 continue
+
+            if i < len(pos_args):
+                if write_back:
+                    var_args[v.name] = pos_args[i]
+                    # = setattr(args, v.name, pos_args[i])    
+            i += 1
 
             if v.name in var_args and var_args[v.name] is not None:
                 value = var_args[v.name]
                 # default is studied "locally"
                 if value != v.default:
                     logger.debug(f"Argument {v.name} has value {value} different from default {v.default}, including in command")
+                    # If the value is a tuple, format it as "min,max" -> "min:max" 
                     kw_args[v.name] = str(value).strip().replace(cmd.fmt.PARAM_SEPARATOR, cmd.fmt.VALUE_SEPARATOR) 
-                    #.strip('"').strip("'") # TODO: strip quotes if any, for example, value.strip('"').strip("'") or similar
-                    #logger.info(f"{cmd_func.__name__}: adding argument {v.name}={value}")
             else:
                 logger.warning(f"Argument {v.name} not found in args or is None, skipping for {cmd_func.__name__}")
         
         cmd.set_args(*pos_args, **kw_args)
         logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
 
-        # if exec:
-        # logger.warning(f"Executing '{cmd_func.__name__}' with explicit args: {kw_args}")
-        # cmd = cmd_func(self, free_args, **dict_args)
+        # cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
+        # print("Final explicit args: ", pos_args, kw_args)
+        if write_back:
+            # Write back to args, for example, for use in other commands or for logging
+            for k,v in kw_args.items():
+                setattr(args, k, v)
 
         return cmd
 

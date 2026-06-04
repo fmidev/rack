@@ -132,7 +132,12 @@ public:
 	 *   To actually align the objects, call also superAlignNew().	 *
 	 */
 	static
-	void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, unsigned short depth=0);
+	//void addStackLayout(TreeSVG & object, AlignBase::Axis orientation = AlignBase::Axis::HORZ, LayoutSVG::Direction direction = LayoutSVG::Direction::INCR, unsigned short depth=0);
+	void addStackLayout(TreeSVG & object,
+			AlignBase::Axis orientation = AlignBase::Axis::HORZ,
+			LayoutSVG::DirectionHorz directionHorz = LayoutSVG::DirectionHorz::RIGHT,
+			LayoutSVG::DirectionVert directionVert = LayoutSVG::DirectionVert::DOWN,
+			unsigned short depth=0);
 
 	/// Sets alignment applying stack layout in a single node.
 	/**
@@ -141,7 +146,8 @@ public:
 	 *   To finally align (translate) the objects, call also TreeUtilsSVG::superAlignNew().	 *
 	 */
 	static
-	void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction);
+	void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::DirectionHorz dirHorz, LayoutSVG::DirectionVert dirVert);
+	// void setStackLayout(NodeSVG & node, AlignBase::Axis orientation, LayoutSVG::Direction direction);
 
 	static
 	void superAlign(TreeSVG & node);

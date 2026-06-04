@@ -75,7 +75,9 @@ $(function() {
   <div class="headertitle"><div class="title">StringMapper-example.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<p>Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string. StringMapper parses a given std::string, it splits the std::string into segments containing literals and variables in turn. The result is stored in a list of Stringlet:s. The variables are provided to a StringMap by means of a std::map&lt;std::string,T&gt; .</p>
+<p>Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string.</p>
+<p>Expands a std::string containing variables like "Hello, ${name}!" to a literal std::string. A tool for expanding variables embedded in a std::string to literals. The input variables are provided as a map, which is allowed to change dynamically. The input std::string, issued with parse(), contains the variables as "$key" or "${key}", a format familiar in Unix shell.</p>
+<p>StringMapper parses a given std::string, it splits the std::string into segments containing literals and variables in turn. The result is stored in a list of Stringlet:s. The variables are provided to a StringMap by means of a std::map&lt;std::string,T&gt; .</p>
 <div class="fragment"></div><!-- fragment --> </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

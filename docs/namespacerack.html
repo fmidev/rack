@@ -310,8 +310,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputPrefix.html">CmdOutputPrefix</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputQuantity.html">CmdOutputQuantity</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputRawImages.html">CmdOutputRawImages</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdOutputTree.html">CmdOutputTree</a></td></tr>
@@ -1076,6 +1074,10 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>quoted</b> (co
 <tr class="separator:af438f7e5852a5bc0a886e8cac3fc042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fe0d3cfb8ca6e0e45df72f1fd73a262" id="r_a7fe0d3cfb8ca6e0e45df72f1fd73a262"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a7fe0d3cfb8ca6e0e45df72f1fd73a262">addCoordMonitor</a> (drain::image::TreeSVG &amp;textObject, const std::string &amp;cls)</td></tr>
 <tr class="separator:a7fe0d3cfb8ca6e0e45df72f1fd73a262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6b7e9b2bdf6bc0d84419ee45e1dd4c" id="r_aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"><td class="memTemplParams" colspan="2"><a id="aaf6b7e9b2bdf6bc0d84419ee45e1dd4c" name="aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"></a>
+template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>encodeToRGBAimage</b> (const <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;data, <a class="el" href="classdrain_1_1image_1_1ImageT.html">drain::image::ImageT</a>&lt; uint8_t &gt; &amp;dataImage)</td></tr>
+<tr class="separator:aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4529b561ba64738c5b239d58fe62f7fc" id="r_a4529b561ba64738c5b239d58fe62f7fc"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a4529b561ba64738c5b239d58fe62f7fc">addDummyObject</a> (drain::image::TreeSVG &amp;group)</td></tr>
 <tr class="separator:a4529b561ba64738c5b239d58fe62f7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11b6f031ad0ea0856803ce1677e42c80" id="r_a11b6f031ad0ea0856803ce1677e42c80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a11b6f031ad0ea0856803ce1677e42c80">process</a> (int argc, const char **argv)</td></tr>
@@ -1174,6 +1176,23 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Rack is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.</p>
 <p>Rack is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Rack. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+<p>Version history:</p>
+<p>Version 20</p><ul>
+<li>Revised SVG output, including gPanel and gRadarLabel</li>
+<li>VsCode support for C++11, and revised Makefile Version 20.0</li>
+<li>Pruned #include:s Version 20.1</li>
+<li>addPolar: fixed default encoding</li>
+<li><a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a>: WIGOS more 2.4 sensitive Version 20.2</li>
+<li><a class="el" href="classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system.">CumulativeProductOp</a>: fixed encoding (when using src)</li>
+<li>Removed CmdOutputQuantity Version 20.3</li>
+<li>Convert re-factored Version 20.4</li>
+<li>gLayout HORZ,INCR_HORZ:DECR_VERT -&gt; gLayout HORZ,UP,RIGHT Release 20.4.1</li>
+<li>encoding: type change Release 20.4.2beta</li>
+<li>graphics style fix</li>
+<li>encoding: type bug reappeared... Release 20.4.2</li>
+<li>graphics style fix</li>
+<li>encoding: type bug probably nailed</li>
+</ul>
 <p>Version 19</p><ul>
 <li>Simplified tree path element handling (including lookup table) Version 19.0</li>
 <li>Simple JavaScript coordinate monitor with &ndash;gCoord Release 19.0.1</li>
@@ -1192,7 +1211,9 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>gRadarLabel, first version Version 19.2</li>
 <li>gRadarLabel, final version</li>
 <li>gPanel adjusted</li>
-<li>CTEXT VERT alignment fixed</li>
+<li>CTEXT VERT alignment fixed Version 19.2.0</li>
+<li>Python3 (.py) edits only Version 19.2.1</li>
+<li>&ndash;sample: added automatic variable ${&lt;quantity&gt;_raw} to see values "under" undetect / nodata. Version 19.3 &ndash;gData coordinate rounding fixed &ndash;histogram for signed short (still faulty) Version 19.3.0 &ndash;gLinkImage outputPrefix removed &ndash;histogram for signed short</li>
 </ul>
 <p>Version 18</p><ul>
 <li>SVG basic command set completed</li>
@@ -1694,7 +1715,7 @@ template&lt;class T &gt; </div>
 <p>Converts Z from logarithmic to linear scale.  </p><p class="formulaDsp">
 <picture><source srcset="form_164_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
     Z = 10^{dBZ/10}
-\]" src="form_164.png"/></picture>
+\]" src="form_164.png" width="74" height="13"/></picture>
 </p>
  
 </div>
@@ -1922,7 +1943,7 @@ template&lt;class T &gt; </div>
 <p>Converts Z from logarithmic to linear scale.  </p><p class="formulaDsp">
 <picture><source srcset="form_165_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
     dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10
-\]" src="form_165.png"/></picture>
+\]" src="form_165.png" width="181" height="14"/></picture>
 </p>
  
 </div>

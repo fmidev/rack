@@ -36,9 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/TypeName.h>
 #include <drain/util/StringMatcher.h>
 
+
 namespace drain {
 
 const std::string StringMatcher::regExpSpecialChars = "^.?*[]()$"; // Notice: still missing: {:,|} (reserved for pipeline ops?)
+
 
 
 void StringMatcher::set(const std::string & s){

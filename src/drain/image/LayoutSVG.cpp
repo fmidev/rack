@@ -38,6 +38,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "LayoutSVG.h"
 
+#include "Direction.h"
+
 namespace drain {
 
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType) = {
@@ -53,50 +55,28 @@ DRAIN_ENUM_DICT(image::LayoutSVG::GroupType) = {
 };
 
 DRAIN_ENUM_DICT(image::LayoutSVG::Direction) = {
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, INCR),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::Direction, DECR)
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, INCR),
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, DECR),
+		/*
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, RIGHT),
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, DOWN),
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, LEFT),
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, UP),
+		*/
 };
 
-namespace image {
+DRAIN_ENUM_DICT(image::LayoutSVG::DirectionHorz) = {
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::DirectionHorz, RIGHT),
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::DirectionHorz, LEFT),
+};
 
+DRAIN_ENUM_DICT(image::LayoutSVG::DirectionVert) = {
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::DirectionVert, DOWN),
+		DRAIN_ENUM_ENTRY(image::LayoutSVG::DirectionVert, UP),
 
-/*
-void LayoutSVG::setStackAlignment(AlignBase::Axis orientation, LayoutSVG::Direction direction){
-
-	if (orientation == drain::image::AlignBase::Axis::HORZ){
-		if (direction==LayoutSVG::Direction::INCR){
-			setAlign(AlignSVG::RIGHT, AlignSVG::OUTSIDE);
-		}
-		else {
-			setAlign(AlignSVG::LEFT, AlignSVG::OUTSIDE);
-		}
-		// Assign "hanging"
-		setAlign(AlignSVG::TOP, AlignSVG::INSIDE); // for some apps, could be BOTTOM as well?
-	}
-	else {
-		if (direction==LayoutSVG::Direction::INCR){
-			setAlign(AlignSVG::BOTTOM, AlignSVG::OUTSIDE);
-		}
-		else {
-			setAlign(AlignSVG::TOP, AlignSVG::OUTSIDE);
-		}
-		setAlign(AlignSVG::LEFT, AlignSVG::INSIDE); // for some apps, could be RIGHT as well?
-	}
-}
-*/
-
-}  // image::
+};
 
 
 }  // drain::
-
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool drain::image::TreeSVG::hasChild(const drain::image::LayoutSVG::GroupType & type) const {
-	return hasChild(Enum<drain::image::LayoutSVG::GroupType>::dict.getKey(type, true)); // no error
-}
-*/
 
 

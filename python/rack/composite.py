@@ -17,10 +17,11 @@ import logging
 #from types import SimpleNamespace
 
 import rack.log
-import rack.prog
-import rack.core
 import rack.cmdline
 import rack.config
+import rack.core
+import rack.maps
+import rack.prog
 import rack.svg
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
@@ -37,7 +38,6 @@ class scheme:
     TILED = "TILED"
     DEFAULT = ""
 
-import rack.maps
 
 def build_parser() -> argparse.ArgumentParser:
     """ Creates registry of supported options of this script
@@ -70,33 +70,6 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         default="",
         help="Output file (basename). See --FORMAT")
     
-
-    """ Geographical information
-
-    parser.add_argument(
-        "--GEOCONF",
-        metavar="<KEY>|<filepath>-<KEY>.json>",
-        help="Read BBOX, PROJ, SIZE from file, default: geoconf/geoconf-<KEY>.json")  # FMI Scandinavia
-
-    parser.add_argument(
-        "--BBOX",
-        #default='6,51.3,49,70.2',
-        metavar="<lonLL,latLL,lonUR,latUR>",
-        help="Bounding box [cBBox]")  # FMI Scandinavia
-
-    parser.add_argument(
-        "--SIZE",
-        #default="800,800",
-        metavar="<width>[,<height>]",
-        help="") 
-    
-    parser.add_argument(
-        "--PROJ",
-        metavar="[<epsg>|<proj_str>]",
-        dest="EPSG",
-        #default="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
-        help="")   # Same as epsg:4326
-    """
 
     parser.add_argument(
         "--METHOD",
@@ -349,22 +322,28 @@ def read_geoconf(args): #, parser):
     # First, assume it is a full path.
     filepath = Path(args.GEOCONF)
     args.GEOCONF = str(filepath.name)
-    
+
+    geoconf = {}
+
     m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', args.GEOCONF)
     if m:
         if args.GEOCONF == m.group(1):
             # Nothing removed - plain key given.
-            filepath = Path(f'geoconf/geoconf-{args.GEOCONF}.json')
+            filepath = Path(f'geoconf/geoconf-{args.GEOCONF}')
+            formats = ['.json', '.cnf']
+            logger.info(f"Reading geoconfs '{args.GEOCONF}' -> {filepath}{formats}")
+            geoconf = rack.config.read_if_found(filepath, formats)
         else:
             # Adopt keyword "reduced" from filepath.
             args.GEOCONF = m.group(1)
+            logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
+            # Notice: does not check if variables other than BBOX, PROJ, SIZE are given 
+            geoconf = rack.config.read(filepath)
+    
     else:
         Exception(f'--GEOCONF: could not extract KEY from argument: {args.GEOCONF}')
 
     
-    logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
-    # Notice: no control if variables other than BBOX, PROJ, SIZE are given 
-    geoconf = rack.config.read(filepath)
     vars(args).update(geoconf)
     return geoconf
 
@@ -743,6 +722,11 @@ def main():
         parser.set_defaults(**config)
 
     args = parser.parse_args()
+
+    # check if no args given, then print help and exit
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
 
     # Selected commands only for direct command line use
     # Needs parser for arg definitions, args for current values

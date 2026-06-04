@@ -40,6 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/util/EnumFlagger.h>
 
+#include "Direction.h"
+
 #include "TreeSVG.h"
 
 namespace drain {
@@ -63,9 +65,44 @@ public:
 	 */
 	enum Direction {
 		UNDEFINED_DIRECTION=0,
+		/*
+		RIGHT = 1,
+		LEFT  = 2,
+		DOWN  = 4,
+		UP    = 8,
+		INCR = RIGHT | DOWN,
+		DECR = LEFT | UP,
+		*/
+		/*
+		INCR_HORZ = 1,
+		INCR_VERT = 2,
+		INCR = INCR_HORZ | INCR_VERT,
+		DECR_HORZ = 4,
+		DECR_VERT = 8,
+		DECR = DECR_HORZ | DECR_VERT,
+		*/
 		INCR = 1,
 		DECR = 2,
+		/*
+		INCR_HORZ = 1+4,
+		DECR_HORZ = 2+4,
+		INCR_VERT = 1+8,
+		DECR_VERT = 2+8,
+		*/
 	};
+
+	enum DirectionHorz {
+		//UNDEFINED_DIRECTION=0,
+		RIGHT = INCR,
+		LEFT  = DECR,
+	};
+
+	enum DirectionVert {
+		//tDEFINED_DIRECTION=0,
+		DOWN  = INCR,
+		UP    = DECR,
+	};
+
 
 	/// Experimental SVG style classes (requests)
 	enum GroupType {
@@ -83,12 +120,13 @@ public:
 	};
 
 
+	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
+	typedef drain::EnumFlagger<drain::SingleFlagger<AlignBase::Axis> > AxisFlagger;
+
 protected:
 
-	typedef drain::EnumFlagger<drain::SingleFlagger<AlignBase::Axis> > AxisFlagger;
 	AxisFlagger orientation = AlignBase::HORZ;
 
-	typedef drain::EnumFlagger<drain::SingleFlagger<Direction> > DirectionFlagger;
 	DirectionFlagger direction = INCR;
 
 	inline
@@ -143,14 +181,25 @@ protected:
 }  // image::
 
 DRAIN_ENUM_DICT(image::LayoutSVG::Direction);
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::Direction);
+
+DRAIN_ENUM_DICT(image::LayoutSVG::DirectionHorz);
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionHorz);
+
+DRAIN_ENUM_DICT(image::LayoutSVG::DirectionVert);
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionVert);
+
+
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
 
 DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
 
+
+
 }  // drain::
 
 
-DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
+//DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
 DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::GroupType);
 
 namespace drain {

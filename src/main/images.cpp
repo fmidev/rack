@@ -1055,7 +1055,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		mout.special("Palette key: ", ctx.paletteKey);
+		mout.info(DRAIN_LOG(ctx.paletteKey));
 
 		drain::image::Palette & palette = ctx.getPalette();
 
@@ -1078,7 +1078,7 @@ public:
 		else {
 
 		}
-		mout.special("comment: ", palette.comment);
+		mout.debug(DRAIN_LOG(palette.comment));
 
 
 		drain::StringMapper mapper(RackContext::variableMapper);
@@ -1090,7 +1090,7 @@ public:
 			// drain::FilePath filepath(ctx.outputPrefix + value);
 			if (FileSVG::fileInfo.checkExtension(filepath.extension)){ // .svg
 
-				mout.special("writing SVG legend");
+				mout.info("writing SVG legend");
 
 				TreeSVG svg;
 				palette.exportSVGLegend(svg, true);

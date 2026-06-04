@@ -77,6 +77,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
@@ -85,17 +86,12 @@ $(function() {
   <div class="headertitle"><div class="title">StringMapper Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>A tool for expanding variables embedded in a std::string to literals.  
- <a href="classdrain_1_1StringMapper.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="StringMapper_8h_source.html">StringMapper.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for StringMapper:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1StringMapper__inherit__graph.png" border="0" usemap="#aStringMapper_inherit__map" alt="Inheritance graph"/></div>
 <map name="aStringMapper_inherit__map" id="aStringMapper_inherit__map">
-<area shape="rect" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="14,79,123,104"/>
+<area shape="rect" title=" " alt="" coords="14,79,123,104"/>
 <area shape="rect" title=" " alt="" coords="5,5,132,31"/>
 <area shape="poly" title=" " alt="" coords="71,44,71,79,66,79,66,44"/>
 </map>
@@ -105,7 +101,7 @@ Collaboration diagram for StringMapper:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1StringMapper__coll__graph.png" border="0" usemap="#aStringMapper_coll__map" alt="Collaboration graph"/></div>
 <map name="aStringMapper_coll__map" id="aStringMapper_coll__map">
-<area shape="rect" title="A tool for expanding variables embedded in a std::string to literals." alt="" coords="145,93,254,119"/>
+<area shape="rect" title=" " alt="" coords="145,93,254,119"/>
 <area shape="rect" title=" " alt="" coords="5,5,132,31"/>
 <area shape="poly" title=" " alt="" coords="99,36,183,91,180,95,96,40"/>
 <area shape="rect" href="classdrain_1_1IosFormat.html" title="Stores precision, fillChar and fieldWidth applied by STD streams." alt="" coords="156,5,243,31"/>
@@ -115,6 +111,13 @@ Collaboration diagram for StringMapper:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:abd06771cfe124662fd579de046599862" id="r_abd06771cfe124662fd579de046599862"><td class="memItemLeft" align="right" valign="top"><a id="abd06771cfe124662fd579de046599862" name="abd06771cfe124662fd579de046599862"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>handleMissing</b> { <b>REMOVE_MISSING_VARIABLE</b>
+, <b>KEEP_MISSING_VARIABLE</b>
+ }</td></tr>
+<tr class="separator:abd06771cfe124662fd579de046599862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a38a2a77d0974bc15a7e349679c9a38c1" id="r_a38a2a77d0974bc15a7e349679c9a38c1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a38a2a77d0974bc15a7e349679c9a38c1">StringMapper</a> (const std::string &amp;format=&quot;&quot;, const std::string &amp;validChars=&quot;[a-zA-Z0-9_]+&quot;, bool formatting=true)</td></tr>
@@ -144,17 +147,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLiteral</b> () cons
 <tr class="memitem:ad3b601f11b6fa853b5a79424eae4dd26" id="r_ad3b601f11b6fa853b5a79424eae4dd26"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ad3b601f11b6fa853b5a79424eae4dd26">toStream</a> (std::ostream &amp;ostr) const</td></tr>
 <tr class="memdesc:ad3b601f11b6fa853b5a79424eae4dd26"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Output.html" title="Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.">Output</a> a concatenated chain of stringlets: literals as such and variables surrounded with "${" and "}".  <br /></td></tr>
 <tr class="separator:ad3b601f11b6fa853b5a79424eae4dd26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a993b269347fe15c091238a2fdd7fd940" id="r_a993b269347fe15c091238a2fdd7fd940"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a993b269347fe15c091238a2fdd7fd940"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a993b269347fe15c091238a2fdd7fd940">toStream</a> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;variables, int replace=0, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;()) const</td></tr>
-<tr class="memdesc:a993b269347fe15c091238a2fdd7fd940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last.  <br /></td></tr>
-<tr class="separator:a993b269347fe15c091238a2fdd7fd940"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a816562818ad1f800c6cf9583b1b2c4b6" id="r_a816562818ad1f800c6cf9583b1b2c4b6"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a816562818ad1f800c6cf9583b1b2c4b6"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a816562818ad1f800c6cf9583b1b2c4b6">toStream</a> (std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;variables, int replace=REMOVE_MISSING_VARIABLE, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;()) const</td></tr>
+<tr class="memdesc:a816562818ad1f800c6cf9583b1b2c4b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last.  <br /></td></tr>
+<tr class="separator:a816562818ad1f800c6cf9583b1b2c4b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0a3324409d405177019c60c26c5933a" id="r_ae0a3324409d405177019c60c26c5933a"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae0a3324409d405177019c60c26c5933a"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#ae0a3324409d405177019c60c26c5933a">toStr</a> (const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=-1, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;()) const</td></tr>
 <tr class="memdesc:ae0a3324409d405177019c60c26c5933a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables in the last parsed std::string to a std::string.  <br /></td></tr>
 <tr class="separator:ae0a3324409d405177019c60c26c5933a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840aa0feb8c17d0580fd7677c14bff0d" id="r_a840aa0feb8c17d0580fd7677c14bff0d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a840aa0feb8c17d0580fd7677c14bff0d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMapper.html#a840aa0feb8c17d0580fd7677c14bff0d">expand</a> (const std::map&lt; std::string, T &gt; &amp;m, const <a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt; &amp;formatter=<a class="el" href="classdrain_1_1VariableFormatter.html">VariableFormatter</a>&lt; T &gt;(), bool clear=false)</td></tr>
-<tr class="memdesc:a840aa0feb8c17d0580fd7677c14bff0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals.">StringMapper</a>, turning expanded variables to constants.  <br /></td></tr>
+<tr class="memdesc:a840aa0feb8c17d0580fd7677c14bff0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a>, turning expanded variables to constants.  <br /></td></tr>
 <tr class="separator:a840aa0feb8c17d0580fd7677c14bff0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0251e21918935ed068840c5d5aa63be" id="r_aa0251e21918935ed068840c5d5aa63be"><td class="memTemplParams" colspan="2"><a id="aa0251e21918935ed068840c5d5aa63be" name="aa0251e21918935ed068840c5d5aa63be"></a>
 template&lt;class T &gt; </td></tr>
@@ -189,10 +192,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>formatting</b></td></
 <a class="el" href="classdrain_1_1RegExp.html">RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>regExp</b></td></tr>
 <tr class="separator:acc182dc9c0aed07a380c8c1f44ef0757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A tool for expanding variables embedded in a std::string to literals. </p>
-<p>The input variables are provided as a map, which is allowed to change dynamically. The input std::string, issued with <a class="el" href="classdrain_1_1StringMapper.html#a69f517d97293b70a2d996d084a5d55e3" title="Converts a std::string containing variables like in &quot;Hello, ${NAME}!&quot; to a list of StringLet&#39;s.">parse()</a>, contains the variables as "$key" or "${key}", a format familiar in Unix shell. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a38a2a77d0974bc15a7e349679c9a38c1" name="a38a2a77d0974bc15a7e349679c9a38c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a38a2a77d0974bc15a7e349679c9a38c1">&#9670;&#160;</a></span>StringMapper()</h2>
 
@@ -317,7 +317,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html" title="A tool for expanding variables embedded in a std::string to literals.">StringMapper</a>, turning expanded variables to constants. </p>
+<p>Expands the variables <em>in</em> <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a>, turning expanded variables to constants. </p>
 <dl class="section user"><dt>m - map containing variable values</dt><dd></dd></dl>
 <dl class="section user"><dt>clear - if true, replace undefined variables with empty std::strings.</dt><dd></dd></dl>
 
@@ -444,8 +444,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a993b269347fe15c091238a2fdd7fd940" name="a993b269347fe15c091238a2fdd7fd940"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a993b269347fe15c091238a2fdd7fd940">&#9670;&#160;</a></span>toStream() <span class="overload">[2/2]</span></h2>
+<a id="a816562818ad1f800c6cf9583b1b2c4b6" name="a816562818ad1f800c6cf9583b1b2c4b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a816562818ad1f800c6cf9583b1b2c4b6">&#9670;&#160;</a></span>toStream() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,7 +471,7 @@ template&lt;class T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>replace</em> = <code>0</code>, </td>
+          <td class="paramname"><em>replace</em> = <code>REMOVE_MISSING_VARIABLE</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -495,7 +495,7 @@ template&lt;class T &gt; </div>
 <p>Expands the variables in the last. </p>
 <dl class="section user"><dt>ostr - output stream</dt><dd></dd></dl>
 <dl class="section user"><dt>m - map containing variable values</dt><dd></dd></dl>
-<dl class="section user"><dt>clear - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry</dt><dd></dd></dl>
+<dl class="section user"><dt>replace - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry</dt><dd></dd></dl>
 
 </div>
 </div>

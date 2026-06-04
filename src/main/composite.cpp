@@ -899,7 +899,7 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		composite.extract(dstProduct, channels, encoding, cropImage);
 		encoding.clear();
 
-		mout.success<LOG_WARNING>("extracted!");
+		mout.success<LOG_DEBUG>("extracted!");
 
 		/*
 		if (!composite.legend.empty()){
@@ -930,7 +930,7 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 
 			if (cropImage.empty()){
 
-				mout.revised<LOG_WARNING>("Main composite, writing auxiliary BBOX info");
+				mout.revised<LOG_INFO>("Main composite, writing auxiliary BBOX info");
 
 				drain::VariableMap & where = dstRoot.getWhere();
 				where["BBOX_native"] = composite.getBoundingBoxNat().tuple();

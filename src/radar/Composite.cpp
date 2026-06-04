@@ -611,7 +611,7 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 		odim.nodes = nodeMap.getKeys();
 	}
 
-	mout.attention(odim.nodes);
+	mout.debug(DRAIN_LOG(odim.nodes));
 
 	// std::list<std::string> nodes;
 
@@ -641,7 +641,7 @@ void Composite::updateGeoData(){ //sconst drain::image::GeoFrame & frame){
 				// mout.attention(DRAIN_LOG(nodSyntax));
 				// At this point, source is something like:
 				// odim.source=WMO:02975,RAD:FI42,PLC:Vantaa,NOD:fivan
-				mout.revised<LOG_NOTICE>("Single-radar Cartesian, keeping metadata: ", DRAIN_LOG(odim.source));
+				mout.revised<LOG_INFO>("Single-radar Cartesian, keeping metadata: ", DRAIN_LOG(odim.source));
 				/*
 				SourceODIM odim(odim.source);
 				if (odim.CMT.empty()){

@@ -182,11 +182,24 @@ struct Enum {
 		s.assign(dict.getKey(value));
 	};
 
+	// tmp hack for DRAIN_ENUM
+	static inline
+	void to(const E & value, std::string &s){
+		convert(value, s);
+	}
+
+
 	static
 	void convert(const std::string &s, E & value){
 		// std::cerr << "Using inv EnumConverter" << std::endl;
 		value = dict.getValue(s);
 	};
+
+	// tmp hack for DRAIN_ENUM
+	static inline
+	void to(const std::string & s, E & value){
+		convert(s, value);
+	}
 
 };
 

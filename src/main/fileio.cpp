@@ -421,7 +421,7 @@ void CmdOutputFile::exec() const {
 			mout.warn("Unrecognized ODIM version: '", ODIM::versionFlagger, "' , setting: ", conventions);
 		}
 		else {
-			mout.revised<LOG_NOTICE>("setting: ", DRAIN_LOG(conventions));
+			mout.revised<LOG_INFO>("setting: ", DRAIN_LOG(conventions));
 		}
 
 
@@ -556,8 +556,8 @@ void CmdOutputFile::exec() const {
 			drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 
 			// NEW:
-
-			TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
+			TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
+			// TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
 			TreeLayoutSVG::superAlign(ctx.svgTrack);
 
 			// OLD

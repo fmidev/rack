@@ -47,12 +47,11 @@ var searchData=
   ['drain_5fenum_5fdict2_44',['DRAIN_ENUM_DICT2',['../namespacedrain.html#a494b16bf65c46b4b8aacace8dd536622',1,'drain']]],
   ['drain_5ftree_5fname_45',['drain_tree_name',['../classdrain_1_1DRAIN__TREE__NAME.html#ad3a1bd0813a2b60907a814cb300d3da3',1,'drain::DRAIN_TREE_NAME::DRAIN_TREE_NAME(const node_data_t &amp;data)'],['../classdrain_1_1DRAIN__TREE__NAME.html#a77d888f8b37470421e92957c30e7d3ae',1,'drain::DRAIN_TREE_NAME::DRAIN_TREE_NAME(const DRAIN_TREE_NAME &amp;t)'],['../classdrain_1_1DRAIN__TREE__NAME.html#aad38ef804f0ccedc2ff064214fef789c',1,'drain::DRAIN_TREE_NAME::DRAIN_TREE_NAME()']]],
   ['drain_5ftypename_46',['DRAIN_TYPENAME',['../namespacedrain.html#a9cce52041a98dc2d3ebdfe5535856855',1,'drain']]],
-  ['drain_5ftypename_5fdef_47',['DRAIN_TYPENAME_DEF',['../namespacedrain.html#ab1c0ecb8b32ec191aad5ee03cccc9113',1,'drain']]],
-  ['drain_5fxml_5fdefault_5finit_48',['DRAIN_XML_DEFAULT_INIT',['../namespacedrain.html#a1404b92a2387f4938210808df580a567',1,'drain']]],
-  ['drain_5fxml_5feasy_5ftype_49',['DRAIN_XML_EASY_TYPE',['../namespacedrain.html#a73f88f0cd938125529c9c67172fa708e',1,'drain']]],
-  ['drawcircle_50',['drawCircle',['../classrack_1_1RadarSVG.html#a57ddcd5cebdbde9eb99ed25b9e15b6a8',1,'rack::RadarSVG']]],
-  ['drawsector_51',['drawSector',['../classrack_1_1RadarSVG.html#a7772fdb463a91f698dbcc94ae6002272',1,'rack::RadarSVG']]],
-  ['drop_52',['drop',['../structdrain_1_1Cloner.html#ad9025fef85f830d2243229c00463bfbc',1,'drain::Cloner::drop()'],['../structdrain_1_1ClonerBase.html#a6dc2ece479cdbb171f17dba8cc032025',1,'drain::ClonerBase::drop()']]],
-  ['dump_53',['dump',['../classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102',1,'drain::TreeUtils::dump()'],['../classdrain_1_1SmartMap.html#ac2236179b2770b16ac72abb636634efd',1,'drain::SmartMap::dump()'],['../classdrain_1_1image_1_1Image.html#ac2236179b2770b16ac72abb636634efd',1,'drain::image::Image::dump()'],['../classdrain_1_1SmartMapFoo.html#ac2236179b2770b16ac72abb636634efd',1,'drain::SmartMapFoo::dump()']]],
-  ['dumpcontents_54',['dumpContents',['../classdrain_1_1TreeUtils.html#a4970a288b19248cec045228e77c32806',1,'drain::TreeUtils']]]
+  ['drain_5fxml_5fdefault_5finit_47',['DRAIN_XML_DEFAULT_INIT',['../namespacedrain.html#a1404b92a2387f4938210808df580a567',1,'drain']]],
+  ['drain_5fxml_5feasy_5ftype_48',['DRAIN_XML_EASY_TYPE',['../namespacedrain.html#a73f88f0cd938125529c9c67172fa708e',1,'drain']]],
+  ['drawcircle_49',['drawCircle',['../classrack_1_1RadarSVG.html#a57ddcd5cebdbde9eb99ed25b9e15b6a8',1,'rack::RadarSVG']]],
+  ['drawsector_50',['drawSector',['../classrack_1_1RadarSVG.html#a7772fdb463a91f698dbcc94ae6002272',1,'rack::RadarSVG']]],
+  ['drop_51',['drop',['../structdrain_1_1Cloner.html#ad9025fef85f830d2243229c00463bfbc',1,'drain::Cloner::drop()'],['../structdrain_1_1ClonerBase.html#a6dc2ece479cdbb171f17dba8cc032025',1,'drain::ClonerBase::drop()']]],
+  ['dump_52',['dump',['../classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102',1,'drain::TreeUtils::dump()'],['../classdrain_1_1SmartMap.html#ac2236179b2770b16ac72abb636634efd',1,'drain::SmartMap::dump()'],['../classdrain_1_1image_1_1Image.html#ac2236179b2770b16ac72abb636634efd',1,'drain::image::Image::dump()'],['../classdrain_1_1SmartMapFoo.html#ac2236179b2770b16ac72abb636634efd',1,'drain::SmartMapFoo::dump()']]],
+  ['dumpcontents_53',['dumpContents',['../classdrain_1_1TreeUtils.html#a4970a288b19248cec045228e77c32806',1,'drain::TreeUtils']]]
 ];

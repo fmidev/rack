@@ -194,6 +194,19 @@ public:
 	}
 
 	/// Sets basic quantities and quality quantities. These sets are separated by '/'.
+	/**
+	 *
+	 *  \param s - a comma-separated list of quantities - literals or regExps
+	 *
+	 *  Examples:
+	 *  - "DBZH"
+	 *  - "DBZ,DBZH,DBZV"
+	 *  - "^DBZ[HV]?$"
+	 *  - "DBZH/QIND"
+	 *
+	 *
+	 *  \see drain::StringMatcherList::setKeys()
+	 */
 	void setQuantities(const std::string & s);
 
 	// void setQuantityRegExp(const std::string & s); // todo: rename (here only) quantities?

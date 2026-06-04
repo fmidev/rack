@@ -17,6 +17,8 @@ import json
 import subprocess
 import datetime as dt
 
+from distro import info
+
 import rack.base
 import rack.log
 import rack.config
@@ -174,12 +176,12 @@ variables_fixed = {
     "COUNTRY" : {
         "desc": "Country prefix (2-letter) of NOD code",
         "type": "string",
-        "rack_expr": "${NOD|0:2}"
+        "rack_expr": "${NOD|:0:2}"
     },
     "SITE3" : {
         "desc": "National radar identifier (3-letter, omitting 2-letter COUNTRY prefix)",
         "type": "string",
-        "rack_expr": "${NOD|2:3}"
+        "rack_expr": "${NOD|:2:3}"
     },
     "TIME": {
         "desc": "Nominal time of measurement",
@@ -288,6 +290,9 @@ variables = {
 
 
 def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
+    """ This does not construct Rack command line using this package.
+    Instead, the cmd line is created directly as a list of arguments supplied to subprocess().
+    """
 
     log = logger.getChild("extract_metadata")
     #
@@ -301,47 +306,65 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
     var_map = [(k,v.get('rack_expr','AUTO')) for (k,v) in variables.items()]
     #log.debug(var_map)
-    log.info(var_map)
+    # log.info(var_map)
+    # for (k,v) in var_map:
+    #    log.info(f"Variable '{k}': rack_expr='{v}'")
 
-    (keys, values) = zip(*var_map)
+    (keys, fmts) = zip(*var_map)
     # log.debug(values)
-    fmt = values
+    # fmt = values
     # fmt = list(variables.values())
 
-    fmt = SEPARATOR.join(fmt)
-    log.info(f"fmt = {fmt}")
+    fmt = SEPARATOR.join(fmts)
+    # log.info(f"fmt = {fmt}")
 
-    shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
+    # shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
+    shared_cmd_args = ['--select','data:', '--format', f'{fmt}\\n', '-o', '-']
+    # shared_cmd_args = ['--select','dataset1/data3', '--format', f'{fmt}\n', '-o', '-']
+    variable_keys = variables.keys()
 
     # Main loop 1: traverse HDF5 files
     for INFILE in INFILES:
+
         log.debug(f'reading {INFILE}') # rack echoes it, so skip here
-        
+        # logger.info(INFILE)
+            
         # Todo: better cmd creator
         cmd = ['rack', INFILE ]
         cmd.extend(shared_cmd_args)
-        logger.debug(" ".join(cmd))
+        #logger.warning(" ".join(cmd))
         
         # Main loop 1: traverse HDF5 files
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         result = result.stdout.decode('utf-8')
         # Note: several lines, for each data<N> group!
+        #logger.warning(result)
+        #logger.warning('\n')
+
+        lines = result.splitlines()
+        # debug line count
+        logger.debug(f"Number of lines in {INFILE}: {len(lines)}")
 
         m = None
-        for i in result.split(): # split by NEWline_syntax
+        for i in lines: # split by NEWline_syntax
 
-            # Rejoin
+            # logger.info(i)
+
             line = i.split(SEPARATOR)
             
             # quantity-wise info
-            info = dict(zip(variables.keys(), i.split(SEPARATOR)))
+            info = dict(zip(variable_keys, i.split(SEPARATOR)))
+
+            # for (k,v) in info.items():
+            #    log.info(f"{k}: '{v}'")
             # logger.info(info)
             
             dataset_id = "{SITECODE}-{TIME_START}".format(**info)
             
             if dataset_id not in metadata:
                 # Start new sweep
-                log.debug(f"dataset: {dataset_id}")
+                #log.debug(f"dataset: {dataset_id}")
+                log.warning(f"dataset: {dataset_id}")
                 if m:
                     logger.debug(m)
                 m = metadata[dataset_id] = dict()
@@ -392,7 +415,8 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             prfs.sort()
             m['PRF_MODE'] = f"{len(prfs)}PRF"            
             m['PRF'] = prfs
-            log.debug(m)
+            # log.debug(m)
+            # log.warning(m)
 
     log.debug("end")
         

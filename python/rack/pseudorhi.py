@@ -8,24 +8,30 @@ Utility for constructing strings that can be executed in shell.
 """
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 import os
 import re # GEOCONF filename-KEY extraction
+import inspect
 import logging
 
 from types import SimpleNamespace
 
 from matplotlib import lines, scale
 from numpy import size
+from sympy import arg
 
 from rack import script
 #from rack.composite import handle_prod
 import rack.log
 import rack.prog
-import rack.select
+#import rack.select
+import rack.cmdline
 import rack.gnuplot
 import rack.core
+import rack.args  
+
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -66,6 +72,10 @@ def build_parser():
 
     rack.prog.Register.publish_func(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
 
+    parser.add_argument(
+        "--PRODUCT",
+        default=None,
+        help="Compute also a meteorogical product and save it in Cartesian coordinates.")
 
     parser.add_argument(
         "--PALETTE",
@@ -75,7 +85,8 @@ def build_parser():
     # parser.add_argument("--PROCESSES", default='4', help="Apply ") 
     parser.add_argument(
         "--FORMAT",
-        default='h5',
+        #default='h5',
+        default=None,
         help="One or several file formats (h5, png, tif, svg)") 
 
 
@@ -131,9 +142,15 @@ def build_parser():
         
     parser.add_argument(
         "--gnuplot",   
-        metavar="<format>",
+        metavar="<filename>",
         default=None,
-        help="Generate GnuPlot script with given format (e.g. 'png')")
+        help="Generate GnuPlot image (e.g. 'png')")
+
+    parser.add_argument(
+        "--gnuplot_script",   
+        metavar="<filename>",
+        default=None,
+        help="Explicit name for GnuPlot script (e.g. 'plot.gnu')")
 
     parser.add_argument(
         "--title",   
@@ -268,8 +285,18 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
 
     if not (args.OUTFILE or args.gnuplot):
         args.OUTFILE = 'out.h5'
+    
+    if not args.OUTFILE:
+        if args.gnuplot:
+            args.OUTFILE = get_background_filename(args, prefixed=False)
+        else:
+            args.OUTFILE = 'out.h5'
 
-    formats = set(args.FORMAT.strip().split(','))
+    if args.FORMAT:
+        formats = set(args.FORMAT.strip().split(','))
+    else:
+        formats = set()
+
     if args.OUTFILE:
         #formats = set(args.FORMAT.strip().split(','))
         formats.add(args.OUTFILE.split('.').pop())
@@ -302,15 +329,16 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     # if parent and parent != Path('.'):  
     #    cmdBuilder.outputPrefix(f"{parent}/")
     
-    logger.debug(f"formats: {formats}")
+    logger.warning(f"formats: {formats}")
         
     if 'h5' in formats:
         cmdBuilder.outputFile(f"{output_basename}.h5")
         formats.remove('h5')
 
     if 'tif' in formats:
-        cmdBuilder.outputConf("tif:tile=512")
-        cmdBuilder.outputFile(f"{output_basename}.tif")
+        #cmdBuilder.outputConf("tif:tile=512")
+        #cmdBuilder.outputFile(f"{output_basename}.tif")
+        logger.warning("TIFF output is not currently supported, skipping.")
         formats.remove('tif')
 
     if ('png' in formats) or args.gnuplot:
@@ -322,57 +350,30 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
             cmdBuilder.encoding(type="C", gain=0.004, offset=0) # 
             cmdBuilder.imageAlpha()
             cmdBuilder.imageFlatten(args.background)
+
         # transparency?
         if (args.gnuplot):
-            # cmdBuilder.outputFile(f"{Path(args.gnuplot).stem}-background.png")
             cmdBuilder.outputFile(get_background_filename(args, prefixed=False))
-        
-        if ('png' in formats):
+        else:
             cmdBuilder.outputFile(f"{output_basename}.png")
-            formats.remove('png')
+        
+        formats.remove('png')
 
     if 'svg' in formats:
         cmdBuilder.outputFile(f"{output_basename}.svg")
         formats.remove('svg')
 
-    if (formats):
+    if formats:
         raise Exception('Unhandled formats:', formats)
-        
-"""
-import inspect
-def handle_prhi(args, progBuilder: rack.core.Rack):
- 
 
-    if args.rhi:
-        progBuilder.pPseudoRhi(args.rhi)
-        return
-    
-    #value = []
-    #svalue.append(args.AZIMUTH)
-    sig = inspect.signature(progBuilder.pPseudoRhi)
-    params = list(sig.parameters.values())
-    # Remove 'self' if it exists in the source signature
-    #    if params and params[0].name == "self":
-    #params = params[1:]
+def handle_product(args, progBuilder: rack.core.Rack):
 
-    var_args = vars(args)
-    dict_args = {}
-    for v in params:
-        name = v.name
-        if name in var_args and var_args[name] is not None:
-            value = var_args[name]
-            #value.append(f"{name}={value}")
-            dict_args[v.name] = value
+    if args.PRODUCT:
+        progBuilder.product(args.PRODUCT)
 
-    logger.warning(f"Calling pPseudoRhi with args: {dict_args}")
+    pass    
 
-    progBuilder.pPseudoRhi(**dict_args)
-
-    return
-"""
-
-
-def handle_gnuplot(args, progBuilder: rack.core.Rack):
+def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
 
     # from rack.gnuplot import Terminal, Datafile, Format, PlotSequence, ConfSequence, Registry
     
@@ -392,8 +393,6 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
 
     #gpl_conf = rack.gnuplot.ConfSequence()
     #gpl_plot = rack.gnuplot.PlotSequence()
-    #gpl_conf = rack.prog.CommandSequence()
-    #gpl_plot = rack.prog.CommandSequence()
     gpl_plot = rack.prog.CommandSequence()
     gpl_plot.fmt = rack.gnuplot.GnuPlotFormatter(param_separator=',\n  ')
     gpl_plot.fmt.cmd_separator='\n'
@@ -402,17 +401,18 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     confCmdReg = rack.gnuplot.Registry(gpl_plot)
     plotCmdReg = rack.gnuplot.Registry(gpl_plot)
     
-
     # conf.comment("Generated by rack with --gnuplot option")
-    #conf.comment("General settings")
+    # conf.comment("General settings")
     confCmdReg.terminal(rack.gnuplot.Terminal(terminal), size=args.size) # Hard-coded. See also handle_prhi for size handling.
     confCmdReg.output(args.gnuplot)
 
     confCmdReg.multiplot()    # (rows=1, cols=1)
     if args.title:
         confCmdReg.title(args.title)
-    else:
+    elif args.select:
         confCmdReg.title(f"Pseudo-RHI [{args.select}] {args.az_angle} deg")
+    elif args.title is None:
+        confCmdReg.title(f"Pseudo-RHI {args.az_angle} deg")
 
 
     confCmdReg.unset("tics")
@@ -430,41 +430,44 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     # left, right, bottom, top in character units. See also margin command for more flexible margins in screen units.
     confCmdReg.set("margins 12, 4, 4, 3"  ) 
 
-    #print("# GnuPlot script\n")
-    #script.extend(gpl_conf.to_list())
-    #print(gpl_conf.to_string())  # ";\n"
-    #gpl_plot.clear() # Clear conf sequence to separate it from plot commands in the output
-
-    #confCmdReg.comment("General settings")
+    # confCmdReg.comment("General settings")
     
     plotCmdReg.comment("Plotting the background image (radar beams)")
     plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), filetype="png", 
                     style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
-    #script.extend(gpl_plot.to_list())
-    #print(gpl_plot.to_string())  # ";\n
-    #gpl_plot.clear() # Clear plot sequence to separate it from background image plot in the output
+    
+    range_args = {
+        "xrange": args.range,
+        "yrange": args.height
+    }
+    for (k,v) in range_args.items():
+        if type(v) == list:
+            v = tuple(v)
+        elif type(v) == str:
+            v = tuple(int(i) for i in str(v).strip().split(':'))
+        range_args[k] = v
 
-    xrange = (-220000, +240000)
-    yrange = (100, 8000)
+    
+    xrange = tuple(range_args.get('xrange', (-250000, 250000)))
+    yrange = tuple(range_args.get('yrange', (0, 8000)))
 
-    confCmdReg.xrange(*xrange)
+    confCmdReg.xrange(xrange)
     confCmdReg.yrange(yrange)
-    confCmdReg.set("border") # see above unset border, to remove default border and tics, and then add custom border back with margins
-    #confCmdReg
+
+    # See above unset border, to remove default border and tics,
+    # and then add custom border back with margins
+    confCmdReg.set("border") 
     confCmdReg.set("tics out nomirror scale 2")
     confCmdReg.set("mxtics 5")
-    #confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
-    confCmdReg.xlabel(f'Range {xrange}')
-    confCmdReg.ylabel(f'Altitude {yrange}')
-    #script.extend(gpl_conf.to_list())
-
+    # confCmdReg.key(rack.gnuplot.Key.LEFT, outside=True)
+    confCmdReg.xlabel(f'Range {xrange[0]} – {xrange[1]} m')
+    confCmdReg.ylabel(f'Altitude {yrange[0]} – {yrange[1]} m')
+    # script.extend(gpl_conf.to_list())
+    confCmdReg.unset("key") # legend 
 
     plotCmdReg.comment("Plotting a dummy line (to ensure gnuplot output is not empty)")
     plotCmdReg.plot('x*0', style=rack.gnuplot.Style.LINES) # linecolor='rgb "gray"', linewidth=1)
-    #script.extend(gpl_plot.to_list())
-    #print(gpl_plot.to_string())  # ";\n
-    #gpl_plot.clear()
-
+    
     script = gpl_plot.to_string()  #"\n".join(script)
     if args.print:
         logger.info("# GnuPlot script:")
@@ -472,15 +475,21 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     
     # Always write the GnuPlot script to a file, even if not executing it,
     # for debugging and user reference. The filename is derived from the --gnuplot argument.
-    script_filename = f"{args.gnuplot}.gnu"
-    with open(script_filename, "w") as f:
+    if not args.gnuplot_script:
+        args.gnuplot_script = f"{args.gnuplot}.gnu" 
+    #args.gnuplot_script = get_background_filename(args, prefixed=False).removesuffix(f".{terminal}") + ".gnu"
+    #script_filename = f"{args.gnuplot}.gnu" # TODO replace .png -> -png.gnu, .svg -> -svg.gnu, etc.
+    with open(args.gnuplot_script, "w") as f:
         f.write(script)
-    logger.info(f"GnuPlot script written to: {script_filename}")
+    logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
     return script
 
 
 def compose_command(args) -> rack.prog.CommandSequence:
-    """Main library entry point.
+    """ Standard entry point.
+
+    For example, test programs expect compose_command() as the interface for generating the command sequence to be tested,
+    and exec_command() is the interface for executing the generated command sequence. 
 
     Args:
         args (argparse.Namespace): Parsed arguments from `build_parser()`
@@ -515,19 +524,10 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # RHI specific
     handle_infile(args, rackCmdReg)
 
-    # RHI specific here
-    # handle_outfile(args, rackCmdReg)
-
-    # removed for debugging
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
 
-    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi)
+    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi, True)
 
-    #handle_prhi(args, progBuilder)
-
-    # Note: progBuilder is passed to handle_gnuplot, but it doesn't actually modify the progBuilder, just generates a separate GnuPlot script.
-    # This is a bit hacky, but allows us to keep all command handling in one place for now.
-    # gnuplot_script = 
     handle_gnuplot(args, rackCmdReg)
 
     # Rack outfiles (only)
@@ -537,7 +537,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
 
 
-  
+"""
 def exec_command(args):
     cmdList = compose_command(args)
     os.system(cmdList)  # subprocess!
@@ -547,8 +547,7 @@ def test():
         "INPUTS" 
     }
     compose_command("")
-
-import rack.args    
+""" 
     
 def main():
 
@@ -575,7 +574,7 @@ def main():
 
     if args.test:
         logger.info("Running tests..")
-        test()
+        #test()
         sys.exit(0)
 
     prog = compose_command(args)
@@ -583,25 +582,44 @@ def main():
     if args.print:
         args.print = args.print.replace(r'\t','\t')
         args.print = args.print.replace(r'\n','\n')
-        logger.info("# Command line:")
+        logger.info("# Rack cmd line:")
         #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
+        logger.info("# Python snippet:")
         print(prog.to_python(prefix="Rack."))
         # print(cmdList.to_string(" \\\n"))
 
     if args.exec:
         logger.info("# Executing Rack...")
-        fmt = rack.prog.RackFormatter(params_format="'{params}'")
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
         print(prog.to_string(fmt))
-        os.system(prog.to_string(fmt))
-
+        #os.system(prog.to_string(fmt))
+        
+        fmt = rack.cmdline.RackFormatter()
+        cmd = prog.to_token_list(fmt)
+        #logger.debug(f"Executing command: {args}")
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if result.returncode != 0:
+            if result.stdout:
+                logger.info(f"stdout:\n{result.stdout.rstrip()}")
+            if result.stderr:
+                logger.warning(f"stderr:\n{result.stderr.rstrip()}")        
+            logger.error(f"Command exited with code {result.returncode}")
+        # os.system(prog.to_string(fmt))  # subprocess! 
+        
+        if args.gnuplot_script:
+            cmd = ["gnuplot", args.gnuplot_script]
+            logger.info(f"Executing GnuPlot script: {cmd}")
+            result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            #, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    
         #logger.info("# Executing GnuPlot script...")
         #os.system(f"gnuplot {script_filename}") 
 
-    line = rack.args.args_to_cli(parser, args)
     # "Rectified" command line
-    logger.info(f"Command line: {line}")
+    line = rack.args.args_to_cli(parser, args)
+    logger.debug(f"Python command line args: {line}")
 
 
 if __name__ == "__main__":

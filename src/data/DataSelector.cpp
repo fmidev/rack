@@ -359,7 +359,7 @@ bool DataSelector::collectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathC
 		const ODIMPathElem & currentElem = entry.first;
 
 		if (!currentElem.belongsTo(filter)){
-			mout.debug("Filter: rejecting '" , entry.first, "'" );
+			mout.debug2("Filter: rejecting '" , entry.first, "'" );
 			continue;
 		}
 

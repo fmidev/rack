@@ -221,11 +221,30 @@ public:
 		}
 	};
 
+	/// If element is of type STYLE, return it. If not, return header object of type STYLE
+	/**
+	 *   The header object is in standard
+	 *
+	 *   \tparam T - XML tree type
+	 *   \param elem
+	 */
+	template <typename T>
+	static inline
+	T & ensureStyleElem(T & elem){
+		if (elem->typeIs(T::node_data_t::xml_tag_t::STYLE)){
+			return elem;
+		}
+		else {
+			return getHeaderObject(elem, T::node_data_t::xml_tag_t::STYLE);
+		}
+	}
+
 	template <typename T>
 	static
-	T & ensureStyle(T & root, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+	T & ensureStyle(T & elem, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 
-		T & style = getHeaderObject(root, T::node_data_t::xml_tag_t::STYLE);
+		//T & style = getHeaderObject(elem, T::node_data_t::xml_tag_t::STYLE);
+		T & style = ensureStyleElem(elem);
 
 		T & styleEntry = style[selector];
 		if (styleEntry.empty()){

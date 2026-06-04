@@ -57,6 +57,9 @@ def add_parameters(parser, path_prefix=None):
 
 def handle_conf(args, cmdBuilder: rack.core.Rack):
 
+    if not args.svgOutputs:
+        return # No SVG output, so no need to handle SVG-specific conf
+
     if args.svgLayout:
         cmdBuilder.gLayout(str(args.svgLayout).split(","))
 

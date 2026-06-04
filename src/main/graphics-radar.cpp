@@ -130,7 +130,7 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 
 	// mout.debug("initializing style");
 
-	style->setType(svg::STYLE);
+	// style->setType(svg::STYLE);
 
 	typedef SelectXML<svg::tag_t> Select;
 	// These could be
@@ -142,13 +142,24 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		select.set("polygon");
 	 */
 
+
+	UtilsXML::ensureStyle(style, Select(GRID),{
+			{"stroke", "white"},
+			{"stroke-width", 3.0},
+			{"fill", "none"}, // debug
+			//{"fill-opacity", 0.35},
+	});
+
+
+
 	style[Select(GRID)] -> set({
 		//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
-		{"stroke", "white"},
-		{"stroke-width", 3.0},
+		//{"stroke", "white"},
+		//{"stroke-width", 3.0},
 		{"fill", "none"}, // debug
 		//{"fill-opacity", 0.35},
 	});
+
 
 
 	style[Select(svg::TEXT, GRID)] -> set({
@@ -188,9 +199,13 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 	TreeSVG & overlayGroup = group[Graphic::VECTOR_OVERLAY]; // (svg::GROUP);
 
+	mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " for group ", group->getId());
+
 	//if (!group.hasChild(VECTOR_OVERLAY)){
 	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
 	if (overlayGroup->isUndefined()){ //  && overlayGroup.hasChildren()
+
+		mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " ADDING for group ", group->getId());
 
 		using namespace drain::image;
 		overlayGroup->setType(svg::GROUP);
@@ -198,6 +213,9 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 		//overlayGroup->addClass(StyleClasses::GRID);
 		overlayGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
+		overlayGroup->setId(Graphic::VECTOR_OVERLAY, '_', group->getId());
+		group.addChild(svg::COMMENT)(svg::COMMENT)->setTextSafe("Above: slot reserved for VECTOR OVERLAY");
+
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
 	}
 

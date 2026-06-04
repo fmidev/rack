@@ -35,8 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-
-
 /*
 DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, NONE),
@@ -57,45 +55,6 @@ DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass) = {
 };
 */
 
-
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) const {
-	// std::string(".")+
-	return hasChild(Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
-}
-
-
-/// Automatic conversion of elem classes to strings.
-/ **
- *
- * /
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & value) const {
-	// std::string(".")+
-	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(value, false)];
-}
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key){
-	// std::string(".")+
-	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
-}
-*/
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x){
-	return (*this)[std::string(".")+Enum<rack::GraphicsContext::ElemClass>::dict.getKey(x, false)];
-}
- */
-
 }
 
 
@@ -105,15 +64,6 @@ using namespace drain::image;
 
 namespace rack {
 
-/*
-const drain::SelectorXMLcls RackSVG::clsTITLE(RackSVG::ElemClass::TITLE);
-const drain::SelectorXMLcls RackSVG::clsIMAGE_TITLE(RackSVG::ElemClass::IMAGE_TITLE);
-const drain::SelectorXMLcls RackSVG::clsGROUP_TITLE(RackSVG::ElemClass::GROUP_TITLE);
-const drain::SelectorXMLcls RackSVG::clsMAIN_TITLE(RackSVG::ElemClass::MAIN_TITLE);
-const drain::SelectorXMLcls RackSVG::clsTIME(RackSVG::ElemClass::TIME);
-const drain::SelectorXMLcls RackSVG::clsLOCATION(RackSVG::ElemClass::LOCATION);
-const drain::SelectorXMLcls RackSVG::clsIMAGE_BORDER(RackSVG::ElemClass::IMAGE_BORDER);
-*/
 
 GraphicsContext::GraphicsContext() {
 }
@@ -172,13 +122,9 @@ Palette & ImageContext::getPalette(const std::string & key){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//PaletteMap::iterator it = getPaletteEntry(const std::string & key);
-
-	// }
-
+	// PaletteMap::iterator it = getPaletteEntry(const std::string & key);
 	// PaletteMap::iterator it ImageContext::getPaletteEntry(const std::string & key){
-
-	//paletteKey = key;
+	// paletteKey = key;
 
 	// NEW: try direct and the QM based, only after that load
 	PaletteMap & pmap = PaletteOp::getPaletteMap();
