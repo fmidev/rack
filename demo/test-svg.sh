@@ -136,6 +136,11 @@ WRITE_DOC \tableofcontents
 
 COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
 
+WRITE_DOC "Add radar grid and back ground map"
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputPrefix '$PWD/out/' \\  --gGroupTitle '${NOD} – ${PLC}' \\ data-kiira/201708121600_radar.polar.fikor.h5 \\ --cProj 3067 --cSize 600 \\  -Q DBZH -c \\  --gLinkImage "'\${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL' \\  --imageTransp 0.0:0.1,0,1 --palette default \\  -o 'out-${what:date}T${what:time}-${NOD}.png' \\  --gRadarGrid 50000:1,15,MASK=true \\  --gStyle .GRID='stroke-width:1px' \\  -o grid_and_background_map 
+
+
+
 WRITE_DOC "Align text to each radar" 
 RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cAdd  --gRadarLabel \"\${what:date|%A, %d %B %Y}£\${NOD}|\${PLC}£\${what:time}\" '" \\ 'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5' \\   --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\  --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" \\  -o composite3.png \\ -o "composite-Labels"
 

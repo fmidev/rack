@@ -130,7 +130,7 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 
 	// mout.debug("initializing style");
 
-	style->setType(svg::STYLE);
+	// style->setType(svg::STYLE);
 
 	typedef SelectXML<svg::tag_t> Select;
 	// These could be
@@ -142,13 +142,24 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		select.set("polygon");
 	 */
 
+
+	UtilsXML::ensureStyle(style, Select(GRID),{
+			{"stroke", "white"},
+			{"stroke-width", 3.0},
+			{"fill", "none"}, // debug
+			//{"fill-opacity", 0.35},
+	});
+
+
+
 	style[Select(GRID)] -> set({
 		//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
-		{"stroke", "white"},
-		{"stroke-width", 3.0},
+		//{"stroke", "white"},
+		//{"stroke-width", 3.0},
 		{"fill", "none"}, // debug
 		//{"fill-opacity", 0.35},
 	});
+
 
 
 	style[Select(svg::TEXT, GRID)] -> set({

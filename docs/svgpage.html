@@ -83,7 +83,26 @@ Automatical generation of SVG files</h1>
 <p>The internal SVG structure is lightweight, so maintaining it in the background is neither time nor memory consuming. In addition, some processing - like alignment of elements - takes places only if an SVG file is actually written out.</p>
 <h2><a class="anchor" id="svg_example"></a>
 Examples of SVG panels</h2>
-<p>tableofcontents Align text to each radar </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<p>tableofcontents Add radar grid and back ground map </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --inputPrefix $PWD/ \</div>
+<div class="line">   --outputPrefix $PWD/out/ \</div>
+<div class="line">   --gGroupTitle ${NOD} – ${PLC} \</div>
+<div class="line">   data-kiira/201708121600_radar.polar.fikor.h5 \</div>
+<div class="line">   --cProj 3067 --cSize 600 \</div>
+<div class="line">   -Q DBZH -c \</div>
+<div class="line">   --gLinkImage <span class="stringliteral">&#39;${inputPrefix}/maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png&#39;</span> \</div>
+<div class="line">   --gAlign HORZ_FILL:VERT_FILL \</div>
+<div class="line">   --imageTransp 0.0:0.1,0,1 --palette <span class="keywordflow">default</span> \</div>
+<div class="line">   -o out-${what:date}T${what:time}-${NOD}.png \</div>
+<div class="line">   --gRadarGrid 50000:1,15,MASK=<span class="keyword">true</span> \</div>
+<div class="line">   --gStyle .GRID=stroke-width:1px \</div>
+<div class="line">   -o grid_and_background_map.svg</div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+</div><!-- fragment --><div class="image">
+<img src="grid_and_background_map.png" alt=""/>
+<div class="caption">
+SVG panel example: grid and background map.</div></div>
+ Align text to each radar </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarLabel &quot;${what:date|%A, %d %B %Y}\n${NOD}|${PLC}\n${what:time}&quot; &#39;</span> \</div>
@@ -93,7 +112,6 @@ Examples of SVG panels</h2>
 <div class="line">   --gAlign HORZ_FILL:VERT_FILL -P --imageTransp <span class="stringliteral">&#39;&#39;</span> \</div>
 <div class="line">   -o composite3.png \</div>
 <div class="line">   -o composite-labels.svg</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
 </div><!-- fragment --><div class="image">
 <img src="composite-labels.png" alt=""/>
 <div class="caption">
@@ -264,14 +282,7 @@ SVG panel example: Three radars, with automatic titles.</div></div>
 <img src="time_series.png" alt=""/>
 <div class="caption">
 SVG panel example: Time series.</div></div>
- Group layout can be set with <code>--gLayout</code> that sets orientation <code>HORZ</code> (rows) or <code>VERT</code> (column). Also direction can be changed.<div class="fragment"><div class="line">--gLayout &lt;orientation&gt;,&lt;directionVert&gt;,&lt;directionHorz&gt;   (section: graphics)</div>
-<div class="line">  Set main panel alignment</div>
-<div class="line">  - orientation (HORZ) [HORZ|VERT]</div>
-<div class="line">  - directionVert (DOWN) [DOWN|UP]</div>
-<div class="line">  - directionHorz (RIGHT) [RIGHT|LEFT]</div>
-<div class="line">  See also: gAlign,gGroupId,gGroupTitle</div>
-<div class="line"> </div>
-</div><!-- fragment -->Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Group layout can be set with <code>--gLayout</code> that sets orientation <code>HORZ</code> (rows) or <code>VERT</code> (column). Also direction can be changed.<div class="fragment"></div><!-- fragment -->Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --palette &quot;&quot; -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gLayout VERT,DOWN,RIGHT --gGroupTitle <span class="stringliteral">&#39;Grouping by time: ${what:time|%H:%M} UTC&#39;</span> data-kiira/201708121?00*.h5 -o time_series2.svg</div>
 </div><!-- fragment --><div class="image">
