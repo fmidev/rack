@@ -75,6 +75,13 @@ $(function() {
   <div class="headertitle"><div class="title">Writing SVG files</div></div>
 </div><!--header-->
 <div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#fileio_svg">Automatical generation of SVG files</a><ul><li class="level2"><a href="#svg_example">Examples of SVG panels</a></li>
+<li class="level2"><a href="#svg_paths">Relative or absolute image file paths?</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="textblock"><h1><a class="anchor" id="fileio_svg"></a>
 Automatical generation of SVG files</h1>
 <p><b>Rack</b> supports presenting generated PNG images collectively using Scalable Vector Graphics (SVG) format.</p>
@@ -83,17 +90,16 @@ Automatical generation of SVG files</h1>
 <p>The internal SVG structure is lightweight, so maintaining it in the background is neither time nor memory consuming. In addition, some processing - like alignment of elements - takes places only if an SVG file is actually written out.</p>
 <h2><a class="anchor" id="svg_example"></a>
 Examples of SVG panels</h2>
-<p>tableofcontents Add radar grid and back ground map </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<p>svg_basic Basic examplesvg_basic_single Single-radar image – add grid and background map<div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
-<div class="line">   --outputPrefix $PWD/out/ \</div>
-<div class="line">   --gGroupTitle ${NOD} – ${PLC} \</div>
+<div class="line">   --gTitle <span class="stringliteral">&#39;${what:date|%Y-%m-%d} ${what:time|%H:%M UTC}  ${NOD} - ${PLC}&#39;</span> \</div>
 <div class="line">   data-kiira/201708121600_radar.polar.fikor.h5 \</div>
 <div class="line">   --cProj 3067 --cSize 600 \</div>
 <div class="line">   -Q DBZH -c \</div>
 <div class="line">   --gLinkImage <span class="stringliteral">&#39;${inputPrefix}/maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png&#39;</span> \</div>
 <div class="line">   --gAlign HORZ_FILL:VERT_FILL \</div>
 <div class="line">   --imageTransp 0.0:0.1,0,1 --palette <span class="keywordflow">default</span> \</div>
-<div class="line">   -o out-${what:date}T${what:time}-${NOD}.png \</div>
+<div class="line">   -o <span class="stringliteral">&#39;out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
 <div class="line">   --gRadarGrid 50000:1,15,MASK=<span class="keyword">true</span> \</div>
 <div class="line">   --gStyle .GRID=stroke-width:1px \</div>
 <div class="line">   -o grid_and_background_map.svg</div>
@@ -102,7 +108,25 @@ Examples of SVG panels</h2>
 <img src="grid_and_background_map.png" alt=""/>
 <div class="caption">
 SVG panel example: grid and background map.</div></div>
- Align text to each radar </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ svg_basic_single Single-radar image – add place marker.<div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+<div class="line">   --inputPrefix $PWD/ \</div>
+<div class="line">   --gTitle <span class="stringliteral">&#39;${what:date|%Y-%m-%d} ${what:time|%H:%M UTC}  ${NOD} - ${PLC}&#39;</span> \</div>
+<div class="line">   data-kiira/201708121600_radar.polar.fikor.h5 \</div>
+<div class="line">   --cProj 3067 --cSize 600 \</div>
+<div class="line">   -Q DBZH -c \</div>
+<div class="line">   --gLinkImage <span class="stringliteral">&#39;${inputPrefix}/maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png&#39;</span> \</div>
+<div class="line">   --gAlign HORZ_FILL:VERT_FILL \</div>
+<div class="line">   --imageTransp 0.0:0.1,0,1 --palette <span class="keywordflow">default</span> \</div>
+<div class="line">   -o <span class="stringliteral">&#39;out-${what:date}T${what:time}-${NOD}.png&#39;</span> \</div>
+<div class="line">   --gRadarDot 5000 --gDot 21.37:59.781667,12000:15000 \</div>
+<div class="line">   --gStyle .SPOT=<span class="stringliteral">&#39;stroke:none;fill:white&#39;</span> \</div>
+<div class="line">   --gStyle .RADARDOT=<span class="stringliteral">&#39;stroke-width:3px;fill:red&#39;</span> \</div>
+<div class="line">   -o place_marker.svg</div>
+</div><!-- fragment --><div class="image">
+<img src="place_marker.png" alt=""/>
+<div class="caption">
+SVG panel example: place marker.</div></div>
+ svg_basic Basic exampleAlign text to each radar </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarLabel &quot;${what:date|%A, %d %B %Y}\n${NOD}|${PLC}\n${what:time}&quot; &#39;</span> \</div>
@@ -130,7 +154,7 @@ SVG panel example: composite-Labels.</div></div>
 <img src="composite-labels2.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-Labels2.</div></div>
- <b>Illustrations</b> applying graphic commands for each input – inside a script. <code>--gRadarDot</code> 30000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Illustrations applying graphic commands for each input. This is done using a <b>script</b>. Example of using: <code>--gRadarDot</code> '<code></code>' 30000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 30000,MASK=true&#39;</span> \</div>
@@ -145,7 +169,7 @@ SVG panel example: composite-Labels2.</div></div>
 <img src="composite-radardot-30000.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarDot-30000.</div></div>
- <code>--gRadarDot</code> 20000:30000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Example of using: <code>--gRadarDot</code> '<code></code>' 20000:30000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarDot 20000:30000,MASK=true&#39;</span> \</div>
@@ -160,7 +184,7 @@ SVG panel example: composite-RadarDot-30000.</div></div>
 <img src="composite-radardot-20000_30000.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarDot-20000:30000.</div></div>
- <code>--gRadarSector</code> 25000:125000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Example of using: <code>--gRadarSector</code> '<code></code>' 25000:125000,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarSector 25000:125000,MASK=true&#39;</span> \</div>
@@ -175,7 +199,7 @@ SVG panel example: composite-RadarDot-20000:30000.</div></div>
 <img src="composite-radarsector-25000_125000.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarSector-25000:125000.</div></div>
- <code>--gRadarSector</code> 1.0,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Example of using: <code>--gRadarSector</code> '<code></code>' 1.0,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd  --gRadarSector 1.0,MASK=true&#39;</span> \</div>
@@ -190,7 +214,7 @@ SVG panel example: composite-RadarSector-25000:125000.</div></div>
 <img src="composite-radarsector-1.0.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarSector-1.0.</div></div>
- <b>Illustrations</b> applying graphic commands for the last (outside a script). <code>--gRadarGrid</code> 50000:1,15:180:240,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Illustrations applying graphic commands for the <b>last</b> input file - defined <b>outside</b> the script. Example of using: <code>--gRadarGrid</code> <code>50000</code>:1,15:180:240,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
@@ -205,7 +229,7 @@ SVG panel example: composite-RadarSector-1.0.</div></div>
 <img src="composite-radargrid-50000_115_180_240.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarGrid-50000:1,15:180:240.</div></div>
- <code>--gRadarSector</code> radius=0:150000,azimuth=170:240,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Example of using: <code>--gRadarSector</code> <code>radius=0</code>:150000,azimuth=170:240,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
@@ -220,7 +244,7 @@ SVG panel example: composite-RadarGrid-50000:1,15:180:240.</div></div>
 <img src="composite-radarsector-radius=0_150000azimuth=170_240.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarSector-radius=0:150000,azimuth=170:240.</div></div>
- <code>--gRadarSector</code> radius=0:250000,azimuth=135:140,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Example of using: <code>--gRadarSector</code> <code>radius=0</code>:250000,azimuth=135:140,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
@@ -235,7 +259,7 @@ SVG panel example: composite-RadarSector-radius=0:150000,azimuth=170:240.</div><
 <img src="composite-radarsector-radius=0_250000azimuth=135_140.png" alt=""/>
 <div class="caption">
 SVG panel example: composite-RadarSector-radius=0:250000,azimuth=135:140.</div></div>
- <code>--gRadarSector</code> radius=100000:175000,azimuth=300:370,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ Example of using: <code>--gRadarSector</code> <code>radius=100000</code>:175000,azimuth=300:370,MASK=true </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --cProj 4326 --cBBox 17.13,57.93,29.41,64.08 --cSize 800,800 --cInit \</div>
 <div class="line">   --script <span class="stringliteral">&#39;-Q DBZH --cAdd&#39;</span> \</div>
@@ -365,7 +389,7 @@ SVG panel example: Multiple styles.</div></div>
 <img src="metadata_panel.png" alt=""/>
 <div class="caption">
 SVG panel example: Metadata panel.</div></div>
- <b>Background</b> maps. External images can be linked with <code>--gLinkImage</code>. For example, maps can be included, aligning the following radar image on top of it with <code>--gAlign</code> <code>HORZ_FILL</code>,VERT_FILL . Note that &ndash;gLinkImage discards &ndash;inputPrefix , but that value can be accessed and added explicitly with ${inputPrefix} </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
+ svg_background_maps Background maps.Background maps. External images can be linked with <code>--gLinkImage</code>. For example, maps can be included, aligning the following radar image on top of it with <code>--gAlign</code> <code>HORZ_FILL</code>,VERT_FILL . Note that &ndash;gLinkImage discards &ndash;inputPrefix , but that value can be accessed and added explicitly with <b>${inputPrefix}</b> </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --outputPrefix $PWD/out/  \</div>
 <div class="line">   --inputPrefix $PWD/ \</div>
 <div class="line">   --gGroupTitle <span class="stringliteral">&#39;${NOD} – ${PLC}&#39;</span> \</div>
 <div class="line">   --script <span class="stringliteral">&#39;--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage ${inputPrefix}/maps/map-radar:${NOD}-${where:EPSG}-${where:xsize}x${where:ysize}.png  --gAlign &#39;</span>HORZ_FILL:VERT_FILL<span class="stringliteral">&#39; --imageTransp 0.0:0.1,0,1 --palette default   -o out-${what:date}T${what:time}-${NOD}.png&#39;</span> data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5 -o adding_background_maps.svg</div>

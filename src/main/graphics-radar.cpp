@@ -143,15 +143,15 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	 */
 
 
+	// Defaults
 	UtilsXML::ensureStyle(style, Select(GRID),{
 			{"stroke", "white"},
 			{"stroke-width", 3.0},
-			{"fill", "none"}, // debug
+			//{"fill", "none"}, // debug
 			//{"fill-opacity", 0.35},
 	});
 
-
-
+	// Force
 	style[Select(GRID)] -> set({
 		//style[drain::SelectXML<svg::tag_t>(drain::ClassXML("GRID")).str()] = {
 		//{"stroke", "white"},
@@ -161,7 +161,20 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	});
 
 
+	UtilsXML::ensureStyle(style, Select(svg::TEXT, GRID),{
+			{"text-anchor", "middle"},
+			{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
+			// {"font-size", 20.0},
+			{"paint-order", "stroke"},
+			{"stroke", "black"},
+			{"stroke-opacity", "0.5"},
+			{"stroke-width", "0.3em"},
+			{"stroke-linejoin", "round"},
+			{"fill", "white"}, // debug
+			{"fill-opacity", "1"},
+	});
 
+	/*
 	style[Select(svg::TEXT, GRID)] -> set({
 		{"text-anchor", "middle"},
 		{"font-size", "smaller"}, // ctx.svgPanelConf.fontSizes[1]
@@ -174,6 +187,7 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 		{"fill", "white"}, // debug
 		{"fill-opacity", "1"},
 	});
+	*/
 
 	style[Select(HIGHLIGHT, PseudoClassCSS::hover)] -> set({
 		//{"display", "block"},
