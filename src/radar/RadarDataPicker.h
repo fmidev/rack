@@ -126,7 +126,7 @@ public:
 	void toStream(std::ostream &ostr = std::cout) const {
 		// "RadarDataPicker "
 		ostr << drain::TypeName<rack::RadarDataPicker<OD> >::name;
-		ostr << this->width << "x" << this->height << "; " << this->ref << "; " <<  odim << '\n';
+		ostr << this->width << "x" << this->height << "; " << "; " <<  odim << '\n';
 	}
 
 
