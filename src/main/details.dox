@@ -1,0 +1,61 @@
+/** \page detailspage Implementation details
+
+
+\tableofcontents
+
+\section details Internal data structure
+
+Internally, radar data is stored in a tree-like hierarchical structure very analogous to that of 
+Hierarchical Data Format (hdf5) itself. Rack also takes advantage of the OPERA Data Model
+(ODIM, http://eumetnet.eu/wp-content/uploads/2017/01/OPERA_hdf_description_2014.pdf),
+an encoding and naming policy applicable in HDF5 for different types of 
+radar data like azimuthal scans, polar products and Cartesian images . 
+
+In \c Rack, an HDF5 file is primarily stored using drain::Tree<T> structure, a tree where each node essentially consists of a data array
+and a map of attributes. The data array is implemented with drain::Image, an image class based on std::vector<T>. The images can
+use any storage type from \c unsigned char to \d double . The attributes are stored as a drain::VariableMap , which is essentially
+an stl::map<T> of references to scalar variables, arrays, and strings (std::string). Practically, in each node either the 
+data array or attributes are applied (ie. non-empty). Specifically, \c /datasetN , \c /dataN , \c /what , \c /where , and \c /how 
+Groups contain only attributes but the data is empty whereas in \c /data Group the data array is non-zero but the attribute map is empty.   
+ 
+ \section imageprocessing Processing two-dimensional data
+ 
+For anomaly detection and removal as well as for meteorological products, all the processing is done in polar coordinate system, 
+ie. the native system for radars. At the edges of the data arrays, 
+coordinate handlers (drain::image::CoordinateHandler) quarantee that the coordinates are properly wrapped. This is needed by functions
+applying pixel neighbourhoods, such as those applying moving windows or spatial recursion. 
+
+Smoothing operations (drain::image::FastAverageOp, 
+drain::image::FastMedianOp) apply rectangular moving windows which are updated incrementally, yelding a remarkable speedup.
+Functions not applying pixel neighbourhoods apply direct, one-dimensional memory iteration whenever possible.  
+The segment size analysis (drain::image::SegmentSizeOp) applies a semi-recursive floodfill technique, which
+combines a non-recursive horizontal traversal with a recursive vertical traversal; this keeps stack size small.  
+
+Internally some \b AnDRe detectors require that incoming data be in unsigned-char type
+with a fixed scaling (\c gain =1.0/250.0, \c offset =-32.0) and special codes (\c undetect =0, \c nodata =255).
+When needed, \b Andre performs this conversion automatically, storing the converted copy in a path suffixed with tilde '~'.
+These auxiliary data will not be included in output files unless a high debugging mode is selected with \c --verbose .
+The removal operations apply to the original data.
+
+\section fuzzy Fuzzy functions
+
+Instead of strict thresholding, the detectors apply frequently fuzzy functions ie. functions that map quantity ranges
+to continuous truth values between 0.0 (no) and 1.0 (yes). Then, conditions like "the dBZ is over 20" and "width of the speck is about 1500m" can be
+combined by multiplying associated fuzzy functions; the result is a combined truth value.    
+The typical fuzzy functions applied in \b AnDRe are fuzzy peak (drain::FuzzyPeak) 
+ \f[
+        f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2}
+ \f]
+where \f$a\f$ is the width, and fuzzy threshold (drain::FuzzyStep)
+ \f[
+         f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}.
+ \f]
+where \f$a\f$ is the steepness.
+
+\image html  fuzzies.png "Fuzzy peak and threshold functions." 
+\image latex fuzzies.png "Fuzzy peak and threshold functions." width=0.5\textwidth
+
+
+
+
+*/

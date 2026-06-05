@@ -1,0 +1,382 @@
+/** \page motionpage Motion
+
+
+\tableofcontents
+
+\section motion Motion
+
+In radar meteorologically, motion can be divided to two phenomenon: atmospheric motion, which is motion of air and falling hydrometeors, 
+and motion of precipitation area, which can be further divided into motion of convective and stratiform areas, for example.
+\b Rack is capable of detecting both of them.
+
+\subsection doppler  Basic Doppler products
+
+Weather radars capable of measuring Doppler speed produce hydrometeor velocities projected on the beam -- 
+hence one-dimensional. The obtained speeds are further aliased by the maximum unambiguous 
+velocity, \f$ V_{Nyq} \f$. In the following, two derived products by are presented.  
+
+\subsection dopplerAvg  Doppler wind smoothing
+
+\~exec
+  QUANTITY=VRAD INPUT=volume-widespread.h5 ./make-image-product.sh #exec (RAW)
+\~
+
+The Doppler field can be smoothed with \c --pDopplerAvg command:  
+\~exec
+  PROD=pDopplerAvg,5000 QUANTITY=VRAD INPUT=volume-widespread.h5 ./make-image-product.sh #exec
+  convert +append ppi-VRAD-rgb.png pDopplerAvg-VRAD-panel.png pDopplerAvg-panel.png 
+\~
+\include pDopplerAvg.exm
+There are several parameters, determining the window width and height, minimum percentage for the samples in the window,
+ switch for compensating the beam broadening, 
+ as well as switch for scaling the result with maximum unambiguous speed\f$V_{Nyq}\f$ 
+ (stored as \c how:NI in ODIM metadata).
+ 
+\image html  pDopplerAvg-VRAD-panel.png "Raw Doppler data (left) and averaged data (right)." 
+\image latex pDopplerAvg-VRAD-panel.png "Raw Doppler data (left) and averaged data (right)." width=0.5\textwidth
+
+There is also an exponential (yet asymmetric)  \c --pDopplerAvgExp .
+It is recommended to use at least 16-bit resolution to store averaged fields.
+\~noexec
+  PROD=pDopplerAvg2,5000 QUANTITY=VRAD INPUT=volume-widespread.h5 ./make-image-product.sh
+  no onvert +append ppi-VRAD-rgb.png pDopplerAvg2-VRAD-panel.png pDopplerAvg2-panel.png 
+  include pDopplerAvg2-.exm
+  image html  pDopplerAvg2-VRAD-panel.png "Raw Doppler data (left) and averaged data (right)."
+  image latex pDopplerAvg2-VRAD-panel.png "Raw Doppler data (left) and averaged data (right)." width=0.5\textwidth
+\~
+
+
+\~exec
+  PROD=pDopplerAvgExp,0.5,vertExtension=80 QUANTITY=VRAD INPUT=volume-widespread.h5 ./make-image-product.sh #exec
+  convert +append ppi-VRAD-rgb.png pDopplerAvgExp-VRAD-panel.png pDopplerAvgExp-panel.png 
+\~
+\include pDopplerAvgExp.exm
+
+\image html  pDopplerAvgExp-panel.png "Raw Doppler data (left) and averaged data (right)." 
+\image latex pDopplerAvgExp-panel.png "Raw Doppler data (left) and averaged data (right)." width=0.5\textwidth
+
+
+\subsection dopplerDev  Doppler wind variation 
+
+The standard deviation in Doppler field can be displayed with \c --pDopplerDev command.  
+The parameters are the same as in the Doppler averaging above. 
+\~exec
+# Palette uses relative scale 0...1.0  ... rethink
+PROD=pDopplerDev,1500,3,0.5,1,0 QUANTITY=VRAD_DEV INPUT=volume-widespread.h5 ./make-image-product.sh #exec
+convert +append ppi-VRAD-rgb.png pDopplerDev-VRAD_DEV-panel.png pDopplerDev-panel.png 
+\~
+\include pDopplerDev.exm
+
+\image html  pDopplerDev-panel.png "Raw Doppler data (left) and standard deviation (right)." 
+\image latex pDopplerDev-panel.png "Raw Doppler data (left) and standard deviation (right)." width=0.5\textwidth
+
+See also the corresponding anomaly detector: \ref aDopplerNoise .
+
+ 
+\subsection dopplerinv  Deriving two-dimensional wind field from Doppler data
+
+\include pDopplerInversion.exm
+
+Basic usage creates polar products, ie. a resulting array is in polar coordinates:
+\code
+rack volume-widespread.h5 --pDopplerInversion 2500,90  -o amv-polar.h5
+\endcode
+
+The vector field can be stored in text format to as follows:
+\code
+rack volume-widespread.h5 --pDopplerInversion 2500,90 --sample 30,30,skipVoid=1 --format '${LON} ${LAT} ${AMVU} ${AMVV} ${QIND}' -o amv-polar.dat
+\endcode
+The filename has to have "dat" as extension. See \ref sampling for further instructions of using \c --sample.
+The output (truncated in the middle) is as follows:
+
+\include amv-polar.cut
+
+Typically, user wants to obtain a Cartesian array, obtained with \c --cCreate, abbreviated \c -c .
+That operation has to be performed separately for \e u and \e v components, and using \c --append command to prevent overwriting:
+\code
+rack volume-widespread.h5 --pDopplerInversion 2500,90 --append data -Q AMVU -c -Q AMVV -c  -o amv-cart.h5
+\endcode
+The resulting motion fields will be in the last available dataset group, here \c dataset1 . 
+This behaviour can be changed with \c --append \c dataset which puts \c AMVU and \c AMVV in separate groups.
+
+Similarly, cartesian sampling is done basically by changing extension \c .h5 to \c .dat 
+\code
+rack volume-widespread.h5 --pDopplerInversion 2500,90 --append data -Q AMVU -c -Q AMVV -c --sample 30,30,skipVoid=1  --format '${i} ${j2} ${AMVU} ${AMVV} ${QIND}' -o amv-cart.dat
+\endcode
+producing:
+\include amv-cart.cut
+
+
+Accompanied utility script \c draw-vectors.sh creates plots of vector fields using \c gnuplot utility. 
+The original data can be in text (\c .dat) or HDF5 (\c .h5) format.
+Optional background images can be applied. For example:
+\~exec
+rack volume-widespread.h5 -Q VRAD -c --palette default -o background-vrad.png 
+rack volume-widespread.h5 -Q DBZH --encoding C,gain=1.0 -c -o background-dark.png
+\~
+
+\code
+BACKGROUND=background-dark.png OUTFILE=doppler-field.png ./draw-vectors.sh amv-cart.h5 
+\endcode
+\~exec
+BACKGROUND=background-dark.png OUTFILE=doppler-field.png ./draw-vectors.sh amv-cart.h5 #exec
+make legend-VRAD.png
+convert -frame 1 +append background-vrad.png legend-VRAD.png doppler-field.png doppler-field-panel.png
+\~
+
+\image html  doppler-field-panel.png "Vector field derived by Doppler dealiasing." 
+\image latex doppler-field-panel.png "Vector field derived by Doppler dealiasing." width=0.9\textwidth
+
+
+\subsection dopplerdealias  Dealiasing Doppler data
+
+As shown above, \b Rack produces wind fields (u,v) directly, but also de-aliased Doppler fields can be 
+computed. This is obtained by re-projecting the approximated (u,v) data back to radar beams and matching
+the result with the original aliased data. This approach cancels the smoothing effect apparent in 
+the approximated (u,v) field. Dealiasing is done by setting \c nyquist parameter to a desired virtual
+maximum speed, say 50m/s:
+
+\code
+rack amv-polar.h5 --pDopplerReproject 50 -Q VRAD -c --palette default -o pDopplerDeAlias.png
+\endcode
+
+\~exec
+PROD=pDopplerReproject,50 QUANTITY=VRAD INPUT=amv-polar.h5 ./make-image-product.sh #exec
+NICK=UNMATCHED PROD=pDopplerReproject,50,match=0 QUANTITY=VRAD INPUT=amv-polar.h5 ./make-image-product.sh #exec
+\~
+
+\image html  pDopplerDeAlias-VRAD-panel.png "De-aliased Doppler field." 
+\image latex pDopplerDeAlias-VRAD-panel.png "De-aliased Doppler field." width=0.9\textwidth
+
+Alternatively, one may skip matching of the original and derived velocities with \c matchAliased=0 , resulting in smoother images.     
+
+
+\image html  pDopplerDeAlias-VRAD-UNMATCHED-panel.png "De-aliased Doppler field, without velocity matching." 
+\image latex pDopplerDeAlias-VRAD-UNMATCHED-panel.png "De-aliased Doppler field, without velocity matching." width=0.9\textwidth
+
+
+\subsection motiondetection  Detecting motion fields
+
+\b Rack provides commands for extracting atmospheric motion vectors (AMV's). There are two approaches:
+-# Deriving Doppler wind field in measurement volumes 
+-# Deriving motion field of apparent intensity changes in subsequent Cartesian images
+
+Both approaches are based on least-squares fitting applying matrix inversion.
+
+
+
+\subsubsection oflow   Motion field apparent in subsequent images
+
+The technique is called \e optical \e flow, and is based on computing spatial and temporal differentials.
+Further, the implementation in \b Rack applies \e sliding \e window techniques which makes the approach
+computationally quick even with windows of size 75x75, for example.
+
+\~exec
+   # Dots to diamonds
+   drainage --geometry 256,256,1 --plot 128,128,100 --distanceTransform 256,256,0 -o diamond1.png
+   drainage --geometry 256,256,1 --plot 148,118,100 --distanceTransform 256,256,0 -o diamond2.png
+\~
+
+
+The command, \c --cOpticalFlow , takes several parameters. The first two define the size of the sliding window. 
+\include cOpticalFlow.exm
+
+The third parameter is an optional threshold, for example 0 (dBZ) in case of reflectivity data. Thresholding may be needed in order to 
+filter apparent echo area edges caused radar geometry and sensitivity.   
+Smoothing (1=true) is always recommended especially with radar images that have large areas of empty data ie. "undetected" echoes.
+Alternatively, radar data can be smoothed by some separate process or previous commands, say \c --iAverage or \c --iGaussianAverage.    
+
+
+The input should contain two Cartesian datasets, for example composites. An optimal time difference between
+the files is typically 15 or 30 minutes. Such file can be generated for example with
+\code
+rack --append dataset composite-1130.h5 composite-1200.h5 -o composite-pair.h5
+\endcode
+
+The actual processing is done as follows:
+\code
+rack composite-pair.h5 --cOpticalFlow 25,25,resize=250,threshold=0,smooth=1 -o motion.h5
+\endcode
+
+The resulting file contains horizontal motion vector (\e u, \e v) stored in quantities \c AMVU and \c AMVV . In addition,
+a quality field (with \c QIND ) is provided. In addition, if \c --store INTERMEDIATE is set, then the following
+fields are stored:
+-# Original two intensity fields (typically DBZH or RATE)
+-# Smoothed fields (for example DBZH_smooth)
+-# Derivatives - horz and vertical gradients, and time differential (for example DBZH_x, DBZH_y, DBZH_t)
+
+Note that the above commands can be combined to a single command line, avoiding creation of intermediate file
+(\c composite-pair.h5 ).  
+
+As with Doppler motion, script \c draw-vectors.sh can be used for visualizing the result:
+\code
+OUTFILE=motion.png LINEWIDTH=2 TRANSP=0 ./draw-vectors.sh motion.h5
+\endcode
+\~exec
+OUTFILE=motion.png LINEWIDTH=2 TRANSP=0 ./draw-vectors.sh motion.h5 #exec
+\~
+
+
+\image html  motion-0.png "Motion vectors extracted with optical flow."
+\image latex motion-0.png "Motion vectors extracted with optical flow." width=0.5textwidth
+
+
+
+\subsection motion-spread  Spreading motion fields
+
+Both methods described above produce an incomplete motion field: Doppler dealiasing provides realiable vectors 
+inside wide-spread precipitation whereas optical flow based motion analysis works best with visual details like
+edges and specks. \b Rack provides some methods for spreading the vector fields, with optional support of quality
+information. The methods are essentially image operators described in \ref imagespage. 
+
+\~exec
+~/venison/products/radar/amv/rack/test/ 
+make shapes1-motion-q.h5 
+cp shapes1-motion-q.h5 ~/workspace-cpp/rack/demo/motion-demo.h5
+\~
+
+\~exec
+BACKGROUND=shapes1.png  OUTFILE=shapes1-motion-vis.png ./draw-vectors.sh shapes1-motion-q.h5 #exec
+convert -frame 1 +append shapes1-motion-vis.png shapes1-q.png shapes1-motion-panel.png
+./make-spread-demo.sh Average-200 GaussianAverage-400 FlowAverage-200 Blender-200 DistanceTransformFill-200 DistanceTransformFillExp-200
+\~
+
+The spreading methods for two dimensional motion vectors are illustrated using an artificial image of "clouds" shown below.
+In vectors, high, intermediate, and low quality are illustrated in green, blue and pink colour, respectively. 
+Utility script \c draw-vectors.sh and GnuPlot have been used in creating the visualisations below.
+
+\image html  shapes1-motion-panel.png "Artificial sparse vector field (left) and its quality field (right)."
+\image latex shapes1-motion-panel.png "Artificial sparse vector field (left) and its quality field (right)." width=0.5textwidth
+
+\subsubsection motion-smooth Smoothing operators
+
+An straighforward way to spread scalar or vector data is to apply a \e smoothing \e window on data.
+In \b Rack, fast and simple smoothing is carried out using rectangular averaging window:
+
+\code
+ rack motion.h5 --iAverage 200:200  -o motion-Average.h5
+\endcode
+\image html  spread-Average-panel.png "Vector field spread with \c --iAverage, window size 200 x 200."
+\image latex spread-Average-panel.png "Vector field spread with \c --iAverage, window size 200 x 200." width=0.5textwidth
+
+As a computational speed-up, the rectangular averaging window of size \f$ W\times H \f$ is internally performed by \f$ W\times 1 \f$ followed 
+by \f$ 1\times H \f$ window averaging; the narrow windows themselves are updated (accumulated) continuously, as a "pipeline", 
+resulting in a very fast operation. As a disadvantage, rectangular patterns may also appear in the resulting  images.
+
+Two-dimensional Gaussian bell function produces smooth fields. Also that operator can be a separated to two consecutive one-dimensional run 
+of \f$ W\times 1 \f$ and \f$ 1\times H \f$ windows, yet without pipelining. The bell curve is principally continuous and infinite, but practically
+truncated to size slightly larger than those of respective rectangular averaging windows.
+
+\code
+ rack motion.h5 --iGaussianAverage 200:200  -o motion-GaussianAverage.h5
+\endcode
+\image html  spread-GaussianAverage-panel.png "Vector field spread with \c --iGaussianAverage, window size 400 x 400."
+\image latex spread-GaussianAverage-panel.png "Vector field spread with \c --iGaussianAverage, window size 400 x 400." width=0.5textwidth
+
+Sometimes it is desired that opposite vector components do not cancel each other but the magnitudes be preserved like in
+a flow a fluid or particles. Using \c --iFlowAverage produces such vectors, pointing to directions of conventionally averaged vectors.
+\code
+rack motion.h5 --iFlowAverage 200:200 -o motion-FlowAverage.h5
+\endcode
+\image html  spread-FlowAverage-panel.png "Vector field spread with \c --iFlowAverage, window size 200 x 200."
+\image latex spread-FlowAverage-panel.png "Vector field spread with \c --iFlowAverage, window size 200 x 200." width=0.5textwidth
+
+The shape of this window operator is rectangular, and basically cannot be accelerated ie. separated to two operations with narrow windows.
+Technically, such processing can be performed by issuing the commands explicitly, producing an approximation of the true rectangular
+window operation:   
+\code
+rack motion.h5 --iFlowAverage 200:1  --iFlowAverage 1:200 -o motion-FlowAverageApprox.h5
+\endcode
+
+The problem with all the averaging operators is that they also blur areas of high-quality vectors. As a solution, the vectors of low
+quality in the resulting image should be overridden with vectors of higher quality of the original image. This kind of combination can
+be produced repeatedly using \c --iBlender which employs a desired averaging operator (above) with a maximum or mixing operator with the
+original image:
+
+\code
+rack motion.h5 --iBlender 200:200 -o  motion-Blender.h5
+\endcode
+\image html  spread-Blender-panel.png "Vector field spread with \c --iBlender, window size 200 x 200, applying simple averaging and maximum-quality combination."
+\image latex spread-Blender-panel.png "Vector field spread with \c --iBlender, window size 200 x 200, applying simple averaging and maximum-quality combination.." width=0.5textwidth
+
+
+
+\subsubsection motion-dist  Distance transform based operators
+
+An alternative way to spead vector fields is to apply distance transform based methods: data values are propagated in all the directions
+such that the underlying quality field is decreased as a function of distance.  
+Propagation continues in low-quality areas until higher 
+quality values are encountered. This method is very fast, but as a disadvantage the resulting vector fields contain segments of constant
+values as no averaging is involved. The basic version is applies linear model ie. constant steps in decreasing the underlying quality field.
+If the data has no quality data, it can be created with \c --createDefaultQuality . 
+
+\code
+rack motion.h5 --iDistanceTransformFill 200:200  -o motion-DistanceTransformFill.h5
+\endcode
+\image html  spread-DistanceTransformFill-panel.png "Vector field spread with \c --iDistanceTransformFill, window size 200 x 200."
+\image latex spread-DistanceTransformFill-panel.png "Vector field spread with \c --iDistanceTransformFill, window size 200 x 200." width=0.5textwidth
+
+When using distance transform approach, an area of high quality may override an area of lower quality if the areas are close enough like
+in the upper right corner of the sample image (the motion field of the pentagon overrides that of the rectangle). 
+When using an exponential model, the resulting quality field has steeply decaying values - that however continue to infinity, 
+in the limits of storage type precision.
+  
+\code
+rack motion.h5 --iDistanceTransformFillExp 200:200 -o  motion-DistanceTransformFillExp.h5
+\endcode
+\image html  spread-DistanceTransformFillExp-panel.png "Vector field spread with \c --iDistanceTransformFillExp, window size 200 x 200."
+\image latex spread-DistanceTransformFillExp-panel.png "Vector field spread with \c --iDistanceTransformFillExp, window size 200 x 200." width=0.5textwidth
+
+The linear and exponential approaches have same the computional complexity.
+
+
+
+\subsection motion-composites  Composites of motion fields
+
+It is possible to generate composites of single-radar motion fields presented above. The procedure is essenstially the same
+as with intensity data, explained in \ref compositespage . 
+However, compositing has to be done separately for each parameter, 
+in this case horizontal wind components \c AMVU and \c AMVV . 
+
+
+ \dot
+  digraph example {
+
+  size="9,5";
+  label = "Compositing of motion fields";
+  rankdir=LR;
+  node [shape=record, fontsize=10];
+  edge [color=black, fontsize=10];
+  headport="n";
+
+  RADAR1  [ label="{Radar 1 | {<u>AMVU|<v>AMVV}}", color="forestgreen"];
+  RADAR2  [ label="{Radar 2 | {<u>AMVU|<v>AMVV}}", color="forestgreen"];
+  RADAR3  [ label="{Radar 3 | {<u>AMVU|<v>AMVV}}", color="forestgreen"];
+  
+  AMVU  [ label="Composite | <i> AMVU", color="forestgreen", URL="\ref compositespage" ];
+  AMVV  [ label="Composite | <i> AMVV", color="forestgreen", URL="\ref compositespage" ];
+  
+  RADAR1:u -> AMVU:i;
+  RADAR1:v -> AMVV:i;
+  RADAR2:u -> AMVU:i;
+  RADAR2:v -> AMVV:i;
+  RADAR3:u -> AMVU:i;
+  RADAR3:v -> AMVV:i;
+  
+  AMVU:i -> COMPOSITE:u;
+  AMVV:i -> COMPOSITE:v;
+  
+  COMPOSITE  [ label="Composite | <u> AMVU| <v> AMVV " ];
+  
+}
+\enddot
+
+For example, assuming that --c <files> are a set of motion files to be composites: 
+\code
+Q=AMVU; rack --cMethod MAXW --script "-Q $Q --cAdd" <files> --cExtract dw -o motion-$Q.h5
+Q=AMVV; rack --cMethod MAXW --script "-Q $Q --cAdd" <files> --cExtract dw -o motion-$Q.h5
+rack --append data motion-AMV?.h5 -o <motion-composite>
+\endcode
+Note that the input files can be the same in the above lines, if they contain both the quantities.  
+
+*/

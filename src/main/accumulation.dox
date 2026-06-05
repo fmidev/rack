@@ -1,0 +1,105 @@
+/** \page accumulationpage Accumulation products
+
+
+\tableofcontents
+
+
+\section acc_polar Accumulation products
+
+
+\b Rack can be used to accumulate polar and Cartesian data - raw data or products. 
+Cumulative rainfall or clutter maps are examples of accumulation products than can be generated.
+  
+Internally, the accumulation process uses the same modules as in compositing:
+an accumulation array is first updated, and finally an accumulation product is extracted. 
+
+\subsection acc_polar Accumulating polar data
+
+Basically, data in polar coordinates (ie. sweeps or polar products) can be accumulated to an array
+by issuing input files proceeded with \c --pAdd command, one by one. More conveniently the command is
+set with \c --script and the inputs are given as a list. 
+Finally, the accumulated data is extracted with \c --pExtract . For example:   
+
+\code 
+# 'Undetect' values replaced with physical low value
+rack --select /dataset1,quantity=DBZH                  --script '--pAdd' data-acc/2017*.h5 --encoding C --pExtract 'dw' -o accumulated0.h5
+
+# 'Undetect' values discarded
+rack --select /dataset1,quantity=DBZH --undetectWeight 0 --script '--pAdd' data-acc/2017*.h5 --encoding C --pExtract 'dw' -o accumulated1.h5
+\endcode 
+ 
+ In these examples, input selector \c --select \c /dataset1,quantity=DBZH is used for faster file read. 
+ 
+\~exec
+convert -frame 1 +append accumulated{0,1}.png accumulated-both.png
+# demo-src/get-acc-data.sh
+\~
+
+\image html  acc-input.png "Input data for accumulation (\c DBZH )." 
+\image latex acc-input.png "Input data for accumulation (\c DBZH )." width=0.9\textwidth
+
+Like in compositing, bins marked \c undetect can be either replaced with
+physical values (set with \c --quantityConf ) or discarded (with \c --undetectWeight 0 ).
+
+
+\image html  accumulated-both.png "Result of accumulation: with (left) or without (right) \c undetect replacement (-32dBZ)." 
+\image latex accumulated-both.png "Result of accumulation: with (left) or without (right) \c undetect replacement (-32dBZ)." width=0.9\textwidth
+
+
+The desired data storage type and encoding can be set with \c --encoding command.
+Issuing it explicitly (before \c --pAdd command) prevents warnings of a limited value range.
+
+Accumulation can be incremental, that is, one may continue accumulation on a previously computed result. 
+The new data will be assigned weight 1/N which normalizes the accumulation.  
+For example, the above set of 25 volumes can be accumulated as follows, as monthly sets:
+\code
+# Cold start
+rack --select /dataset1,quantity=DBZH --undetectWeight 0 --script '--pAdd'        data-acc/20170[2-5]*.h5 --pExtract 'dw' -o acc-part.h5
+
+# Warm start: read previous accumulation as a background
+rack --select /dataset1,quantity=DBZH --undetectWeight 0 --script '--pAdd' acc-part.h5 data-acc/201706*.h5     --pExtract 'dw' -o accumulated.h5
+\endcode
+
+ 
+
+By default, quantities \c DBZH and \c RATE are used for accumulation. This can be changed with \c --select .
+For example, accumulation of total reflectivity (\c TH ) is obtained with:   
+\code 
+rack --encoding S --select 'quantity=^TH$' --script '--pAdd' <files>  --pExtract 'dw' -o accumulated.h5 
+\endcode 
+ 
+
+\subsection create_cluttermap Application: creating clutter maps
+
+As can be seen from above images, accumulating data without quality control produces anomalies in results, especially wind turbines and
+other clutter that has not been removed even by Doppler filtering. Utility script \c make-cluttermap.sh accumulates data and creates
+a clutter map applicable with anomaly detection command \c --aClutter (\ref aClutter) . The accumulation part is similar to the processes
+described above. After obtaining the accumulated \c DBZH field it can converted to \c CLUTTER
+for example as follows:
+
+\code
+rack accumulated0.h5 -Q DBZH --encoding C,0.004,-0.004,quantity=CLUTTER --iFuzzyStep -20:21 --keep quantity=CLUTTER -o cluttermap.h5
+\endcode
+
+One can say that the above command practically \e defines a clutter map. 
+In other words, \b Rack contains no built-in support in creating \c CLUTTER quantity but the user
+may use general purpose commands as above to produce a clutter map. In this example,
+the accumulated \c DBZH data is simply rescaled by a fuzzy mapping and the quantity label is 
+changed to \c CLUTTER. Other fuzzy functions can be considered as well
+(see \c --iFuzzy prefixed commands in \ref imageOps).
+
+The above command appends the \c CLUTTER data group in the file. The original \c DBZH group can be removed with \c --keep \c quantity=CLUTTER .
+Further, in batches generating clutter maps for several radar sites the filenames can be automatically
+derived by using  \c --expandVariables followed by filenames containing implicit variables 
+like 'cluttermaps/clutterMap-${NOD}.h5'. (See \ref templates for details).
+
+\subsection acc_cart Accumulating Cartesian data
+
+Accumulating data that has already been projected to a Cartesian coordinate system can be accumulated
+using \c --cAdd command . This process is technically similar to compositing; now a single radar is
+repeatedly "composited" on itself.
+
+(Under construction.)
+
+
+*/

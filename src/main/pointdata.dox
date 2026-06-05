@@ -1,0 +1,58 @@
+/** \page pointdata Point data
+
+
+\tableofcontents
+
+
+\section pointmeasurements Adding point measurements
+
+Also external point measurements - like ground station observations - can be projected into a Cartesian product.
+Technically, the procedure works as in compositing, which applies internally an accumulation array: adding data from
+a single radar is equal to adding several single observations. 
+
+Everything starts by creating an empty accumulation array with \c --cSize and \c --cProj commands; sometimes 
+\c --cMethod may apply as well.
+Alternatively, the array can be initialised with a radar composite by loading it with \c --cLoad . Moreover, plotting can be 
+arbitrarily mixed with single radar observations; weighting can be applied in tuning the between radars and ground observations.   
+
+Single entries can be added in a command line with \c --cPlot command. The command has the form
+\code
+rack <composite-settings> --cPlot <lon>,<lat>,<intensity>[,<weight>] [...] --cExtract dw  [--cSpread <spread>]  <output-commands> 
+\endcode
+The plotting command takes longitude, latitude and intensity as parameters. Intensity is the magnitude of the
+user defined quantity, say rain rate. A weight parameter can be associated to each observation. 
+After extraction, the pointwise intensities can be spread coarsely as ellipses
+using \c --cSpread , which takes horizonal and vertical radii in kilometres as arguments. 
+Like any other products, the result can be stored in an HDF5 or image file.
+
+\subsection rate_measurements Rain rate observations
+
+Applying many subsequent \c --cPlot commands is clumsy.  
+Assume that you have file \c measurements.dat containing comma separated entries of lon,lat, and measurement value, like
+
+\~exec
+	make measurements.cut
+\~
+\include measurements.cut
+
+then you can plot them with \c --cPlotFile command as follows:
+
+\include make-plot.sh
+\~exec
+QUANTITY=RATE GAIN=0.02 ./make-plot.sh measurements.dat #exec
+composite -compose over plot-spread-color.png map-finland.png  plot-map-finland.png #exec
+# convert has a bug, image becomes grayscale if the first image is grayscale.
+convert  plot-spread1.png -type TrueColor tmp.tif
+convert -resize 800x640 -frame 1 +append tmp.tif plot-map-finland.png plots.png #exec
+\~ 
+
+For further processing, it may be needed to add several ODIM variables as in the above script. 
+
+\image html  plots.png "Rainfall observations plotted and spread to 50km circles (left) and similar 100km circles coloured with \c --palette and superposed on a map (right)." 
+\image latex plots.png "Rainfall observations plotted and spread to 50km circles (left) and similar 100km circles coloured with \c --palette and superposed on a map (right)." width=0.5\textwidth
+
+\subsection obstacles Aviation obstacles
+
+
+
+*/ 

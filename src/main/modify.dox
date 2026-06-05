@@ -1,0 +1,65 @@
+/** \page modifypage Modifying data
+
+\tableofcontents
+
+\section modify Modifying data arrays and metadata
+
+\subsection CmdSetODIM Adding and changing ODIM metadata
+
+Metadata attributes in an HDF5 structure can be changed with  \c --setODIM command.
+
+For convenience, this special command has also a shorthand – a direct assignment appended to \c -- , for example 
+\c /dataset1/where:rscale=500 .
+
+\copydoc rack::CmdSetODIM
+ 
+\see #rack::CmdSetODIM (code)
+\see CompleteODIM
+
+\subsection CmdCompleteODIM Ensuring ODIM metadata
+
+\copydoc rack::CmdCompleteODIM
+
+\see CmdSetODIM
+
+\see #rack::CmdCompleteODIM (code)
+
+
+\subsection CmdDelete Deleting data
+
+The h5 structure can be pruned with \c --delete command which uses 
+selector arguments similar to that of \c --select (see \ref selecting). 
+
+\copydoc rack::CmdDelete
+
+\see #rack::CmdDelete (code)
+
+\subsection CmdKeep Keeping data
+
+One may use \c --keep to save part of the data, making the rest to be deleted.
+Technically, this is a "complement" of \c --delete command.
+
+\copydoc rack::CmdKeep
+
+\see #rack::CmdKeep (code)
+
+
+\subsection CmdMove Renaming and moving paths and attributes
+
+One can rename existing paths (hdf5 group names) and attributes with \c --move command. 
+
+\copydoc rack::CmdMove
+
+\see #rack::CmdMove (code)
+
+
+\section conversions Data conversions
+
+\copydoc rack::CmdConvert
+
+\see #rack::CmdConvert (code)
+\see CmdDelete
+\see CmdMove 
+
+
+*/

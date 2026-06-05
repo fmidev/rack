@@ -1,0 +1,48 @@
+/** \page svgpage Writing SVG files 
+
+\tableofcontents
+
+\section fileio_svg  Automatical generation of SVG files
+
+\b Rack supports presenting generated PNG images collectively using Scalable Vector Graphics (SVG) format.
+
+When executing \b Rack, all the PNG images that have been written with \c --outputFile / \c -o  are included automatically in an \e internal SVG \e structure.
+
+The structure is always created in the background but written out only if explicitly asked to, with  \c --outputFile \c <file>.svg  command.
+Typically, that command is executed last.
+
+The internal SVG structure is lightweight, so maintaining it in the background is neither time nor memory consuming. 
+In addition, some processing - like alignment of elements - takes places only if an SVG file is actually written out. 
+
+\subsection svg_example Examples of SVG panels
+
+\include{doc} graphics.inc
+
+Alignment of the elements is done horizontally or vertically.
+By default, images are positioned horizontally, from left to right. This can be changed with  \c --gLayout , 
+selecting \c orientation as \c HORZ or \c VERT  and
+coordinate \c direction as increasing (\c INCR ) or decreasing (\c DECR ).
+
+The resulting SVG file can be converted to various other image formats using ImageMagick's \c convert program,
+for example.  A good alternative is \c inkscape .
+
+\subsection svg_paths Relative or absolute image file paths?
+
+In SVG files, IMAGE elements may use either relative or absolute file paths.
+By default, \c Rack uses absolute paths in IMAGE elements.
+Should relative paths be used, simply use them on commandline, or
+use \c --outputPrefix \c $PWD/  together with \c --outputConf svg:absolutePaths=false .
+
+
+Some considerations:
+
+- If an SVG file is to be placed on an HTML page, file references of IMAGE elements must be \e relative –
+HTTP servers typically avoid revealing any system-side paths, hence do not support them in openly adressing files.
+- ImageMagick's \c convert and \c display programs seem to  require \e absolute paths in filenames.
+- \c Inkscape program supports both
+
+
+With \b Rack , SVG files can also be created using templates, see \ref templates .
+
+
+*/

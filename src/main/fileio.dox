@@ -1,0 +1,370 @@
+/** \page fileiopage File input and output
+
+
+\tableofcontents
+
+\b Rack supports reading sweep and volume files in HDF5
+format using OPERA information model (ODIM). 
+In addition, supports reading and writing data as images and text files.
+\~remark
+The respective BUFR format is under consideration.
+\~
+
+\section fileio_h5 Reading and writing HDF5 files
+
+Input files are given as plain arguments or alternatively with
+explicit command \c --inputFile , abbreviated \c -i. 
+If several files are given, they will be internally
+combined in the internal HDF5 structure, adding datasets incrementally. 
+
+Outputs are generated using \c --outputFile , abbreviated \c -o. 
+Hence, combining sweep files to a volume is obtained simply with
+\code
+rack sweep1.h5 sweep2.h5 sweep3.h5  -o volume-combined.h5 
+\endcode
+
+In combining sweep data to volumes, \b Rack creates and updates one \c /dataset\<i\> group for each \em elevation \em angle .
+Further, \b Rack creates and updates one \c /data\<i\> group for each \em quantity ; new input overwrites existing data 
+of the same quantity.
+
+If quality information -- stored under some \c /quality[i] group and marked with \c what:quantity=QIND -- is read, the overall
+quality indices are updated automatically. See \ref file_quality below for further details.
+  
+
+\image latex volume-hdfview-small.png "A volume combined from three separate files (illustrated with HDFview)." width=0.9\textwidth
+\image html  volume-hdfview-small.png "A volume combined from three separate files (illustrated with HDFview)." 
+ 
+  
+\section fileio_txt Reading and writing text files
+ 
+Using \c --outputFile , the \em structure of the current data can be written as plain text in a file (*.txt) or to standard input (-): 
+\code
+rack volume.h5 -o volume.txt
+\endcode
+
+\~exec
+  cat volume.txt | grep -v data1[0-9] | head -12 > volume-head.txt  #exec
+  echo '...' >> volume-head.txt          #exec
+\~
+
+File \c volume.txt will consist of lines of ODIM entries as follows:
+\include volume-head.txt
+
+Note that strings are presented in double quotes and arrays as comma-separated values in brackets. 
+
+\~DEPRECATED
+The storage types are indicated in the braces. The most frequent types are:
+ - \c # - string
+ - \c C - unsigned character
+ - \c S - unsigned intereger
+ - \c i - integer (discouraged in ODIM)
+ - \c l - long integer
+ - \c f - float (discouraged in ODIM)
+ - \c d - double
+ - \c * - undefined
+\~
+
+Based on metadata, it is often handy to automatically compose filenames.
+\code{.sh}
+rack volume.h5  -o 'incoming-${NOD}_${what:date}-${what:time}.txt'
+\endcode
+For using format templates and hadling multiple files on a single command line, see \ref templates.
+
+
+Volume can be also created using a text file like the one created above, that is, with the desired structure and data types.
+\code
+rack volume.txt -o volume-new.h5
+\endcode
+
+One can modify the metadata directly from the command line by means of \c --setODIM \c \<path\>:\<attribute\>=\<value\> command. 
+
+\include setODIM.hlp
+
+The command has a special shorthand \c --/\<path\>:\<attribute\>=\<value\> . For example: 
+\code
+rack volume.h5   --/dataset1/how:myKey=myValue          -o volume-new.h5
+rack volume.h5   --/dataset1/how:myKey=123.456          -o volume-new.h5
+rack volume.h5   --/dataset2/data3/what:quantity="PROB" -o volume-new.h5
+\endcode
+
+This feature can be used for completing incomplete ODIM metadata or adding arbitrary metadata. 
+The actual radar data can be read or saved as image files as explained below. 
+
+
+\section fileio_img Reading and writing image files 
+
+In addition to HDF5 format, \b Rack support three image formats: 
+- Portable Network Graphics (PNG), with (\c .png ) extension
+- Portable Anymap Format (PNM), grayscale ( \c .pgm ) and RGB images (\c .ppm ).
+- Geo-Referenced Tagged Image File Format (GeoTIFF, GTIF),  (\c .tif ), see ref geotiff_remarks below
+
+
+When writing data with \c --outputFile (\c -o) command, the applied image format is determined from the filename extension. 
+By default, the first dataset encountered in the internal data structure is selected, hence typically \c /data1/dataset1/data . 
+The source can be changed with \c --select command.
+\code
+rack volume.h5 -o sweep1.png
+rack volume.h5 --select dataset2/data:,quantity=DBZH -o sweep1.pgm
+rack volume.h5 --cProj "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" -c  -o sweep1.tif
+\endcode
+
+
+
+
+\image latex sweep.png "A PNG image generated with \c -o ." width=0.5\textwidth
+\image html  sweep.png "A PNG image generated with \c -o ." 
+
+
+Metadata (ODIM variables) are written in the comment lines (PGM and PNM). 
+The syntax follows that of a text dump produced with \c --outputFile as explained above with \c volume.txt , 
+but only the last path component (\c what , \c where,  \c how) is included. For example, a resulting header of 
+a PGM file - here pruned for illustration - looks like:
+\code
+P5
+# how:freeze=2.1
+# how:highprf=570
+# how:lowprf=570
+# how:polarization="H+V"
+# how:rpm=2.82074
+# how:task="PPI1_A"
+# how:wavelength=5.33
+# what:date="20140827"
+# what:enddate="20140827"
+# what:endtime="090022"
+# what:gain=0.5
+# what:nodata=255
+# what:object="PVOL"
+# what:offset=-32
+# what:product="SCAN"
+# what:quantity="DBZH"
+# what:source="WMO:02870,RAD:FI47,PLC:Utajärvi,NOD:fiuta"
+# what:startdate="20140827"
+# what:starttime="090000"
+# what:time="090000"
+# what:undetect=0
+# where:elangle=0.3
+# where:height=118
+# where:lat=64.7749
+# where:lon=26.3189
+# where:nbins=500
+# where:nrays=360
+# where:rscale=500
+# where:rstart=0
+# where:towerheight=33
+500 360
+255
+\endcode
+
+The comments can be overriden with \c --format command. This experimental feature covers currently:
+
+- PGM/PPM files: all the comments are replaced by that string.
+- GeoTIFF files: if the argument starts with a curly brace \c '{' , it is read in as JSON , and (first-level) key-value pairs are stored as GDAL attributes.
+
+In addition, for GeoTIFF files, attributes set with \c --/how:GDAL:<key>=<value> will be also added as GDAL variables.
+
+\b Rack can also save all the data sets in separate files with a single command, producing \c
+sweep000.png , \c sweep001.png and so on. This is achieved with \c --outputRawImages , abbreviated  -O .
+The command stores the image data directly, without rescaling pixel values. 
+
+
+\b Reading image files creates and updates internal HDF5 structure, adding grid data:
+-# in the first encountered \c /data\<i\> or \c /quality\<i\> group containing an empty \c /data  (ie. uninitialized image), or if not found:
+-# in a new \c /data\<i\>/data of the existing \c /dataset\<j\> with the highest index \c j
+ 
+Metadata can be set 
+-# by reading them directly from image file comments (text supported by PNG and PNM formats, e.g. \c what:quantity="DBZH" )  
+-# by inputting a text file as explained above 
+-# on the command line, like \c --/dataset1/data2/what:quantity=DBZH (see \ref changing)
+ 
+Metadata can be set before or after image inputs. Example:
+\code
+rack volume.txt sweep1.png --/dataset1/data1/where:rscale=500  <commands>
+\endcode
+
+Some important ODIM attributes can be added automatically with \c --completeODIM command, which sets \c nbins , \c nrays , \c xsize , and \c ysize
+equal to data dimensions, if already loaded as image.
+
+\subsection geotiff_remarks Remarks on GeoTIFF images
+
+Rack produces GeoTIFF images under the following limitations:
+
+- writing is supported only
+- grayscale is supported only 
+- applicable to Cartesian products only; polar coordinate system is not supported.
+  GDAL conventions are used in intensity scaling (\c scale and \c offset ). 
+- support of geodetic data is minimal; use utilities like \c gdalinfo to check output
+- some projections (e.g. \c epsg:3844, \c epsg:3035, and \c epsg:3995) raise errors – see \ref compositespage for details.
+- tiling is supported
+- some image viewing programs (ex. ImageMagick's \c display ) produce rendering errors of \em 16-bit images having width not multiple of tile width
+
+
+\image latex composite-geotiff-error.png "A composite rendered as 8-bit and 16-bit images." width=0.2\textwidth
+\image html  composite-geotiff-error.png "A composite rendered as 8-bit and 16-bit images."
+
+\~remark
+include geoTiff.hlp
+\~
+
+
+
+\section fileio_html  Writing HTML files
+
+\b Experimental. The current data structure can be written to a HTML file which displays the data in a clickable tree.
+The data arrays are stored in PNG files in sub directory named with the basename of the output file.
+The structure of the directory repeats the hierarchy of the original HDF5-ODIM data. 
+
+Examples: 
+ 
+ \code
+# Store full data structure
+rack volume.h5 -o volume-full.html
+
+# Store selected parts of the structure
+rack volume.h5 --outputPrefix $PWD/ --select /dataset1:2/data2:4/data  -o volume-partial.html
+
+# Generate and store a Pseudo CAPPI product
+rack volume.h5 --pCappi 1500 -c -o pCappi-1500m.html
+
+# Generate a coloured Pseudo CAPPI product and store it 
+rack volume.h5 --pCappi 1500 -c --encoding quantity='DBZH'  --palette 'default' -o pCappi-1500m-RGB.html
+
+\endcode
+
+\section histograms Histograms
+
+\~exec
+	make histogram.hlp 
+\~
+\include histogram.hlp
+
+Example:
+\code
+rack volume.h5 --select 'quantity=TH' --histogram filename=histogram.dat
+\endcode
+
+\~exec
+make histogram.dat.cut
+\~
+
+
+The resulting file consists of lines containing values and counts
+\include histogram.cut
+
+Example:
+\code
+rack volume-detected.h5 --select 'data:/quality:,quantity=CLASS' --format '${index}\t${count}\t # ${label}\n' --histogram filename=histogram2.dat
+\endcode
+
+\~exec
+make histogram2.dat.cut
+\~
+
+\include histogram2.dat.cut
+
+
+\section graphs Illustrating data structure
+
+ The contents of hierarchical radar data can be displayed in a simple tree format using
+ \c outputTree command or by changing file extension to \c .tre 
+ when using the general command \c -o / \c --outputFile .
+ 
+\code
+rack volume.h5 -o volume-tree.tre
+\endcode 
+ 
+ \b Rack can be also used to output the tree-like hierarchy of radar data in 
+ \c dot format (http://www.graphviz.org/documentation/).
+ From that format, one may use Graphviz \c dot program to produce tree graphs in various image formats link \c png , \c pdf and \c svg. For example:
+
+\code
+rack volume.h5 --keep dataset1:2/data1:3 -o volume-tree.dot
+# Currently --keep preferred to --select 
+
+dot volume-tree.dot -Tpng -o volume-tree.png
+dot volume-tree.dot -Tpdf -o volume-tree.pdf
+\endcode
+
+
+The desired path can be selected with \c --select path=<group>[/<group>] or simply \c --select <group>[/<group>] 
+because path is the first argument key.  
+The most relevant groups are \c dataset: , and  \c data: , and \c quality: . 
+The colon \c : is compulsory for separating \c data<index>  groups from lower level \c data group in ODIM.
+In the current version, groups \c what , \c what and \c how are handled somewhat automagically. (See \ref selecting .) 
+
+\image latex volume-tree.png "Data structure illustrations creating by means of \c dot file output." width=0.2\textwidth
+\image html  volume-tree.png "Data structure illustrations creating by means of \c dot file output." 
+
+  
+ 
+\section file_quality Reading and combining quality data
+ 
+ In an operative environment, two parallel processes may perform quality control. \b Rack combines the resulting files using
+ the following logic:
+ 
+ - The main quality field (\c quantity=QIND ) is updated, based on either target class field (\c quantity=CLASS) or (\c quantity=\<class-name\> ):
+   -# If overall classification (\c quantity=CLASS) is provided, \c  QIND and \c CLASS will be updated directly from those.
+   -# If \c CLASS is not provided, \c QIND will be updated from the specific class probability (\c quantity=\<class-name\> ).
+ -  Under the group containing \c QIND (typically \c /quality1 ), \c how:task_args will be updated by the names of the added classes.
+ 
+ In the following example, the quantities (detection classes) applied are those produced by \b Rack but could be thought as if they
+ were produced by some other software, with same or similar names.
+
+\~exec
+rack volume.h5 --keep 'dataset1/data:,quantity=DBZH$'  --store INTERMEDIATE --aEmitter ''   --aJamming '' -o volume-det1.h5 -o - | fgrep quan > volume-det1.txt  
+echo '...' >> volume-det1.txt   
+rack volume.h5 --keep 'dataset1/data1:4' --delete data3  --store INTERMEDIATE --aShip    ''   --aSpeckle '' -o volume-det2.h5 -o - | fgrep quan > volume-det2.txt  
+echo '...' >> volume-det2.txt   
+\~
+
+
+
+  
+Consider two quality control processes, the first producing detection of \c EMITTER and \c JAMMING , stored in file \c volume-det1.h5 , containing
+following data (among others):
+ 
+\include volume-det1.txt
+ 
+Assume the other process detecting \c SHIP and \c SPECKLE stored in \c volume-det2.h5 , respectively:
+ 
+\include volume-det2.txt
+ 
+These files can be combined simply with 
+\~conf{.sh}
+shell=True
+\~
+\code{.sh}
+rack volume-det1.h5 volume-det2.h5  -o volume-det-combined.h5 >> /tmp/foo
+\endcode
+
+\~exec
+rack volume-det-combined.h5 -o - | fgrep quan > volume-det-combined.txt #exec
+echo '...' >> volume-det-combined.txt  #exec
+\~
+ 
+The resulting file contains structure as follows: 
+\include volume-det-combined.txt
+ 
+ \~exec
+ rack volume-det1.h5 --delete 'what|where|how|data' --select dataset:/data: -o volume-det1.dot
+ rack volume-det2.h5 --delete 'what|where|how|data' --select dataset:/data: -o volume-det2.dot
+ rack volume-det-combined.h5 --delete 'what|where|how|data' --select dataset:/data: -o volume-det-combined.dot
+ dot volume-det1.dot -Tpng -o tmp1.png #exec
+ dot volume-det2.dot -Tpng -o tmp2.png #exec
+ dot volume-det-combined.dot -Tpng -o tmp3.png  #exec
+ convert -frame 1 -fill green +append tmp1.png tmp2.png tmp3.png -filter Point -resize 1024x800 volumes-combined.png
+\~ 
+ 
+Just like after running several \e detection processes, after reading files containing detection fields, 
+global ie. elevation-specific quality data (\c QIND and \c CLASS ) are not implictly combined to local ie. quantity-specific quality data. 
+As explained in \ref detection , this combination takes place automatically if any
+removal command or \c --c  --aQualityCombiner command is issued.
+
+\~exec
+rack volume-det1.h5 --aQualityCombiner -Q CLASS -c --iDistanceTransformFill 5 --palette CLASS -o tmp1.png 
+rack volume-det2.h5 --aQualityCombiner -Q CLASS -c --iDistanceTransformFill 5 --palette CLASS -o tmp2.png
+rack volume-det-combined.h5 --aQualityCombiner -Q CLASS -c --iDistanceTransformFill 5 --palette CLASS -o tmp3.png
+convert -frame 1 -fill gray +append tmp1.png tmp2.png tmp3.png -filter Point -resize 1024x800 volumes-combined.png
+\~
+ 
+
+*/

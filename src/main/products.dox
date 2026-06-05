@@ -1,0 +1,384 @@
+/** 
+\page productspage Meteorological products
+
+
+\tableofcontents
+
+\section products Product generation
+
+Primarily, \b Rack computes meteorological products in polar
+coordinate system.  The resulting product is also in polar
+coordinates, hence called a \b polar \b product.  It can be also
+called as an intermediate product because such a product is often processed
+further on, for example added to a composite or transformed to a
+Cartesian single-radar image.  This design feature adds speed to
+production since many final products can be computed from the same
+polar product.  This also facilitates developing the software, as a
+new meteorological algorithm needs to be programmed in a single
+module only.
+
+By default, generation of a product removes the previous product from memory. Alternatively, several products can be written in the same output structure
+by issuing \c --append \c dataset or \c --append \c data (with optional index) before the product commands.. 
+
+
+The rest of this section handles computation of \em polar \em products. Since end products are most often 
+viewed in Cartesian coordinates and coloured, the examples include the Cartesian conversion (\c -c) and palette operation (\c --palette ). 
+A quality field, when provided by the product operator, is attached right of the actual product image. 
+
+As processing and using Doppler data involves special aspects, it is handled in it own section, \ref doppler.
+
+\subsection cappi  PseudoCAPPI
+
+Constant-altitude position indicator (CAPPI) is obtained with \c --pCappi command. It takes
+altitude as its first argument. 
+
+\~exec
+SELECT=dataset1:3 NICK=DEFAULT     PROD=pCappi,1000,weightMin=0,beamWidth=0.5    ./make-image-product.sh #exec
+SELECT=dataset1:3 NICK=PSEUDOCAPPI PROD=pCappi,1000,weightMin=-0.1,beamWidth=0.5 ./make-image-product.sh #exec
+SELECT=dataset1:3 NICK=CAPPI       PROD=pCappi,1000,weightMin=+0.1,beamWidth=0.5 ./make-image-product.sh #exec
+\~
+\include pCappi.exm
+
+The Pseudo CAPPI product is computed by traversing \em all the bins of the volume data. The bins are
+weighted using an exponential function of the distance from reference altitude. 
+This method allows using measurement data from upper and lower beams, when data has low quality or data is missing 
+in the closest bins.  
+
+\b Rack supports computing three variations of CAPPI. They differ in ways <i> vertically distant data</i> – bins far below and above the 
+requested altitude – near and far from the radar hence are handled.
+
+- CAPPI: \c weightMin > 0, dropping low-quality areas ie. marking them with \c nodata , resulting in an annular shaped image  
+- Pseudo CAPPI: \c weightMin < 0, including data far off the nominal altitude
+- Default CAPPI: \c weightMin = 0, dropping low-quality areas ie. marking them with \c undetect , resulting in an annular shaped image  
+
+\~remark
+The strict, annular CAPPI: vertically distant measurements are marked with \c nodata (obtained with weightMin > 0)
+The pseudo CAPPI: also vertically distant measurements are included; obtained by setting a negative value (eg. weightMin=-0.1)
+The compromized CAPPI which replaces distant data with \c undetect . (obtained with weightMin=0)
+\~
+
+The images below illustrate these variations. Virtual beam width has been set smaller (0.5) to visualize the differences and the quality field. 
+
+\image html  CAPPI-pCappi-DBZH-panel.png "The CAPPI product and its quality field." 
+\image latex CAPPI-pCappi-DBZH-panel.png "The CAPPI product and its quality field." width=0.5\textwidth
+
+\image html  PSEUDOCAPPI-pCappi-DBZH-panel.png "The Pseudo CAPPI product and its quality field." 
+\image latex PSEUDOCAPPI-pCappi-DBZH-panel.png "The Pseudo CAPPI product and its quality field." width=0.5\textwidth
+
+\image html  DEFAULT-pCappi-DBZH-panel.png "The 'compromized' CAPPI product and its quality field." 
+\image latex DEFAULT-pCappi-DBZH-panel.png "The 'compromized' CAPPI product and its quality field." width=0.5\textwidth
+
+
+
+
+As a default setting, the relative quality of \c undetect bins is lower than that of detected signals;
+this affects e.g. creation of radar image composites. 
+The relative quality can be changed with \c --undetectWeight command. 
+
+
+
+
+\subsection maxEcho  Maximum echo
+
+Maximum reflectivity in vertical direction is obtained \c --maxEcho command. It takes two parametes: (minimum) \c altitude 
+above which reflectances are considered and   \c altitudeDev (altitude deviation), a fuzzy width parameter of the threshold. 
+
+\~exec
+  PROD=pMaxEcho,1000:9000 QUANTITY=DBZH ./make-image-product.sh #exec
+\~
+\include pMaxEcho.exm
+
+
+The quality is low near and far from the radar, as precipitation may reside over and under radar beams,
+respectively. 
+
+\~remark
+Further, quality is low in the highest-elevation bins with detected values; empty (undetected)
+measurements "confirm" the maxima.  
+\~
+
+\image html  pMaxEcho-DBZH-panel.png "The maximum echo product and its quality field." 
+\image latex pMaxEcho-DBZH-panel.png "The maximum echo product and its quality field." width=0.5\textwidth
+
+ 
+\subsection echoTop  Echo top altitude
+
+Height of precipitation can be computed with \c --pEchoTop command. It takes threshold reflectivity (dBZ) as its first argument.
+\~exec
+  PROD=pEchoTop,20 QUANTITY=HGHT INPUT=volume-conv.h5 ./make-image-product.sh #exec
+\~
+\include pEchoTop.exm
+
+The other parameters are the coordinates of a hight reference point having a very low dBZ value. The echo top altitudes 
+are linearly interpolated towards this point. 
+
+The user may wish to choose a target resolution, for example:   
+ \code
+  rack volume.h5 --encoding C,0.05 --pEchoTop 20  -o echoTop_8bit.h5
+  rack volume.h5 --encoding S,1.0  --pEchoTop 20  -o echoTop_16bit.h5
+ \endcode
+ 
+
+\image html  pEchoTop-HGHT-panel.png "Echo top product and its quality field." 
+\image latex pEchoTop-HGHT-panel.png "Echo top product and its quality field." width=0.5\textwidth
+
+\~remark
+Echo top is an indirect measurement and its reliability varies strongly with the number and height of radar beams.
+It can be measured rather reliably where a beam intersects the threshold reflectance.
+In the image below, these locations are illustrated as circles.  
+\image html  echoTop-principle.png "Estimation of echo top by means of reflectivity gradients." 
+\image latex echoTop-principle.png "Estimation of echo top by means of reflectivity gradients." width=0.5\textwidth
+In other cases, the echo top altitudes have to be interpolated using reflectivity measured along the beams.
+In computation, \b Rack recognizes the following cases, illustrated in the above image:
+\~ 
+
+\subsection convection Convection
+
+Class probability for convective precipitation is obtained with \c --pConv command. 
+
+\~exec
+FILE=volume.h5 PROD=pConv,25,3,2,20 QUANTITY=PROB ./make-image-product.sh #exec
+\~
+\include pConv.exm
+
+
+\image html  pConv-PROB-panel.png "Convection product and its quality field." 
+\image latex pConv-PROB-panel.png "Convection product and its quality field." width=0.5\textwidth
+
+(Under constr.)
+
+
+
+
+\subsection rainRate  Rainfall rate (mm/h)  (under construction)
+
+Currently, \b rack provides two operators for estimating instantaneous rainfall rate: an operator using single and another using 
+double polarization. The rate is estimated aloft, ie. on an elevation scan (by default the lowest one). 
+That is, there is currently no actual surface rainfall rate estimation. The computation uses the following formulae: 
+ 
+- \f$R(z) = \frac{1}{a}z^\frac{1}{b}\f$
+- \f$R(z_{h},z_{dr})  = 0.0122z_{h}^{0.820}z_{dr}^{-2.28}\f$
+- \f$R(K_{dp}) = 21.0K_{dp}^{0.720}\f$
+- \f$R(K_{dp},z_{dr}) = 29.7K_{dp}^{0.890}z_{dr}^{-0.927}\f$
+
+\~exec
+  make precip{ZZDR,KDP,KDPZDR,Zsnow,Zrain}.hlp
+  # ack --help formulae | fgrep Precip -i -A 1  > precip.inc 
+\~
+The parameters of these formulae can be changed with the respective commands: 
+\include precipZrain.hlp
+\include precipZsnow.hlp
+\include precipZZDR.hlp
+\include precipKDP.hlp
+\include precipKDPZDR.hlp
+
+These commands can be seen collectively also with \c --help \c formulae .
+
+The simpler command \c  --pRainRate uses \c --precipZrain and \c --precipZsnow .
+It assumes that a global freezing level is available in data as ODIM variable \c how:freeze [km].
+To override that, the user may apply \c --freezingLevel to set the height and thickness of the freezing level.    
+
+\~exec
+  INPUT=volume-wide-conv.h5 PROD=pRainRate QUANTITY=RATE ./make-image-product.sh #exec
+\~
+
+\include pRainRate.exm
+
+
+\image html  pRainRate-RATE-panel.png "Rain rate [mm/h] product and its quality field." 
+\image latex pRainRate-RATE-panel.png "Rain rate [mm/h] product and its quality field." width=0.5\textwidth
+
+\subsection RainRateDP Dual polarimetric rainfall rate (mm/h)
+
+Calculates the rain rate using four different functions that utilize dbz, zdr and kdp data. The optimal
+rain rate function is chosen for each radar data pixel using the given data threshold values. These thresholds are
+adjustable and their values can be given from the command line, for example:
+
+\code
+ rack volume.h5 --pRainRateDP '0.85:50.0:20.0:0.2:0.1' -o <rainRateDP.h5>
+\endcode
+where the values are:
+
+- 0.85 - rhohv meteorological target filter
+- 50.0 - dbz hail/ice
+- 20.0 - dbz heavy rain
+- 0.2 - kdp heavy rain
+- 0.1 - zdr threshold 
+
+The functions are:\n
+(1) \f$R={\frac{z}{a}}^\frac{1}{b}\f$\n
+(2) \f$R=0.0122z_{h}^{0.820}z_{dr}^{-2.28}\f$\n
+(3) \f$R=21.0K_{dp}^{0.720}\f$\n
+(4) \f$R=29.7K_{dp}^{0.890}z_{dr}^{-0.927}\f$\n
+
+The graph describes the rain rate calculation algorithm that mixes all the four methods. Dual pol. equations shouldn't be applied
+if the measurement is done closer than 10 km from the radar. In addition, the equations should only be used for liquid water. These
+factors have been taken into consideration in the implementation and Eq.1 is used when ever the other equations can't be applied.  
+\dot
+  digraph rainRateDP {
+
+	size="9,5";
+ 	rankdir=UD;
+ 	
+	node [shape=record, fontsize=10];
+    edge [color=black, fontsize=10];
+	
+	metfilter [label="rhohv greater than 0.85"];
+	nonmet [label="R=0"];
+	
+	hailice [label="dbz greater than 50"];
+	hailicezdr [label="zdr greater than 0.1"];
+	hailice3 [label="Eq. 3"];
+	hailice4 [label="Eq. 4"];
+	heavyrain [label="dbz greater than 20\nkdp greater than 0.2"];
+	heavyrainzdr [label="zdr 0.1"];
+	heavyrain2 [label="Eq. 2"];
+	heavyrain1 [label="Eq. 1"];
+	
+	metfilter -> nonmet [label="no"];
+	metfilter -> hailice [label="yes"];
+	hailice -> heavyrain [label="no"];
+	hailice -> hailicezdr [label="yes"];
+	hailicezdr -> hailice3 [label="no"];
+	hailicezdr -> hailice4 [label="yes"];
+	heavyrain -> heavyrainzdr [label="no"];
+	heavyrain -> hailicezdr [label="yes"];
+	heavyrainzdr -> heavyrain1 [label="no"];
+	heavyrainzdr -> heavyrain2 [label="yes"];
+}
+\enddot
+
+
+
+\section otherproducts Other single-radar products
+
+\subsection verticalProfile  Vertical profile
+ 
+Vertical distribution of reflectivity can be computed with \c --verticalProfile . It takes several arguments:
+
+\~exec
+PROD=pVerticalProfile ./make-image-product.sh #exec
+\~
+\include verticalProfile-params.inc
+
+The default selector for this operator defines \c quantity=^DBZH$ but more quantities can included with \c --select .
+The resulting product consists of one-dimensional arrays for height (\c HGHT ) and each input quantity stored in data groups, \c /dataset1/data<N> .
+In addition to the native output format (HDF5), the resulting product can exported as an image (png) or text (mat format). The latter works only
+if \c azSlots=1 , for example: 
+\code
+rack volume-conv-VIM.h5 --pVerticalProfile 40:200,0:11000,100,0:360,1 -o profile.mat
+\endcode
+
+\~exec
+  ./make-profile.sh #exec 
+\~
+
+The text file consists of a header line and the quantities in column layout. Height (HGHT) will be always the first quantity:
+
+\include profile-cut.mat
+
+The text format suits well to further illustrations with appropriate software. The curve images below have been created with \b gnuplot . 
+
+\image html  vpr-screen.png "A graphical interface using Rack for VPR computation." 
+\image latex vpr-screen.png "A graphical interface using Rack for VPR computation." width=0.5\textwidth
+
+
+Both the applied input quantities and the output quantities can be set with \c --select command. 
+   
+\~exec
+  convert -frame 2 +append rhi-widespread-low.png rhi-conv.png -resize 75\% rhi-screen.png
+  echo "TODO Wed, 14 Aug 2013 12:00:00 GMT   FIVAN"
+\~
+
+
+\subsection pseudoRhi Pseudo RHI 
+
+While a true Range-height indicator (RHI) is obtained by tilting 
+the radar antenna vertically, one may construct \e Pseudo RHI's
+by computing an intersection in a standard measurement volume consisting of 
+azimuthal sweeps. 
+
+\include pPseudoRhi.hlp
+
+Such a product is obtained with
+\~cliconf
+My_comment="foo"
+\~
+\code{.sh}
+rack volume.h5 --pPseudoRhi 168,0:120,0:11000,800:400,0.25 -o pseudo-rhi.h5
+\endcode
+
+\b Experimental. Using Rack Python API, the respective product can be created with:
+\~pyconf
+{
+	"prog": "python3",
+	"head": [
+		"my head"
+		],
+	"tail": [
+		"ops.."
+	]
+}
+\~
+\code{.py}
+fmt = rack.prog.RackFormatter(params_format="'{params}'")
+rackProg = rack.prog.CommandSequence(programName='rack', quote="'")
+Rack = rack.core.Rack(rackProg)
+Rack.inputFile('volume.h5')
+Rack.pPseudoRhi(168, range=[-50000,250000], height=[0,15000])
+Rack.outputFile('pseudo-rhi.h5')
+cmds = rackProg.to_list(fmt)
+self.assertEqual(cmds, ['rack',
+  "'volume.h5'",
+  "--pPseudoRhi '168,-50000:250000,0:15000'",
+  "--outputFile 'pseudo-rhi.h5'"])
+\endcode
+
+
+\~pyconf
+prog: "python3",
+head= "my head",test
+"tail"= "ops.."
+\~
+\code{.py}
+fmt2 = rack.prog.RackFormatter(params_format="'{params}'")
+rackProg2 = rack.prog.CommandSequence(programName='rack', quote="'")
+\endcode
+
+
+The 2D data may be coloured with \c --palette command and saved as an image file. The gridded images below have been created from such images 
+with \b gnuplot . 
+
+\image html  rhi-screen.png "A graphical interface using Rack for Pseudo-RHI computation." 
+\image latex rhi-screen.png "A graphical interface using Rack for Pseudo-RHI computation." width=0.5\textwidth
+
+
+\section nonmetproducts Other useful products
+
+
+\subsection beamAlt  Beam altitude 
+
+For special applications, the height of the beam can be computed with \c --beamAltitude command. It takes the altitude reference point as argument (0=radar site, 
+1=sea level), Target properties can be set with \c --encoding command:
+image \c type (typically 'C' or 'd') as the first argument and \c gain (kilometres) as second. 
+The resulting polar product is simply a function of ground distance, hence an array of \c nbins x 1 elements,
+but can be projected to a Cartesian product like any other polar product.
+
+\~exec
+  PROD=pBeamAltitude QUANTITY=HGHT ./make-image-product.sh #exec 
+\~
+\include pBeamAltitude.exm
+
+\include beamAltitude-params.inc
+
+\~remark
+  xack volume.h5 --select elangle=1 --pBeamAltitude '0' -c --palette palette-HGHT.txt  --paletteRefine 32  -o pBeamAltitude2.png
+  xonvert +append pBeamAltitude-HGHT-panel.png pBeamAltitude2.png pBeamAltitude-HGHT-panel.png
+\~
+
+
+\image html  pBeamAltitude-HGHT-panel.png "Beam altitude product." 
+\image latex pBeamAltitude-HGHT-panel.png "Beam altitude product." width=0.5\textwidth
+
+
+*/

@@ -1,0 +1,101 @@
+/** \page miscbook Miscellaneous commands
+
+\section Introduction
+
+This section explains general commands and useful hints in using \b Rack.
+
+
+\section checkscope Does a radar overlap with a given geographical scope?
+
+Consider generating a composite on a geographical scope defined by a projection
+and a bounding box.
+If the area is small with respect to the surrounding radar network, 
+one should not read all the possible radar files at hand, even though \c Rack
+will automatically reject volume data which is out of scope. 
+This is especially critical if radar data are archived, 
+needing time-consuming retrieval, uncompressing and format conversion. 
+Hence, one needs a means of advance checking
+if a radar should be included or not in the composite.
+
+In \b Rack, commands of type \c --/xxx/xxx:yyy=zzz are interpreted as ODIM
+metadata to be set in the current HDF5 object.
+\c Rack always contains one object, initially empty, for 
+which the metadata can be set as well. As for with a true input volume,
+one can check the geographical scope of this "volume" using 
+\c --cBBoxTest command as follows, for example:
+
+\include make-scope-test.sh
+
+The result can be checked from the return code, which is zero if 
+the radar range overlaps with the composite domain, and non-zero otherwise.
+
+Another way is to call \c --formatOut for each input volume, using \c --format that contains \c ${BBOX} and other desired status variables.
+For example:
+\code
+ rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox 20,60,30,70 \
+   --format '${BBOX} ${CMT} ${what:source} ${inputFile} \n' \
+   --verbose 0  --script '--cBBoxTest 1 --formatOut -' \
+   data/pvol_*
+\endcode
+
+
+Instead of giving \c nbins and \c rscale , the range can be given using the non-standard \c --where:range
+directly (in metres, for example 250000).
+
+This command could be called by a script which iterates through sample files, and the results are catenated in a file
+like 
+\code
+# FMI radars
+fianj=27.1111,60.9036
+fiika=23.08,61.767
+fikor=21.6465,60.1284
+...
+\endcode
+
+A further application could be in an operational compositing process, 
+where another script iterates through these entries, testing locations
+with \c --cBBoxTest as shown above and including successful sites in the actual compositing script.
+A variable names, instead of output of \c ${what:source} above, 
+it is practical to use radar site codes in the form they appear in filenames. 
+
+
+
+\subsection validator Validating data structure
+
+ \b Rack supports validating both input data and products it generates. The process uses comma-separated 
+ definition files by OPERA, originally designed by Ladislav Meri (SMU).
+Input data is validated by issuing \c --validate command after reading the data: 
+ \code
+  rack volume.h5 --validate ODIM_H5_V2_2_PVOL.csv 
+\endcode
+Output data -- polar or Cartesian products -- can be validated similarly, after generating the products:
+ \code
+  rack volume.h5 --pCappi 500      --validate ODIM_H5_V2_3_PPROD.csv 
+  rack volume.h5 -Q DBZH --cCreate --validate ODIM_H5_V2_3_CART.csv 
+\endcode
+Normal warnings and notifications are displayed upon exceptions.
+More verbose output obtained with \c --verbose \c 7 , for example.
+In future versions, automatic validator filename selection may be supported (based on attribute \c what:version ). 
+Note: only some basic defition files have been designed by \c OPERA this far. Note2: \b Rack is mostly, but not
+fully, compliant to \c ODIM \c 2.2 and \c 2.3 .
+  
+ 
+
+
+\section testdata Creating test volumes
+
+The following script can be applied to create test volumes.
+
+\include make-test-data.sh
+
+\~exec
+  DATA=32,64,128,16 NRAYS=360 OUTFILE=test-sweep.h5 ./make-test-data.sh #exec
+  rack test-sweep.h5 -o test-sweep-polar.png --cSize 360,360 -c -o test-sweep-cartesian.png #exec
+  convert -frame 1 +append test-sweep-polar.png test-sweep-cartesian.png test-sweep-both.png #exec
+\~
+\image html  test-sweep-both.png "Test data in its original polar coordinates and Cartesian projection." 
+\image latex test-sweep-both.png "Test data in its original polar coordinates and Cartesian projection." width=0.5\textwidth
+
+
+
+*/ 

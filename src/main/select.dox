@@ -1,0 +1,11 @@
+/** \page selectpage Selecting data
+
+\tableofcontents
+
+\section CmdSelect Selecting data 
+
+
+\copydoc rack::CmdSelect
+ 
+
+*/

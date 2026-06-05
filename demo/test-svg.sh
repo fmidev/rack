@@ -33,7 +33,20 @@ NEWLINE="
 
 function WRITE_TITLE(){
     echo $NEWLINE >> $DOCFILE
+    #echo '<b>' $* '</b>' >> $DOCFILE
     echo '<b>' $* '</b>' >> $DOCFILE
+    echo $NEWLINE >> $DOCFILE
+}
+
+function WRITE_SECTION(){
+    echo $NEWLINE >> $DOCFILE
+    echo '\section' $* >> $DOCFILE
+    echo $NEWLINE >> $DOCFILE
+}
+
+function WRITE_SUBSECTION(){
+    echo $NEWLINE >> $DOCFILE
+    echo '\section' $* >> $DOCFILE
     echo $NEWLINE >> $DOCFILE
 }
 
@@ -133,14 +146,19 @@ EOF
 
 # NOtes:
 # Style should be nested with "'triple quotes'", because semicolon breaks the command 
-WRITE_DOC \tableofcontents
+# WRITE_DOC \tableofcontents
 
 COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
 
-WRITE_DOC "Add radar grid and back ground map"
-RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputPrefix '$PWD/out/' \\  --gGroupTitle '${NOD} – ${PLC}' \\ data-kiira/201708121600_radar.polar.fikor.h5 \\ --cProj 3067 --cSize 600 \\  -Q DBZH -c \\  --gLinkImage "'\${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL' \\  --imageTransp 0.0:0.1,0,1 --palette default \\  -o 'out-${what:date}T${what:time}-${NOD}.png' \\  --gRadarGrid 50000:1,15,MASK=true \\  --gStyle .GRID='stroke-width:1px' \\  -o grid_and_background_map 
+WRITE_SECTION svg_basic Basic example
 
+WRITE_SUBSECTION svg_basic_single Single-radar image – add grid and background map
+#WRITE_DOC "Add radar grid and background map"
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --gTitle "'\${what:date|%Y-%m-%d} \${what:time|%H:%M UTC}  \${NOD} - \${PLC}'" \\ data-kiira/201708121600_radar.polar.fikor.h5 \\ --cProj 3067 --cSize 600 \\  -Q DBZH -c \\  --gLinkImage "'\${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL' \\  --imageTransp 0.0:0.1,0,1 --palette default \\  -o "'out-\${what:date}T\${what:time}-\${NOD}.png'" \\  --gRadarGrid 50000:1,15,MASK=true \\  --gStyle .GRID='stroke-width:1px' \\  -o grid_and_background_map 
 
+# exit
+
+WRITE_SECTION svg_basic Basic example
 
 WRITE_DOC "Align text to each radar" 
 RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cAdd  --gRadarLabel \"\${what:date|%A, %d %B %Y}£\${NOD}|\${PLC}£\${what:time}\" '" \\ 'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5' \\   --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\  --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" \\  -o composite3.png \\ -o "composite-Labels"
@@ -165,22 +183,22 @@ RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cAdd  -
 # A set of tests...
 COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
 
-WRITE_DOC '\b'" Illustrations applying graphic commands for each input – inside a script."
+WRITE_DOC "Illustrations applying graphic commands for each input. This is done using a \\b script. "
 
 for i in RadarDot_30000 RadarDot_20000:30000 RadarSector_25000:125000 RadarSector_1.0; do
     CMD=${i%_*}
     PARAMS=${i##*_}
-    WRITE_DOC '\c'" --g$CMD $PARAMS,MASK=true"
+    WRITE_DOC "Example of using: "'\c'" --g$CMD '\c' $PARAMS,MASK=true"
     RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd  --g$CMD $PARAMS,MASK=true'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "cart-$CMD.png" \\ --gStyle "'.COVER=fill:blue;opacity:0.5'" \\ -o "composite-$CMD-$PARAMS"  
     
 done
 
-WRITE_DOC '\b'" Illustrations applying graphic commands for the last (outside a script)."
+WRITE_DOC "Illustrations applying graphic commands for the \\b last input file - defined \\b outside the script."
 
 for i in RadarGrid_50000:1,15:180:240 RadarSector_radius=0:150000,azimuth=170:240 RadarSector_radius=0:250000,azimuth=135:140  RadarSector_radius=100000:175000,azimuth=300:370; do
     CMD=${i%_*}
     PARAMS=${i##*_}
-    WRITE_DOC '\c'" --g$CMD $PARAMS,MASK=true"
+    WRITE_DOC "Example of using: \\c --g$CMD \\c $PARAMS,MASK=true"
     RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\ --script "'-Q DBZH --cAdd'" \\ 'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' \\  --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\ --gAlign "'HORZ_FILL:VERT_FILL'"  \\ -P --imageTransp "''" -o "foo-$CMD.png" \\ --g$CMD $PARAMS,MASK=true --gStyle "'.COVER=fill:black;opacity:0.75'" \\ -o "composite-$CMD-$PARAMS"  
     
 done
@@ -259,7 +277,8 @@ WRITE_DOC 'Metadata panel. (Experimental, variants under development.)'
 RUN_TEST \\  --gTitleHeights "'30,25,15'"  --gTitle "''" --gGroupTitle "''" \\  volume.h5 \\ --cProj 3067 --cSize 500 -Q DBZH -c \\ --palette "'default'" --outputPalette legend.svg -o rbg.png \\  --gPanel TECH --gStyle text.IMAGE='opacity:0' \\  -o "Metadata_panel"
 
 
-WRITE_DOC '\b Background maps. External images can be linked with \c --gLinkImage. For example, maps can be included, aligning the following radar image on top of it with \c --gAlign \c HORZ_FILL,VERT_FILL . Note that --gLinkImage discards --inputPrefix , but that value can be accessed and added explicitly with ${inputPrefix}'  
+WRITE_SECTION svg_background_maps Background maps.
+WRITE_DOC 'Background maps. External images can be linked with \c --gLinkImage. For example, maps can be included, aligning the following radar image on top of it with \c --gAlign \c HORZ_FILL,VERT_FILL . Note that --gLinkImage discards --inputPrefix , but that value can be accessed and added explicitly with \b ${inputPrefix}'  
 
 #WRITE_DOC '\subsection svg-include Including and excluding images in SVG panels'
 #make -B gInclude.hlp

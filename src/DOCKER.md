@@ -7,10 +7,13 @@ This section explains automated build of an image on a server
 
 Required settings:
 
-| Dockerfile Location | Context Location | Branches/Tags  | Pull Robot |
-| ------------------- | ---------------- | -------------  | ---------- |
-| /src/Dockerfile     | `/src`           | `heads/main`   | (None)     |
+| Dockerfile Location | Context Location | Branches/Tags                  | Pull Robot |
+| ------------------- | ---------------- | ------------------------------  | ---------- |
+| /src/Dockerfile     | `/src`           | `tags/v?[0-9]+(\.[0-9]+)*$` | (None)     |
 
+The above Braches/Tags setting supports numerical version labels.
+It excludes versions containing `beta` or other alphabetic strings.  
+(The former setting was: `heads/main`.)
 
 Tagging options:
 - Branch/tag name
@@ -29,6 +32,12 @@ An image is constructed by entering `rack/src` directory and issuing:
 
 ```
 make docker-image
+```
+
+Or, specifying Ubuntu version explicitly:
+ 
+```
+make docker-image BASE_IMAGE=ubuntu20
 ```
 
 Essentially, a command like this one will be run:

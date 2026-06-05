@@ -1,0 +1,463 @@
+/// <em></em>
+/** 
+\page andrepage Anomaly Detection and Removal (AnDRe)
+\brief .
+
+
+\tableofcontents
+
+\section andreintro Introduction
+
+This section explains \b AnDRe, the set of anomaly detection and
+removal functions of \b Rack. A quick reference of all the commands is found in \ref commands_andre.
+
+\subsection anomalies Background
+
+Practically, echoes received by a weather radar originate not only
+from precipitating clouds but also from insects, birds, aircraft,
+ships, ground, sea clutter and electromagnetic emitters illustrated in the figure below.
+
+\image html  radar-anomalies-compact2.png "Sources of anomalies." 
+\image latex radar-anomalies-compact2.png "Sources of anomalies." width=0.5\textwidth
+
+These external factors -- or anomalies from the meteorological point of view -- affect radar data in various ways. 
+Some of the anomalies appear as distinct, localized peaks, some form geometrical patterns and some affect the overall data.
+Examples of effects are shown in the image set below. 
+
+\~exec
+  make volumes-anom-panel.png 
+\~
+
+\image html  volumes-anom-panel.png "Samples containing several types of anomaly." width=90% 
+\image latex volumes-anom-panel.png "Samples containing several types of anomaly." width=0.5\textwidth
+
+\subsection andrecommands AnDRe commands
+
+In AnDRe, the processing is divided into two stages: \b detecting anomalies and 
+\b removing the anomalies from input data. 
+In principle, these stages modify ODIM data independently so
+a user may combine \b Rack with other software performing anomaly detection (see \ref file_quality).
+The independence also means that anomalies can be detected using parallel computation in future versions
+of \b Rack (see \ref  parallel_anom).
+
+The following code is an example of applying both detection and removal in \b Rack :
+
+\~exec
+   ./make-andre.sh #exec
+\~
+\include andre-default-filled.and
+
+By default, AnDRe commands apply to the full volume input. Each operator will look for quantities (typically DBZH) it needs
+as input. To decrease computation time, the processing can be limited using \c --select command, for example:
+\code
+rack volume-anomalous.h5 --select 'dataset1:5/data1:3' <andre-cmds> ...
+\endcode 
+For details, see \ref selecting . 
+
+
+The design of \b AnDRe detectors is based on \b Ropo , the operational anomaly detection C program applied in FMI since 2001.   
+Each detector has been fully rewritten as a respective C++ class (rack::BiometOp, rack::EmitterOp, rack::ShipOp, rack::SpeckleOp)
+which internally applies functions of the \b Drain library, for example segment size analysis, 
+moving window filters and statistics. In development, emphasis has been on code re-usability, speed and stability; see
+\ref andredetails "implementation details" 
+further below.
+
+
+\b Rack provides several detectors that compute detection fields ie. probablity images, explained next. 
+The removal procedures are explained after that.
+
+\section detectors Detection
+
+Currently, \b AnDRe supports detection the following anomalies: 
+
+-# birds and insects ("biometeors")
+-# emitter lines
+-# widespread electromagnetic interference (jamming)
+-# ships
+-# speckle noise 
+
+\ref commands_andre start with \c '--a', and can be listed with 
+\code
+rack --help andre 
+\endcode 
+
+
+
+\subsection aBiomet  Detecting birds and insects (single-pol)
+
+
+\copydoc rack::BiometOp
+
+\~exec
+# remark copydoc rack::BiometOp::BiometOp()
+# SITE=fikor ./make-andre-example.sh anom-sea biomet # old
+./make-andre-example.sh bird-precip biomet #exec
+\~
+\include aBiomet.exm
+ 
+\image html  result-bird-precip-biomet.png "Detection results of \c --aBiomet ."
+\image latex result-bird-precip-biomet.png "Detection results of \c --aBiomet ." width=0.5\textwidth
+
+\subsection aBiomet2  Detecting birds and insects (dual-pol)
+
+There is also detectors for birds and insects using dual-pol data.
+
+
+\~exec
+./make-andre-example.sh bird-precip bird #exec 
+# SITE=fivan 
+\~
+\include aBird.exm
+ 
+\image html  result-bird-precip-bird.png "Detection results of \c --aBird ."
+\image latex result-bird-precip-bird.png "Detection results of \c --aBird ." width=0.5\textwidth
+
+
+\~exec
+./make-andre-example.sh bird-precip insect #exec
+# SITE=fivan 
+\~
+\include aInsect.exm
+
+\image html  result-insect.png "Detection results of \c --aInsect ."
+\image latex result-insect.png "Detection results of \c --aInsect ." width=0.5\textwidth
+
+\subsection aClutter Detecting ground clutter 
+
+\copydoc rack::ClutterOp
+
+
+\~exec
+# copydoc rack::ClutterOp::ClutterOp()
+./make-andre-example.sh anom-clutter clutter #exec SITE=fivim 
+\~
+\include aClutter.exm
+ 
+\image html  result-anom-clutter-clutter.png "Detection results of \c --aClutterMap ."
+\image latex result-anom-clutter-clutter.png "Detection results of \c --aClutterMap ." width=0.5\textwidth
+
+
+\subsection aDopplerNoise Detecting variations in Doppler wind
+
+Faster yet less accurate bird detection is available as \c aDopplerNoise which computes 
+standard deviation much in the same way the corresponding meteorological motion product \ref dopplerDev .
+It takes three parameters: speed \c threshold (m/s) as well as  window width and height. 
+The obtained deviation is converted to a detection probability by means of a fuzzy bell function.
+
+\~exec
+./make-andre-example.sh anom-sea dopplerNoise #exec SITE=fikor 
+\~
+\include aDopplerNoise.exm
+  
+\image html  result-anom-sea-dopplerNoise.png "Detection results of \c --aDopplerNoise ."
+\image latex result-anom-sea-dopplerNoise.png "Detection results of \c --aDopplerNoise ." width=0.5\textwidth
+
+
+\subsection aEmitter Detecting emitters (electromagnetic interference)
+
+AnDRe emitter detector takes four parameters: 
+\c lengthMin (along the beam, kilometres), \c widthMax (azimuthal degrees) and \c sensitivity (between 0.0 and 1.0).
+The current implementation applies median filtering twice on the data: horizontally and vertically. Then, the vertical result is
+subtracted from the horizontal, revealing the horizontally elongated line segments. The computed medians are biased; instead of the
+conventional median position (at 0.5 of the cumulative distribution) one may lighten or darken the results with the sensitivity value. A high value
+darkens the vertical result and lightens the horizontal result, causing more line segments in the resulting detection field. 
+
+
+\~exec
+#
+SITE=plrze ./make-andre-example.sh anom-emitter emitter=5,5,0.75 #exec
+\~
+\include aEmitter.exm
+
+\image html  result-anom-emitter-emitter.png "Detection results of \c --aEmitter ." 
+\image latex result-anom-emitter-emitter.png "Detection results of \c --aEmitter ." width=0.5\textwidth
+
+
+\subsection aJamming Detecting jamming
+
+In presense of intensive nearby transmitters or receiver malfunction radar data can be contaminated by intensive overall 
+noise. \b Rack models the shape of such intensity as a function of distance and applies curve fitting to distinguish
+between smoothly matching noise areas and pronounced meteorological targets.
+
+\~exec
+./make-andre-example.sh anom-calib    jamming1    #exec SITE=lvrix 
+./make-andre-example.sh anom-jamming  jamming2    #exec SITE=fikor 
+\~
+\include aJamming.exm
+
+\image html  result-anom-calib-jamming1.png "Detection results of \c --aJamming ." 
+\image latex result-anom-calib-jamming1.png "Detection results of \c --aJamming ." width=0.5\textwidth
+
+\image html  result-anom-jamming-jamming2.png "Detection results of \c --aJamming ." 
+\image latex result-anom-jamming-jamming2.png "Detection results of \c --aJamming ." width=0.5\textwidth
+
+
+
+
+\subsection aNonMet Detecting sea clutter and other non-meteorogical targets
+
+With the polarimetric quantity \em RhoHV one can easily detect some non-meteorological echoes such as sea clutter.
+For meteorological targets, \em RhoHV is close to 1.0 and below otherwise. For example, sea clutter can be detected with 
+the following command:
+
+\~exec
+./make-andre-example.sh anom-sea nonMet        #exec SITE=fikor 
+\~
+\include aNonMet.exm
+
+\image html  result-anom-sea-nonMet.png "Detection results of \c --aNonMet ." 
+\image latex result-anom-sea-nonMet.png "Detection results of \c --aNonMet ." width=0.5\textwidth
+
+
+ 
+\subsection aShip  Detecting ships
+
+The ship detector takes four parameters: 
+\c minDBZ (minimum reflectance), 
+\c devDBZ (minimum reflectance difference in a neighborhood),
+\c windowWidth (neighbourhood's beam-directional width, metres), 
+\c windowHeight (neighbourhood's azimuthal width, degrees).
+First, the detector function computes two separate fields: a fuzzy remapping of  \c minDBZ and 
+field resulting from high-pass filtering with given neighbourhood. Basically, the result is a fuzzy multiplication of those.  
+In addition, artificial vertical "ship sidelobes" are computed for the latter field, modelling 
+the radar echoes of highly reflective point targets. If the sidelobes also appear in 
+the fuzzy intensity field, they become included in the final result.
+
+\~exec
+./make-andre-example.sh anom-sea ship #exec 
+\~
+\include aShip.exm
+  
+\image html  result-anom-sea-ship.png "Detection results of \c --aShip ."
+\image latex result-anom-sea-ship.png "Detection results of \c --aShip ." width=0.5\textwidth
+
+
+\subsection aSpeckle Detecting speckle noise
+
+Speckle detection needs two parameters: \c threshold (in dBZ) and \c area (fuzzy maximal speck size). 
+This detector focuses on distinct, small specks, giving maximum value to single-pixel segments, and progressively smaller values
+for larger segments. The speckle detector applies a semi-recursive flood-fill type
+function in computing segment sizes: the image is traversed and each segment having intensity 
+of at least \c threshold becomes analyzed. The size of each segment fuzzily converted to an intensity of equally shaped segment
+in the result image. 
+
+\~exec
+./make-andre-example.sh anom-sea   speckle1=-10,invertPolar=false #exec  
+./make-andre-example.sh anom-sea   speckle2=-10,invertPolar=true #exec
+convert +append anom-sea-panel.png andre-anom-sea-speckle{1,2}-panel.png -filter point -filter point -resize '347x600!' result-anom-sea-speckle.png
+./make-andre-example.sh anom-noise speckle3=-10 #exec  
+\~
+\include aSpeckle.exm
+
+\image html  result-anom-noise-speckle3.png "Detection results of \c --aSpeckle ."
+\image latex result-anom-noise-speckle3.png "Detection results of \c --aSpeckle ." width=0.5\textwidth
+ 
+The speck areas are optionally scaled to Cartesian coordinate system. Unscaled areas are better for detecting for non-physical, range independent anomalies
+like noise whereas scaled mode should be used if physical targets are focused.  
+ 
+ 
+\image html  result-anom-sea-speckle.png "Detection results of \c --aSpeckle without and with polar coordinate inversion."
+\image latex result-anom-sea-speckle.png "Detection results of \c --aSpeckle without and with polar coordinate inversion." width=0.5\textwidth
+
+
+
+
+
+\subsection aSun "Detecting" the Sun
+
+This detector calculates the position of the Sun and marks its with sector of 
+given width and intensity. The detector does not analyse the data itself; 
+sectors will be marked also inside precipitation. 
+
+
+\~exec
+./make-andre-example.sh anom-sea sun #exec SITE=fikor 
+\~
+\include aSun.exm
+  
+\image html  result-anom-sea-sun.png "Detection results of \c --aSun ."
+\image latex result-anom-sea-sun.png "Detection results of \c --aSun ." width=0.5\textwidth
+
+
+
+
+
+ 
+\section andreCumulation  Cumulating quality fields
+
+ Typically, user wants to detect several different types of anomalies.
+In the ODIM structure, \b Rack creates new data arrays for storing detection results:
+-# An overall result (maximum) of all the detection operators executed, stored in 
+   \c /dataset??/data??/quality1,  with \c what:quantity=QIND
+-# If \c --store INTERMEDIATE has been called, all the intermediate detection results    
+   in \c /dataset??/data??/quality{N} where \c {N} is an index starting from 2, with \c what:quantity=PROB-xxx (non-standard)
+
+\b Universality. Some detectors like \c --aSpeckle are \em universal , they apply not only for the quantity they have been computed on (like \c DBZH)
+but also other quantities (like \c VRAD). The resulting quality information is stored respectively to dataset level or data level.
+This policy can be toggled with \c --aUniversal .
+    
+The resulting cumulative field with \c what:quantity=QIND is inverted, reflecting the probability of \em meteorological echoes, ie. quality of the data.
+In parallel, the classification field with  \c what:quantity=CLASS is updated. 
+The fields are updated automatically after every detection command. They reside on the dataset level or data level, depending on detector universality
+described above. 
+
+In the removal stage, \b AnDRe combines the \c QIND and \c CLASS fields automatically. One may also combine the fields with \c --aCombine .
+
+
+\image html  andre-detected-hdfview.png "Cumulative field (top window) and distinct detection results (underlying windows)." 
+\image latex andre-detected-hdfview.png "Cumulative field (top window) and distinct detection results (underlying windows)." width=0.9\textwidth
+
+\section andreremoval  Anomaly removal
+
+After applying preferred detectors, original data in the volume 
+can be enhanced with the help of the overall quality field,
+\c /dataset1/quality/data .
+
+There are three techniques available for the removal:
+-# erasing: replacing values with \c nodata 
+-# damping: turning values down
+-# gap filling: replacing values with surrounding values having better quality
+
+\~exec
+# ack volume-anomalous.h5  --aStore --aSpeckle '' --aEmitter '' --aShip '' --aBiomet '' -o andre-detected.h5
+# ack volume-anom-sea.h5   --aStore --aBiomet '' --aEmitter '' --aJamming '' --aShip '' --aSpeckle ''  -o andre-detected.h5 
+\~
+
+The \c --aRemover command simply replaces data values with \c nodata in locations where the quality (anomaly probability) is lower than a threshold:
+\code
+rack volume-anomalous.h5  <...detection commands...> --aRemover 0.5  -o andre-removed.h5
+\endcode
+By default, \c aRemover applies to practically all quantities (DBZH,TH,VRAD,RHOHV,...). This behaviour can be changed with \c --select command.  
+
+\~exec
+./make-andre-remover-example.sh anom-sea remover=0.25  remover=0.75 #exec SITE=fikor
+\~
+\image html  volume-anom-sea-remover-panel.png  "A sweep corrected by \c --aRemover with threshold 0.25 (left) and 0.75 (right)."
+\image latex volume-anom-sea-remover-panel.png  "A sweep corrected by \c --aRemover with threshold 0.25 (left) and 0.75 (right)." width=0.5\textwidth 
+
+
+
+A smooth erasure function is implemented as \c --aDamper which decreases intensity proportionally to the quality index. It applies to reflectivity
+data (DBZH) only. The lower the quality index, the more intensity will be decreased. 
+An example of the erasing approach:
+\code
+rack volume-anomalous.h5  <...detection commands...> --aDamper 0.5 -o andre-damped.h5
+\endcode
+
+The parameter defines the threshold quality. The bin values below the quality threshold will be smoothly erased.
+
+\~exec
+./make-andre-remover-example.sh anom-sea damper=0.25  damper=0.75 #exec SITE=fikor 
+\~
+\image html  volume-anom-sea-damper-panel.png  "A sweep corrected by \c --aDamper with threshold 0.25 (left) and 0.5 (right)."
+\image latex volume-anom-sea-damper-panel.png  "A sweep corrected by \c --aDamper with threshold 0.25 (left) and 0.5 (right)." width=0.5\textwidth 
+
+
+Gap filling means replacing single values with neighboring, more reliable values. 
+An example of the gap filling approach:
+\code
+rack volume-anomalous.h5  <...detection commands...>  --aGapFill 2000m,5deg  -o andre-gapfilled.h5
+\endcode
+
+The parameters of \c aGapFill are window width and height as metres and azimuthal degrees, respectively. 
+Internally, this operator is implemented using 8-directional \em distance \em transform. 
+
+\~exec
+# SITE=fikor 
+./make-andre-remover-example.sh anom-sea gapFill=1500,3 gapFill=2500,7 #exec
+\~
+\image html  volume-anom-sea-gapFill-panel.png  "A sweep corrected with gap fill parameters 1500m,3deg (left) and 2500m,7deg (right)."
+\image latex volume-anom-sea-gapFill-panel.png  "A sweep corrected with gap fill parameters 1500m,3deg (left) and 2500m,7deg (right)."  width=0.5\textwidth 
+
+Another, experimental gap filling operator \c --aGapFillRec is recursive and produces spline-like correction fields. The result is smoother but 
+slower to compute. Internally, this operator is implemented by repeating a weighted averaging window.   
+
+The removal command can be applied together, for example:
+\code
+rack volume-anomalous.h5  <...detection commands...>  --aDamper 0.5,0.1  --aGapFill 1500m,7deg  -o andre-corrected.h5
+\endcode
+
+
+\~rema
+ #ack andre-detected.h5 --aDamper 0.5,0.1  --aGapFill 2000m,5deg  -o andre-cleaned.png 
+ #onvert +append -frame 1  volume-anomalous.png andre-cleaned.png -resize 75%  andre-all.png 
+ #image latex  andre-all.png "A sweep (left) and its corrected version using remover and gap filling (right)." 
+ #image html  andre-all.png "A sweep (left) and its corrected version using remover and gap filling (right)." width=0.5\textwidth
+\~
+
+
+
+\section otherQuality  Other quality fields
+
+Detection based quality fields like the ones explained above describe the probability of signals originating from
+other than desired targets (other than precipitation, typically). In addition to those, \b Rack provides
+two operators that describe the quality. 
+
+
+\subsection aAttenuation  Attenuation in rain
+
+Radar signal attenuates in heavy rain. The amount of attenuation in liquid rain can be approximated from dBZ data using
+formula proposed by Ulrich Blahak:
+\f[
+     k(Z) = 1.12\cdot10^{-4} Z_e^{0.62}
+\f]
+ 
+\~exec
+./make-andre-example.sh anom-attn    attenuation1 #exec  SITE=fivan 
+./make-andre-example.sh anom-clutter attenuation2 #exec SITE=fivim 
+\~
+\include aAttenuation.exm
+
+\image html  result-attenuation1.png "Detection results of \c --aAttenuation ." 
+\image latex result-attenuation1.png "Detection results of \c --aAttenuation ." width=0.5\textwidth
+
+\image html  result-attenuation2.png "Detection results of \c --aAttenuation ." 
+\image latex result-attenuation2.png "Detection results of \c --aAttenuation ." width=0.5\textwidth
+
+
+Note that this field should NOT be used for removing echoes; the radar has already cleaned data in signal processor.
+However, this operator should be computed after removal operators (if applied). The resulting (total) quality field 
+can be used in further production, 
+like quality based compositing in which input bins of lower quality will be overridden by other, overlapping bins of higher quality. 
+
+
+
+\subsection aCCor  Using Doppler filtering result
+
+If both the total reflectivity (\c TH ) and Doppler filtered reflectivity are available, their difference provides
+information where the radar has detected static i.e. suspicious targets.  The \c CCor operator computes
+the diffence between these and fuzzifies the result such that at the given threshold reflecitivy difference the
+probability of anomaly is 0.5. 
+
+\~exec
+./make-andre-example.sh anom-sea cCor #exec SITE=fikor 
+\~
+\include aCCor.exm
+
+\image html  result-cCor.png "Detection results of \c --aCCor ." 
+\image latex result-cCor.png "Detection results of \c --aCCor ." width=0.5\textwidth
+
+Note that this field should NOT be used for removing echoes; the radar has already cleaned data in signal processor.
+However, this operator should be computed after removal operators (if applied). The resulting (total) quality field 
+can be used in further production, 
+like quality based compositing in which input bins of lower quality will be overridden by other, overlapping bins of higher quality. 
+
+\subsection aTime  Timing based quality
+
+Likewise, we can associate timing based quality field that describes the extent in which each measurement bin is representative of
+the nomimal time of the volume or some other desired time, like the nominal time of a composite. 
+ 
+\~exec
+SITE=fikor ./make-andre-example.sh anom-sea time=20130504023010,1,5 #exec
+\~
+
+\include aTime.exm
+  
+\image html  result-time.png "'Detection' results of \c --aTime ."
+\image latex result-time.png "'Detection' results of \c --aTime ." width=0.5\textwidth
+
+
+
+
+
+*/

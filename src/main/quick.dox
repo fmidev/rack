@@ -1,0 +1,39 @@
+/// <em></em>
+/** \page quickpage Quick reference
+
+
+\tableofcontents
+
+\section quick_intro Introduction
+
+This page lists all the commands of \b Rack. The lists have been generated automatically
+using command-line help of the current version.
+
+
+\subsection commands_general General commands
+
+\include general.hlp 
+
+\subsection commands_andre Anomaly detection and removal
+
+\include andre.hlp
+
+\subsection commands_product Meteorological products
+
+\include products.hlp
+
+\subsection commands_cart Compositing and Cartesian products
+
+\include cart.hlp
+
+\subsection commands_images Basic image commands 
+
+\include images.hlp
+
+\subsection commands_imageOps Image operators
+
+\include imageOps.hlp
+
+
+
+*/

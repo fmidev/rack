@@ -1,0 +1,147 @@
+/** \page text-output-page Text output
+
+\tableofcontents
+
+\section text-output Extracting metadata
+
+
+
+\subsection dumps Simple dump of metadata
+
+The basic way to view context in textual format is to write a file with \c '.txt' extension:
+
+Using \c --outputFile , the \em structure of the current data can be written as plain text in a file (*.txt) or to standard input (-): 
+\code
+rack volume.h5 -o volume.txt
+\endcode
+
+\~exec
+  make volume.txt.cut
+\~
+
+File \c volume.txt will consist of lines of ODIM entries as follows:
+\include volume.txt.cut
+
+\subsection templates Formatting metadata output using templates
+
+There is often need to produce metadata text for:
+- Text files completing data formats not supporting metadata
+- Log entries
+- HTML files applied in monitoring product generation
+- Graphical layouts (eg. SVG)
+- Geographic definition files (eg. KML) for adding radar products to GIS applications
+
+One can easily export metadata of current HDF5 structure (latest volume read or product generated).
+The output is a text file in which variables \c ${variable} have been expanded to their current values. 
+
+The text template can be defined briefly on command line by \c --format or by reading a file with
+\c --formatFile .
+
+For example, from a Cartesian product one may extract the projection and a bounding box with the following command:
+\code 
+rack volume.h5 -c  --format 'BBOX=${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}\n' -o formatOut.txt 
+\endcode
+
+The result:
+\include formatOut.txt
+
+The applicable variables are those the ODIM variables (what:product, where:lat, ...). In addition,
+\c what:source fields (\c NOD, \c WMO , \c RAD , \c PLC , \c CMT ) are searched for and expanded to convenience
+variables (\c ${NOD}, etc...). The list of current variables can be examined with \c --status command.
+
+
+
+For example, assume template file \c radar-conf.tpl with the following contents:
+   
+\include radar-conf.tpl
+
+Then, 
+\code
+  rack volume.h5 -c --formatFile radar-conf.tpl --formatOut out.cnf  
+\endcode
+produces code which can be used by applications supporting \b Proj4 projection syntax. The result:
+
+\include out.cnf
+
+Further, using \c --script one can quickly create similar conf files with a single command:
+\code
+  rack --formatFile radar-conf.tpl --script '--cReset -c --formatOut site-${NOD}.cnf' <volumes.h5>
+\endcode
+
+
+\b New. Latest versions of \b Rack support variable formatting with following options
+
+-# \c bash style substring extraction: \c :startpos or \c :startpos:length (as with \c bash shell variables)
+-# C \c printf() styled value formatting, like \c %4.2f or \c %8d   (see https://cplusplus.com/reference/cstdio/printf/ )
+-# \c date style date and time formatting, like \c %Y/%m/%d  or \c %H:%M – for variables with names ending with "date" or "time".
+
+This options are illustrated with examples:
+\code 
+# 
+rack volume.h5  --format 'time: ${what:startdate|%Y-%m-%d} ${what:starttime|%H:%M} elangle: ${where:elangle|%04.1f} \n'  --select dataset:/ -o elangles.out
+\endcode
+\include elangles.out
+
+
+
+
+\section sampling Sampling data
+
+The input volume as well as the generated polar or Cartesian products can be sampled, producing a text file.
+The sampling is performed automatically if output file has the extension '.dat'.
+For example:
+\code
+  rack volume.h5 -o samples.dat
+\endcode
+\~exec
+	make samples.dat.cut
+\~
+The result:
+\include samples.dat.cut
+
+The default sampling step is 10 in both horizontal and vertical direction, and all the quantities are sampled. 
+One may apply \c --select command to get desired subset of quantities. 
+Further, \c --format modifies output layout;
+variables inserted like \c ${NAME} are converted to actual values in output. (See \c format in the file header above).
+- \em i and \em j : image coordinates, from top-left corner (bin and azimuth index in polar sampling); 
+- \em j2: inverted vertical image coordinate ie. from bottom-left corner (in Cartesian sampling only)
+- \em LON and \em LAT : geographical coordinates, in degreees
+- \em X and \em Y : map coordinates, in metres
+- \em AZM and \em RANGE: polar coordinates (in polar sampling only)
+- the quantities, eg. \c DBZH , \c VRAD , and so on, including quality quantities like \c QIND. 
+The default format consists of all the applicable coordinates and quantities separated by space.
+Values can be negated by putting a minus sign inside the curly braces of a format string.   
+   
+Sampling steps, start, and end can be changed with \c --sample command. One may also skip lines containing \c undetect or \c nodata samples. 
+If a comment char is defined some metadata, including applied format, appears as comments in the start of the output. 
+\~exec
+	make sample.hlp
+\~
+\include sample.hlp
+
+Example of a formatted sampling:
+\code
+  rack volume.h5 --select quantity=DBZH --sample 10,30,i=50:200,j=0:50 --format '${i},${j} (${LON},${LAT}) ${DBZH}' -o samples-formatted.dat
+\endcode
+\~exec
+	make samples-formatted.dat.cut
+\~
+The result:
+\include samples-formatted.dat.cut
+
+Likewise, one can sample Cartesian data. Example:
+\code
+  rack volume.h5 --select quantity=DBZH --cSize 500,500 -c --sample 50,50  -o samples-cart.dat
+\endcode
+\~exec
+	make samples-cart.dat.cut
+\~
+The result:
+\include samples-cart.dat.cut
+
+Note that \c --cCreate maps a single quantity to Cartesian coordinates; the quantity can be changed with \c --select .
+
+
+\ref checkscope
+
+*/ 

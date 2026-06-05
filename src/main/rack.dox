@@ -1,0 +1,293 @@
+// Notice! Contains examples automatically collected and tested in demo/demo.sh
+
+
+
+/// <em> </em>
+/** 
+\brief <em> </em>
+
+
+
+\mainpage Rack - a weather radar data processing program
+
+
+\image html  rack-logo-384x192.png  "" 
+\image latex rack-logo.png          ""  width=0.25\textwidth
+
+\~exec
+rack --format 'Version ${version}\n' -o rack-version.inc
+# --formatOut
+\~
+\include rack-version.inc
+
+
+\tableofcontents
+
+\section intro Introduction
+ 
+\b Rack is a command-line program for processing weather radar data.
+It uses raw measurement data as input and generates \ref productspage  as well as \ref compositespage . 
+\b Rack also provides methods for \ref andrepage . 
+Quality information is supported throughout the processing chain. 
+ \b Rack also supports \ref imagespage , like applying colors and transparency. 
+
+\b Rack is based on code developed at the Finnish Meteorological
+Institute since 2001. Part of the development work has been supported by the
+BALTRAD project (2009-2014), see http://www.baltrad.eu .
+The program can be downloaded from https://github.com/fmidev/rack .
+
+As input, \b Rack accepts azimuthal scans - volumes or separate sweeps - 
+in HDF5 files using OPERA Information Model (ODIM, http://www.eumetnet.eu/opera).
+\~comment
+The polar coordinate system is applied: the radar at left, 
+rows presenting beams clockwise, the topmost row towards North.
+\~
+After loading a volume file, a typical operation is to compute a 
+single-radar product. The computation is carried out in polar coordinates. 
+The result can be mapped to a Cartesian products. 
+The projections are calculated using the Proj4
+ library (http://trac.osgeo.org/proj/).
+Output files can be written in HDF5 files, PNG image files or geo-referenced GeoTIFF files.
+In addition, metadata, resampled grid data and vertical profiles can be output as plain text files. 
+  
+ The overall data flow is illustrated below.  
+  
+ \dot
+  digraph example {
+  
+      size ="12,8";
+ 	  rankdir=LR;
+      node [shape=ellipse, fontsize=10];
+      edge [color=black, fontsize=8];
+	
+	
+
+	file [ label="Input file\nHDF5 (or PNG+TXT)", shape=record, URL="\ref fileiopage" color="blue"];
+
+ 	subgraph cluster2  {
+	  
+	  label = "Rack";
+	  color = "gray";
+
+	  volume [ label="Input volume", shape=record, URL="\ref fileiopage"];
+	  
+	  andre  [ label = "Anomaly detection\n and removal", URL="\ref andrepage", color="blue" ];
+	  
+	  polar [ label="Product generation\n(in polar coordinates)", URL="\ref productspage" color="blue"];
+
+	  polarfile [ label="Meteorological product", URL="\ref productspage", shape=record];
+
+	  cartesian [ label="Cartesian products\n and compositing", URL="\ref compositespage", color="blue" ];
+
+      cartfile [ label="Cartesian product", URL="\ref compositespage", shape=record];
+
+  	  cumulator [ label="Composite\n(Internal accumulation array)", URL="\ref compositespage", shape=record, style="dotted"];
+
+	}
+
+	file -> volume;
+	volume -> andre -> volume;
+	volume -> polar -> polarfile -> cartesian;
+	volume -> cartesian [label = ""];
+            
+    cartesian -> cumulator [label = "add"];
+    cumulator -> cartesian [label = "extract"];
+    cartesian -> cartfile;
+	file      -> cartfile;
+
+    outfile [ label="Output file\nHDF5, GeoTIFF, or PNG", shape=record,  URL="\ref fileiopage" color="blue" ];
+
+    volume -> outfile [style = "dotted"];
+    polarfile -> outfile [style = "dotted"];
+    cartfile -> outfile [style = "dotted"];
+     
+}
+\enddot
+  
+  
+
+
+ 
+ 
+ 
+ 
+ 
+ \section commands Usage
+
+ \subsection command_line_format Command line arguments
+
+A typical invocation of \b Rack looks like:
+\code
+rack <input-files>  <command> -o <file1>   <command2> -o <file2>  ...
+\endcode
+
+The native format for data is HDF5, but data and be read or written partially using
+image and text format. See \ref fileiopage for details. 
+ 
+Specifically, \b Rack accepts three kinds of command line arguments:
+ 
+ -# options without arguments, like \c --help 
+ -# options with arguments,  like \c --outputFile \c product.h5
+ -# plain arguments recognized as input filenames, like \c volume.h5 , serving as shorthand for \c --inputFile \c \<file\> .
+ 
+ The options are prefixed with double hyphen, "--". Some options have also a single hyphen "-", single-letter
+ shorthand. (This argument syntax differs from POSIX and GNU conventions,
+ e.g.  \c -x \c -y cannot be grouped to \c -xy. )
+ All the arguments are handled in order; they can be thought as commands to be executed sequentially. 
+
+
+Usage info and a list of commands is dumped if \c --help or \c -h or no arguments are supplied:
+\code
+rack --help
+\endcode
+The list of commands is also listed in Section \ref commands_general.
+  
+Help is also available for invidual commands:
+\code
+rack --help <command>
+\endcode
+ 
+The version of the program is displayed with \c --version.  
+Other useful general commands are \c --verbose \c \<level\> and \c --status, which give
+debugging information of data flow and memory.
+
+
+\subsection products_brief  Meteorological products
+
+Generation of a single-radar product is explained in section \ref productspage.
+The products are generated in polar coordinates, that is, in radar's native coordinate system.  
+A product may contain additional data arrays, typically quality indices or height information.
+As processing and using Doppler data involves special aspects, it is handled in it own section, \ref doppler.
+
+A product can be further converted to Cartesian coordinate system, explained next.
+
+
+\subsection cartesian_brief  Converting to Cartesian images 
+ 
+Data in polar coordinates can be mapped to a Cartesian product with \c --cCreate (abbreviated \c -c). 
+The simplest possible command is
+\code
+rack volume.h5 --cCreate -o cartesian.h5
+\endcode
+which converts the first dataset (sweep) in volume.h5 to a Cartesian product.
+The default projection is azimuthal equidistant, centered at the radar. The projection can be changed
+with \c --cProj which uses \b Proj.4 syntax (http://trac.osgeo.org/proj/). 
+The default size (bins x bins) can be changed with \c --cSize .
+
+\code
+rack volume.h5 --cSize 400,400 --cProj '+proj=stere +lon_0=25.0 +lat_0=60.000' --cCreate -o cartesian-stere.h5
+\endcode
+
+\~exec
+  QUANTITY=DBZH INPUT=volume-anom-sea.h5 ./make-image-product.sh  #exec
+  convert -type TrueColor ppi-DBZH.png foo.tif  
+  convert +append -frame 1 foo.tif ppi-DBZH-panel.png -resize 800x400 cartesians.png 
+\~
+
+
+\image html  cartesians.png "Data remapped with \c --cCreate , further coloured with \c --palette , displayed with a legend generated with \c --legendOut ." 
+\image latex cartesians.png "Data remapped with \c --cCreate , further coloured with \c --palette , displayed with a legend generated with \c --legendOut ." width=0.5\textwidth
+
+The above image contains some anomalies that can be detected and removed. See \ref andrepage for details.
+
+ 
+Inside \b Rack , a single-radar Cartesian product is technically similar to a radar composite -- it is a single-radar 
+"composite". 
+The related commands are prefixed with \c 'c'. Composite generation, projections, methods, and other options are explained 
+in further detail in section \ref compositespage . 
+
+
+
+\subsection selecting Selecting data
+
+\~exec
+make select.hlp
+\~
+\copydetails rack::CmdSelect
+
+\subsubsection selectquantity Selecting by quantity only
+
+\copydetails rack::CmdSelectQuantity
+ 
+
+\~exec
+  QUANTITY=RHOHV INPUT=volume-anom-sea.h5 ./make-image-product.sh  #exec
+  convert -frame 1  ppi-RHOHV-panel.png  ppi-RHOHV-panel.png
+\~
+\image html  ppi-RHOHV-panel.png "Data selected with -Q RHOHV and coloured with \c --palette."
+\image latex ppi-RHOHV-panel.png "Data selected with -Q RHOHV and coloured with \c --palette." width=0.5\textwidth
+
+
+
+\subsection target Defining target data properties
+
+The desired output storage type, scaling, and encoding can be set with \c --encoding command. 
+Depending on the following command, a varying set of properties will be supported. The general form of \c --encoding command is
+\code
+rack <input>  --encoding <type>,<gain>,<offset>,<undetect>,<nodata>  <commands>
+\endcode
+and for polar products and conversions, the extended form is: 
+\code
+rack <input>  --encoding <type>,<gain>,<offset>,<undetect>,<nodata>,<rscale>,<nrays>,<nbins>  <commands>
+\endcode
+
+One may set one or more properties by giving only N first ones. Also \c key=value forms are supported.   
+The typical choices for storage type are 'C' (unsigned char), 'S' (unsigned short int) and 'd' (double precision float). 
+The next parameters \c gain and \c offset define the mapping between bit values and the physical quantity: 
+\e f = \c gain * \e x + \c offset .  
+In ODIM standard, \c undetect marks the data where a measurement value falls under a sensitivity limit and 
+\c nodata marks areas where no measurement at all is available.
+Also grid geometry (\c nbins , \c nrays and \c rscale ) can be set when applicable.
+For example, producing a polar product (here 500m CAPPI, see \ref productspage) with some desired properties is given by:
+\code
+  rack volume.h5 --encoding C,0.4,-20,rscale=1000,nbins=250  --pCappi 500 -o cappi-500.h5
+\endcode
+\b Rack provides default encodings for some quantities. The configuration can be listed and changed with
+\c --quantityConf command.
+
+As to hierarchical structure of resulting products, the default location of computed meteorological products and Composites is 
+\c /dataset1/data1 . Any previous results are overwritten. This can be changed by means of \c --append command: one can 
+combine several products in same \c dataset group, adding a new \c data group, or append a new \c dataset group. 
+
+For modifying existing data, see \ref modifypage .
+
+
+\subsection quantityConf Default encoding of quantities
+
+Measurement parameters in radar have a varying scale. For example, DBZH is typically between -32dBZ and 50dBZ whereas
+RHOHV ranges between 0.0 and 1.0. Further, different storage types can be used, and the resulting value range 
+should be compatible with the encoding. In some cases, like in creating radar image composites, \b Rack can
+use predefined storage types and encoding. The following examples illustrate the usage
+
+\code
+rack --quantityConf DBZ:S          # for encoding dBZ, use unsigned short int, with default scaling
+rack --quantityConf DBZ:C,0.6,-30  # for encoding dBZ, use unsigned char, with gain=0.5 and offset=-32
+\endcode
+
+The arguments can be named explicitly, as in the case of \c --select and \c --encoding .
+The encoding of a given quantity is displayed if the quantity is issued without type specifier character.
+A quantity can be also assigned \c zero, a "virtual" physical small value to be applied instead of \c undetect marker.
+
+\code
+rack --quantityConf 'DBZ'
+\endcode
+\~exec
+rack --quantityConf 'DBZ' > quantityConf.inc
+\~
+yelding
+\include quantityConf.inc
+where asterisk \c * marks the current default storage type and scaling.
+
+The full list of predefined quantity encodings are listed with
+\code
+rack --quantityConf ''
+\endcode
+One may freely add encodings simply by setting them with \c --quantityConf
+
+
+\author Markus Peura, Seppo Pulkkinen (HDF5 support), Joonas Karjalainen 
+
+*/
+  
+  
+

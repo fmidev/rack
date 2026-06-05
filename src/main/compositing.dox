@@ -1,0 +1,510 @@
+/** \page compositespage Cartesian conversions and composites
+
+
+
+\tableofcontents
+
+\section compositing  Compositing
+
+\b Rack can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products.
+On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in 
+\b Rack . 
+This section lists related commands and examples. A quick reference is found in \ref commands_cart.
+Compositing motion vectors is art of its own, hence explained in a separate section, \ref motion-composites .
+
+\~exec
+OUTFILE=composite-baltic.h5 DEMO=1 BBOX=0,47,40,73 SIZE=600,800 PRODUCT=pCappi,700 METHOD=WAVG,2,3,-32  ./make-composite.sh data-20140924  #exec 
+composite -compose Over composite-baltic-rgba.png map-baltic-0,47,40,73-600,800.png composite-baltic-rgba-map.tif   #exec        
+convert composite-baltic.png -type TrueColor tmp.tif
+convert -frame 2  +append tmp.tif  composite-baltic-rgba-map.tif -resize 900x600  composite-baltic-pair.png
+\~
+
+\image html  composite-baltic-pair.png  "A radar image composite over the Baltic area." 
+\image latex composite-baltic-pair.png  "A radar image composite over the Baltic area." width=\textwidth
+
+
+\subsection cmethods  Compositing methods
+
+Compositing can be apply several \e compositing \e methods (or rules):
+- \b AVERAGE - average value
+- \b MAXIMUM - maximum value
+- \b MAXW - maximum-quality (using a quality field provided with the data)
+- \b WAVG,\em p,\em r,\em offset - weighted average with data and quality enhancement coefficients \em p  and  \em r ; also \em offset is needed for ensuring positive data values. 
+See also \ref specialcodes .
+
+The commands related to compositing and Cartesian products start with 'c'. 
+In computation \b Rack supports two schemes:
+
+- \b Direct \b scheme: data from all the radars are added to a composite sequentially, applying a single command line 
+- \b Tiled (distributed) \b scheme: data from each radar are pre-processed and stored in parallel, asynchronously; the tiles are later composited by a separate, fast process  
+
+In both direct and tiled schemes, data of each radar can undergo anomaly detection and removal. In addition, a polar product
+(like pseudo CAPPI or echo height) can be computed.
+
+
+\subsection cinitialisation Initialisation
+
+Essential properties of a composite are:
+- Size of the array (image)
+- Geographical projection
+- Geographical extent
+
+\subsubsection csize Size
+
+The size of the composite, in pixels, is set with \c –cSize. 
+\include cSize.hlp
+
+
+\subsubsection cprojections  Projection
+
+Projection definition command --cProj uses \b Proj.4 syntax and additionally supports direct EPSG codes,  \c --cProj\ 3067 .
+\include cProj.hlp
+
+If the projection is not given, \b Rack uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.
+
+When writing GeoTIFF files, using EPSG codes is recommended because not all \b Proj.4 project definition strings are supported by the
+GeoTIFF library. The following list produced as a part of release tests.
+
+\include rack-geotiff-supported.inc
+
+\subsubsection cbbox Bounding box
+
+The geographical area – the bounding box – of the composite is set with \c --cBBox taking lower left and upper right points as arguments.
+The points can be always given in degrees. If the applied projection is metric, the coordinates can be given as meters.
+If the bounding box is not explictly given with \c --cBBox command, the corner points of the first radar input are used.
+ 
+\include cBBox.hlp
+
+Hint: look at additional attributes of prefix `where:BBOX` written in output files. These attributes display the coordinates of 
+metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising 
+composite products.
+(Write of additional non-standard attributes is controlled with the \c --odim command. )
+
+\subsubsection cinit Initialisation
+
+Command \c --cInit creates an empty compositing array of desired size in the memory and stores the essential attributes listed above.
+The command is optional  – initialisation is implicitly invoked when the first input is introduced with
+\c --cAdd or \c --cAddWeighted . However, explicit command is recommended, if the user wants to get an empty image 
+(instead of an error) in case no inputs are available.
+
+\include cInit.hlp
+
+
+\subsection specialcodes  Handling special codes
+
+Radar data complying the ODIM standard applies special marker codes \c undetect and \c nodata . 
+These codes have to be handled carefully in product generation and compositing.
+In \b Rack , pixel values with \c nodata are simply skipped; they are not accumulated in the composite array, for example.
+
+Handling of  \c undetect can be tuned by the user with \c --quantityConf and \c --undetectWeight . 
+The physical value or "virtual zero" replacing \c undetect codes is set using \c --quantityConf ,  
+for example,  \c --quantityConf \c DBZH,zero=-32.0 (corresponding the limit of signal detection sensitivity).
+See also \ref quantityConf.
+The corresponding relative weight is set with \c --undetectWeight \c \<value\> . 
+The value 0.0...1.0 describes the significance of the value relative to a "true" detected measurement value.
+The value is zero by default, which in compositing means that the location is marked as processed 
+(a counter is incremented) but the value is not accumulated.
+
+
+\subsection cschemes Compositing schemes
+
+\subsubsection directcompositing  Direct compositing
+  
+Creating composites in a direct mode involves the following steps:
+-# \b Initialising a composite to apply projection, geographical scope, size, and compositing method
+-# For each radar, reading and processing volume data and projecting them on the array 
+-# \b Extracting the final product from the array 
+
+The process is illustrated in the graph below.
+
+ \dot
+  digraph example {
+
+      size="9,5";
+	  label = "Control flow in direct compositing";
+ 	  rankdir=LR;
+      node [shape=record, fontsize=10];
+      edge [color=black, fontsize=10];
+    
+  headport="n";
+
+ 
+  init [ label="<i>Initialisation | --cProj \n --cBBox \n --cSize \n --cMethod"];	
+   
+  filein [ label="<i>Read volume file" , color="forestgreen", URL="\ref fileiopage"];
+
+  create  [ label="<i>Creation of meteorological product", color="blue", URL="\ref productspage" ];
+  
+  add [ label="<i>Update composite | --cAdd \n --cAddWeighted "];
+  
+  isMore [shape="point", label=""];
+  
+  close [ label="<i>Extraction | --cExtract \n -o composite.h5"];
+    
+	
+	init:i -> filein:i;
+	filein:i -> create:i;
+	
+	
+	create -> add:i;
+    add:i -> isMore;
+    
+    isMore -> filein:i [label="repeat for each radar"];
+    isMore -> close:i [label=""];
+    
+}
+\enddot
+
+
+
+A 800 x 1000 maximum composite over Finland in a lat-lon projection is obtained with 
+\~exec
+OUTFILE=composite-fi.h5 SIZE=800,1000 BBOX=17,57.7,33,69.5 ./make-composite.sh data/pvol_fi*.h5  #exec
+\~
+
+\include composite-fi.cmd
+
+
+
+A similar composite of CAPPI in 1000 m altitude, with quality-weighted compositing method is obtained with 
+\~exec
+DEMO=1 OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
+       OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data/pvol_fi*.h5                   #exec
+\~
+
+\include composite-fi-cappi.cmd
+
+\b Rack installation package contains a utility script \c make-composite.sh which compiles a command line string - like the one above - and executes it. For example:
+\code
+PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32 SIZE=500,750 BBOX=17,57.7,33,69.5  ./make-composite.sh data/pvol_fi*.h5
+\endcode 
+
+
+
+The extraction command \c --cExtract extracts one or more data layers out of the compositing (accumulation array): 
+- \c DATA - the actual composited data, like reflectivity (\c DBZH )
+- \c WEIGHT - quality (confidence) of the data value
+- \c COUNT - number of radars contributed
+- \c DEVIATION - difference or discrepancy of data (if more than one radar contributed)
+
+The desired combination is given as a comma-separated list of above keywords. 
+Notice that the command \c –cCreate for creating  single radar "composite" is equivalent to \c --cAdd \c cExtract \c DATA,WEIGHT .
+For example:
+\~exec
+rack volume.h5 -Q DBZH --cAdd --cExtract DATA --cExtract WEIGHT -o composite-single.h5
+\~ 
+
+A more complex command could be:
+
+\include composite-singleX_rack.sh
+
+Experimental: the above command line can also be generated using Python utility \c rack.composite :
+
+\include composite-singleX_py.sh
+
+\~conf{py}
+{
+  "imports": ["os", "rack.prog","rack.composite"],
+  "tests" : {
+  	"rack.sh": {
+  	  "returncode": 0
+  	}
+  }
+}
+\~ 
+
+\code{.py}
+# Initialize command line generator.
+composer = rack.cmdline.Composer(rack.composite)
+
+# Set parameters
+composer.set(INFILE='volume.h5') 
+composer.set(QUANTITY='DBZH') 
+composer.set(OUTFILE='cartesian-single.h5')
+
+# Extract command sequence
+prog = composer.get_prog()
+
+# Apply formatting 
+fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+
+# Extract as a single string (suited to os.system call).
+rack_cmd = prog.to_string(fmt)
+os.system(rack_cmd)
+\endcode
+
+\~stop
+\~
+
+Upon initialisation of the compositing array, \c Rack stores the encoding parameters – storage type, scaling and marker values (\c undetect , \c nodata) – given explicitly 
+or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so
+encoding of the output can be also set upon extraction.
+Reusing the above single-radar example, as follows:    
+\~exec
+# Unsigned char type ("C"), with default encoding parameters for DBZH
+rack volume.h5 -Q DBZH --cAdd --encoding C --cExtract DATA,WEIGHT -o composite-single.h5
+# Unsigned short int ("S"), with some adjustments
+rack volume.h5 -Q DBZH --cAdd --encoding S,undetect=65534,nodata=65535 --cExtract DATA,WEIGHT -o composite-single.h5
+\~ 
+The encoding is applied to the first field (like \c DATA ) listed; the remaining field (typically quality fields) use their default encodings.
+But if desired, encoding of each field can be set, for example as follows: 
+\~exec
+rack volume.h5 -Q DBZH --cAdd --encoding C --cExtract DATA --encoding d --cExtract WEIGHT --encoding S --cExtract COUNT -o composite-single.h5
+\~ 
+
+For now, the old syntax is also supported: a string composed of single letters (\c d ), weight, (\c w ), deviation (std.dev., \c s ) and count of radars (\c c ). 
+
+Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly \c <LLx>,<LLy>,<URx>,<URy> or \c DATA (automatic bounding box) 
+or \c OVERLAP (overlapping area). 
+
+\include cExtract.hlp
+
+\~exec
+convert composite-fi-cappi-COUNT.png -equalize composite-fi-cappi-COUNT.png
+convert -frame 2 +append composite-fi-cappi{,-QIND,-STDEV,-COUNT}.png -resize 800x300 composite-layers.png 
+\~
+
+\image html  composite-layers.png  "Layers extracted from the accumulation array: the composite, quality field, deviation and count of radars." 
+\image latex composite-layers.png  "Layers extracted from the accumulation array: the composite, quality field, deviation and count of radars." width=\textwidth
+
+\b Rack makes composites of any selected quantity or polar product.  Examples are shown in the image below.
+\~exec
+echo pCappi above
+DEMO=1 OUTFILE=composite-fi-echoTop.h5 RACK=rack         PRODUCT=pEchoTop,20        QUANTITY=HGHT  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
+# TARGET=C,0.5,-32 
+DEMO=1 OUTFILE=composite-fi-maxEcho.h5                   PRODUCT=pMaxEcho,5000:2500               SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
+# TARGET=C,0.005
+DEMO=1 OUTFILE=composite-fi-rhoHV.h5                     QUANTITY=RHOHV                           SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
+DEMO=1 OUTFILE=composite-fi-hclass.h5                    QUANTITY=HCLASS                          SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
+
+for i in cappi echoTop maxEcho rhoHV hclass; do composite -compose over composite-fi-$i-rgba.png map-finland.png composite-fi-$i-map.png; done;  #exec
+convert -frame 2 +append  composite-fi-{cappi,maxEcho,echoTop,rhoHV,hclass}-map.png  -resize 800x300 composite-fi-all.png #exec
+\~
+
+\image html  composite-fi-all.png  "Composites of CAPPI, max echo, echo top, rhoHV, and HydroClass."
+\image latex composite-fi-all.png  "Composites of CAPPI, max echo, echo top, rhoHV, and HydroClass." width=\textwidth
+
+
+\b Hint. Command lines may get lengthy in compositing. You can shorten file arguments by using general 
+options \c --inputPrefix and \c --outputPrefix . 
+
+\subsubsection tiledcompositing  Tiled compositing
+
+In a Tiled (distributed) mode, the composite is initialized as in direct mode but the tile generated is with \c --cCreateTile and 
+then saved with \c --outputFile command. 
+In the accumulation stage, the composite is loaded and then copied to the internal compositing array with \c --cAdd. 
+The stages are illustrated in the diagrams below.
+
+
+\dot
+  digraph example {
+
+	  size="9,5";
+	  label = "Distributed compositing, stage 1: tile creation";
+ 	  rankdir=LR;
+      node [shape=record, fontsize=10];
+      edge [color=black, fontsize=10];
+	 headport="n";
+
+ 
+  init    [ label="<i>Initialisation | --cMethod \n --cSize \n --cProj \n --cBBox"];	
+  filein  [ label="<i>Load volume file", color="forestgreen", URL="\ref fileiopage" ];
+  create  [ label="<i>Creation of meteorological product", color="blue", URL="\ref productspage" ];
+  project [ label="<i>Conversion to Cartesian | --cCreateTile"  ];
+  fileout [ label="<i>Saving tile | --outputFile ", color="forestgreen", URL="\ref fileiopage" ];
+	
+	init:i -> filein:i -> create:i -> project:i -> fileout:i ;
+    
+}
+\enddot
+
+For example, a tile can be created as follows:
+\~exec
+  rm -vf tiles/*.* #exec
+  SCHEME=TILE OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
+\~
+
+\~hide
+\include composite-fi-cappi-TILE.cmd
+\~
+
+\include composite-fi-cappi-TILE_rack.sh
+
+Experimental: the above command line can also be generated using Python utility \c rack.composite :
+\include composite-fi-cappi-TILE_py.sh
+
+Or using Python API, as follows:
+\~conf{py}
+{
+  "imports": ["os", "rack.prog","rack.composite"],
+  "prepend_code": [
+    "SITE='fikor'"
+  ],
+  "append_code": [
+    "cmds = prog.to_list(fmt)", 
+    "print(cmds)",
+    "line = composer.get_module_cmd_line()",
+    "print(line)"
+  ]
+}
+\~ 
+
+\code{.py}
+# Initialize command line generator.
+composer = rack.cmdline.Composer(rack.composite)
+
+# Set parameters
+composer.set(SCHEME="TILE")
+composer.set(INDIR='data-20140525/')
+composer.set(INFILE=f'201405251200_radar.polar.{SITE}.h5') 
+composer.set(SCHEME="TILE")
+composer.set(OUTFILE=f'tile-{SITE}.h5')
+
+# Several options can be set at once
+# composer.set(SIZE="512,614", PROJ=3067, BBOX="-208000,6390000,1072000,7926000")
+
+# Alternatively, reads BBOX, SIZE and PROJ from geoconf/geoconf-WRAPTEST.json :
+composer.set(GEOCONF='WRAPTEST')
+
+# Extract command sequence
+prog = composer.get_prog()
+
+# Apply formatting 
+fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+
+# Extract as a single string (suited to os.system call).
+rack_cmd = prog.to_string(fmt)
+os.system(rack_cmd)
+\endcode
+
+\~stop
+python3 -m rack.composite --SCHEME TILE --GEOCONF WRAPTEST --PPROD pCappi,1000 --SIZE 500,750 --BBOX 17,57.7,33,69.5    --print ' \\n  ' --exec  data-20140525/201405251200_radar.polar.fik??.h5
+
+\~
+
+\dot
+
+  digraph example2 {
+
+  size="6,5";
+  label = "Distributed compositing, stage 2: accumulation";
+  rankdir=LR;
+  node [shape=record, fontsize=10];
+  edge [color=black, fontsize=10];
+  headport="n";
+
+  init   [ label="<i>Initialisation | --cMethod \n --cSize \n --cProj \n --cBBox"];	
+  filein [ label="<i>Load tile file", color="forestgreen", URL="\ref fileiopage" ];
+  add    [ label="<i>Update composite | --cAdd \n --cAddWeighted "];  
+  
+  isMore [shape="point", label=""];
+   
+  close [ label="<i>Extraction | --cExtract "];
+  save  [ label="<i>Saving composite | --outputFile ", color="forestgreen", URL="\ref fileiopage];
+  
+	
+  init:i -> filein:i -> add:i -> isMore ;
+  isMore -> filein:i [label="repeat for each radar"];
+  isMore -> close:i -> save:i;
+    
+ }
+\enddot
+
+Then, tiles are collectively added to composite with a single command. Notice that the composite definitions should be exactly the same as in
+the tile creation:
+\~exec
+  SCHEME=TILED OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  tiles/*.h5  #exec
+\~
+
+\include composite-fi-cappi-TILED.cmd
+
+(The above commands have been generated using \c make-composite.sh with \c SCHEME=TILE and \c SCHEME=TILED .)
+
+\subsubsection multitiles Tiles containing several radars
+
+By default, each tile contains data from a single radar. Alternatively, for a large composite, 
+one can construct a tile containing data from several radars by calling \c --cBBoxTile command immediately
+after \c --cBBox and \c --cSize . The latter commands are equal to those of the large composite. 
+A multi-radar tile is otherwise generated like any composite, that is, \c --cAdd and \c --cExtract
+commands are needed (unlike in constructing a single-radar tile). 
+
+For example, consider receiving a precomputed the OPERA composite, to which the
+Russian and Belarussian radars are added. First, the latter data is composited to a tile cropped
+with \c --cBBoxTile under OPERA geometry:
+
+\~exec
+OUTFILE=tile-east.h5 SIZE='1900,2200' BBOX='-10.4346,31.7462,57.812,67.621' BBOXTILE='24.4357,51.754,47.9115,65.4706' PROJ='+proj=laea +lat_0=55.0 +lon_0=10.0 +x_0=1950000.0 +y_0=2300000.0 +units=m +ellps=WGS84' ./make-composite.sh data-east #exec
+\~
+\include tile-east.cmd
+
+Finally, the two composites are combined 
+\code 
+rack 201703071200_radar.opera.h5 --cAdd  tile-east.h5 --cAdd --cExtract dw -o composite-combined.h5 
+\endcode
+Notice that the geometry is implicitly determined by the first composite data read (or projected).
+
+\subsubsection livecomposite Continuous compositing
+
+It is also possible to continuously update a composite. It means that a previous composite is loaded as a "warm start" 
+and \c --cAddWeighted command. 
+The size and geometrical scope are set to those of the composite file. Fading with a low weight value 
+is motivated by substituting missing radars with older measurements with however lower confidence.  
+
+\code
+rack  composite.h5 --cAddWeighted 0.5  volume.h5  --cAdd  --cExtract dwsc -o composite-new.h5
+\endcode
+
+\dot
+  digraph example {
+
+  size="6,5";
+  label = "Continuous compositing (direct or distributed)";
+  rankdir=LR;
+  node [shape=record, fontsize=10];
+  edge [color=black, fontsize=10];
+  headport="n";
+
+  compin [ label="<i>Read previous composite | (--inputFile) \n --cAdd \n --cAddWeighted", color="forestgreen" ];
+  single [ label="<i>Generate or load a tile", color="darkturquoise" ];
+  add    [ label="<i>Update composite | --cAdd \n --cAddWeighted "];
+  
+  isMore [shape="point", label="More inputs?"];
+  
+  close [ label="<i>Extraction and \n saving composite| --cExtract \n --outputFile"];
+  
+  compin:i -> single:i -> add:i -> isMore;
+  isMore -> single:i [label="repeat for each radar"];
+  //add:i -> single:i [label="repeat for each file"];
+  isMore -> close:i;
+  close:i;
+    
+ }
+\enddot
+
+\section composite-misc Utilities
+
+\subsection composite-bbox Bounding box of input data
+
+Minimal bounding box of input data, cropped by the bounding box of the composite, is stored in \c how:dataBBOX variable.  
+
+\subsection grid Adding lat-lon grid to Cartesian images
+
+A grid of latitudes and longitudes can be added onto Cartesiand products with \c --cGrid. The following command
+creates a grid with 5 degree spacing in latitudes and longitudes, using width of 0.9 pixels and 50% gray intensity: 
+\code
+rack composite.h5 --palette default --cGrid 5,5,0.9,0.5 -o composite-grid.png
+\endcode
+The input data -- a Cartesian product -- can be read as a file as in this example or generated 
+from polar data with \c --cCreate .
+
+\~exec
+# Todo: European composite.
+convert composite-grid.png -resize 600 composite-grid-small.png
+\~
+
+
+
+*/
+
+
+
