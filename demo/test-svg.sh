@@ -164,7 +164,7 @@ RUN_TEST \\  --inputPrefix '$PWD/' \\  --gTitle "'\${what:date|%Y-%m-%d} \${what
 
 WRITE_SUBSECTION svg_basic_single Single-radar image – add place marker.
 #WRITE_DOC "Add radar grid and background map"
-RUN_TEST \\  --inputPrefix '$PWD/' \\  --gTitle "'\${what:date|%Y-%m-%d} \${what:time|%H:%M UTC}  \${NOD} - \${PLC}'" \\ data-kiira/201708121600_radar.polar.fikor.h5 \\ --cProj 3067 --cSize 600 \\  -Q DBZH -c \\  --gLinkImage "'\${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL' \\  --imageTransp 0.0:0.1,0,1 --palette default \\  -o "'out-\${what:date}T\${what:time}-\${NOD}.png'" \\   --gRadarDot 5000 --gDot 21.37:59.781667,12000:15000  \\  --gStyle ".SPOT='stroke:none;fill:white'" \\  --gStyle ".RADARDOT='stroke-width:3px;fill:red'" \\  -o place_marker 
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --gTitle "'\${what:date|%Y-%m-%d} \${what:time|%H:%M UTC}  \${NOD} - \${PLC}'" \\  data-kiira/201708121600_radar.polar.fikor.h5 \\  --cProj 3067 --cSize 600 \\  -Q DBZH -c \\  --gLinkImage "'\${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png'" \\  --gAlign 'HORZ_FILL:VERT_FILL' \\  --imageTransp 0.0:0.1,0,1 --palette default \\  -o "'out-\${what:date}T\${what:time}-\${NOD}.png'" \\  --gRadarDot 5000 \\  --gDot 21.37:59.781667,12000:15000  \\  --gStyle ".DOT='stroke-width:3px;fill:red'" \\ --gStyle ".SPOT='stroke:none;fill:white'"  \\  -o place_marker 
 
 #exit
 
