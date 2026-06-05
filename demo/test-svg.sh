@@ -55,6 +55,7 @@ function RUN_TEST(){
     local DESC="${args[$(( argc - 1 ))]}"
     local OUTFILE=${DESC,,}'.svg'
     OUTFILE=${OUTFILE//,/}
+    OUTFILE=${OUTFILE//:/_}
     cmd="${cmd/$DESC/$OUTFILE}"
 
     DESC="${DESC//_/ }."
