@@ -98,6 +98,17 @@ public:
 
 };
 
+class CmdForEach : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdForEach() : drain::SimpleCommand<std::string>(__FUNCTION__, "Define variable to repeat script for each value.", "key=value1,value2,...") {
+	};
+
+	void exec() const override;
+
+};
+
 //class CmdLog : public SimpleCommand<> {
 class CmdLog : public BasicCommand {
 

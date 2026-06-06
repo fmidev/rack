@@ -58,6 +58,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandInstaller.h>
+//#include <drain/prog/Loop.h>
 
 
 
@@ -1968,6 +1969,47 @@ public:
 
 };
 
+/*
+#include <drain/prog/Loop.h>
+
+class CmdForEach : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdForEach() : drain::SimpleCommand<std::string>(__FUNCTION__, "Define variable to repeat script for each value.", "key=value1,value2,...") {
+	};
+
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
+		std::string key;
+		std::string values;
+		drain::StringTools::split2(value, key, values, '=');
+
+		ctx.loops.push_back(drain::Loop());
+		drain::Loop & loop = ctx.loops.back();
+		loop.set(key, values);
+		//loop.set(key, values);
+
+		mout.experimental("Added loop:");
+		for (const auto & value: loop.getValueList()){
+			mout.warn(key, "=", value);
+		}
+
+		// drain::Loop::traverse(ctx.loops); // ctx
+
+
+	}
+
+
+
+};
+*/
+
+
 class CmdStopOnError : public drain::SimpleCommand<std::string> {
 
 public:
@@ -2608,28 +2650,24 @@ MainModule::MainModule(){ //
 	// Bank-referencing commands first
 	drain::CmdHelp help(cmdBank);
 	install(help, 'h');
-	//installExternal(help, 'h');
-
 	install<CmdHelpExample>();
+
+	drain::CmdLog log(cmdBank);
+	install(log); //  cmdLogFile; // consider abbr. -L ?
 
 	drain::CmdScript script(cmdBank);
 	install(script);
 
 	drain::CmdExecFile execFile(cmdBank);
 	install(execFile);
+	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
+
+	DRAIN_CMD_INSTALL(drain::Cmd, ForEach)();
 
 	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)('X');
-	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
-	linkRelatedCommands(script, execFile, ExecScript);
+	linkRelatedCommands(script, execFile, ExecScript, ForEach);
 	linkRelatedSection(script, drain::Static::get<drain::TriggerSection>());
-	// linkRelatedSection(script, "koe");
-	// script.linkRelatedCommands("TEST");
-	// script.value = "TEST";
-	// script.getRelatedCommands(std::cout);
 
-
-	drain::CmdLog log(cmdBank);
-	install(log); //  cmdLogFile; // consider abbr. -L ?
 
 	// Independent commands
 	DRAIN_CMD_INSTALL(Cmd,Select)('s');
@@ -2918,6 +2956,7 @@ HiddenModule::HiddenModule(){ //
 
 	// Bank-referencing commands first
 	// drain::HelpCmd help(cmdBank);
+
 
 	install<CmdPause>();
 	install<CmdInputFilter>();

@@ -66,9 +66,6 @@ public:
 		// Copy sections?
 	};
 
-	//static  // Otherwise ok, but handler as error...
-	//const Flagger::value_t SCRIPT_DEFINED;
-
 
 	/// Words that are moved from class name prior to composing a command name.
 	static
@@ -179,6 +176,12 @@ public:
 
 	// Newish
 	void run(Program & prog, ClonerBase<Context> & contextCloner); // !! May be RackContext!
+
+	// experimental
+	void traverseLoops(Context & ctx, ClonerBase<Context> & contextCloner);
+
+	// experimental
+	void traverseLoops(Context & ctx, ClonerBase<Context> & contextCloner, Loop::loopStack::const_iterator it, Loop::loopStack::const_iterator itEnd);
 
 
 	/// Basic help dump, displays help commands to proceed.

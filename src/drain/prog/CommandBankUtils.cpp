@@ -109,6 +109,28 @@ void CmdStatus::exec() const {
 
 
 
-} /* namespace drain */
+void CmdForEach::exec() const  {
 
-// Rack
+	Context & ctx = getContext<Context>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
+	std::string key;
+	std::string values;
+	drain::StringTools::split2(value, key, values, '=');
+
+	ctx.loops.push_back(drain::Loop());
+	drain::Loop & loop = ctx.loops.back();
+	loop.set(key, values);
+
+	mout.experimental("Added loop: ", key, ':', sprinter(loop.getValueList()));
+	/*
+		for (const auto & value: loop.getValueList()){
+			mout.experimental(key, "=", value);
+		}
+	 */
+
+}
+
+
+
+} // drain

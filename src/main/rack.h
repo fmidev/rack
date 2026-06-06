@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,4,3)
+#define RACK_VERSION drain::Version<>(20,5)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -66,6 +66,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - encoding: type bug probably nailed
  *  Release 20.4.3
  *  - RadarDataPicker: removed obsolete member 'ref'
+ *  Version 20.5.beta
+ *  - --forEach, command line structure for loop
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

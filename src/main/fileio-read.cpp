@@ -149,7 +149,7 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 	}
 
 
-	if (!ctx.SCRIPT_DEFINED){
+	if (!ctx.isScriptDefined()){
 		if (!ctx.select.empty()){
 			mout.deprecating<LOG_NOTICE>("clearing selector - in future, may be changed");
 			ctx.select.clear(); // NEW: "starts a product pipe". monitor effects of this
@@ -247,7 +247,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		mout.experimental<LOG_DEBUG>("Input selection: removing excluded subtrees");
 		hi5::Hi5Base::deleteExcluded(srcTmp);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true
-		if (ctx.SCRIPT_DEFINED){
+		if (ctx.isScriptDefined()){
 			mout.debug("Script defined -> not clearing input data selector (", ctx.inputSelect, ')');
 			//mout.info(ctx.select);
 		}
@@ -357,8 +357,8 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 		}
 
 		// TODO: force APPEND / REPLACE?
-		if (ctx.polarInputHi5.empty() || ctx.SCRIPT_DEFINED){
-			if (ctx.SCRIPT_DEFINED){
+		if (ctx.polarInputHi5.empty() || ctx.isScriptDefined()){
+			if (ctx.isScriptDefined()){
 				mout.info("Script defined, resetting previous inputs (if exist)");
 			}
 			ctx.polarInputHi5.swap(srcTmp);

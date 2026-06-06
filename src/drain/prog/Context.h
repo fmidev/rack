@@ -45,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include "CommandSequence.h"
+#include "Loop.h"
 
 
 namespace drain {
@@ -55,16 +56,16 @@ class Context {
 
 public:
 
-	Context(const std::string & basename = __FUNCTION__);
-
-	Context(const Context & ctx);
-
 	// Experimental
 	Script addedCommands;
 
-	/// Used by copy const
-	const std::string basename;
+	// Experimental
+	Loop::loopStack loops;
+	Script routine;
 
+	Context(const std::string & basename = __FUNCTION__);
+
+	Context(const Context & ctx);
 
 
 	virtual
@@ -148,9 +149,17 @@ public:
 		}
 	}
 
-	bool SCRIPT_DEFINED; // To correctly handle sequential input commands (and other script-triggering commands)
+	//bool SCRIPT_DEFINED; // To correctly handle sequential input commands (and other script-triggering commands)
+
+	inline
+	bool isScriptDefined(){
+		return !routine.empty();
+	}
 
 protected:
+
+	/// Used by copy const
+	const std::string basename;
 
 	const long int id;
 

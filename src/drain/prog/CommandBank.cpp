@@ -506,10 +506,13 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	ProgramVector threads;
 
-	Script routine;
+	//Script routine;
 
 	Context & ctx = prog.getContext<>(); // 2023/01
-	//Log & log = ctx.log; // 2022/10
+
+	//Script & routine = ctx.ctx.routine;
+
+
 	Logger mout(ctx.log, __FILE__, __FUNCTION__); // Could be thread prefix?
 
 	mout.debug(ctx.getName());
@@ -532,7 +535,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		// log.setVerbosity(baseLog.getVerbosity());
 
 		const bool TRIGGER_CMD = ((cmd.section & this->scriptTriggerFlag)>0);
-		// ctx.setStatus("script", !routine.empty());
+		// ctx.setStatus("script", !ctx.routine.empty());
 
 		mout.debug('"', key, '"', "->", ctx.getName(), "\t context=", ctx.getName(), " TRIGGER_CMD=", TRIGGER_CMD, ", PARALLEL_ENABLED=", PARALLEL_ENABLED, ", INLINE_SCRIPT=", INLINE_SCRIPT);
 
@@ -558,17 +561,16 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			if (INLINE_SCRIPT){
 				mout.warn("Script should be added prior to enabling parallel (thread triggering) mode. Problems ahead...");
 			}
-			scriptify(pit->second.toStr(), routine);
-			ctx.SCRIPT_DEFINED = true; // For polar volume input read, to avoid appending sweeps.
+			scriptify(pit->second.toStr(), ctx.routine);
+			// Automatic ctx.SCRIPT_DEFINED = true; // For polar volume input read, to avoid appending sweeps.
 
-			mout.debug("routine:\n", routine);
+			mout.debug(DRAIN_LOG(ctx.routine));
 			// mout.attention("Added script.. ", cmd.getName(), " script=", pit->second.toStr());
-			// mout.attention("Added script.. ", cmd.getName(), " script=", routine);
+			// mout.attention("Added script.. ", cmd.getName(), " script=", ctx.routine);
 			// ctx.setStatus("script", true);
-			//ctx.statusFlags.set(SCRIPT_DEFINED);
+			// ctx.statusFlags.set(SCRIPT_DEFINED);
 		}
 		else if (cmd.getName() == execFileCmd){ // "execFile"
-
 			// TODO: redesign to resemble --script <cmd...>
 			ReferenceMap::const_iterator pit = constParams.begin();
 			// TODO catch
@@ -588,24 +590,38 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 			PARALLEL_ENABLED = true;
 
-			if (routine.empty())
+			if (ctx.routine.empty()){ // check this
 				INLINE_SCRIPT = true;
+			}
 
-			ctx.SCRIPT_DEFINED = true; // IMPORTANT. To prevent appending sequental input sweeps
+			// automatic ctx.SCRIPT_DEFINED = true; // IMPORTANT. To prevent appending sequental input sweeps
 			//ctx.setStatus("script", true); // IMPORTANT. To prevent appending sequental input sweeps
 		}
-		else if (TRIGGER_CMD && (!routine.empty()) && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
+		else if (TRIGGER_CMD && (!ctx.routine.empty()) && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
 
 			mout.special<LOG_DEBUG>("Running SCRIPT in main thread: ", ctx.getName());
 
-			Program prog(cmd.getContext<Context>());
-			//Program prog;
-			prog.add(key, cmd).section = 0; // To not re-trigger?
-			//append(routine, cmd.getContext<Context>(), prog);
-			append(routine, prog);
-			//Logger mout2(ctx.log, __FILE__, __FUNCTION__);
-			//mout2.startTiming("SCRIPT");
-			run(prog, contextCloner); // Run in this context
+			// Add current command (typically read file), so that it becomes executed.
+			// Logger mout2(ctx.log, __FILE__, __FUNCTION__);
+			// mout2.startTiming("SCRIPT");
+
+			if (ctx.loops.empty()){
+				Program prog(cmd.getContext<Context>());
+				prog.add(key, cmd).section = 0; // To not re-trigger?
+				// append(ctx.routine, cmd.getContext<Context>(), prog);
+				append(ctx.routine, prog);
+				run(prog, contextCloner); // Run in this context
+			}
+			else {
+				// Run command once, then iterate loop(s)
+				// Reduced version -> TODO: separate exec(cmd, ctx) with statusMap handling (see below, default case)
+				cmd.update(); //  --select etc
+				cmd.exec();
+				mout.attention("Running script inside loop(s)");
+				traverseLoops(ctx, contextCloner);
+				ctx.loops.clear();
+			}
+
 		}
 		else if (PARALLEL_ENABLED && (TRIGGER_CMD || (key == "/"))){ // || (key == "]")) { // Now threads are enabled
 
@@ -631,11 +647,11 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				thread.add(key, cmdCloned); // XXX
 			}
 
-			append(routine, thread);
+			append(ctx.routine, thread);
 
 			//if (!TRIGGER_CMD){
 			if (INLINE_SCRIPT){// flush
-				routine.clear();
+				ctx.routine.clear();
 			}
 		}
 		else if (key == "]"){ // Run the threads.
@@ -645,7 +661,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				//mout.attention("cloned: ", ctxCloned.getId());
 				ctxCloned.log.setVerbosity(mout.getVerbosity());
 				Program & thread = threads.add(ctxCloned);
-				append(routine, thread);
+				append(ctx.routine, thread);
 			}
 
 			if (threads.empty()){
@@ -694,9 +710,9 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			//}
 
 		}
-		else if (INLINE_SCRIPT){ // In this mode, catch all the commands to current routine.
+		else if (INLINE_SCRIPT){ // In this mode, catch all the commands to current ctx.routine.
 			mout.debug("Adding: ", key, " = ", cmd, " ");
-			routine.add(key, constParams.getValues()); // kludge... converting ReferenceMap back to string...
+			ctx.routine.add(key, constParams.getValues()); // kludge... converting ReferenceMap back to string...
 		}
 		else if (key.size() == 1){
 			mout.warn("Use these characters for parallel computing: [ / ]");
@@ -748,13 +764,78 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			ctx.setStatus("prevCmdArgs", cmd.getLastParameters());
 
 		}
-		// TODO: when to explicitly clear routine?
+		// TODO: when to explicitly clear ctx.routine?
 
 	}
 
 }
 
+void CommandBank::traverseLoops(Context & ctx, ClonerBase<Context> & contextCloner){ // , const Loop::loopStack & loops){
 
+	Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	//mout.debug("Check that nesting loops have no duplicate variable names")
+	std::set<std::string> keys;
+	for (const auto & loop: ctx.loops){
+		if (keys.find(loop.key) == keys.end()){
+			keys.insert(loop.key);
+		}
+		else {
+			mout.error("Loop structure (--for) has duplicate variable name: ", loop.key);
+			return;
+		}
+	}
+
+	traverseLoops(ctx, contextCloner, ctx.loops.begin(), ctx.loops.end());
+};
+
+
+void CommandBank::traverseLoops(Context & ctx, ClonerBase<Context> & contextCloner, Loop::loopStack::const_iterator it, Loop::loopStack::const_iterator itEnd){
+
+	Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	Loop::loopStack::const_iterator itNext(it);
+	++itNext;
+
+	StringMapper statusFormatter;
+	//VariableMap & statusMap = ctx.getUpdatedStatusMap(); // raise
+	VariableMap & statusMap = ctx.getStatusMap();
+
+	for (const auto & item: it->getValueList()){
+
+		//std::cout << '\t' << it->key << ' ' << item << '\n';
+
+		if (itNext != itEnd){
+			traverseLoops(ctx, contextCloner, itNext, itEnd);
+		}
+
+		mout.debug(it->key,'=',item);
+		//ctx.getStatusMap()[it->key] = item;
+		statusMap[it->key] = item;
+
+		Script subRoutine;
+		for (const auto & cmd: ctx.routine){
+			statusFormatter.parse(cmd.first, true);
+			std::string key = statusFormatter.toStr(statusMap, StringMapper::KEEP_MISSING_VARIABLE);
+			if (cmd.second.empty()){
+				subRoutine.add(key, "");
+			}
+			else {
+				statusFormatter.parse(cmd.second, true);
+				std::string value = statusFormatter.toStr(statusMap, StringMapper::KEEP_MISSING_VARIABLE);
+				subRoutine.add(key, value);
+			}
+		}
+		// mout.experimental(subRoutine);
+		// mout.experimental(prog);
+		Program prog(ctx);
+		append(subRoutine, prog);
+		//mout.experimental("executing: ", prog);
+
+		run(prog, contextCloner);
+	}
+
+}
 
 /**
  *
