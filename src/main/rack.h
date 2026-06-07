@@ -67,7 +67,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 20.4.3
  *  - RadarDataPicker: removed obsolete member 'ref'
  *  Version 20.5.beta
- *  - --forEach, command line structure for loop
+ *  - --for: command line structure for loop
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

@@ -109,7 +109,7 @@ void CmdStatus::exec() const {
 
 
 
-void CmdForEach::exec() const  {
+void CmdFor::exec() const  {
 
 	Context & ctx = getContext<Context>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
@@ -118,18 +118,66 @@ void CmdForEach::exec() const  {
 	std::string values;
 	drain::StringTools::split2(value, key, values, '=');
 
-	ctx.loops.push_back(drain::Loop());
-	drain::Loop & loop = ctx.loops.back();
-	loop.set(key, values);
+	if (values.empty()){
+		mout.warn("empty argument: '<key>=<values>'");
+		return;
+	}
 
-	mout.experimental("Added loop: ", key, ':', sprinter(loop.getValueList()));
-	/*
-		for (const auto & value: loop.getValueList()){
-			mout.experimental(key, "=", value);
-		}
-	 */
+	StringMapper stringMapper;
+	stringMapper.parse(values, true);
+	values = stringMapper.toStr(ctx.getUpdatedStatusMap(), StringMapper::KEEP_MISSING_VARIABLE);
+
+	if (values.empty()){
+		mout.warn("empty argument after expansion of value=", value);
+		return;
+	}
+	else {
+		ctx.loops.push_back(drain::Loop());
+		drain::Loop & loop = ctx.loops.back();
+		loop.set(key, values);
+		mout.experimental("Added loop: ", key, ':', sprinter(loop.getValueList()));
+		/*
+			for (const auto & value: loop.getValueList()){
+				mout.experimental(key, "=", value);
+			}
+		 */
+	}
 
 }
+
+/* No need for separate ForEach, because for "i=${var}" can be expanded.
+void CmdForEach::exec() const  {
+
+	Context & ctx = getContext<Context>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
+	// StringMapper statusFormatter;
+	VariableMap & statusMap = ctx.getUpdatedStatusMap();
+
+	std::string key;
+	std::string varKey;
+	drain::StringTools::split2(value, key, varKey, ':');
+
+	if (varKey.empty()){
+		mout.warn("Empty variable name. Syntax: '<key>:<varName>'");
+		return;
+	}
+
+	ctx.loops.push_back(drain::Loop());
+	drain::Loop & loop = ctx.loops.back();
+	loop.set(key, statusMap.get(varKey,""));
+
+	if (loop.getValueList().empty()){
+		mout.warn("Value of ", varKey, " is empty (arguments of: forEach ", key, ": ...)");
+	}
+	else {
+		mout.accept<LOG_NOTICE>(DRAIN_LOG(key));
+		mout.accept<LOG_NOTICE>(DRAIN_LOG(varKey));
+		mout.experimental("Added loop: ", key, ':', sprinter(loop.getValueList()));
+	}
+
+}
+*/
 
 
 

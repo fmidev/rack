@@ -98,17 +98,29 @@ public:
 
 };
 
-class CmdForEach : public drain::SimpleCommand<std::string> {
+class CmdFor : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdForEach() : drain::SimpleCommand<std::string>(__FUNCTION__, "Define variable to repeat script for each value.", "key=value1,value2,...") {
+	CmdFor() : drain::SimpleCommand<std::string>(__FUNCTION__, "Iterate a list of values, calling a script for each", "key","val,val2,...","comma-separated list") {
 	};
 
 	void exec() const override;
 
 };
 
+/*
+class CmdForEach : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdForEach() : drain::SimpleCommand<std::string>(__FUNCTION__, "Iterate values of status variable ${key}, calling a script for each", "key") {
+	};
+
+	void exec() const override;
+
+};
+*/
 //class CmdLog : public SimpleCommand<> {
 class CmdLog : public BasicCommand {
 

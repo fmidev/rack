@@ -2662,10 +2662,11 @@ MainModule::MainModule(){ //
 	install(execFile);
 	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
 
-	DRAIN_CMD_INSTALL(drain::Cmd, ForEach)();
+	DRAIN_CMD_INSTALL(drain::Cmd, For)();
+	//DRAIN_CMD_INSTALL(drain::Cmd, ForEach)();
 
 	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)('X');
-	linkRelatedCommands(script, execFile, ExecScript, ForEach);
+	linkRelatedCommands(script, execFile, ExecScript, For);
 	linkRelatedSection(script, drain::Static::get<drain::TriggerSection>());
 
 

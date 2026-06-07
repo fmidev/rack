@@ -213,7 +213,8 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 	TreeSVG & overlayGroup = group[Graphic::VECTOR_OVERLAY]; // (svg::GROUP);
 
-	mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " for group ", group->getId());
+	//mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " for group ", group->getId());
+	mout.attention("Hey ", Graphic::VECTOR_OVERLAY, " for group ", group->getId());
 
 	//if (!group.hasChild(VECTOR_OVERLAY)){
 	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
