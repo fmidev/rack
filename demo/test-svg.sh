@@ -178,6 +178,11 @@ WRITE_DOC "Align text to each radar, variant"
 RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cAdd  --gRadarDot 30000 --gRadarLabel \"\${what:date|%A, %d %B %Y}£\${NOD}|\${PLC}£\${what:time}\" '" \\ 'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5' \\   --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\  --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" \\  -o composite3.png \\ --gStyle .LABEL="'fill:white;stroke:forestgreen;font-size:10px'" -o "composite-Labels2"
 
 
+#WRITE_DOC "Test grid clipping" 
+#RUN_TEST \\ --inputPrefix '$PWD/' \\ $COMP_CONF \\  --script "'-Q DBZH --cRange 80000 --cAdd --gRadarGrid 10000:1,15,MASK=true --gRadarLabel \"\${what:date|%A, %d %B %Y}£\${NOD}|\${PLC}£\${what:time}\" '" \\ 'data-kiira/201708121600_radar.polar.fi{ika,kor,van}.h5' \\   --cExtract DATA \\  --gLinkImage '$PWD/data-kiira/map-kiira.png' \\  --gAlign 'HORZ_FILL:VERT_FILL'  -P --imageTransp "''" \\  -o composite3.png \\ --gStyle .LABEL="'fill:white;stroke:forestgreen;font-size:10px'" -o "composite-Labels2"
+
+
+
 #exit 0
 
 # --gTitles main=AUTO,groups=NONE|AUTO|ID,images=NONE

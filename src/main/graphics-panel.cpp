@@ -449,7 +449,7 @@ drain::image::TreeSVG & RackSVG::getAdapterGroup(drain::image::TreeSVG & group){
 		clip -> setId(group->getId(), "Clipper");
 		*/
 		adapterGroup[svg::IMAGE]->setType(svg::GROUP);
-		adapterGroup[svg::IMAGE]->addClass("RASTERS");
+		// adapterGroup[svg::IMAGE]->addClass("RASTERS");
 		// adapterGroup[RadarSVG::VECTOR_OVERLAY]->setType(svg::GROUP); // parking lot, so may be left empty
 		adapterGroup[Graphic::VECTOR_OVERLAY]->addClass(Graphic::VECTOR_OVERLAY);
 		adapterGroup[Graphic::VECTOR_OVERLAY]->addClass(drain::image::ClipperSVG::CLIP);
