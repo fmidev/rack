@@ -152,6 +152,29 @@ public:
 	void exec() const override;
 
 };
+
+class CmdRadarDotTest : public CmdPolarBase { //  drain::BasicCommand,
+
+public:
+
+	// Default: 10 kms.
+	CmdRadarDotTest() : CmdPolarBase(__FUNCTION__, "Mark the radar position with a circle", DOT) {
+		getParameters().link("radius", radiusMetres.range.tuple(10000.0,10000.0), "metres or relative").setFill(true);
+		getParameters().link("MASK", MASK, "add mask");
+	};
+
+	// Copy constructor
+	CmdRadarDotTest(const CmdRadarDotTest & cmd) : CmdPolarBase(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+
+	virtual
+	void exec() const override;
+
+};
+
+
 /**
  *
  *  See also: CmdGrid, CmdCartesianGrid

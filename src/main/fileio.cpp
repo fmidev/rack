@@ -439,9 +439,6 @@ void CmdOutputFile::exec() const {
 
 		mout.info("File format: image");
 
-		//const drain::VariableMap & vmap = ctx.getStatusMap();
-		// mout.pending<LOG_WARNING>(__FUNCTION__, " quantity : ", ctx.getStatusMap().get("what:quantity","??"));
-		// mout.pending<LOG_WARNING>(__FUNCTION__, " quantity1: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
 		const Image & srcImage = ctx.updateCurrentImage();
@@ -450,15 +447,6 @@ void CmdOutputFile::exec() const {
 
 		if (IMAGE_PNG){
 			RackSVG::addImage(ctx, srcImage, filepath);
-			/*
-			std::cout << "\nMain:\n";
-			drain::TreeUtils::dump(RackSVG::getMainGroup(ctx), std::cout);
-			drain::image::NodeSVG::toStream(std::cout, RackSVG::getMainGroup(ctx));
-
-			std::cout << "\nTrack:\n";
-			drain::TreeUtils::dump(ctx.svgTrack, std::cout);
-			drain::image::NodeSVG::toStream(std::cout, ctx.svgTrack);
-			*/
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");

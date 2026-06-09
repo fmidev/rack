@@ -380,8 +380,8 @@ const drain::image::Image & RackContext::updateCurrentImage(){ //RackContext & c
 
 	// mout.attention(__FUNCTION__, ':', __LINE__, " quantity: ", ctx.getStatusMap().get("what:quantity","??"));
 
-	// if ctx.select ..
-	if (!ctx.select.empty()){
+	// if ctx.select is set, or encoding request is set.
+	if (!(ctx.select.empty() && ctx.targetEncoding.empty())){
 		mout.info("selector: ", ctx.select);
 		path = findImage();
 		mout.info("selected image at: ", path);

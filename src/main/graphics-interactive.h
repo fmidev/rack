@@ -182,6 +182,34 @@ public:
 
 };
 
+
+/*
+class CmdDotTest : public CmdPolarBase { //  drain::BasicCommand,
+
+	drain::Point2D<double> coords;
+	std::string id;
+	std::string style;
+
+public:
+
+	inline
+	CmdDotTest() : CmdPolarBase(__FUNCTION__, "Draw a marker circle", LABEL) {
+		getParameters().link("lonlat", coords.tuple(25.0, 60.0), "Coordinate (lon,lat) in degrees(decimal) or metres.");
+		getParameters().link("radius", radiusMetres.range.tuple(0,25000), "metres or relative").setFill(true);
+		getParameters().link("id", id, "XML element id");
+		getParameters().link("style", style, "XML element CSS style");
+	}
+
+	inline
+	CmdDotTest(const CmdDotTest & cmd) : CmdPolarBase(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	void exec() const override;
+
+};
+*/
+
 } // rack::
 
 

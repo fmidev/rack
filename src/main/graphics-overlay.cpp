@@ -409,6 +409,71 @@ void CmdRadarDot::exec() const {
 
 };
 
+void CmdRadarDotTest::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	RadarSVG radarSVG;
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+
+	// Always a range, though here only dis.max used
+	drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
+	// Note: DOT does not use shared polar selection
+	resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.radarProj.getRange());
+
+
+	if (dist.range.max > 0.0){ // earlier!
+
+		// drain::image::TreeUtilsSVG\n
+		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+				{"fill", "white"},
+				{"stroke", "black"},
+				{"stroke-width", 2.0},
+				// {"opacity", 0.5}
+		});
+
+		// overlay.addChild()->setComment(getName(), ' ', getParameters());
+		drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
+		curve->addClass(DOT);
+
+		{
+			// Private scope, to call bezierElem destructor.
+			drain::svgPATH bezierElem(curve);
+			radarSVG.drawCircle(bezierElem, dist.range);
+
+		}
+
+		drain::StringMapper statusFormatter(RackContext::variableMapper);
+		statusFormatter.parse("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}", true); // convert escaped
+		// mout.special(DRAIN_LOG(statusFormatter));
+
+		const std::string info = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
+		drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
+		title->setText(info);
+
+		if (MASK){
+			// Note: mask is full 100% range.
+			drain::image::TreeSVG & localMask = overlay[svg::MASK];
+			{
+				// Private scope, to call bezierElem destructor.
+				drain::svgPATH elem(localMask);
+				radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
+			}
+			// Copy this localMask to shared mask...
+			const int w = radarSVG.geoFrame.getFrameWidth();
+			const int h = radarSVG.geoFrame.getFrameHeight();
+			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+			// ... and "delete" the object.
+			localMask->setType(svg::COMMENT);
+		}
+
+
+	}
+
+};
+
 
 void CmdRadarLabel::exec() const  {
 

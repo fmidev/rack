@@ -134,6 +134,67 @@ void CmdDot::exec() const  {
 }
 
 
+/*
+void CmdDotTest::exec() const  {
+
+	using namespace drain::image;
+
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+	RadarSVG radarSVG;
+
+	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+	// NoTE: this is  not radar specific
+	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " imageCoords=", imageCoords);
+
+	drain::Point2D<double> coordsDeg;
+	// drain::Point2D<int> imageCoords;
+	if (drain::BBox::isMetric(coords)){
+		radarSVG.geoFrame.m2deg(coords, coordsDeg);
+		//radarSVG.geoFrame.m2pix(coords, imageCoords);
+		overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
+	}
+	else {
+		coordsDeg = coords;
+		//radarSVG.geoFrame.deg2pix(coords, imageCoords);
+	}
+	//mout.attention(DRAIN_LOG(imageCoords));
+	mout.attention(DRAIN_LOG(coordsDeg));
+	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
+
+	radarSVG.radarProj.setSiteLocationDeg(coordsDeg.x, coordsDeg.y);
+
+	// const std::string SPOT = "SPOT";
+	//drain::image::TreeUtilsSVG
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, SPOT, {
+			{"fill", "green"},
+			{"stroke", "white"},
+			{"stroke-width", 2.0},
+			// {"opacity", 0.5}
+	});
+
+	// overlay.addChild()->setComment(getName(), ' ', getParameters());
+	drain::image::TreeSVG & curve = overlay[SPOT](drain::image::svg::PATH);
+	curve->addClass(SPOT);
+	if (!id.empty()){
+		curve->setId(id);
+	}
+
+	drain::svgPATH svgElem(curve);
+	radarSVG.drawCircle(svgElem, radiusMetres.range); // km
+
+	if (!style.empty()){
+		curve->setStyle(style);
+	}
+
+	// radarSVG.geoFrame.p
+
+}
+*/
+
+
 
 
 /**

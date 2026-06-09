@@ -66,8 +66,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - encoding: type bug probably nailed
  *  Release 20.4.3
  *  - RadarDataPicker: removed obsolete member 'ref'
- *  Version 20.5.beta
- *  - --for: command line structure for loop
+ *  Version 20.5beta
+ *  --for: command line structure for loop
+ *  Version 20.5
+ *  --for: command line structure for loop
+ *  - outputImage PNG: fixed encoding request (was skipped without explicit --select)
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)
