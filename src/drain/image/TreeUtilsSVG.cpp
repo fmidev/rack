@@ -265,29 +265,6 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 		mout.experimental("clipping elements under: ", path);
 
-		//TreeSVG & defs = this->root[svg::DEFS](svg::DEFS);
-		/*
-		TreeSVG & defs = TreeUtilsSVG::getDefaultObject(this->root, svg::DEFS);
-
-		const std::string & id = t->getId();
-		TreeSVG & clip = defs[id](svg::CLIP_PATH);
-		clip->setId(id,"Clipper");
-		// std::string url = drain::StringBuilder<>("url(#", clip->getId(), ")");
-		t->set("clip-path", drain::StringBuilder<>("url(#", clip->getId(), ")").str());
-		TreeSVG & rect = clip[svg::RECT](svg::RECT);
-		size_t w = t->getWidth();
-		if (w == 0){
-			mout.warn("zero width of clipped object/group, setting 250");
-			w = 450;
-		}
-		size_t h = t->getHeight();
-		if (h == 0){
-			mout.warn("zero height of clipped object/group, setting 250");
-			h = 450;
-		}
-		rect->setWidth(w);
-		rect->setHeight(h);
-		*/
 		TreeSVG & clip = getClippingRect(this->root, t->getWidth(), t->getHeight());
 		t->set("clip-path", drain::StringBuilder<>("url(#", clip->getId(), ")").str());
 	}

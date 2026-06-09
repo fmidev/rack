@@ -953,12 +953,15 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdStyle>();
 
 	DRAIN_CMD_INSTALL(Cmd, RadarDot)();
+	DRAIN_CMD_INSTALL(Cmd, RadarDotTest)(); // .section = HIDDEN;
 	DRAIN_CMD_INSTALL(Cmd, RadarGrid)();
 	DRAIN_CMD_INSTALL(Cmd, RadarSector)();
 	DRAIN_CMD_INSTALL(Cmd, RadarLabel)();
 	// DRAIN_CMD_INSTALL(Cmd, RadarMarker)();
 	DRAIN_CMD_INSTALL(Cmd, RadarRay)();
 	linkRelatedCommands(RadarDot, RadarGrid, RadarRay, RadarSector, RadarLabel); // RadarMarker,
+	linkRelatedCommands(RadarDot, RadarDotTest);
+
 
 	DRAIN_CMD_INSTALL(Cmd, Dot)();
 	linkRelatedCommands(RadarDot,Dot);

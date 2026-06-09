@@ -424,6 +424,16 @@ void CmdRadarDotTest::exec() const {
 	resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.radarProj.getRange());
 
 
+	drain::image::TreeSVG & imgGroupTest = RackSVG::getImagePanelGroup(ctx);
+	drain::image::TreeSVG & vectGroupTest = imgGroupTest[DOT](drain::image::svg::GROUP);
+	//vectGroupTest->addClass(LayoutSVG::NEUTRAL);
+	//vectGroupTest->addClass(LayoutSVG::COMPOUND);
+	// assumes IMAGE BORDER or IMAGE?
+	vectGroupTest->setMyAlignAnchor(drain::image::svg::IMAGE);
+	vectGroupTest->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	vectGroupTest->addClass(drain::image::ClipperSVG::CLIP);
+
+
 	if (dist.range.max > 0.0){ // earlier!
 
 		// drain::image::TreeUtilsSVG\n
@@ -435,7 +445,10 @@ void CmdRadarDotTest::exec() const {
 		});
 
 		// overlay.addChild()->setComment(getName(), ' ', getParameters());
-		drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
+		// drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
+		// drain::image::TreeSVG & curve = imgGroupTest[DOT](drain::image::svg::PATH);
+		drain::image::TreeSVG & curve = vectGroupTest[DOT](drain::image::svg::PATH);
+		//curve->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 		curve->addClass(DOT);
 
 		{
