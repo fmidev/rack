@@ -470,8 +470,9 @@ void CmdRadarDotTest::exec() const {
 		if (MASK){
 			// Note: mask is full 100% range. - ?
 			// drain::image::TreeSVG & localMask = overlay[svg::MASK];
-			drain::image::TreeSVG & localMask = vectGroupTest[svg::MASK];
-			//drain::image::TreeSVG & localMask = imgGroupTest[svg::MASK];
+			//drain::image::TreeSVG & localMask = vectGroupTest[svg::MASK];
+			// drain::image::TreeSVG & localMask = imgGroupTest[svg::MASK]; // MaskerSVG::COVER
+			drain::image::TreeSVG & localMask = imgGroupTest[MaskerSVG::COVER]; // MaskerSVG::COVER
 			{
 				// Private scope, to call bezierElem destructor.
 				drain::svgPATH elem(localMask);

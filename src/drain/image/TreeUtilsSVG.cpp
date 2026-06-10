@@ -383,7 +383,8 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 		if (group->typeIs(drain::image::svg::GROUP)){
 			//drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
-			drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+			//drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+			drain::image::TreeSVG & rect = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
 			linkMask(mask, rect);
 		}
 		else {

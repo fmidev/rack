@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,5)
+#define RACK_VERSION drain::Version<>(20,5,1,"beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -71,6 +71,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 20.5
  *  --for: command line structure for loop
  *  - outputImage PNG: fixed encoding request (was skipped without explicit --select)
+ *  Release 20.5.1beta
+ *  - SVG: revised MASK and CLIP: ensure for panels
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)
