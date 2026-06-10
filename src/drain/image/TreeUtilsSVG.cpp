@@ -366,12 +366,20 @@ TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int 
 	return mask;
 }
 
+void MaskerSVG::addCoverRect(const TreeSVG & mask, TreeSVG & group) {
+	drain::image::TreeSVG & cover = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+	cover->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
+	cover->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
+	cover->addClass(COVER);
+}
 
+/*
 void MaskerSVG::linkMask(const TreeSVG & mask, TreeSVG & obj) {
 	obj->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
 	obj->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
 	obj->addClass(COVER);
 }
+*/
 
 
 int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
@@ -384,8 +392,10 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		if (group->typeIs(drain::image::svg::GROUP)){
 			//drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
 			//drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
-			drain::image::TreeSVG & rect = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
-			linkMask(mask, rect);
+
+			addCoverRect(mask, group);
+			//drain::image::TreeSVG & rect = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+			//linkMask(mask, rect);
 		}
 		else {
 			drain::Logger mout(__FILE__, __FUNCTION__);

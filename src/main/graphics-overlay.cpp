@@ -469,22 +469,23 @@ void CmdRadarDotTest::exec() const {
 
 		if (MASK){
 			// Note: mask is full 100% range. - ?
+
 			// drain::image::TreeSVG & localMask = overlay[svg::MASK];
 			//drain::image::TreeSVG & localMask = vectGroupTest[svg::MASK];
 			// drain::image::TreeSVG & localMask = imgGroupTest[svg::MASK]; // MaskerSVG::COVER
-			drain::image::TreeSVG & localMask = imgGroupTest[MaskerSVG::COVER]; // MaskerSVG::COVER
+			drain::image::TreeSVG & tmpMask = imgGroupTest[MaskerSVG::COVER]; // MaskerSVG::COVER
 			{
 				// Private scope, to call bezierElem destructor.
-				drain::svgPATH elem(localMask);
+				drain::svgPATH elem(tmpMask);
 				radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
 			}
 			// Copy this localMask to shared mask...
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
 			// MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
-			MaskerSVG::createMask(ctx.svgTrack, imgGroupTest, w, h, localMask.data);
+			MaskerSVG::createMask(ctx.svgTrack, imgGroupTest, w, h, tmpMask.data);
 			// ... and "delete" the object.
-			localMask->setType(svg::COMMENT);
+			tmpMask->setType(svg::COMMENT);
 		}
 
 

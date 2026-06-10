@@ -261,8 +261,19 @@ public:
 	 *  \param obj  - SVG element, typically of type RECT, to be masked.
 	 *
 	 */
+	// static
+	//void linkMask(const TreeSVG & mask, TreeSVG & obj);
+
+	/// Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object.
+	/**
+	 *  The mask parameter with be assigned value "url(" + maskId + ")".
+	 *
+	 *  \param mask   - SVG object of type MASK.
+	 *  \param group  - SVG group containing graphics, appended by a RECT of class COVER.
+	 *
+	 */
 	static
-	void linkMask(const TreeSVG & mask, TreeSVG & obj);
+	void addCoverRect(const TreeSVG & mask, TreeSVG & group);
 
 
 	/// Ensures a clipping path o f type RECT of given size.
