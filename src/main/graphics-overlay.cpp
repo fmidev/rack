@@ -458,6 +458,7 @@ void CmdRadarDotTest::exec() const {
 
 		}
 
+		// TODO: extract makeTitle(...)
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}", true); // convert escaped
 		// mout.special(DRAIN_LOG(statusFormatter));
@@ -467,8 +468,10 @@ void CmdRadarDotTest::exec() const {
 		title->setText(info);
 
 		if (MASK){
-			// Note: mask is full 100% range.
-			drain::image::TreeSVG & localMask = overlay[svg::MASK];
+			// Note: mask is full 100% range. - ?
+			// drain::image::TreeSVG & localMask = overlay[svg::MASK];
+			drain::image::TreeSVG & localMask = vectGroupTest[svg::MASK];
+			//drain::image::TreeSVG & localMask = imgGroupTest[svg::MASK];
 			{
 				// Private scope, to call bezierElem destructor.
 				drain::svgPATH elem(localMask);
@@ -477,7 +480,8 @@ void CmdRadarDotTest::exec() const {
 			// Copy this localMask to shared mask...
 			const int w = radarSVG.geoFrame.getFrameWidth();
 			const int h = radarSVG.geoFrame.getFrameHeight();
-			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+			// MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+			MaskerSVG::createMask(ctx.svgTrack, imgGroupTest, w, h, localMask.data);
 			// ... and "delete" the object.
 			localMask->setType(svg::COMMENT);
 		}

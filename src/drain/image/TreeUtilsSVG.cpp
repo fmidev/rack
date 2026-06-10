@@ -346,7 +346,7 @@ TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int 
 
 	const drain::FlexibleVariable & maskId = createMaskId(group);
 
-	std::string s; //  = drain::MapTools::get(group->getAttributes(), "data-latest", group->getId());
+	std::string s;
 	if (group.hasChild(svg::DESC)){
 		s = group[svg::DESC].data.getText();
 	}
