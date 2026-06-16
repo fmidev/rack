@@ -612,7 +612,7 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 		"what:date", "what:time", "what:product", "what:prodpar", "what:quantity",
 		"where:elangle", "where:lon", "where:lat", "where:EPSG", // "where:projdef",
 		"how:camethod",
-		"prevCmdKey"}){
+		"prevCmdKey"}){ // consider other than prevCmd (product or so)
 
 		if (src.properties.hasKey(key)){
 			size_t i = key.find(':');

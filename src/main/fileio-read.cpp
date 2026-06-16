@@ -328,7 +328,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffM
 
 			std::list<std::string> movedAttributes;
 
-			for (const char * key: {
+			for (const char *key: {
 					"lowprf", "highprf", "NI", "astart", "rpm", "nsampleH", "nsampleV", "scan_index",
 					"startazT", "stopazT", "startelA", "stopelA"
 			}){
@@ -362,13 +362,13 @@ void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffM
 		bool append = true;
 
 		if (ctx.isScriptDefined()){
-			// Ok, looks like each file is from different radar.
+			// Ok, so each (volume) file is from different radar?
 			// Is this a good criterion? Sweeps can also trigger a script, right?
 			append = false;
 		}
 
 		if (maxTimeDiffMinutes >= 0) {
-			// Ok, forced combine.
+			// Ok, allow combine.  (negative, with same radar, means combining any?) (or INT_MAX)?
 			append = true;
 		}
 
@@ -1051,7 +1051,6 @@ void pickElems(const Hi5Tree & src, int groupFilter, std::map<std::string, ODIMP
 }
 */
 
-//readListFile
 //void CmdInputFile::readListFile(const std::string & fullFilename) const  {
 
 void CmdInputFile::readListFile(const drain::FilePath & path) const  {
@@ -1062,20 +1061,25 @@ void CmdInputFile::readListFile(const drain::FilePath & path) const  {
 
 	//mout.experimental("Reading list: ", fullFilename);
 
+
 	bool HANDLE_SEPARATELY = false;
 
 	if (path.extension == "vol"){
 		// Read full volume, do not trigger
-		mout.warn("List: Read files, creating a volume"); //, script trigger disabled");
+		mout.revised("Read files in the list, creating a volume, and trigger script trigger if enabled");
 		HANDLE_SEPARATELY = false;
 	}
 	else if (path.extension == "lst"){
 		// Read one by one, and trigger script (if defined)
-		mout.warn("Read files one by one"); // , script trigger enabled");
+		mout.revised("Read files one by one"); // , script trigger enabled");
+		// mout.revised("Read files in the list, creating a volume, and trigger script trigger if enabled");
 		HANDLE_SEPARATELY = true;
+		(int &)this->section = 0; // Don't exec script after this cmd (after inserting the list)
 	}
 	else {
+		// or accept like "lst" ?
 		mout.error("unknown list file extension: ", path.extension);
+		return;
 	}
 
 
@@ -1094,18 +1098,15 @@ void CmdInputFile::readListFile(const drain::FilePath & path) const  {
 	}
 
 	drain::Input input(path); // fullFilename);
-	// std::string  tmp;
-	// bool FIRST = true;
-	// std::string lastFile;
-	// (int &)this->section = 0;
 	std::string line;
 	while (std::getline((std::ifstream &)input, line)){
+
 		if (!line.empty()){
 			// mout.debug2(line );
 			if (line.at(0) != '#'){
 
-				// Note: comments also after commands could be stripped,
-				// but simple char search is faulty as command args can contain hash '#'
+				// Note: comments also after commands could be stripped, but...
+				// ... simple search of char '#' is faulty as command arguments can also contain it.
 				std::string inputFileName = drain::StringTools::trim(line);
 				if (inputFileName == this->value){
 					// Todo: use full paths in comparing...

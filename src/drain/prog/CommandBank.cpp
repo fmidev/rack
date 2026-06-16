@@ -469,6 +469,7 @@ void CommandBank::remove(Program & prog) const {
 
 
 /// Run a single command
+/*
 void CommandBank::run(const std::string & cmdKey, const std::string & params, Context & ctx){
 
 	Logger mout(ctx.log, __FILE__, __FUNCTION__);
@@ -482,6 +483,7 @@ void CommandBank::run(const std::string & cmdKey, const std::string & params, Co
 	cmd.setExternalContext(ctx);
 	cmd.run(params);
 }
+*/
 
 // TEST
 /*
@@ -493,7 +495,33 @@ Script & getRoutine(Program & prog, Script task){
 }
 */
 
-void CommandBank::runNEW(const key_t & key, Command & cmd, Context & ctx) const {
+
+void CommandBank::commitAddedCommands(Context & ctx, Program & prog, Program::iterator it) const {
+
+	Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	if (!ctx.addedCommands.empty()){
+
+		++it;
+		for (const auto & entry: ctx.addedCommands){
+			mout.experimental("appending: ", entry.first, ' ', entry.second);
+			command_t & cmd = clone(entry.first);
+			cmd.setExternalContext(ctx);
+			cmd.setParameters(entry.second);
+
+			prog.add(entry.first, cmd, it); // dangerous? current prog iterator
+			//prog.add(entry.first, cmd, ait); // dangerous? current prog iterator
+		}
+		// this->append(ctx.addedCommands, ctx, prog);
+		ctx.addedCommands.clear();
+		mout.experimental<LOG_NOTICE>("prog: \n", prog);
+
+	}
+
+}
+
+
+void CommandBank::run(const key_t & key, Command & cmd, Context & ctx) const {
 
 	Logger mout(ctx.log, __FILE__, __FUNCTION__); // Could be thread prefix?
 	// Logger mout2(ctx.log, __FILE__, __FUNCTION__);
@@ -632,32 +660,26 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// Add current command (typically read file), so that it becomes executed.
 			// Logger mout2(ctx.log, __FILE__, __FUNCTION__);
 			// mout2.startTiming("SCRIPT");
-			mout.accept<LOG_NOTICE>("TRIGGER activated by ", cmd.getName(), ' ', cmd.getLastParameters(), " (running it first)");
-
-			// runNEW(key, cmd, ctx);
-			/*
-			Program prog(cmd.getContext<Context>());
-			Command & cmd2 = prog.add(key, cmd); //.section = 0;;
-			run(prog, contextCloner);
-			cmd2.section = 0;
-			*/
-			//mout.warn(DRAIN_LOG(ctx.routine.size()));
+			int section = cmd.section;
+			mout.accept<LOG_DEBUG>("TRIGGER activated by ", cmd.getName(), ' ', cmd.getLastParameters(), " (running it first)");
+			run(key, cmd, ctx);
+			commitAddedCommands(ctx, prog, it);
 
 			if ((cmd.section & this->scriptTriggerFlag) == 0){
-				mout.accept<LOG_NOTICE>("Trigger deactivation requested by : ", cmd.getName());
-				// cmd.section |= this->scriptTriggerFlag;
-				//continue;
+				mout.accept<LOG_DEBUG>("Current prog: \n", prog);
+				mout.accept<LOG_INFO>("Trigger deactivation requested by : ", key, ' ', cmd.getLastParameters());
+				//cmd.section |= this->scriptTriggerFlag;
+				cmd.section = section; // |= this->scriptTriggerFlag;
+				continue;
 			}
 
 			if (ctx.loops.empty()){
-				mout.accept<LOG_NOTICE>("Running script in main thread: ", ctx.getName());
+				mout.experimental<LOG_DEBUG>("Running script in main thread: ", ctx.getName());
 
 				Program prog(cmd.getContext<Context>());
-				prog.add(key, cmd).section = 0; // Prevent infinite recursion
+				//prog.add(key, cmd).section = 0; // Prevent infinite recursion
 				append(ctx.routine, prog);
 				run(prog, contextCloner); // Run in this context
-				// cmd.update(); //  --select etc
-				// cmd.exec();
 			}
 			else {
 				mout.attention("Repeating script in loop(s)");
@@ -665,7 +687,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				// Reduced version -> TODO: separate exec(cmd, ctx) with statusMap handling (see below, default case)
 				// cmd.update(); //  --select etc
 				// cmd.exec();
-				runNEW(key, cmd, ctx);
+				// run(key, cmd, ctx);
 
 				traverseLoops(ctx, contextCloner);
 				ctx.loops.clear();
@@ -769,10 +791,13 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else { // Run a "normal" command...  This is the default action.
 
-			mout.accept<LOG_NOTICE>("DEFAULT Executing: ", key, " = ", cmd, ' ');
+			mout.accept<LOG_DEBUG>("DEFAULT Executing: ", key, " = ", cmd, ' ');
 
-			runNEW(key, cmd, ctx);
+			run(key, cmd, ctx);
 
+			commitAddedCommands(ctx, prog, it);
+
+			/*
 			if (!ctx.addedCommands.empty()){
 
 				Program::iterator ait = it;
@@ -790,6 +815,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 				ctx.addedCommands.clear();
 				mout.experimental<LOG_NOTICE>("prog: \n", prog);
 			}
+			*/
 
 		}
 		// TODO: when to explicitly clear ctx.routine?

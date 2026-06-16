@@ -168,11 +168,17 @@ public:
 	void remove(Program & prog) const;
 
 	/// Run a single command
-	void run(const std::string & cmd, const std::string & params, Context & ctx);
+	// void run(const std::string & cmd, const std::string & params, Context & ctx);
 
 	/// Run a single command
-	void runNEW(const std::string & key, Command & cmd, Context & ctx) const;
+	/**
+	 *  \param key - command name as it appears as option, on command line
+	 *  \param cmd - respective (cloned) command object
+	 *  \param ctx - current program execution context
+	 */
+	void run(const std::string & key, Command & cmd, Context & ctx) const;
 
+	void commitAddedCommands(Context & ctx, Program & prog, Program::iterator it) const;
 	/// Unlike compile, "interprets" script by running it command by command. \see compile()
 	//void run(ScriptTxt & script, drain::Context & context);
 	// void run(Script & script, ClonerBase<Context> & contextSrc);
