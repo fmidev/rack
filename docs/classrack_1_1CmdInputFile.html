@@ -302,13 +302,12 @@ typedef std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:aa850993fcf91f8a879b33529188aced6" id="r_aa850993fcf91f8a879b33529188aced6"><td class="memItemLeft" align="right" valign="top"><a id="aa850993fcf91f8a879b33529188aced6" name="aa850993fcf91f8a879b33529188aced6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>readFileH5</b> (const std::string &amp;fullFilename) const</td></tr>
-<tr class="memdesc:aa850993fcf91f8a879b33529188aced6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads hdf5 file and appends it to H5 structure. Works only with sweeps (SCAN), volume (PVOL) or Cartesian data (COMP) (having elevations). <br /></td></tr>
-<tr class="separator:aa850993fcf91f8a879b33529188aced6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53ed4638c15451c987247f968b84760b" id="r_a53ed4638c15451c987247f968b84760b"><td class="memItemLeft" align="right" valign="top"><a id="a53ed4638c15451c987247f968b84760b" name="a53ed4638c15451c987247f968b84760b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>readListFile</b> (const std::string &amp;fullFilename) const</td></tr>
-<tr class="separator:a53ed4638c15451c987247f968b84760b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa50dcfa4befb55ea92faf123d82f72" id="r_a8aa50dcfa4befb55ea92faf123d82f72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInputFile.html#a8aa50dcfa4befb55ea92faf123d82f72">readFileH5</a> (const std::string &amp;fullFilename, int maxTimeDiffMinutes=0) const</td></tr>
+<tr class="memdesc:a8aa50dcfa4befb55ea92faf123d82f72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read cartesian or polar data (sweep, volume).  <br /></td></tr>
+<tr class="separator:a8aa50dcfa4befb55ea92faf123d82f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe6fd640d499cbd0369b7a03abe5bb29" id="r_afe6fd640d499cbd0369b7a03abe5bb29"><td class="memItemLeft" align="right" valign="top"><a id="afe6fd640d499cbd0369b7a03abe5bb29" name="afe6fd640d499cbd0369b7a03abe5bb29"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>readListFile</b> (const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;path) const</td></tr>
+<tr class="separator:afe6fd640d499cbd0369b7a03abe5bb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab58d25a120fe939d6d1a7a94c18fe0d3" id="r_ab58d25a120fe939d6d1a7a94c18fe0d3"><td class="memItemLeft" align="right" valign="top"><a id="ab58d25a120fe939d6d1a7a94c18fe0d3" name="ab58d25a120fe939d6d1a7a94c18fe0d3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>readTextFile</b> (const std::string &amp;fullFilename) const</td></tr>
 <tr class="separator:ab58d25a120fe939d6d1a7a94c18fe0d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -487,6 +486,51 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>lastParameters
 <p>Run the command with current parameter values. </p>
 
 <p>Reimplemented from <a class="el" href="classdrain_1_1Command.html#a951c3a8da6ec531137592b969a542cbb">Command</a>.</p>
+
+</div>
+</div>
+<a id="a8aa50dcfa4befb55ea92faf123d82f72" name="a8aa50dcfa4befb55ea92faf123d82f72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aa50dcfa4befb55ea92faf123d82f72">&#9670;&#160;</a></span>readFileH5()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void readFileH5 </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>fullFilename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxTimeDiffMinutes</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read cartesian or polar data (sweep, volume). </p>
+<p>Reads hdf5 file and appends it to H5 structure. Works only with sweeps (SCAN), volume (PVOL) or Cartesian data (COMP) (having elevations).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fullFilename</td><td>- file path </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

@@ -153,9 +153,9 @@ static TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMa
 static TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>createMask</b> (TreeSVG &amp;root, TreeSVG &amp;group, int width=0, int height=0, const <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp;node=<a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>(svg::UNDEFINED))</td></tr>
 <tr class="memdesc:afef73264e412e1be7df13bb4538c271e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#aaf304360d4426a123a017176a65c766d" title="Mark an overlay group &quot;masked&quot;, meaning that at least one of its objects (also) creates a mask for th...">createMaskId()</a>, <a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#a9423f76cdcab4fb9bf89079cadab8a41" title="From global document definitions (DEFS), retrieve the mask designed for this group.">getMask()</a> and <a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#a65217523625a2e0e0d713103e6417a88" title="Method for an object to copy its contour.">updateMask()</a>. <br /></td></tr>
 <tr class="separator:afef73264e412e1be7df13bb4538c271e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01dad6c80f1cf3f81457690133218fea" id="r_a01dad6c80f1cf3f81457690133218fea"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#a01dad6c80f1cf3f81457690133218fea">linkMask</a> (const TreeSVG &amp;mask, TreeSVG &amp;obj)</td></tr>
-<tr class="memdesc:a01dad6c80f1cf3f81457690133218fea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object.  <br /></td></tr>
-<tr class="separator:a01dad6c80f1cf3f81457690133218fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf68bd13a975ce8c29af847866cf0a1b" id="r_acf68bd13a975ce8c29af847866cf0a1b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#acf68bd13a975ce8c29af847866cf0a1b">addCoverRect</a> (const TreeSVG &amp;mask, TreeSVG &amp;group)</td></tr>
+<tr class="memdesc:acf68bd13a975ce8c29af847866cf0a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object.  <br /></td></tr>
+<tr class="separator:acf68bd13a975ce8c29af847866cf0a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -169,6 +169,54 @@ static const <a class="el" href="classdrain_1_1ClassXML.html">ClassXML</a>&#160;
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Tools for creating masks for graphic objects based on their contours. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="acf68bd13a975ce8c29af847866cf0a1b" name="acf68bd13a975ce8c29af847866cf0a1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf68bd13a975ce8c29af847866cf0a1b">&#9670;&#160;</a></span>addCoverRect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void addCoverRect </td>
+          <td>(</td>
+          <td class="paramtype">const TreeSVG &amp;&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TreeSVG &amp;&#160;</td>
+          <td class="paramname"><em>group</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object. </p>
+<p>The mask parameter with be assigned value "url(" + maskId + ")".</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mask</td><td>- SVG object of type MASK. </td></tr>
+    <tr><td class="paramname">obj</td><td>- SVG element, typically of type RECT, to be masked. Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object. The mask parameter with be assigned value "url(" + maskId + ")".</td></tr>
+    <tr><td class="paramname">mask</td><td>- SVG object of type MASK. </td></tr>
+    <tr><td class="paramname">group</td><td>- SVG group containing graphics, appended by a RECT of class COVER. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aaf304360d4426a123a017176a65c766d" name="aaf304360d4426a123a017176a65c766d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf304360d4426a123a017176a65c766d">&#9670;&#160;</a></span>createMaskId()</h2>
 
@@ -195,52 +243,6 @@ static const <a class="el" href="classdrain_1_1ClassXML.html">ClassXML</a>&#160;
 
 <p>Mark an overlay group "masked", meaning that at least one of its objects (also) creates a mask for that group. </p>
 <p>Later, a RECT will be appended, serving as a masking element. </p>
-
-</div>
-</div>
-<a id="a01dad6c80f1cf3f81457690133218fea" name="a01dad6c80f1cf3f81457690133218fea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01dad6c80f1cf3f81457690133218fea">&#9670;&#160;</a></span>linkMask()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void linkMask </td>
-          <td>(</td>
-          <td class="paramtype">const TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>mask</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>obj</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object. </p>
-<p>The mask parameter with be assigned value "url(" + maskId + ")".</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">mask</td><td>- SVG object of type MASK. </td></tr>
-    <tr><td class="paramname">obj</td><td>- SVG element, typically of type RECT, to be masked. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

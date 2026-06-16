@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['text_20output_0',['Text output',['../text-output-page.html',1,'']]],
-  ['todo_20list_1',['Todo List',['../todo.html',1,'']]]
+  ['scripts_0',['Scripts',['../scriptspage.html',1,'']]],
+  ['selecting_20data_1',['Selecting data',['../selectpage.html',1,'']]],
+  ['statistics_2',['Python3 utilities for extracting statistics',['../python_statistics.html',1,'']]],
+  ['svg_20files_3',['Writing SVG files',['../svgpage.html',1,'']]]
 ];

@@ -216,13 +216,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>flushRoutine</b> (<a 
 <tr class="memitem:a09f5b1b16e1e282ec405063471e6bea3" id="r_a09f5b1b16e1e282ec405063471e6bea3"><td class="memItemLeft" align="right" valign="top"><a id="a09f5b1b16e1e282ec405063471e6bea3" name="a09f5b1b16e1e282ec405063471e6bea3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>remove</b> (<a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
 <tr class="separator:a09f5b1b16e1e282ec405063471e6bea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89eec0772bf2dc5e8a5854e69be1ba3e" id="r_a89eec0772bf2dc5e8a5854e69be1ba3e"><td class="memItemLeft" align="right" valign="top"><a id="a89eec0772bf2dc5e8a5854e69be1ba3e" name="a89eec0772bf2dc5e8a5854e69be1ba3e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>run</b> (const std::string &amp;cmd, const std::string &amp;params, <a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx)</td></tr>
-<tr class="memdesc:a89eec0772bf2dc5e8a5854e69be1ba3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a single command. <br /></td></tr>
-<tr class="separator:a89eec0772bf2dc5e8a5854e69be1ba3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ff51b851d9fb41327cfd127fdcc340" id="r_a40ff51b851d9fb41327cfd127fdcc340"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a40ff51b851d9fb41327cfd127fdcc340">run</a> (const std::string &amp;key, <a class="el" href="classdrain_1_1Command.html">Command</a> &amp;cmd, <a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx) const</td></tr>
+<tr class="memdesc:a40ff51b851d9fb41327cfd127fdcc340"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a single command.  <br /></td></tr>
+<tr class="separator:a40ff51b851d9fb41327cfd127fdcc340"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b6967fe6302e5ee537bade6103549a2" id="r_a2b6967fe6302e5ee537bade6103549a2"><td class="memItemLeft" align="right" valign="top"><a id="a2b6967fe6302e5ee537bade6103549a2" name="a2b6967fe6302e5ee537bade6103549a2"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>commitAddedCommands</b> (<a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog, Program::iterator it) const</td></tr>
+<tr class="memdesc:a2b6967fe6302e5ee537bade6103549a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a single command. <br /></td></tr>
+<tr class="separator:a2b6967fe6302e5ee537bade6103549a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30edf254f408543e91d133b1a2f19de7" id="r_a30edf254f408543e91d133b1a2f19de7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a30edf254f408543e91d133b1a2f19de7">run</a> (<a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog, <a class="el" href="structdrain_1_1ClonerBase.html">ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Context.html">Context</a> &gt; &amp;contextCloner)</td></tr>
 <tr class="memdesc:a30edf254f408543e91d133b1a2f19de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike compile, "interprets" script by running it command by command.  <br /></td></tr>
 <tr class="separator:a30edf254f408543e91d133b1a2f19de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3376d069c5e642d9ee28c3516dc7968" id="r_aa3376d069c5e642d9ee28c3516dc7968"><td class="memItemLeft" align="right" valign="top"><a id="aa3376d069c5e642d9ee28c3516dc7968" name="aa3376d069c5e642d9ee28c3516dc7968"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>traverseLoops</b> (<a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="structdrain_1_1ClonerBase.html">ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Context.html">Context</a> &gt; &amp;contextCloner)</td></tr>
+<tr class="separator:aa3376d069c5e642d9ee28c3516dc7968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c806b20822690631a699151971cac29" id="r_a8c806b20822690631a699151971cac29"><td class="memItemLeft" align="right" valign="top"><a id="a8c806b20822690631a699151971cac29" name="a8c806b20822690631a699151971cac29"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>traverseLoops</b> (<a class="el" href="classdrain_1_1Context.html">Context</a> &amp;ctx, <a class="el" href="structdrain_1_1ClonerBase.html">ClonerBase</a>&lt; <a class="el" href="classdrain_1_1Context.html">Context</a> &gt; &amp;contextCloner, Loop::loopStack::const_iterator it, Loop::loopStack::const_iterator itEnd)</td></tr>
+<tr class="separator:a8c806b20822690631a699151971cac29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa5e1d60643ea389b706dbf0dfa2ec32" id="r_aaa5e1d60643ea389b706dbf0dfa2ec32"><td class="memItemLeft" align="right" valign="top"><a id="aaa5e1d60643ea389b706dbf0dfa2ec32" name="aaa5e1d60643ea389b706dbf0dfa2ec32"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>help</b> (std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:aaa5e1d60643ea389b706dbf0dfa2ec32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic help dump, displays help commands to proceed. <br /></td></tr>
@@ -611,8 +620,52 @@ Utilities for creating scripts and programs</h1>
 
 </div>
 </div>
+<a id="a40ff51b851d9fb41327cfd127fdcc340" name="a40ff51b851d9fb41327cfd127fdcc340"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40ff51b851d9fb41327cfd127fdcc340">&#9670;&#160;</a></span>run() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void run </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Command.html">Command</a> &amp;&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1Context.html">Context</a> &amp;&#160;</td>
+          <td class="paramname"><em>ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Run a single command. </p>
+<p>Run a single command </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>- command name as it appears as option, on command line </td></tr>
+    <tr><td class="paramname">cmd</td><td>- respective (cloned) command object </td></tr>
+    <tr><td class="paramname">ctx</td><td>- current program execution context </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a30edf254f408543e91d133b1a2f19de7" name="a30edf254f408543e91d133b1a2f19de7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30edf254f408543e91d133b1a2f19de7">&#9670;&#160;</a></span>run()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a30edf254f408543e91d133b1a2f19de7">&#9670;&#160;</a></span>run() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -639,7 +692,6 @@ Utilities for creating scripts and programs</h1>
 
 <p>Unlike compile, "interprets" script by running it command by command. </p>
 <dl class="section see"><dt>See also</dt><dd>compile() </dd></dl>
-<p>MAIN</p>
 
 </div>
 </div>
