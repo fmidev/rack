@@ -75,6 +75,7 @@ void SourceODIM::init(){
 	if (ODIM::versionFlagger.isSet(ODIM::Version::ODIM_2_4)){
 		(*this)["WIGOS"].link(WIGOS);
 	}
+	//(*this)["SRC"].link(getPreferredSourceCode());
 }
 
 
@@ -91,6 +92,13 @@ const std::string & SourceODIM::getPreferredSourceCode() const {
 	const static std::string empty;
 	return empty;
 }
+
+/*
+std::string & SourceODIM::getPreferredSourceCode() {
+	static std::string empty;
+	return empty;
+}
+*/
 
 
 /// Tries to resolve NOD code from partial or deprecated metadata

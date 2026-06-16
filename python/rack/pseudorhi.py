@@ -274,11 +274,17 @@ def handle_infile(args, progBuilder: rack.core.Rack):
 
             
 def get_background_filename(args, prefixed=False):
+    """
+    Get background filename based on --gnuplot argument, 
+    and optionally prefix with OUTDIR if prefixed=True.
+    """
     p = Path(args.gnuplot)
     if prefixed and args.OUTDIR:
         return f"{args.OUTDIR}{p.stem}-background.png"  
-    else:
+    elif p.parent and p.parent != Path('.'):
         return f"{p.parent}/{p.stem}-background.png"
+    else:
+        return f"{p.stem}-background.png"
 
 def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     # Assumes prefix has been handled
@@ -351,13 +357,16 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
             cmdBuilder.imageAlpha()
             cmdBuilder.imageFlatten(args.background)
 
-        # transparency?
+        # transparency?--gInclude
         if (args.gnuplot):
+            cmdBuilder.gLinkImage(args.gnuplot)
+            cmdBuilder.gInclude("SKIP")
             cmdBuilder.outputFile(get_background_filename(args, prefixed=False))
         else:
             cmdBuilder.outputFile(f"{output_basename}.png")
         
-        formats.remove('png')
+        if ('png' in formats):
+            formats.remove('png')
 
     if 'svg' in formats:
         cmdBuilder.outputFile(f"{output_basename}.svg")
@@ -369,9 +378,27 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
 def handle_product(args, progBuilder: rack.core.Rack):
 
     if args.PRODUCT:
-        progBuilder.product(args.PRODUCT)
+        cmd,params = args.PRODUCT.split(',', 1)
+        cmd = cmd.strip()
+        params = params.strip()
+        if hasattr(rack.core.Rack, cmd):
+            rackCmd = getattr(rack.core.Rack, cmd)
+            # logger.warning(type(rackCmd))
+            logger.warning(f"Adding cmd: {cmd}, params: {params}")
+            rackCmd(progBuilder, *params.split(','))
+            progBuilder.cCreate() 
+            progBuilder.paletteDefault() 
+            p = Path(args.gnuplot)
+            if args.OUTDIR:
+                progBuilder.outputFile(f"{args.OUTDIR}/{p.stem}-product.png")
+            else:
+                progBuilder.outputFile(f"{p.parent}/{p.stem}-product.png")
 
-    pass    
+            # TODO: consider palette for products, e.g. with --PALETTE
+            #progBuilder.getCmdSequence().add(rackCmd(params))
+        else:
+            logger.warning(f"Unsupported product: {args.PRODUCT}. Skipping.")
+
 
 def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
 
@@ -523,6 +550,9 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     # RHI specific
     handle_infile(args, rackCmdReg)
+
+    # Optional Cartesian
+    handle_product(args, rackCmdReg)
 
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
 

@@ -319,7 +319,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     # log.info(f"fmt = {fmt}")
 
     # shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
-    shared_cmd_args = ['--select','data:', '--format', f'{fmt}\\n', '-o', '-']
+    shared_cmd_args = ['--select','data:', '--format', f"'{fmt}\\n'", '-o', '-']
     # shared_cmd_args = ['--select','dataset1/data3', '--format', f'{fmt}\n', '-o', '-']
     variable_keys = variables.keys()
 
@@ -332,7 +332,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
         # Todo: better cmd creator
         cmd = ['rack', INFILE ]
         cmd.extend(shared_cmd_args)
-        #logger.warning(" ".join(cmd))
+        logger.info(" ".join(cmd))
         
         # Main loop 1: traverse HDF5 files
         result = subprocess.run(cmd, stdout=subprocess.PIPE)

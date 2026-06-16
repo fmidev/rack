@@ -103,14 +103,15 @@ while [ ${#*} != 0 ]; do
 	
 	echo "# NEW Trial " # -o $VOLUME_IMG
 	select="-Q '.*${QUANTITY}.*'" # +"OP"
-	cmd="$cmd_base --gGroupTitle '\${what:quantity}' --gGroupId 'Detection' --store INTERMEDIATE --$aDETECTOR '$VALUES' $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART -o ${ANOM_IMG_PANEL_SVG}"
+	cmd="$cmd_base --gGroupTitle '\${what:quantity}' --gGroupId 'Detection' --store INTERMEDIATE --$aDETECTOR $VALUES $select -o $ANOM_IMG $select --cSize 500   -c -o $ANOM_IMG_CART -o ${ANOM_IMG_PANEL_SVG}"
 	echo "$cmd"
+	echo "$cmd" > ${ANOM_IMG_PANEL%.*}.log
 	eval "$cmd"
 
 	IMG_PANEL="result-$NICK-$DETLABEL.png"
 	
 	#cmd="convert ${ANOM_IMG_PANEL_SVG} ${ANOM_IMG_PANEL}"
-	cmd="convert ${ANOM_IMG_PANEL_SVG} ${IMG_PANEL}"
+	cmd="convert ${ANOM_IMG_PANEL_SVG} -resize 800x732 ${IMG_PANEL}"
 	echo "$cmd"
 	eval "$cmd"
 

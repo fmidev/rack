@@ -35,52 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 
 
-namespace drain {
-
-/*
-template <>
-const drain::Enum<rack::GraphicsContext::ElemClass>::dict_t  drain::Enum<rack::GraphicsContext::ElemClass>::dict = {
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, NONE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, MAIN_TITLE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GROUP_TITLE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_TITLE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TITLE),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, LOCATION),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, TIME),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, GENERAL),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_PANEL),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, IMAGE_BORDER),
-		DRAIN_ENUM_ENTRY(rack::GraphicsContext::ElemClass, SHARED_METADATA),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
-};
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::GraphicsContext::ElemClass & key) const {
-	return hasChild(Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, true)); // no error on non-existent dict entry
-}
-
-/// Automatic conversion of elem classes to strings.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & value) const {
-	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(value, false)];
-}
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass & key){
-	return (*this)[Enum<rack::GraphicsContext::ElemClass>::dict.getKey(key, false)];
-}
-*/
-
-}
-
-
-
 using namespace drain;
 using namespace drain::image;
 
@@ -101,8 +55,9 @@ Hdf5Context::Hdf5Context(const Hdf5Context &ctx):
 	currentPolarHi5(ctx.currentPolarHi5){
 }
 
-template <>
-const drain::Enum<Hdf5Context::Hi5Role>::dict_t drain::Enum<Hdf5Context::Hi5Role>::dict = {
+DRAIN_ENUM_DICT(Hdf5Context::Hi5Role) = {
+//template <>
+//const drain::Enum<Hdf5Context::Hi5Role>::dict_t drain::Enum<Hdf5Context::Hi5Role>::dict = {
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, CURRENT),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, INPUT),
 		DRAIN_ENUM_ENTRY(rack::Hdf5Context, POLAR),
@@ -293,6 +248,7 @@ void Hdf5Context::updateHdf5Status(VariableMap & statusMap) const {
 			/// Split what:source to separate fields
 			const SourceODIM sourceODIM(statusMap["what:source"].toStr());
 			statusMap.importCastableMap(sourceODIM); // NOD, PLC, WIGOS, ...
+			statusMap["SRC"] = sourceODIM.getSourceCode();
 
 			const PolarODIM odim(statusMap);
 			statusMap["how:NI"] = odim.getNyquist();

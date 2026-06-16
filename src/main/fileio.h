@@ -57,6 +57,9 @@ const drain::RegExp h5FileExtension;
 extern
 const drain::RegExp listFileExtension;
 
+extern
+const drain::FileInfo listFileInfo;
+
 /// Syntax for recognising text files.
 extern
 const drain::RegExp textFileExtension;

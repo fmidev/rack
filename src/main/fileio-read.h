@@ -109,8 +109,16 @@ public:
 
 protected:
 
-	void readFileH5(const std::string & fullFilename) const;
-	void readListFile(const std::string & fullFilename) const;
+	// \param COMBINE - force appending new file to a volume (even if origin or time differ)
+
+	/// Read cartesian or polar data (sweep, volume).
+	/**
+	 * \param fullFilename - file path
+	 *
+	 */
+	void readFileH5(const std::string & fullFilename, int maxTimeDiffMinutes = 0) const;
+	// void readListFile(const std::string & fullFilename) const;
+	void readListFile(const drain::FilePath & path) const;
 	void readTextFile(const std::string & fullFilename) const;
 	void readImageFile(const std::string & fullFilename) const;
 

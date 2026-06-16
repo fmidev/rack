@@ -106,11 +106,13 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 			}
 			readFileH5(fullFilename);
 		}
-		else if (listFileExtension.test(fileName)){
+		else if (listFileInfo.checkExtension(path.extension)){
+		//else if (listFileExtension.test(fileName)){
 			if (!ctx.inputPrefix.empty()){
-				mout.note("Reading .lst file '", fileName, "', omitting prefix: ", ctx.inputPrefix);
+				mout.note("Reading list file '", fileName, "', omitting prefix: ", ctx.inputPrefix);
 			}
-			readListFile(fileName);
+			//readListFile(fileName);
+			readListFile(path);
 			// It is better to "save" inputPrefix for inputFiles
 			// readListFile(fullFilename);
 		}
@@ -172,7 +174,7 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 
 
 /// Reads hdf5 file and appends it to H5 structure. Works only with sweeps (SCAN), volume (PVOL) or Cartesian data (COMP) (having elevations).
-void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
+void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffMinutes) const {  // TODO
 
 	RackContext & ctx = getContext<RackContext>();
 
@@ -356,10 +358,95 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 
 		}
 
-		// TODO: force APPEND / REPLACE?
-		if (ctx.polarInputHi5.empty() || ctx.isScriptDefined()){
+		//bool RESET = ctx.polarInputHi5.empty();
+		bool append = true;
+
+		if (ctx.isScriptDefined()){
+			// Ok, looks like each file is from different radar.
+			// Is this a good criterion? Sweeps can also trigger a script, right?
+			append = false;
+		}
+
+		if (maxTimeDiffMinutes >= 0) {
+			// Ok, forced combine.
+			append = true;
+		}
+
+		if (ctx.polarInputHi5.empty()){
+			// Well, certainly a clean start.
+			append = false;
+		}
+		else {
+			const drain::VariableMap & whatNew  =            srcTmp[ODIMPathElem::WHAT].data.attributes;
+			const drain::VariableMap & whatCurr = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes;
+
+			// const std::string sourceNew =            srcTmp[ODIMPathElem::WHAT].data.attributes["source"];
+			// const std::string sourceOld = ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["source"]; // Warning: Creates attribute, unless it exists
+			// mout.warn("Input: ", sourceNew, " Previous input: ", sourceOld, " same?: ", sourceNew==sourceOld);
+			//if (sourceNew == sourceOld){
+			if (whatNew["source"] == whatCurr["source"]){
+				mout.ok<LOG_DEBUG>("Unchanged input what:source='", whatCurr["source"], "' -> update (append) volume");
+				append = true;
+
+				try {
+					drain::Time timeCurrent;
+					timeCurrent.setTime(whatCurr.get("date",""), "%Y%m%d");
+					timeCurrent.setTime(whatCurr.get("time",""),   "%H%M%S");
+
+					drain::Time timeNew;
+					timeNew.setTime(whatNew.get("date",""), "%Y%m%d");
+					timeNew.setTime(whatNew.get("time",""),   "%H%M%S");
+
+					int mins = abs(timeCurrent.getTime() - timeNew.getTime())/60;
+					if (mins > maxTimeDiffMinutes){
+						mout.warn("Same source (radar), but time difference more than ", maxTimeDiffMinutes, " minutes");
+						mout.warn(" - current: ", timeCurrent.str("%c"));
+						mout.warn(" - input:   ", timeNew.str("%c"));
+						// mout.advice("Use --inputVolumeMaxTimeDiff");
+						append = false;
+					}
+
+				}
+				catch (std::exception & e){
+					mout.warn("Time stamp format error(s): ", e.what());
+				}
+
+			}
+			else {
+				mout.ok<LOG_DEBUG>("Changed what:source");
+				mout.ok<LOG_DEBUG>("current: '", whatNew["source"],  "'");
+				mout.ok<LOG_DEBUG>("input:   '", whatCurr["source"], "'");
+				append = false;
+			}
+
+			// drain::Time timeNew;
+			// ODIM odim;
+			// odim.setTime();
+
+			// composite.odim.getTime(tComposite);
+			// polarSrc.odim.getTime(tData);
+			// int mins = abs(tComposite.getTime() - tData.getTime())/60;
+
+		}
+
+		if (append){
+			if (!ctx.polarInputHi5.empty()){
+				mout.info("Appending sweep(s) to volume");
+			}
+			appendPolarH5(srcTmp, ctx.polarInputHi5);
+			mout.revised<LOG_INFO>("ensuring PVOL (instead of SCAN)");
+			ctx.polarInputHi5[ODIMPathElem::WHAT].data.attributes["object"] = "PVOL";
+		}
+		else {
+			mout.info("Reading new sweep(s), replacing old data");
+			ctx.polarInputHi5.swap(srcTmp);
+			ctx.polarInputHi5.data.image.properties.clearVariables();
+		}
+
+		/*
+		if ((!COMBINE) && (ctx.polarInputHi5.empty() || ctx.isScriptDefined())){
 			if (ctx.isScriptDefined()){
-				mout.info("Script defined, resetting previous inputs (if exist)");
+				mout.note("Script defined, resetting previous inputs (if exist)");
 			}
 			ctx.polarInputHi5.swap(srcTmp);
 			ctx.polarInputHi5.data.image.properties.clearVariables();
@@ -381,6 +468,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename) const {  // TODO
 				ctx.polarInputHi5.data.image.properties.clearVariables(); // ? ok
 			}
 		}
+		*/
 
 		// ctx.polarInputHi5.data.attributes.clear(); //NEW
 
@@ -533,7 +621,7 @@ void CmdInputFile::appendPolarH5(Hi5Tree & srcRoot, Hi5Tree & dstRoot) const {
 			DataSelector::swapData(srcDataSet, dstRoot, ODIMPathElem::DATASET); // check type (DATASET) after filter implemented!
 		}
 		else {
-			mout.attention("DATASET group exists for <", timeGroup.first, "> dst:", tit->second, " <-> src: ", timeGroup.second);
+			mout.debug("DATASET group exists for <", timeGroup.first, "> dst:", tit->second, " <-> src: ", timeGroup.second);
 
 			Hi5Tree & dstDataSet = dstRoot[tit->second];
 
@@ -963,22 +1051,28 @@ void pickElems(const Hi5Tree & src, int groupFilter, std::map<std::string, ODIMP
 }
 */
 
+//readListFile
+//void CmdInputFile::readListFile(const std::string & fullFilename) const  {
 
-
-void CmdInputFile::readListFile(const std::string & fullFilename) const  {
+void CmdInputFile::readListFile(const drain::FilePath & path) const  {
 
 	RackContext & ctx = getContext<RackContext>();
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = getResources().mout( ;
 
-	drain::FilePath path(fullFilename);
+	//mout.experimental("Reading list: ", fullFilename);
 
-	bool APPEND_COMMANDS = false;
+	bool HANDLE_SEPARATELY = false;
+
 	if (path.extension == "vol"){
-		APPEND_COMMANDS = false;
+		// Read full volume, do not trigger
+		mout.warn("List: Read files, creating a volume"); //, script trigger disabled");
+		HANDLE_SEPARATELY = false;
 	}
 	else if (path.extension == "lst"){
-		APPEND_COMMANDS = true;
+		// Read one by one, and trigger script (if defined)
+		mout.warn("Read files one by one"); // , script trigger enabled");
+		HANDLE_SEPARATELY = true;
 	}
 	else {
 		mout.error("unknown list file extension: ", path.extension);
@@ -987,47 +1081,67 @@ void CmdInputFile::readListFile(const std::string & fullFilename) const  {
 
 	std::string prefix;
 	if (ctx.inputPrefix.empty()){
-		prefix = path.dir.str() + '/';
-		mout.revised("adding inputPrefix=", ctx.inputPrefix);
+		prefix = path.dir.str();
+		if (!prefix.empty()){
+			prefix += '/';
+			mout.revised("adding inputPrefix=", ctx.inputPrefix);
+		}
+		// prefix = path.dir.str() + '/';
 		//
 	}
 	else {
 		prefix = ctx.inputPrefix;
 	}
 
-	drain::Input input(fullFilename);
-	mout.experimental("Reading list: ", fullFilename);
-
+	drain::Input input(path); // fullFilename);
+	// std::string  tmp;
+	// bool FIRST = true;
+	// std::string lastFile;
+	// (int &)this->section = 0;
 	std::string line;
 	while (std::getline((std::ifstream &)input, line)){
 		if (!line.empty()){
 			// mout.debug2(line );
 			if (line.at(0) != '#'){
+
 				// Note: comments also after commands could be stripped,
 				// but simple char search is faulty as command args can contain hash '#'
 				std::string inputFileName = drain::StringTools::trim(line);
 				if (inputFileName == this->value){
 					// Todo: use full paths in comparing...
-					mout.error("Recursion detected while reading ", fullFilename);
+					mout.error("Recursion detected while reading ", path); // fullFilename);
 				}
 				else {
-					if (APPEND_COMMANDS){
-						mout.experimental("extending command sequence with: ", inputFileName);
+					if (HANDLE_SEPARATELY){
+						// mout.experimental("extending command sequence with: ", inputFileName);
 						ctx.addedCommands.add("inputFile", prefix + inputFileName);
-						//ctx.addedCommands.add(prefix + inputFileName);
 					}
 					else {
 						// Now expect volume, read sweep(s) directly and append. No script exec after each.
-						readFile(prefix + inputFileName);
+						//readFile(prefix + inputFileName);
+						readFileH5(prefix + inputFileName, true); // append
 					}
 					//
 				}
+				//FIRST = false;
 			}
 		}
 	}
 
+	if (!HANDLE_SEPARATELY){
+		DataTools::updateInternalAttributes(ctx.polarInputHi5);
+		ctx.getUpdatedStatusMap();
+	}
+	/*
+	if (!lastFile.empty()){
+		mout.experimental("now reading first file: ", lastFile);
+		readFile(lastFile);
+	}
+	*/
+
+
 	//hi5::Hi5Base::readText(ctx.polarInputHi5, ifstr);
-	// DataTools::updateInternalAttributes(ctx.polarInputHi5);
+	//
 
 
 }

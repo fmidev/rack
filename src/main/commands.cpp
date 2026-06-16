@@ -803,6 +803,11 @@ public:
 			handleEmptyGroups(ctx, dst, true); // true=delete
 			return;
 		}
+		else if (value == "all"){
+			dst.clear();
+			//handleEmptyGroups(ctx, dst, true); // true=delete
+			return;
+		}
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
 		selector.setParameters(value);

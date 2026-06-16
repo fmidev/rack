@@ -499,16 +499,21 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	// const drain::VariableMap & map =
-	ctx.getStatusMap();
-
-	// mout.warn(map);
-
 	// drain::FilePath filepath(ctx.getFormattedStatus("${outputPrefix}./${outputFile}${how:nodes}.png")); // format ${NOD}, for example
+
+	//const drain::VariableMap & statusMap = ctx.getStatusMap();
+	const drain::Variable & outputFile = ctx.getStatus("outputFile", false);
+
+	if (ctx.composite.isDefined() && outputFile.empty()){
+		mout.experimental("COMPOSITE defined, no output yet -> shared vector overlay");
+		return getImagePanelGroup(ctx, drain::FilePath("composite.h5"));
+	}
+
+	// Notice: double formatting: in script, filename may contain variables.
 	const std::string s(ctx.getFormattedStatus("${outputPrefix}${outputFile}")); // format ${NOD}, for example
-	drain::FilePath filepath(ctx.getFormattedStatus(s));
-	//drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
-	//drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
+	const drain::FilePath filepath(ctx.getFormattedStatus(s));
+	// drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
+	// drain::FilePath filepath(map.get("outputPrefix", ""), map.get("outputFile", "empty.txt"));
 
 	mout.experimental("external image panel request: ", filepath);
 

@@ -415,8 +415,9 @@ void CmdRadarDotTest::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	// drain::image::TreeSVG & overlayGroup =
+	getOverlayGroup(ctx, radarSVG);
+	// drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
 	// Always a range, though here only dis.max used
 	drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
@@ -426,12 +427,9 @@ void CmdRadarDotTest::exec() const {
 
 	drain::image::TreeSVG & imgGroupTest = RackSVG::getImagePanelGroup(ctx);
 	drain::image::TreeSVG & vectGroupTest = imgGroupTest[DOT](drain::image::svg::GROUP);
-	//vectGroupTest->addClass(LayoutSVG::NEUTRAL);
-	//vectGroupTest->addClass(LayoutSVG::COMPOUND);
-	// assumes IMAGE BORDER or IMAGE?
 	vectGroupTest->setMyAlignAnchor(drain::image::svg::IMAGE);
 	vectGroupTest->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	vectGroupTest->addClass(drain::image::ClipperSVG::CLIP);
+	vectGroupTest->addClass(drain::image::ClipperSVG::CLIP); // Request CLIP
 
 
 	if (dist.range.max > 0.0){ // earlier!
@@ -447,7 +445,8 @@ void CmdRadarDotTest::exec() const {
 		// overlay.addChild()->setComment(getName(), ' ', getParameters());
 		// drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
 		// drain::image::TreeSVG & curve = imgGroupTest[DOT](drain::image::svg::PATH);
-		drain::image::TreeSVG & curve = vectGroupTest[DOT](drain::image::svg::PATH);
+		// drain::image::TreeSVG & curve = vectGroupTest[DOT](drain::image::svg::PATH);
+		drain::image::TreeSVG & curve = vectGroupTest.addChild()(drain::image::svg::PATH);
 		//curve->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 		curve->addClass(DOT);
 

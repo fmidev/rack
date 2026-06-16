@@ -56,12 +56,16 @@ class Context {
 
 public:
 
+
+	Script routine;
+	// Experimental
+
+
 	// Experimental
 	Script addedCommands;
 
 	// Experimental
 	Loop::loopStack loops;
-	Script routine;
 
 	Context(const std::string & basename = __FUNCTION__);
 

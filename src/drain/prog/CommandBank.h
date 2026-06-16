@@ -170,6 +170,9 @@ public:
 	/// Run a single command
 	void run(const std::string & cmd, const std::string & params, Context & ctx);
 
+	/// Run a single command
+	void runNEW(const std::string & key, Command & cmd, Context & ctx) const;
+
 	/// Unlike compile, "interprets" script by running it command by command. \see compile()
 	//void run(ScriptTxt & script, drain::Context & context);
 	// void run(Script & script, ClonerBase<Context> & contextSrc);
@@ -207,7 +210,7 @@ public:
 
 
 	/// Member and methods for special commands.
-	// drain::Flagger::ivalue_t
+	//  drain::Flagger::ivalue_t
 	bank_section_t scriptTriggerFlag;
 
 

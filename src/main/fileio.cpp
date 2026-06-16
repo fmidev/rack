@@ -88,6 +88,9 @@ namespace rack {
 
 /// Syntax for command files, typically used reading HDF5 input lists.
 const drain::RegExp listFileExtension(".*\\.(lst|vol)$",  REG_EXTENDED); //  | REG_ICASE);
+const drain::FileInfo listFileInfo("lst|vol");
+
+
 
 /// Syntax for recognising text files.
 const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);

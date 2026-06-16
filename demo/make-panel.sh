@@ -71,7 +71,7 @@ else
     echo "# MAP '$MAP' not found, $PWD/$MAP"
 fi
 
-cmd="rack $VOLUME --gLayout VERT,DECR --outputPrefix $PWD/ $select --encoding C,0.4 -o $BASENAME.png --cSize 500 $bgmap  $select -c $palette --iPhysical false --imageTransp 0.1:0.3 -o $BASENAME-cart-rgb.png -o $BASENAME-cart-rgb.svg"
+cmd="rack $VOLUME --gLayout VERT,UP,RIGHT --outputPrefix $PWD/ $select --encoding C,0.4 -o $BASENAME.png --cSize 500 $bgmap  $select -c $palette --iPhysical false --imageTransp 0.1:0.3 -o $BASENAME-cart-rgb.png -o $BASENAME-cart-rgb.svg"
 echo "$cmd"
 eval "$cmd"
 

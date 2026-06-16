@@ -493,6 +493,39 @@ Script & getRoutine(Program & prog, Script task){
 }
 */
 
+void CommandBank::runNEW(const key_t & key, Command & cmd, Context & ctx) const {
+
+	Logger mout(ctx.log, __FILE__, __FUNCTION__); // Could be thread prefix?
+	// Logger mout2(ctx.log, __FILE__, __FUNCTION__);
+	// mout.startTiming(cmd.getName(), " <tt>", constParams.getValues(), "</tt>");
+	// mout.accept<LOG_NOTICE>("DEFAULT Executing: ", key, " = ", cmd, ' ');
+
+	const ReferenceMap & constParams = ((const Command &)cmd).getParameters(); // ??
+
+	// NEW 2023/05/10
+	ctx.setStatus("cmd", cmd.getName()); //
+	ctx.setStatus("cmdKey", key); // not getName()
+	// ctx.setStatus("cmdArgs", cmd.getParameters().getValues());
+	ctx.setStatus("cmdArgs", cmd.getLastParameters());
+
+	/// MAIN
+	cmd.update(); //  --select etc
+	cmd.exec();
+
+	// MOVED ctx.addedCommands DOWN
+	// const ReferenceMap & params = ((const Command &)cmd).getParameters();
+	ctx.setStatus(key, constParams.getValues()); // make earlier?
+
+	// Obsolete:
+	ctx.setStatus("cmdParams", constParams.getValues());
+
+	// NEW
+	ctx.setStatus("prevCmd", cmd.getName()); //
+	ctx.setStatus("prevCmdKey", key); // not getName()
+	ctx.setStatus("prevCmdArgs", cmd.getLastParameters());
+
+}
+
 // MAIN
 void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
@@ -506,11 +539,7 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 
 	ProgramVector threads;
 
-	//Script routine;
-
 	Context & ctx = prog.getContext<>(); // 2023/01
-
-	//Script & routine = ctx.ctx.routine;
 
 
 	Logger mout(ctx.log, __FILE__, __FUNCTION__); // Could be thread prefix?
@@ -597,27 +626,47 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 			// automatic ctx.SCRIPT_DEFINED = true; // IMPORTANT. To prevent appending sequental input sweeps
 			//ctx.setStatus("script", true); // IMPORTANT. To prevent appending sequental input sweeps
 		}
-		else if (TRIGGER_CMD && (!ctx.routine.empty()) && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
+		else if (TRIGGER_CMD && ctx.isScriptDefined() && !PARALLEL_ENABLED){ // Here, actually !THREADS_ENABLED implies -> TRIGGER_SCRIPT_NOW
 
-			mout.special<LOG_DEBUG>("Running SCRIPT in main thread: ", ctx.getName());
 
 			// Add current command (typically read file), so that it becomes executed.
 			// Logger mout2(ctx.log, __FILE__, __FUNCTION__);
 			// mout2.startTiming("SCRIPT");
+			mout.accept<LOG_NOTICE>("TRIGGER activated by ", cmd.getName(), ' ', cmd.getLastParameters(), " (running it first)");
+
+			// runNEW(key, cmd, ctx);
+			/*
+			Program prog(cmd.getContext<Context>());
+			Command & cmd2 = prog.add(key, cmd); //.section = 0;;
+			run(prog, contextCloner);
+			cmd2.section = 0;
+			*/
+			//mout.warn(DRAIN_LOG(ctx.routine.size()));
+
+			if ((cmd.section & this->scriptTriggerFlag) == 0){
+				mout.accept<LOG_NOTICE>("Trigger deactivation requested by : ", cmd.getName());
+				// cmd.section |= this->scriptTriggerFlag;
+				//continue;
+			}
 
 			if (ctx.loops.empty()){
+				mout.accept<LOG_NOTICE>("Running script in main thread: ", ctx.getName());
+
 				Program prog(cmd.getContext<Context>());
-				prog.add(key, cmd).section = 0; // To not re-trigger?
-				// append(ctx.routine, cmd.getContext<Context>(), prog);
+				prog.add(key, cmd).section = 0; // Prevent infinite recursion
 				append(ctx.routine, prog);
 				run(prog, contextCloner); // Run in this context
+				// cmd.update(); //  --select etc
+				// cmd.exec();
 			}
 			else {
-				// Run command once, then iterate loop(s)
+				mout.attention("Repeating script in loop(s)");
+
 				// Reduced version -> TODO: separate exec(cmd, ctx) with statusMap handling (see below, default case)
-				cmd.update(); //  --select etc
-				cmd.exec();
-				mout.attention("Running script inside loop(s)");
+				// cmd.update(); //  --select etc
+				// cmd.exec();
+				runNEW(key, cmd, ctx);
+
 				traverseLoops(ctx, contextCloner);
 				ctx.loops.clear();
 			}
@@ -720,48 +769,27 @@ void CommandBank::run(Program & prog, ClonerBase<Context> & contextCloner){
 		}
 		else { // Run a "normal" command...  This is the default action.
 
-			Logger mout2(ctx.log, __FILE__, __FUNCTION__);
-			mout2.startTiming(cmd.getName(), " <tt>", constParams.getValues(), "</tt>");
+			mout.accept<LOG_NOTICE>("DEFAULT Executing: ", key, " = ", cmd, ' ');
 
-			mout.debug("Executing: ", key, " = ", cmd, ' ');
-
-			// NEW 2023/05/10
-			ctx.setStatus("cmd", cmd.getName()); //
-			ctx.setStatus("cmdKey", key); // not getName()
-			// ctx.setStatus("cmdArgs", cmd.getParameters().getValues());
-			ctx.setStatus("cmdArgs", cmd.getLastParameters());
-
-			/// MAIN
-			cmd.update(); //  --select etc
-			cmd.exec();
+			runNEW(key, cmd, ctx);
 
 			if (!ctx.addedCommands.empty()){
+
+				Program::iterator ait = it;
+				++ait;
 				for (const auto & entry: ctx.addedCommands){
 					mout.experimental("appending: ", entry.first, ' ', entry.second);
 					command_t & cmd = clone(entry.first);
 					cmd.setExternalContext(ctx);
 					cmd.setParameters(entry.second);
-					// mout.attention("adding a cloned cmd ", entry.first, ", params: ", entry.second);
-					//prog.add(entry.first, cmd, prog.end());
-					Program::iterator ait = it;
-					prog.add(entry.first, cmd, ++ait); // dangerous? current prog iterator
+
+					prog.add(entry.first, cmd, ait); // dangerous? current prog iterator
+					//prog.add(entry.first, cmd, ait); // dangerous? current prog iterator
 				}
 				// this->append(ctx.addedCommands, ctx, prog);
 				ctx.addedCommands.clear();
-				mout.experimental("prog: \n", prog);
+				mout.experimental<LOG_NOTICE>("prog: \n", prog);
 			}
-
-			//const ReferenceMap & params = ((const Command &)cmd).getParameters();
-			ctx.setStatus(key, constParams.getValues()); // make earlier?
-
-
-			// Obsolete:
-			ctx.setStatus("cmdParams", constParams.getValues());
-
-			// NEW
-			ctx.setStatus("prevCmd", cmd.getName()); //
-			ctx.setStatus("prevCmdKey", key); // not getName()
-			ctx.setStatus("prevCmdArgs", cmd.getLastParameters());
 
 		}
 		// TODO: when to explicitly clear ctx.routine?

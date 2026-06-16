@@ -90,9 +90,22 @@ public:
 			return getPreferredSourceCode(args...);
 	}
 
+	/*
+	template <class ...TT>
+	std::string & getPreferredSourceCode(std::string & arg, TT& ...args){
+		//std::cerr << __FILE__ << ':' << __LINE__ << __FUNCTION__ << " (variadic args)" << std::endl;
+		if (!arg.empty())
+			return arg;
+		else
+			return getPreferredSourceCode(args...);
+	}
+	*/
+
 private:
 
 	const std::string & getPreferredSourceCode() const;
+
+	// std::string & getPreferredSourceCode();
 
 
 	void init();
