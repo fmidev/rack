@@ -109,7 +109,7 @@ void CmdStatus::exec() const {
 
 
 
-void CmdFor::exec() const  {
+void CmdForEach::exec() const  {
 
 	Context & ctx = getContext<Context>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;

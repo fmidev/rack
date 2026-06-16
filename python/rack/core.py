@@ -1256,6 +1256,21 @@ class Rack(rack.prog.Register):
         return cmd
 
 
+    def forEach(self,
+        key:str='val,val2,...'):
+        """ Iterate a list of values, calling a script for each
+
+        Parameters
+        ----------
+        key:str
+          comma-separated list
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
     def format(self,
         syntax:str=''):
         """ Set format for data dumps (see --sample or --outputFile)
@@ -1513,15 +1528,18 @@ class Rack(rack.prog.Register):
 
     def gLayout(self,
         orientation:str='HORZ',
-        direction:str='INCR'):
+        directionVert:str='DOWN',
+        directionHorz:str='RIGHT'):
         """ Set main panel alignment
 
         Parameters
         ----------
         orientation:str
           HORZ|VERT
-        direction:str
-          INCR|DECR
+        directionVert:str
+          DOWN|UP
+        directionHorz:str
+          RIGHT|LEFT
 
         """
 
@@ -1590,6 +1608,24 @@ class Rack(rack.prog.Register):
 
 
     def gRadarDot(self,
+        radius:list=[10000,10000],
+        MASK:bool=False):
+        """ Mark the radar position with a circle. CSS classes: GRID,DOT
+
+        Parameters
+        ----------
+        radius:list
+          metres or relative
+        MASK:bool
+          add mask
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
+    def gRadarDotTest(self,
         radius:list=[10000,10000],
         MASK:bool=False):
         """ Mark the radar position with a circle. CSS classes: GRID,DOT
@@ -4322,7 +4358,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.953e-310,
+        a:float=6.95285e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4340,9 +4376,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.953e-310,
+        a:float=6.95285e-310,
         b:float=1.4822e-323,
-        c:float=6.953e-310):
+        c:float=6.95285e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters

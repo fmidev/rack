@@ -7,6 +7,8 @@ Utility for constructing strings that can be executed in shell.
 
 """
 import argparse
+from ctypes.wintypes import SIZE
+from html import parser
 import json
 import subprocess
 import sys
@@ -89,6 +91,12 @@ def build_parser():
         default=None,
         help="One or several file formats (h5, png, tif, svg)") 
 
+    """
+    parser.add_argument(
+        "--SIZE",
+        default="800,600",
+        help="Size of the output image in pixels, as width,height (e.g. 800,600). Only applies to raster formats (e.g. PNG).") 
+    """
 
     #parser.add_argument("--loop", type=str, help="<file>.json Path to JSON config file")
     """
@@ -170,6 +178,16 @@ def build_parser():
         action='store_true',
         help="run some tests")
 
+    parser.add_argument(
+        "--ALIGN",
+        metavar="[TOP|BOTTOM|LEFT|RIGHT]",
+        default="",
+        help="Position of the Pseudo RHI image wrt. radar image")
+
+    parser.add_argument(
+        "--STYLE",
+        default=".RAY=stroke:white;stroke-endcap:round",
+        help="Adjust CSS styles for the output")
 
 
     return parser
@@ -272,104 +290,122 @@ def handle_infile(args, progBuilder: rack.core.Rack):
         progBuilder.inputFile(i)
 
 
-            
-def get_background_filename(args, prefixed=False):
-    """
-    Get background filename based on --gnuplot argument, 
-    and optionally prefix with OUTDIR if prefixed=True.
-    """
-    p = Path(args.gnuplot)
-    if prefixed and args.OUTDIR:
-        return f"{args.OUTDIR}{p.stem}-background.png"  
-    elif p.parent and p.parent != Path('.'):
-        return f"{p.parent}/{p.stem}-background.png"
+
+# handle_outfile1 
+def handle_basename(args, cmdBuilder: rack.core.Rack) -> str:
+    
+
+    v = vars(args)
+
+    if not args.OUTFILE:
+        args.OUTFILE = 'pseudo-rhi.svg'
+
+    p = Path(args.OUTFILE)
+    v["basename"] = p.stem
+
+    if not args.OUTDIR:
+        args.OUTDIR = p.parent
+        args.OUTFILE = f"{p.stem}.{p.suffix}"
+
+    args.OUTDIR = str(args.OUTDIR)
+    if args.OUTDIR:
+        # ensure 1 trailing slash for later prefixing
+        args.OUTDIR = args.OUTDIR.rstrip('/') + '/' 
+
+
+    if args.FORMAT:
+        args.FORMAT = set(args.FORMAT.strip().split(','))
     else:
-        return f"{p.stem}-background.png"
+        args.FORMAT = set()
+    args.FORMAT.add(p.suffix.strip('.'))
+
+    if args.PRODUCT:
+        logger.debug(f"An auxiliary image with range indicator is requested")
+        args.FORMAT.add('svg')
+
+    if 'svg' in args.FORMAT:
+
+        #cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
+        if not args.gnuplot:
+            args.gnuplot = f"{p.stem}-gnuplot.png"
+
+    if args.ALIGN:
+        align = args.ALIGN.upper()
+        if align == 'TOP':
+            cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
+        elif align == 'BOTTOM':
+            cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
+        elif align == 'LEFT':
+            cmdBuilder.gLayout("HORZ", "UP", "RIGHT")
+        elif align == 'RIGHT':
+            cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
+        else:
+            logger.warning(f"Unsupported ALIGN value: {args.ALIGN}. Ignoring.") 
+        
+
+    cmdBuilder.outputPrefix(args.OUTDIR)
+
+    # args.SIZE = tuple(int(i) for i in args.SIZE.strip().split(','))
+
+    logger.info(f"args.OUTDIR={args.OUTDIR}")
+    logger.info(f"args.OUTFILE={args.OUTFILE}")
+    logger.info(f"args.FORMAT={args.FORMAT}")
+    logger.info(f"args.basename={args.basename}")
+    logger.info(f"args.size={args.size}")
+
+def handle_style(args, cmdBuilder: rack.core.Rack) -> str:
+    cmdBuilder.gStyle(".IMAGE_BORDER=stroke:gray")
+    if args.STYLE:
+        for i in args.STYLE.strip().split('|'):
+            cmdBuilder.gStyle(i.strip())
+        
+def handle_outfiles_prhi(args, cmdBuilder: rack.core.Rack) -> str:
+
+    cmdBuilder.paletteDefault()
+
+    # print(args)
+    # anticipated gnuplot-produced image:
+    SIZE = str(args.size).replace(':', ',').split(',')
+    cmdBuilder.cSize(SIZE[0],SIZE[1])
+    # Linking wants full path.
+    cmdBuilder.gLinkImage(f"{args.OUTDIR}{args.gnuplot}")
+    
+    if args.background  != "":  # color
+        cmdBuilder.select(quantity='QIND')
+        cmdBuilder.encoding(type="C", gain=0.004, offset=0) # 
+        cmdBuilder.imageAlpha()
+        cmdBuilder.imageFlatten(args.background)
+
+    cmdBuilder.gInclude("SKIP")
+    cmdBuilder.outputFile(f"{args.basename}-background.png")
+    
+    # else:
+    #    cmdBuilder.outputFile(f"{args.basename}.png")
 
 def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
     # Assumes prefix has been handled
 
-    if not (args.OUTFILE or args.gnuplot):
-        args.OUTFILE = 'out.h5'
-    
-    if not args.OUTFILE:
-        if args.gnuplot:
-            args.OUTFILE = get_background_filename(args, prefixed=False)
-        else:
-            args.OUTFILE = 'out.h5'
-
-    if args.FORMAT:
-        formats = set(args.FORMAT.strip().split(','))
-    else:
-        formats = set()
-
-    if args.OUTFILE:
-        #formats = set(args.FORMAT.strip().split(','))
-        formats.add(args.OUTFILE.split('.').pop())
-        
-    #else:
-    #    args.FORMAT = args.gnuplot.split('.').pop()
-    #    args.OUTFILE = args.gnuplot.removesuffix(f".{args.FORMAT}") + f"-bkg.{args.FORMAT}"
-    #    formats = {args.FORMAT} 
-
-    #args.OUTFILE
-    
+    formats = args.FORMAT
     
     p = Path(args.OUTFILE)
-    
-    if (not args.OUTDIR) and len(formats) > 1:
-        if p.parent and p.parent != Path('.'):
-            args.OUTDIR = f"{p.parent}/"
-            cmdBuilder.outputPrefix(args.OUTDIR)
-    
-    if args.OUTDIR:
-        cmdBuilder.outputPrefix(args.OUTDIR)
-        output_basename = p.stem
-    else:
-        output_basename = f"{p.parent}/{p.stem}"
         
-    
-    # output_basename = output_basename.removesuffix(f".{formats}")
-    # OUTPUT_PREFIX not handled, but could be derived from OUTFILE if needed, e.g. for gnuplot output files
-    # parent = Path(args.OUTFILE).parent
-    # if parent and parent != Path('.'):  
-    #    cmdBuilder.outputPrefix(f"{parent}/")
-    
     logger.warning(f"formats: {formats}")
-        
+
+    args.basename 
+
     if 'h5' in formats:
-        cmdBuilder.outputFile(f"{output_basename}.h5")
+        cmdBuilder.outputFile(f"{args.basename}.h5")
         formats.remove('h5')
 
     if 'tif' in formats:
         #cmdBuilder.outputConf("tif:tile=512")
-        #cmdBuilder.outputFile(f"{output_basename}.tif")
+        #cmdBuilder.outputFile(f"{args.basename}.tif")
         logger.warning("TIFF output is not currently supported, skipping.")
         formats.remove('tif')
 
-    if ('png' in formats) or args.gnuplot:
-
-        cmdBuilder.paletteDefault()
-        
-        if args.background  != "":
-            cmdBuilder.select(quantity='QIND')
-            cmdBuilder.encoding(type="C", gain=0.004, offset=0) # 
-            cmdBuilder.imageAlpha()
-            cmdBuilder.imageFlatten(args.background)
-
-        # transparency?--gInclude
-        if (args.gnuplot):
-            cmdBuilder.gLinkImage(args.gnuplot)
-            cmdBuilder.gInclude("SKIP")
-            cmdBuilder.outputFile(get_background_filename(args, prefixed=False))
-        else:
-            cmdBuilder.outputFile(f"{output_basename}.png")
-        
-        if ('png' in formats):
-            formats.remove('png')
 
     if 'svg' in formats:
-        cmdBuilder.outputFile(f"{output_basename}.svg")
+        cmdBuilder.outputFile(f"{args.basename}.svg")
         formats.remove('svg')
 
     if formats:
@@ -386,14 +422,23 @@ def handle_product(args, progBuilder: rack.core.Rack):
             # logger.warning(type(rackCmd))
             logger.warning(f"Adding cmd: {cmd}, params: {params}")
             rackCmd(progBuilder, *params.split(','))
+            # ORIENTATION !
+            SIZE=str(args.size).replace(':', ',').split(',')
+            HORZ = True
+            if args.ALIGN in ['TOP', 'BOTTOM']:
+                progBuilder.cSize(SIZE[0],SIZE[0]) 
+            else:
+                progBuilder.cSize(SIZE[1],SIZE[1]) 
             progBuilder.cCreate() 
             progBuilder.paletteDefault() 
-            p = Path(args.gnuplot)
-            if args.OUTDIR:
-                progBuilder.outputFile(f"{args.OUTDIR}/{p.stem}-product.png")
-            else:
-                progBuilder.outputFile(f"{p.parent}/{p.stem}-product.png")
-
+            #p = Path(args.gnuplot)
+            #if args.OUTDIR:
+            safe_params = params.replace('/', '-').replace(':', '-').replace(' ', '_')
+            progBuilder.outputFile(f"{args.basename}-{cmd}{safe_params}.png")
+            #progBuilder.outputFile(f"{args.OUTDIR}{args.basename}-{cmd}{safe_params}.png")
+            #else:
+            #    progBuilder.outputFile(f"{p.parent}/{p.stem}-product.png")
+            progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
             # TODO: consider palette for products, e.g. with --PALETTE
             #progBuilder.getCmdSequence().add(rackCmd(params))
         else:
@@ -460,7 +505,8 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
     # confCmdReg.comment("General settings")
     
     plotCmdReg.comment("Plotting the background image (radar beams)")
-    plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), filetype="png", 
+    #plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), filetype="png", 
+    plotCmdReg.plot(filename=f"{args.basename}-background.png", filetype="png",     
                     style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
     
     range_args = {
@@ -548,17 +594,27 @@ def compose_command(args) -> rack.prog.CommandSequence:
     verbosityKey = rack.log.handle_parameters(args)
     rackCmdReg.verbose(level=verbosityKey)
 
-    # RHI specific
+    #args.SIZE 
+    #print(args)
+
+    handle_basename(args, rackCmdReg)
+
     handle_infile(args, rackCmdReg)
+
+    # RHI specific
+    # Note: resolves args.size used by cartesian PRODUCT also.
 
     # Optional Cartesian
     handle_product(args, rackCmdReg)
 
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
-
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pPseudoRhi, True)
 
+    handle_outfiles_prhi(args, rackCmdReg)
+
     handle_gnuplot(args, rackCmdReg)
+
+    handle_style(args, rackCmdReg)
 
     # Rack outfiles (only)
     handle_outfiles(args, rackCmdReg)
@@ -616,14 +672,14 @@ def main():
         #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
-        logger.info("# Python snippet:")
-        print(prog.to_python(prefix="Rack."))
-        # print(cmdList.to_string(" \\\n"))
-
+        #logger.info("# Python snippet:")
+        #print(prog.to_python(prefix="Rack."))
+        
     if args.exec:
         logger.info("# Executing Rack...")
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
-        print(prog.to_string(fmt))
+        #fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
+        logger.debug(prog.to_string(fmt))
         #os.system(prog.to_string(fmt))
         
         fmt = rack.cmdline.RackFormatter()

@@ -98,11 +98,11 @@ public:
 
 };
 
-class CmdFor : public drain::SimpleCommand<std::string> {
+class CmdForEach : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdFor() : drain::SimpleCommand<std::string>(__FUNCTION__, "Iterate a list of values, calling a script for each", "key","val,val2,...","comma-separated list") {
+	CmdForEach() : drain::SimpleCommand<std::string>(__FUNCTION__, "Iterate a list of values, calling a script for each", "key","val,val2,...","comma-separated list") {
 	};
 
 	void exec() const override;
