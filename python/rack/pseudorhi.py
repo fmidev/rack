@@ -70,9 +70,9 @@ def build_parser():
 
     # Rhi specific parameters
     # rack.prog.Register.export_func(rack.core.Rack.pPseudoRhi, parser, key="RHI", name_mapper=camel_to_upper_underscore)
-    rack.prog.Register.publish_func(rack.core.Rack.pPseudoRhi, parser, name_mapper=camel_to_upper_underscore)
+    rack.prog.Register.expand_options(rack.core.Rack.pPseudoRhi, parser, name_mapper=camel_to_upper_underscore)
 
-    rack.prog.Register.publish_func(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
+    rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)     
 
     parser.add_argument(
         "--PRODUCT",
@@ -116,8 +116,6 @@ def build_parser():
         help="Common path of output files.")
 
 
-
-
     # Optional config file
     parser.add_argument(
         "--config",
@@ -147,7 +145,6 @@ def build_parser():
         default="0", # black
         help="Illustrate radar beams with given background color.")
 
-        
     parser.add_argument(
         "--gnuplot",   
         metavar="<filename>",
@@ -192,13 +189,8 @@ def build_parser():
 
     return parser
 
-""" Utils etc
+# Utils etc
 
-"""
-
-
-
-    
 def get_defaults(parser):
     return {a.dest: a.default for a in parser._actions if a.dest != 'help'}
 
@@ -245,14 +237,11 @@ def read_default_args(parser):
         config = load_config(args.config)
         parser.set_defaults(**config)
 
-    # Re-parse all args with updated defaults
-    # final_args = parser.parse_args()
-    # return final_args
 
 
+"""
 def expand_string(inputSet, key, values):
-    """ Given
-    """
+    
     if type(inputSet) is not set:
         inputSet = set(inputSet) # also converts a list to a set
 
@@ -268,11 +257,7 @@ def expand_string(inputSet, key, values):
             result.add(x.replace(key, v))
             
     return result
-        
-    
-    
-
-
+ """       
 
 def handle_infile(args, progBuilder: rack.core.Rack):
     
@@ -291,8 +276,16 @@ def handle_infile(args, progBuilder: rack.core.Rack):
 
 
 
-# handle_outfile1 
-def handle_basename(args, cmdBuilder: rack.core.Rack) -> str:
+def ensure_arguments(args, cmdBuilder: rack.core.Rack) -> str:
+    """ Ensure required arguments are present, and set defaults for optional arguments.
+        Also, perform any necessary transformations on the arguments, 
+        e.g. parsing a comma-separated string into a list.
+
+        Example: args.SIZE: "800,600" -> (800, 600)
+
+        Also, adds "hidden" arguments to the args namespace, e.g. args.basename,
+        which are derived from the provided arguments and used later in the command generation.        
+    """
     
 
     v = vars(args)
@@ -301,13 +294,15 @@ def handle_basename(args, cmdBuilder: rack.core.Rack) -> str:
         args.OUTFILE = 'pseudo-rhi.svg'
 
     p = Path(args.OUTFILE)
-    v["basename"] = p.stem
+
+    v["basename"] = p.stem  # Adds "hidden" argument to the args namespace
 
     if not args.OUTDIR:
         args.OUTDIR = p.parent
         args.OUTFILE = f"{p.stem}.{p.suffix}"
 
     args.OUTDIR = str(args.OUTDIR)
+
     if args.OUTDIR:
         # ensure 1 trailing slash for later prefixing
         args.OUTDIR = args.OUTDIR.rstrip('/') + '/' 
@@ -324,8 +319,6 @@ def handle_basename(args, cmdBuilder: rack.core.Rack) -> str:
         args.FORMAT.add('svg')
 
     if 'svg' in args.FORMAT:
-
-        #cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
         if not args.gnuplot:
             args.gnuplot = f"{p.stem}-gnuplot.png"
 
@@ -345,13 +338,12 @@ def handle_basename(args, cmdBuilder: rack.core.Rack) -> str:
 
     cmdBuilder.outputPrefix(args.OUTDIR)
 
-    # args.SIZE = tuple(int(i) for i in args.SIZE.strip().split(','))
+    logger.debug(f"args.OUTDIR={args.OUTDIR}")
+    logger.debug(f"args.OUTFILE={args.OUTFILE}")
+    logger.debug(f"args.FORMAT={args.FORMAT}")
+    logger.debug(f"args.basename={args.basename}")
+    logger.debug(f"args.size={args.size}")
 
-    logger.info(f"args.OUTDIR={args.OUTDIR}")
-    logger.info(f"args.OUTFILE={args.OUTFILE}")
-    logger.info(f"args.FORMAT={args.FORMAT}")
-    logger.info(f"args.basename={args.basename}")
-    logger.info(f"args.size={args.size}")
 
 def handle_style(args, cmdBuilder: rack.core.Rack) -> str:
     cmdBuilder.gStyle(".IMAGE_BORDER=stroke:gray")
@@ -360,6 +352,10 @@ def handle_style(args, cmdBuilder: rack.core.Rack) -> str:
             cmdBuilder.gStyle(i.strip())
         
 def handle_outfiles_prhi(args, cmdBuilder: rack.core.Rack) -> str:
+
+    if 'h5' in args.FORMAT:
+        cmdBuilder.outputFile(f"{args.basename}.h5")
+        args.FORMAT.remove('h5')
 
     cmdBuilder.paletteDefault()
 
@@ -376,42 +372,24 @@ def handle_outfiles_prhi(args, cmdBuilder: rack.core.Rack) -> str:
         cmdBuilder.imageAlpha()
         cmdBuilder.imageFlatten(args.background)
 
+    # This is for gnuplot script to use as background
     cmdBuilder.gInclude("SKIP")
     cmdBuilder.outputFile(f"{args.basename}-background.png")
     
-    # else:
-    #    cmdBuilder.outputFile(f"{args.basename}.png")
-
-def handle_outfiles(args, cmdBuilder: rack.core.Rack) -> str:
-    # Assumes prefix has been handled
-
-    formats = args.FORMAT
-    
-    p = Path(args.OUTFILE)
-        
-    logger.warning(f"formats: {formats}")
-
-    args.basename 
-
-    if 'h5' in formats:
-        cmdBuilder.outputFile(f"{args.basename}.h5")
-        formats.remove('h5')
-
-    if 'tif' in formats:
-        #cmdBuilder.outputConf("tif:tile=512")
-        #cmdBuilder.outputFile(f"{args.basename}.tif")
-        logger.warning("TIFF output is not currently supported, skipping.")
-        formats.remove('tif')
 
 
-    if 'svg' in formats:
-        cmdBuilder.outputFile(f"{args.basename}.svg")
-        formats.remove('svg')
 
-    if formats:
-        raise Exception('Unhandled formats:', formats)
 
 def handle_product(args, progBuilder: rack.core.Rack):
+    """ Compute an auxiliary product (e.g. CAPPI) and save it in Cartesian coordinates.
+        Add an indicator line with the same range and height as the Pseudo-RHI. 
+        
+        This allows to illustrate the radar beams in the Pseudo-RHI image, and 
+        also to use the Cartesian product as background for the Pseudo-RHI in GnuPlot.
+    """
+
+    if args.prf:
+        progBuilder.select(prf=args.prf)
 
     if args.PRODUCT:
         cmd,params = args.PRODUCT.split(',', 1)
@@ -422,49 +400,31 @@ def handle_product(args, progBuilder: rack.core.Rack):
             # logger.warning(type(rackCmd))
             logger.warning(f"Adding cmd: {cmd}, params: {params}")
             rackCmd(progBuilder, *params.split(','))
-            # ORIENTATION !
-            SIZE=str(args.size).replace(':', ',').split(',')
-            HORZ = True
+            
+            SIZE = str(args.size).replace(':', ',').split(',')
             if args.ALIGN in ['TOP', 'BOTTOM']:
                 progBuilder.cSize(SIZE[0],SIZE[0]) 
             else:
                 progBuilder.cSize(SIZE[1],SIZE[1]) 
             progBuilder.cCreate() 
-            progBuilder.paletteDefault() 
-            #p = Path(args.gnuplot)
-            #if args.OUTDIR:
+            progBuilder.paletteDefault()
             safe_params = params.replace('/', '-').replace(':', '-').replace(' ', '_')
             progBuilder.outputFile(f"{args.basename}-{cmd}{safe_params}.png")
-            #progBuilder.outputFile(f"{args.OUTDIR}{args.basename}-{cmd}{safe_params}.png")
-            #else:
-            #    progBuilder.outputFile(f"{p.parent}/{p.stem}-product.png")
             progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
-            # TODO: consider palette for products, e.g. with --PALETTE
-            #progBuilder.getCmdSequence().add(rackCmd(params))
         else:
             logger.warning(f"Unsupported product: {args.PRODUCT}. Skipping.")
 
 
 def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
-
-    # from rack.gnuplot import Terminal, Datafile, Format, PlotSequence, ConfSequence, Registry
     
     if not args.gnuplot:
         return
-
-    # ensure png file is generated by rack, and use that as input for gnuplot (background image)
-    
-    #script = []
-    #script.append("# GnuPlot script\n")
     
     terminal = args.gnuplot.split('.').pop()
     if terminal not in ['png', 'svg', 'tif']:
         logger.warning(f"Unsupported gnuplot terminal format: {terminal}, defaulting to png")
         terminal = 'png'
 
-
-    #gpl_conf = rack.gnuplot.ConfSequence()
-    #gpl_plot = rack.gnuplot.PlotSequence()
     gpl_plot = rack.prog.CommandSequence()
     gpl_plot.fmt = rack.gnuplot.GnuPlotFormatter(param_separator=',\n  ')
     gpl_plot.fmt.cmd_separator='\n'
@@ -554,7 +514,8 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
     #script_filename = f"{args.gnuplot}.gnu" # TODO replace .png -> -png.gnu, .svg -> -svg.gnu, etc.
     with open(args.gnuplot_script, "w") as f:
         f.write(script)
-    logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
+        logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
+    
     return script
 
 
@@ -594,10 +555,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
     verbosityKey = rack.log.handle_parameters(args)
     rackCmdReg.verbose(level=verbosityKey)
 
-    #args.SIZE 
-    #print(args)
-
-    handle_basename(args, rackCmdReg)
+    ensure_arguments(args, rackCmdReg)
 
     handle_infile(args, rackCmdReg)
 
@@ -616,8 +574,18 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     handle_style(args, rackCmdReg)
 
-    # Rack outfiles (only)
-    handle_outfiles(args, rackCmdReg)
+    if 'svg' in args.FORMAT:
+        rackCmdReg.outputFile(f"{args.basename}.svg")
+        args.FORMAT.remove('svg')
+
+    if 'tif' in args.FORMAT:
+        #cmdBuilder.outputConf("tif:tile=512")
+        #cmdBuilder.outputFile(f"{args.basename}.tif")
+        logger.warning("TIFF output is not currently supported, skipping.")
+        args.FORMAT.remove('tif')
+
+    if args.FORMAT:
+        raise Exception('Unhandled formats:', args.FORMAT)
     
     return rackProg
 

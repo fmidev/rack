@@ -199,7 +199,7 @@ class Register:
             #    self.cmdSequence.add(cmd)
     
     @classmethod
-    def publish_func(self, func: callable, parser: argparse.ArgumentParser = None, key: str = None, name_mapper = None):
+    def expand_options(self, func: callable, parser: argparse.ArgumentParser = None, key: str = None, name_mapper = None):
         """ Exports, "explodes" function arguments to an argparse parser. The function name will be the command name,
             and the arguments will be the command arguments.
         
@@ -214,7 +214,7 @@ class Register:
         Separate commands --RANGE... --HEIGHT=...
         """
         
-        logger.info(f"Exporting args for {func.__name__}")
+        logger.info(f"Expanding options of {func.__name__} to argparse options")
         
         if isinstance(func, str):
             caller_name = func
