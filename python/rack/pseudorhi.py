@@ -9,8 +9,6 @@ Utility for constructing strings that can be executed in shell.
 import argparse
 from ctypes.wintypes import SIZE
 from html import parser
-import json
-import subprocess
 import sys
 from pathlib import Path
 import os
@@ -25,14 +23,16 @@ from numpy import size
 from sympy import arg
 
 from rack import script
-#from rack.composite import handle_prod
 import rack.log
 import rack.prog
-#import rack.select
 import rack.cmdline
 import rack.gnuplot
 import rack.core
-import rack.args  
+import rack.args
+from rack.plot_common import (
+    read_default_args, export_defaults_to_json,
+    handle_infile, handle_style,
+)
 
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
@@ -191,51 +191,8 @@ def build_parser():
 
 # Utils etc
 
-def get_defaults(parser):
-    return {a.dest: a.default for a in parser._actions if a.dest != 'help'}
-
-# General utility? -> move
-def export_defaults_to_json(parser, args, filename="config_template.json"):
-    """Write all parser defaults to a JSON file."""
-    logger.debug(f'Writing defaults to a JSON file: {filename}')
-    
-    defaults = get_defaults(parser)
-    conf = {}
-    for k,v in vars(args).items():
-        if k == 'export_config': # TODO: add set of commands skipped
-            continue
-        if v is None:
-            continue
-        conf[k] = v
-
-    
-    #{a.dest: a.default for a in parser._actions if a.dest != 'help'}
-    with open(filename, "w") as f:
-        json.dump(conf, f, indent=4)
-        #json.dump(defaults, f, indent=4)
-    logger.info(f"Config template written to: {filename}")
-
-
-def load_config(filename):
-    """Load JSON config if it exists."""
-    path = Path(filename)
-    if not path.is_file():
-        print(f"File not found: {filename}", file=sys.stderr)
-        return {}
-    with open(path, "r") as f:
-        return json.load(f)
-
-
-def read_default_args(parser):
-    """Parse args with precedence:
-       CLI > JSON config > defaults
-    """
-    # First parse known args to see if --config is given
-    args, remaining_argv = parser.parse_known_args()
-
-    if args.config:
-        config = load_config(args.config)
-        parser.set_defaults(**config)
+# Utilities load_config, read_default_args, export_defaults_to_json,
+# handle_infile, handle_style imported from rack.plot_common above.
 
 
 
@@ -259,20 +216,6 @@ def expand_string(inputSet, key, values):
     return result
  """       
 
-def handle_infile(args, progBuilder: rack.core.Rack):
-    
-    logger.debug(f"INFILE {args.INFILE}")
-
-    if not args.INFILE:
-        logger.error("No input file specified. Use --INFILE or check your config file.")
-        sys.exit(1) 
-
-    if type(args.INFILE) == str:
-        args.INFILE = [ args.INFILE ]
-
-    # probably Pseudo-RHI should support multiple input files, but for now just take the first one
-    for i in args.INFILE:
-        progBuilder.inputFile(i)
 
 
 
@@ -345,12 +288,6 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack) -> str:
     logger.debug(f"args.size={args.size}")
 
 
-def handle_style(args, cmdBuilder: rack.core.Rack) -> str:
-    cmdBuilder.gStyle(".IMAGE_BORDER=stroke:gray")
-    if args.STYLE:
-        for i in args.STYLE.strip().split('|'):
-            cmdBuilder.gStyle(i.strip())
-        
 def handle_outfiles_prhi(args, cmdBuilder: rack.core.Rack) -> str:
 
     if 'h5' in args.FORMAT:
@@ -604,76 +541,7 @@ def test():
 """ 
     
 def main():
-
-    parser = build_parser()
-
-    rack.log.add_parameters(parser)
-    # rack.select.build_parser(parser)
-
-    read_default_args(parser)
-
-    args = parser.parse_args()
-
-    # Handle --log_level <level>, --debug, --verbose
-    # rack.log.handle_parameters(args)
-    
-    # Selected commands only for direct command line use
-
-    # Needs parser for arg definitions, args for current values
-
-    # Export template if user requests it
-    if args.export_config:
-        export_defaults_to_json(parser, args, args.export_config)
-        sys.exit(0)
-
-    if args.test:
-        logger.info("Running tests..")
-        #test()
-        sys.exit(0)
-
-    prog = compose_command(args)
-
-    if args.print:
-        args.print = args.print.replace(r'\t','\t')
-        args.print = args.print.replace(r'\n','\n')
-        logger.info("# Rack cmd line:")
-        #fmt = rack.prog.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
-        print(prog.to_string(fmt))
-        #logger.info("# Python snippet:")
-        #print(prog.to_python(prefix="Rack."))
-        
-    if args.exec:
-        logger.info("# Executing Rack...")
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
-        #fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
-        logger.debug(prog.to_string(fmt))
-        #os.system(prog.to_string(fmt))
-        
-        fmt = rack.cmdline.RackFormatter()
-        cmd = prog.to_token_list(fmt)
-        #logger.debug(f"Executing command: {args}")
-        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        if result.returncode != 0:
-            if result.stdout:
-                logger.info(f"stdout:\n{result.stdout.rstrip()}")
-            if result.stderr:
-                logger.warning(f"stderr:\n{result.stderr.rstrip()}")        
-            logger.error(f"Command exited with code {result.returncode}")
-        # os.system(prog.to_string(fmt))  # subprocess! 
-        
-        if args.gnuplot_script:
-            cmd = ["gnuplot", args.gnuplot_script]
-            logger.info(f"Executing GnuPlot script: {cmd}")
-            result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            #, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    
-        #logger.info("# Executing GnuPlot script...")
-        #os.system(f"gnuplot {script_filename}") 
-
-    # "Rectified" command line
-    line = rack.args.args_to_cli(parser, args)
-    logger.debug(f"Python command line args: {line}")
+    rack.cmdline.run_module(sys.modules[__name__])
 
 
 if __name__ == "__main__":

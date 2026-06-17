@@ -88,6 +88,72 @@ class Composer():
     def get_module_name(self) -> str:
         return self.module.__name__
 
+def run_module(module):
+    """Drive a RackModule as a standalone program.
+
+    Handles the common main() flow shared by all profile plot modules:
+    parse args, compose the rack command sequence, print and/or execute it,
+    then run gnuplot if a script was generated.
+
+    Usage in any conforming module's main():
+        def main():
+            rack.cmdline.run_module(sys.modules[__name__])
+    """
+    import subprocess
+    import sys
+    import rack.log
+    import rack.args
+    from rack.plot_common import load_config, export_defaults_to_json
+
+    parser = module.build_parser()
+    rack.log.add_parameters(parser)
+
+    # Apply JSON config if --config was given (before full parse)
+    known_args, _ = parser.parse_known_args()
+    if getattr(known_args, 'config', None):
+        parser.set_defaults(**load_config(known_args.config))
+
+    args = parser.parse_args()
+
+    if getattr(args, 'export_config', None):
+        export_defaults_to_json(parser, args, args.export_config)
+        sys.exit(0)
+
+    if getattr(args, 'test', False):
+        logger.info("Running tests..")
+        sys.exit(0)
+
+    prog = module.compose_command(args)
+
+    if getattr(args, 'print', None):
+        sep = args.print.replace(r'\t', '\t').replace(r'\n', '\n')
+        logger.info("# Rack cmd line:")
+        fmt = RackFormatter(params_format="'{params}'", cmd_separator=sep)
+        print(prog.to_string(fmt))
+
+    if getattr(args, 'exec', False):
+        logger.info("# Executing Rack...")
+        fmt = RackFormatter(params_format="'{params}'")
+        logger.debug(prog.to_string(fmt))
+        fmt = RackFormatter()
+        cmd = prog.to_token_list(fmt)
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        if result.returncode != 0:
+            if result.stdout:
+                logger.info(f"stdout:\n{result.stdout.rstrip()}")
+            if result.stderr:
+                logger.warning(f"stderr:\n{result.stderr.rstrip()}")
+            logger.error(f"Command exited with code {result.returncode}")
+
+        if getattr(args, 'gnuplot_script', None):
+            cmd = ["gnuplot", args.gnuplot_script]
+            logger.info(f"Executing GnuPlot script: {cmd}")
+            subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    line = rack.args.args_to_cli(parser, args)
+    logger.debug(f"Python command line args: {line}")
+
+
 class RackFormatter(Formatter):
     """A formatter for Rack commands (command line arguments). Overrides some of the default formatting rules."""
     
