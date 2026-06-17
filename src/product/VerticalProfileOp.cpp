@@ -81,8 +81,9 @@ void VerticalProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSwe
 	dstHeight.odim.scaling.scale = 0.25;
 	//dstHeight.data.setType<unsigned short>();
 	dstHeight.data.setGeometry(1, odim.levels);
-	for (int k = 0; k < odim.levels; ++k) // inverse vertical coordinate (image convention)
+	for (int k = 0; k < odim.levels; ++k){ // inverse vertical coordinate (image convention)
 		dstHeight.data.put(k, dstHeight.odim.scaleInverse(odim.altitudeRange.min + static_cast<double>(odim.levels-1 - k) * interval));
+	}
 	//@ dstHeight.updateTree();
 
 	//setGeometry(dstHeight);
@@ -101,6 +102,22 @@ void VerticalProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSwe
 	mout .debug3() << geometry << mout.endl;
 
 	const drain::RegExp decibels("(T|DBZ)(H|V)");
+
+	drain::Range<double> distanceRange(odim.distanceRange);
+
+	if (distanceRange.min < 0.0){
+		mout.error("negative",  DRAIN_LOG(distanceRange.min));
+	}
+	if (distanceRange.max < 0.0){
+		mout.error("negative",  DRAIN_LOG(distanceRange.min));
+	}
+
+	if (distanceRange.max < 500.0){
+		mout.revised("Unit change: km -> m");
+		distanceRange.min *= 1000.0;
+		distanceRange.max *= 1000.0;
+		mout.suspicious("small range, converted",  DRAIN_LOG(odim.distanceRange), " -> ", DRAIN_LOG(distanceRange));
+	}
 
 
 	mout.debug3("Step 1: initialize accumulation arrays." );
@@ -216,16 +233,20 @@ void VerticalProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSwe
 			const double beamOffset = srcData.odim.rstart + srcData.odim.rscale/2.0;
 
 			/// Distance (in metres) to the first measurement requested by the user.
-			const double beamMin = Geometry::beamFromEtaGround(eta, odim.distanceRange.min * 1000.0);
-			if (beamMin < beamOffset)
-				mout.info("requested minimum distance " , beamMin , " smaller than measured distance " , beamOffset );
+			// const double beamMin = Geometry::beamFromEtaGround(eta, odim.distanceRange.min * 1000.0);
+			const double beamMin = Geometry::beamFromEtaGround(eta, distanceRange.min);
+
+			if (beamMin < beamOffset){
+				mout.suspicious("requested minimum distance " , beamMin , " smaller than measured distance " , beamOffset );
+			}
 
 			/// Distance (in metres) to the last measurement requested by the user.
-			const double beamMax = Geometry::beamFromEtaGround(eta, odim.distanceRange.max * 1000.0);
+			//  const double beamMax = Geometry::beamFromEtaGround(eta, odim.distanceRange.max * 1000.0);
+			const double beamMax = Geometry::beamFromEtaGround(eta, distanceRange.max);
 			const double beamMaxMeasured = srcData.odim.area.width*srcData.odim.rscale + beamOffset;
-			if (beamMax > beamMaxMeasured)
-				mout.info("requested maximum distance " , beamMax , " greater than measured distance " , beamMaxMeasured );
-
+			if (beamMax > beamMaxMeasured){
+				mout.suspicious("requested maximum distance " , beamMax , " greater than measured distance " , beamMaxMeasured );
+			}
 
 			const int startRay = srcData.odim.area.height * (odim.azmRange.min / 360.0);  //
 			const int stopRay  = srcData.odim.area.height * (odim.azmRange.max / 360.0) + (odim.azmRange.max > odim.azmRange.min ? 0 : srcData.odim.area.height);  // Sector goes over 360 deg

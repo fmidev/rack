@@ -51,13 +51,25 @@ class VerticalProfileOp: public VolumeOp<VerticalProfileODIM> {
 
 public:
 
+	// Partially compliant to:
+	//  4.3.4 where for vertical profiles
+
+
 	VerticalProfileOp(double minRange=10, double range=100, double minHeight=0, double maxHeight=10000, long int levels=100, double startaz=0.0, double stopaz=359.99, long int azSlots=1) :
 		VolumeOp<VerticalProfileODIM>(__FUNCTION__ ,"Computes vertical dBZ distribution in within range [minRange,maxRange] km.") { // std::string type="d", double gain=0.5, double offset=-32.0) :
 
 		odim.distanceRange.set(minRange, range);
-		parameters.link("range",  odim.distanceRange.tuple(), "km"); //  = range
-		// parameters.link("minRange",  odim.minRange = minRange, "km");
-		//parameters.link("range",  odim.range = range, "km");
+		// parameters.link("range",  odim.distanceRange.tuple(), "km"); //  = range
+		parameters.link("range",  odim.distanceRange.tuple(), "m"); //  = range
+
+		if (maxHeight < 300){
+
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.revised("Unit change: from km to m");
+			minHeight *= 1000.0;
+			maxHeight *= 1000.0;
+			mout.suspicious("Multiplying by 1000:");
+		}
 
 		odim.altitudeRange.set(minHeight, maxHeight);
 		parameters.link("height", odim.altitudeRange.tuple(), "m");
@@ -95,7 +107,7 @@ protected:
 	mutable
 	double interval;
 
-	void setGeometry(const PolarODIM & srcODIM, PlainData<VprDst> & dstData) const {};
+	void setGeometry(const PolarODIM & srcODIM, PlainData<VprDst> & dstData) const {}; // ???
 
 	//virtual	void setGeometry(Data<VprDst> & dstData) const;
 

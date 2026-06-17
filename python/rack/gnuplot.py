@@ -267,17 +267,24 @@ class Registry(rack.prog.Register):
         mode = Data(mode)
         return self.make_set_cmd(locals()) 
     
-    def xlabel(self, label: str, **opts) : 
-        return self.make_set_cmd(locals()) 
-    
-    def ylabel(self, label: str, **opts) : 
-        return self.make_set_cmd(locals()) 
+    def xlabel(self, label: str, **opts) :
+        return self.make_set_cmd(locals())
+
+    def x2label(self, label: str, **opts) :
+        return self.make_set_cmd(locals())
+
+    def ylabel(self, label: str, **opts) :
+        return self.make_set_cmd(locals())
 
 
     def xrange(self, *args) :
         args = Range(*args)
         return self.make_set_cmd(locals())
-    
+
+    def x2range(self, *args) :
+        args = Range(*args)
+        return self.make_set_cmd(locals())
+
     def yrange(self, *args) :
         args = Range(*args)
         return self.make_set_cmd(locals())
@@ -356,7 +363,6 @@ class Registry(rack.prog.Register):
                 filetype = opts.pop("filetype")
                 if filetype == "png":
                     self.opts["binary"] = Literal(f"filetype={filetype}")
-                    #self.opts["format"] = "png"
                 else:
                     logger.warning(f"Unsupported filetype '{filetype}' for plot entry with filename='{filename}'")
 
@@ -366,14 +372,18 @@ class Registry(rack.prog.Register):
                     using = ",".join(map(str, using))
                 self.opts["using"] = Literal(using)
 
+            # axes must be popped now but inserted last (GnuPlot requires it after "with"/"title")
+            axes_val = opts.pop("axes", None)
 
-            if (style):
+            if style:
                 self.opts["with"] = style
             elif opts:
-                logger.warning(f"unset 'style' with options={opts}") 
-           
+                logger.warning(f"unset 'style' with options={opts}")
+
             self.opts.update(opts)
-            pass
+
+            if axes_val is not None:
+                self.opts["axes"] = Literal(str(axes_val))
 
 
         def __str__(self):
