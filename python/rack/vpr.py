@@ -35,16 +35,8 @@ def build_parser():
     """
     parser = argparse.ArgumentParser(description="Vertical Profile of Reflectivity (VPR) generator")
 
-    parser.add_argument(
-        "INFILE",
-        nargs='*',
-        help="Input files")
 
-    parser.add_argument(
-        "--OUTFILE",
-        default="",
-        help="Output file (basename). See --FORMAT")
-
+    
     def camel_to_upper_underscore(name: str) -> str:
         s1 = re.sub(r'(.)([A-Z][a-z]+)', r'\1_\2', name)
         s2 = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', s1)
@@ -52,136 +44,35 @@ def build_parser():
 
     rack.prog.Register.expand_options(rack.core.Rack.pVerticalProfile, parser, name_mapper=camel_to_upper_underscore)
 
-    rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)
-
     parser.add_argument(
-        "--PRODUCT",
-        default=None,
-        help="Compute a meteorological product and save it as a radar overview image (e.g. 'pCappi,1500'). "
-             "The VPR selection area is overlaid using gRadarSector. Implies SVG output.")
-
-    parser.add_argument(
-        "--SIZE",
+        # Uppercase option but lowercase member, for compatibility with rack.pseudorhi, 
+        # where this parameter is native. 
+        "--SIZE", # "--size",
+        dest = "size",
         default="400,800",
         help="Size of the output gnuplot image in pixels, as width,height (e.g. 400,800).")
 
-    parser.add_argument(
-        "--PALETTE",
-        default='default',
-        help="Add colours using a palette. Affects PNG image only.")
+    rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)
 
-    parser.add_argument(
-        "--FORMAT",
-        default=None,
-        help="One or several file formats (mat, h5, png, svg)")
-
-    parser.add_argument(
-        "--OUTDIR",
-        type=str,
-        metavar="<path>|AUTO",
-        default=None,
-        help="Common path of output files.")
-
-    parser.add_argument(
-        "--config",
-        help="Path to JSON config file")
-
-    parser.add_argument(
-        "--export-config",
-        default=None,
-        help="Save configuration to file")
-
-    parser.add_argument(
-        "-n", "--newline",
-        type=str,
-        metavar="<chars>",
-        default=" \\\n",
-        help="Argument separator for the resulting command string.")
-
-    parser.add_argument(
-        "-e", "--exec",
-        action='store_true',
-        help="execute parsed command")
-
-    parser.add_argument(
-        "--gnuplot",
-        metavar="<filename>",
-        default=None,
-        help="Generate GnuPlot image (e.g. 'my-vpr.png')")
-
-    parser.add_argument(
-        "--gnuplot_script",
-        metavar="<filename>",
-        default=None,
-        help="Explicit name for GnuPlot script (e.g. 'plot.gnu')")
-
-    parser.add_argument(
-        "--title",
-        metavar="<string>",
-        default=None,
-        help="Set title for GnuPlot output.")
-
-    parser.add_argument(
-        "--print", "-p",
-        metavar="<line_separator>",
-        default=None,
-        help="print parsed commands (line separator '\\n' or '\\t')")
-
-    parser.add_argument(
-        "--test",
-        action='store_true',
-        help="run some tests")
+    rack.vertical.complete_arg_parser(parser)
 
     parser.add_argument(
         "--STYLE",
         default=".SECTOR=stroke:white;stroke-width:3",
         help="Adjust CSS styles for the SVG output")
 
-    parser.add_argument(
-        "--ALIGN",
-        metavar="[TOP|BOTTOM|LEFT|RIGHT]",
-        default="",
-        help="Position of the Pseudo RHI image wrt. radar image")
+    #parser.add_argument(
+    #    "--test",
+    #    action='store_true',
+    #    help="run some tests")
+
 
     return parser
 
 
-# Utilities load_config, read_default_args, export_defaults_to_json,
-# handle_infile, handle_style imported from rack.plot_common above.
 
-def handle_product_FOO(args, progBuilder: rack.core.Rack):
-    """ Compute an auxiliary product (e.g. CAPPI) as a radar overview image.
-        Overlay gRadarSector to show the VPR selection area (range + azimuth sector).
-    """
-
-    if not args.PRODUCT:
-        return
-
-    cmd, params = args.PRODUCT.split(',', 1)
-    cmd = cmd.strip()
-    params = params.strip()
-
-    if not hasattr(rack.core.Rack, cmd):
-        logger.warning(f"Unsupported product: {args.PRODUCT}. Skipping.")
-        return
-
-    rackCmd = getattr(rack.core.Rack, cmd)
-    logger.info(f"Adding product cmd: {cmd}, params: {params}")
-    rackCmd(progBuilder, *params.split(','))
-
-    SIZE = str(args.SIZE).replace(':', ',').split(',')
-    #side = SIZE[1]  # use height dimension for the square radar overview
-    #SIZE = str(args.size).replace(':', ',').split(',')
-    if args.ALIGN in ['TOP', 'BOTTOM']:
-        progBuilder.cSize(SIZE[0],SIZE[0]) 
-    else:
-        progBuilder.cSize(SIZE[1],SIZE[1]) 
-    #progBuilder.cSize(side, side)
-    progBuilder.cCreate()
-    progBuilder.paletteDefault()
-
-    safe_params = params.replace('/', '-').replace(':', '-').replace(' ', '_')
-    progBuilder.outputFile(f"{args.basename}-{cmd}{safe_params}.png")
+def handle_graphics(args, progBuilder: rack.core.Rack):
+    progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
 
 def handle_vert_product(args, progBuilder: rack.core.Rack):
 
@@ -199,10 +90,22 @@ def handle_outfiles_vpr(args, cmdBuilder: rack.core.Rack):
     """ Link the gnuplot image (for SVG embedding) and write the profile data file. """
 
     if args.gnuplot:
-        SIZE = str(args.SIZE).replace(':', ',').split(',')
+        SIZE = str(args.size).replace(':', ',').split(',')
         cmdBuilder.cSize(SIZE[0], SIZE[1])
         cmdBuilder.gLinkImage(f"{args.OUTDIR}{args.gnuplot}")
 
+    # optional: PNG, if az_slots?
+
+    if 'h5' in args.FORMAT:
+        cmdBuilder.outputFile(f"{args.basename}.h5")
+        args.FORMAT.remove('h5')
+
+    if 'mat' in args.FORMAT:
+        args.FORMAT.remove('mat')
+    else:
+        logger.warning("No output format '.mat' specified – current version forces it.")
+        # for profile data. Use --FORMAT mat or --FORMAT h5 to save the profile data.")
+        # exit(1)
     cmdBuilder.select(quantity=r'^COUNT$|^DBZH$|HGHT')
     cmdBuilder.outputFile(f"{args.basename}.mat")
 
@@ -225,7 +128,7 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     confCmdReg = rack.gnuplot.Registry(gpl_plot)
     plotCmdReg = rack.gnuplot.Registry(gpl_plot)
 
-    confCmdReg.terminal(rack.gnuplot.Terminal(terminal), size=args.SIZE)
+    confCmdReg.terminal(rack.gnuplot.Terminal(terminal), size=args.size)
     confCmdReg.output(args.gnuplot)
 
     # Parse parameters used for title and axis ranges
@@ -310,33 +213,18 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     rackCmdReg = rack.core.Rack(rackProg)
 
-    verbosityKey = rack.log.handle_parameters(args)
-    rackCmdReg.verbose(level=verbosityKey)
+    rack.vertical.initialize_rack(args, rackCmdReg)
 
-    rack.vertical.ensure_arguments(args, rackCmdReg)
-
-    rack.vertical.handle_infile(args, rackCmdReg)
-
-    # Optional Cartesian overview with sector indicator
-    rack.vertical.handle_horz_product(args, rackCmdReg)
+    # VPR specific commands:
     handle_vert_product(args, rackCmdReg)
-
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
-
-    
     handle_outfiles_vpr(args, rackCmdReg)
-
     handle_gnuplot(args, rackCmdReg)
 
-    rack.vertical.handle_style(args, rackCmdReg)
+    rack.vertical.finalize_svg_output(args, rackCmdReg)
 
-    if 'svg' in args.FORMAT:
-        rackCmdReg.outputFile(f"{args.basename}.svg")
-        args.FORMAT.remove('svg')
 
-    if 'mat' in args.FORMAT:
-        args.FORMAT.remove('mat')
 
     if args.FORMAT:
         raise Exception('Unhandled formats:', args.FORMAT)
