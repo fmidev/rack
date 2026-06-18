@@ -14,13 +14,15 @@ import re
 import inspect
 import logging
 
-from rack import script
+from rack import args, script
 import rack.log
 import rack.prog
-import rack.cmdline
+#import rack.cmdline
 import rack.gnuplot
 import rack.core
-from rack.plot_common import handle_infile, handle_style
+#from 
+import rack.vertical
+#from rack.vertical import ensure_arguments 
 
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
@@ -123,7 +125,7 @@ def build_parser():
         "--print", "-p",
         metavar="<line_separator>",
         default=None,
-        help="print parsed commands with given line separator (e.g. '\\n' or '\\t')")
+        help="print parsed commands (line separator '\\n' or '\\t')")
 
     parser.add_argument(
         "--test",
@@ -147,69 +149,7 @@ def build_parser():
 # Utilities load_config, read_default_args, export_defaults_to_json,
 # handle_infile, handle_style imported from rack.plot_common above.
 
-
-def ensure_arguments(args, cmdBuilder: rack.core.Rack):
-    """ Ensure required arguments are present and set defaults for optional ones.
-
-        Adds 'hidden' arguments to the args namespace derived from provided arguments,
-        e.g. args.basename, used later in command generation.
-    """
-
-    v = vars(args)
-
-    if not args.OUTFILE:
-        args.OUTFILE = 'profile.mat'
-
-    p = Path(args.OUTFILE)
-
-    v["basename"] = p.stem
-
-    if not args.OUTDIR:
-        args.OUTDIR = p.parent
-        args.OUTFILE = f"{p.stem}.{p.suffix}"
-
-    args.OUTDIR = str(args.OUTDIR)
-
-    if args.OUTDIR:
-        args.OUTDIR = args.OUTDIR.rstrip('/') + '/'
-
-    if args.FORMAT:
-        args.FORMAT = set(args.FORMAT.strip().split(','))
-    else:
-        args.FORMAT = set()
-    args.FORMAT.add(p.suffix.strip('.'))
-
-    if args.PRODUCT:
-        logger.debug("An auxiliary radar overview image with sector indicator is requested")
-        args.FORMAT.add('svg')
-
-    if args.ALIGN:
-        align = args.ALIGN.upper()
-        if align == 'TOP':
-            cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
-        elif align == 'BOTTOM':
-            cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
-        elif align == 'LEFT':
-            cmdBuilder.gLayout("HORZ", "UP", "RIGHT")
-        elif align == 'RIGHT':
-            cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
-        else:
-            logger.warning(f"Unsupported ALIGN value: {args.ALIGN}. Ignoring.") 
-            
-
-    if 'svg' in args.FORMAT:
-        if not args.gnuplot:
-            args.gnuplot = f"{p.stem}-gnuplot.png"
-
-    cmdBuilder.outputPrefix(args.OUTDIR)
-
-    logger.debug(f"args.OUTDIR={args.OUTDIR}")
-    logger.debug(f"args.OUTFILE={args.OUTFILE}")
-    logger.debug(f"args.FORMAT={args.FORMAT}")
-    logger.debug(f"args.basename={args.basename}")
-
-
-def handle_product(args, progBuilder: rack.core.Rack):
+def handle_product_FOO(args, progBuilder: rack.core.Rack):
     """ Compute an auxiliary product (e.g. CAPPI) as a radar overview image.
         Overlay gRadarSector to show the VPR selection area (range + azimuth sector).
     """
@@ -242,6 +182,8 @@ def handle_product(args, progBuilder: rack.core.Rack):
 
     safe_params = params.replace('/', '-').replace(':', '-').replace(' ', '_')
     progBuilder.outputFile(f"{args.basename}-{cmd}{safe_params}.png")
+
+def handle_vert_product(args, progBuilder: rack.core.Rack):
 
     # range is already in metres; pass directly to gRadarSector
     range_raw = str(args.range) if hasattr(args, 'range') and args.range is not None else "10:100"
@@ -334,7 +276,9 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
     plotCmdReg.plot(e_dbzh, e_count)
 
     script_text = gpl_plot.to_string()
-    if args.print:
+    if args.print != None:
+        if args.print == '':
+            args.print = ' \\n  '  # default separator 
         logger.info("# GnuPlot script:")
         print(script_text)
 
@@ -369,21 +313,23 @@ def compose_command(args) -> rack.prog.CommandSequence:
     verbosityKey = rack.log.handle_parameters(args)
     rackCmdReg.verbose(level=verbosityKey)
 
-    ensure_arguments(args, rackCmdReg)
+    rack.vertical.ensure_arguments(args, rackCmdReg)
 
-    handle_infile(args, rackCmdReg)
+    rack.vertical.handle_infile(args, rackCmdReg)
 
     # Optional Cartesian overview with sector indicator
-    handle_product(args, rackCmdReg)
+    rack.vertical.handle_horz_product(args, rackCmdReg)
+    handle_vert_product(args, rackCmdReg)
 
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
     rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
 
+    
     handle_outfiles_vpr(args, rackCmdReg)
 
     handle_gnuplot(args, rackCmdReg)
 
-    handle_style(args, rackCmdReg)
+    rack.vertical.handle_style(args, rackCmdReg)
 
     if 'svg' in args.FORMAT:
         rackCmdReg.outputFile(f"{args.basename}.svg")
@@ -399,7 +345,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
 
 def main():
-    rack.cmdline.run_module(sys.modules[__name__])
+    rack.vertical.run_module(sys.modules[__name__])
 
 
 if __name__ == "__main__":
