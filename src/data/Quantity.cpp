@@ -220,8 +220,14 @@ std::ostream & Quantity::toStream(std::ostream & ostr) const {
 		}
 		ostr << '\n';
 	}
-	if (hasUndetectValue())
-		ostr << '\t' << "virtual zero=" << undetectValue << '\n';
+
+	ostr << '\t' << "physical range=[" << physicalRange << ']';
+	if (hasUndetectValue()){
+		//ostr << '\t' <<
+		ostr << " virtual zero=" << undetectValue;
+	}
+	ostr << '\n';
+
 	return ostr;
 }
 

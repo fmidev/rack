@@ -1694,8 +1694,8 @@ public:
 
 		drain::Output output(filename);
 
-		python.exportImports({"rack.prog"}, output);
-		python.exportCommands("Rack(rack.prog.Register)", cmdBank, output);
+		python.exportImports({"rack.prog"}, output.getStream());
+		python.exportCommands("Rack(rack.prog.Register)", cmdBank, output.getStream());
 
 		// const drain::Command & command = cmdBank.get(key);
 

@@ -1,35 +1,28 @@
 /// Add mouse listerners 
 function image_coord_tracker(){
 
-    const elems = document.querySelectorAll(".MOUSE");
+    const groups = document.querySelectorAll(".MOUSE");
 
-    elems.forEach(panel => {
-
+    groups.forEach(group => {
 
 	// Plane listening to mouse events
-	const coordTracker = panel.querySelector(".MOUSE_TRACKER");
+	const coordTracker = group.querySelector(".MOUSE_TRACKER");
 	if (!coordTracker){
-	    console.info(panel);
+	    console.info(group);
 	    console.error("elem .MOUSE found without child .MOUSE_TRACKER");
 	    return;
 	}
 
-	// var precision = parseInt(coordTracker.getAttribute("data-precision")); // for rect
-	
-	// TODO: direct attr in frame
-	var epsg = null;
-	var metadata  = panel.querySelector("metadata.SHARED");
-	if (metadata.hasAttribute('EPSG')){
-	    epsg = metadata.getAttribute('EPSG');
+	// var epsg = null;
+	if (group.hasAttribute('data-epsg')){
+	    var epsg = group.getAttribute('data-epsg');
 	    console.info('EPSG='+epsg);
 	}
-
 	
-	const BBOX_KEY='data-bbox';
+	// const BBOX_KEY='data-bbox';
 	var bbox = [0,0,1,1];
-
-	if (coordTracker.hasAttribute(BBOX_KEY)){
-	    bbox = coordTracker.getAttribute(BBOX_KEY).split(',');
+	if (group.hasAttribute('data-bbox')){
+	    bbox = group.getAttribute('data-bbox').split(',');
 	    console.log("data-bbox: ", bbox);
 	}
 	else {
@@ -40,26 +33,27 @@ function image_coord_tracker(){
 	/// Client rect will be updated (because the page may be scrolled)
 	const m = new CoordHandler(bbox, coordTracker.getBoundingClientRect());
 	m.setPrecision(coordTracker.getAttribute("data-resolution"));
-	
-	const selectionRect = panel.querySelector("rect.SELECTOR");
 
+	// Visualisation
+	const selectionRect = group.querySelector('rect.SELECTOR');
 	// Collective, to support cross-actions
-	const monitorMove = panel.querySelector('.MONITOR_MOVE');
-	const monitorDown = panel.querySelector('.MONITOR_DOWN');
-	const monitorUp   = panel.querySelector('.MONITOR_UP');
+	const monitorMain = group.querySelector('.MONITOR'); // top level group for others
+	const monitorMove = group.querySelector('.MONITOR_MOVE');
+	const monitorDown = group.querySelector('.MONITOR_DOWN');
+	const monitorUp   = group.querySelector('.MONITOR_UP');
 	// Optional (move also the box)
-	const monitorBox  = panel.querySelector('.MONITOR_BOX');
+	const monitorBox  = group.querySelector('.MONITOR_BOX');
 
 	if (monitorMove){
-
+	    
 	    coordTracker.addEventListener("mousemove", (ev) => {
 		m.readEvent(ev, m.curr);
 		m.update(m.curr, monitorMove);
 		// console.log(m.curr)
+		// Todo: add free/iddle coord monitor: option to monitor of coord (if no-dragging)
 		if (m.drag && selectionRect){
 		    m.updateSpan(selectionRect);
 		    if (monitorBox){
-			//var transX = 5;
 			if (m.curr.x > m.start.x){
 			    monitorBox.setAttribute("style", "text-anchor:start");
 			}
@@ -68,10 +62,10 @@ function image_coord_tracker(){
 			}
 			
 			if (m.curr.y > m.start.y){
-			    monitorBox.setAttribute("transform", "translate(0,+20)"); // retrieve STYLE/ font size?
+			    monitorBox.setAttribute("transform", "translate(0,+20)"); // retrieve font size?
 			}
 			else {
-			    monitorBox.setAttribute("transform", "translate(0,-10)"); // retrieve STYLE/ font size?
+			    monitorBox.setAttribute("transform", "translate(0,-10)"); // retrieve font size?
 			}
 		    }
 		}
@@ -97,34 +91,43 @@ function image_coord_tracker(){
 		if (monitorBox){
 		    monitorBox.setAttribute("x", m.start.x);
 		    monitorBox.setAttribute("y", m.start.y);
-		    if (m.start.x > m.curr.x){
-		    }
+		    // if (m.start.x > m.curr.x){}
 		}
+		
+		if (monitorMain){
+		    monitorMain.style.visibility = 'visible';
+		}
+
 	    })
 	}
 
 	
-	if (monitorUp){ //  = panel.querySelector('.MONITOR_UP')){
+	if (monitorUp){ 
 
 	    coordTracker.addEventListener("mouseup", (ev) => {
 		m.readEvent(ev, m.curr);
 		m.update(m.curr, monitorUp); // needed?
 		m.drag = false;
-		console.info([m.start.x, m.start.y, m.curr.x, m.curr.y].join(','));
-		console.info("Array size: ", Math.abs(m.curr.x-m.start.x), ',', Math.abs(m.curr.y-m.start.y));
-		var bb = m.getGeoBBOX();
-		console.info(bb.join(','));
-		console.info("Geo size: ", bb[2]-bb[0], ',', bb[3]-bb[1]);
-		/*
-		navigator.clipboard.writeText(bb).then(
-		    () => {
-			console.info(bb + ' copied to clipboard')
-		    },
-		    () => {
-			console.warn('clipboard write failed')
-		    },
-		    );
-		*/
+		if ((m.curr.x != m.start.x) && (m.curr.y != m.start.y)){
+		    console.info([m.start.x, m.start.y, m.curr.x, m.curr.y].join(','));
+		    console.info("Array size: ", Math.abs(m.curr.x-m.start.x), ',', Math.abs(m.curr.y-m.start.y));
+		    var bb = m.getGeoBBOX();
+		    console.info(bb.join(','));
+		    console.info("Geo size: ", bb[2]-bb[0], ',', bb[3]-bb[1]);		    
+		}
+		else {
+
+		    if (monitorMain){
+			monitorMain.style.visibility = 'hidden';
+		    }
+		    
+		    if (monitorDown){
+			monitorDown.textContent = '*';
+		    }
+		    if (monitorUp){
+			monitorUp.textContent = '*';
+		    }		    
+		}
 	    })
 	    
 	}
@@ -153,18 +156,16 @@ Coord2D.prototype.readEvent = function(ev){
     }
     */
 
-// function CoordHandler(coordTracker, bbox){ // , group?
-function CoordHandler(bboxGeo, bboxFrame){ // , group?
 
+function CoordHandler(bboxGeo, bboxFrame){
+    
     this.bboxFrame = bboxFrame; // coordTracker.getBoundingClientRect();
     this.bboxGeo    = new BBox(bboxGeo);
 
     this.drag = false;
     this.curr = new Coord2D()
     this.start = new Coord2D()
-    // this.up   = new Coord2D()
-    // this.group = group;
-    // this.resolution = 0;
+
 }
 
 CoordHandler.prototype.readEvent = function(ev, coords){
@@ -197,13 +198,16 @@ CoordHandler.prototype.updateSpan = function(elem){
 	elem.setAttribute("y", Math.min(this.start.y, this.curr.y));
 	elem.setAttribute("width",  width);
 	elem.setAttribute("height", height);
-	console.info("Size: ", width,',',height);
+	if (this.precisionWidth){ // Else no need
+	    console.info("Size: ", width,',',height);
+	} 
     }
     else {
 	elem.setAttribute("x", 0);
 	elem.setAttribute("y", 0);
 	elem.setAttribute("width",  0);
 	elem.setAttribute("height", 0);
+	
 	// console.info('skip update: ', this.start,  ' ', this.curr, ' ', this.up)
 	// toggle invisible, or open up
     }

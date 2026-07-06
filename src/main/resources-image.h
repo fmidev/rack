@@ -136,7 +136,7 @@ public:
 	AlignAnchorSVG::anchor_t anchorVert;
 
 	//int svgDebug = 0;
-
+	std::string currentImagePanel;
 };
 
 

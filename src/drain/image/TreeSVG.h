@@ -210,6 +210,7 @@ public:
 	bool isAbstract() const {
 		return typeIs(
 				svg::tag_t::UNDEFINED,
+				svg::tag_t::COMMENT,
 				svg::tag_t::STYLE,
 				svg::tag_t::CLIP_PATH, // Semi-abstract..
 				svg::tag_t::DESC,
@@ -369,7 +370,7 @@ public:
 	}
 
 	inline
-	svg::coord_t getWidth(){
+	svg::coord_t getWidth() const {
 		return box.width;
 	}
 
@@ -390,7 +391,7 @@ public:
 	 *
 	 */
 	inline
-	svg::coord_t getMargin(){
+	svg::coord_t getMargin() const {
 		return box.width;
 	}
 
@@ -409,7 +410,7 @@ public:
 	}
 
 	inline
-	svg::coord_t getHeight(){
+	svg::coord_t getHeight() const {
 		return box.height;
 	}
 

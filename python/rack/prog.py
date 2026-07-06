@@ -293,7 +293,7 @@ class Register:
     
 
     # @classmethod
-    def handle_published_cmd_args(self, args: argparse.Namespace, cmd_func: callable, write_back=False) -> Command:
+    def handle_expanded_cmd_args(self, args: argparse.Namespace, cmd_func: callable, write_back=False) -> Command:
         """
         Docstring for handle_exploded_command
         

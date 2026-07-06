@@ -231,7 +231,132 @@ int MetaDataCollectorSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & p
 
 }
 
-const std::string ClipperSVG::CLIP("CLIPPED");
+const std::string FloaterSVG::FLOATING("FLOATING");
+
+int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// mout.experimental("check: ", path);
+	// std::list<TreeSVG::key_t> floating;
+	TreeSVG & parent = tree(path);
+	// TreeSVG swapper;
+
+	for (auto & t: parent.getChildren()){
+		if (t.second->hasClass(FLOATING)){
+			//floating.push_back(t.first);
+			t.second->removeClass(FLOATING); // prevent infinite loop...
+			t.second->addClass("MOVED");
+			mout.experimental("Lifting floating element at: ", path, " -> ", t.first);
+			//TreeSVG & dummy = swapper.addChild(t.first)(svg::COMMENT);
+			TreeSVG & dummy = parent.addChild();
+			dummy->setType(t.second->getNativeType());
+			// dummy->setAttribute("data-SWAP", t.first);
+			t.second.swap(dummy);
+			dummy->set(t.second->getAttributes());
+			dummy->setDefaultAlignAnchor<AlignBase::Axis::HORZ>(t.second->getDefaultAlignAnchor<AlignBase::Axis::HORZ>());
+			dummy->setDefaultAlignAnchor<AlignBase::Axis::VERT>(t.second->getDefaultAlignAnchor<AlignBase::Axis::VERT>());
+			dummy->setMyAlignAnchor<AlignBase::Axis::HORZ>(t.second->getMyAlignAnchor<AlignBase::Axis::HORZ>());
+			dummy->setMyAlignAnchor<AlignBase::Axis::VERT>(t.second->getMyAlignAnchor<AlignBase::Axis::VERT>());
+			dummy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+			//dummy->
+			// TODO: implement addClasses()
+			//dummy->addClass(t.second->getClasses());
+			dummy->addClass(t.second->getClasses());
+			/*
+			for (auto & cls: t.second->getClasses()){
+				dummy->addClass(cls);
+			}
+			*/
+			// t.second->removeClass(FLOATING); // prevent infinite loop...
+			t.second->setType(svg::COMMENT);
+			t.second->setComment("Swiped away");
+			mout.experimental("Swapper: -> ", t.first);
+		}
+	}
+
+	// Step 2: move floating elements off
+	/*
+	for (auto & t: swapper.getChildren()){
+		t.second.swap(parent[t.first]);
+		mout.experimental("Exchanged: ", t.first);
+	}
+	*/
+
+	// Step 3: append them back.
+
+
+	return 0;
+
+}
+
+const std::string OverlayMoverSVG::OVERLAY("OVERLAY");
+
+int OverlayMoverSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path){
+	// if not GROUP
+	return 0;
+}
+
+//
+int OverlayMoverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// mout.experimental("check: ", path);
+	TreeSVG & parent = tree(path);
+
+	//return 0;
+
+	if (parent->typeIs(svg::GROUP)){
+
+		for (auto & src: parent.getChildren()){
+
+			if (src.second->typeIs(svg::GROUP) && src.second->hasClass(OVERLAY)){
+
+				if (src.second.empty()){
+					mout.suspicious("Empty OVERLAY elem at child=", src.first,  " of GROUP ", path);
+					continue;
+				}
+
+				// Reiterate: search for target position
+				for (auto & src2: parent.getChildren()){
+					// could also check direct descendants:
+					// if (src2.first == OVERLAY){ ...
+					if (src2.second->typeIs(svg::GROUP)){
+
+						if (src2.second.hasChild(OVERLAY)){
+
+							TreeSVG & dst = src2.second[OVERLAY];
+							dst.swap(src.second);
+							dst->swapSVG(src.second);
+
+							src.second->removeClass(OVERLAY);
+							// src.second->addClass("ex_OVERLAY");
+							src.second.addChild()->setComment("Removed overlay");
+							/*
+							std::cout << "DUMPING: " << src.first << '\n';
+							drain::TreeUtils::dump(src.second, std::cout);
+							std::cout << "DUMPING: " << dstChild.first << '\n';
+							drain::TreeUtils::dump(dstChild.second, std::cout);
+							 */
+							return 0;
+						}
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+	return 1;
+
+}
+
+
+const std::string ClipperSVG::CLIPPED("CLIPPED");
 
 
 TreeSVG & ClipperSVG::getClippingRect(TreeSVG & root, size_t width, size_t height){
@@ -261,10 +386,16 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	//mout.experimental("check: ", path);
 
 	TreeSVG & t = tree(path);
-	if (t->hasClass(CLIP)){
+	if (t->hasClass(CLIPPED)){
 
-		mout.experimental("clipping elements under: ", path);
-
+		mout.experimental<LOG_INFO>("clipping elements under: ", path);
+		const svg::coord_t w = t->getWidth();
+		const svg::coord_t h = t->getHeight();
+		if ((w==0) || (h==0)){
+			mout.reject<LOG_WARNING>("Clipping skipped for ", w, 'x', h, " element at ", path);
+			return 1;
+		}
+		// TODO: try relying on tree == root  (and forget separate root)
 		TreeSVG & clip = getClippingRect(this->root, t->getWidth(), t->getHeight());
 		t->set("clip-path", drain::StringBuilder<>("url(#", clip->getId(), ")").str());
 	}

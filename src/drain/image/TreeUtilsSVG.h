@@ -157,6 +157,71 @@ protected:
 };
 
 
+/// Raises FLOATING elements on the top.
+/**
+ *
+ */
+class FloaterSVG : public drain::TreeVisitor<TreeSVG> {
+public:
+
+	static
+	const std::string FLOATING;
+
+	inline // TreeSVG & root
+	FloaterSVG(){
+	}
+
+	inline
+	FloaterSVG(const FloaterSVG & floatLifter){ // : root(clipper.root) { // ???
+	}
+
+
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		// always continue
+		return 0;
+	}
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	// TreeSVG & root;
+
+};
+
+/// Raises FLOATING elements on the top.
+/**
+ *
+ */
+class OverlayMoverSVG : public drain::TreeVisitor<TreeSVG> {
+public:
+
+	static
+	const std::string OVERLAY;
+
+	inline // TreeSVG & root
+	OverlayMoverSVG(){
+	}
+
+	inline
+	OverlayMoverSVG(const OverlayMoverSVG & floatLifter){ // : root(clipper.root) { // ???
+	}
+
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+	/*
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		// always continue
+		return 0;
+	}
+	*/
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+	// TreeSVG & root;
+
+};
+
+
 /**
  *
  */
@@ -165,14 +230,8 @@ class ClipperSVG : public drain::TreeVisitor<TreeSVG> {
 public:
 
 	static
-	const std::string CLIP;
+	const std::string CLIPPED;
 
-	/*
-	enum MyDataType {
-		FIRST,
-		SECOND
-	};
-	*/
 
 	inline
 	ClipperSVG(TreeSVG & root) : root(root) {
@@ -220,7 +279,7 @@ public:
 	MaskerSVG(){
 	}
 
-	MaskerSVG(const MaskerSVG & clipper){ // ???
+	MaskerSVG(const MaskerSVG & masker){ // ???
 	}
 
 

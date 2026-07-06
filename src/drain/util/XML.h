@@ -606,6 +606,13 @@ public:
 		classList.add(args...);
 	}
 
+	inline
+	void addClass(const ClassListXML & clist) {
+		for (auto & cls: clist){
+			addClass(cls);
+		}
+	}
+
 	/**
 	 *  \tparam V – string or enum type
 	 */

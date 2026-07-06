@@ -39,7 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
 		/* Abstract or general classes */
-		DRAIN_ENUM_ENTRY(rack::Graphic, VECTOR_OVERLAY),
+		// DRAIN_ENUM_ENTRY(rack::Graphic, VECTOR_OVERLAY),
 		DRAIN_ENUM_ENTRY(rack::Graphic, HIGHLIGHT),
 		DRAIN_ENUM_ENTRY(rack::Graphic, GRID),
 		/* Graphic objects */
@@ -206,7 +206,7 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 	return style;
 }
 
-
+/*
 drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -215,8 +215,6 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 
 	// mout.attention("Hey ", Graphic::VECTOR_OVERLAY, " for group ", group->getId());
 
-	//if (!group.hasChild(VECTOR_OVERLAY)){
-	// if (!geoGroup->hasClass(VECTOR_OVERLAY)){
 	if (overlayGroup->isUndefined()){ //  && overlayGroup.hasChildren()
 
 		mout.pending<LOG_WARNING>(Graphic::VECTOR_OVERLAY, " ADDING for group ", group->getId());
@@ -228,13 +226,14 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 		overlayGroup->addClass(LayoutSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 		overlayGroup->setId(Graphic::VECTOR_OVERLAY, '_', group->getId());
-		group.addChild(svg::COMMENT)(svg::COMMENT)->setTextSafe("Above: slot reserved for VECTOR OVERLAY");
+		group.addChild(svg::COMMENT)(svg::COMMENT)->setText("Above slot reserved for (OLD) VECTOR_OVERLAY");
 
 		// Override with: RackSVG::consumeAlignRequest(ctx, geoGroup);
 	}
 
 	return overlayGroup;
 }
+*/
 
 void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 
@@ -243,6 +242,7 @@ void RadarSVG::updateRadarConf(const drain::VariableMap & where) {
 	// drain::Point2D<double> location(where["lon"], where["lat"]);
 	const double lon = where.get("lon", 0.0);
 	const double lat = where.get("lat", 0.0);
+	source = where.get("source", "unknown-source");
 
 	if ((lon != 0.0) && (lat != 0.0)){
 		radarProj.setSiteLocationDeg(lon, lat);
@@ -279,6 +279,8 @@ void RadarSVG::updateCartesianConf(const drain::VariableMap & where) {
 	geoFrame.setGeometry(where["xsize"], where["ysize"]);
 	// mout.pending<LOG_WARNING>("now slowly: bbox: -> ", geoFrame.getBoundingBoxDeg(), " -> NATIVE: ", geoFrame.getBoundingBoxNat());
 
+	source = where.get("source", "unknown-source");
+
 }
 
 
@@ -306,6 +308,8 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 	geoFrame.setBoundingBoxNat(comp.getBoundingBoxNat());
 	geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
 	// mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
+
+	source = comp.odim.source;
 
 }
 

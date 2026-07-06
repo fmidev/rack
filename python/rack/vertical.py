@@ -5,10 +5,10 @@ build_parser() and compose_command() — can import these helpers and use
 rack.cmdline.run_module() as their main().
 """
 import argparse
-import json
 import sys
 from pathlib import Path
 
+from rack.args import export_defaults_to_json, load_config
 from rack.cmdline import RackFormatter, logger
 import rack.log
 import rack.core
@@ -173,6 +173,10 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
         logger.debug("An auxiliary radar overview image with sector indicator is requested")
         args.FORMAT.add('svg')
 
+    cmdBuilder.gTitle('${what:date|%Y-%m-%d} ${what:time|%H:%M} ${NOD}-${PLC}')
+    # spoils vertical layout...
+    #cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
+
     if args.ALIGN:
         align = args.ALIGN.upper()
         if align == 'TOP':
@@ -180,11 +184,14 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
         elif align == 'BOTTOM':
             cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
         elif align == 'LEFT':
+            cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
             cmdBuilder.gLayout("HORZ", "UP", "RIGHT")
         elif align == 'RIGHT':
+            cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
             cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
         else:
-            logger.warning(f"Unsupported ALIGN value: {args.ALIGN}. Ignoring.")
+            logger.error(f"Unsupported ALIGN value: {args.ALIGN}. Ignoring.")
+            exit(2)
 
 
     if 'svg' in args.FORMAT:
@@ -210,37 +217,6 @@ def handle_infile(args, progBuilder: rack.core.Rack):
         progBuilder.inputFile(f)
 
 
-def load_config(filename: str) -> dict:
-    """Load a JSON config file; return empty dict if not found."""
-    path = Path(filename)
-    if not path.is_file():
-        print(f"File not found: {filename}", file=sys.stderr)
-        return {}
-    with open(path, "r") as f:
-        return json.load(f)
-
-
-def read_default_args(parser):
-    """Apply JSON config file (if --config given) as parser defaults."""
-    args, _ = parser.parse_known_args()
-    if hasattr(args, 'config') and args.config:
-        config = load_config(args.config)
-        parser.set_defaults(**config)
-
-
-def export_defaults_to_json(parser, args, filename: str = "config_template.json"):
-    """Write current argument values to a JSON config file."""
-    logger.debug(f'Writing config to: {filename}')
-    conf = {k: v for k, v in vars(args).items()
-            if k != 'export_config' and v is not None}
-    with open(filename, "w") as f:
-        json.dump(conf, f, indent=4)
-    logger.info(f"Config written to: {filename}")
-
-
-
-
-
 def handle_horz_product(args, progBuilder: rack.core.Rack):
     """ Compute an auxiliary product (e.g. CAPPI) as a radar overview image.
         Overlay gRadarSector to show the VPR selection area (range + azimuth sector).
@@ -249,26 +225,54 @@ def handle_horz_product(args, progBuilder: rack.core.Rack):
     if not args.PRODUCT:
         return
     
-    # Todo: consider other selection criteria.
-    if args.prf:
-        progBuilder.select(prf=args.prf)
+    logger.warning(args.select)
 
-    cmd, params = args.PRODUCT.split(',', 1)
-    cmd = cmd.strip()
-    params = params.strip()
+    safe_id = args.PRODUCT 
+    if args.PRODUCT == "sweep":
+        if args.prf:
+            progBuilder.select(quantity=args.quantity, prf=args.prf)
+        else:
+            progBuilder.select(quantity=args.quantity)
+    elif args.PRODUCT == args.PRODUCT.upper():
+        # Sweep (select based on QUANTITY)
+        if args.prf:
+            progBuilder.select(quantity=args.PRODUCT, prf=args.prf)
+        else:
+            progBuilder.select(quantity=args.PRODUCT)
+        # args.PRODUCT = ''
+    else:
+        if args.prf:
+            progBuilder.select(prf=args.prf)
+        # Todo: consider other selection criteria.
+    
+        product = args.PRODUCT.split(',', 1)
+        params = None
+        cmd = product[0].strip()
+        if len(product) == 2:
+            params = product[0].strip()
+        #cmd, params = args.PRODUCT.split(',', 1)
+        #cmd = cmd.strip()
+        #params = params.strip()
 
-    if not hasattr(rack.core.Rack, cmd):
-        logger.warning(f"Unsupported product: {args.PRODUCT}. Skipping.")
-        return
+        if not hasattr(rack.core.Rack, cmd):
+            logger.warning(f"Unsupported product: {args.PRODUCT}. Skipping.")
+            return
 
-    rackCmd = getattr(rack.core.Rack, cmd)
-    logger.info(f"Adding product cmd: {cmd}, params: {params}")
-    rackCmd(progBuilder, *params.split(','))
+        rackCmd = getattr(rack.core.Rack, cmd)
+        logger.info(f"Adding product cmd: {cmd}, params: {params}")
+        if params:
+            rackCmd(progBuilder, *params.split(','))
+        else:
+            rackCmd(progBuilder)
 
-    # SIZE = str(args.SIZE).replace(':', ',').split(',')
-    # side = SIZE[1]  # use height dimension for the square radar overview
-    #SIZE = str(args.size).replace(':', ',').split(',')
-    SIZE = rack.typical(args.size, tuple, ',')
+        safe_id = cmd + params.replace('/', '-').replace(':', '-').replace(' ', '_')
+        # SIZE = str(args.SIZE).replace(':', ',').split(',')
+        # side = SIZE[1]  # use height dimension for the square radar overview
+        #SIZE = str(args.size).replace(':', ',').split(',')
+
+
+    SIZE = rack.typical(args.size, [int], ',')
+
     logger.warning(f"Parsed size: {SIZE}")
     if args.ALIGN in ['TOP', 'BOTTOM']:
         progBuilder.cSize(SIZE[0],SIZE[0]) 
@@ -278,8 +282,10 @@ def handle_horz_product(args, progBuilder: rack.core.Rack):
     progBuilder.cCreate()
     progBuilder.paletteDefault()
 
-    safe_params = params.replace('/', '-').replace(':', '-').replace(' ', '_')
-    progBuilder.outputFile(f"{args.basename}-{cmd}{safe_params}.png")
+    #safe_params = params.replace('/', '-').replace(':', '-').replace(' ', '_')
+    #progBuilder.outputFile(f"{args.basename}-{cmd}{safe_params}.png")
+    progBuilder.outputFile(f"{args.basename}-{safe_id}.png")
+        
 
 def finalize_svg_output(args, cmdBuilder: rack.core.Rack):
     """Apply CSS style settings to the rack command sequence."""
@@ -309,7 +315,7 @@ def run_module(module):
     import sys
     import rack.log
     import rack.args
-    from rack.vertical import load_config, export_defaults_to_json
+    from rack.args import load_config
 
     parser = module.build_parser()
     rack.log.add_parameters(parser)
@@ -333,14 +339,11 @@ def run_module(module):
 
 
     if args.print == '':
-        args.print = ' \\n  '  # default separator 
+        args.print = r' \\n  '  # default separator 
     
     if args.print:
         logger.info("# Rack cmd:")
-        #print(script_text)
-        #if getattr(args, 'print', None):
         sep = args.print.replace(r'\t', '\t').replace(r'\n', '\n')
-        logger.info("# Rack cmd line:")
         fmt = RackFormatter(params_format="'{params}'", cmd_separator=sep)
         print(prog.to_string(fmt))
 
@@ -367,6 +370,6 @@ def run_module(module):
             subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
 
     line = rack.args.args_to_cli(parser, args)
-    logger.debug(f"Python command line args: {line}")
+    logger.warning(f"Python command line args: {line}")
 
 

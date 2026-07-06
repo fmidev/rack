@@ -227,15 +227,14 @@ void Compositor::addPolar(Composite & composite, const Hi5Tree & src) const {
 	// TODO: prune
 	if (!composite.isDefined()){
 
-		mout.info("Initialising (like) a single-radar Cartesian");
+		mout.info("Initialising (as) a single-radar Cartesian");
 
 		if (!composite.projectionIsSet()){
 			mout.note("using radar-specific AEQD projection");
 			projectAEQD = true;
 		}
 		else {
-			mout.note("using predefined projection: ", composite.getProjStr());
-			//projectAEQD = true;
+			mout.info("using predefined projection: ", composite.getProjStr());
 			projectAEQD = false;
 		}
 

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,5,5)
+#define RACK_VERSION drain::Version<>(20,6, "beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -82,6 +82,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Rename --for back to --forEach due to name conflict in Python with 'def for(...)'
  *  Release 20.5.5
  *  --pVerticalProfile distance unit change km -> m ; now warns if small numbers (kms)
+ *  Version 20.6 beta
+ *  - New namespace odim
+ *  - Graphics: redesigned VectorImagePanel, CLIPPER, cRect
+ *  - Todo: (p)reserve slot for ${composite-name} (file-independently) and finally raise FLOATER
+ *  - GeoFrame bbox conversions
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

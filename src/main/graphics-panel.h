@@ -67,20 +67,20 @@ public:
 
 	enum ElemClass {
 		NONE = 0,
-		MAIN_TITLE  = 1,  // Main title in SVG image
+		MAIN_TITLE  = 1, // Main title in SVG image
 		GROUP_TITLE = 2, // Group title
-		IMAGE_TITLE = 4,  // Image title: small text (time, location) in corners of radar images
+		IMAGE_TITLE = 4, // Image title: small text (time, location) in corners of radar images
 		// Topical
-		TIME = 8,       // Date and time attributes
+		TIME = 8,        // Date and time attributes
 		LOCATION = 16,   // Place (coordinates, municipality)
 		GENERAL = 32,    // Default type
 		ALL = (63),
 		// MAIN,
-		IMAGE_PANEL,
+		IMAGE_PANEL,     // Group containing and image and, potentially, title TEXTs.
 		IMAGE_BORDER,    // RECT surrounding the image, potentially also a COORD_TRACKER
-		BACKGROUND_RECT, // invisible RECT used for aligning
+		BACKGROUND_RECT, // invisible RECT used for aligning titles.
 		SIDE_PANEL,
-		BORDER,          // Overall image border (RECT), invisible by default
+		BORDER,          // Overall border (RECT) around the SVG document, invisible by default
 		// --
 		MOUSE,			 // A group marked for mouse event listeners
 		MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
@@ -137,13 +137,22 @@ public:
 	static
 	drain::image::TreeSVG & getCurrentAlignedGroup(RackContext & ctx);
 
+	/// Applicable for PNG images.
 	static
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath);
 
 	static
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx);
 
+	/// Applicable for vector graphics.
+	static
+	drain::image::TreeSVG & getVectorImagePanelGroup(RackContext & ctx);
 
+	static
+	drain::image::TreeSVG & getFloatingGroup(RackContext & ctx);
+
+	static
+	drain::image::TreeSVG & getSourceSpecificGroup(RackContext & ctx, drain::image::TreeSVG & panel);
 	/** Intermediate group "hiding" translation that moves upper left corner of the object to the origin.
 	 *
 	 */

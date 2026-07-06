@@ -190,6 +190,7 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 		if (!node.isAligned()){
 			// somewhat atribitrary
 			node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
+			// object[svg::COMMENT]
 		}
 	}
 	else if (node.hasClass(LayoutSVG::FIXED)){
@@ -237,7 +238,8 @@ void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, 
 
 	// LayoutSVG::DirectionFlagger dirFlagger(direction);
 
-	if (orientation == drain::image::AlignBase::Axis::HORZ){
+	//if (orientation == drain::image::AlignBase::Axis::HORZ){
+	if (orientation == drain::image::AlignBase::Axis::VERT){
 		if (dirHorz == LayoutSVG::DirectionHorz::RIGHT){
 			node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
 		}
@@ -860,6 +862,9 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 		break;
 	default:
 		// assert undefined value.
+		mout.unimplemented<LOG_WARNING>("Node: ", node);
+		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getId()));
+		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getMyAlignAnchor<AlignBase::Axis::VERT>()));
 		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
 	}
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
@@ -899,6 +904,9 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 		}
 		break;
 	case AlignBase::Pos::UNDEFINED_POS: // or absolute
+		mout.unimplemented<LOG_WARNING>("Node: ", node);
+		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getTag()), DRAIN_LOG(node.getId()), drain::sprinter(node.getAttributes()).str());
+		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getMyAlignAnchor<AlignBase::Axis::VERT>()));
 		mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", alignLoc, " for ", AlignSVG::Owner::OBJECT, '/', AlignBase::Axis::VERT);
 		break;
 	default:

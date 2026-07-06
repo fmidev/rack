@@ -128,6 +128,10 @@ public:
 
 		if (!value.empty()){
 			ctx.composite.setProjection(value);
+			//int EPSG = ctx.composite.getEPSG();
+			//if (EPSG){
+			ctx.getStatusMap()["where:EPSG"] = ctx.composite.getEPSG();
+			//}
 		}
 		// ctx.composite.odim.projdef = value; // plain EPSG code OK??
 		// NOTE: could be :
@@ -157,14 +161,21 @@ public:
 
 	inline
 	void exec() const {
+
 		RackContext & ctx = getContext<RackContext>();
+		drain::VariableMap & statusMap = ctx.getStatusMap();
+
 		if (height == 0){
 			ctx.getComposite(RackContext::PRIVATE).setGeometry(width, width);
 			ctx.getComposite(RackContext::SHARED ).setGeometry(width, width);
+			statusMap["where:xsize"] = width;
+			statusMap["where:ysize"] = width;
 		}
 		else {
 			ctx.getComposite(RackContext::PRIVATE).setGeometry(width, height);
 			ctx.getComposite(RackContext::SHARED ).setGeometry(width, height);
+			statusMap["where:xsize"] = width;
+			statusMap["where:ysize"] = height;
 		}
 		/*
 			ctx.composite.setGeometry(width, width);

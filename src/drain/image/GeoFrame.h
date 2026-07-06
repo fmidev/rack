@@ -31,16 +31,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef GEOFRAME_H_
 #define GEOFRAME_H_
 
-#include <drain/util/Units.h>
-#include "Geometry.h"
+#include "drain/StringTools.h"
 #include "drain/util/BoundingBox.h"
 #include "drain/util/Proj6.h"  // for geographical projection of radar data bins
-
+#include "drain/util/Units.h"
+#include "Geometry.h"
 
 namespace drain
 {
-
-
 
 namespace image
 {
@@ -482,6 +480,21 @@ x	 *  \par i - horizontal image coordinate
 		return projGeo2Native.isLongLat();
 	}
 
+	/// Split bbox string to numeric bbox, deriving the unit from the end of the string or numeric scale.
+	/**
+	 *
+	 */
+	template <typename BB>
+	drain::Unit convert(const std::string & bboxStr, BB & bbox);
+
+	// Todo: templatize to support bb[0...3]
+	void convert(const std::vector<double> &bb, drain::Unit unit,
+			drain::Rectangle<double> &bboxNat, drain::Rectangle<int> &bboxImg);
+
+	// Todo: templatize to support bb[0...3]
+	drain::Unit convert(const std::string & bbox,
+			drain::Rectangle<double> &bboxNat, drain::Rectangle<int> &bboxImg);
+
 
 	//std::ostream & toOStr(std::ostream & ostr) const ;
 	virtual
@@ -525,6 +538,31 @@ protected:
 	double yScale = 0.0;
 
 };
+
+
+/// Split bbox string to numeric bbox, deriving the unit from the end of the string or numeric scale.
+/**
+ *  Examples of supported BB types:
+ *  - std::vector<T>
+ *  - drain::Rectangle<T>
+ */
+template <typename BB>
+drain::Unit GeoFrame::convert(const std::string & bboxStr, BB & bbox){
+
+	drain::StringTools::split(bboxStr, bbox, ',');
+
+	drain::Unit unit = drain::Units::extract<drain::Unit>(bboxStr);
+	if (unit == drain::Unit::UNDEFINED){
+		if (BBox::isMetric({bbox[0], bbox[1]}) && BBox::isMetric({bbox[2], bbox[3]})){
+			// TODO: add numeric support to guess...
+
+		};
+		unit = drain::Unit::PIXEL;
+	}
+
+	return unit;
+}
+
 
 inline
 std::ostream & operator<<(std::ostream & ostr, const GeoFrame & frame){

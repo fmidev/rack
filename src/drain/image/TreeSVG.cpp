@@ -248,7 +248,7 @@ void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 
 void NodeSVG::swapSVG(NodeSVG & node){
 	// Attributes
-	NodeXML<svg::tag_t>::swap(node);
+	NodeXML<svg::tag_t>::swapNode(node);
 	// Classes (this could be in NodeXML<svg::tag_t> ?)
 	// classList.swap(node.classList);
 	// Additional SVG properties

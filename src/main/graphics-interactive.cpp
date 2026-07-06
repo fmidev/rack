@@ -45,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-interactive.h"
 
 
+#include <drain/image/GeoFrame.h>
 
 namespace rack {
 
@@ -250,7 +251,8 @@ drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, cons
 	textObject->setType(svg::TEXT); // ensure
 	textObject->setAlign(AlignSVG::RIGHT);
 	textObject->setFontSize(15,18);
-	textObject->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+	//textObject->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
+	textObject->addClass(RackSVG::ElemClass::SELECTOR);
 
 	drain::image::TreeSVG & coordDisplay = textObject[cls](svg::TSPAN);
 	coordDisplay->addClass(cls);
@@ -259,6 +261,141 @@ drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, cons
 	// return imagePanelGroup;
 }
 
+/// Designed for CmdRect, could be multi-purpose
+TreeSVG & CmdRect::prepare(RackContext & ctx, RadarSVG & radarSVG) const {
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	drain::image::TreeSVG & alignedGroup = RackSVG::getCurrentAlignedGroup(ctx);
+
+	TreeSVG & imagePanel = alignedGroup[ctx.currentImagePanel];
+	if (imagePanel->isUndefined()){
+		mout.warn("currentImagePanel created but undefined");
+	}
+
+	if (!imagePanel.hasChild(svg::IMAGE)){
+		mout.warn("currentImagePanel created contains no image");
+	}
+
+	drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE];
+	mouseGroup.addChild()->setComment("Mouse tracker modified by ", getName(), ' ', getLastParameters());
+
+	drain::image::NodeSVG::map_t & attr = mouseGroup->getAttributes();
+
+	std::vector<double> bboxNat;
+	attr["data-bbox"].toSequence(bboxNat, ',');
+	if (bboxNat.empty()){
+		mout.warn("Could not attach coordinate monitor for imagePanel '", imagePanel->getId(), "' - missing 'data-bbox' attribute ");
+	}
+	else if (bboxNat.size() != 4){
+		mout.warn("Image panel #", imagePanel->getId(), ": odd size of elements in 'data-bbox' = ", attr["data-bbox"], " => ", drain::sprinter(bboxNat));
+	}
+
+	mout.special("Attaching coordinate monitor to imagePanel: ", imagePanel->getId());
+	// mouseGroup[svg::TITLE](svg::TITLE)->setText("Mouse tracker by ", getName(), ' ', getLastParameters());
+
+
+	int EPSG = attr["data-epsg"];
+	if (EPSG > 0){
+		mout.info("Projection: using EPSG=", EPSG);
+		radarSVG.geoFrame.setProjectionEPSG(EPSG);
+	}
+	else {
+		mout.hint("Projection: EPSG not detected, consider to set/unset fixedAEQD");
+		std::string projdef = ctx.getStatus("where:projdef", !fixedAEQD);
+		if (projdef.empty()){
+			mout.warn(drain::sprinter(attr));
+			mout.warn("No valid 'epsg' attribute value, and 'where:projdef' empty.");
+		}
+		radarSVG.geoFrame.setProjection(projdef);
+		mout.info("Projection: EPSG not detected, using projdef; ", projdef);
+		mouseGroup.addChild()->setComment("Projection: EPSG not detected, using projdef='", projdef,"'");
+	}
+
+	radarSVG.geoFrame.setBoundingBox(bboxNat[0], bboxNat[1], bboxNat[2],bboxNat[3]);
+
+	const drain::image::TreeSVG & image = imagePanel[svg::IMAGE];
+	const drain::Frame2D<int> imageGeometry(image->getWidth(), image->getHeight());
+	radarSVG.geoFrame.setGeometry(imageGeometry.width, imageGeometry.height);
+
+	if (radarSVG.geoFrame.isDefined()){
+		mout.debug(radarSVG.geoFrame);
+	}
+	else {
+		mout.warn("Failed in initializing", DRAIN_LOG(radarSVG.geoFrame));
+	}
+
+
+	return imagePanel;
+}
+
+void GeoFrame_convert(const drain::image::GeoFrame & geo, const std::vector<double> &bb, drain::Unit unit, drain::Rectangle<double> &bboxNat, drain::Rectangle<int> &bboxImg){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	switch (unit) {
+	case drain::Unit::DEGREE:
+		if (geo.isLongLat()){
+			// Metric coordinates undefined.
+			geo.deg2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
+			geo.deg2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
+			// monitorMove->setText(bbox);
+			// This could be enough also for METRIC projection, but...
+		}
+		else {
+			// ... here we get the METRIC BBOX without extra computation:
+			geo.deg2m(bb[0], bb[1], bboxNat.lowerLeft.x, bboxNat.lowerLeft.y);
+			geo.deg2m(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
+			geo.m2pix(bboxNat.lowerLeft, bboxImg.lowerLeft);
+			geo.m2pix(bboxNat.upperRight, bboxImg.upperRight);
+			// monitorMove->setText(bb, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "m)");
+		}
+		break;
+	case drain::Unit::METRE:
+		if (!geo.isLongLat()){
+			geo.m2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
+			geo.m2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
+			geo.m2deg(bb[0], bb[1], bboxNat.lowerLeft.x,  bboxNat.lowerLeft.y);
+			geo.m2deg(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
+			// monitorMove->setText(this->bbox, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "deg)");
+		}
+		else {
+			mout.error("Cannot set metric BBOX (", drain::sprinter(bb), ") for long-lat projection: ", geo.getProjStr());
+		}
+		break;
+	case drain::Unit::UNDEFINED:
+		// consder: develop drain::BBox::isMetric(bb[0], bb[1])
+		unit = drain::Unit::PIXEL;
+		// no break;
+	case drain::Unit::PIXEL:
+		bboxImg.set(bb[0], bb[1], bb[2], bb[3]);
+		break;
+	default:
+		mout.error("unknown unit: ", unit); // or trust false above?
+		break;
+	}
+	mout.attention(DRAIN_LOG(bboxImg));
+
+}
+
+drain::Unit GeoFrame_convert(const drain::image::GeoFrame & geo, const std::string & bbox, drain::Rectangle<double> &bboxNat, drain::Rectangle<int> &bboxImg){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::vector<double> bb;
+	drain::StringTools::split(bbox, bb, ',');
+
+	drain::Unit unit = drain::Units::extract<drain::Unit>(bbox);
+	if (unit == drain::Unit::UNDEFINED){
+		unit = drain::Unit::PIXEL;
+	}
+	// mout.attention(drain::sprinter(bb), ' ', DRAIN_LOG(unit));
+	GeoFrame_convert(geo, bb, unit, bboxNat, bboxImg);
+	return unit;
+}
+
+
+
 void CmdRect::exec() const {
 
 	using namespace drain::image;
@@ -266,28 +403,24 @@ void CmdRect::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	if (ctx.currentImagePanel.empty()){
+		mout.advice("write PNG file before calling ", getName());
+		mout.warn("currentImagePanel empty");
+		return;
+	}
+
 	// Modify SVG header
 	TreeSVG & myJS = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker");
 	myJS = image_coord_tracker;
 
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
-	onloadJS["image_coord_tracker"] = drain::StringBuilder<>("image_coord_tracker();");
+	onloadJS["image_coord_tracker"] = drain::StringBuilder<>("image_coord_tracker();"); // Original reason for this?
 
 
 	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	overlayGroup->setId(); // visible
-	std::string bboxGeo = overlayGroup->get("data-bbox","");
-	if (!bboxGeo.empty()){
-		mout.special("Attaching coordinate monitor to overlaygroup #", overlayGroup->getId());
-	}
-	else {
-		mout.warn("Could not attach coordinate monitor - overlaygroup #", overlayGroup->getId(), "has no 'data-bbox' attribute ");
-	}
+	TreeSVG & imagePanel = prepare(ctx, radarSVG);
 
-
-	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
-	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE); //  COORD_TRACKER
+	drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE];
 
 	/*
 	TreeSVG & monitorStyle = drain::UtilsXML::ensureStyle(ctx.svgTrack, "MONITOR", {
@@ -297,126 +430,142 @@ void CmdRect::exec() const {
 	});
 	*/
 
+	drain::image::TreeSVG & visualGroup = mouseGroup[RackSVG::ElemClass::SELECTOR](svg::GROUP);
+	visualGroup->addClass(LayoutSVG::FIXED); // check
+	visualGroup->addClass(RackSVG::ElemClass::MONITOR); // handles visualGroup->setStyle("visibility", ...);
+	visualGroup.addChild()->setComment("Visualisation of the selection");
+	// Reserve slot (implemented below).
+	drain::image::TreeSVG & reserved = visualGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
+	reserved->setLocation(10,20);
+	reserved->setFrame(30,40);
 
-	// REMOVE this! (why)
-	TreeSVG & coordDisplay = imagePanelGroup["MONITOR"];
-	coordDisplay->addClass(RackSVG::ElemClass::SELECTOR);
-	coordDisplay->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
-	coordDisplay->setAlign(AlignSVG::TOP);
-	TreeSVG & monitorMove = addCoordMonitor(coordDisplay, "MONITOR_MOVE");
+	TreeSVG & coordMoveDisplay = visualGroup[RackSVG::ElemClass::MONITOR];
+	coordMoveDisplay->addClass(RackSVG::ElemClass::SELECTOR);
+
+	TreeSVG & monitorMove = addCoordMonitor(coordMoveDisplay, "MONITOR_MOVE");
 	monitorMove->setText('.');
 
-	mout.attention(DRAIN_LOG(this->bbox));
+	/* This does not work
+	coordMoveDisplay->setMyAlignAnchor(AnchorElem::PREVIOUS);
+	coordMoveDisplay->setAlign(AlignSVG::BOTTOM);
+	coordMoveDisplay->setAlign(AlignSVG::LEFT);
+	// coordMoveDisplay->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+	*/
+	coordMoveDisplay->resetAlign();
+	coordMoveDisplay->addClass(LayoutSVG::FIXED);
+	coordMoveDisplay->setLocation(10,20);
 
+	// mout.attention(DRAIN_LOG(this->bbox));
+
+	/*
 	std::vector<double> bb;
 	drain::StringTools::split(this->bbox, bb, ',');
-	mout.attention(drain::sprinter(bb));
+	*/
+	// mout.attention(drain::sprinter(bb));
 
+
+	// MAIN
+	// if (bb.size() == 4){
+	// Draw rectangle (RECT)
+	/*
 	drain::Unit unit = drain::Units::extract<drain::Unit>(this->bbox);
-	mout.attention(DRAIN_LOG(unit));
-	mout.attention("Unit=", unit);
+	mout.attention(drain::sprinter(bb), ' ', DRAIN_LOG(unit));
+	*/
+	drain::Rectangle<double> bboxNat;
+	drain::Rectangle<int> bboxImg;
 
+	drain::Unit unit = radarSVG.geoFrame.convert(this->bbox, bboxNat, bboxImg);
 
-	if (bb.size() == 4){
-		// Draw rectangle (RECT)
-
-		drain::Rectangle<double> bboxNat;
-		drain::Rectangle<int> bboxImg;
-
-		switch (unit) {
-		case drain::Unit::DEGREE:
-			if (radarSVG.geoFrame.isLongLat()){
-				// Metric coordinates undefined.
-				radarSVG.geoFrame.deg2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
-				radarSVG.geoFrame.deg2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
-				monitorMove->setText(this->bbox);
-				// This could be enough also for METRIC projection, but...
-			}
-			else {
-				// ... here we get the METRIC BBOX without extra computation:
-				radarSVG.geoFrame.deg2m(bb[0], bb[1], bboxNat.lowerLeft.x, bboxNat.lowerLeft.y);
-				radarSVG.geoFrame.deg2m(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
-				radarSVG.geoFrame.m2pix(bboxNat.lowerLeft, bboxImg.lowerLeft);
-				radarSVG.geoFrame.m2pix(bboxNat.upperRight, bboxImg.upperRight);
-				monitorMove->setText(this->bbox, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "m)");
-			}
-			break;
-		case drain::Unit::METRE:
-			if (!radarSVG.geoFrame.isLongLat()){
-				radarSVG.geoFrame.m2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
-				radarSVG.geoFrame.m2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
-				radarSVG.geoFrame.m2deg(bb[0], bb[1], bboxNat.lowerLeft.x,  bboxNat.lowerLeft.y);
-				radarSVG.geoFrame.m2deg(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
-				monitorMove->setText(this->bbox, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "deg)");
-			}
-			else {
-				mout.error("Cannot set metric BBOX (", this->bbox, ") for long-lat projection: ", radarSVG.geoFrame.getProjStr());
-			}
-			break;
-		case drain::Unit::UNDEFINED:
-			// consder: develop drain::BBox::isMetric(bb[0], bb[1])
-			unit = drain::Unit::PIXEL;
-			// no break;
-		case drain::Unit::PIXEL:
-			bboxImg.set(bb[0], bb[1], bb[2], bb[3]);
-			break;
-		default:
-			mout.error("unknown unit: ", this->bbox); // or trust false above?
-			break;
-		}
-		mout.attention(DRAIN_LOG(bboxImg));
-
-
-		// TODO: gRectangle -> RECTANGLE
-		drain::image::TreeSVG & selectRect = imagePanelGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
-		selectRect->addClass(RackSVG::ElemClass::SELECTOR, LayoutSVG::FIXED);
-		/*
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::SELECTOR, {
-				{"fill", "none"},
-				{"stroke", "darkgreen"},
-				{"stroke-width", 2.0},
-				// {"opacity", 0.5}
-		});
-		 */
-		selectRect->setLocation(std::min(bboxImg.lowerLeft.x, bboxImg.upperRight.x), std::min(bboxImg.lowerLeft.y, bboxImg.upperRight.y));
-		selectRect->setFrame(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
-
-		TreeSVG & coordSpanDisplay = imagePanelGroup["MONITOR_BOX"];
-		coordSpanDisplay->addClass("MONITOR_BOX"); // From JS
-		coordSpanDisplay->addClass(RackSVG::ElemClass::SELECTOR);
-		coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
-		coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
-		TreeSVG & monitorDown = addCoordMonitor(coordSpanDisplay, "MONITOR_DOWN");
-		coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
-		TreeSVG & monitorUp   = addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
-
-		monitorDown->setText(bboxImg.lowerLeft);
-		monitorUp->setText(bboxImg.upperRight, " px");
-
+	if (bboxImg.empty()){
+		mout.warn("Bounding box empty: ", bbox, " -> ", bboxImg);
 	}
+
+	switch (unit) {
+	case drain::Unit::DEGREE:
+
+		if (radarSVG.geoFrame.isLongLat()){
+			// Metric coordinates undefined.
+			/// radarSVG.geoFrame.deg2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
+			/// radarSVG.geoFrame.deg2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
+			monitorMove->setText(this->bbox);
+			// This could be enough also for METRIC projection, but...
+		}
+		else {
+			// ... here we get the METRIC BBOX without extra computation:
+			/// radarSVG.geoFrame.deg2m(bb[0], bb[1], bboxNat.lowerLeft.x, bboxNat.lowerLeft.y);
+			/// radarSVG.geoFrame.deg2m(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
+			/// radarSVG.geoFrame.m2pix(bboxNat.lowerLeft, bboxImg.lowerLeft);
+			/// radarSVG.geoFrame.m2pix(bboxNat.upperRight, bboxImg.upperRight);
+			monitorMove->setText(this->bbox, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "m)");
+		}
+		break;
+	case drain::Unit::METRE:
+		if (!radarSVG.geoFrame.isLongLat()){
+			/// radarSVG.geoFrame.m2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
+			/// radarSVG.geoFrame.m2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
+			/// radarSVG.geoFrame.m2deg(bb[0], bb[1], bboxNat.lowerLeft.x,  bboxNat.lowerLeft.y);
+			/// radarSVG.geoFrame.m2deg(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
+			monitorMove->setText(this->bbox, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "deg)");
+		}
+		else {
+			mout.error("Cannot set metric BBOX (", this->bbox, ") for long-lat projection: ", radarSVG.geoFrame.getProjStr());
+		}
+		break;
+	case drain::Unit::UNDEFINED:
+		// consder: develop drain::BBox::isMetric(bb[0], bb[1])
+		// unit = drain::Unit::PIXEL;
+		// no break;
+	case drain::Unit::PIXEL:
+		// bboxImg.set(bb[0], bb[1], bb[2], bb[3]);
+		break;
+	default:
+		mout.error("unknown unit: ", this->bbox); // or trust false above?
+		break;
+	}
+	mout.attention(DRAIN_LOG(bboxImg));
+
+
+	// TODO: gRectangle -> RECTANGLE (?)
+	drain::image::TreeSVG & selectRect = visualGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
+	selectRect->addClass(RackSVG::ElemClass::SELECTOR, LayoutSVG::FIXED);
+	// drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::SELECTOR, {
+	selectRect->setLocation(std::min(bboxImg.lowerLeft.x, bboxImg.upperRight.x), std::min(bboxImg.lowerLeft.y, bboxImg.upperRight.y));
+	selectRect->setFrame(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
+
+	TreeSVG & coordSpanDisplay = visualGroup["MONITOR_BOX"];
+	coordSpanDisplay->addClass("MONITOR_BOX"); // From JS
+	coordSpanDisplay->addClass(RackSVG::ElemClass::SELECTOR);
+	coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
+	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+
+	TreeSVG & monitorDown = addCoordMonitor(coordSpanDisplay, "MONITOR_DOWN");
+	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
+	TreeSVG & monitorUp   = addCoordMonitor(coordSpanDisplay, "MONITOR_UP");
+	monitorDown->setText(bboxImg.lowerLeft);
+	monitorUp->setText(bboxImg.upperRight, " px");
+
+	// }
 
 
 	// Experimental
 	RackSVG::addJavaScripsDef(ctx, "MONITOR2_BOX", "cls");
 
-	/// Create yet another plane (RECT) to receive mouse events
-	drain::image::TreeSVG & coordTracker = imagePanelGroup[RackSVG::ElemClass::MOUSE_TRACKER](svg::RECT);
-	coordTracker->setMyAlignAnchor(svg::IMAGE);
-	coordTracker->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	/// Todo: move/share/generalize
-	coordTracker->set("data-bbox", bboxGeo);
-	coordTracker->set("data-epsg", overlayGroup->get("data-epsg",""));
+	/// Create the actual another plane (RECT) to receive mouse events
+	drain::image::TreeSVG & coordTracker = mouseGroup[RackSVG::ElemClass::MOUSE_TRACKER](svg::RECT);
+	coordTracker->addClass(LayoutSVG::FIXED);
+	coordTracker->setFrame(radarSVG.geoFrame.getFrameWidth(), radarSVG.geoFrame.getFrameHeight());
 	coordTracker->set("data-resolution", resolution.tuple());
 	coordTracker->addClass(RackSVG::ElemClass::MOUSE_TRACKER);
-	coordTracker->setStyle("fill", "white"); // TODO: transparent tracker
-	coordTracker->setStyle("opacity", 0.0001);
+	coordTracker->setStyle("fill", "yellow"); // TODO: transparent tracker
+	coordTracker->setStyle("opacity", 0.1);
+
 
 	// If mask...
 	if (MASK && false){
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
 		//drain::image::TreeSVG & mask =
-		MaskerSVG::createMask(ctx.svgTrack, imagePanelGroup, w, h, coordTracker);
+		MaskerSVG::createMask(ctx.svgTrack, mouseGroup, w, h, coordTracker);
 	}
 
 
@@ -687,9 +836,9 @@ void CmdData::exec() const {
 		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
 			value = static_cast<T>(*it) - bias;
 			*rit =  value     & 0xff;
-			//*git = (value>>8) & 0xff;
+			// *git = (value>>8) & 0xff;
 			++rit;
-			//++git;
+			// ++git;
 		}
 
 		drain::image::FilePng::write(dataImage, filenameFinal);

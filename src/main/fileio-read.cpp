@@ -399,9 +399,9 @@ void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffM
 
 					int mins = abs(timeCurrent.getTime() - timeNew.getTime())/60;
 					if (mins > maxTimeDiffMinutes){
-						mout.warn("Same source (radar), but time difference more than ", maxTimeDiffMinutes, " minutes");
-						mout.warn(" - current: ", timeCurrent.str("%c"));
-						mout.warn(" - input:   ", timeNew.str("%c"));
+						mout.info("Same source (radar), but not appending – nominal time difference ", mins, " [mins] > max (", maxTimeDiffMinutes, ")");
+						mout.debug(" - current: ", timeCurrent.str("%c"));
+						mout.debug(" - input:   ", timeNew.str("%c"));
 						// mout.advice("Use --inputVolumeMaxTimeDiff");
 						append = false;
 					}

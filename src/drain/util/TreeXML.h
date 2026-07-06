@@ -91,6 +91,10 @@ public:
 	class Elem; // {} ?
 
 	/// Provides access to ReferenceMap2 of XML elements, to link FlexibleVariables.
+	/**
+	 *  \see TreeElemUtilsHTML
+	 *  \see TreeElemUtilsSVG
+	 */
 	template <T ELEM>
 	friend class Elem;
 
@@ -123,8 +127,9 @@ public:
 	~NodeXML(){};
 
 	// TODO: Shadowing. Check usage, change name no swapNode()
+	// also: confusion risk with: tree.swap() tree->swap()
 	virtual
-	void swap(NodeXML<T> & node);
+	void swapNode(NodeXML<T> & node);
 
 
 	inline
@@ -372,12 +377,24 @@ protected:
 };
 
 template <class T>
-void NodeXML<T>::swap(NodeXML<T> & node){
-	// Swap attributes
-	//ReferenceMap2<FlexibleVariable>::swap(node);
-	map_t::swap(node);
-	// Swap classes
-	this->classList.swap(node.classList);
+void NodeXML<T>::swapNode(NodeXML<T> & node){
+
+	if (this != &node){
+
+		// Swap attributes
+		// Risky? FlexibleVariableMap contains references. Should be moved with copy-struct-kind of mechanism...
+		map_t::swap(node);
+		// Swap text content
+
+		ctext.swap(node.ctext);
+
+		// Swap classes
+		classList.swap(node.classList);
+	}
+	else {
+		// // Consider conditional (strict => exception)
+	}
+
 }
 
 

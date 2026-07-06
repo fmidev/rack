@@ -110,9 +110,9 @@ public:
 		ADAPTER,      // Translate this group object such that the upper right corner of graphics are in the origin (0,0).
 		ALIGN,        // Align this object, with applicable rules and preferences (populate me with align instructions, unless already set)
 		COMPOUND,     // Internal elements are already aligned, bypass recursion.
-		FIXED,        // Absolute position - do not align.
-		INDEPENDENT,  // No anchoring allowed to this element, but collective bounding box is adjusted to include this element
-		NEUTRAL,  // The object is not included in updating the collective bounding box but can be used as anchor. \see INDEPENDENT
+		FIXED,        // Absolute position - do not align. (Do not adjust coordinates, but allow internal recursion.
+		INDEPENDENT,  // No anchoring allowed – but inclusion by collective bounding box applies, unless NEUTRAL.
+		NEUTRAL,      // Excluded from the collective bounding box – but anchoring supported, unless INDEPENDENT)
 		//
 		CROP,         // minimize bbox covering all the included objects. \see GroupType::FIXED
 		// Future options

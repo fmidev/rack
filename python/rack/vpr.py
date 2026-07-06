@@ -9,25 +9,16 @@ Utility for constructing strings that can be executed in shell.
 import argparse
 import sys
 from pathlib import Path
-import os
-import re
-import inspect
-import logging
 
-from rack import args, script
 import rack.log
 import rack.prog
-#import rack.cmdline
 import rack.gnuplot
 import rack.core
-#from 
 import rack.vertical
-#from rack.vertical import ensure_arguments 
 
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 
-reg = rack.prog.Register
 
 
 def build_parser():
@@ -35,14 +26,7 @@ def build_parser():
     """
     parser = argparse.ArgumentParser(description="Vertical Profile of Reflectivity (VPR) generator")
 
-
-    
-    def camel_to_upper_underscore(name: str) -> str:
-        s1 = re.sub(r'(.)([A-Z][a-z]+)', r'\1_\2', name)
-        s2 = re.sub(r'([a-z0-9])([A-Z])', r'\1_\2', s1)
-        return s2.upper()
-
-    rack.prog.Register.expand_options(rack.core.Rack.pVerticalProfile, parser, name_mapper=camel_to_upper_underscore)
+    rack.prog.Register.expand_options(rack.core.Rack.pVerticalProfile, parser, name_mapper=True)
 
     parser.add_argument(
         # Uppercase option but lowercase member, for compatibility with rack.pseudorhi, 
@@ -52,7 +36,17 @@ def build_parser():
         default="400,800",
         help="Size of the output gnuplot image in pixels, as width,height (e.g. 400,800).")
 
-    rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=camel_to_upper_underscore)
+    parser.add_argument(
+        "--XRANGE",
+        default=None,
+        help="Plot range, x axis")
+
+    parser.add_argument(
+        "--YRANGE",
+        default=None,
+        help="Plot range, y axis")
+
+    rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=True)
 
     rack.vertical.complete_arg_parser(parser)
 
@@ -61,32 +55,13 @@ def build_parser():
         default=".SECTOR=stroke:white;stroke-width:3",
         help="Adjust CSS styles for the SVG output")
 
-    #parser.add_argument(
-    #    "--test",
-    #    action='store_true',
-    #    help="run some tests")
-
-
     return parser
 
 
 
-def handle_graphics(args, progBuilder: rack.core.Rack):
-    progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
-
-def handle_vert_product(args, progBuilder: rack.core.Rack):
-
-    # range is already in metres; pass directly to gRadarSector
-    range_raw = str(args.range) if hasattr(args, 'range') and args.range is not None else "10:100"
-    azm_raw = str(args.azm) if hasattr(args, 'azm') and args.azm is not None else "0:359.99"
-
-    progBuilder.gRadarSector(
-        radius=range_raw.replace(',', ':'),
-        azimuth=azm_raw.replace(',', ':'),
-        MASK=True)
 
 
-def handle_outfiles_vpr(args, cmdBuilder: rack.core.Rack):
+def write_output_vpr(args, cmdBuilder: rack.core.Rack):
     """ Link the gnuplot image (for SVG embedding) and write the profile data file. """
 
     if args.gnuplot:
@@ -106,11 +81,13 @@ def handle_outfiles_vpr(args, cmdBuilder: rack.core.Rack):
         logger.warning("No output format '.mat' specified – current version forces it.")
         # for profile data. Use --FORMAT mat or --FORMAT h5 to save the profile data.")
         # exit(1)
-    cmdBuilder.select(quantity=r'^COUNT$|^DBZH$|HGHT')
-    cmdBuilder.outputFile(f"{args.basename}.mat")
+    # cmdBuilder.select(quantity=r'^COUNT$|^DBZH$|HGHT')
+    # cmdBuilder.select(quantity=r'^COUNT$|^DBZH$|HGHT')
+    # cmdBuilder.outputFile(f"{args.basename}.mat")
+    cmdBuilder.outputFile(args.datafilename)
 
 
-def handle_gnuplot(args, progBuilder: rack.core.Rack):
+def create_gnuplot_script(args, progBuilder: rack.core.Rack):
 
     if not args.gnuplot:
         return
@@ -120,68 +97,94 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack):
         logger.warning(f"Unsupported gnuplot terminal format: {terminal}, defaulting to png")
         terminal = 'png'
 
-    gpl_plot = rack.prog.CommandSequence()
-    gpl_plot.fmt = rack.gnuplot.GnuPlotFormatter(param_separator=',\n  ')
-    gpl_plot.fmt.cmd_separator = '\n'
-    gpl_plot.fmt.CMD_SEPARATOR = '\n'
+    plotScript = rack.prog.CommandSequence()
+    plotScript.fmt = rack.gnuplot.GnuPlotFormatter(param_separator=',\n  ')
+    plotScript.fmt.CMD_SEPARATOR = '\n'
 
-    confCmdReg = rack.gnuplot.Registry(gpl_plot)
-    plotCmdReg = rack.gnuplot.Registry(gpl_plot)
+    plotBuilder = rack.gnuplot.Registry(plotScript)
 
-    confCmdReg.terminal(rack.gnuplot.Terminal(terminal), size=args.size)
-    confCmdReg.output(args.gnuplot)
+    
+    plotBuilder.comment(f"GnuPlot script created by {__name__}")
 
-    # Parse parameters used for title and axis ranges
-    range_raw = str(args.range).replace(',', ':') if hasattr(args, 'range') and args.range else "?"
-    azm_raw   = str(args.azm).replace(',', ':')   if hasattr(args, 'azm')   and args.azm   else "?"
+    plotBuilder.terminal(rack.gnuplot.Terminal(terminal), size=args.size)
+    plotBuilder.output(args.gnuplot)
 
-    height_raw = args.height if hasattr(args, 'height') and args.height is not None else "0:12000"
-    if isinstance(height_raw, list):
-        height_tuple = tuple(height_raw)
-    elif isinstance(height_raw, str):
-        height_tuple = tuple(int(i) for i in height_raw.replace(',', ':').split(':'))
-    else:
-        height_tuple = (0, 12000)
-
+   # Parse parameters used for title and axis ranges
+    height_tuple = rack.typical(args.height, [int], "[:,]")
+    
     if args.title:
-        confCmdReg.title(args.title)
-    elif azm_raw != "?":
-        confCmdReg.title(f"Vertical profile ({range_raw}m, {azm_raw}deg)")
+        plotBuilder.title(args.title)
     else:
-        confCmdReg.title(f"Vertical profile ({range_raw}m)")
+        range_tuple  = rack.typical(args.range, [int], "[:,]")
+        azm_tuple    = rack.typical(args.azm,   [int], "[:,]")
+        if azm_tuple != (0,0):
+            plotBuilder.title(f"Vertical profile {range_tuple[0]/1000}–{range_tuple[1]/1000} km, {azm_tuple[0]}–{azm_tuple[1]}deg")
+        else:
+            plotBuilder.title(f"Vertical profile {range_tuple}m")
 
-    confCmdReg.set("grid")
+    plotBuilder.set("grid")
 
-    confCmdReg.ylabel("HGHT (m)")
+    plotBuilder.ylabel("HGHT (m)")
 
     # x1 (bottom): DBZH reflectivity  [TODO: add --XRANGE option]
-    confCmdReg.xlabel("DBZH")
-    confCmdReg.xrange((-32, 60))
+    #confCmdReg.xlabel("DBZH")
+    quantities = rack.typical(args.quantity, list, "[:,]")
+
+    plotBuilder.xlabel(",".join(quantities))
+
+    plotBuilder.comment(f"If needed, tune x range with --XRANGE")
+    if args.XRANGE:
+        plotBuilder.xrange(*rack.typical(args.XRANGE, [int], "[:,]"))
+    
+    #confCmdReg.xrange((-32, 60))
 
     # x2 (top): COUNT, log scale  [TODO: add --X2RANGE option]
-    confCmdReg.x2label("count(DBZH)")
-    confCmdReg.set("log x2")
-    confCmdReg.x2range((1, 10000))
-    confCmdReg.set("x2tics")
+    plotBuilder.x2label("count")  # (f"count({args.quantity})")
+    plotBuilder.set("log x2")
+    plotBuilder.x2range((1, 10000))
+    plotBuilder.set("x2tics")
 
     # y: altitude
-    confCmdReg.yrange(height_tuple)
+    plotBuilder.yrange(height_tuple)
 
-    # .mat text file columns: 1=HGHT, 2=DBZH, 3=COUNT
-    # quantities = ["DBZH", "COUNT"]  # TODO: make configurable via --QUANTITIES
-    mat_file = f"{args.basename}.mat"
-    e_dbzh  = plotCmdReg.plot_entry(
-        filename=mat_file, using="2:1",
-        style=rack.gnuplot.Style.LINES, title="DBZH")
-    e_count = plotCmdReg.plot_entry(
-        filename=mat_file, using="3:1",
-        style=rack.gnuplot.Style.LINES, title="count(DBZH)", axes="x2y1")
-    plotCmdReg.plot(e_dbzh, e_count)
+    mat_file = args.datafilename
+    column_index = 1 # HGHT, to be skipped
+    plotBuilder.comment(f"Quantities: HGHT and {quantities}")
 
-    script_text = gpl_plot.to_string()
+    """
+    Column order
+    # 1 HGHT (fixed)
+    # 2 DBZH  (or other user-selected)
+    # 3 COUNT (of that DBZH)
+    Optionally:
+    # 4 ZDR   (or other ...)
+    # 5 COUNT (of quantity above)
+    etc
+    """
+
+    plots = []
+    for quantity in quantities:
+
+        logger.debug(f"plotting quantity: {quantity}")
+
+        column_index += 1
+        plots.append(plotBuilder.plot_entry(
+            filename=mat_file, using=f"{column_index}:1",
+            style=rack.gnuplot.Style.LINES, title=quantity)
+        )
+        
+        column_index += 1
+        plots.append(plotBuilder.plot_entry(
+            filename=mat_file, using=f"{column_index}:1",
+            style=rack.gnuplot.Style.LINES, title=f"count({quantity})", axes="x2y1")
+        )
+
+    plotBuilder.plot(*plots)
+
+    script_text = plotScript.to_string()+'\n'
     if args.print != None:
-        if args.print == '':
-            args.print = ' \\n  '  # default separator 
+        #if args.print == '':
+        #    args.print = ' \\n  '  # default separator 
         logger.info("# GnuPlot script:")
         print(script_text)
 
@@ -211,20 +214,29 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     rackProg = rack.prog.CommandSequence(programName='rack', quote="'")
 
-    rackCmdReg = rack.core.Rack(rackProg)
+    progBuilder = rack.core.Rack(rackProg)
 
-    rack.vertical.initialize_rack(args, rackCmdReg)
+    rack.vertical.initialize_rack(args, progBuilder)
 
+    # Access to add "hidden" options.
+    v = vars(args)
+
+    # Hidden option: filename for output data.
+    
     # VPR specific commands:
-    handle_vert_product(args, rackCmdReg)
-    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.select)
-    rackCmdReg.handle_published_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
-    handle_outfiles_vpr(args, rackCmdReg)
-    handle_gnuplot(args, rackCmdReg)
+    # Visualize selection
+    progBuilder.gRadarSector(
+        radius  = rack.typical(args.range, [int], r'[,:]'), 
+        azimuth = rack.typical(args.azm,   [int], r'[,:]'), 
+        MASK=True)
+    progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select)
+    progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
 
-    rack.vertical.finalize_svg_output(args, rackCmdReg)
+    v["datafilename"] = f'{args.basename}.mat'
+    write_output_vpr(args, progBuilder)
+    create_gnuplot_script(args, progBuilder)
 
-
+    rack.vertical.finalize_svg_output(args, progBuilder)
 
     if args.FORMAT:
         raise Exception('Unhandled formats:', args.FORMAT)

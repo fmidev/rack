@@ -51,13 +51,6 @@ class CartesianBBox : public drain::BasicCommand {
 public:
 
 	CartesianBBox() : drain::BasicCommand(__FUNCTION__, "Bounding box of the Cartesian product.") {
-		/*
-		RackResources & resources = getResources();
-		getParameters().link("llLon", resources.bbox.lowerLeft.x = 0.0, "deg");
-		getParameters().link("llLat", resources.bbox.lowerLeft.y = 0.0, "deg");
-		getParameters().link("urLon", resources.bbox.upperRight.x = 0.0, "deg");
-		getParameters().link("urLat", resources.bbox.upperRight.y = 0.0, "deg");
-		*/
 		getParameters().link("llLon", bbox.lowerLeft.x  = 0.0, "deg|m");
 		getParameters().link("llLat", bbox.lowerLeft.y  = 0.0, "deg|m");
 		getParameters().link("urLon", bbox.upperRight.x = 0.0, "deg|m");
@@ -72,6 +65,7 @@ public:
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
 		ctx.composite.setBoundingBox(bbox);
+		ctx.getStatusMap()["where:BBOX"] = bbox.tuple();
 		// std::cerr << __FILE__ << ' ' << bbox << std::endl;
 		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 

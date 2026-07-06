@@ -51,7 +51,7 @@ class Graphic  {
 public:
 
 	enum GRAPHIC {
-		VECTOR_OVERLAY, // Standard subgroup name inside IMAGE_PANEL group.
+		// VECTOR_OVERLAY, // Standard subgroup name inside IMAGE_PANEL group.
 		HIGHLIGHT,      // CSS: activated on tool tip
 		GRID,           // overlapping with element class?
 		DOT,		// Marker for radar location
@@ -169,24 +169,10 @@ public:
 	// static
 	// drain::image::TreeSVG & getOverlayStyle(drain::image::TreeSVG & svgDoc);
 
-	/// Get (create) group dedicated for layers drawn over radar data
-	/**
-	 *
-	 */
-	static
-	drain::image::TreeSVG & getOverlayGroup(drain::image::TreeSVG & svgDoc);
-
 
 	// Projection of the latest radar input.
-	//RadarProj radarProj;
 	PolarRadarConf radarProj;
 
-	/*
-	inline
-	void deriveMaxRange(const Hi5Tree & srcPolar){
-		maxRange = DataTools::getMaxRange(srcPolar);
-	}
-	*/
 
 	/// If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such.
 	/*
@@ -205,6 +191,7 @@ public:
 	};
 	*/
 
+	std::string source;
 
 	/// Geographic extent and projection (Cartesian)
 	drain::image::GeoFrame geoFrame;

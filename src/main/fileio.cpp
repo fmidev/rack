@@ -506,7 +506,12 @@ void CmdOutputFile::exec() const {
 			svgGroup->set("data-outputPrefix", ctx.outputPrefix); // add "data:..."
 		}
 
-		mout.experimental("writing SVG file: ", path);
+		// mout.experimental("writing SVG file: ", path);
+		drain::image::OverlayMoverSVG overlayMover;
+		drain::TreeUtils::traverse(overlayMover, ctx.svgTrack);
+
+		drain::image::FloaterSVG floater;
+		drain::TreeUtils::traverse(floater, ctx.svgTrack);
 
 		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
@@ -519,65 +524,50 @@ void CmdOutputFile::exec() const {
 			// mout.attention("svg: ABSOLUTE paths");
 		}
 
+		/*
 		if (ctx.svgTrack->get("data-version") == 2){
 			mout.attention("skipping alignment");
 
 			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
 			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
-				// Finalize view box
+			// Finalize view box
 			ctx.svgTrack->setViewBox(bb);
-			// const std::string viewBox = drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height);
-			// ctx.svgTrack->set("viewBox", viewBox);
 		}
 		else {
-			/*
-			TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
-			TreeUtilsSVG::addStackLayout(ctx.svgTrack, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
-			TreeUtilsSVG::superAlignNEW(ctx.svgTrack);
-			*/
+		*/
 			//
-			MetaDataCollectorSVG metadataPruner;
-			drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
+		MetaDataCollectorSVG metadataPruner;
+		drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
 
-			//  RackSVG::completeSVG(ctx);
+		ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
 
-			ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
+		TitleCreatorSVG titleCreator(ctx.svgPanelConf);
+		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
 
-			TitleCreatorSVG titleCreator(ctx.svgPanelConf);
-			drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
+		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
+		TreeLayoutSVG::superAlign(ctx.svgTrack);
 
-			// NEW:
-			TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
-			// TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
-			TreeLayoutSVG::superAlign(ctx.svgTrack);
+		const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
+		ctx.svgTrack->setFrame(bb.getFrame()); // width, height
+		ctx.svgTrack->setViewBox(bb);
 
-			// OLD
-			// TreeUtilsSVG::superAlign(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirection);
+		{
+			// using namespace drain::image;
+			// typedef svg::tag_t tag_t;
+			// TreeSVG & subGroup = ctx.svgTrack[RackSVG::BORDER];
+			NodeSVG::Elem<svg::tag_t::RECT> frame(ctx.svgTrack[RackSVG::BORDER]);
+			frame.width  = bb.width;
+			frame.height = bb.height;
+			frame.node.addClass(RackSVG::BORDER);
+			// frame.node.setStyle("fill", "none");
+			frame.node.setStyle({
+				{"fill", "none"},
+				// {"stroke", "red"},
+				//{"stroke-width", "1px"},
+			});
 
-			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
-			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
-			ctx.svgTrack->setViewBox(bb);
-
-			{
-				// using namespace drain::image;
-				typedef svg::tag_t tag_t;
-				TreeSVG & subGroup = ctx.svgTrack["BORDER"];
-				NodeSVG::Elem<tag_t::RECT> frame(subGroup);
-				frame.width  = bb.width;
-				frame.height = bb.height;
-				frame.node.addClass("BORDER");
-				// frame.node.setStyle("fill", "none");
-				frame.node.setStyle({
-						{"fill", "none"},
-						// {"stroke", "red"},
-						//{"stroke-width", "1px"},
-				});
-
-			}
-
-
-			// mout.attention("View BBOX: ", bb);
 		}
+
 
 
 		drain::TreePruner<drain::image::TreeSVG> textPruner;
@@ -602,8 +592,6 @@ void CmdOutputFile::exec() const {
 
 		drain::image::MaskerSVG masker;
 		drain::TreeUtils::traverse(masker, ctx.svgTrack);
-
-
 
 		drain::Output ofstr(filepath);
 

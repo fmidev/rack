@@ -156,6 +156,8 @@ EOF
 
 COMP_CONF="--cProj 4326 --cBBox 17.13,57.93,29.41,64.08  --cSize 800,800 --cInit"
 
+
+
 WRITE_SECTION svg_basic Basic example
 
 WRITE_SUBSECTION svg_basic_single Single-radar image – add grid and background map
@@ -278,7 +280,7 @@ RUN_TEST \\ --gTitle "''"  --gGroupTitle "'\${what:time|%H:%M} ${what:time|%H:%M
 WRITE_DOC '<b>Changing style of graphic panels</b> <p /> '
 
 WRITE_DOC 'A further example, usage of styles'
-RUN_TEST \\  --gLayout 'VERT' \\ --gStyle ".BORDER='stroke:black;stroke-width:1px'" \\ --gTitle "'Larger font here...'"  --gGroupTitle "'...but smaller here, with still readable timestamp \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" --gTitleHeights "'40,20,15'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "User-defined_title_height"
+RUN_TEST \\  --gLayout 'HORZ' \\ --gStyle ".BORDER='stroke:black;stroke-width:1px'" \\ --gTitle "'Larger font here...'"  --gGroupTitle "'...but smaller here, with still readable timestamp \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" --gTitleHeights "'40,20,15'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\   'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "User-defined_title_height"
 
 WRITE_DOC 'A further example, usage of styles'
 RUN_TEST \\ --gGroupId "'\${what:time}'"  \\ --gStyle ".IMAGE_BORDER='stroke:black;stroke-width:1'" --gStyle "rect.MAIN_TITLE='fill:forestgreen'" --gStyle "rect.GROUP_TITLE='fill:lightgreen'"  \\   --gStyle "text.MAIN='font-family:Times'"  --gStyle ".LOCATION='fill:brown'" \\  --script "'--cReset --cSize 300 --cProj 3067 -Q DBZH -c $CONF --palette \"\" -o out-\${what:date}T\${what:time}-\${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{ika,kor,van}.h5'  \\  -o "Multiple_styles"
@@ -295,11 +297,11 @@ RUN_TEST \\  --gTitleHeights "'30,25,15'"  --gTitle "''" --gGroupTitle "''" \\  
 WRITE_SECTION svg_background_maps Background maps.
 WRITE_DOC 'Background maps. External images can be linked with \c --gLinkImage. For example, maps can be included, aligning the following radar image on top of it with \c --gAlign \c HORZ_FILL,VERT_FILL . Note that --gLinkImage discards --inputPrefix , but that value can be accessed and added explicitly with \b ${inputPrefix}'  
 
-#WRITE_DOC '\subsection svg-include Including and excluding images in SVG panels'
-#make -B gInclude.hlp
-#WRITE_DOC '\include gInclude.hlp'
-# use --gGroupId as soon as fixed 
-RUN_TEST \\ --inputPrefix '$PWD/' \\  --gGroupTitle "'\${NOD} – \${PLC}'" \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage \${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --gAlign 'HORZ_FILL:VERT_FILL' --imageTransp 0.0:0.1,0,1 --palette default   -o out-\${what:date}T\${what:time}-\${NOD}.png'"  'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' -o 'Adding_background_maps'
+# IF --gGroupTitle "'\${NOD} – \${PLC}'"
+# THEN also: --gLayout VERT 
+# 
+# 
+RUN_TEST \\ --inputPrefix '$PWD/' \\  --script "'--cReset --cProj 3067 --cSize 300 -Q DBZH -c --gLinkImage \${inputPrefix}/maps/map-radar:\${NOD}-\${where:EPSG}-\${where:xsize}x\${where:ysize}.png  --gAlign 'HORZ_FILL:VERT_FILL' --imageTransp 0.0:0.1,0,1 --palette default   -o out-\${what:date}T\${what:time}-\${NOD}.png'"  'data-kiira/201708121600_radar.polar.fi{kor,ika,van}.h5' -o 'Adding_background_maps'
 
 
 #WRITE_DOC '\b Grid, sector, labels.'
@@ -317,7 +319,19 @@ for i in RadarGrid_50000:1,15:180:540 RadarSector_radius=0:150000; do
     
 done
 
+WRITE_SECTION svg_crange Visualisation of cRange command
 
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'\${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" \\ --script "'--cReset -Q DBZH --cProj 3067 --cSize 300 --cRange 260000 --cCreate  -P -o cart-\${NOD}-\${what:time}-RadarGrid.png --gRadarGrid 50000:1,15,MASK=true'"  'data-kiira/201708121?00_radar.polar.fi{kor,ika,van}.h5' \\  --gStyle "'.COVER=fill:darkblue;opacity:0.5'" --gStyle ".GRID='stroke-width:1px'"  --gStyle ".IMAGE_BORDER='stroke:gray;stroke-width:1px'"  \\  -o "radar_crange_grid"
+
+
+WRITE_SECTION svg_crange_clip Visualisation of clipping
+
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'\${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" \\ --script "'--cReset -Q DBZH --cProj 3067 --cSize 300 --cRange 220000 --cCreate  -P -o cart-\${NOD}-\${what:time}-RadarGrid.png --gRadarGrid 50000:1,15,MASK=true'"  'data-kiira/201708121?00_radar.polar.fi{kor,ika,van}.h5' \\  --gStyle "'.COVER=fill:darkblue;opacity:0.5'" --gStyle ".GRID='stroke-width:1px'"  --gStyle ".IMAGE_BORDER='stroke:lightblue;stroke-width:2px'"  \\  -o "radar_crange_clip"
+
+WRITE_SECTION svg_select_rect1  'Highlighting details with rectangles (AEQD projection)'
+
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'Grouping by time:  UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gRect -200000,0,-50000,-120000m'" \\  "'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'"  -o "radar_svg_select_rect1"
+# --gStyle "rect.SELECTOR='stroke:white;stroke-width:3px'
 
 ls -1t ${OUTFILES[*]//.png/.cmd}
 

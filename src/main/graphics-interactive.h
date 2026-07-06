@@ -53,12 +53,15 @@ class CmdRect : public CmdPolarBase { //  drain::BasicCommand,
 
 public:
 
+	TreeSVG & prepare(RackContext & ctx, RadarSVG & radarSVG) const;
+
 	CmdRect() : CmdPolarBase(__FUNCTION__, "Draw rectangle or circle", Graphic::GRAPHIC::RECTANGLE) {
 		getParameters().separator = ':';
 		//getParameters().link("bbox", bbox.tuple(100,200,300,400), "xLL,yLL,xUR,yUR").setFill(false).setSeparator(',');
 		getParameters().link("bbox", bbox, "xLL,yLL,xUR,yUR[px|m|deg] or xLL,yLL,r").setSeparator(',');
 		//getParameters().link("bboxUnits", bboxUnits, "[PIX|M|DEG]");
 		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true).setSeparator(',');
+		getParameters().link("fixedAEQD", fixedAEQD, "fix origin to the first radar");
 		getParameters().link("MASK", MASK, "Render outer region with style class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
@@ -73,6 +76,7 @@ public:
 
 	std::string bbox = "";
 	drain::Range<int> resolution;
+	bool fixedAEQD = true;
 
 };
 

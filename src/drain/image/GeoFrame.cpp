@@ -426,6 +426,77 @@ void GeoFrame::updateDataExtentNat(const drain::Rectangle<double> & inputExtentN
 	*/
 }
 
+
+void GeoFrame::convert(const std::vector<double> &bb, drain::Unit unit, drain::Rectangle<double> &bboxNat, drain::Rectangle<int> &bboxImg){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	switch (unit) {
+	case drain::Unit::DEGREE:
+		if (isLongLat()){
+			// Metric coordinates undefined.
+			deg2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
+			deg2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
+			// monitorMove->setText(bbox);
+			// This could be enough also for METRIC projection, but...
+		}
+		else {
+			// ... here we get the METRIC BBOX without extra computation:
+			deg2m(bb[0], bb[1], bboxNat.lowerLeft.x, bboxNat.lowerLeft.y);
+			deg2m(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
+			m2pix(bboxNat.lowerLeft, bboxImg.lowerLeft);
+			m2pix(bboxNat.upperRight, bboxImg.upperRight);
+			// monitorMove->setText(bb, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "m)");
+		}
+		break;
+	case drain::Unit::METRE:
+		if (!isLongLat()){
+			m2pix(bb[0], bb[1], bboxImg.lowerLeft.x, bboxImg.lowerLeft.y);
+			m2pix(bb[2], bb[3], bboxImg.upperRight.x, bboxImg.upperRight.y);
+			m2deg(bb[0], bb[1], bboxNat.lowerLeft.x,  bboxNat.lowerLeft.y);
+			m2deg(bb[2], bb[3], bboxNat.upperRight.x, bboxNat.upperRight.y);
+			// monitorMove->setText(this->bbox, " (", bboxNat.lowerLeft, ',', bboxNat.upperRight, "deg)");
+		}
+		else {
+			mout.error("Cannot set metric BBOX (", drain::sprinter(bb), ") for long-lat projection: ", getProjStr());
+		}
+		break;
+	case drain::Unit::UNDEFINED:
+		// consder: develop drain::BBox::isMetric(bb[0], bb[1])
+		unit = drain::Unit::PIXEL;
+		// no break;
+	case drain::Unit::PIXEL:
+		bboxImg.set(bb[0], bb[1], bb[2], bb[3]);
+		break;
+	default:
+		mout.error("unknown unit: ", unit); // or trust false above?
+		break;
+	}
+	// mout.attention(DRAIN_LOG(bboxImg));
+
+}
+
+drain::Unit GeoFrame::convert(const std::string & bbox, drain::Rectangle<double> &bboxNat, drain::Rectangle<int> &bboxImg){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::vector<double> bb;
+	// drain::StringTools::split(bbox, bb, ',');
+
+	drain::Unit unit = convert(bbox, bb);
+	/*
+	drain::Units::extract<drain::Unit>(bbox);
+	if (unit == drain::Unit::UNDEFINED){
+		// TODO: add support to guess
+		unit = drain::Unit::PIXEL;
+	}
+	*/
+	// mout.attention(drain::sprinter(bb), ' ', DRAIN_LOG(unit));
+	convert(bb, unit, bboxNat, bboxImg);
+	return unit;
+}
+
+
 std::ostream & GeoFrame::toStream(std::ostream & ostr) const {
 
 	ostr << "frame " << this->getFrameWidth() << 'x' << this->getFrameHeight() << "\n";

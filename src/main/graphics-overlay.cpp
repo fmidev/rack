@@ -105,8 +105,12 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 
 	Graphic::getGraphicStyle(ctx.svgTrack);
 
-	drain::image::TreeSVG & group    = RackSVG::getCurrentAlignedGroup(ctx);
-	drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
+	// OLD drain::image::TreeSVG & group = ...
+	// NEW:..
+	RackSVG::getCurrentAlignedGroup(ctx);
+	// drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
+	//ctx.getUpdatedStatusMap();
+	drain::image::TreeSVG & overlayGroup = RackSVG::getVectorImagePanelGroup(ctx);
 	RackSVG::consumeAlignRequest(ctx, overlayGroup);
 
 	const drain::VariableMap & wherePolar = srcPolar[ODIMPathElem::WHERE].data.attributes;
@@ -350,62 +354,63 @@ void CmdRadarDot::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	//TreeSVG & overlayGroup =
+	TreeSVG & imagePanel = getOverlayGroup(ctx, radarSVG);
+
+
+
 
 	// Always a range, though here only dis.max used
 	drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
 	// Note: DOT does not use shared polar selection
 	resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.radarProj.getRange());
 
+	if (dist.range.max <= 0.0){
+		mout.warn(DRAIN_LOG(radiusMetres), " => ", DRAIN_LOG(dist));
+		mout.warn("Zero or negative distance range, skipping ", getName());
+		return;
+	}
 
-	if (dist.range.max > 0.0){ // earlier!
 
-		// drain::image::TreeUtilsSVG\n
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-				{"fill", "white"},
-				{"stroke", "black"},
-				{"stroke-width", 2.0},
-				// {"opacity", 0.5}
-		});
+	// drain::image::TreeUtilsSVG\n
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+			{"fill", "white"},
+			{"stroke", "black"},
+			{"stroke-width", 2.0},
+			// {"opacity", 0.5}
+	});
 
-		// overlay.addChild()->setComment(getName(), ' ', getParameters());
-		drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
-		curve->addClass(DOT);
+	TreeSVG & vectGroup = RackSVG::getSourceSpecificGroup(ctx, imagePanel);
+	vectGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', getParameters(), " for ", radarSVG.source);
+	// vectGroup.addChild()->setComment(getName(), ' ', getParameters());
+	drain::image::TreeSVG & curve = vectGroup[DOT](drain::image::svg::PATH);
+	curve->addClass(DOT);
 
+	{
+		// Private scope, to call bezierElem destructor.
+		drain::svgPATH bezierElem(curve);
+		radarSVG.drawCircle(bezierElem, dist.range);
+	}
+
+	drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
+	title->setText(ctx.getFormattedStatus("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}"));
+
+	if (MASK){
+		// Note: mask is full 100% range.
+		drain::image::TreeSVG & localMask = vectGroup[svg::MASK];
 		{
 			// Private scope, to call bezierElem destructor.
-			drain::svgPATH bezierElem(curve);
-			radarSVG.drawCircle(bezierElem, dist.range);
-
+			drain::svgPATH elem(localMask);
+			radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
 		}
-
-		drain::StringMapper statusFormatter(RackContext::variableMapper);
-		statusFormatter.parse("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}", true); // convert escaped
-		// mout.special(DRAIN_LOG(statusFormatter));
-
-		const std::string info = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
-		drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
-		title->setText(info);
-
-		if (MASK){
-			// Note: mask is full 100% range.
-			drain::image::TreeSVG & localMask = overlay[svg::MASK];
-			{
-				// Private scope, to call bezierElem destructor.
-				drain::svgPATH elem(localMask);
-				radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
-			}
-			// Copy this localMask to shared mask...
-			const int w = radarSVG.geoFrame.getFrameWidth();
-			const int h = radarSVG.geoFrame.getFrameHeight();
-			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
-			// ... and "delete" the object.
-			localMask->setType(svg::COMMENT);
-		}
-
-
+		// Copy this localMask to shared mask...
+		const int w = radarSVG.geoFrame.getFrameWidth();
+		const int h = radarSVG.geoFrame.getFrameHeight();
+		MaskerSVG::createMask(ctx.svgTrack, imagePanel, w, h, localMask.data);
+		// ... and "delete" the object.
+		localMask->setType(svg::COMMENT);
 	}
+
 
 };
 
@@ -415,82 +420,89 @@ void CmdRadarDotTest::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	RadarSVG radarSVG;
-	// drain::image::TreeSVG & overlayGroup =
 	getOverlayGroup(ctx, radarSVG);
-	// drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 
-	// Always a range, though here only dis.max used
+
 	drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
-	// Note: DOT does not use shared polar selection
+	// Note: DOT does not (yet) use shared polar selection
 	resolveDistance(radiusMetres, {0.0,0.0}, dist, radarSVG.radarProj.getRange());
 
-
-	drain::image::TreeSVG & imgGroupTest = RackSVG::getImagePanelGroup(ctx);
-	drain::image::TreeSVG & vectGroupTest = imgGroupTest[DOT](drain::image::svg::GROUP);
-	vectGroupTest->setMyAlignAnchor(drain::image::svg::IMAGE);
-	vectGroupTest->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	vectGroupTest->addClass(drain::image::ClipperSVG::CLIP); // Request CLIP
-
-
-	if (dist.range.max > 0.0){ // earlier!
-
-		// drain::image::TreeUtilsSVG\n
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-				{"fill", "white"},
-				{"stroke", "black"},
-				{"stroke-width", 2.0},
-				// {"opacity", 0.5}
-		});
-
-		// overlay.addChild()->setComment(getName(), ' ', getParameters());
-		// drain::image::TreeSVG & curve = overlay[DOT](drain::image::svg::PATH);
-		// drain::image::TreeSVG & curve = imgGroupTest[DOT](drain::image::svg::PATH);
-		// drain::image::TreeSVG & curve = vectGroupTest[DOT](drain::image::svg::PATH);
-		drain::image::TreeSVG & curve = vectGroupTest.addChild()(drain::image::svg::PATH);
-		//curve->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-		curve->addClass(DOT);
-
-		{
-			// Private scope, to call bezierElem destructor.
-			drain::svgPATH bezierElem(curve);
-			radarSVG.drawCircle(bezierElem, dist.range);
-
-		}
-
-		// TODO: extract makeTitle(...)
-		drain::StringMapper statusFormatter(RackContext::variableMapper);
-		statusFormatter.parse("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}", true); // convert escaped
-		// mout.special(DRAIN_LOG(statusFormatter));
-
-		const std::string info = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
-		drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
-		title->setText(info);
-
-		if (MASK){
-			// Note: mask is full 100% range. - ?
-
-			// drain::image::TreeSVG & localMask = overlay[svg::MASK];
-			//drain::image::TreeSVG & localMask = vectGroupTest[svg::MASK];
-			// drain::image::TreeSVG & localMask = imgGroupTest[svg::MASK]; // MaskerSVG::COVER
-			drain::image::TreeSVG & tmpMask = imgGroupTest[MaskerSVG::COVER]; // MaskerSVG::COVER
-			{
-				// Private scope, to call bezierElem destructor.
-				drain::svgPATH elem(tmpMask);
-				radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
-			}
-			// Copy this localMask to shared mask...
-			const int w = radarSVG.geoFrame.getFrameWidth();
-			const int h = radarSVG.geoFrame.getFrameHeight();
-			// MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
-			MaskerSVG::createMask(ctx.svgTrack, imgGroupTest, w, h, tmpMask.data);
-			// ... and "delete" the object.
-			tmpMask->setType(svg::COMMENT);
-		}
-
-
+	if (dist.range.max <= 0.0){
+		mout.warn(DRAIN_LOG(radiusMetres), " => ", DRAIN_LOG(dist));
+		mout.warn("Zero or negative distance range, skipping ", getName());
+		return;
 	}
 
+	TreeSVG & imagePanel = RackSVG::getVectorImagePanelGroup(ctx);
+
+	// For each separate, or?
+	TreeSVG & vectGroup = imagePanel[DOT](svg::GROUP);
+
+
+	// drain::image::TreeUtilsSVG\n
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+			{"fill", "white"},
+			{"stroke", "black"},
+			{"stroke-width", 2.0},
+			// {"opacity", 0.5}
+	});
+
+	TreeSVG & curve = vectGroup.addChild()(drain::image::svg::PATH);
+	curve->addClass(DOT);
+	{
+		// Private scope, to call bezierElem destructor.
+		drain::svgPATH bezierElem(curve);
+		radarSVG.drawCircle(bezierElem, dist.range);
+	}
+
+	drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
+	title->setText(ctx.getFormattedStatus("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}"));
+
+	if (MASK){
+
+		// Note: mask is full 100% range. Clipper should handle the graphic part.
+		drain::image::TreeSVG & tmpMask = imagePanel[MaskerSVG::COVER];
+		{
+			// Private scope, to call bezierElem destructor.
+			drain::svgPATH elem(tmpMask);
+			radarSVG.drawSector(elem, {0, radarSVG.radarProj.getRange()});
+		}
+		// Copy this localMask to shared mask...
+		const int w = radarSVG.geoFrame.getFrameWidth();
+		const int h = radarSVG.geoFrame.getFrameHeight();
+		MaskerSVG::createMask(ctx.svgTrack, imagePanel, w, h, tmpMask.data);
+		// ... and "delete" the object.
+		tmpMask->setType(svg::COMMENT);
+	}
+
+
 };
+
+void getSafeKey(const std::string & src, std::string & dst, const std::string & accept="_", const std::string & toUnderScore=""){
+	std::stringstream sstr;
+	bool FIRST = true;
+	for (const char & c: src){
+		if ((c >= 'A') && (c <= 'Z')){
+			sstr << c;
+		}
+		else if ((c >= 'a') && (c <= 'z')){
+			sstr << c;
+		}
+		else if (!FIRST){
+			if ((c >= '0') && (c <= '9')){
+				sstr << c;
+			}
+			else if (accept.find(c) != std::string::npos) {
+				sstr << c;
+			}
+			else if (toUnderScore.find(c) != std::string::npos) {
+				sstr << '_';
+			}
+		}
+		FIRST = false;
+	};
+	dst = sstr.str();
+}
 
 
 void CmdRadarLabel::exec() const  {
@@ -500,140 +512,148 @@ void CmdRadarLabel::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
 
-	TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	TreeSVG & overlay = getOverlay(overlayGroup);
+	getOverlayGroup(ctx, radarSVG);
+	TreeSVG & imagePanel = RackSVG::getVectorImagePanelGroup(ctx);
+	TreeSVG & vectGroup =  RackSVG::getSourceSpecificGroup(ctx, imagePanel);
+
+	// const std::string source = ctx.getStatus("what:source", false);
+	// TreeSVG & vectGroup =  imagePanel[source](svg::GROUP);
 
 
-	if (!label.empty()){
+	if (label.empty()){
+		vectGroup.addChild()->setComment(getName(), '[', cls, ']', " - empty label skipped");
+		mout.warn("Empty argument for ", getName());
+		return;
+	}
+
+	std::string s;
+	getSafeKey(label, s, "_- ");
+	vectGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', s);
+	// TreeSVG & vectGroup = imagePanel[source](svg::GROUP);
+	// TreeSVG & overlay = imagePanel[LABEL](svg::GROUP);
+
+	TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+			{"font-size", "12"},
+			{"stroke", "black"},
+			{"stroke-width", "0.2"},
+			{"stroke-opacity", "0.5"},
+			{"stroke-width", "0.3em"},
+			{"stroke-linejoin", "round"},
+			{"fill", "white"}, // debug
+			{"fill-opacity", "1"},
+			{"paint-order", "stroke"},
+	});
+
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, "DEBUG", { // ?
+			//{"font-size", "12"},
+			{"fill", "white"},
+			{"fill-opacity", 0.1},
+			{"stroke", "red"},  // replace these with image-title etc soft transit
+			{"stroke-width", "2"},
+	});
 
 
-		TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
-				{"font-size", "12"},
-				{"stroke", "black"},
-				{"stroke-width", "0.2"},
-				{"stroke-opacity", "0.5"},
-				{"stroke-width", "0.3em"},
-				{"stroke-linejoin", "round"},
-				{"fill", "white"}, // debug
-				{"fill-opacity", "1"},
-				{"paint-order", "stroke"},
-		});
+	// TODO: group for all (font size etc)
+	drain::Point2D<int> imgPoint;
+	radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
 
-		//
-		// mout.attention(DRAIN_LOG(style->getStyle()));
-		// drain::TreeUtils::dump(style, std::cout); //  DataTools::treeToStream); // CmdOutputTree::dataToStream);
-		//	drain::TreeUtils::dump(style["font-size"], std::cout); // , DataTools::treeToStream);
-		//mout.attention(style["font-size"]);
+	const std::string LABEL_ANCHOR = "labelAnchor";
 
-		drain::UtilsXML::ensureStyle(ctx.svgTrack, "DEBUG", {
-				//{"font-size", "12"},
-				{"fill", "white"},
-				{"fill-opacity", 0.1},
-				{"stroke", "red"},  // replace these with image-title etc soft transit
-				{"stroke-width", "2"},
-		});
-
-
-		// TODO: group for all (font size etc)
-		drain::Point2D<int> imgPoint;
-		radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
-
-		TreeSVG & labelAnchor = overlay["labelAnchor"];
-		labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
-		labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL); // IMPORTANT! Else, other elems of the same group (like DOTS) become translated...
-		labelAnchor->addClass("DEBUG");
-		//labelAnchor->setMyAlignAnchor("munDOT");
-		if (false){
-			drain::svgCIRCLE circle(labelAnchor);
+	TreeSVG & labelAnchor = vectGroup[LABEL_ANCHOR];
+	labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
+	labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL); // IMPORTANT! Else, other elems of the same group (like DOTS) become translated...
+	// labelAnchor->addClass("DEBUG");
+	// labelAnchor->setMyAlignAnchor("munDOT");
+	/*
+		drain::svgCIRCLE circle(labelAnchor);
 			circle.cx = imgPoint.x;
 			circle.cy = imgPoint.y;
 			circle.r = 10.0;
 			// svgPATH has no "natural" origin...
 			// drain::svgPATH bezierElem(labelAnchor);
 			// radarSVG.drawCircle(bezierElem, {0.0,15000.0});
-		}
-		else {
-			// drain::svgRECT rect(overlayGroup[RackSVG::BACKGROUND_RECT]);
-			drain::svgRECT rect(labelAnchor);
-			// rect.node.addClass(RackSVG::BACKGROUND_RECT);
-			// mout.attention(DRAIN_LOG(imgPoint));
-			rect.width  = 5.0;
-			rect.height = 10.0;
-			rect.x = imgPoint.x - 10.0;
-			rect.y = imgPoint.y -  5.0;
-		}
+	 */
+	{
+		drain::svgRECT rect(labelAnchor);
+		rect.width  = 5.0;
+		rect.height = 10.0;
+		rect.x = imgPoint.x - 10.0;
+		rect.y = imgPoint.y -  5.0;
+	}
 
+	/*
 		drain::StringMapper statusFormatter(RackContext::variableMapper);
 		statusFormatter.parse(label, true); // convert escaped
 		// mout.special(DRAIN_LOG(statusFormatter));
 
 		const std::string formattedLabel = statusFormatter.toStr(ctx.getUpdatedStatusMap(), 0, RackContext::variableFormatter); // XXX
-		// mout.special(DRAIN_LOG(formattedLabel));
+	 */
+	const std::string formattedLabel = ctx.getFormattedStatus(label);
+	// mout.special(DRAIN_LOG(formattedLabel));
 
-		// int fontSize=10;
-		mout.attention(drain::sprinter(style->getAttributes()));
-		int fontSize = style->get("font-size", 13);
-		mout.special(DRAIN_LOG(fontSize));
+	// int fontSize=10;
+	mout.attention(drain::sprinter(style->getAttributes()));
+	int fontSize = style->get("font-size", 13);
+	mout.special(DRAIN_LOG(fontSize));
 
-		std::list<std::string> lines;
-		drain::StringTools::split(formattedLabel, lines,'\n');
-		labelAnchor->setLocation(imgPoint.x, imgPoint.y - int(fontSize*lines.size())/2);
-		labelAnchor->setFrame(0,0);
+	std::list<std::string> lines;
+	drain::StringTools::split(formattedLabel, lines,'\n');
+	labelAnchor->setLocation(imgPoint.x, imgPoint.y - int(fontSize*lines.size())/2);
+	labelAnchor->setFrame(0,0);
 
-		for (std::string & line: lines){
+	for (std::string & line: lines){
 
-			if (line.empty()){
-				// TODO: allow empty line
-				continue;
+		if (line.empty()){
+			// TODO: allow empty line
+			continue;
+		}
+
+		// AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
+		// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignBase::Pos::MID); // , MutualAlign::INSIDE);
+		// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+		// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignBase::Pos::MAX, MutualAlign::OUTSIDE);
+
+		CompleteAlignment<AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
+		CompleteAlignment<AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+
+		std::list<std::string> parts;
+		drain::StringTools::split(line, parts, '|');
+		switch (parts.size()) {
+		case 1:
+			alignHorz.pos = AlignBase::Pos::MID;
+			break;
+		case 2:
+			alignHorz.pos = AlignBase::Pos::MIN;
+			break;
+		default:
+			alignHorz.pos = AlignBase::Pos::MIN;
+			mout.warn("Text contained several alignment markers '|'");
+			break;
+		}
+
+		for (const std::string & part: parts){
+			if (!part.empty()){
+
+				drain::image::TreeSVG & text = vectGroup.addChild()(drain::image::svg::TEXT);
+
+				text->setFontSize(fontSize, (15*fontSize)/10);
+				text->setText(part);
+				// text->setFrame(fontSize*2, fontSize);
+				text->addClass(this->cls);
+				text->addClass(LayoutSVG::GroupType::NEUTRAL);
+
+				text->setMyAlignAnchor<AlignBase::Axis::HORZ>(LABEL_ANCHOR);
+				text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS); // For the first element, this is "labelAnchor"
+				text->setAlign(alignHorz);
+				text->setAlign(alignVert);
+				alignVert.set(AlignSVG::TOP, MutualAlign::INSIDE);
+
+				text[svg::TITLE](svg::TITLE)->setText(part);
 			}
-
-			// AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
-			// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignBase::Pos::MID); // , MutualAlign::INSIDE);
-			// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
-			// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignBase::Pos::MAX, MutualAlign::OUTSIDE);
-
-			CompleteAlignment<AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
-			CompleteAlignment<AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
-
-			std::list<std::string> parts;
-			drain::StringTools::split(line, parts, '|');
-			switch (parts.size()) {
-				case 1:
-					alignHorz.pos = AlignBase::Pos::MID;
-					break;
-				case 2:
-					alignHorz.pos = AlignBase::Pos::MIN;
-					break;
-				default:
-					alignHorz.pos = AlignBase::Pos::MIN;
-					mout.warn("Text contained several alignment markers '|'");
-					break;
-			}
-
-			for (const std::string & part: parts){
-				if (!part.empty()){
-
-					drain::image::TreeSVG & text = overlay.addChild()(drain::image::svg::TEXT);
-
-					text->setFontSize(fontSize, (15*fontSize)/10);
-					text->setText(part);
-					// text->setFrame(fontSize*2, fontSize);
-					text->addClass(this->cls);
-					text->addClass(LayoutSVG::GroupType::NEUTRAL);
-
-					text->setMyAlignAnchor<AlignBase::Axis::HORZ>("labelAnchor");
-					text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS); // For the first element, this is "labelAnchor"
-					text->setAlign(alignHorz);
-					text->setAlign(alignVert);
-					alignVert.set(AlignSVG::TOP, MutualAlign::INSIDE);
-
-					text[svg::TITLE](svg::TITLE)->setText(part);
-				}
-				alignHorz.pos = AlignBase::Pos::MAX;
-			}
-
+			alignHorz.pos = AlignBase::Pos::MAX;
 		}
 
 	}
@@ -654,12 +674,12 @@ void CmdRadarGrid::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
-	// overlay.addChild()->setComment(getName(), ' ', getParameters());
+	TreeSVG & imagePanel = getOverlayGroup(ctx, radarSVG);
 
-	drain::SteppedRange<double> dist(0.0, 0.0, 1.0); // (distanceMetres.range); // double -> int
+	/// Step 2a: check distance parameter
+	drain::SteppedRange<double> dist(0.0, 0.0, 1.0);  // double -> int
 	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());
 	if (dist.range.span() == 0.0){
 		mout.error("empty range: ", radiusMetres.range.tuple(), " => ", dist.range.tuple(), " [metres]");
@@ -673,8 +693,8 @@ void CmdRadarGrid::exec() const  {
 	}
 	mout.debug("final range: ", DRAIN_LOG(dist.range), DRAIN_LOG(dist.step));
 
-	drain::SteppedRange<double> azm; // (distanceMetres.range); // double -> int
-	// drain::SteppedRange<double> azm(0.0, 0.0, 0.0); // (distanceMetres.range); // double -> int
+	/// Step 2b: check azimuth parameter
+	drain::SteppedRange<double> azm; // double -> int
 	resolveAzimuthRange(azimuthDegrees, ctx.polarSelector.azimuth, azm);
 	const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 	if (azm.step < 5){
@@ -683,13 +703,20 @@ void CmdRadarGrid::exec() const  {
 	}
 
 
-	overlay.addChild()->setComment("Rays: ", dist.range.tuple());
+	// TreeSVG & imagePanel = RackSVG::getVectorImagePanelGroup(ctx);
+
+	TreeSVG & vectorGroup = RackSVG::getSourceSpecificGroup(ctx, imagePanel);
+	//TreeSVG & vectorGroup = imagePanel[cls](svg::GROUP);
+	vectorGroup->addClass(cls); // GRID
+
+
+	vectorGroup.addChild()->setComment("Rays: ", dist.range.tuple());
 	double angleRad = 0.0;
 	for (int j=azm.range.min; j<=azm.range.max; j += azm.step){
 
 		angleRad = drain::DEG2RAD * static_cast<double>(j);
 
-		drain::image::TreeSVG & rayNode = overlay.addChild();
+		drain::image::TreeSVG & rayNode = vectorGroup.addChild();
 		rayNode->addClass(Graphic::HIGHLIGHT);
 		rayNode[svg::TITLE](svg::TITLE)->setText(j, drain::XML::DEGREE); // degree sign "&#176;"
 
@@ -706,13 +733,12 @@ void CmdRadarGrid::exec() const  {
 
 	}
 
-	// const drain::Range<double> azmRad(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 
-	overlay.addChild()->setComment("Circles/arcs: ", azm.range.tuple(), " - ", azmRad.tuple());
+	vectorGroup.addChild()->setComment("Circles/arcs: ", azm.range.tuple(), " - ", azmRad.tuple());
 
 	for (int i=dist.range.min + dist.step; i<=dist.range.max; i += dist.step){
 
-		drain::image::TreeSVG & g = overlay.addChild()(svg::GROUP);
+		drain::image::TreeSVG & g = vectorGroup.addChild()(svg::GROUP);
 		g->addClass(Graphic::HIGHLIGHT);
 		g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
 
@@ -740,7 +766,8 @@ void CmdRadarGrid::exec() const  {
 
 
 	if (MASK){
-		drain::image::TreeSVG & localMask = overlay[svg::MASK];
+
+		TreeSVG & localMask = imagePanel[MaskerSVG::COVER];
 		{
 			// Private scope, to call bezierElem destructor.
 			drain::svgPATH elem(localMask);
@@ -748,9 +775,7 @@ void CmdRadarGrid::exec() const  {
 		}
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		// drain::image::TreeSVG & mask =
-		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
-		// drain::image::TreeSVG & comment = mask.prependChild("")(svg::COMMENT);
+		MaskerSVG::createMask(ctx.svgTrack, imagePanel, w, h, localMask.data);
 		// comment->setText("applied by: ", getName(), ' ', getParameters());
 		localMask->setType(svg::COMMENT);
 	}

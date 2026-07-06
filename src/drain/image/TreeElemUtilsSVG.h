@@ -57,7 +57,6 @@ namespace drain {
 
 template <> template <>
 class DRAIN_SVG_ELEM_CLS(RECT){
-// class NodeXML<image::svg::tag_t>::Elem<image::svg::tag_t::RECT>{
 public:
 
 	inline
@@ -146,15 +145,13 @@ DRAIN_SVG_ELEM(POLYGON)
 template <>
 template <>
 class DRAIN_SVG_ELEM_CLS(PATH){
-//class svgPATH {
 public:
 
 	inline
 	Elem(image::NodeSVG & node) : node(node = image::svg::tag_t::PATH), d(node["d"]) {
-		//node[d].setType<std::string>();
-		//node["d"].setSeparator(' ');
 	};
 
+	inline
 	~Elem(){
 		flush();
 	}
@@ -211,7 +208,6 @@ protected:
 	// Could be protected
 	void flush(){
 		// Logger mout(__FILE__, __FUNCTION__);
-		// mout.warn("contents1: ", d);
 		if (noReset){
 			node["d"].append(sstr.str());
 			// mout.warn("appended contents_: ", d);
