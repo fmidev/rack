@@ -48,29 +48,24 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/*
-class MouseXML {
+/// Tools for adding user interaction to SVG displays.
+/**
+ *
+ *  \see MouseXML::ElemClass
+ *  \see MouseXML
+ *
+ */
+class InteractiveSVG {
 
 public:
 
-	   \see rack::RackSVG::ElemClass
-
-	enum ElemClass {
-		//MOUSE,	     // A group marked for interaction (mouse event listeners)
-		MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
-		MONITOR,         // Display of interactive operations
-		MONITOR_MOVE,    // Display something when mouse is moving, e.g. cursor coordinates.
-		MONITOR_DOWN,    // Display something when mouse is pressed
-		MONITOR_UP,      // Display something when mouse is released
-		MONITOR_DRAG,    // Display something when mouse is dragged
-	};
+	TreeSVG & getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
 
 	bool cursorCoord = false;
 };
-*/
 
 
-class CmdRect : public CmdPolarBase, public drain::image::MouseXML { //  drain::BasicCommand,
+class CmdRect : public CmdPolarBase, InteractiveSVG { // , public drain::image::MouseXML { //  drain::BasicCommand,
 
 public:
 
@@ -98,7 +93,7 @@ public:
 	std::string bbox = "";
 	drain::Range<int> resolution;
 	bool fixedAEQD = true;
-	bool cursorCoord = false;
+
 };
 
 class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
@@ -123,7 +118,7 @@ public:
 
 };
 
-class CmdData : public CmdPolarBase { //  drain::BasicCommand,
+class CmdData : public CmdPolarBase, InteractiveSVG { //  drain::BasicCommand,
 
 public:
 

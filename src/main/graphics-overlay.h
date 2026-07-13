@@ -122,9 +122,9 @@ public:
 	// New
 	// static?
 	/**
-	 *
+	 *  TODO: parts of this to general imagePanel?
 	 */
-	TreeSVG & prepare(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
+	 // TreeSVG & getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
 
 
 };

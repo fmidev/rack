@@ -37,25 +37,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Units.h>
 
 #include <drain/image/FilePng.h>
-// #include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
-
-//#include "graphics.h"
-#include "graphics-panel.h"
 #include <drain/image/GeoFrame.h>
-#include <main/graphics-interactive.h>
+#include <drain/image/MouseXML.h>
 
-/*
-DRAIN_ENUM_DICT(rack::MouseXML::ElemClass) = {
-		// DRAIN_ENUM_ENTRY(rack::Interactive::ElemClass, MOUSE),
-		DRAIN_ENUM_ENTRY(rack::MouseXML::ElemClass, MOUSE_TRACKER),
-		DRAIN_ENUM_ENTRY(rack::MouseXML::ElemClass, MONITOR),
-		DRAIN_ENUM_ENTRY(rack::MouseXML::ElemClass, MONITOR_MOVE),
-		DRAIN_ENUM_ENTRY(rack::MouseXML::ElemClass, MONITOR_DOWN),
-		DRAIN_ENUM_ENTRY(rack::MouseXML::ElemClass, MONITOR_UP),
-		DRAIN_ENUM_ENTRY(rack::MouseXML::ElemClass, MONITOR_DRAG),
-};
-*/
+#include "graphics-panel.h"
+#include "graphics-interactive.h"
+
 
 namespace rack {
 
@@ -81,7 +69,6 @@ namespace rack {
  *
  *
  */
-
 
 
 
@@ -320,6 +307,130 @@ void addVisibilitySwitch(NodeSVG & dstElem, NodeSVG & controlElem, const std::st
 }
 */
 
+
+/// Designed for CmdRect, could be multi-purpose
+/**
+ *   Creates the following "standard" groups:
+ *   - mouseGroup (path=MOUSE)
+ *
+ *   Compare with: addGeoData() above.
+ *
+ *   Move to graphics-interactive.
+ */
+TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD) const {
+
+	using namespace drain::image;
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	TreeSVG & alignedGroup = RackSVG::getCurrentAlignedGroup(ctx);
+
+	TreeSVG & imagePanel = alignedGroup[ctx.currentImagePanel];
+	if (imagePanel->isUndefined()){
+		mout.warn("currentImagePanel created but undefined");
+	}
+
+	if (!imagePanel.hasChild(svg::IMAGE)){
+		mout.warn("currentImagePanel created contains no image");
+	}
+
+
+	// could also be [MouseXML::ElemClass::MONITOR]
+	drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE](svg::GROUP);
+	mouseGroup->addClass(ClipperSVG::CLIPPED);
+	// mouseGroup.addChild()->setComment("Mouse tracker modified by ", getName(), ' ', getLastParameters());
+
+	drain::image::TreeSVG & visualGroup = mouseGroup[RackSVG::ElemClass::SELECTOR](svg::GROUP);
+	visualGroup->addClass(MouseXML::ElemClass::MONITOR); // handles visualGroup->setStyle("visibility", ...);
+	visualGroup->setDefaultAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
+	visualGroup.addChild()->setComment("Visualisation of the selection");
+
+
+	drain::image::NodeSVG::map_t & attr = mouseGroup->getAttributes();
+
+
+	mout.special("Attaching coordinate monitor to imagePanel: ", imagePanel->getId());
+	// mouseGroup[svg::TITLE](svg::TITLE)->setText("Mouse tracker by ", getName(), ' ', getLastParameters());
+
+
+	int EPSG = attr["data-epsg"];
+	if (EPSG > 0){
+		mout.info("Projection: using EPSG=", EPSG);
+		radarSVG.geoFrame.setProjectionEPSG(EPSG);
+		radarSVG.radarProj.setProjectionDst(EPSG);
+	}
+	else {
+		mout.hint("Projection: EPSG not detected, consider to set/unset fixedAEQD");
+		drain::image::NodeSVG::map_t & attrColumn = alignedGroup->getAttributes();
+
+		mout.note(DRAIN_LOG(fixedAEQD));
+		std::string projdef;
+
+		auto & sharedProjdef = attrColumn["data-projdef"];
+		mout.warn(DRAIN_LOG(sharedProjdef));
+		if (fixedAEQD && !sharedProjdef.empty()){
+			projdef = sharedProjdef.toStr();
+			mout.warn("Now change: using ", projdef);
+			mouseGroup.addChild()->setComment(DRAIN_LOG(fixedAEQD), " - using projdef of the first input:");
+		}
+		else {
+			const drain::VariableMap & status = ctx.getStatusMap();
+			projdef = status.get("where:projdef", "");
+			sharedProjdef = projdef;
+		}
+		//mout.attention(DRAIN_LOG(projdef));
+
+		if (projdef.empty()){
+			mout.warn("No valid 'epsg' attribute value and also 'projdef' empty.");
+		}
+		else {
+			mouseGroup.addChild()->setComment("Projection: EPSG not detected, using projdef='", projdef,"'");
+			radarSVG.geoFrame.setProjection(projdef);
+			radarSVG.radarProj.setProjectionDst(projdef);
+		}
+
+	}
+
+	std::vector<double> bboxNat;
+	attr["data-bbox"].toSequence(bboxNat, ',');
+	if (bboxNat.empty()){
+		mout.warn("Could not attach coordinate monitor for imagePanel '", imagePanel->getId(), "' - missing 'data-bbox' attribute ");
+	}
+	else if (bboxNat.size() != 4){
+		mout.warn("Image panel #", imagePanel->getId(), ": odd size of elements in 'data-bbox' = ", attr["data-bbox"], " => ", drain::sprinter(bboxNat));
+	}
+	radarSVG.geoFrame.setBoundingBox(bboxNat[0], bboxNat[1], bboxNat[2],bboxNat[3]);
+
+	const drain::image::TreeSVG & image = imagePanel[svg::IMAGE];
+	const drain::Frame2D<int> imageGeometry(image->getWidth(), image->getHeight());
+	radarSVG.geoFrame.setGeometry(imageGeometry.width, imageGeometry.height);
+
+	if (radarSVG.geoFrame.isDefined()){
+		mout.debug(radarSVG.geoFrame);
+	}
+	else {
+		mout.warn("Failed in initializing", DRAIN_LOG(radarSVG.geoFrame));
+	}
+
+	drain::image::TreeSVG & bgRect = visualGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
+	bgRect->setFrame(radarSVG.geoFrame.getGeometry());
+	bgRect->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
+	bgRect->addClass(LayoutSVG::FIXED); // check
+	// mout.attention(DRAIN_LOG(radarSVG.geoFrame));
+	// radarSVG.radarProj.setProjectionDst();
+
+	mouseGroup.addChild()->setComment("Plane with a mouse listener1");
+	drain::image::TreeSVG & mouseListenerElem = mouseGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
+	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
+	mouseListenerElem->addClass(LayoutSVG::FIXED);
+	mouseListenerElem->setFrame(radarSVG.geoFrame.getFrameWidth(), radarSVG.geoFrame.getFrameHeight());
+	//mouseListenerElem->set("data-resolution", resolution.tuple());
+	mouseListenerElem->setStyle("fill", "yellow"); // TODO: transparent tracker
+	mouseListenerElem->setStyle("opacity", 0);
+
+	return imagePanel;
+}
+
+
 void CmdRect::exec() const {
 
 	using namespace drain::image;
@@ -343,11 +454,6 @@ void CmdRect::exec() const {
 	// Experimental
 	RackSVG::addJavaScripsDef(ctx, "MONITOR2_BOX", "cls");
 
-	RadarSVG radarSVG;
-	TreeSVG & imagePanel = prepare(ctx, radarSVG, fixedAEQD);
-
-	drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE];
-
 	/*
 	TreeSVG & monitorStyle = drain::UtilsXML::ensureStyle(ctx.svgTrack, Interactive::ElemClass::MONITOR, {
 			{"fill", "white"},
@@ -356,16 +462,25 @@ void CmdRect::exec() const {
 	})
 	*/
 
+	RadarSVG radarSVG;
+	TreeSVG & imagePanel = getInteractiveOverlay(ctx, radarSVG, fixedAEQD);
+
+	drain::image::TreeSVG & mouseGroup  = imagePanel[RackSVG::ElemClass::MOUSE];
 	drain::image::TreeSVG & visualGroup = mouseGroup[RackSVG::ElemClass::SELECTOR](svg::GROUP);
-	// visualGroup->addClass(LayoutSVG::FIXED); // check
-	// visualGroup->addClass(ClipperSVG::CLIPPED);
+
+	/*
 	visualGroup->addClass(MouseXML::ElemClass::MONITOR); // handles visualGroup->setStyle("visibility", ...);
 	visualGroup->setDefaultAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
+	visualGroup.addChild()->setComment("Visualisation of the selection");
+	*/
+
 	//
+	/*
 	drain::image::TreeSVG & bgRect = visualGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
 	bgRect->setFrame(radarSVG.geoFrame.getGeometry());
 	bgRect->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
 	bgRect->addClass(LayoutSVG::FIXED); // check
+	*/
 
 	// Reserve slot (implemented below).
 	visualGroup.addChild()->setComment("Visualisation of the selection");
@@ -435,18 +550,14 @@ void CmdRect::exec() const {
 	mout.attention(DRAIN_LOG(bboxImg));
 
 
-	// TODO: gRectangle -> RECTANGLE (?)
-	// drain::image::TreeSVG & selectRect = visualGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
 	selectRect->addClass(RackSVG::ElemClass::SELECTOR);
-	// selectRect->addClass(RackSVG::ElemClass::SELECTOR, LayoutSVG::FIXED);
-	// drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::SELECTOR, {
 	selectRect->setLocation(std::min(bboxImg.lowerLeft.x, bboxImg.upperRight.x), std::min(bboxImg.lowerLeft.y, bboxImg.upperRight.y));
 	selectRect->setFrame(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
 
 
 	TreeSVG & coordSpanDisplay = visualGroup[MouseXML::ElemClass::MONITOR_DRAG];
-	coordSpanDisplay->addClass(MouseXML::ElemClass::MONITOR_DRAG); // From JS
 	coordSpanDisplay->addClass(RackSVG::ElemClass::SELECTOR);
+	coordSpanDisplay->addClass(MouseXML::ElemClass::MONITOR_DRAG); // From JS
 	// coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
 	// coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 
@@ -468,7 +579,9 @@ void CmdRect::exec() const {
 	// RackSVG::consumeAlignRequest(ctx, coordSpanDisplay); // TODO return bool, if applied
 
 	/// Create the actual another plane (RECT) to receive mouse events
-	mouseGroup.addChild()->setComment("Plane with a mouse listener");
+	drain::image::TreeSVG & mouseListenerElem = mouseGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
+	/*
+	mouseGroup.addChild()->setComment("Plane with a mouse listener2");
 	drain::image::TreeSVG & mouseListenerElem = mouseGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
 	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
 	mouseListenerElem->addClass(LayoutSVG::FIXED);
@@ -476,6 +589,8 @@ void CmdRect::exec() const {
 	mouseListenerElem->set("data-resolution", resolution.tuple());
 	mouseListenerElem->setStyle("fill", "yellow"); // TODO: transparent tracker
 	mouseListenerElem->setStyle("opacity", 0);
+	*/
+	mouseListenerElem->set("data-resolution", resolution.tuple());
 
 	MouseXML::addVisibilitySwitch(coordMoveText.data, mouseListenerElem.data);
 	/*
@@ -650,7 +765,7 @@ void CmdData::exec() const {
 
 
 	RadarSVG radarSVG;
-	TreeSVG & imagePanel = prepare(ctx, radarSVG);
+	TreeSVG & imagePanel = getInteractiveOverlay(ctx, radarSVG);
 	// drain::image::TreeSVG & imagePanelGroup = imagePanel; // mouseGroup;
 	// Add marker for 'image_value_tracker()'
 	imagePanel->addClass("MOUSE_VALUE");
