@@ -34,7 +34,7 @@ src/js/%.h: src/js/%.js
 
 #https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
 
-javascript: src/js/image_coord_tracker.h src/js/image_value_tracker.h src/js/base64ToArrayLE.h
+javascript: src/js/coord_handler.h src/js/image_coord_tracker.h src/js/image_value_tracker.h src/js/base64ToArrayLE.h
 	git status $^
 	@echo Completed $@
 

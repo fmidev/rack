@@ -53,18 +53,18 @@ template <typename T>
 struct TypeName
 {
 
-	static const std::string & str();
+	static
+	const std::string & str();
 
+	inline
+	operator const std::string & () const{
+	    return str();
+	}
 	/*
     static const std::string & str(){
         return name;
-    }
-
-protected:
-
-    static const std::string name;
 	*/
-	static const std::string nameOLD;
+	// static const std::string nameOLD;
 
 };
 
@@ -96,9 +96,9 @@ std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
 
 
 /// Name declaration, for header files.
-//#define DRAIN_TYPENAME(tname) template <>        const std::string TypeName<tname>::name
+// #define DRAIN_TYPENAME(tname) template <>        const std::string TypeName<tname>::name
 /// Name definition, for object files.
-#define DRAIN_TYPENAME_DEF(tname) template <>    const std::string TypeName<tname>::nameOLD(#tname)
+// #define DRAIN_TYPENAME_DEF(tname) template <>    const std::string TypeName<tname>::nameOLD(#tname)
 
 //#define DRAIN_TYPENAME_DEF(tname) bool x;
 

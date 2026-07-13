@@ -38,10 +38,10 @@ namespace drain
 namespace image
 {
 
-DRAIN_TYPENAME_DEF(WindowConfig);
-DRAIN_TYPENAME_DEF(WindowCoreBase);
-DRAIN_TYPENAME_DEF(WindowCore);
-DRAIN_TYPENAME_DEF(WeightedWindowCore);
+ // DRAIN_TYPENAME_DEF(WindowConfig);
+ // DRAIN_TYPENAME_DEF(WindowCoreBase);
+ // DRAIN_TYPENAME_DEF(WindowCore);
+                                                   // DRAIN_TYPENAME_DEF(WeightedWindowCore);
 
 std::ostream & operator<<(std::ostream & ostr, const WindowConfig & conf){
 	ostr << drain::TypeName<WindowConfig>::str() << ":: " << conf.frame << ',' << conf.getFunctorName() << ':' << conf.getFunctorParams();

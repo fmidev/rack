@@ -133,6 +133,34 @@ std::string & StringTools::convertEscaped(std::string &s){
 	return s;
 }
 
+void StringTools::getSafeKey(const std::string & src, std::string & dst, const std::string & accept, const std::string & toUnderScore){
+
+	std::stringstream sstr;
+	bool FIRST = true;
+	for (const char & c: src){
+		if ((c >= 'A') && (c <= 'Z')){
+			sstr << c;
+		}
+		else if ((c >= 'a') && (c <= 'z')){
+			sstr << c;
+		}
+		else if (!FIRST){
+			if ((c >= '0') && (c <= '9')){
+				sstr << c;
+			}
+			else if (accept.find(c) != std::string::npos) {
+				sstr << c;
+			}
+			else if (toUnderScore.find(c) != std::string::npos) {
+				sstr << '_';
+			}
+		}
+		FIRST = false;
+	};
+	dst = sstr.str();
+}
+
+
 /*
 void StringTools::replace(const std::string &src, const std::string &search, const std::string &to, std::ostream & ostr){
 

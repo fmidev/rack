@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,6, "beta")
+#define RACK_VERSION drain::Version<>(20,6,"beta",2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -87,6 +87,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Graphics: redesigned VectorImagePanel, CLIPPER, cRect
  *  - Todo: (p)reserve slot for ${composite-name} (file-independently) and finally raise FLOATER
  *  - GeoFrame bbox conversions
+ *  Version 20.6 beta2
+ *  - XML sets ID only upon explicit request
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

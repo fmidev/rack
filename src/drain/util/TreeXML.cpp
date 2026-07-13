@@ -47,6 +47,7 @@ namespace drain {
  */
 DRAIN_ENUM_DICT2(int,XML) = {
 		{"UNDEFINED", XML::UNDEFINED},
+		{"xml", XML::XMLBASE},
 		{"#ctext", XML::CTEXT},   // CTEXT     - the tag should never appear
 		{"#comment", XML::COMMENT},  // COMMMENT  - the tag should never appear
 		{"style", XML::STYLE},  // // Consider making <STYLE-ITEM> elements, with name (composed of tag(s?) , and attribs like

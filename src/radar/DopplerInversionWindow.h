@@ -262,7 +262,7 @@ public:
 };
 
 
-}  // ::rack
+}  // rack::
 
 
-#endif /* DOPPLERInversionOP_H_ */
+#endif

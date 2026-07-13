@@ -70,6 +70,13 @@ GeoFrame::GeoFrame(const GeoFrame & gf) : projR2M(gf.projR2M), xScale(1), yScale
 }
 */
 
+void GeoFrame::reset(){
+	setGeometry(0, 0);
+	setBoundingBoxD(0,0,0,0);
+	Logger(__FILE__, __FUNCTION__).revised<LOG_NOTICE>("also resetting projection ");
+	projGeo2Native.dst.clear();
+	//bBoxD.set(+180.0, +90.0, -180.0, -90.0);
+}
 
 
 void GeoFrame::setGeometry(unsigned int w,unsigned int h) {

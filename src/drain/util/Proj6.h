@@ -76,6 +76,13 @@ public:
 	Projector src;
 	Projector dst;
 
+	/*
+	inline
+	void clear(){
+		src.clear();
+		dst.clear();
+	}
+	*/
 
 	/// Sets source projection.
 	/**

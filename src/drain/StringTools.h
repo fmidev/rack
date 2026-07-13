@@ -213,6 +213,19 @@ public:
 	static
 	std::string & convertEscaped(std::string &s);
 
+	/// Ensure a safe variable name.
+	/**
+	 *  The resulting string:
+	 *  - contains only alphanumeric characters and underscores
+	 *  - will not start with a number
+	 *
+	 *   \param src - original string
+	 *   \param dst - resulting string
+	 *   \param accept - list of non-alphanumeric character accepted as such.
+	 *   \param toUnderScore - list of other non-alphanumeric character accepted, but converted to underscore.
+	 */
+	static
+	void getSafeKey(const std::string & src, std::string & dst, const std::string & accept="_", const std::string & toUnderScore="");
 
 private:
 

@@ -101,8 +101,8 @@ DRAIN_ENUM_DICT(AlignSVG::VertAlign) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
 
-DRAIN_TYPENAME_DEF(AlignSVG::HorzAlign);
-DRAIN_TYPENAME_DEF(AlignSVG::VertAlign);
+// // DRAIN_TYPENAME_DEF(AlignSVG::HorzAlign);
+// // DRAIN_TYPENAME_DEF(AlignSVG::VertAlign);
 
 
 
@@ -167,6 +167,51 @@ void AlignSVG::setAlign(const std::string & align){
 
 void AlignSVG::confToStream(std::ostream & ostr) const {
 
+
+	// std::stringstream sstr;
+	char sep=0;
+
+	std::string join="";
+
+	for (AlignSVG::Owner owner: {Owner::ANCHOR, Owner::OBJECT}){
+
+		ostr << join;
+
+		for (AlignBase::Axis axis: {AlignBase::Axis::VERT, AlignBase::Axis::HORZ}){
+
+			const AlignBase::Pos & pos = getAlignPos(owner, axis);
+
+			if (pos != AlignBase::UNDEFINED_POS){
+
+				if (sep){
+					ostr << sep;
+				}
+				sep=',';
+
+				const std::string & key = drain::Enum<Alignment<> >::dict.getKey(Alignment<>(axis, pos), true);
+				if (!key.empty()){
+					ostr << key;
+				}
+				else {
+					drain::Logger(__FUNCTION__, __FILE__).attention("Rare case: ", axis, '-', pos);
+					ostr << axis << '-' << pos; // DOES empty key ever happen?
+				}
+
+				join="-to-";
+				//std::cerr << __FUNCTION__ << ':' << Enum<AlignAnchorSVG::Owner>::dict.getKey(p) << '_' << Enum<AlignAnchorSVG::axis_t>::dict.getKey(a) << '_' << Enum<AlignAnchorSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
+			}
+
+		}
+
+		sep=0;
+		//join="-to-";
+	}
+
+}
+
+/*
+void AlignSVG::confToStream(std::ostream & ostr) const {
+
 	// std::stringstream sstr;
 	char sep=0;
 
@@ -178,9 +223,6 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 		bitShift += (axis == AlignBase::Axis::HORZ) ? 0 : 2;
 
-		//sep=0;
-		//sep=' ';
-
 		for (AlignSVG::Owner owner: {Owner::ANCHOR, Owner::OBJECT}){
 
 			bitShift = (owner == Owner::OBJECT) ? 0 : 4;
@@ -191,18 +233,14 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 				if (sep){
 					ostr << sep;
-					//sep = ' ';
 				}
 				else {
-					//sep='.';
 				}
 				sep='.';
 
 				if (owner == Owner::ANCHOR){
-					// ostr << '@';
 				}
 				else {
-					//ostr << '.';
 				}
 
 				const std::string & key = drain::Enum<Alignment<> >::dict.getKey(Alignment<>(axis, pos), true);
@@ -222,9 +260,8 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 		sep=' ';
 	}
 
-
 }
-
+*/
 void AlignSVG::updateAlignStr(){
 	std::stringstream sstr;
 	confToStream(sstr);

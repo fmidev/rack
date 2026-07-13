@@ -97,7 +97,7 @@ void FlexibleVariable::info(std::ostream & ostr) const {
 
 //#define DRAIN_TYPENAME(tname) template <>  const std::string TypeName<tname>::name(#tname)
 
-DRAIN_TYPENAME_DEF(FlexibleVariable);
+// qqq DRAIN_TYPENAME_DEF(FlexibleVariable);
 
 // template <>
 // const std::string TypeName<FlexibleVariable>::name("FlexibleVariable");

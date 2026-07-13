@@ -187,12 +187,19 @@ void CartesianReset::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 
+	// Reset accumulation array and GeoFrame.
 	ctx.composite.reset();
+	// Unset target encoding (typically is "consumed" already)
 	ctx.composite.setTargetEncoding("");
+
+	// Clear metadata
 	ctx.composite.odim.source.clear();
 	ctx.composite.nodeMap.clear();
 	ctx.composite.odim.clear(); // 2022/12
+	//ctx.composite.reset();
 	ctx.composite.legend.clear();
+
+	// Clear pointers to current image arrays.
 	ctx.unsetCurrentImages();
 
 	// Consider including in reset:

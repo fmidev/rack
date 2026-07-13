@@ -60,7 +60,8 @@ class NodeHTML;
     drain::UnorderedMultiTree<NodeXML<html::tag_t>,false, NodeXML<>::path_t> CoreTreeHTML;
  	That is, the first template is NodeXML<html::tag_t> and not the complete NodeHTML
  */
-typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
+// typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
+typedef DRAIN_XML_TREE(NodeHTML) TreeHTML;
 
 
 // typedef drain::UnorderedMultiTree<NodeHTML,false, NodeXML<>::path_t> TreeHTML;
@@ -83,12 +84,12 @@ struct Html {
 };
 
 
-
-// template <>
-// const drain::Enum<Html::tag_t>::dict_t drain::Enum<Html::tag_t>::dict;
-
+DRAIN_TYPENAME(Html);
+DRAIN_TYPENAME(Html::tag_t);
 DRAIN_ENUM_DICT(Html::tag_t);
 DRAIN_ENUM_OSTREAM(Html::tag_t);
+
+
 
 // Note: this specialization actually applies to all XML paths of default type, that is NodeXML<int> .
 template <>
@@ -100,11 +101,9 @@ void drain::NodeXML<>::path_t::appendElem(const Html::tag_t & type){
 }
 
 /**
- *  \tparam T - index type; may be enum.
+ *
  */
-//class NodeHTML : public HTML, public NodeXML<html::tag_t> {
 class NodeHTML : public Html, public NodeXML<Html::tag_t> {
-// class NodeHTML : public NodeXML<html::tag_t> {
 
 
 public:
@@ -140,27 +139,8 @@ public:
 		return *this;
 	}
 
-	/*
-	inline
-    NodeHTML & operator=(const std::initializer_list<std::pair<const char *,const drain::Variable> > &l){
-		set(l);
-		return *this;
-	}
-	*/
-
-	/*
-	static // virtual
-	inline
-	std::ostream & docTypeToStream(std::ostream &ostr){
-		ostr << "<!DOCTYPE html>\n";
-		return ostr;
-	}
-	*/
-
 	static
 	const FileInfo fileInfo;
-
-	// virtual	void handleType(const Html::tag_t &t) override final;
 
 protected:
 
@@ -170,27 +150,23 @@ protected:
 };
 
 
+DRAIN_TYPENAME(NodeHTML);
 
+DRAIN_XML_EASY_TYPE(TreeHTML);
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
 	return node.nodeToStream(ostr);
 }
 
-
-// This is the way!
-template <> // for T (Tree class)
+template <> // T for tag type
 inline
 std::ostream & NodeXML<Html::tag_t>::docTypeToStream(std::ostream &ostr){
 		ostr << "<!DOCTYPE html>\n";
 		return ostr;
 }
 
-
-
-
-
-// Important TAG type initialisations for elements.
+// Handles TAG type selection for some elements.
 template <>
 const NodeXML<Html::tag_t>::xml_default_elem_map_t NodeXML<Html::tag_t>::xml_default_elems;
 
@@ -202,41 +178,12 @@ template <>
 inline
 void TreeHTML::initChild(TreeHTML & child) const {
 	UtilsXML::initChildWithDefaultType(*this, child);
-	/*
-	const typename Html::tag_t type = UtilsXML::retrieveDefaultType(this->data);
-	if (type){
-		child->setType(type);
-	}
-	*/
-}
-
-// Preferred template specification
-/*
-template <>
-inline
-TreeHTML & TreeHTML::addChild(){ // const TreeHTML::key_t & key){
-	return UtilsXML::addChild(*this);
-}
-*/
-
-
-
-// Preferred template specification
-template <>
-template <>
-inline
-TreeHTML & TreeHTML::operator()(const Html::tag_t & type){
-	return UtilsXML::setType(*this, type);
 }
 
 
-// NEW 2026/02/27 replacing many!?
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-inline
-const TreeHTML::key_t & TreeHTML::getKey(const Html::tag_t & type){
-	return Enum<Html::tag_t>::dict.getKey(type, false);
-}
+DRAIN_XML_ENUM_KEY(TreeHTML, Html::tag_t);
+// const TreeHTML::key_t & TreeHTML::getKey(const Html::tag_t & type){
+// return Enum<Html::tag_t>::dict.getKey(type, false);
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
@@ -245,42 +192,9 @@ const TreeHTML::key_t & TreeHTML::getKey(const ClassXML & cls){
 	return cls.strPrefixed();
 }
 
-/*
-// old template specification
-template <>
-template <>
-inline
-bool TreeHTML::hasChild(const Html::tag_t & type) const { // const TreeHTML::key_t & key){
-	return TreeHTML::hasChild(Enum<Html::tag_t>::dict.getKey(type, false));
-}
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-TreeHTML & TreeHTML::operator[](const Html::tag_t & type);
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const TreeHTML & TreeHTML::operator[](const Html::tag_t & type) const;
-
-// Same for ClassXML (designed for children of STYLE element)
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-TreeHTML & TreeHTML::operator[](const ClassXML & cls);
-
-/// Automatic conversion of element type (enum value) to a string.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const TreeHTML & TreeHTML::operator[](const ClassXML & cls) const ;
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool TreeHTML::hasChild(const ClassXML & cls) const;
-*/
 
 template <>
 inline
-//TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
 TreeHTML & TreeHTML::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
 	return UtilsXML::assign(*this, l);
 }
@@ -302,13 +216,6 @@ TreeHTML & TreeHTML::operator=(const T & arg){
 	return UtilsXML::assign(*this, arg);
 }
 
-/*
-inline
-std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
-	return drain::Sprinter::toStream(ostr, node.getAttributes());
-}
-*/
-
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
@@ -316,14 +223,10 @@ std::ostream & operator<<(std::ostream &ostr, const TreeHTML & tree){
 }
 
 
-// TODO: try
-// DRAIN_TYPENAME_STR
-DRAIN_TYPENAME(NodeHTML);
-DRAIN_TYPENAME(Html);
-DRAIN_TYPENAME(Html::tag_t);
-
 
 }  // drain::
+
+
 
 #endif // DRAIN_TREE_HTML
 

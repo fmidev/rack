@@ -56,7 +56,10 @@ const XML::intval_t XML::CTEXT;
 const XML::intval_t XML::STYLE;
 const XML::intval_t XML::STYLE_SELECT;
 const XML::intval_t XML::SCRIPT;
+const XML::intval_t XML::JAVASCRIPT;
+const XML::intval_t XML::JAVASCRIPT_SCOPE;
 
+const XML::intval_t XML::XMLBASE;
 
 /**
  *

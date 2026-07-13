@@ -76,6 +76,6 @@ bool StringMatcher::test(const std::string & s) const {
 	}
 }
 
-DRAIN_TYPENAME_DEF(StringMatcher);
+// qqq DRAIN_TYPENAME_DEF(StringMatcher);
 
 }  // rack::

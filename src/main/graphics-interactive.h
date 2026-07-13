@@ -37,23 +37,43 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/Command.h>
 #include <drain/util/Base64.h>
 
+#include <drain/image/MouseXML.h>
+
 #include "hi5/Hi5.h"
-#include "resources.h" // ctx
-//#include "graphics-radar.h" // ctx
-#include "graphics-overlay.h" // ctx
+#include "resources.h"
+#include "graphics-overlay.h"
 
 
+//
 
 namespace rack {
 
-
-
-
-class CmdRect : public CmdPolarBase { //  drain::BasicCommand,
+/*
+class MouseXML {
 
 public:
 
-	TreeSVG & prepare(RackContext & ctx, RadarSVG & radarSVG) const;
+	   \see rack::RackSVG::ElemClass
+
+	enum ElemClass {
+		//MOUSE,	     // A group marked for interaction (mouse event listeners)
+		MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
+		MONITOR,         // Display of interactive operations
+		MONITOR_MOVE,    // Display something when mouse is moving, e.g. cursor coordinates.
+		MONITOR_DOWN,    // Display something when mouse is pressed
+		MONITOR_UP,      // Display something when mouse is released
+		MONITOR_DRAG,    // Display something when mouse is dragged
+	};
+
+	bool cursorCoord = false;
+};
+*/
+
+
+class CmdRect : public CmdPolarBase, public drain::image::MouseXML { //  drain::BasicCommand,
+
+public:
+
 
 	CmdRect() : CmdPolarBase(__FUNCTION__, "Draw rectangle or circle", Graphic::GRAPHIC::RECTANGLE) {
 		getParameters().separator = ':';
@@ -62,6 +82,7 @@ public:
 		//getParameters().link("bboxUnits", bboxUnits, "[PIX|M|DEG]");
 		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true).setSeparator(',');
 		getParameters().link("fixedAEQD", fixedAEQD, "fix origin to the first radar");
+		getParameters().link("cursorCoord", cursorCoord, "show cursor coordinate");
 		getParameters().link("MASK", MASK, "Render outer region with style class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
@@ -77,7 +98,7 @@ public:
 	std::string bbox = "";
 	drain::Range<int> resolution;
 	bool fixedAEQD = true;
-
+	bool cursorCoord = false;
 };
 
 class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
@@ -216,6 +237,14 @@ public:
 
 } // rack::
 
+
+namespace drain {
+
+DRAIN_ENUM_DICT(rack::MouseXML::ElemClass);
+DRAIN_ENUM_OSTREAM(rack::MouseXML::ElemClass);
+DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::MouseXML::ElemClass);
+
+}
 
 #endif
 

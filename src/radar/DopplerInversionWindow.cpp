@@ -34,25 +34,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/FunctorBank.h>
 #include <drain/util/Fuzzy.h>
 #include <drain/util/Geo.h>
-
-
-
 #include "radar/Doppler.h"
-
 #include "DopplerInversionWindow.h"
 
-
-namespace drain {
-	DRAIN_TYPENAME_DEF(rack::DopplerWindow);
-	DRAIN_TYPENAME_DEF(rack::DopplerAverageWindow);
-	DRAIN_TYPENAME_DEF(rack::DopplerAverageWindow2);
-	DRAIN_TYPENAME_DEF(rack::DopplerDevWindow);
-}
-
-
 namespace rack {
-
-
 
 void DopplerInversionWindow::initialize(){
 

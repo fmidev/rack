@@ -761,12 +761,15 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	case AlignBase::Pos::MIN:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "start");
+			// SVG, not CSS, may be ambigous/confusing: if raised, perhaps not inherited?
+			// node.setAttribute(StyleXML::TEXT_ANCHOR, "start");
 			node.transform.translate.x = +1.0*node.getMargin();
 		}
 		break;
 	case AlignBase::Pos::MID:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "middle");
+			// node.setAttribute(StyleXML::TEXT_ANCHOR, "middle"); // SVG, not CSS, not inherited?
 		}
 		else {
 			coord -= obox.width/2;
@@ -775,6 +778,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	case AlignBase::Pos::MAX:
 		if (IS_TEXT){
 			node.setStyle(StyleXML::TEXT_ANCHOR, "end");
+			// node.setAttribute(StyleXML::TEXT_ANCHOR, "end"); // SVG, not CSS, not inherited?
 			node.transform.translate.x = -1.0*node.getMargin();
 		}
 		else {

@@ -125,9 +125,10 @@ public:
 
 
 	inline
-	const Variable & getStatus(const std::string & key, bool update) const {
-		//updateStatus(update);
-		updateStatus();
+	const Variable & getStatus(const std::string & key, bool update=true) const {
+		if (update){
+			updateStatus();
+		}
 		return statusMap[key];
 		//return static_cast<T>(statusMap[key]);
 	};

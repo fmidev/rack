@@ -40,8 +40,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-DRAIN_TYPENAME_DEF(image::NodeSLD);
-DRAIN_TYPENAME_DEF(image::SLD::tag_t);
+ // DRAIN_TYPENAME_DEF(image::NodeSLD);
+                                                   // DRAIN_TYPENAME_DEF(image::SLD::tag_t);
 
 // template <>
 // const Enum<image::SLD::tag_t>::dict_t Enum<image::SLD::tag_t>::dict =

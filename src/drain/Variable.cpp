@@ -68,7 +68,7 @@ bool Variable::requestSize(size_t elementCount){
 	// return true;
 }
 
-DRAIN_TYPENAME_DEF(Variable);
+// qqq DRAIN_TYPENAME_DEF(Variable);
 
 /*
 template <>

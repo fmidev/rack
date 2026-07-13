@@ -119,6 +119,12 @@ public:
 	static
 	void addGeoData(const drain::image::Image & imageData, drain::image::NodeSVG & node);
 
+	// New
+	// static?
+	/**
+	 *
+	 */
+	TreeSVG & prepare(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
 
 
 };

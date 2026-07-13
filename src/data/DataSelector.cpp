@@ -938,6 +938,6 @@ void DataSelector::selectPaths(const Hi5Tree & src, std::list<ODIMPath> & pathCo
 
 /*
 namespace drain {
-	DRAIN_TYPENAME_DEF(rack::DataSelector);
+// zzz DRAIN_TYPENAME_DEF(rack::DataSelector);
 }
 */

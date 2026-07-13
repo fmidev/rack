@@ -347,7 +347,6 @@ protected:
 
 namespace drain {
 
-
 	DRAIN_TYPENAME(rack::DopplerWindow);
 	DRAIN_TYPENAME(rack::DopplerAverageWindow);
 	DRAIN_TYPENAME(rack::DopplerAverageWindow2);

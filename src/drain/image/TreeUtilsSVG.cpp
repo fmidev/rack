@@ -81,7 +81,7 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 			// Strip directory part from the imagePath, replace with prefix
 			drain::Logger mout(__FILE__, __FUNCTION__);
 			std::string p = prefix + imagePath.substr(dir.size());
-			mout.attention("Modifying: ", imagePath, " -> ", p);
+			mout.info("Modifying: ", imagePath, " -> ", p);
 			imageNode->setUrl(p);
 		}
 		else {
@@ -331,7 +331,6 @@ int OverlayMoverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 							dst->swapSVG(src.second);
 
 							src.second->removeClass(OVERLAY);
-							// src.second->addClass("ex_OVERLAY");
 							src.second.addChild()->setComment("Removed overlay");
 							/*
 							std::cout << "DUMPING: " << src.first << '\n';

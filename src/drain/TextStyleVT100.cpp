@@ -103,7 +103,7 @@ const std::map<TextStyle::Line,int> & TextStyleVT100::getCodeMap(){
 
 
 
-DRAIN_TYPENAME_DEF(TextStyleVT100);
+// qqq DRAIN_TYPENAME_DEF(TextStyleVT100);
 
 
 

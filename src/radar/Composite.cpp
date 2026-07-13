@@ -443,8 +443,14 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 		pRadarToComposite.setProjectionDst(getProjStr()); // TODO: more direct assign
 
 		double range = PolarODIM::defaultRange;
-		if (range > 0.0){
+		if (range > 2.0){
 			mout.info("Using predefined range: " , range );
+			// pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
+		}
+		else if (range > 0.0){
+			mout.experimental("Using predefined RELATIVE range: " , range );
+			range = range * srcData.odim.getMaxRange(false);
+			mout.info("Using range: " , range );
 			// pRadarToComposite.determineBoundingBoxM(PolarODIM::defaultRange, bboxM);
 		}
 		else {
@@ -453,7 +459,7 @@ void Composite::addPolar(const PlainData<PolarSrc> & srcData, const PlainData<Po
 			//pRadarToComposite.determineBoundingBoxM(srcData.odim.getMaxRange(true), bboxM);
 		}
 
-		mout.debug("Range:", range, " (max: ", srcData.odim.getMaxRange(true), ')');
+		// mout.debug("Range:", range, " (max: ", srcData.odim.getMaxRange(true), ')');
 
 		//drain::Rectangle<double> bboxNat;
 		pRadarToComposite.determineBoundingBoxM(range, bboxInput);

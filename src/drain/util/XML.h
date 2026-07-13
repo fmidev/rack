@@ -48,8 +48,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/StringTools.h>
 
 #include "ClassXML.h"
-// #include "UtilsXML.h"
-// #include "Flags.h"
 #include "ReferenceMap.h"
 #include "StyleXML.h"
 
@@ -59,28 +57,35 @@ namespace drain {
 
 
 /// Base class for XML "nodes", to be data elements T for drain::Tree<T>
-//class XML :  protected ReferenceMap2<FlexibleVariable> {
-//class XML :  protected ReferenceMap2<FlexibleVariable> {
-class XML :  protected std::map<std::string,FlexibleVariable> {
+/**
+ *
+ *  In derived classes, the values will be typically of enumeration type.
+ *  The derived classes often reuse basic types, especially UNDEFINED, COMMENT, and CTEXT.
+ *  In that case, the first enum values should "inherit" the integer values from this basic
+ *  class with explicit enum value assigment.
+ *  The first 10 values are recommended to be reserved for this purpose, allowing future
+ *  extensions in this base class.
+ *
+ */
+class XML :  protected std::map<std::string,FlexibleVariable> { // ReferenceMap2<FlexibleVariable> {
 
 public:
 
-	typedef std::map<std::string,FlexibleVariable> map_t;
-	//typedef ReferenceMap2<FlexibleVariable> map_t;
-
-	map_t & getMap(){
-		return *this;
-	}
-
-	const map_t & getMap() const {
-		return *this;
-	}
-
+	/**
+	 *  In derived classes, the values will be typically of enumeration type.
+	 *  The derived classes often reuse basic types, especially UNDEFINED, COMMENT, and CTEXT.
+	 *  In that case, the first enum values should "inherit" the integer values from this basic
+	 *  class with explicit enum value assigment.
+	 *  The first 10 values are recommended to be reserved for this purpose, allowing future
+	 *  extensions in this base class.
+	 */
 	typedef int intval_t;
 
 	// TODO:
 	// static const intval_t flag_OPEN = 128;
 	// static const intval_t flag_TEXT = 256;
+
+
 	static const intval_t UNDEFINED = 0;
 	static const intval_t COMMENT   = 1; // || flag_TEXT
 	static const intval_t CTEXT     = 2; // || flag_TEXT
@@ -89,6 +94,17 @@ public:
 	static const intval_t STYLE_SELECT = 5;
 	static const intval_t JAVASCRIPT       = 6; // future extension
 	static const intval_t JAVASCRIPT_SCOPE = 7; // future extension
+	static const intval_t XMLBASE = 10; // for debugging basic XML doc
+
+	typedef std::map<std::string,FlexibleVariable> map_t;
+
+	map_t & getMap(){
+		return *this;
+	}
+
+	const map_t & getMap() const {
+		return *this;
+	}
 
 
 	enum entity_t {
@@ -133,12 +149,32 @@ public:
 	virtual inline
 	~XML(){};
 
+	/**
+	 *  All the derived classes must have a method returning a tag associated with
+	 *  a supported element type.
+	 */
+	virtual
+	const std::string & getTag() const = 0;
+
+	///
+	/**
+	 *   Recommended way to mark a node out is to change it to a comment.
+	 */
+	// Could be also internal, and only NodeXML<> declares this interface.
 	template <class T> // "final"
 	void setType(const T &t){ // DANGER, without cast?
 		const intval_t t2 = static_cast<intval_t>(t);
 		if (type != t2){
+			// const std::string & tag = getTag();
+			const bool CHANGE = (typeIsSet() && (t2 != COMMENT));
+			if (CHANGE){
+				Logger(__FILE__, __FUNCTION__).warn("Changing type from ", getType(), " to ", t, '(', t2, ')');
+			}
 			reset();
 			type = t2; // also UNDEFINED ok here
+			if (CHANGE){
+				//Logger(__FILE__, __FUNCTION__).error("Type changed from ", tag, " to ", getTag());
+			}
 			handleType(); // NOTE: problems, if copy constructor etc. calls setType on a base class – trying to link future members
 		}
 		// handleType(static_cast<T>(t)); REMOVED 2025/09
@@ -157,6 +193,9 @@ public:
 	};
 
 	/// Return true, if type is any of the arguments.
+	/**
+	 *   Overlapping function: isUndefined() - ?
+	 */
 	inline
 	bool typeIsSet() const {
 		return type != UNDEFINED;
@@ -178,16 +217,55 @@ public:
 	};
 
 
+
 	std::string ctext;
 
 	// Could be templated, behind Static?
 	static int nextID;
 
-	inline
-	static int getCount(){
+	static inline
+	int getCount(){
 		return nextID;
 	}
 
+	static inline
+	int getNewIndex(){
+		return ++nextID;
+	}
+
+	/// Makes ID a visible attribute.
+	/**
+	 *  Also a terminal function for
+	 */
+	inline
+	const std::string & setId(){
+		if (id.empty()){
+			id=drain::StringBuilder<>(getTag(), ++nextID);
+		}
+		getMap()["id"].link(id);
+		return id;
+	}
+
+	/// Makes ID a visible attribute, with a given value.
+	inline
+	const std::string & setId(const std::string & s){
+		getMap()["id"].link(id=s);
+		return id;
+	}
+
+	/// Concatenates arguments to an id.
+	template <char C='\0', typename ...TT>
+	inline
+	const std::string & setId(const TT & ...args) {
+		getMap()["id"].link(id=drain::StringBuilder<C>(args...));
+		return id;
+	}
+
+	/// Returns ID of this element. Hopefully a unique ID...
+	inline
+	const std::string & getId() const {
+		return id;
+	}
 
 	inline
 	bool isUndefined() const {
@@ -253,36 +331,6 @@ public:
 	}
 	 */
 
-	/// Makes ID a visible attribute.
-	/**
-	 *  Also a terminal function for
-	 */
-	inline
-	void setId(){
-		getMap()["id"].link(id);
-		//link("id", id);
-	}
-
-	/// Makes ID a visible attribute, with a given value.
-	inline
-	void setId(const std::string & s){
-		getMap()["id"].link(id=s);
-		// link("id", id = s);
-	}
-
-	/// Concatenates arguments to an id.
-	template <char C='\0', typename ...TT>
-	inline
-	void setId(const TT & ...args) {
-		getMap()["id"].link(id=drain::StringBuilder<C>(args...));
-		// link("id", id = drain::StringBuilder<C>(args...));
-	}
-
-	/// Returns ID of this element. Hopefully a unique ID...
-	inline
-	const std::string & getId() const {
-		return id;
-	}
 
 
 	/// Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.
@@ -643,6 +691,7 @@ public:
 		CLOSING_TAG = 2,   // </TAG>
 		EMPTY_TAG = OPENING_TAG | CLOSING_TAG,  // element has no descendants:  <hr/>
 		NON_EMPTY_TAG, // opening and closing tags must appear, even when empty: <script></script>
+		NO_TAG, // New, for CTEXT
 	};
 
 
@@ -775,37 +824,43 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	tag_display_mode mode = EMPTY_TAG;
 
 	if (data.isCText()){ // this can be true only at root, and rarely so...? (because recursive call not reached, if ctext)
-		data.nodeToStream(ostr, mode);
+		// data.nodeToStream(ostr, mode);
 		// ostr << "<!--TX-->";
-		return ostr;
+		// NEW
+		mode = NO_TAG;
+		// return ostr;
 	}
-
-	if (!data.ctext.empty()){
-		// mout.warn("Non-CTEXT-elem with ctext: <", data.getTag(), " id='", data.getId(), "' ...>, text='", data.ctext, "'");
-		if (data.isSingular()){
-			// mout.warn("Skipping CTEXT of a singular element <", tree->getTag(), " id='", data.getId(), "' ...> , CTEXT: '", data.ctext, "'");
-			mode = EMPTY_TAG;
+	else {
+		if (!data.ctext.empty()){
+			// mout.warn("Non-CTEXT-elem with ctext: <", data.getTag(), " id='", data.getId(), "' ...>, text='", data.ctext, "'");
+			if (data.isSingular()){
+				// mout.warn("Skipping CTEXT of a singular element <", tree->getTag(), " id='", data.getId(), "' ...> , CTEXT: '", data.ctext, "'");
+				mode = EMPTY_TAG;
+			}
+			else {
+				mode = OPENING_TAG;
+			}
 		}
-		else {
+
+		if (!children.empty()){
+			mode = OPENING_TAG;
+			if (data.isSingular()){
+				mout.warn("Singular (hence normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has ", children.size(), " children?");
+			}
+		}
+
+		// mout.attention("Hey! ", TypeName<TR>::str(), " with ", TypeName<typename TR::node_data_t>::str(), "Explicit ", data.isExplicit(), " or implicit ", data.isSingular());
+		if (data.isExplicit()){ // explicit
 			mode = OPENING_TAG;
 		}
-	}
-
-	if (!children.empty()){
-		mode = OPENING_TAG;
-		if (data.isSingular()){
-			mout.warn("Singular (hence normally empty) element <", tree->getTag(), " id='", data.getId(), "' ...> has ", children.size(), " children?");
+		else if (data.isSingular()){ // <br/> <hr/>
+			mode = EMPTY_TAG;
 		}
+
+		// Hence, is flexible, "bimodal", supports empty and open-close mode.
+
 	}
 
-	// mout.attention("Hey! ", TypeName<TR>::str(), " with ", TypeName<typename TR::node_data_t>::str(), "Explicit ", data.isExplicit(), " or implicit ", data.isSingular());
-	if (data.isExplicit()){ // explicit
-		mode = OPENING_TAG;
-	}
-	else if (data.isSingular()){ // <br/> <hr/>
-		mode = EMPTY_TAG;
-	}
-	// Hence, is flexible, "bimodal", supports empty and open-close mode.
 
 
 	// Indent
@@ -813,11 +868,14 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	ostr << fill;
 
 	// Print opening tag and attributes.
+	// NEW: js scope print also its CTEXT
 	data.nodeToStream(ostr, mode);
 
 	// Note: if tree has attributes, empty() == false.
 	//if (data.isScript() && !(tree.empty() && data.ctext.empty())){ // (mode==OPENING_TAG)
-	if (data.isScript() && (tree.hasChildren() || !data.ctext.empty())){
+	const bool SCRIPT_NONEMPTY = data.isScript() && (tree.hasChildren() || !data.ctext.empty());
+	//if (data.isScript() && (tree.hasChildren() || !data.ctext.empty())){
+	if (SCRIPT_NONEMPTY){
 		//std::string fill(2*indent, ' ');
 		ostr << "//<![CDATA[\n";
 	}
@@ -919,20 +977,31 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 			// StringTools::replace(XML::encodingMap, data.ctext, ostr); // sometimes an issue? // any time issue?
 		}
 		*/
-		ostr << data.ctext;
+
+		/*
+		if (!data.isCText()){
+			ostr << data.ctext;
+		}
+		*/
+
+		if (!data.isScopeJS()){
+			ostr << data.ctext;
+			if (!data.ctext.empty()){
+				//ostr << data.ctext << '\n'; // newline nice in scripts, but else where?
+			}
+		}
 
 		// Detect if all the children are of type CTEXT, to be rendered in a single line.
 		// Note: potential re-parsing will probably detect them as a single CTEXT element.
 		bool ALL_CTEXT = true; // (!data.ctext.empty()) || !children.empty();
 
 		for (const auto & entry: children){
-			if (!entry.second->isCText()){
+			// New: if CTEXT has children, ensure recursion by skipping ALL_TEXT handler
+			if (entry.second.hasChildren() || !entry.second->isCText()){
 				ALL_CTEXT = false;
 				break;
 			}
 		}
-
-		// ALL_CTEXT = false;
 
 		if (ALL_CTEXT){
 			// ostr << "<!--ALL_CTEXT-->";
@@ -944,8 +1013,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 				else {
 					sep = ' '; // consider global setting?
 				}
-				//ostr << entry.second->getText();
-				//StringTools::replace(XML::encodingMap, entry.second->getText(), ostr); // any time issue?
+
 				if (data.isScript()){
 					// Unfiltered
 					ostr << entry.second->getText();
@@ -953,7 +1021,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 				else {
 					StringTools::replace(entry.second->getText(), getEntityMap(), ostr); // any time issue?
 				}
-				// ostr << entry.second->getText();
+
 			}
 		}
 		else {
@@ -968,16 +1036,21 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 			ostr << fill; //  for CLOSING tag
 		}
 
+		if (data.isCText())
+			return ostr;
 	}
 
 	// ostr << "<!-- END "<< data.getId() << ' ' << data.getTag() << '(' << data.getType() << ')' << "-->";
 	// Note: if tree has attributes, empty() == false.
-	if (data.isScript() && (tree.hasChildren() || !data.ctext.empty())){
+	// Write terminting escape sequence only if there was some content
+	if (SCRIPT_NONEMPTY){
+		// if (data.isScript() && (tree.hasChildren() || !data.ctext.empty())){
 		// if (data.isScript() && !(tree.empty() && data.ctext.empty())){
 		ostr << '\n';
 		std::string fill(2*indent, ' ');
 		ostr << "//]]>";
 	}
+
 
 	data.nodeToStream(ostr, CLOSING_TAG);
 	ostr << '\n';  // Always after closing tag!

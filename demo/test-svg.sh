@@ -330,7 +330,7 @@ RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'\${what:date|%A, %d %B %Y
 
 WRITE_SECTION svg_select_rect1  'Highlighting details with rectangles (AEQD projection)'
 
-RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'Grouping by time:  UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gRect -200000,0,-50000,-120000m'" \\  "'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'"  -o "radar_svg_select_rect1"
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'Grouping by time: \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gRect -200000,0,-50000,-120000m'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_select_rect1"
 # --gStyle "rect.SELECTOR='stroke:white;stroke-width:3px'
 
 ls -1t ${OUTFILES[*]//.png/.cmd}

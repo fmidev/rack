@@ -108,7 +108,7 @@ std::ostream & operator<<(std::ostream & ostr, const Proj6 &p){
 	return ostr;
 }
 
-DRAIN_TYPENAME_DEF(Proj6);
+// qqq DRAIN_TYPENAME_DEF(Proj6);
 
 }
 

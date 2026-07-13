@@ -38,18 +38,61 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define DRAIN_UTILS_XML
 
 #include "XML.h"
-
 #include "SelectorXML.h" // Only for StyleUtils :-/
-
 
 namespace drain {
 
 
-/// Base class for XML "nodes", to be data elements T for drain::Tree<T>
+/// Functions for manipulating XML structures.
 class UtilsXML {
 
 public:
 
+	///
+	/**
+	 *   Forward definition – type can be set only upon construction of a complete class
+	 *
+	 */
+	template <typename TX>
+	static inline
+	TX & setType(TX & tree, const typename TX::node_data_t::xml_tag_t & type){
+		tree->setType(type);
+		return tree;
+	}
+
+	template <typename TX, typename ...TT>
+	static TX& setTypeAndID(TX &tree, const typename TX::node_data_t::xml_tag_t &type, const TT & ...args);
+
+
+	/// Find node type (tag id) from a predefined list of default types for (some) parent types.
+	/**
+	 *
+	 */
+	template <typename N>
+	static
+	typename N::xml_tag_t retrieveDefaultType(const N & parentNode){
+		typedef typename N::xml_default_elem_map_t map_t;
+		const typename map_t::const_iterator it = N::xml_default_elems.find(parentNode.getNativeType());
+		if (it != N::xml_default_elems.end()){
+			return (it->second);
+		}
+		else {
+			return static_cast<typename N::xml_tag_t>(0);
+		}
+	}
+
+	template <typename T>
+	static
+	bool initChildWithDefaultType(const T & tree, T & child){
+		typename T::node_data_t::xml_tag_t type = retrieveDefaultType(tree.data);
+		if (static_cast<int>(type) != 0){
+			child->setType(type);
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	/// Assign another tree structure to another
 	/**
@@ -162,48 +205,6 @@ public:
 	}
 
 
-	///
-	/**
-	 *   Forward definition – type can be set only upon construction of a complete class
-	 *
-	 */
-	template <typename TX>
-	static inline
-	TX & setType(TX & tree, const typename TX::node_data_t::xml_tag_t & type){
-		tree->setType(type);
-		return tree;
-	}
-
-
-	/// Find node type (tag id) from a predefined list of default types for (some) parent types.
-	/**
-	 *
-	 */
-	template <typename N>
-	static
-	typename N::xml_tag_t retrieveDefaultType(const N & parentNode){
-		typedef typename N::xml_default_elem_map_t map_t;
-		const typename map_t::const_iterator it = N::xml_default_elems.find(parentNode.getNativeType());
-		if (it != N::xml_default_elems.end()){
-			return (it->second);
-		}
-		else {
-			return static_cast<typename N::xml_tag_t>(0);
-		}
-	}
-
-	template <typename T>
-	static
-	bool initChildWithDefaultType(const T & tree, T & child){
-		typename T::node_data_t::xml_tag_t type = retrieveDefaultType(tree.data);
-		if (static_cast<int>(type) != 0){
-			child->setType(type);
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 
 	template <typename T>
 	static
@@ -213,6 +214,22 @@ public:
 
 		if (!root.hasChild(finalKey)){
 			T & child = root.prependChild(finalKey); // consider path type! getDefaultObject
+			child->setType(tag);
+			return child;
+		}
+		else {
+			return root[finalKey];
+		}
+	};
+
+	template <typename T>
+	static
+	T & appendHeaderObject(T & root, typename T::node_data_t::xml_tag_t tag, const typename T::path_elem_t & key = typename T::path_elem_t()){
+
+		const typename T::path_elem_t & finalKey = !key.empty() ? key : Enum<typename T::node_data_t::xml_tag_t>::getKey(tag);
+
+		if (!root.hasChild(finalKey)){
+			T & child = root.add(finalKey); // consider path type! getDefaultObject
 			child->setType(tag);
 			return child;
 		}
@@ -254,8 +271,41 @@ public:
 		return styleEntry;
 	}
 
+	// See StringTools::getSafeKey void getSafeVariableName();
+
+	///
 	/**
+	 *  Creates a function in a shared /SCRIPT/ slot.
+	 *  Todo: rename
 	 *
+	 *  \tparam N - Tree node type (T::node_data_t)
+	 *  \tparam TT - function parameter names (strings).
+	 */
+	template <typename N, typename ...TT>
+	static
+	UnorderedMultiTree<N> & ensureJavaScriptFunctionScope(UnorderedMultiTree<N> & root, const std::string & name, const TT & ...args){
+
+		typedef UnorderedMultiTree<N> T;
+		T & scriptElem = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
+
+		if (!scriptElem.hasChild(name)){
+			T & jsFunction = scriptElem[name];
+			//jsFunction->setType(N::xml_tag_t::JAVASCRIPT_SCOPE);
+			jsFunction->setText("var ", name, " = function(", args..., ')');
+			// T & jsFunctionScope = jsFunction.addChild();
+			T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE]; // maybe string best?
+			jsFunctionScope->setType(N::xml_tag_t::JAVASCRIPT_SCOPE);
+			return jsFunctionScope;
+		}
+		else {
+			return scriptElem[name][N::xml_tag_t::JAVASCRIPT_SCOPE];
+		}
+		// T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
+
+	}
+
+	/**
+	 *   Creates...
 	 */
 	template <typename N, typename ...TT>
 	static
@@ -301,114 +351,54 @@ public:
 
 };
 
+template<typename TX, typename ...TT>
+inline
+TX& UtilsXML::setTypeAndID(TX &tree, const typename TX::node_data_t::xml_tag_t &type, const TT & ...args) {
+	tree->setType(type);
+	tree->setId(type, drain::StringBuilder<'_'>(TX::node_data_t::getCount(), args...));
+	return tree;
+}
+
+/// Utility for automatically setting child element types. Uses xml_default_elems .
+/**
+ *   \b Usage
+ *
+ *   In header files:
+ *   \code{.cpp}
+ *   namespace drain {
+ *   DRAIN_XML_DEFAULT_INIT(image::TreeSvg);
+ *   }
+ *   \endcode
+ *
+ *   In code:
+ *   \code{.cpp}
+ *   // Assume TreeSvg script is of type svg::SCRIPT.
+ *   image::TreeSvg & line1 = script.addChild(); // Set type xml::CTEXT.
+ *   image::TreeSvg & line2 = script["l2"];      // Set type xml::CTEXT.
+ *   \endcode
+ */
+#define DRAIN_XML_DEFAULT_INIT(xml_tree) template <> inline void xml_tree::initChild(xml_tree & child) const { UtilsXML::initChildWithDefaultType(*this, child); }
+
+/// Set type with simple operator().
+/**
+ *   \b Usage
+ *
+ *   In header files:
+ *   \code
+ *   namespace drain {
+ *   DRAIN_XML_DEFAULT_ELEMS_INIT(image::TreeSvg);
+ *   }
+ *
+ *   In code:
+ *   \code
+ *   image::TreeSvg & tree = tree["image1"](svg::IMAGE); // Set type svg::IMAGE.
+ *   \endcode
+ */
+#define DRAIN_XML_EASY_TYPE(xml_tree) template <> template <> inline xml_tree & xml_tree::operator()(const xml_tree::node_data_t::tag_t & type){ return UtilsXML::setType(*this, type); }
 
 
 }  // drain::
 
 #endif /* DRAIN_XML */
 
-/*
-template <typename T>
-static
-T & xmlGuessType(const typename T::node_data_t & parentNode, T & child){
-	typedef typename T::node_data_t::xml_default_elem_map_t map_t;
-	const typename map_t::const_iterator it = T::node_data_t::xml_default_elems.find(parentNode.getNativeType());
-	if (it != T::node_data_t::xml_default_elems.end()){
-		child->setType(it->second);
-		drain::Logger(__FILE__, __FUNCTION__).experimental<LOG_WARNING>("Default type set: ", child->getTag());
-	}
-	return child;
-}
-*/
-
-/// Assign tree node (data) to another
-/**
- *  \tparam N - xml node (e.g. NodeXML, NodeSVG, NodeHTML)
- *
- *  \see clear()
-template <typename N>
-static inline
-N & assignNode(N & dst, const N & src){
-
-	if (&src != &dst){
-		//dst.clear(); // clear attributes,
-		//if (!dst.typeIs(src.getNativeType())){
-		if (dst.getType() != src.getType()){
-			dst.reset(); // clear attributes, style, cstring and type.
-			// Warning: does not create links.
-			dst.setType(src.getType());
-		}
-		dst.getAttributes().importMap(src.getAttributes());
-		dst.setStyle(src.getStyle());
-		// dst.setText(src.ctext); // wrong! set type to CTEXT
-		dst.ctext = src.ctext;
-	}
-
-	return dst;
-}
- */
-
-
-/**
- *
- *  TODO: add default type based on parent group? defaultChildMap TR->TD
- *
- */
-/*
-template <typename T>
-static
-T & addChild(T & tree){
-	typename T::node_data_t::xml_tag_t type = retrieveDefaultType(tree.data);
-	std::stringstream k; // ("elem");
-	k << "elem"; // number with 4 digits overwrites this?
-	k.width(3);  // consider static member prefix
-	k.fill('0');
-	k << tree.getChildren().size();
-	return tree[k.str()](type);
-}
-
-template <typename T>
-static
-T & addChild(T & tree, const std::string & key){
-
-	if (!key.empty()){
-		typename T::node_data_t::xml_tag_t type = xmlRetrieveDefaultType(tree.data);
-		return tree[key](type);
-	}
-	else {
-		return addChild(tree);
-	}
-}
-*/
-
-
-// TX & xmlAppendString(TX & tree, const std::string & s){
-/*
-template <class V>
-static inline
-void attribToStream(std::ostream &ostr, const std::string & key, const V &value){
-	//StringTools::replace(XML::encodingMap, data.ctext, ostr);
-	//ostr << ' ' << key << '=' << '"' << value << '"'; // << ' ';
-
-	static const std::map<char,char> keyMap = {
-			{' ','_'},
-			{'"','_'},
-			{'=','_'},
-	};
-	ostr << ' ';
-	StringTools::replace(key, keyMap, ostr); // XML::encodingMap
-	//StringTools::replace(getEntityMap(), key, ostr); // XML::encodingMap
-
-	static const std::map<char,std::string> valueMap = {
-			{XML::entity_t::QUOTE, "'"},
-			{XML::entity_t::LESS_THAN,"(("},
-			{XML::entity_t::GREATER_THAN,"))"},
-	};
-	ostr << '=' << '"';
-	StringTools::replace(value, valueMap, ostr); // XML::encodingMap
-	//StringTools::replace(getEntityMap(), value, ostr); // XML::encodingMap
-	ostr << '"';
-	//<< key << '=' << '"' << value << '"'; // << ' ';
-}
-*/
 

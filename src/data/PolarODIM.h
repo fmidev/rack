@@ -249,8 +249,7 @@ public:
 	}
 
 
-	// defaultRange
-	static int defaultRange;
+	static double defaultRange;
 
 private:
 

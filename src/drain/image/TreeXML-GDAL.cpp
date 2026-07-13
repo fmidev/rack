@@ -46,8 +46,8 @@ namespace drain
 {
 
 
-DRAIN_TYPENAME_DEF(image::NodeGDAL);
-DRAIN_TYPENAME_DEF(image::NodeGDAL::tag_t);
+ // DRAIN_TYPENAME_DEF(image::NodeGDAL);
+                                                   // DRAIN_TYPENAME_DEF(image::NodeGDAL::tag_t);
 
 DRAIN_ENUM_DICT(image::NodeGDAL::tag_t) = {
 		{"UNDEFINED",    drain::image::GDAL::UNDEFINED},

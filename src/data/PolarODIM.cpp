@@ -36,7 +36,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-int PolarODIM::defaultRange(250000); // metres
+double PolarODIM::defaultRange(250000.0); // metres or relative, if (0<r<2).
 
 void PolarODIM::init(group_t initialize){ // ::referenceRootAttrs(){
 
@@ -121,16 +121,10 @@ double PolarODIM::getMaxRange(bool warn) const {
 		if (r == 0.0){
 			mout.note("using ", DRAIN_LOG(PolarODIM::defaultRange) );
 			r = static_cast<double>(PolarODIM::defaultRange);
-			/*
-			if (PolarODIM::defaultRange > 0){
-				r = PolarODIM::defaultRange;
-				mout.note("using defaultRange" , r );
+			if (r < 2.0){
+				r = 250000;
+				mout.note(DRAIN_LOG(PolarODIM::defaultRange), " is relative (less than 2.0), using ", r);
 			}
-			else {
-				r = 250000.0;
-				mout.note("using range=" , r );
-			}
-			*/
 		}
 		return r;
 	}
@@ -237,6 +231,6 @@ signed char PolarODIM::checkAliasing(double v1, double v2, double NI_threshold) 
 }  // namespace rack
 
 namespace drain {
-	DRAIN_TYPENAME_DEF(rack::PolarODIM);
+// zzz DRAIN_TYPENAME_DEF(rack::PolarODIM);
 }
 

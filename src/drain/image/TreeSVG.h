@@ -121,9 +121,8 @@ struct svg {
 
 class NodeSVG;
 
-// typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<svg::tag_t>::path_t> TreeSVG;
-typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
-
+// typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
+typedef DRAIN_XML_TREE(NodeSVG) TreeSVG;
 
 } // image::
 

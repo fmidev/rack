@@ -67,12 +67,7 @@ public:
 	~GeoFrame(){
 	};
 
-	inline
-	void reset(){
-		setGeometry(0, 0);
-		setBoundingBoxD(0,0,0,0);
-		//bBoxD.set(+180.0, +90.0, -180.0, -90.0);
-	}
+	void reset();
 
 	/// Returns true, if the geographical extent has been set.
 	/**
@@ -109,10 +104,19 @@ public:
 		return geometryIsSet() && projectionIsSet() && bboxIsSet();
 	};
 
+	/// This does NOT allocate memory. @see allocate();
+	inline
+	void setGeometry(const Frame2D<int> & frame){
+		setGeometry(frame.width, frame.height);
+	}
 
-	// Notice that someday this does NOT allocate memory. @see allocate();
+	/// This does NOT allocate memory. @see allocate();
 	virtual
 	void setGeometry(unsigned int width, unsigned int height);
+
+	/// Return frame geometry - the nominal width and height.
+	inline
+	const Frame2D<int> & getGeometry() const { return frame; };
 
 	/// Return the nominal width, not the width of the memory array which does not have to be allocated.
 	inline
@@ -121,6 +125,7 @@ public:
 	/// Return the nominal height, not the height of the memory array which does not have to be allocated.
 	inline
 	int getFrameHeight() const {return  frame.height; };
+
 
 
 	/// Sets bounding box in degrees OR in metres in the target coordinate system.

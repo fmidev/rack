@@ -34,6 +34,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-DRAIN_TYPENAME_DEF(KeySelector);
+// qqq DRAIN_TYPENAME_DEF(KeySelector);
 
 }  // drain::

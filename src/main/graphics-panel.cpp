@@ -60,8 +60,8 @@ DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
 		// ---
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, DATA_ARRAY),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SHARED_METADATA),
@@ -105,6 +105,7 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	UtilsXML::ensureStyle(style, ClassXML(BACKGROUND_RECT), {
 			{"stroke", "none"},
+			{"fill", "none"},
 	});
 
 	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::IMAGE_TITLE), {
@@ -239,7 +240,7 @@ drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
 	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
 
 	return drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	// return onloadJS;
+	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.svgTrack, onload_fnc_name);
 
 }
 
@@ -844,34 +845,38 @@ drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePan
 
 drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image::TreeSVG & object, RackSVG::ElemClass elemClass){
 
+	drain::image::TreeSVG & comment = object.addChild()(svg::COMMENT);
+
 	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
-	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::COLLECTIVE_CURRENT); // ("*");
+	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::CURRENT_COMPOUND); // ("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	// backgroundRect->setHeight(40); // TODO!!
 
 	// Lower... for GENERAL as well.
 	switch (elemClass) {
 	case RackSVG::ElemClass::MAIN_TITLE:
+		comment->setComment(DRAIN_LOG(conf.mainTitle));
 		backgroundRect->setId(RackSVG::ElemClass::MAIN_TITLE);
 		backgroundRect->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 		backgroundRect->setHeight(conf.boxHeights[0]);
 		break;
 	case RackSVG::ElemClass::GROUP_TITLE:
 		if (!conf.groupIdentifier.empty()){ // or Force?
+			comment->setComment(DRAIN_LOG(conf.groupIdentifier));
 			backgroundRect->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 			backgroundRect->setHeight(conf.boxHeights[1]);
-			drain::image::TreeSVG & comment = backgroundRect[svg::COMMENT](svg::COMMENT);
-			comment->setText(DRAIN_LOG(conf.groupIdentifier), ' ', DRAIN_LOG(conf.groupTitle));
+			drain::image::TreeSVG & comment = object.addChild(); // backgroundRect[svg::COMMENT](svg::COMMENT);
 		}
 		else {
 			backgroundRect->setComment("Empty title, RECT removed");
 		}
 		break;
 	default:
+		comment->setComment("Unhandled: ", DRAIN_LOG(elemClass));
 		drain::Logger mout(__FILE__, __FUNCTION__);
-		mout.suspicious("Unhandled elemClass: ", elemClass);
+		mout.suspicious("Unhandled: ", DRAIN_LOG(elemClass));
 		break;
 	}
 
@@ -1360,12 +1365,14 @@ void CmdLinkImage::exec() const {
 		mout.hint("Use  '--format FMI-MAP --outputFile -' to obtain a background map.");
 	}
 
-	// drain::FilePath filePath(ctx.getFormattedStatus(ctx.inputPrefix + this->value));
-	if (!ctx.inputPrefix.empty()){
-		mout.note("Not using input prefix (", ctx.inputPrefix, ") with this command");
-	}
 	drain::FilePath filePath(ctx.getFormattedStatus(this->value));
-	mout.note("linking: ", filePath);
+	if (ctx.inputPrefix.empty()){
+		mout.note("linking: ", filePath);
+	}
+	else {
+		mout.note("linking: ", filePath, " (without input prefix: ", ctx.inputPrefix, ')');
+		// mout.note(getName(), ": not using input prefix (", ctx.inputPrefix, ")");
+	}
 	RackSVG::addImage(ctx, frame, filePath); // , drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
 	// RackSVG::addImage(ctx, frame, filePath, drain::StringBuilder<>(LayoutSVG::INDEPENDENT));
 	// drain::image::TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath);

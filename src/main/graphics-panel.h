@@ -65,6 +65,9 @@ public:
 	// Identifier for the anchor background
 	// static const std::string BACKGROUND_RECT; //  = "mainRect";
 
+	/**
+	 *  \see rack::Interactive::ElemClass
+	 */
 	enum ElemClass {
 		NONE = 0,
 		MAIN_TITLE  = 1, // Main title in SVG image
@@ -83,8 +86,8 @@ public:
 		BORDER,          // Overall border (RECT) around the SVG document, invisible by default
 		// --
 		MOUSE,			 // A group marked for mouse event listeners
-		MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
-		MONITOR,         // Display of interactive operations
+		// MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
+		// MONITOR,         // Display of interactive operations
 		SELECTOR,        // Interactive element illustrating a selection by the user
 		DATA_ARRAY,      // Image used as data array only, not to be displayed
 		// SHARED_METADATA, // Something that should not be repeated in panels.

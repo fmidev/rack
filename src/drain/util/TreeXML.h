@@ -56,7 +56,8 @@ class NodeXML : public XML {
 
 public:
 
-	typedef T xml_tag_t;
+	typedef T xml_tag_t; // "final"
+	//typedef T tag_t;
 	typedef NodeXML<T> xml_node_t;
 	typedef drain::Path<std::string,'/'> path_t; // basically, also path_elem_t could be a template.
 	typedef UnorderedMultiTree<xml_node_t,false, path_t> xml_tree_t;
@@ -98,6 +99,10 @@ public:
 	template <T ELEM>
 	friend class Elem;
 
+	/// Helps creating child elements. Like children of HTML element UL should be LI.
+	typedef std::map<xml_tag_t,xml_tag_t> xml_default_elem_map_t;
+
+	static const xml_default_elem_map_t xml_default_elems;
 
 	/// Default constructor
 	/**
@@ -105,8 +110,7 @@ public:
 	 */
 	inline
 	NodeXML(){
-		id = drain::StringBuilder<>('e', ++nextID);
-		// drain::StringTools::import(++nextID, id);
+		// id = drain::StringBuilder<>('e', ++nextID);
 	};
 
 	//
@@ -119,25 +123,50 @@ public:
 	 */
 	inline
 	NodeXML(const NodeXML & node){
-		drain::StringTools::import(++nextID, id);
+		id = drain::StringBuilder<>(node.getTag(), ++nextID);
+		// drain::StringTools::import(++nextID, id);
 		// XML::xmlAssignNode(*this, node); // RISKY!? Should be called by the copy constructors of derived classes.
 	}
 
 	virtual inline
 	~NodeXML(){};
 
-	// TODO: Shadowing. Check usage, change name no swapNode()
-	// also: confusion risk with: tree.swap() tree->swap()
+	/// Default implementation of tag name retrieval based on drain::Enum<t>.
+	/**
+	 *   This function should not be called upon construction, as the dictionary does not exist.
+	 *
+	 */
+	virtual inline
+	const std::string & getTag() const override {
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::Enum<T>::dict) << std::endl; // <<
+		return drain::Enum<T>::getDict().getKey((T)type, false);
+	}
+
+	/**
+	 *   This function should not be called upon construction. Consider dynamic getDict() to skip
+	 */
+	static inline
+	const std::string & getTag(const T & type){
+		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::Enum<T>::dict) << std::endl; // <<
+		return drain::Enum<T>::getDict().getKey((T)type, false);
+	}
+
+	/// Change attributes, styles and classes of a node.
+	/**
+	 *  Explicit naming to avoid shadowing map<>::swap().
+	 *
+	 *  TODO: check link (drain::Reference) stability
+	 */
 	virtual
 	void swapNode(NodeXML<T> & node);
 
 
+	//
 	inline
 	T getNativeType() const {
 		return static_cast<T>(type); // may fail! consider two-way conversion assert
 	};
 
-public:
 
 	inline
 	void set(const NodeXML & node){
@@ -176,7 +205,6 @@ public:
 
 
 	inline
-	//void set(const std::initializer_list<std::pair<const char *,const char *> > & args){
 	void set(const std::initializer_list<std::pair<const char *,const Variable> > & args){
 		// TODO: redirect to set(key,value), for consistency?
 		if (type == STYLE){
@@ -226,7 +254,6 @@ public:
 	inline
 	void set(const std::string & key, const V & value){
 
-		// if (type == STYLE){
 		if (this->isStyle()){
 			// Modify collection directly
 			drain::Logger mout(__FILE__, __FUNCTION__);
@@ -241,8 +268,11 @@ public:
 		else if (key == "class"){
 			// mout.warn<LOG_DEBUG>("class");
 			std::string cls;
-			drain::StringTools::import(value, cls);
+			drain::ClassXML xls;
+			drain::StringTools::import(value, cls); // Or Convert?
 			addClass(cls);
+			//drain::Logger(__FILE__, __FUNCTION__).revised("addClass:", value);
+			// addClass(value);
 		}
 		else {
 			setAttribute(key, value);
@@ -251,23 +281,6 @@ public:
 	}
 
 
-	/**
-	 *   This function should not be called upon construction, as the dictionary does not exist.
-	 */
-	virtual
-	const std::string & getTag() const {
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::Enum<T>::dict) << std::endl; // <<
-		return drain::Enum<T>::getDict().getKey((T)type, false);
-	}
-
-	/**
-	 *   This function should not be called upon construction. Consider dynamic getDict() to skip
-	 */
-	static inline // needed?
-	const std::string & getTag(const T & type){
-		// std::cout << __FILE__ << ':' << __FUNCTION__ << ' ' << drain::TypeName<T>::str() << " dict:"  << sprinter(drain::Enum<T>::dict) << std::endl; // <<
-		return drain::Enum<T>::getDict().getKey((T)type, false);
-	}
 
 
 
@@ -279,7 +292,6 @@ public:
 	// Check char *
 	inline
 	NodeXML & operator=(const xml_tag_t & x){ // needed? possibly with tree(int x) ?
-		//set(x);
 		setType(x);
 		return *this;
 	}
@@ -354,19 +366,9 @@ public:
 		return ostr;
 	}
 
-	/// Helps creating child elements. Like children of HTML element UL should be LI.
-	typedef std::map<xml_tag_t,xml_tag_t> xml_default_elem_map_t;
-	static const xml_default_elem_map_t xml_default_elems;
 
 protected:
 
-	/// Internal function called after setType()
-	/**
-	 *  Originally called after setType(), but involves as forward-init problem, a class should not poke members through its constructor.
-	 */
-	//virtual
-	//void handleType(const T & type) = 0;
-	//void handleType() = 0;
 
 
 	/// Control constant variables of  (note: templated, through Node<T>::)
@@ -399,25 +401,21 @@ void NodeXML<T>::swapNode(NodeXML<T> & node){
 
 
 
-/*
-   Impossible. Cannot construct final object, for example members are not available for #link() .
-template <>
-inline
-void NodeXML<int>::handle Type(const int & type){
- // DANGER, without cast?
-	std::cerr << __FILE__ << ':' << __FUNCTION__ << " unimplemented? " << type << '=' << std::endl;
-	std::cerr << __FILE__ << ':' << __FUNCTION__ << " dict: " << drain::sprinter(drain::Enum<int,XML>::dict) << std::endl;
-}
-*/
 
+/*
 template <>
 inline
 const std::string & NodeXML<int>::getTag() const {
 	return drain::Enum<int,XML>::dict.getKey(this->type, false);
 }
+*/
+#define DRAIN_XML_TREE(N) drain::UnorderedMultiTree<N,false, NodeXML<>::path_t>
 
-typedef NodeXML<>::xml_tree_t TreeXML;
+//typedef NodeXML<>::xml_tree_t TreeXML;
+typedef DRAIN_XML_TREE(NodeXML<>) TreeXML;
+
 //typedef drain::UnorderedMultiTree<NodeXML<>,false, NodeXML<>::path_t> TreeXML;
+//#define DRAIN_XML_TREE(N) NodeXML<N>::xml_tree_t
 
 // NOTE: template will not match for subclasses of NodeXML<E> because default template will match any class exactly.
 template <class E, bool EX, class P>
@@ -442,7 +440,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			ostr << ctext; //  << '(' << mode << ')'; // << " /-->\n";
 		}
 		return ostr;
-		}
+	}
 	else if (isComment()){
 		// Remember: a large subtree can be commented out
 		if (mode != CLOSING_TAG){
@@ -451,10 +449,10 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 	}
 	else if (isScopeJS()){
 		if (mode != CLOSING_TAG){
-			ostr << "{\n";
+			ostr << ctext << "{\n";
 		}
 		else {
-			//ostr << "}\n";
+			// Newline good in avoiding potential comment line
 			ostr << "\n}";
 		}
 		return ostr;
@@ -634,42 +632,6 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
  */
 #define DRAIN_XML_DEFAULT_ELEMS(xml_tree) template <> const NodeXML<xml_tree::node_data_t::tag_t>::xml_default_elem_map_t NodeXML<xml_tree::node_data_t::tag_t>::xml_default_elems
 
-/// Utility for automatically setting child element types. Uses xml_default_elems .
-/**
- *   \b Usage
- *
- *   In header files:
- *   \code{.cpp}
- *   namespace drain {
- *   DRAIN_XML_DEFAULT_INIT(image::TreeSvg);
- *   }
- *   \endcode
- *
- *   In code:
- *   \code{.cpp}
- *   // Assume TreeSvg script is of type svg::SCRIPT.
- *   image::TreeSvg & line1 = script.addChild(); // Set type xml::CTEXT.
- *   image::TreeSvg & line2 = script["l2"];      // Set type xml::CTEXT.
- *   \endcode
- */
-#define DRAIN_XML_DEFAULT_INIT(xml_tree) template <> inline void xml_tree::initChild(xml_tree & child) const { UtilsXML::initChildWithDefaultType(*this, child); }
-
-/// Set type with simple operator().
-/**
- *   \b Usage
- *
- *   In header files:
- *   \code
- *   namespace drain {
- *   DRAIN_XML_DEFAULT_ELEMS_INIT(image::TreeSvg);
- *   }
- *
- *   In code:
- *   \code
- *   image::TreeSvg & tree = tree["image1"](svg::IMAGE); // Set type svg::IMAGE.
- *   \endcode
- */
-#define DRAIN_XML_EASY_TYPE(xml_tree) template <> template <> inline xml_tree & xml_tree::operator()(const xml_tree::node_data_t::tag_t & type){ return UtilsXML::setType(*this, type); }
 
 /// Enable using keys of enum_type to be used as path elements.
 #define DRAIN_XML_ENUM_KEY(xml_tree, enum_type) template <> template <> inline const xml_tree::key_t & xml_tree::getKey(const enum_type & type){ return Enum<enum_type>::dict.getKey(type, false); }

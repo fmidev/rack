@@ -63,6 +63,10 @@ public:
 	StringBuilder(const std::string & arg="") : std::string(arg){
 	}
 
+	/// Faster short-cut for single-arg initialization.
+	StringBuilder(const StringBuilder<SEP> & sb) : std::string(sb.str()){
+	}
+
 
 	template<typename ... TT>
 	StringBuilder(const TT &... args){

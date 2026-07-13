@@ -46,7 +46,7 @@ DRAIN_ENUM_DICT(drain::image::AnchorElem::Anchor) = {
 		{"@NONE", drain::image::AnchorElem::NONE},
 		{"@PREVIOUS", drain::image::AnchorElem::PREVIOUS},
 		{"@NEXT", drain::image::AnchorElem::NEXT},
-		{"@COLLECTIVE_CURRENT", drain::image::AnchorElem::COLLECTIVE_CURRENT},
+		{"@CURRENT_COMPOUND", drain::image::AnchorElem::CURRENT_COMPOUND},
 		{"@COLLECTIVE_FINAL", drain::image::AnchorElem::COLLECTIVE_FINAL},
 };
 

@@ -53,12 +53,14 @@ class Projector {
 
 	friend class Proj6;
 
-	static const SprinterLayout projDefLayout; // space-separated, =, no hypens  (" ","","=", "","");
+	static
+	const SprinterLayout projDefLayout; // space-separated, =, no hypens  (" ","","=", "","");
 
 
 public:
 
-	static const std::string proj4version;
+	static
+	const std::string proj4version;
 
 	typedef drain::Dictionary<std::string,std::string> ProjDef;
 

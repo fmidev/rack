@@ -62,8 +62,8 @@ DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy) = {
 int image::FileSVG::radialBezierResolution = 8;
 
 
-DRAIN_TYPENAME_DEF(image::NodeSVG);
-DRAIN_TYPENAME_DEF(image::svg::tag_t);
+// // DRAIN_TYPENAME_DEF(image::NodeSVG);
+// // DRAIN_TYPENAME_DEF(image::svg::tag_t);
 
 DRAIN_ENUM_DICT(image::svg::tag_t) = {
 		{"UNDEFINED", drain::image::svg::UNDEFINED},
@@ -325,70 +325,6 @@ void NodeSVG::specificAttributesToStream(std::ostream & ostr) const {
 }
 
 }  // image::
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const image::svg::tag_t & type) const {
-	return hasChild(Enum<image::svg::tag_t>::dict.getKey(type, true)); // no error on non-existent dict entry
-}
- */
-
-/// Set the type.
-/*
-template <> // for T - Tree class
-template <> // for K - operator() argument
-image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type){
-	return UtilsXML::setType(*this, type);
-}
- */
-
-/// Automatic conversion of element type (enum value) to a string.
-/**
- *  Convenience
- */
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type){
-	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
-}
- */
-
-
-/// Automatic conversion of element type (enum value) to a string.
-/**
- *   Convenience
- */
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type) const {
-	return (*this)[Enum<image::svg::tag_t>::dict.getKey(type, false)];
-}
- */
-
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const ClassXML & cls) const {
-	return hasChild(cls.strPrefixed()); // no error on non-existent dict entry
-}
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls){
-	return (*this)[cls.strPrefixed()];
-}
-
-/// Automatic conversion of element type (enum value) to a string.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const ClassXML & cls) const {
-	return (*this)[cls.strPrefixed()];
-}
- */
 
 }  // drain::
 

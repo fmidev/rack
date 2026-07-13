@@ -41,9 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-DRAIN_TYPENAME_DEF(NodeHTML);
-DRAIN_TYPENAME_DEF(Html);
-DRAIN_TYPENAME_DEF(Html::tag_t);
+// qqq DRAIN_TYPENAME_DEF(NodeHTML);
+// qqq DRAIN_TYPENAME_DEF(Html);
+// qqq DRAIN_TYPENAME_DEF(Html::tag_t);
 
 
 const FileInfo NodeHTML::fileInfo("html");

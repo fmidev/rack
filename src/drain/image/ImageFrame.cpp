@@ -285,7 +285,7 @@ std::ostream & drain::Sprinter::toStream<drain::image::ImageFrame>(std::ostream 
 	return ostr;
 }
 
-DRAIN_TYPENAME_DEF(drain::image::ImageFrame);
+                                                   // DRAIN_TYPENAME_DEF(drain::image::ImageFrame);
 
 
 }  // drain::

@@ -321,16 +321,22 @@ void CmdPolarBase::resolveAzimuthRange(const drain::SteppedRange<double> & ownAz
 };
 
 
+/// Designed for CmdData, could be multi-purpose
+/**
+ *   Compare with: prepare() below...
+ */
 void CmdPolarBase::addGeoData(const drain::image::Image & imageData, drain::image::NodeSVG & node){
 
 	CartesianODIM odim(ODIMPathElem::DATA|ODIMPathElem::ROOT); // Encoding + quantity + geo
 	odim.copyFrom(imageData);
 	// ODIM odim(ODIMPathElem::DATA); // Encoding + quantity
-	//mout.attention(DRAIN_LOG(myOdim));
+	// mout.attention(DRAIN_LOG(myOdim));
 
 	node.set("data-epsg", odim.epsg);
-	node.set("data-bbox-deg", odim.bboxD.toStr(','));
-	node.set("data-bbox-nat", imageData.getProperties().get("where:BBOX_native","?"));
+	// Currently unused:
+	// node.set("data-bbox-deg", odim.bboxD.toStr(','));
+	// Currently unused:
+	// node.set("data-bbox-nat", imageData.getProperties().get("where:BBOX_native","?"));
 
 	node.set("data-quantity", odim.quantity);
 	node.set("data-encoding",
@@ -339,6 +345,103 @@ void CmdPolarBase::addGeoData(const drain::image::Image & imageData, drain::imag
 }
 
 // --------------------------------------------------------------------------------------------------------
+
+/// Designed for CmdRect, could be multi-purpose
+/**
+ *   Compare with: addGeoData() above.
+ */
+TreeSVG & CmdPolarBase::prepare(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD) const {
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	drain::image::TreeSVG & alignedGroup = RackSVG::getCurrentAlignedGroup(ctx);
+
+	TreeSVG & imagePanel = alignedGroup[ctx.currentImagePanel];
+	if (imagePanel->isUndefined()){
+		mout.warn("currentImagePanel created but undefined");
+	}
+
+	if (!imagePanel.hasChild(svg::IMAGE)){
+		mout.warn("currentImagePanel created contains no image");
+	}
+
+	const drain::VariableMap & status = ctx.getStatusMap();
+
+	drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE];
+	mouseGroup->addClass(ClipperSVG::CLIPPED);
+	mouseGroup.addChild()->setComment("Mouse tracker modified by ", getName(), ' ', getLastParameters());
+
+	drain::image::NodeSVG::map_t & attr = mouseGroup->getAttributes();
+
+
+	mout.special("Attaching coordinate monitor to imagePanel: ", imagePanel->getId());
+	// mouseGroup[svg::TITLE](svg::TITLE)->setText("Mouse tracker by ", getName(), ' ', getLastParameters());
+
+
+	int EPSG = attr["data-epsg"];
+	if (EPSG > 0){
+		mout.info("Projection: using EPSG=", EPSG);
+		radarSVG.geoFrame.setProjectionEPSG(EPSG);
+		radarSVG.radarProj.setProjectionDst(EPSG);
+	}
+	else {
+		mout.hint("Projection: EPSG not detected, consider to set/unset fixedAEQD");
+		drain::image::NodeSVG::map_t & attrColumn = alignedGroup->getAttributes();
+
+		mout.note(DRAIN_LOG(fixedAEQD));
+		std::string projdef;
+
+		auto & sharedProjdef = attrColumn["data-projdef"];
+		mout.warn(DRAIN_LOG(sharedProjdef));
+		if (fixedAEQD && !sharedProjdef.empty()){
+			projdef = sharedProjdef.toStr();
+			mout.warn("Now change: using ", projdef);
+			mouseGroup.addChild()->setComment(DRAIN_LOG(fixedAEQD), " - using projdef of the first input:");
+		}
+		else {
+			projdef = status.get("where:projdef", "");
+			sharedProjdef = projdef;
+		}
+		//mout.attention(DRAIN_LOG(projdef));
+
+		if (projdef.empty()){
+			mout.warn("No valid 'epsg' attribute value and also 'projdef' empty.");
+		}
+		else {
+			mouseGroup.addChild()->setComment("Projection: EPSG not detected, using projdef='", projdef,"'");
+			radarSVG.geoFrame.setProjection(projdef);
+			radarSVG.radarProj.setProjectionDst(projdef);
+		}
+
+	}
+
+	std::vector<double> bboxNat;
+	attr["data-bbox"].toSequence(bboxNat, ',');
+	if (bboxNat.empty()){
+		mout.warn("Could not attach coordinate monitor for imagePanel '", imagePanel->getId(), "' - missing 'data-bbox' attribute ");
+	}
+	else if (bboxNat.size() != 4){
+		mout.warn("Image panel #", imagePanel->getId(), ": odd size of elements in 'data-bbox' = ", attr["data-bbox"], " => ", drain::sprinter(bboxNat));
+	}
+	radarSVG.geoFrame.setBoundingBox(bboxNat[0], bboxNat[1], bboxNat[2],bboxNat[3]);
+
+	const drain::image::TreeSVG & image = imagePanel[svg::IMAGE];
+	const drain::Frame2D<int> imageGeometry(image->getWidth(), image->getHeight());
+	radarSVG.geoFrame.setGeometry(imageGeometry.width, imageGeometry.height);
+
+	if (radarSVG.geoFrame.isDefined()){
+		mout.debug(radarSVG.geoFrame);
+	}
+	else {
+		mout.warn("Failed in initializing", DRAIN_LOG(radarSVG.geoFrame));
+	}
+
+	// mout.attention(DRAIN_LOG(radarSVG.geoFrame));
+	// radarSVG.radarProj.setProjectionDst();
+
+	return imagePanel;
+}
+
 
 /**
  *
@@ -478,7 +581,8 @@ void CmdRadarDotTest::exec() const {
 
 };
 
-void getSafeKey(const std::string & src, std::string & dst, const std::string & accept="_", const std::string & toUnderScore=""){
+/*
+void getSafeKeyOLD(const std::string & src, std::string & dst, const std::string & accept="_", const std::string & toUnderScore=""){
 	std::stringstream sstr;
 	bool FIRST = true;
 	for (const char & c: src){
@@ -503,6 +607,7 @@ void getSafeKey(const std::string & src, std::string & dst, const std::string & 
 	};
 	dst = sstr.str();
 }
+*/
 
 
 void CmdRadarLabel::exec() const  {
@@ -530,7 +635,7 @@ void CmdRadarLabel::exec() const  {
 	}
 
 	std::string s;
-	getSafeKey(label, s, "_- ");
+	drain::StringTools::getSafeKey(label, s, "_- ");
 	vectGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', s);
 	// TreeSVG & vectGroup = imagePanel[source](svg::GROUP);
 	// TreeSVG & overlay = imagePanel[LABEL](svg::GROUP);
