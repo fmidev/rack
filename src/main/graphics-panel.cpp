@@ -533,7 +533,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 	// For each image an own group is created to contain also title TEXT's etc.
 	drain::image::TreeSVG & adapterGroup = getCurrentAlignedGroup(ctx);
-	drain::image::TreeSVG & imageGroup = adapterGroup; // TEST
+	// drain::image::TreeSVG & imageGroup = adapterGroup; // TEST
 
 	// SEMI-OLD
 	/*
@@ -575,7 +575,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 
 	// imageGroup -> addClass(ClipperSVG::CLIPPED);
-	TreeSVG & imagePanel = imageGroup[name];
+	TreeSVG & imagePanel = adapterGroup[name];
 	if (imagePanel->isUndefined()){
 		imagePanel->setType(svg::GROUP);
 		imagePanel->setId(name);
@@ -720,31 +720,31 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 
 	mout.debug(DRAIN_LOG(filepath));
 
-	TreeSVG & imagePanel = getImagePanelGroup(ctx, filepath); // getImagePanelGroup(ctx, filepath);
-	imagePanel->addClass(RackSVG::IMAGE_PANEL); // Add elems ^ here ^ ?
+	TreeSVG & imagePanelGroup = getImagePanelGroup(ctx, filepath); // getImagePanelGroup(ctx, filepath);
+	imagePanelGroup->addClass(RackSVG::IMAGE_PANEL); // Add elems ^ here ^ ?
 
 	// problematic, as init value!
-	consumeAlignRequest(ctx, imagePanel);
+	consumeAlignRequest(ctx, imagePanelGroup);
 
-	TreeSVG & image = imagePanel[svg::IMAGE](svg::IMAGE); // +EXT!
+	TreeSVG & image = imagePanelGroup[svg::IMAGE](svg::IMAGE); // +EXT!
 	image->addClass(LayoutSVG::FIXED);
 	image->setLocation(0,0);
 	image->setFrame(src.getGeometry().area);
 
 	// Slot reserved imagePanel->addClass(OverlayMoverSVG::OVERLAY);
-	TreeSVG & overlay = imagePanel[OverlayMoverSVG::OVERLAY](svg::GROUP);
-	overlay->addClass(OverlayMoverSVG::OVERLAY);
-	overlay[svg::COMMENT]->setComment("Slot for OVERLAY");
+	TreeSVG & overlayGroup = imagePanelGroup[OverlayMoverSVG::OVERLAY](svg::GROUP);
+	overlayGroup->addClass(OverlayMoverSVG::OVERLAY);
+	overlayGroup[svg::COMMENT]->setComment("Slot for OVERLAY");
 
-	addImageBorder(imagePanel);
+	// addImageBorder(imagePanelGroup);
+	addImageBorder(overlayGroup);
 
 	// addMousePlane(imagePanel);
-	drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE](svg::GROUP);
+	// drain::image::TreeSVG & mouseGroup = imagePanelGroup[RackSVG::ElemClass::MOUSE](svg::GROUP);
+	drain::image::TreeSVG & mouseGroup = overlayGroup;
 	mouseGroup->addClass(RackSVG::ElemClass::MOUSE);
 	mouseGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	mouseGroup.addChild()->setComment("Mouse interaction");
-
-
 
 	// practical...
 	if (src.properties.hasKey("where:EPSG")){
@@ -755,11 +755,8 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 		mouseGroup->set("data-bbox", src.properties["where:BBOX_native"]);
 	}
 
-
-
-
 	// Metadata:
-	TreeSVG & metadata = imagePanel[svg::METADATA](svg::METADATA);
+	TreeSVG & metadata = imagePanelGroup[svg::METADATA](svg::METADATA);
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
@@ -837,6 +834,8 @@ drain::image::TreeSVG & RackSVG::addImageBorder(drain::image::TreeSVG & imagePan
 	imageBorder->addClass(RackSVG::ElemClass::IMAGE_BORDER); // style
 	imageBorder->addClass(drain::image::LayoutSVG::INDEPENDENT);  // next object won't treat me as anchor (unless specifically called for)
 	imageBorder->addClass(drain::image::LayoutSVG::NEUTRAL);  // does not expand COMPOUND bbox
+	imageBorder->addClass(FloaterSVG::FLOATING); // Rises on top within a group.
+	imageBorder->setMyAlignAnchor(svg::IMAGE);
 	imageBorder->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 	return imageBorder;
 }
@@ -867,7 +866,7 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 			comment->setComment(DRAIN_LOG(conf.groupIdentifier));
 			backgroundRect->setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 			backgroundRect->setHeight(conf.boxHeights[1]);
-			drain::image::TreeSVG & comment = object.addChild(); // backgroundRect[svg::COMMENT](svg::COMMENT);
+			//drain::image::TreeSVG & comment = object.addChild(); // backgroundRect[svg::COMMENT](svg::COMMENT);
 		}
 		else {
 			backgroundRect->setComment("Empty title, RECT removed");

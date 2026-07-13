@@ -242,23 +242,37 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	TreeSVG & parent = tree(path);
 	// TreeSVG swapper;
 
-	for (auto & t: parent.getChildren()){
+	TreeSVG *endMarker = nullptr;
+	for (auto & t: parent){
+
+		if (&t.second == endMarker){
+			// All FLOATING elems now lifted.
+			return 1;
+		}
+
 		if (t.second->hasClass(FLOATING)){
 			//floating.push_back(t.first);
 			t.second->removeClass(FLOATING); // prevent infinite loop...
-			t.second->addClass("MOVED");
+			t.second->addClass("FLOAT_LIFTED");
 			mout.experimental("Lifting floating element at: ", path, " -> ", t.first);
 			//TreeSVG & dummy = swapper.addChild(t.first)(svg::COMMENT);
+			if (endMarker == nullptr){
+				endMarker = & parent.addChild();
+				(*endMarker)->setComment("floats lifted");
+			}
 			TreeSVG & dummy = parent.addChild();
 			dummy->setType(t.second->getNativeType());
 			// dummy->setAttribute("data-SWAP", t.first);
 			t.second.swap(dummy);
-			dummy->set(t.second->getAttributes());
+			t.second->swapSVG(dummy); // Attributes, Classes, CSS,..
+			/*
+			 * dummy->set(t.second->getAttributes());
 			dummy->setDefaultAlignAnchor<AlignBase::Axis::HORZ>(t.second->getDefaultAlignAnchor<AlignBase::Axis::HORZ>());
 			dummy->setDefaultAlignAnchor<AlignBase::Axis::VERT>(t.second->getDefaultAlignAnchor<AlignBase::Axis::VERT>());
 			dummy->setMyAlignAnchor<AlignBase::Axis::HORZ>(t.second->getMyAlignAnchor<AlignBase::Axis::HORZ>());
 			dummy->setMyAlignAnchor<AlignBase::Axis::VERT>(t.second->getMyAlignAnchor<AlignBase::Axis::VERT>());
 			dummy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+			*/
 			//dummy->
 			// TODO: implement addClasses()
 			//dummy->addClass(t.second->getClasses());
@@ -274,17 +288,6 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			mout.experimental("Swapper: -> ", t.first);
 		}
 	}
-
-	// Step 2: move floating elements off
-	/*
-	for (auto & t: swapper.getChildren()){
-		t.second.swap(parent[t.first]);
-		mout.experimental("Exchanged: ", t.first);
-	}
-	*/
-
-	// Step 3: append them back.
-
 
 	return 0;
 
@@ -309,7 +312,7 @@ int OverlayMoverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	if (parent->typeIs(svg::GROUP)){
 
-		for (auto & src: parent.getChildren()){
+		for (auto & src: parent){ // .getChildren()){
 
 			if (src.second->typeIs(svg::GROUP) && src.second->hasClass(OVERLAY)){
 
@@ -319,7 +322,7 @@ int OverlayMoverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 				}
 
 				// Reiterate: search for target position
-				for (auto & src2: parent.getChildren()){
+				for (auto & src2: parent){
 					// could also check direct descendants:
 					// if (src2.first == OVERLAY){ ...
 					if (src2.second->typeIs(svg::GROUP)){

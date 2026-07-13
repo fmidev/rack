@@ -247,20 +247,16 @@ void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 }
 
 void NodeSVG::swapSVG(NodeSVG & node){
-	// Attributes
+
+	// Basic XML attributes, classes, style:
 	NodeXML<svg::tag_t>::swapNode(node);
-	// Classes (this could be in NodeXML<svg::tag_t> ?)
-	// classList.swap(node.classList);
+
 	// Additional SVG properties
 	swapAlign(node);
 	swapAnchors(node);
-	/*
-	alignments.swap(node.alignments);
-	myAnchorHorz.swap(node.myAnchorHorz);
-	myAnchorVert.swap(node.myAnchorVert);
-	defaultAnchorHorz.swap(node.defaultAnchorHorz);
-	defaultAnchorVert.swap(node.defaultAnchorVert);
-	 */
+
+	updateAlign();
+	node.updateAlign();
 };
 
 void NodeSVG::updateAlign(){

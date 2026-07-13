@@ -331,7 +331,7 @@ public:
 	}
 	 */
 
-
+	void swapNode(XML & node);
 
 	/// Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.
 	/**

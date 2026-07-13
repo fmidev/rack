@@ -27,25 +27,21 @@ void MouseXML::addVisibilitySwitch(XML &dstElem,
 		XML &controlElem, const std::string &scope,
 		const std::string &mouseEventOn, const std::string &mouseEventOff) {
 
-	// dst->setId("coordMove", dst->getId());
 	if (dstElem.getId().empty()){
-		dstElem.setId("mouseMonitor_", dstElem.getTag(), XML::getNewIndex());
+		dstElem.setId("switchVisible_", dstElem.getTag(), XML::getNewIndex());
 	}
 
 	const std::string &id = dstElem.getId(); // ->setId();
 
-	if (scope.empty()) {
-		controlElem.setAttribute(mouseEventOn,
-				drain::StringBuilder<>("getElementById('", id, "').style.visibility='visible'"));
-		controlElem.setAttribute(mouseEventOff,
-				drain::StringBuilder<>("getElementById('", id, "').style.visibility='hidden'"));
-	}
-	else {
-		controlElem.setAttribute(mouseEventOn,
-				drain::StringBuilder<>(scope, ".getElementById('", id, "').style.visibility='visible'"));
-		controlElem.setAttribute(mouseEventOff,
-				drain::StringBuilder<>(scope, ".getElementById('", id, "').style.visibility='hidden'"));
-	}
+	const std::string fct = scope.empty() ? "document.getElementById" : scope+".getElementById";
+
+	// controlElem.setAttribute(mouseEventOn, drain::StringBuilder<>("setVisibile(", ,",true)"));
+	// Consider setVisibility(value=[true|false], elemId, scope=null)
+	controlElem.setAttribute(mouseEventOn,
+			drain::StringBuilder<>(fct, "('", id, "').style.visibility='visible'"));
+	controlElem.setAttribute(mouseEventOff,
+			drain::StringBuilder<>(fct, "('", id, "').style.visibility='hidden'"));
+
 }
 
 

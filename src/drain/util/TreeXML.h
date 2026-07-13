@@ -157,8 +157,7 @@ public:
 	 *
 	 *  TODO: check link (drain::Reference) stability
 	 */
-	virtual
-	void swapNode(NodeXML<T> & node);
+	// virtual void swapNode(NodeXML<T> & node);
 
 
 	//
@@ -169,7 +168,7 @@ public:
 
 
 	inline
-	void set(const NodeXML & node){
+	void set(const NodeXML<T> & node){
 		if (isUndefined()){
 			// Should make sense, and be safe. Esp. when exactly same node type, by templating
 			setType(node.getType());
@@ -378,6 +377,7 @@ protected:
 
 };
 
+/*
 template <class T>
 void NodeXML<T>::swapNode(NodeXML<T> & node){
 
@@ -392,12 +392,15 @@ void NodeXML<T>::swapNode(NodeXML<T> & node){
 
 		// Swap classes
 		classList.swap(node.classList);
+
+		style.swap(node.style);
 	}
 	else {
 		// // Consider conditional (strict => exception)
 	}
 
 }
+*/
 
 
 

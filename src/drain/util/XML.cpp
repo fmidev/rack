@@ -83,6 +83,46 @@ DRAIN_ENUM_DICT(XML::entity_t)  = {
 		{"&#176;", XML::DEGREE}, //
 };
 
+
+void XML::swapNode(XML & node){
+
+	if (this != &node){
+
+		// Swap attributes
+		// Risky? FlexibleVariableMap contains references.
+		// Should be moved with copy-struct-kind of mechanism...
+		//map_t::swap(node);
+
+		// Swap attributes
+		const XML::intval_t tmpType = getType();
+		std::map<std::string, drain::Variable> tmpMap;
+		drain::MapTools::setValues(tmpMap, *this);
+
+		setType(node.getType());
+		for (const auto & attr: node){
+			setAttribute(attr.first, attr.second);
+		};
+
+		node.setType(tmpType);
+		for (const auto & attr: tmpMap){
+			node.setAttribute(attr.first, attr.second);
+		};
+
+
+		// Swap text content
+		ctext.swap(node.ctext);
+
+		// Swap classes
+		classList.swap(node.classList);
+
+		// Swap style
+		style.swap(node.style);
+	}
+	else {
+		// // Consider conditional (strict => exception)
+	}
+
+}
 // Consider 1) getKeyConversionMap
 
 const std::map<char,std::string> & XML::getKeyConversionMap(){
