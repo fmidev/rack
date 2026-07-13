@@ -253,7 +253,7 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		if (t.second->hasClass(FLOATING)){
 			//floating.push_back(t.first);
 			t.second->removeClass(FLOATING); // prevent infinite loop...
-			t.second->addClass("FLOAT_LIFTED");
+			t.second->addClass("FLOATED");
 			mout.experimental("Lifting floating element at: ", path, " -> ", t.first);
 			//TreeSVG & dummy = swapper.addChild(t.first)(svg::COMMENT);
 			if (endMarker == nullptr){

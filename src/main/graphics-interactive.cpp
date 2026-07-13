@@ -433,10 +433,10 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	// NOte: mouseGroup == overlayGroup
 	drain::image::TreeSVG & mouseListenerElem = mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
 	mouseListenerElem->setFrame(radarSVG.geoFrame.getFrameWidth(), radarSVG.geoFrame.getFrameHeight());
-	mouseListenerElem->setStyle("fill", "gray"); // TODO: transparent tracker
+	mouseListenerElem->setStyle("fill", "gray");      // TODO: transparent tracker
 	mouseListenerElem->setStyle("fill-opacity", 0.0); // TODO: transparent tracker
 	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
-	mouseListenerElem->addClass("MIKA");
+	// mouseListenerElem->addClass("MIKA");
 	// mouseListenerElem->setStyle("opacity", 0);
 
 	return imagePanel;
@@ -557,6 +557,8 @@ void CmdRect::exec() const {
 	TreeSVG & coordSpanDisplay = visualGroup[MouseXML::ElemClass::MONITOR_DRAG];
 	coordSpanDisplay->addClass(RackSVG::ElemClass::SELECTOR);
 	coordSpanDisplay->addClass(MouseXML::ElemClass::MONITOR_DRAG); // From JS
+	coordSpanDisplay->addClass(LayoutSVG::NEUTRAL); // ?
+
 	// coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
 	// coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 
@@ -581,8 +583,7 @@ void CmdRect::exec() const {
 	drain::image::TreeSVG & mouseListenerElem = mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
 	// drain::image::TreeSVG & mouseListenerElem = mouseGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
 	mouseListenerElem->set("data-resolution", resolution.tuple());
-
-	// MouseXML::addVisibilitySwitch(coordMoveText.data, mouseListenerElem.data);
+	MouseXML::addVisibilitySwitch(coordMoveText.data, mouseListenerElem.data);
 
 	// If mask...
 	if (MASK && false){

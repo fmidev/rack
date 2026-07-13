@@ -88,12 +88,8 @@ void XML::swapNode(XML & node){
 
 	if (this != &node){
 
-		// Swap attributes
-		// Risky? FlexibleVariableMap contains references.
-		// Should be moved with copy-struct-kind of mechanism...
-		//map_t::swap(node);
-
-		// Swap attributes
+		// Attributes: (map of) FlexibleVariables cannot be swapped easily/safely.
+		// Swap attributes using pragmatic tmp-copy.
 		const XML::intval_t tmpType = getType();
 		std::map<std::string, drain::Variable> tmpMap;
 		drain::MapTools::setValues(tmpMap, *this);
