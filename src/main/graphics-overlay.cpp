@@ -107,7 +107,7 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 
 	// OLD drain::image::TreeSVG & group = ...
 	// NEW:..
-	RackSVG::getCurrentAlignedGroup(ctx);
+	RackSVG::getCurrentAdapterGroup(ctx);
 	// drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
 	//ctx.getUpdatedStatusMap();
 	drain::image::TreeSVG & overlayGroup = RackSVG::getVectorImagePanelGroup(ctx);
@@ -363,7 +363,7 @@ void CmdRadarDot::exec() const {
 
 	RadarSVG radarSVG;
 	//TreeSVG & overlayGroup =
-	TreeSVG & imagePanel = getOverlayGroup(ctx, radarSVG);
+	TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 
 
 
@@ -388,7 +388,7 @@ void CmdRadarDot::exec() const {
 			// {"opacity", 0.5}
 	});
 
-	TreeSVG & vectGroup = RackSVG::getSourceSpecificGroup(ctx, imagePanel);
+	TreeSVG & vectGroup = RackSVG::getSourceSpecificGroup(ctx, overlayGroup);
 	vectGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', getParameters(), " for ", radarSVG.source);
 	// vectGroup.addChild()->setComment(getName(), ' ', getParameters());
 	drain::image::TreeSVG & curve = vectGroup[DOT](drain::image::svg::PATH);
@@ -414,9 +414,10 @@ void CmdRadarDot::exec() const {
 		// Copy this localMask to shared mask...
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, imagePanel, w, h, localMask.data);
+		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
 		// ... and "delete" the object.
 		localMask->setType(svg::COMMENT);
+		localMask->setComment("Original position of MASK:", getName(), getParameters());
 	}
 
 

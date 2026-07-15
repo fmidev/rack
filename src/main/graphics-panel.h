@@ -137,12 +137,18 @@ public:
 	static
 	drain::image::TreeSVG & getMainGroup(RackContext & ctx);
 
+	/** Intermediate group "hiding" translation that moves upper left corner of the object to the origin.
+	 *
+	 */
 	static
-	drain::image::TreeSVG & getCurrentAlignedGroup(RackContext & ctx);
+	drain::image::TreeSVG & ensureAdapterGroup(drain::image::TreeSVG & group);
+
+	static
+	drain::image::TreeSVG & getCurrentAdapterGroup(RackContext & ctx);
 
 	/// Applicable for PNG images.
 	static
-	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath);
+	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath, bool unique=false);
 
 	static
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx);
@@ -156,11 +162,7 @@ public:
 
 	static
 	drain::image::TreeSVG & getSourceSpecificGroup(RackContext & ctx, drain::image::TreeSVG & panel);
-	/** Intermediate group "hiding" translation that moves upper left corner of the object to the origin.
-	 *
-	 */
-	static
-	drain::image::TreeSVG & getAdapterGroup(drain::image::TreeSVG & group);
+
 
 
 	static
@@ -185,7 +187,7 @@ public:
 	 */
 	static
 	// drain::image::TreeSVG &
-	void addImage(RackContext & ctx, const drain::Frame2D<drain::image::svg::coord_t> & frame, const drain::FilePath & filepath, const std::string & styleClass = "");
+	void addExternalImage(RackContext & ctx, const drain::Frame2D<drain::image::svg::coord_t> & frame, const drain::FilePath & filepath, const std::string & styleClass = "");
 
 
 	/// Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)
@@ -226,7 +228,7 @@ public:
 	 *  \param imagePanel
 	 */
 	static
-	drain::image::TreeSVG & addImageBorder(drain::image::TreeSVG & imagePanel); // , const drain::Frame2D<double> & frame = {200,200});
+	drain::image::TreeSVG & getImageBorder(drain::image::TreeSVG & imagePanel); // , const drain::Frame2D<double> & frame = {200,200});
 
 
 protected:

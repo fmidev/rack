@@ -139,46 +139,8 @@ namespace drain {
  *  \endcode
  *
  *
- *
- * Obsolete: template C - path element comparison functor, should be compatible with Path<P>::key_t.
- */
-
-/**
-#ifndef DRAIN_AMBIVALUE
-#define DRAIN_AMBIVALUE "0.1beta"
-template <class T, class K>
-class CombiValue {
-public:
-
-	typedef T data_t;
-	typedef K key_t;
-
-	// T data; CONSIDER! But Hi5Node heavy?
-
-	inline
-	~CombiValue(){};
-
-	/// True, if data is structured.
-	virtual
-	bool hasMultipleData() const = 0;
-
-
-	virtual
-	const data_t & getData() const = 0;
-
-	virtual
-	data_t & getData() = 0;
-
-	virtual
-	const data_t & getData(const key_t &) const = 0;
-
-	virtual
-	data_t & getData(const key_t &) = 0;
-
-};
-#endif
- *  \tparam K – key type
- *  \tparam K – key type
+ *  \tparam T – node data type
+ *  \tparam EXCLUSIVE - a node may contain either data or children but not both.
  */
 
 template <class T, bool EXCLUSIVE=false, class P=drain::Path<std::string,'/'> > // , class C=std::less<std::string>
@@ -217,12 +179,26 @@ public:
 	/// Contents (data) of the node.
 	node_data_t data;
 
+	/// Default implementation. To be redefined (template-implemented).
+	/**
+	 *   This default applies to many STL types, like string, vector, set and list.
+	 */
+	static inline
+	bool dataEmpty(const node_data_t & data){
+		return data.empty();
+	};
+
+	inline
+	bool dataEmpty() const {
+		return dataEmpty(data);
+	};
 
 	// AMBIVALUED
 	virtual inline
 	bool hasMultipleData() const {
 		// Return false, if own, local data (explain ??)
-		return data.empty();
+		// return data.empty(); //???
+		return dataEmpty();
 	};
 
 	virtual inline
@@ -242,6 +218,14 @@ public:
 	};
 
 
+
+	/// Iterator interface enables for-each type iteration.
+	/**
+	 *    for (const auto & entry: tree){
+	 *       // ...
+	 *    }
+	 *
+	 */
 
 	/// Child iterator pointing to the first child.
 	inline
@@ -322,32 +306,6 @@ public:
 	};
 	*/
 
-	/* 2025/01 => non-ref
-	template <class S>
-	inline
-	tree_t & operator=(const std::initializer_list<S> &l){
-		data = l;
-		if (EXCLUSIVE){
-			clearChildren();
-		}
-		return *this;
-	}
-	*/
-
-
-	// 2025/01 non-const
-	/*
-	template <class S>
-	inline
-	tree_t & operator=(std::initializer_list<S> l){
-		data = l;
-		if (EXCLUSIVE){
-			clearChildren();
-		}
-		return *this;
-	}
-	*/
-
 
 	/// Assigns a value to contents.
 	/**
@@ -406,19 +364,9 @@ public:
 		return *this;
 	}
 
-	/*
-	inline 	// 2025/01 experimental.
-	tree_t & operator=(std::initializer_list<std::pair<const char *,const char *> > l){
-		for (const auto & entry: l){
-			*this << entry;
-		}
-		return *this;
-	}
-	*/
-
 	/// Assign data.
 	/**
-	 *  If init list elements are not pairs, assign it to node data.
+	 *  If initializer list elements are not pairs, assign it to node data.
 	 *
 	 *  2025/01 experimental.
 	 */
@@ -436,16 +384,6 @@ public:
 	// See operator<<() below.
 	typedef std::pair<key_t,node_data_t> node_pair_t;
 
-	// 2025/01 experimental
-	/*
-	inline
-	tree_t & operator=(std::initializer_list<node_pair_t> l){
-		for (const auto & entry: l){
-			*this << entry;
-		}
-		return *this;
-	}
-	*/
 
 	/// Experimental. Given pair(elem, data) assigns child[elem] = data;
 	inline
@@ -458,31 +396,21 @@ public:
 		return child;
 	}
 
-
+	/// Return a reference to node data.
 	inline
 	operator const node_data_t &() const {
 		return data;
 	};
 
+	/// Return a reference to node data.
+	/**
+	 *   Handy in functions of type fct(N & node) .
+	 */
 	inline
 	operator node_data_t &(){
 		return data;
 	};
 
-
-	/*
-	/// Child addressing operator
-	inline
-	tree_t & operator[](const key_t & key){
-		return retrieveChild(key);
-	}
-
-	/// Child addressing operator
-	inline
-	const tree_t & operator[](const key_t & key) const {
-		return retrieveChild(key);
-	}
-	*/
 
 	/// NEW 2025 templated child addressing operator
 	/**
@@ -599,7 +527,7 @@ public:
 
 	/// Clears the children of this node. Does not clear data.
 	/**
-x	 *  \see clearData()
+	 *  \see clearData()
 	 *  \see clear()
 	 *  \see erase()
 	 */
@@ -608,11 +536,6 @@ x	 *  \see clearData()
 		children.clear();
 	};
 
-	/*
-	void eraseChild(const key_t & key){
-		children.erase(key);
-	}
-	*/
 
 	/// Deletes a descendant node and hence its subtrees.
 	/**
@@ -672,7 +595,8 @@ x	 *  \see clearData()
 	/// Check if the tree node has empty data and no children.
 	virtual inline
 	bool empty() const {
-		return (data.empty() && !hasChildren());
+		//return (data.empty() && !hasChildren());
+		return (dataEmpty() && !hasChildren());
 	};
 
 	inline
@@ -764,13 +688,6 @@ x	 *  \see clearData()
 		return hasPath(path.begin(), path.end());
 	}
 
-	// protect:
-	/*
-	key_t getNewChildKey() const {
-		// Consider error (unimplemented)
-		return key_t();
-	}
-	*/
 
 	/// Means for automatically setting something, for example the type of a node.
 	/**
@@ -813,6 +730,7 @@ x	 *  \see clearData()
 
 	/// Ensure that a child node with given key exists. For MULTIPLE, always add one.
 	/**
+	 *   If UNORDERED and not MULTIPLE, reuse existing nodes.
 	 *   Behaviour of this function varies as follows:
 	 *
 	 *   - OrderedTree: create a child, if nonexistent.
@@ -939,7 +857,87 @@ x	 *  \see clearData()
 	};
 
 
-	// retrieveChild(key, create ALWAYS / IF_NOT_FOUND
+
+
+
+	// Functions perhaps less relevant ....................................
+
+	/// Returns the map containing the children.
+	/**
+	 *   This is useful for example for map::swap ?
+	 */
+	inline
+	container_t & getChildren() { return children; };
+
+	/// Returns the map containing the children.
+	inline
+	const container_t & getChildren() const { return children; };
+
+
+
+	// New
+	/// Fast access to data, applied widely in TreeXML (HTML/SVG)
+	inline
+	const node_data_t *operator->() const {
+		return &data;
+	};
+
+	/// Fast access to data, applied widely in TreeXML (HTML/SVG)
+	inline
+	node_data_t *operator->(){
+		return &data;
+	};
+
+
+	/// Replace children (but no data?)
+	inline
+	void swap(tree_t &t){
+		children.swap(t.children);
+		swapData(t.data);
+	}
+
+	/// User should redefine (implement) this function for applied node types.
+	void swapData(node_data_t &node){
+		if (!(dataEmpty() && dataEmpty(node.empty))) {
+			Logger(__FILE__, __FUNCTION__).unimplemented(TypeName<DRAIN_TREE_NAME>::str(),
+					": node data exists but is not swapped");
+		}
+	}
+
+
+	/// "Default implementation" of key conversion – the identity mapping.
+	/*
+	 *  As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
+	 */
+	static inline
+	const key_t & getKey(const key_t & key){
+		return key;
+	}
+
+	/// Conversion of char array to key type (which is never a char array).
+	// NOTE: char * should not be directed to getKey! (But more to inst std::string(key)
+	// Return to temp?
+	static inline
+	key_t getKey(const char * key){
+		return key_t(key);
+	}
+
+	/// Mapping of keys of external type - for example an enumerated type - to native \c key_t type.
+	/*
+	 * As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
+	 * Note that this version returns a constant reference.
+	 */
+	template <typename K>
+	static
+	const key_t & getKey(const K & key); // left undefined!
+
+
+protected:
+
+	container_t children;
+
+	static
+	const tree_t emptyNode;
 
 	virtual
 	tree_t & retrieveChild(const key_t & key){
@@ -1004,80 +1002,6 @@ x	 *  \see clearData()
 
 		return getEmpty();
 	};
-
-
-	// Functions perhaps less relevant ....................................
-
-	/// Returns the map containing the children.
-	/**
-	 *   This is useful for example for map::swap ?
-	 */
-	inline
-	container_t & getChildren() { return children; };
-
-	/// Returns the map containing the children.
-	inline
-	const container_t & getChildren() const { return children; };
-
-
-
-	// New
-	/// Fast access to data, applied widely in TreeXML (HTML/SVG)
-	inline
-	const node_data_t *operator->() const {
-		return &data;
-	};
-
-	/// Fast access to data, applied widely in TreeXML (HTML/SVG)
-	inline
-	node_data_t *operator->(){
-		return &data;
-	};
-
-
-	/// Replace children (but no data?)
-	inline
-	void swap(tree_t &t){
-		children.swap(t.children);
-		if (!data.empty()){
-			Logger(__FILE__, __FUNCTION__).unimplemented("node data unempty but not swapped");
-		}
-	}
-
-	/// "Default implementation" of key conversion – the identity mapping.
-	/*
-	 *  As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
-	 */
-	static inline
-	const key_t & getKey(const key_t & key){
-		return key;
-	}
-
-	/// Conversion of char array to key type (which is never a char array).
-	// NOTE: char * should not be directed to getKey! (But more to inst std::string(key)
-	// Return to temp?
-	static inline
-	key_t getKey(const char * key){
-		return key_t(key);
-	}
-
-	/// Mapping of keys of external type - for example an enumerated type - to native \c key_t type.
-	/*
-	 * As an option, child nodes can be addressed using keys which are not of key_y type, but can be converted to such.
-	 * Not that this version returns a constant reference.
-	 */
-	template <typename K>
-	static
-	const key_t & getKey(const K & key); // left undefined!
-
-
-protected:
-
-	container_t children;
-
-	static
-	const tree_t emptyNode;
-
 
 
 	/// Checks if there is a node with a given path name.
@@ -1185,6 +1109,7 @@ void DRAIN_TREE_NAME<T,EXCLUSIVE, P>::generateKey(const DRAIN_TREE_NAME<T,EXCLUS
 	key = k.str();
 }
 
+#define DRAIN_TREE_NODE_SWAP(tree_t) template <> inline void tree_t::swapData(tree_t::node_data_t & node){ data.swap(node)); }
 
 
 
@@ -1207,6 +1132,17 @@ struct TypeName<DRAIN_TREE_NAME<T,EXCLUSIVE, P> > {
     }
 
 };
+
+
+/*
+template<class T, bool EXCLUSIVE, class P>
+void OrderedTree<T,EXCLUSIVE,P>::swapData(node_data_t &node) {
+	if (!(dataEmpty() && node.empty())) {
+		Logger(__FILE__, __FUNCTION__).unimplemented(TypeName<OrderedTree<T,EXCLUSIVE,P> >::str(),
+				": node data exists but is not swapped");
+	}
+}
+*/
 
 } // drain::
 

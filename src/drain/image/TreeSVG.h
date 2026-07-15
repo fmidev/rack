@@ -127,7 +127,7 @@ typedef DRAIN_XML_TREE(NodeSVG) TreeSVG;
 } // image::
 
 
-// const drain::Enum<image::svg::tag_t>::dict_t & getDict();
+
 
 
 // template <>
@@ -269,6 +269,9 @@ public:
 		return *this;
 	}
 	*/
+
+	// virtual
+	// void swapNode(NodeSVG & node);
 
 
 	/* Well, every graphic obj may have DESC and TITLE?
@@ -428,8 +431,8 @@ public:
 	virtual
 	void specificAttributesToStream(std::ostream & ostr) const override;
 
-
-	void swapSVG(NodeSVG & node);
+	/// Swaps XML properties and also alignment, anchors etc.
+	void swapDataSVG(NodeSVG & node);
 
 protected:
 
@@ -601,6 +604,10 @@ DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG);
  *   Relates to the above list of default elements.
  */
 DRAIN_XML_DEFAULT_INIT(image::TreeSVG);
+
+// const drain::Enum<image::svg::tag_t>::dict_t & getDict();
+template <>
+void image::TreeSVG::swapData(image::NodeSVG & node);
 
 
 } // drain::

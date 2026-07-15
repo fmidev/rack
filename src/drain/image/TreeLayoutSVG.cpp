@@ -448,7 +448,7 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 			}
 		}
 		else {
-			mout.warn("non-existing anchor(", AX, ") element [", anchorElem,"] requested for node ", id);
+			mout.warn("non-existing anchor-", AX, " element=/", anchorElem,"/ requested for node ", id);
 			for (const auto & entry: group.getChildren()){
 				const NodeSVG & n = entry.second.data;
 				if ((&n != &node) && !n.isAbstract()){

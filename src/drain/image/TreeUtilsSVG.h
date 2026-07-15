@@ -188,7 +188,7 @@ public:
 
 };
 
-/// Raises FLOATING elements on the top.
+/// Within a group, moves elements of class OVERLAY to the subgroup
 /**
  *
  */
@@ -288,7 +288,7 @@ public:
 	 *  Later, a RECT will be appended, serving as a masking element.
 	 */
 	static
-	const drain::FlexibleVariable & createMaskId(TreeSVG & group);
+	const drain::FlexibleVariable & ensureMaskId(TreeSVG & group);
 
 	/// From global document definitions (DEFS), retrieve the mask designed for this group.
 	static

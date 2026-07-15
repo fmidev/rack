@@ -246,10 +246,10 @@ void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 	}
 }
 
-void NodeSVG::swapSVG(NodeSVG & node){
+void NodeSVG::swapDataSVG(NodeSVG & node){
 
-	// Basic XML attributes, classes, style:
-	NodeXML<svg::tag_t>::swapNode(node);
+	// setType() and then, swap attributes, classes, style:
+	NodeXML<svg::tag_t>::swapXML(node);
 
 	// Additional SVG properties
 	swapAlign(node);
@@ -321,6 +321,12 @@ void NodeSVG::specificAttributesToStream(std::ostream & ostr) const {
 }
 
 }  // image::
+
+template <>
+void image::TreeSVG::swapData(image::NodeSVG & node){
+	// std::cout << __FILE__ << '#' << __FUNCTION__ << ':' << __LINE__ << '\n';
+	data.swapDataSVG(node);
+}
 
 }  // drain::
 

@@ -113,13 +113,12 @@ const rack::ODIMPathElem & Hi5Tree::getKey(const rack::ODIMPathElem::group_t  & 
 		return elem;
 	}
 	//return drain::Enum<rack::ODIMPathElem::group_t>::dict.getKey(key, false);
-
 }
 
-}
+} // drain::
+
 
 namespace hi5 {
-
 
 const drain::FileInfo fileInfo("h5|hdf5|hdf");
 
@@ -132,6 +131,16 @@ drain::Log & getLogH5(){
 }
 
 // std::map<std::string, rack::ODIMPathElem> NodeHi5::lookUp;
+
+void NodeHi5::swap(NodeHi5 & node){
+
+	const bool tmpExclude = exclude;
+	attributes.swap(node.attributes);
+	image.swap(node.image);
+	exclude = node.exclude;
+	node.exclude = tmpExclude;
+
+};
 
 
 void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {

@@ -84,7 +84,7 @@ DRAIN_ENUM_DICT(XML::entity_t)  = {
 };
 
 
-void XML::swapNode(XML & node){
+void XML::swapXML(XML & node){
 
 	if (this != &node){
 
@@ -94,7 +94,13 @@ void XML::swapNode(XML & node){
 		std::map<std::string, drain::Variable> tmpMap;
 		drain::MapTools::setValues(tmpMap, *this);
 
+		// Explicit clear
+		//std::map<std::string,FlexibleVariable>::clear();
 		setType(node.getType());
+		if (!getAttributes().empty()){
+			drain::Logger mout(__FILE__,__FUNCTION__);
+			mout.suspicious("has still attributes: ", sprinter(getAttributes()));
+		}
 		for (const auto & attr: node){
 			setAttribute(attr.first, attr.second);
 		};
@@ -150,7 +156,8 @@ const std::map<char,std::string> & XML::getAttributeConversionMap(){
 
 const std::map<char,std::string> & XML::getCTextConversionMap(){
 
-	static const std::map<char,std::string> m = {
+	static
+	const std::map<char,std::string> m = {
 			{entity_t::LESS_THAN, "&#60;"},
 			{entity_t::GREATER_THAN, "&#62;"},
 			{entity_t::NONBREAKABLE_SPACE, "&#160;"}, // &nbsp;",
@@ -170,6 +177,19 @@ const std::map<char,std::string> XML::encodingMap = {
 		{' ', "&nbsp;"},
 };
 */
+void XML::setType(intval_t t){
+	if (type != t){
+		// const std::string & tag = getTag();
+		//const bool CHANGE = (typeIsSet() && (t != COMMENT));
+		if ((type>1) && (t > 1)){
+			// Major "semantic" change
+			Logger(__FILE__, __FUNCTION__).warn("Changing type from ", getType(), " to ", t);
+		}
+		reset();
+		type = t; // also UNDEFINED ok here
+		handleType(); // NOTE: problems, if copy constructor etc. calls setType on a base class – trying to link future members
+	}
+}
 
 // reset() clears also the type
 //void XML::clear(){

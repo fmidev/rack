@@ -162,7 +162,10 @@ public:
 	 */
 	// Could be also internal, and only NodeXML<> declares this interface.
 	template <class T> // "final"
+	inline
 	void setType(const T &t){ // DANGER, without cast?
+		setType(static_cast<intval_t>(t));
+		/*
 		const intval_t t2 = static_cast<intval_t>(t);
 		if (type != t2){
 			// const std::string & tag = getTag();
@@ -177,14 +180,14 @@ public:
 			}
 			handleType(); // NOTE: problems, if copy constructor etc. calls setType on a base class – trying to link future members
 		}
+		*/
 		// handleType(static_cast<T>(t)); REMOVED 2025/09
 		// in derived classes, eg. drain::image::BaseGDAL
 		// warning: case value ‘...’ not in enumerated type
 	}
 
-	// Consider this later, for user-defined (not enumerated) tag types.
-	// virtual
-	// void setType(const std::string & type);
+	void setType(intval_t t);
+
 
 
 	inline
@@ -331,7 +334,8 @@ public:
 	}
 	 */
 
-	void swapNode(XML & node);
+	virtual
+	void swapXML(XML & node);
 
 	/// Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.
 	/**
@@ -1058,6 +1062,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	return ostr;
 }
 
+#define DRAIN_XML_NODE_SWAP(tree_t) template <> inline void tree_t::swapData(tree_t::node_data_t & node){ this->data.swapXML(node); }
 
 
 }  // drain::

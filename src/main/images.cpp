@@ -375,7 +375,7 @@ public:
 
 			fuzzyStep.set(range, 1.0);
 
-			mout.special("Applying fuzzy: "  , fuzzyStep );
+			mout.special<LOG_INFO>("Applying ", DRAIN_LOG(fuzzyStep));
 
 			radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), fuzzyStep, true);
 
@@ -801,7 +801,7 @@ public:
 				//mout.note("stored color image in HDF5 structure: " , elem , '[' , dstQuantity , ']' );
 
 				if (channels > 3){
-					mout.warn("only 3 channels (RGB) of " , channels , " will be stored in HDF5 files" );
+					mout.unimplemented<LOG_INFO>("only 3 channels (RGB) of " , channels , " will be stored in HDF5 files" );
 				}
 				ctx.setCurrentImageColor(data.data);
 			}

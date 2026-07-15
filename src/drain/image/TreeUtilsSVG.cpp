@@ -238,54 +238,36 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// mout.experimental("check: ", path);
-	// std::list<TreeSVG::key_t> floating;
+
 	TreeSVG & parent = tree(path);
-	// TreeSVG swapper;
 
 	TreeSVG *endMarker = nullptr;
-	for (auto & t: parent){
+	for (auto & entry: parent){
 
-		if (&t.second == endMarker){
+		TreeSVG & child = entry.second;
+
+		if (&child == endMarker){
 			// All FLOATING elems now lifted.
 			return 1;
 		}
 
-		if (t.second->hasClass(FLOATING)){
-			//floating.push_back(t.first);
-			t.second->removeClass(FLOATING); // prevent infinite loop...
-			t.second->addClass("FLOATED");
-			mout.experimental("Lifting floating element at: ", path, " -> ", t.first);
-			//TreeSVG & dummy = swapper.addChild(t.first)(svg::COMMENT);
+		if (child->hasClass(FLOATING)){
+
 			if (endMarker == nullptr){
 				endMarker = & parent.addChild();
-				(*endMarker)->setComment("floats lifted");
+				(*endMarker)->setComment("Floats lifted:");
 			}
+
+			child->setId();
+			child->removeClass(FLOATING); // prevent infinite loop...
+			child->addClass("FLOATED");
+			mout.experimental("Lifting floating element #", child->getId()," at: ", path, "//", entry.first);
 			TreeSVG & dummy = parent.addChild();
-			dummy->setType(t.second->getNativeType());
-			// dummy->setAttribute("data-SWAP", t.first);
-			t.second.swap(dummy);
-			t.second->swapSVG(dummy); // Attributes, Classes, CSS,..
-			/*
-			 * dummy->set(t.second->getAttributes());
-			dummy->setDefaultAlignAnchor<AlignBase::Axis::HORZ>(t.second->getDefaultAlignAnchor<AlignBase::Axis::HORZ>());
-			dummy->setDefaultAlignAnchor<AlignBase::Axis::VERT>(t.second->getDefaultAlignAnchor<AlignBase::Axis::VERT>());
-			dummy->setMyAlignAnchor<AlignBase::Axis::HORZ>(t.second->getMyAlignAnchor<AlignBase::Axis::HORZ>());
-			dummy->setMyAlignAnchor<AlignBase::Axis::VERT>(t.second->getMyAlignAnchor<AlignBase::Axis::VERT>());
-			dummy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-			*/
-			//dummy->
-			// TODO: implement addClasses()
-			//dummy->addClass(t.second->getClasses());
-			dummy->addClass(t.second->getClasses());
-			/*
-			for (auto & cls: t.second->getClasses()){
-				dummy->addClass(cls);
-			}
-			*/
-			// t.second->removeClass(FLOATING); // prevent infinite loop...
-			t.second->setType(svg::COMMENT);
-			t.second->setComment("Swiped away");
-			mout.experimental("Swapper: -> ", t.first);
+			dummy->setComment("FLOAT id='", child->getId(), "' moved...");
+			child.swap(dummy);
+			// t.second->setType(svg::COMMENT);
+			// t.second->setComment("FLOAT id='", dummy->getId(), "' moved...", t.second->getId());
+			mout.experimental("Swapper: -> ", entry.first);
 		}
 	}
 
@@ -312,29 +294,35 @@ int OverlayMoverSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 	if (parent->typeIs(svg::GROUP)){
 
-		for (auto & src: parent){ // .getChildren()){
+		for (auto & src: parent){
 
-			if (src.second->typeIs(svg::GROUP) && src.second->hasClass(OVERLAY)){
+			TreeSVG & child = src.second;
 
-				if (src.second.empty()){
-					mout.suspicious("Empty OVERLAY elem at child=", src.first,  " of GROUP ", path);
+			if (child->typeIs(svg::GROUP) && child->hasClass(OVERLAY)){
+
+				child->setId();
+
+				if (child.empty()){
+					mout.suspicious("Empty OVERLAY elem at child=[", src.first, "] id=", child->getId()," of GROUP ", path);
 					continue;
 				}
 
 				// Reiterate: search for target position
 				for (auto & src2: parent){
-					// could also check direct descendants:
-					// if (src2.first == OVERLAY){ ...
+
+
 					if (src2.second->typeIs(svg::GROUP)){
 
 						if (src2.second.hasChild(OVERLAY)){
 
 							TreeSVG & dst = src2.second[OVERLAY];
-							dst.swap(src.second);
-							dst->swapSVG(src.second);
-
-							src.second->removeClass(OVERLAY);
-							src.second.addChild()->setComment("Removed overlay");
+							dst->setId();
+							dst.addChild()->setComment("Orig overlay: ", dst->getId());
+							mout.accept<LOG_NOTICE>("Found OVERLAY target: ", dst->getId());
+							child->removeClass(OVERLAY);
+							dst.swap(child);
+							// dst->swapSVG(src.second);
+							child.addChild()->setComment("Removed overlay: ", dst->getId());
 							/*
 							std::cout << "DUMPING: " << src.first << '\n';
 							drain::TreeUtils::dump(src.second, std::cout);
@@ -412,10 +400,16 @@ const std::string MaskerSVG::MASK_ID = "data-mask";
 const ClassXML MaskerSVG::COVER("COVER");
 
 
-const drain::FlexibleVariable & MaskerSVG::createMaskId(TreeSVG & group){
-	const drain::StringBuilder<'_'> maskId(svg::MASK, group->getId());
-	group->set(MASK_ID, maskId.str());
+const drain::FlexibleVariable & MaskerSVG::ensureMaskId(TreeSVG & group){
+
+	if (!group->hasAttribute(MASK_ID)){
+		const drain::StringBuilder<'_'> maskId(svg::MASK, group->getId());
+		group->set(MASK_ID, maskId);
+		group.addChild()->setComment("added MASK_ID=", maskId);
+	}
+
 	return group->get(MASK_ID);
+
 }
 
 TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
@@ -477,7 +471,7 @@ drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int 
 
 TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node){
 
-	const drain::FlexibleVariable & maskId = createMaskId(group);
+	const drain::FlexibleVariable & maskId = ensureMaskId(group);
 
 	std::string s;
 	if (group.hasChild(svg::DESC)){

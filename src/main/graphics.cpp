@@ -101,7 +101,7 @@ public:
 		drain::Frame2D<double> frame = {150,480};
 
 		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAdapterGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		group->addClass(LayoutSVG::INDEPENDENT);
 
@@ -298,7 +298,7 @@ public:
 
 		drain::Frame2D<double> frame = {160,300};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[RackSVG::SIDE_PANEL](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAdapterGroup(ctx)[RackSVG::SIDE_PANEL](svg::GROUP);
 		group->setId(value);
 		group->addClass(RackSVG::SIDE_PANEL);
 
@@ -476,7 +476,7 @@ public:
 		drain::Frame2D<double> frame = {300,600};
 
 		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
-		drain::image::TreeSVG & group = RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = RackSVG::getCurrentAdapterGroup(ctx)[value](svg::GROUP);
 		group->setId(value);
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("anchor-elem");
@@ -935,7 +935,6 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	linkRelatedCommands(Align, LinkImage);
 
 	install<CmdFontSizes>();
-	//install<CmdGroupTitle>();
 	DRAIN_CMD_INSTALL(Cmd, GroupTitle)();
 	DRAIN_CMD_INSTALL(Cmd, GroupId)();
 	DRAIN_CMD_INSTALL(Cmd, Title)();

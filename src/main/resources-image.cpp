@@ -33,32 +33,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources-image.h"
 
 
-namespace drain {
-
-/*
-DRAIN_ENUM_DICT(rack::PanelConfSVG::ElemClass) = {
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, NONE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN_TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, MAIN_TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, GROUP_TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_TITLE),
-		// DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, TITLE),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, LOCATION),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, TIME),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, GENERAL),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_PANEL),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, IMAGE_BORDER),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, BORDER),
-		DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, SIDE_PANEL),
-		// DRAIN_ENUM_ENTRY(rack::PanelConfSVG::ElemClass, SHARED_METADATA),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::TitleClass, IMAGE_SET)
-};
-*/
-
-}
-
-
-
 using namespace drain;
 using namespace drain::image;
 

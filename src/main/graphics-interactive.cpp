@@ -44,6 +44,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-panel.h"
 #include "graphics-interactive.h"
 
+namespace drain {
+
+
+// DRAIN_XML_NODE_SWAP(drain::image::TreeSVG);
+
+}
 
 namespace rack {
 
@@ -249,6 +255,7 @@ drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, Mous
 	textObject->setType(svg::TEXT); // ensure
 	textObject->setFontSize(15,18);
 	textObject->addClass(RackSVG::ElemClass::SELECTOR);
+	textObject->addClass(LayoutSVG::NEUTRAL);
 	// textObject->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 	// textObject->setAlign(AlignSVG::RIGHT);
 
@@ -322,7 +329,7 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	using namespace drain::image;
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	TreeSVG & alignedGroup = RackSVG::getCurrentAlignedGroup(ctx);
+	TreeSVG & alignedGroup = RackSVG::getCurrentAdapterGroup(ctx);
 
 	TreeSVG & imagePanel = alignedGroup[ctx.currentImagePanel];
 	if (imagePanel->isUndefined()){
@@ -431,8 +438,9 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	mouseListenerElem->setStyle("fill", "yellow"); // TODO: transparent tracker
 	*/
 	// NOte: mouseGroup == overlayGroup
-	drain::image::TreeSVG & mouseListenerElem = mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
-	mouseListenerElem->setFrame(radarSVG.geoFrame.getFrameWidth(), radarSVG.geoFrame.getFrameHeight());
+	drain::image::TreeSVG & mouseListenerElem = RackSVG::getImageBorder(mouseGroup);
+			// mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
+	mouseListenerElem->setFrame(radarSVG.geoFrame.getGeometry());
 	mouseListenerElem->setStyle("fill", "gray");      // TODO: transparent tracker
 	mouseListenerElem->setStyle("fill-opacity", 0.0); // TODO: transparent tracker
 	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
@@ -580,7 +588,8 @@ void CmdRect::exec() const {
 	// RackSVG::consumeAlignRequest(ctx, coordSpanDisplay); // TODO return bool, if applied
 
 	/// Create the actual another plane (RECT) to receive mouse events
-	drain::image::TreeSVG & mouseListenerElem = mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
+	drain::image::TreeSVG & mouseListenerElem = RackSVG::getImageBorder(mouseGroup);
+			// mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
 	// drain::image::TreeSVG & mouseListenerElem = mouseGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
 	mouseListenerElem->set("data-resolution", resolution.tuple());
 	MouseXML::addVisibilitySwitch(coordMoveText.data, mouseListenerElem.data);
@@ -638,7 +647,7 @@ TreeSVG & activateImagePanel(RackContext & ctx, RadarSVG & radarSVG, bool fixedA
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	TreeSVG & alignedGroup = RackSVG::getCurrentAlignedGroup(ctx);
+	TreeSVG & alignedGroup = RackSVG::getCurrentAdapterGroup(ctx);
 
 	TreeSVG & imagePanel = alignedGroup[ctx.currentImagePanel];
 	if (imagePanel->isUndefined()){

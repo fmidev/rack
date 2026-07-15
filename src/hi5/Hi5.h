@@ -70,23 +70,21 @@ const drain::FileInfo fileInfo;
  */
 struct NodeHi5 {
 
-	typedef drain::image::Image image_type;
-
-	drain::image::Image image;
-
-	// Required, but not much needed.
-	bool empty() const {
-		return (image.isEmpty() && attributes.empty());
-	}
-
-	drain::VariableMap  attributes;
-
 	NodeHi5() : exclude(false) {};
 
 	inline
 	NodeHi5(const NodeHi5 & n) : exclude(n.exclude) {
 		attributes.importMap(n.attributes);
 	};
+
+
+
+	// Required, but not much needed.
+	bool empty() const {
+		return (image.isEmpty() && attributes.empty());
+	}
+
+
 
 	inline
 	NodeHi5 & operator=(const hi5::NodeHi5 & node){
@@ -99,16 +97,24 @@ struct NodeHi5 {
 	//void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
 	void writeText(std::ostream & ostr = std::cout, const rack::ODIMPath & prefix = rack::ODIMPath()) const;
 
+
+	void swap(NodeHi5 & n);
+
+	typedef drain::image::Image image_type;
+
+	image_type image;
+
+	drain::VariableMap  attributes;
+
 	/// Marker for excluding from any "serious" file write.
 	/**
-	 *   Marker for excluding from any "serious" file write.
+	 *   Subtrees marked with \c exclude will be be bypassed upon file write.
+	 *
 	 */
 	bool exclude;
 
 	/// Experimental
 	typedef std::map<std::string, rack::ODIMPathElem> lookup_t;
-	// static
-	// lookup_t lookUp;
 
 };
 
@@ -118,20 +124,17 @@ struct NodeHi5 {
 /// The most importand and central class for handling HDF5 data in \b Rack .
 typedef drain::OrderedTree<hi5::NodeHi5, false, rack::ODIMPath> Hi5Tree;
 
+template <> inline
+void Hi5Tree::swapData(hi5::NodeHi5 & node){
+	data.swap(node);
+}
+
+
 namespace drain {
 
 
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-inline
-const image::TreeSVG::key_t & image::TreeSVG::getKey(const ClassXML & cls){
-	// return Enum<image::svg::tag_t>::dict.getKey(type, false);
-	return image::TreeSVG::getKey(cls.strPrefixed());
-}
-*/
 
-// Experimental implementations, based on above example
+// Experimental implementations, based on static dictionary.
 
 // Basic idea: a static map is maintained. TODO: check its contents upon rack exit.
 template <> // for T (Tree class)
