@@ -508,7 +508,7 @@ void CmdOutputFile::exec() const {
 
 		// mout.experimental("writing SVG file: ", path);
 		drain::image::OverlayMoverSVG overlayMover;
-		drain::TreeUtils::traverse(overlayMover, ctx.svgTrack);
+		//drain::TreeUtils::traverse(overlayMover, ctx.svgTrack);
 
 		drain::image::FloaterSVG floater;
 		drain::TreeUtils::traverse(floater, ctx.svgTrack);

@@ -417,16 +417,14 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	drain::image::TreeSVG & defs = drain::UtilsXML::getHeaderObject(root, svg::DEFS);
-	//drain::image::TreeSVG & mask = defs[group->get(MASK_ID, "default")](svg::MASK);
 	drain::image::TreeSVG & mask = defs[maskId]; //(svg::MASK);
 
-	drain::UtilsXML::ensureStyle(root, COVER, { // drain::ClassXML(svg::MASK)
+	drain::UtilsXML::ensureStyle(root, COVER, {
 			{"fill",   "gray"},
 			{"opacity", 0.5},
 	}
 	);
 
-	// if (!mask.hasChild(svg::RECT)){
 	// Ensure background.
 	if (mask->isUndefined()){
 		mask->setType(svg::MASK);
@@ -434,11 +432,11 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 		// maskUnits="userSpaceOnUse" maskContentUnits="userSpaceOnUse"
 		mask->set("maskUnits", "userSpaceOnUse");
 		mask->set("maskContentUnits", "userSpaceOnUse");
-		drain::image::TreeSVG & comment = mask.addChild()(svg::COMMENT);
-		comment->setText("This base RECT is also the reference for (width, height)");
+		// drain::image::TreeSVG & comment = mask.addChild()(svg::COMMENT);
+		// comment->setText("This base RECT is also the reference for (width, height)");
+		mask.addChild()->setComment("This base RECT is also the reference for (width, height)");
 		drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
-		rect->setWidth(128);
-		rect->setHeight(128);
+		rect->setFrame(123, 123); // debugging (remove)
 		rect->set("fill", "white");
 	}
 
@@ -450,10 +448,8 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int width, int height, const NodeSVG & node){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	// drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
+
 	mask[svg::RECT]->setFrame(width, height);
-	// rect->setWidth(width);
-	// rect->setHeight(height);
 
 	// Punch hole
 	drain::image::TreeSVG & hole = mask.addChild();
@@ -472,23 +468,33 @@ drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int 
 TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node){
 
 	const drain::FlexibleVariable & maskId = ensureMaskId(group);
-
-	std::string s;
+	/*
+	std::string description;
 	if (group.hasChild(svg::DESC)){
-		s = group[svg::DESC].data.getText();
+		description = group[svg::DESC].data.getText();
 	}
 	else {
-		s = group->getId();
+		description = group->getId();
 	}
+	*/
 
 	drain::image::TreeSVG & mask = getMask(root, maskId);
 	if ((width != 0) && (height != 0)){
 		TreeSVG & hole = updateMask(mask, width, height, node);
-		hole[svg::DESC](svg::DESC)->setText(s);
+		// hole[svg::DESC](svg::DESC)->setText(description);
+		const std::string & description = group.hasChild(svg::DESC) ? group[svg::DESC].data.getText() : group->getId();
+		hole[svg::DESC](svg::DESC)->setText(description);
+		/*
+		if (group.hasChild(svg::DESC)){
+			hole[svg::DESC](svg::DESC)->setText(group[svg::DESC].data.getText());
+			// description = group[svg::DESC].data.getText();
+		}
+		else {
+			hole[svg::DESC](svg::DESC)->setText(group->getId());
+			// description = group->getId();
+		}
+		*/
 	}
-
-	// c = mask.prependChild(s)(svg::COMMENT);
-	// comment->setText("reference: ", s);
 
 	return mask;
 }

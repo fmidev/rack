@@ -527,8 +527,8 @@ void CmdRadarLabel::exec() const  {
 	RadarSVG radarSVG;
 
 	getOverlayGroup(ctx, radarSVG);
-	TreeSVG & imagePanel = RackSVG::getVectorImagePanelGroup(ctx);
-	TreeSVG & vectGroup =  RackSVG::getSourceSpecificGroup(ctx, imagePanel);
+	TreeSVG & imagePanelGroup = RackSVG::getVectorImagePanelGroup(ctx);
+	TreeSVG & vectGroup =  RackSVG::getSourceSpecificGroup(ctx, imagePanelGroup);
 
 	// const std::string source = ctx.getStatus("what:source", false);
 	// TreeSVG & vectGroup =  imagePanel[source](svg::GROUP);
@@ -687,7 +687,7 @@ void CmdRadarGrid::exec() const  {
 
 	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
-	TreeSVG & imagePanel = getOverlayGroup(ctx, radarSVG);
+	TreeSVG & imagePanelGroup = getOverlayGroup(ctx, radarSVG);
 
 	/// Step 2a: check distance parameter
 	drain::SteppedRange<double> dist(0.0, 0.0, 1.0);  // double -> int
@@ -716,7 +716,7 @@ void CmdRadarGrid::exec() const  {
 
 	// TreeSVG & imagePanel = RackSVG::getVectorImagePanelGroup(ctx);
 
-	TreeSVG & vectorGroup = RackSVG::getSourceSpecificGroup(ctx, imagePanel);
+	TreeSVG & vectorGroup = RackSVG::getSourceSpecificGroup(ctx, imagePanelGroup);
 	//TreeSVG & vectorGroup = imagePanel[cls](svg::GROUP);
 	vectorGroup->addClass(cls); // GRID
 
@@ -778,7 +778,7 @@ void CmdRadarGrid::exec() const  {
 
 	if (MASK){
 
-		TreeSVG & localMask = imagePanel[MaskerSVG::COVER];
+		TreeSVG & localMask = imagePanelGroup[MaskerSVG::COVER];
 		{
 			// Private scope, to call bezierElem destructor.
 			drain::svgPATH elem(localMask);
@@ -786,7 +786,7 @@ void CmdRadarGrid::exec() const  {
 		}
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, imagePanel, w, h, localMask.data);
+		MaskerSVG::createMask(ctx.svgTrack, imagePanelGroup, w, h, localMask.data);
 		// comment->setText("applied by: ", getName(), ' ', getParameters());
 		localMask->setType(svg::COMMENT);
 	}

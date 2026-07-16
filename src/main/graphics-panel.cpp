@@ -520,8 +520,7 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx){
 /**
  *
  */
-drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath,
-		bool unique){
+drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath, bool unique){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -537,41 +536,22 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 	// For each image an own group is created to contain also title TEXT's etc.
 	drain::image::TreeSVG & adapterGroup = getCurrentAdapterGroup(ctx);
-	// drain::image::TreeSVG & imageGroup = adapterGroup; // TEST
 
-	// SEMI-OLD
-	/*
-	drain::image::TreeSVG & imageGroup = adapterGroup[svg::IMAGE]; // WHY?
-	// Get rid of this intermediate or explain?
-	// fgrep fitter -B 1 -A 1 out/composite-radar_clip_grid.svg
-	imageGroup->addClass("fitter");
-	*/
 	drain::StringBuilder<'_'> identifier("imagePanel", filepath.tail, filepath.extension);
 
 	if (unique){
 		identifier.add(NodeSVG::getNewIndex());
 	}
 
+	const bool FIRST = ctx.currentImagePanel.empty();
 	/*
-	if (filepath.extension.empty()){ // TODO: more logic here
-		// Note: ctx.composite.odim not updated until extract.
-		if (ctx.composite.isDefined()){
-			const std::string id = drain::StringBuilder<'_'>("compositeVisualPanel", filepath);
-			// std::string id = drain::StringBuilder<'-'>("composite", ctx.composite.getEPSG(), ctx.composite.getFrameWidth(), ctx.composite.getFrameWidth(), ctx.composite.getBoundingBoxNat()).str();
-			mout.experimental("COMPOSITE defined, mapping file: ", filepath, " -> ", id);
-			drain::StringTools::getSafeKey(id, ctx.currentImagePanel, "-");
-			// drain::StringTools::replace(id, repl, ctx.currentImagePanel);
-		}
-		else {
-			mout.warn("No file extension in  '", filepath, "', and no composite defined");
-		}
-	}
-	else {
-		const std::string filename = drain::StringBuilder<'_'>("imagePanel", filepath.tail, filepath.extension);
-		drain::StringTools::getSafeKey(filename, ctx.currentImagePanel, "-");
+	if (adapterGroup.empty()){
+		mout.attention("FIRST", ctx.currentImagePanel);
 	}
 	*/
-	drain::StringTools::getSafeKey(identifier, ctx.currentImagePanel, "-");
+
+	drain::StringTools::getSafeKey(identifier, ctx.currentImagePanel, "-", ".,:+");
+
 
 	// imageGroup -> addClass(ClipperSVG::CLIPPED);
 	TreeSVG & imagePanelGroup = adapterGroup[ctx.currentImagePanel];
@@ -583,6 +563,9 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 
 	}
 
+	if (FIRST){
+		imagePanelGroup->addClass("FIRST_IP");
+	}
 
 	imagePanelGroup->setDefaultAlignAnchor(svg::IMAGE);
 	drain::image::TreeSVG & image = imagePanelGroup[svg::IMAGE];
@@ -599,8 +582,6 @@ drain::image::TreeSVG & RackSVG::getImagePanelGroup(RackContext & ctx, const dra
 	}
 	//
 
-	// drain::image::TreeSVG & comment =
-	// imagePanel.addChild()->setComment("Applied by: ", DRAIN_LOG(ctx.currentImagePanel), " ", DRAIN_LOG(filepath));
 
 	return imagePanelGroup;
 
@@ -615,6 +596,8 @@ drain::image::TreeSVG & RackSVG::getVectorImagePanelGroup(RackContext & ctx){
 	drain::FilePath filePath(ctx.getFormattedStatus("${where:EPSG}-${where:BBOX}-${where:xsize}x${where:ysize}-${what:date}T${what:time}.ext"));
 	filePath.extension.clear();
 
+	const bool FIRST = ctx.currentImagePanel.empty();
+
 	TreeSVG & imagePanel = RackSVG::getImagePanelGroup(ctx, filePath);
 	imagePanel->setAttribute("data-id", filePath.str());
 	imagePanel->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
@@ -623,6 +606,10 @@ drain::image::TreeSVG & RackSVG::getVectorImagePanelGroup(RackContext & ctx){
 	imagePanel->addClass(ClipperSVG::CLIPPED);
 	// imagePanel->addClass(Graphic::VECTOR_OVERLAY); OLD
 	imagePanel->addClass(OverlayMoverSVG::OVERLAY);
+	if (FIRST){
+		imagePanel->addClass(FloaterSVG::FLOATING);
+	}
+	// imagePanel->addClass("vect");
 	return imagePanel;
 
 }
@@ -675,7 +662,8 @@ drain::image::TreeSVG & RackSVG::getSourceSpecificGroup(RackContext & ctx, drain
 	const std::string source = ctx.getStatusMap().get("what:source", "unknown-source");
 	drain::image::TreeSVG & subGroup = panel[source](svg::GROUP);
 	subGroup->setAttribute("data-source", source);
-	return panel[statusMap.get("what:source", "unknown-source")](svg::GROUP);
+	return subGroup;
+	// return panel[statusMap.get("what:source", "unknown-source")](svg::GROUP);
 }
 
 // }
