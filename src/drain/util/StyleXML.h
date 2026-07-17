@@ -61,21 +61,15 @@ public:
 	inline
 	StyleXML(){};
 
+	inline
+	StyleXML(const StyleXML & stl){
+		MapTools::setValues(*this, stl);
+	};
+
 	static const SprinterLayout styleLineLayout;
 	static const SprinterLayout styleRecordLayout;
 	static const SprinterLayout styleRecordLayoutActual;
-
-	/// Practical utility, helps in adding C++ code commenting...
-	template <class ...TT>
-	static inline
-	void commentToStream(std::ostream & ostr, const TT... args){
-		ostr << "/* ";
-		argsToStream(ostr, args...);
-		ostr << " */ ";
-	};
-
-	static
-	const std::string TEXT_ANCHOR;
+	static const std::string TEXT_ANCHOR;
 
 	template <class T>
 	inline
@@ -94,9 +88,18 @@ public:
 		return get(key, std::string(defaultValue));
 	}
 
+	/// Practical utility, helps in adding C++ code commenting...
+	template <class ...TT>
+	static inline
+	void commentToStream(std::ostream & ostr, const TT... args){
+		ostr << "/* ";
+		argsToStream(ostr, args...);
+		ostr << " */ ";
+	};
 
 
 protected:
+
 
 	template <class T, class ...TT>
 	static inline
@@ -109,13 +112,14 @@ protected:
 	void argsToStream(std::ostream & ostr){
 	}
 
+
 };
 
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const StyleXML & style){
-	//drain::Sprinter::toStream(ostr, style.getMap(), drain::Sprinter::xmlAttributeLayout);
-	drain::Sprinter::toStream(ostr, style, drain::Sprinter::xmlAttributeLayout);
+	// Risk: infinite loop
+	drain::Sprinter::toStream(ostr, (const std::map<std::string,Variable> &)style, drain::Sprinter::xmlAttributeLayout);
 	return ostr;
 }
 

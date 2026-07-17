@@ -262,9 +262,12 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			child->removeClass(FLOATING); // prevent infinite loop...
 			child->addClass("FLOATED");
 			mout.experimental("Lifting floating element #", child->getId()," at: ", path, "//", entry.first);
-			TreeSVG & dummy = parent.addChild();
-			dummy->setComment("FLOAT id='", child->getId(), "' moved...");
-			child.swap(dummy);
+			mout.experimental("child -> ", child->getStyle());
+			TreeSVG & childNew = parent.addChild();
+			childNew->setComment("FLOAT id='", child->getId(), "' moved...");
+			child.swap(childNew);
+			mout.experimental("child    -> ", child   ->getStyle());
+			mout.experimental("childNew -> ", childNew->getStyle());
 			// t.second->setType(svg::COMMENT);
 			// t.second->setComment("FLOAT id='", dummy->getId(), "' moved...", t.second->getId());
 			mout.experimental("Swapper: -> ", entry.first);

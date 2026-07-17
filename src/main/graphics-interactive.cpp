@@ -329,22 +329,20 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	using namespace drain::image;
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	TreeSVG & alignedGroup = RackSVG::getCurrentAdapterGroup(ctx);
+	TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
 
-	TreeSVG & imagePanel = alignedGroup[ctx.currentImagePanel];
-	if (imagePanel->isUndefined()){
+	TreeSVG & imagePanelGroup = adapterGroup[ctx.currentImagePanel];
+	if (imagePanelGroup->isUndefined()){
 		mout.warn("currentImagePanel created but undefined");
 	}
 
-	if (!imagePanel.hasChild(svg::IMAGE)){
+	if (!imagePanelGroup.hasChild(svg::IMAGE)){
 		mout.warn("currentImagePanel created contains no image");
 	}
 
 
-	// could also be [MouseXML::ElemClass::MONITOR]getInteractiveOverlay
-
 	// drain::image::TreeSVG & mouseGroup = imagePanel[RackSVG::ElemClass::MOUSE](svg::GROUP);
-	drain::image::TreeSVG & mouseGroup = imagePanel[OverlayMoverSVG::OVERLAY](svg::GROUP);
+	drain::image::TreeSVG & mouseGroup = imagePanelGroup[OverlayMoverSVG::OVERLAY](svg::GROUP);
 
 	mouseGroup->addClass(ClipperSVG::CLIPPED);
 	// mouseGroup.addChild()->setComment("Mouse tracker modified by ", getName(), ' ', getLastParameters());
@@ -358,7 +356,7 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	drain::image::NodeSVG::map_t & attr = mouseGroup->getAttributes();
 
 
-	mout.special("Attaching coordinate monitor to imagePanel: ", imagePanel->getId());
+	mout.special("Attaching coordinate monitor to imagePanel: ", imagePanelGroup->getId());
 	// mouseGroup[svg::TITLE](svg::TITLE)->setText("Mouse tracker by ", getName(), ' ', getLastParameters());
 
 
@@ -370,7 +368,7 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	}
 	else {
 		mout.hint("Projection: EPSG not detected, consider to set/unset fixedAEQD");
-		drain::image::NodeSVG::map_t & attrColumn = alignedGroup->getAttributes();
+		drain::image::NodeSVG::map_t & attrColumn = adapterGroup->getAttributes();
 
 		mout.note(DRAIN_LOG(fixedAEQD));
 		std::string projdef;
@@ -403,14 +401,14 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	std::vector<double> bboxNat;
 	attr["data-bbox"].toSequence(bboxNat, ',');
 	if (bboxNat.empty()){
-		mout.warn("Could not attach coordinate monitor for imagePanel '", imagePanel->getId(), "' - missing 'data-bbox' attribute ");
+		mout.warn("Could not attach coordinate monitor for imagePanel '", imagePanelGroup->getId(), "' - missing 'data-bbox' attribute ");
 	}
 	else if (bboxNat.size() != 4){
-		mout.warn("Image panel #", imagePanel->getId(), ": odd size of elements in 'data-bbox' = ", attr["data-bbox"], " => ", drain::sprinter(bboxNat));
+		mout.warn("Image panel #", imagePanelGroup->getId(), ": odd size of elements in 'data-bbox' = ", attr["data-bbox"], " => ", drain::sprinter(bboxNat));
 	}
 	radarSVG.geoFrame.setBoundingBox(bboxNat[0], bboxNat[1], bboxNat[2],bboxNat[3]);
 
-	const drain::image::TreeSVG & image = imagePanel[svg::IMAGE];
+	const drain::image::TreeSVG & image = imagePanelGroup[svg::IMAGE];
 	const drain::Frame2D<int> imageGeometry(image->getWidth(), image->getHeight());
 	radarSVG.geoFrame.setGeometry(imageGeometry.width, imageGeometry.height);
 
@@ -429,25 +427,17 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	// radarSVG.radarProj.setProjectionDst();
 
 	mouseGroup.addChild()->setComment("Plane with a mouse listener1");
-	/*
-	drain::image::TreeSVG & mouseListenerElem = mouseGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
-	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
-	mouseListenerElem->addClass(LayoutSVG::FIXED);
-	mouseListenerElem->setFrame(radarSVG.geoFrame.getFrameWidth(), radarSVG.geoFrame.getFrameHeight());
-	//mouseListenerElem->set("data-resolution", resolution.tuple());
-	mouseListenerElem->setStyle("fill", "yellow"); // TODO: transparent tracker
-	*/
 	// NOte: mouseGroup == overlayGroup
 	drain::image::TreeSVG & mouseListenerElem = RackSVG::getImageBorder(mouseGroup);
-			// mouseGroup[RackSVG::ElemClass::IMAGE_BORDER](svg::RECT);
 	mouseListenerElem->setFrame(radarSVG.geoFrame.getGeometry());
 	mouseListenerElem->setStyle("fill", "gray");      // TODO: transparent tracker
 	mouseListenerElem->setStyle("fill-opacity", 0.0); // TODO: transparent tracker
 	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
+	mouseListenerElem->setAttribute("fillo", "garo");
 	// mouseListenerElem->addClass("MIKA");
 	// mouseListenerElem->setStyle("opacity", 0);
 
-	return imagePanel;
+	return imagePanelGroup;
 }
 
 

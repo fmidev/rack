@@ -84,47 +84,6 @@ DRAIN_ENUM_DICT(XML::entity_t)  = {
 };
 
 
-void XML::swapXML(XML & node){
-
-	if (this != &node){
-
-		// Attributes: (map of) FlexibleVariables cannot be swapped easily/safely.
-		// Swap attributes using pragmatic tmp-copy.
-		const XML::intval_t tmpType = getType();
-		std::map<std::string, drain::Variable> tmpMap;
-		drain::MapTools::setValues(tmpMap, *this);
-
-		// Explicit clear
-		//std::map<std::string,FlexibleVariable>::clear();
-		setType(node.getType());
-		if (!getAttributes().empty()){
-			drain::Logger mout(__FILE__,__FUNCTION__);
-			mout.suspicious("has still attributes: ", sprinter(getAttributes()));
-		}
-		for (const auto & attr: node){
-			setAttribute(attr.first, attr.second);
-		};
-
-		node.setType(tmpType);
-		for (const auto & attr: tmpMap){
-			node.setAttribute(attr.first, attr.second);
-		};
-
-
-		// Swap text content
-		ctext.swap(node.ctext);
-
-		// Swap classes
-		classList.swap(node.classList);
-
-		// Swap style
-		style.swap(node.style);
-	}
-	else {
-		// // Consider conditional (strict => exception)
-	}
-
-}
 // Consider 1) getKeyConversionMap
 
 const std::map<char,std::string> & XML::getKeyConversionMap(){
@@ -245,6 +204,50 @@ void XML::setText(const std::string & s) {
 	}
 
 }
+
+void XML::swapXML(XML & node){
+
+	if (this != &node){
+
+		// Attributes: (map of) FlexibleVariables cannot be swapped easily/safely.
+		// Swap attributes using pragmatic tmp-copy.
+		const XML::intval_t tmpType = getType();
+
+		// Explicit clear only for attributes.
+		std::map<std::string, drain::Variable> tmpMap;
+		drain::MapTools::setValues(tmpMap, *this);
+		map_t::clear();
+
+		// Note: not calling setType(), to skip resetting style and style classes.
+		type = node.getType();
+		handleType();
+		for (const auto & attr: node){
+			setAttribute(attr.first, attr.second);
+		};
+
+		//node.setType(tmpType);
+		node.type = tmpType;
+		node.handleType();
+		for (const auto & attr: tmpMap){
+			node.setAttribute(attr.first, attr.second);
+		};
+
+
+		// Swap text content
+		ctext.swap(node.ctext);
+
+		// Swap classes
+		classList.swap(node.classList);
+
+		// Swap style
+		style.swap(node.style);
+	}
+	else {
+		// // Consider conditional (strict => exception)
+	}
+
+}
+
 
 const std::map<char,std::string> & XML::getEntityMap(){
 
