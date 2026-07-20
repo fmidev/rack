@@ -773,7 +773,7 @@ public:
 		}
 
 		// drain::image::TreeSVG & group = getPlayGround(ctx);
-		drain::image::TreeSVG & group = RackSVG::getImagePanelGroup(ctx);
+		drain::image::TreeSVG & group = RackSVG::getImagePanelGroupPlain(ctx);
 
 		// const drain::Frame2D<double> frame2 = group->getBoundingBox().getFrame();
 

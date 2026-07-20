@@ -25,7 +25,7 @@ public:
 	 */
 	enum ElemClass {
 		//MOUSE,	     // A group marked for interaction (mouse event listeners)
-		MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
+		MOUSE_LISTENER,   // Area inside which mouse events will be tracked.
 		MONITOR,         // Display of interactive operations
 		MONITOR_MOVE,    // Display something when mouse is moving, e.g. cursor coordinates.
 		MONITOR_DOWN,    // Display something when mouse is pressed

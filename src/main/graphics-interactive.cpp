@@ -86,27 +86,29 @@ void CmdDot::exec() const  {
 	drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 	RadarSVG radarSVG;
+	updateRadarSVG(ctx, radarSVG);
 
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	// NoTE: this is  not radar specific
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	drain::image::TreeSVG & overlayGroup = RackSVG::getImagePanelGroupNEW(ctx);
+
+	ImagePanel superPanel(overlayGroup);
+	drain::image::TreeSVG & overlay = superPanel.getOverlay();
+
 	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " imageCoords=", imageCoords);
 
 	drain::Point2D<double> coordsDeg;
-	// drain::Point2D<int> imageCoords;
+
 	if (drain::BBox::isMetric(coords)){
 		radarSVG.geoFrame.m2deg(coords, coordsDeg);
-		//radarSVG.geoFrame.m2pix(coords, imageCoords);
-		overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
+		overlay.addChild()->setComment(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
 	}
 	else {
 		coordsDeg = coords;
-		//radarSVG.geoFrame.deg2pix(coords, imageCoords);
 	}
-	//mout.attention(DRAIN_LOG(imageCoords));
-	mout.attention(DRAIN_LOG(coordsDeg));
-	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " coordsDeg=", coordsDeg);
 
+	//mout.attention(DRAIN_LOG(imageCoords));
+	mout.info(DRAIN_LOG(coordsDeg));
+
+	// Essentially drawing a "radar" there, so here its coordinates...
 	radarSVG.radarProj.setSiteLocationDeg(coordsDeg.x, coordsDeg.y);
 
 	// const std::string SPOT = "SPOT";
@@ -428,12 +430,14 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 
 	mouseGroup.addChild()->setComment("Plane with a mouse listener1");
 	// NOte: mouseGroup == overlayGroup
+	/*
 	drain::image::TreeSVG & mouseListenerElem = RackSVG::getImageBorder(mouseGroup);
 	mouseListenerElem->setFrame(radarSVG.geoFrame.getGeometry());
 	mouseListenerElem->setStyle("fill", "gray");      // TODO: transparent tracker
 	mouseListenerElem->setStyle("fill-opacity", 0.0); // TODO: transparent tracker
 	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
 	mouseListenerElem->setAttribute("fillo", "garo");
+	*/
 	// mouseListenerElem->addClass("MIKA");
 	// mouseListenerElem->setStyle("opacity", 0);
 
@@ -473,10 +477,12 @@ void CmdRect::exec() const {
 	*/
 
 	RadarSVG radarSVG;
-	TreeSVG & imagePanel = getInteractiveOverlay(ctx, radarSVG, fixedAEQD);
+	TreeSVG & imagePanelGroup = getInteractiveOverlay(ctx, radarSVG, fixedAEQD);
+
+	// ImagePanel superPanel(imagePanelGroup);
 
 	//drain::image::TreeSVG & mouseGroup  = imagePanel[RackSVG::ElemClass::MOUSE];
-	drain::image::TreeSVG & mouseGroup  = imagePanel[OverlayMoverSVG::OVERLAY];
+	drain::image::TreeSVG & mouseGroup  = imagePanelGroup[OverlayMoverSVG::OVERLAY];
 	drain::image::TreeSVG & visualGroup = mouseGroup[RackSVG::ElemClass::SELECTOR](svg::GROUP);
 
 	// Reserve slot (implemented below).
@@ -857,8 +863,14 @@ void encodeToRGBAimage(const Image & data, drain::image::ImageT<uint8_t> & dataI
 void CmdData::exec() const {
 
 	using namespace drain::image;
+
 	RackContext & ctx = getContext<RackContext>();
+
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
+
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
+			{"opacity", 0.1},  // some browsers disable mouse listener, if fully invisible?
+	});
 
 	const Image & data = ctx.getCurrentGrayImage();
 
@@ -872,33 +884,32 @@ void CmdData::exec() const {
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 	RackSVG::getOnLoadScript(ctx)["image_value_tracker"] = "image_value_tracker();";
 
+	// RadarSVG radarSVG;
+	// TreeSVG & imagePanelGroup = getInteractiveOverlay(ctx, radarSVG);
+	TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
+	// TreeSVG::generateKey(adapterGroup, ctx.currentImagePanel);
+	mout.attention(DRAIN_LOG(ctx.currentImagePanel));
+	TreeSVG & imagePanelGroup = adapterGroup[ctx.currentImagePanel];
 
-	RadarSVG radarSVG;
-	TreeSVG & imagePanel = getInteractiveOverlay(ctx, radarSVG);
-	// drain::image::TreeSVG & imagePanelGroup = imagePanel; // mouseGroup;
-	// Add marker for 'image_value_tracker()'
-	imagePanel->addClass("MOUSE_VALUE");
+	// NEW
+	ImagePanel superPanel(imagePanelGroup);
 
-	drain::image::TreeSVG & dataImageElem = imagePanel[RackSVG::ElemClass::DATA_ARRAY](svg::IMAGE);
-	dataImageElem->addClass("MOUSE_VALUE_DATA");  // Interactive::ElemClass::MOUSE_TRACKER consider shared tracker plane!
-	dataImageElem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	dataImageElem->addClass(RackSVG::ElemClass::DATA_ARRAY);
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
-			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
-	});
-	addGeoData(data, dataImageElem);
+	// TODO: pack inside ImagePanel
+	imagePanelGroup->addClass("MOUSE_VALUE");
 
+	drain::image::TreeSVG & overlay = superPanel.getOverlay();
 
-	drain::image::TreeSVG & coordMonitor = imagePanel["MOUSE_COORD"](svg::TEXT);
+	drain::image::TreeSVG & coordMonitor = overlay["MOUSE_COORD"](svg::TEXT); // imagePanelGroup
 	coordMonitor->setId();
-	coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
+	//coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
+	coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
 	coordMonitor->setAlign(AlignSVG::RIGHT, AlignSVG::BOTTOM);
 	coordMonitor->addClass("COORD_MONITOR");
 	coordMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::TIME); // check
 	coordMonitor->setTextSafe("(x,y)");
 	coordMonitor->setFontSize(15,20);
 
-	drain::image::TreeSVG & valueMonitor = imagePanel["MOUSE_VALUE"](svg::TEXT);
+	drain::image::TreeSVG & valueMonitor = overlay["MOUSE_VALUE"](svg::TEXT); // imagePanelGroup
 	valueMonitor->setId();
 	valueMonitor->setMyAlignAnchor("MOUSE_COORD");
 	valueMonitor->setAlign(AlignSVG::RIGHT);
@@ -906,42 +917,29 @@ void CmdData::exec() const {
 	valueMonitor->addClass("VALUE_MONITOR");
 	// Associate with graphical "location" style
 	valueMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::LOCATION);
-	valueMonitor->setTextSafe("(value)");
+	valueMonitor->setTextSafe("-value-");
 	valueMonitor->setFontSize(15,20);
 
-	/*
-	TreeSVG & coordElem = group[RackSVG::ElemClass::LOCATION](svg::TEXT);
-		locationHeader->addClass(elemClass, RackSVG::ElemClass::LOCATION);
-		locationHeader->addClass(LayoutSVG::NEUTRAL); // testing LayoutSVG::NEUTRAL
-		locationHeader->setMyAlignAnchor(anchor);
-	*/
-
-
-	// ???
-
-
-	// Construct actual data and save it.
-
+	// Formatted status: also \c filename can contain variables.
 	const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
 	mout.special(DRAIN_LOG(filenameFinal));
-	dataImageElem->setUrl(filenameFinal);
+	drain::image::TreeSVG & dataImageElem = superPanel.getDataImage(filenameFinal, data.getGeometry().getAreaGeometry());
+	addGeoData(data, dataImageElem);
+	//dataImageElem->setUrl(filenameFinal);
 
-	drain::image::ImageT<uint8_t> dataImage;
+	// Construct actual data (RGB) and save it.
+	const std::type_info & type = data.getType();
+	const int bits = 8 * drain::Type::call<drain::sizeGetter>(type);
+	const int bias = drain::Type::call<drain::typeMin, int>(type);
+	mout.attention(DRAIN_LOG(bits), ' ', DRAIN_LOG(bias));
 
-
-	dataImage.setGeometry(data.getWidth(), data.getHeight(), 3);
+	drain::image::ImageT<uint8_t> dataImage(data.getWidth(), data.getHeight(), 3);
 	drain::image::Channel & red   = dataImage.getChannel(0);
 	drain::image::Channel & green = dataImage.getChannel(1);
 	//drain::image::Channel & blue  = dataImage.getChannel(2);
 
-	const std::type_info & type = data.getType();
 
-	// const int bias = std::numeric_limits<T>::min();
-	const int bias = drain::Type::call<drain::typeMin, int>(type);
-	const int bits = 8 * drain::Type::call<drain::sizeGetter>(type);
-	// const int bits = 8 * sizeof(T);
 	int value;
-	mout.attention(DRAIN_LOG(bits), ' ', DRAIN_LOG(bias));
 
 	drain::image::Channel::iterator rit = red.begin();   // More significant bits
 	drain::image::Channel::iterator git = green.begin(); // Less significant bits
@@ -970,67 +968,11 @@ void CmdData::exec() const {
 
 	drain::image::FilePng::write(dataImage, filenameFinal);
 
-	return;
+	drain::image::TreeSVG & mouseListenerElem = superPanel.getMouseListenerLayer();
+	mouseListenerElem->setStyle("fill", "red");       //
+	mouseListenerElem->setStyle("fill-opacity", 0.1); // TODO: transparent tracker
 
-	//drain::image::FilePng::write(data, ctx.outputPrefix + "gray.png");
-
-	/*
-
-	if (type == typeid(unsigned char)){
-
-		typedef unsigned char T;
-		const T bias = std::numeric_limits<T>::min();
-		T value;
-		drain::image::Channel::iterator rit = red.begin();
-		drain::image::Channel::iterator git = green.begin();
-		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-			value = static_cast<T>(*it) - bias;
-			*rit =  value     & 0xff;
-			// *git = (value>>8) & 0xff;
-			++rit;
-			// ++git;
-		}
-
-		drain::image::FilePng::write(dataImage, filenameFinal);
-
-	}
-	else if (type == typeid(unsigned short int)){
-		drain::image::Channel::iterator rit = red.begin();
-		drain::image::Channel::iterator git = green.begin();
-		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-			*rit = (static_cast<unsigned short int>(*it))    & 0xff;
-			*git = (static_cast<unsigned short int>(*it)>>8) & 0xff;
-			++rit;
-			++git;
-		}
-
-		drain::image::FilePng::write(dataImage, filenameFinal);
-
-	}
-	else if (type == typeid(signed short int)){
-
-		mout.unimplemented<LOG_WARNING>("unscaled handling of signed type:", drain::Type::call<drain::simpleName>(type));
-		typedef signed short int T;
-		const T bias = std::numeric_limits<T>::min();
-		T value;
-		drain::image::Channel::iterator rit = red.begin();
-		drain::image::Channel::iterator git = green.begin();
-		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-			value = static_cast<T>(*it) - bias;
-			*rit =  value     & 0xff;
-			*git = (value>>8) & 0xff;
-			++rit;
-			++git;
-		}
-
-		drain::image::FilePng::write(dataImage, filenameFinal);
-
-	}
-	else {
-		mout.unimplemented<LOG_ERR>("type:", drain::Type::call<drain::simpleName>(type));
-	}
-	*/
-
+	// return;
 
 }
 
@@ -1049,15 +991,15 @@ void CmdTestData::exec() const {
 
 	RadarSVG radarSVG;
 	//drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
-	drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
+	//drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
+	// drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
 
 	/// Ensure that the script is available.
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
 
 	// TEST 1: float vector
 	const std::vector<float> floatVector(11*11, 1.2345);
-	test(img, floatVector, mout);
+	//test(img, floatVector, mout);
 
 	// TEST 2: short unsigned vector
 	const int N = 64;
@@ -1067,7 +1009,7 @@ void CmdTestData::exec() const {
 			uint16Vector[j*N+i] = j*N+i;
 		}
 	}
-	test(img, uint16Vector, mout);
+	// test(img, uint16Vector, mout);
 
 
 	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);

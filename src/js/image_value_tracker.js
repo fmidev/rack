@@ -9,8 +9,10 @@ function RadarDataEncoding(encoding){
     // Could be hidden, for now
     this.precision = 2; // digits
 
-    if (!encoding)
+    if (!encoding){
+	// Error?
 	return;
+    }
     
     if (typeof(encoding) === "string"){
 	// console.info(elem);
@@ -53,12 +55,12 @@ RadarDataEncoding.prototype.decode = function(value){
 }
 
 
-async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valueMonitorElem){
+async function set_image_value_tracker(listenerElem, dataElem, encoding, coordMonitorElem, valueMonitorElem){
 
     const svg = document.querySelector("svg");
     
-    await imgElem.decode();
-    const bbox  = imgElem.getBoundingClientRect();
+    await dataElem.decode();
+    const bbox  = dataElem.getBoundingClientRect();
     console.log('bbox: ', bbox);
     // const w = imgElem.naturalWidth  | 1;
     // const h = imgElem.naturalHeight | 1;
@@ -75,7 +77,7 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
     // Draw and read
     ctx.clearRect(0, 0, w, h);
     // ctx.drawImage(imgElem, 0, 0);
-    ctx.drawImage(imgElem, 0, 0, w, h);
+    ctx.drawImage(dataElem, 0, 0, w, h);
 
     
     
@@ -88,11 +90,11 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
     function grayAt(x, y) {
 
 	const e = encoding;
-
-	//x = Math.floor(x)
+	// IMPORTANT: must be int values
+	//x = Math.floor(x) 
 	//y = Math.floor(y)
 	
-	if (x < 0 || y < 0 || x >= w || y >= h) return "";
+	if (x < 0 || y < 0 || x >= w || y >= h) return "(value)";
 	const i = (y * w + x) * 4;
 	// Red: higher bits, Green: lower bits
 	const v = (data[i]<<8) + data[i+1];
@@ -101,7 +103,7 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
 
     }
 
-    imgElem.addEventListener("mousemove", (ev) => {
+    listenerElem.addEventListener("mousemove", (ev) => {
 
 	// svg - doc root linked above
 	/*
@@ -113,10 +115,10 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
 	const x = Math.floor(p.x);
 	const y = Math.floor(p.y);
 	*/
-	var my_bbox  = imgElem.getBoundingClientRect();
+	var my_bbox  = listenerElem.getBoundingClientRect();
 	var x = Math.floor(ev.clientX - my_bbox.left);
 	var y = Math.floor(ev.clientY - my_bbox.top);
-	coordMonitorElem.textContent = '('+x+','+y+')'; //.toFixed(2);
+	coordMonitorElem.textContent = '('+x+','+y+')' //.toFixed(2);
 	valueMonitorElem.textContent = grayAt(x,y); //.toFixed(2);
     })
     
@@ -127,18 +129,42 @@ async function set_image_value_tracker(imgElem, encoding, coordMonitorElem, valu
 function image_value_tracker(){
 
     // const elems = document.querySelectorAll("metadata[data-base64]");
-    const elems = document.querySelectorAll(".MOUSE_VALUE");
+    const elems = document.querySelectorAll(".MOUSE_VALUE"); // group
 
     elems.forEach(elem => {
 
-	const dataElem = elem.querySelector(".MOUSE_VALUE_DATA");
-	window.metadata = dataElem;
-	var encoding = new RadarDataEncoding(dataElem.getAttribute("data-encoding"))
+	const listenerElem = elem.querySelector(".MOUSE_LISTENER");
+	const dataElem     = elem.querySelector(".MOUSE_VALUE_DATA");
 
+	if (!listenerElem){
+	    console.info(group);
+	    console.error('elem .MOUSE_VALUE found without child elem .MOUSE_LISTENER');
+	    return
+	}
+	
+	if (!dataElem){
+	    console.info(group);
+	    console.error('elem .MOUSE_VALUE found without child elem .MOUSE_VALUE_DATA');
+	    return
+	}
+	
+	// window.metadata = dataElem;
 	const coordMonitorElem = elem.querySelector(".COORD_MONITOR");
 	const valueMonitorElem = elem.querySelector(".VALUE_MONITOR");
+	var encoding = new RadarDataEncoding(dataElem.getAttribute("data-encoding"))
+
+	if (!encoding){
+	    console.info(dataElem);
+	    console.error('Failed in parsing attribute "data-encoding" of dataElem');
+	    return
+	}
+	else {
+	    console.info(encoding);
+	}
 	
-	set_image_value_tracker(dataElem, encoding, coordMonitorElem, valueMonitorElem);
+	
+	set_image_value_tracker(listenerElem, dataElem, encoding, coordMonitorElem, valueMonitorElem);
+
 	// var type = dataElem.getAttribute("data-basetype");
 	
     });

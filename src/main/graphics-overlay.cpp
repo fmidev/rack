@@ -82,11 +82,8 @@ const std::string CmdPolarBase::DATA_ID = "data-latest";
  *
  */
 
-
-/**
- *  \param shared - if false, create private object ("layer") for each radar; else use common.
- */
-drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG){ // , bool prepend=false){
+// New.. Keep this?
+void CmdPolarBase::updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -103,27 +100,18 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		// return;
 	}
 
-	Graphic::getGraphicStyle(ctx.svgTrack);
-
-	// OLD drain::image::TreeSVG & group = ...
-	// NEW:..
-	RackSVG::getCurrentAdapterGroup(ctx);
-	// drain::image::TreeSVG & overlayGroup = RadarSVG::getOverlayGroup(group);
-	//ctx.getUpdatedStatusMap();
-	drain::image::TreeSVG & overlayGroup = RackSVG::getVectorImagePanelGroup(ctx);
-	RackSVG::consumeAlignRequest(ctx, overlayGroup);
-
 	const drain::VariableMap & wherePolar = srcPolar[ODIMPathElem::WHERE].data.attributes;
 
 	radarSVG.updateRadarConf(wherePolar); // lon, lat
 
-	std::string srcDsc = "unknown_composite";
+	// std::string srcDsc = "unknown_composite";
 
 	const drain::Variable & object = srcCurr[ODIMPathElem::WHAT].data.attributes["object"];
 	if ((object == "SCAN") || (object == "PVOL")){
 		// mout.note("Polar coordinates"); // Cartesian not "found", ie not created this.
 		// mout.warn("Current object is not projected (Cartesian) data, cannot focus on a specific radar");
-		srcDsc = srcCurr[ODIMPathElem::WHAT].data.attributes["source"].toStr();
+		// srcDsc = srcCurr[ODIMPathElem::WHAT].data.attributes["source"].toStr();
+		radarSVG.source = srcCurr[ODIMPathElem::WHAT].data.attributes["source"].toStr();
 	}
 
 	// mout.note("Cartesian");
@@ -137,7 +125,8 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		radarSVG.updateCartesianConf(whereCart);
 		// Redesign multi-frame mosaick...
 		// overlayGroup->set("data-latest",
-		srcDsc = srcCurr[ODIMPathElem::HOW].data.attributes["nodes"].toStr();
+		// srcDsc =
+		radarSVG.source = srcCurr[ODIMPathElem::HOW].data.attributes["nodes"].toStr();
 	}
 	else {
 		Composite & composite = ctx.getComposite(RackContext::Hi5Role::PRIVATE | RackContext::Hi5Role::SHARED); // SHARED?
@@ -145,18 +134,38 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		radarSVG.updateCartesianConf(composite);
 	}
 
-
-
-
-	// overlayGroup->addClass(GRID); // add RADAR?
-	overlayGroup->set(DATA_ID, srcDsc); // Rack necessity.
-	// New. For mouse coords: // drain::Sprinter::plainLayout
-
 	/*
 	mout.attention(DRAIN_LOG(radarSVG.geoFrame.getEPSG()));
 	mout.attention(DRAIN_LOG(radarSVG.radarProj.getSrc().getEPSG()));
 	mout.attention(DRAIN_LOG(radarSVG.radarProj.getDst().getEPSG()));
+	mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
+	mout.reject<LOG_WARNING>(DRAIN_LOG(radarSVG.radarProj));
 	*/
+
+}
+
+/**
+ *  \param shared - if false, create private object ("layer") for each radar; else use common.
+ */
+drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG){ // , bool prepend=false){
+
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+
+	Graphic::getGraphicStyle(ctx.svgTrack);
+
+	// OLD drain::image::TreeSVG & group = ...
+	// NEW:..
+	RackSVG::getCurrentAdapterGroup(ctx);
+	drain::image::TreeSVG & overlayGroup = RackSVG::getVectorImagePanelGroup(ctx);
+	RackSVG::consumeAlignRequest(ctx, overlayGroup);
+
+
+	updateRadarSVG(ctx, radarSVG);
+
+	overlayGroup->set(DATA_ID, radarSVG.source); // Rack necessity.
+	// New. For mouse coords: // drain::Sprinter::plainLayout
+
 
 	// TODO: should these be in shared level? Also Overlays should be for each vertical "stack".
 	if (radarSVG.geoFrame.getEPSG()){
@@ -172,16 +181,9 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 		radarSVG.geoFrame.getBoundingBoxNat().toSequence(geoBBOX);
 		overlayGroup->set("data-bbox", drain::sprinter(geoBBOX, drain::Sprinter::plainLayout).str());
 	}
-
-
-
 	// DOES not work overlayGroup->set("data-epsg", radarSVG.geoFrame.getEPSG());
 
-	// overlayGroup->addClass("COORDS");
-	overlayGroup[svg::DESC](svg::DESC)->setText(srcDsc); // General SVG comment
-	// mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
-	// mout.reject<LOG_WARNING>(DRAIN_LOG(radarSVG.radarProj));
-
+	overlayGroup[svg::DESC](svg::DESC)->setText(radarSVG.source); // General SVG comment
 	return overlayGroup;
 
 };
@@ -362,11 +364,36 @@ void CmdRadarDot::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	RadarSVG radarSVG;
-	//TreeSVG & overlayGroup =
-	TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 
 
+	//TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+	/*
+	TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
+	// TreeSVG::generateKey(adapterGroup, ctx.currentImagePanel);
 
+	const bool PENDING = ctx.currentImagePanel.empty();
+
+	mout.attention(DRAIN_LOG(ctx.currentImagePanel));
+	TreeSVG & imagePanelGroup = adapterGroup[PENDING ? "pending" : ctx.currentImagePanel];
+	if (PENDING){
+		imagePanelGroup->addClass(FloaterSVG::FLOATING);
+	}
+	*/
+	TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroupNEW(ctx);
+
+	updateRadarSVG(ctx, radarSVG);
+	// ctx.getStatusMap().get("what:source", "unknown-source");
+
+	ImagePanel superPanel(imagePanelGroup);
+
+	imagePanelGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	imagePanelGroup->addClass(LayoutSVG::NEUTRAL);
+	imagePanelGroup->addClass(LayoutSVG::INDEPENDENT);
+	imagePanelGroup->addClass(ClipperSVG::CLIPPED);
+
+	TreeSVG & overlayGroup = superPanel.getOverlay();
+
+	overlayGroup->set(DATA_ID, radarSVG.source); // needed? changes for each radar?
 
 	// Always a range, though here only dis.max used
 	drain::SteppedRange<double> dist(0.0, 0.0, 30.0);
@@ -388,7 +415,11 @@ void CmdRadarDot::exec() const {
 			// {"opacity", 0.5}
 	});
 
-	TreeSVG & vectGroup = RackSVG::getSourceSpecificGroup(ctx, overlayGroup);
+
+	TreeSVG & vectGroup = superPanel.getSourceSpecificGroup(radarSVG.source);
+	// RackSVG::getSourceSpecificGroup(ctx, overlayGroup);
+
+	vectGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	vectGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', getParameters(), " for ", radarSVG.source);
 	// vectGroup.addChild()->setComment(getName(), ' ', getParameters());
 	drain::image::TreeSVG & curve = vectGroup[DOT](drain::image::svg::PATH);
@@ -487,33 +518,6 @@ void CmdRadarDotTest::exec() const {
 
 };
 
-/*
-void getSafeKeyOLD(const std::string & src, std::string & dst, const std::string & accept="_", const std::string & toUnderScore=""){
-	std::stringstream sstr;
-	bool FIRST = true;
-	for (const char & c: src){
-		if ((c >= 'A') && (c <= 'Z')){
-			sstr << c;
-		}
-		else if ((c >= 'a') && (c <= 'z')){
-			sstr << c;
-		}
-		else if (!FIRST){
-			if ((c >= '0') && (c <= '9')){
-				sstr << c;
-			}
-			else if (accept.find(c) != std::string::npos) {
-				sstr << c;
-			}
-			else if (toUnderScore.find(c) != std::string::npos) {
-				sstr << '_';
-			}
-		}
-		FIRST = false;
-	};
-	dst = sstr.str();
-}
-*/
 
 
 void CmdRadarLabel::exec() const  {
@@ -527,8 +531,25 @@ void CmdRadarLabel::exec() const  {
 	RadarSVG radarSVG;
 
 	getOverlayGroup(ctx, radarSVG);
+
+	/*  1) Radar-PROJ-yleistys! Ehkä erillinen svg, parametreilla?
+	 *  2) ks FIRST! RackSVG::getVectorImagePanelGroup(ctx);
+	 *  3)
+	 *
+	 */
+
 	TreeSVG & imagePanelGroup = RackSVG::getVectorImagePanelGroup(ctx);
+	/*
 	TreeSVG & vectGroup =  RackSVG::getSourceSpecificGroup(ctx, imagePanelGroup);
+
+
+	TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
+	mout.attention(DRAIN_LOG(ctx.currentImagePanel));
+	TreeSVG & imagePanelGroup = adapterGroup[ctx.currentImagePanel];
+	*/
+	ImagePanel superPanel(imagePanelGroup);
+
+	TreeSVG & vectGroup = superPanel.getOverlay();
 
 	// const std::string source = ctx.getStatus("what:source", false);
 	// TreeSVG & vectGroup =  imagePanel[source](svg::GROUP);

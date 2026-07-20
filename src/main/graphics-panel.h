@@ -50,9 +50,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "resources-image.h"
 
 
+
 namespace rack {
-
-
 
 /// SVG support for creating aligned image panels
 class RackSVG {
@@ -93,6 +92,7 @@ public:
 		// SHARED_METADATA, // Something that should not be repeated in panels.
 		// --- unused ? ---
 		// TITLE,      // Default title
+		OVERLAY,          // Standard subgroup name inside IMAGE_PANEL group.
 	};
 
 
@@ -137,6 +137,14 @@ public:
 	static
 	drain::image::TreeSVG & getMainGroup(RackContext & ctx);
 
+protected:
+
+	static
+	drain::image::TreeSVG & getStackedGroup(RackContext & ctx);
+
+
+public:
+
 	/** Intermediate group "hiding" translation that moves upper left corner of the object to the origin.
 	 *
 	 */
@@ -148,17 +156,30 @@ public:
 
 	/// Applicable for PNG images.
 	static
+	drain::image::TreeSVG & getImagePanelGroupNEW(RackContext & ctx, const drain::FilePath & filepath, bool unique=false);
+
+	/// Returns the last applicable
+	static
+	drain::image::TreeSVG & getImagePanelGroupNEW(RackContext & ctx);
+
+
+	/// Applicable for PNG images.
+	static
 	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath, bool unique=false);
 
 	static
-	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx);
+	drain::image::TreeSVG & getImagePanelGroupPlain(RackContext & ctx);
 
 	/// Applicable for vector graphics.
 	static
 	drain::image::TreeSVG & getVectorImagePanelGroup(RackContext & ctx);
 
 	static
-	drain::image::TreeSVG & getFloatingGroup(RackContext & ctx);
+	drain::image::TreeSVG & getOverlayGroup(TreeSVG & imagePanelGroup);
+
+	static
+	drain::image::TreeSVG & getFloatingGroupFOO(TreeSVG & imagePanel);
+	// drain::image::TreeSVG & getFloatingGroup(RackContext & ctx);
 
 	static
 	drain::image::TreeSVG & getSourceSpecificGroup(RackContext & ctx, drain::image::TreeSVG & panel);
@@ -175,6 +196,9 @@ public:
 	static
 	// drain::image::TreeSVG &
 	void addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
+
+	static
+	void addImageNEW(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<drain::image::svg::coord_t> & frame);
 
 	/// Currently, uses file link (does not embed)
 	static
@@ -219,8 +243,8 @@ public:
 
 
 	/// Add rectangle
-	static
-	drain::image::TreeSVG & addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
+	// static
+	// drain::image::TreeSVG & addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
 
 
 	/// Add
@@ -236,8 +260,73 @@ protected:
 
 };
 
+
 } // rack
 
+namespace rack {
+
+
+
+class ImagePanel {
+
+
+public:
+
+	ImagePanel(TreeSVG & imagePanelGroup);
+
+	ImagePanel(TreeSVG & imagePanelGroup, const drain::FilePath & filePath, const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0});
+
+	TreeSVG & getImage(const drain::FilePath & filePath = drain::FilePath(), const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
+
+	inline
+	TreeSVG & getMetadata(){
+		return getUniqueElem(imagePanelGroup, svg::METADATA);
+	}
+
+	inline
+	TreeSVG & getOverlay() const {
+		return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::OVERLAY, svg::GROUP);
+	};
+
+	inline
+	TreeSVG & getBackGround() const {
+		TreeSVG & overlay = getOverlay();
+		return getUniqueElem(overlay, RackSVG::ElemClass::BACKGROUND_RECT, svg::RECT);
+	};
+
+
+	inline
+	TreeSVG & getImageBorder() const {
+		return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::IMAGE_BORDER, svg::RECT);
+	};
+
+
+	TreeSVG & getMouseListenerLayer() const;
+
+	TreeSVG & getDataImage(const drain::FilePath & filepath = drain::FilePath(), const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
+
+
+	TreeSVG & getSourceSpecificGroup(const std::string & source) const;
+
+
+protected:
+
+	TreeSVG & imagePanelGroup;
+
+	TreeSVG & getUniqueElem(TreeSVG & parent, RackSVG::ElemClass cls, svg::tag_t type = svg::GROUP) const;
+
+	TreeSVG & getUniqueElem(TreeSVG & parent, svg::tag_t type = svg::GROUP) const;
+
+};
+
+
+} // rack::
+
+namespace drain {
+
+DRAIN_TYPENAME(rack::ImagePanel);
+
+}  // drain
 
 
 namespace drain {
@@ -247,47 +336,6 @@ DRAIN_ENUM_OSTREAM(rack::RackSVG::ElemClass);
 
 DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::RackSVG::ElemClass);
 
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-bool image::TreeSVG::hasChild(const rack::RackSVG::ElemClass & key) const ;
-
-/// Automatic conversion of elem classes to strings.
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-const image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & value) const;
-
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::RackSVG::ElemClass & key);
-*/
-
-//
-/*
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const rack::GraphicsContext::ElemClass &x);
-*/
-
-/// Automatic conversion of elem classes to strings.
-/**
- *
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-image::TreeSVG & image::TreeSVG::operator[](const image::svg::tag_t & type);
- */
-
-
-//template <>
-//const drain::Enum<RackSVG::TitleClass>::dict_t  drain::Enum<RackSVG::TitleClass>::dict;
-
-/*
-template <>
-const std::string std::static_cast<std::string>(const RackSVG::ElemClass & e){
-	return drain::Enum<RackSVG::ElemClass>::dict.getKey(e);
-}
-*/
 
 }
 

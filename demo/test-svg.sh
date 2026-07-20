@@ -101,8 +101,11 @@ function RUN_TEST(){
     source $TMPDIR/$BASENAME.cmd
     if [ $? != 0 ]; then
 	echo "# $cmd"
+	echo "# $rack_cmd"
 	echo "Rack command failed"
-	exit 1
+	echo "${rack_cmd}" > $BASENAME-rack.err
+	#exit 1
+	return
     fi
 
     echo "# Format $FORMAT "
@@ -116,7 +119,9 @@ function RUN_TEST(){
 	else
 	    echo $cmd
 	    echo "# FAIL: XML syntax error (xmllint $OUTFILE) "
-	    exit 2
+	    echo "${rack_cmd}" > $BASENAME-xml.err
+	    #exit 2
+	    return
 	fi
 
 	local OUTFILE_PNG=$BASENAME.png
@@ -130,6 +135,7 @@ function RUN_TEST(){
 	else
 	    echo $cmd
 	    echo "# FAIL: SVG->PNG conversion "
+	    echo "${cmd}" > $BASENAME.err
 	    exit 3
 	fi
 

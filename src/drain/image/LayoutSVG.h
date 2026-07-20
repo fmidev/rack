@@ -108,7 +108,7 @@ public:
 	enum GroupType {
 		STACK_LAYOUT, // Align elements in rows or columns. (Alternate the axis in nesting STACK_LAYOUT levels)
 		ADAPTER,      // Translate this group object such that the upper right corner of graphics are in the origin (0,0).
-		ALIGN,        // Align this object, with applicable rules and preferences (populate me with align instructions, unless already set)
+		// ALIGN,        // Align this object, with applicable rules and preferences (populate me with align instructions, unless already set)
 		COMPOUND,     // Internal elements are already aligned, bypass recursion.
 		FIXED,        // Absolute position - do not align. (Do not adjust coordinates, but allow internal recursion.
 		INDEPENDENT,  // No anchoring allowed – but inclusion by collective bounding box applies, unless NEUTRAL.

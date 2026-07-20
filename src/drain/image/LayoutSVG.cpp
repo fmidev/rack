@@ -43,26 +43,20 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain {
 
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType) = {
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
-		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FIXED),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INDEPENDENT),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, NEUTRAL),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
 };
 
 DRAIN_ENUM_DICT(image::LayoutSVG::Direction) = {
 		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, INCR),
 		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, DECR),
-		/*
-		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, RIGHT),
-		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, DOWN),
-		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, LEFT),
-		DRAIN_ENUM_ENTRY(image::LayoutSVG::Direction, UP),
-		*/
 };
 
 DRAIN_ENUM_DICT(image::LayoutSVG::DirectionHorz) = {

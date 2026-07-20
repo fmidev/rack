@@ -240,6 +240,10 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	// mout.experimental("check: ", path);
 
 	TreeSVG & parent = tree(path);
+	if (parent.getChildren().size() <= 1){
+		// Nothing to sort
+		return 1;
+	}
 
 	TreeSVG *endMarker = nullptr;
 	for (auto & entry: parent){

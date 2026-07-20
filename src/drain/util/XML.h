@@ -165,30 +165,13 @@ public:
 	inline
 	void setType(const T &t){ // DANGER, without cast?
 		setType(static_cast<intval_t>(t));
-		/*
-		const intval_t t2 = static_cast<intval_t>(t);
-		if (type != t2){
-			// const std::string & tag = getTag();
-			const bool CHANGE = (typeIsSet() && (t2 != COMMENT));
-			if (CHANGE){
-				Logger(__FILE__, __FUNCTION__).warn("Changing type from ", getType(), " to ", t, '(', t2, ')');
-			}
-			reset();
-			type = t2; // also UNDEFINED ok here
-			if (CHANGE){
-				//Logger(__FILE__, __FUNCTION__).error("Type changed from ", tag, " to ", getTag());
-			}
-			handleType(); // NOTE: problems, if copy constructor etc. calls setType on a base class – trying to link future members
-		}
-		*/
-		// handleType(static_cast<T>(t)); REMOVED 2025/09
-		// in derived classes, eg. drain::image::BaseGDAL
-		// warning: case value ‘...’ not in enumerated type
 	}
 
+	///
+	/**
+	 *   Initializes element accordind to the type
+	 */
 	void setType(intval_t t);
-
-
 
 	inline
 	const intval_t & getType() const {
@@ -345,10 +328,20 @@ public:
 	template <class ...T>
 	inline
 	void setComment(const T & ...args) {
-		this->clear(); // what if also uncommenting needed?
-		// this->clearClasses();
+		this->reset();
+		//this->clear(); // what if also uncommenting needed?
 		type = COMMENT;
 		setText(args...);
+	}
+
+	template <class ...T>
+	inline
+	void setCommentSafe(const T & ...args) {
+
+		this->reset();
+		//this->clear(); // what if also uncommenting needed?
+		type = COMMENT;
+		setTextSafe(args...);
 	}
 
 	/// Assign the text content of this node. If the node type is undefined, set it to CTEXT.

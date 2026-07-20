@@ -33,10 +33,10 @@ function image_coord_tracker(){
     groups.forEach(group => {
 
 	// Plane listening to mouse events
-	const coordTracker = group.querySelector('.MOUSE_TRACKER');
+	const coordTracker = group.querySelector('.MOUSE_LISTENER');
 	if (!coordTracker){
 	    console.info(group);
-	    console.error('elem .MOUSE found without child .MOUSE_TRACKER');
+	    console.error('elem .MOUSE found without child .MOUSE_LISTENER');
 	    return;
 	}
 
@@ -81,29 +81,8 @@ function image_coord_tracker(){
 		if (m.drag && selectionRect){
 		    m.updateSpan(selectionRect);
 		    if (monitorDrag){
-			//
+			// Toggle text direction away from rect/image borders 
 			flipFlop(monitorDrag, m.curr.x < m.start.x, m.curr.y < m.start.y);
-
-			/*
-			if (m.curr.x > m.start.x){
-			    monitorDrag.style.setProperty('text-anchor','start');
-			    // monitorDrag.setAttribute('style', 'text-anchor:start');
-			    // monitorDrag.setAttribute('text-anchor','start'); // if raised, perhaps not inherited
-			}
-			else {
-			    monitorDrag.style.setProperty('text-anchor','end');
-			    // monitorDrag.setAttribute('style', 'text-anchor:end');
-			    // monitorDrag.setAttribute('text-anchor','end'); // SVG (not CSS): if raised, perhaps not inherited?
-			    }
-
-			
-			if (m.curr.y > m.start.y){
-			    monitorDrag.setAttribute('transform', 'translate(0,+20)'); // retrieve font size?
-			}
-			else {
-			    monitorDrag.setAttribute('transform', 'translate(0,-10)'); // retrieve font size?
-			    }
-			    */			
 		    }
 		}
 	    })

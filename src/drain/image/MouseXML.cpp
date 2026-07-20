@@ -13,7 +13,7 @@ namespace drain {
 
 DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
 		// DRAIN_ENUM_ENTRY(rack::Interactive::ElemClass, MOUSE),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MOUSE_TRACKER),
+		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MOUSE_LISTENER),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_MOVE),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DOWN),

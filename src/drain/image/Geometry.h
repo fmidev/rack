@@ -241,6 +241,11 @@ public:
 		return area.getArea();
 	};
 
+    inline
+    const AreaGeometry & getAreaGeometry() const {
+    	return area;
+    }
+
 
 	/// Set...
 	// template <class T>

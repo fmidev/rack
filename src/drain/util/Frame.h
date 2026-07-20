@@ -71,6 +71,11 @@ public:
 		this->set(geometry.width, geometry.height);
 	}
 
+	template <class T2>
+	Frame2D(const UniTuple<T2,2> & tuple)  : width(this->next()), height(this->next()) {
+		this->set(tuple[0], tuple[1]);
+	}
+
 	// Reference, N>=2
 	template <size_t N>
 	// Frame2D(drain::UniTuple<T,N> & tuple, T i) : // WHY T i, not int index type?size_t

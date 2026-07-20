@@ -450,6 +450,14 @@ void CmdOutputFile::exec() const {
 
 		if (IMAGE_PNG){
 			RackSVG::addImage(ctx, srcImage, filepath);
+			/*
+			TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
+			TreeSVG::generateKey(adapterGroup, ctx.currentImagePanel);
+			mout.attention(DRAIN_LOG(ctx.currentImagePanel));
+			ImagePanel imagePanel(adapterGroup[ctx.currentImagePanel]);
+			imagePanel.getImage(filepath, srcImage.getGeometry().getAreaGeometry());
+			drain::image::NodeSVG::toStream(std::cout, adapterGroup);
+			*/
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");

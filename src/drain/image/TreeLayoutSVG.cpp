@@ -146,22 +146,6 @@ void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 
 }
 
-/*
-void surround(TreeSVG & group, const TreeSVG::path_elem_t & childKey){
-
-	static const TreeSVG::path_elem_t cageElem("cage");
-	static const TreeSVG::path_elem_t dummyElem("dummy");
-
-
-	TreeSVG & cage  = group[cageElem](svg::GROUP);
-	cage->addClass("cage");
-	TreeSVG & dummy = cage[dummyElem](svg::GROUP);
-	dummy->addClass("dungeon");
-	// dummy->setText("Hello!");
-	dummy.swap(group[childKey]);
-
-}
-*/
 
 
 
@@ -188,9 +172,9 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 
 	if (node.hasClass(LayoutSVG::INDEPENDENT)){
 		if (!node.isAligned()){
+			mout.revised("Keeping ", LayoutSVG::INDEPENDENT, " unaligned,  check results...");
 			// somewhat atribitrary
-			node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
-			// object[svg::COMMENT]
+			// node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
 		}
 	}
 	else if (node.hasClass(LayoutSVG::FIXED)){
@@ -210,23 +194,13 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 	if (node.typeIs(svg::SVG, svg::GROUP)){
 
 		if (node.hasClass(LayoutSVG::STACK_LAYOUT)){
+			// mout.special("Flip orientation to ", orientation, " for children of ", node);
 			orientation = AlignBase::flip(orientation);
-			// mout.special("flipped orientation to ", orientation, " for children of ", node);
-			// Also mark and increment level:
-			// node.addClass(StringBuilder<'_'>("STACK", depth).str()); // future option...
 			++depth;
 		}
 
 		for (TreeSVG::pair_t & entry: object){
 			addStackLayout(entry.second, orientation, dirHorz, dirVert, depth);
-			//addStackLayout(entry.second, orientation, direction, depth);
-			/*
-			if (entry.second->typeIs(svg::IMAGE)){
-				// steal DESC and TITLE
-				surround(object, entry.first);
-			}
-			*/
-
 		}
 	}
 
@@ -246,34 +220,16 @@ void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, 
 		else {
 			node.setAlign(AlignSVG::LEFT, MutualAlign::OUTSIDE);
 		}
-		/*
-		if (direction==LayoutSVG::Direction::INCR){
-			node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
-		}
-		else {
-			node.setAlign(AlignSVG::LEFT, MutualAlign::OUTSIDE);
-		}
-		*/
-		// node.setAlign(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
 		// Assign "hanging"
 		node.setAlign(AlignSVG::TOP, MutualAlign::INSIDE); // for some apps, could be BOTTOM as well?
 	}
 	else {
-		//if (dirFlagger.isSet(LayoutSVG::Direction::DOWN)){
 		if (dirVert == LayoutSVG::DirectionVert::DOWN){
 			node.setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 		}
 		else {
 			node.setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
 		}
-		/*
-		if (direction==LayoutSVG::Direction::INCR){
-			node.setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
-		}
-		else {
-			node.setAlign(AlignSVG::TOP, MutualAlign::OUTSIDE);
-		}
-		*/
 		node.setAlign(AlignSVG::LEFT, MutualAlign::INSIDE); // for some apps, could be RIGHT as well?
 	}
 }
@@ -432,7 +388,6 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 		BBoxSVG b;
 		getAdjustedBBox(group.data, b);
 		anchorSpan.copyFrom(b); // translate should be anyway 0,0 (now, still)
-		//anchorSpan.copyFrom(node); // translate should be anyway 0,0 (now, still)
 	}
 	else if (anchorElem.isSpecific()){
 		if (group.hasChild(anchorElem)){
@@ -444,11 +399,12 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 				BBoxSVG b;
 				getAdjustedBBox(anchorNode, b);
 				anchorSpan.copyFrom(b);
-				//anchorSpan.copyFrom(anchorNode);
+				//anchorSpan.copyFrom(anchorNode); For some reason this does not work...
 			}
 		}
 		else {
 			mout.warn("non-existing anchor-", AX, " element=/", anchorElem,"/ requested for node ", id);
+			// Debugging:
 			for (const auto & entry: group.getChildren()){
 				const NodeSVG & n = entry.second.data;
 				if ((&n != &node) && !n.isAbstract()){
@@ -477,17 +433,11 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 	}
 	else {
 		// When should this happen?
+		mout.suspicious<LOG_NOTICE>("Current span-", AX, " undefined ", anchorSpan);
 	}
 
 }
 
-/*
-inline
-std::ostream & operator<<(std::ostream & ostr, const drain::image::TransformSVG & tr){
-	tr.toStream(ostr);
-	return ostr;
-}
-*/
 
 /**
  *   Aligns each object which isAligned()
@@ -504,7 +454,6 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 	// Starting point (indeed): origin.
 	// Basic idea: Stack-align objects on a separate "board" group, and finally move the board if needed.
-
 
 	/// Ideally, each object (graphic element or compound object) should:
 	/**  - return a bounding box, or more specifically (width,height) that is, bbox.getFrame())
@@ -528,8 +477,11 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 		if (node.hasClass(LayoutSVG::FIXED)){ // consider joining this with COMPOUND?
 			// mout.attention("fixed, ok ", node);
+			continue;
 		}
-		else if (!node.hasClass(LayoutSVG::COMPOUND)){
+
+		// else
+		if (!node.hasClass(LayoutSVG::COMPOUND)){
 			// First, align the children of this node, recursively
 			superAlign(entry.second);
 		}
@@ -564,8 +516,11 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 		if (node.hasClass(LayoutSVG::FIXED)){
 			// skip moving/translating
+			continue;
 		}
-		else if (node.isAligned()){
+
+		// else
+		if (node.isAligned()){
 			// Horz
 			adjustLocation(group, node, anchorSpanHorz);
 			// if false (has store HORZ request) skip?
@@ -609,92 +564,16 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 		//mout.special("VERT: önd ", anchorSpanVert);
 
-
-		if (!node.hasClass(LayoutSVG::INDEPENDENT)){
-			//aligned.insert(entry.first);
-		}
-
-
-		/*
-		// mout.accept<LOG_NOTICE>("NOW ", NodePrinter(node).str(), " with ", anchorSpanHorz, " and ", anchorSpanVert, " are expanding BBOX of ", NodePrinter(group).str());
-		mout.accept<LOG_NOTICE>("completed ", node.getTag(),'=', node.getId(), ": ",
-				"H:",  anchorSpanHorz.pos, ',', anchorSpanHorz.span, ", ",
-				"V:",  anchorSpanVert.pos, ',', anchorSpanVert.span);
-		*/
-
 		if (!node.hasClass(LayoutSVG::NEUTRAL)){
-			//compoundBBox.expand(node.getBoundingBox()); // this should be valid :-(
 			compoundBBox.expandHorz(anchorSpanHorz.pos);
 			compoundBBox.expandHorz(anchorSpanHorz.pos + anchorSpanHorz.span);
 			compoundBBox.expandVert(anchorSpanVert.pos);
 			compoundBBox.expandVert(anchorSpanVert.pos + anchorSpanVert.span);
-			// mout.accept<LOG_NOTICE>("COMPOUND BBOX, now ", compoundBBox, " now, after: ", NodePrinter(node).str());
 		}
 
-		// mout.special("VERT: end ", anchorSpanVert);
 
 	}
 	// mout.accept<LOG_NOTICE>("compoundBBox   end:", group->getBoundingBox(), " obj=", group.data);
-
-	// Debugging
-	/*
-	for (TreeSVG::pair_t & entry: object){
-
-		NodeSVG & node = entry.second.data;
-		if (node.typeIs(svg::GROUP)){ // Non-graphic
-
-			CoordSpan<AlignBase::Axis::HORZ> cx;
-			cx.copyFrom(node);
-			CoordSpan<AlignBase::Axis::VERT> cy;
-			cy.copyFrom(node);
-
-			drain::image::NodeSVG & debugRect = entry.second["debugRect"](svg::RECT);
-			// debugRect.addClass("DEBUG");
-			debugRect.addClass("DEBUG", LayoutSVG::FLOAT);
-
-			BBoxSVG & b =  debugRect.getBoundingBox();
-			b.setLocation(cx.pos, cy.pos);
-			b.setArea(cx.span, cy.span);
-		}
-
-	}
-	*/
-	/*
-	*/
-	// debugRect.set("x", b.x);
-	// debugRect.set("y", b.y);
-	// debugRect.setFrame(b.getFrame());
-
-	/*
-	if (group->hasClass("ADAPTER") || group->hasClass("MAIN") ){
-		mout.accept<LOG_NOTICE>("Finally TUNING  ... ", compoundBBox, " of ", group.data);
-		// TransformSVG & tr = group->transform;
-		// group->transform.setTranslateX(-compoundBBox.x);
-		if (compoundBBox.x || compoundBBox.y){
-			group->set("hey", compoundBBox.getLocation().tuple());
-		}
-
-		//tr.translate.x = -compoundBBox.x;
-		//tr.translate.y = -compoundBBox.y;
-		group->transform.setTranslate(-compoundBBox.x, -compoundBBox.y);
-		compoundBBox.setLocation(0.0, 0.0);
-		//mout.accept<LOG_NOTICE>("... and we get ", NodePrinter(group).str());
-		// std::cerr <<  tr << std::endl;
-		std::stringstream sstr;
-		group->nodeToStream(sstr);
-		//mout.accept<LOG_NOTICE>("... and we get ", NodePrinter(group).str(), " tr=",  tr.translate.tuple(), " and bbox ", compoundBBox);
-		mout.accept<LOG_NOTICE>("... and we get ", sstr.str(), " tr=",  group->transform.translate.tuple(), " and bbox ", compoundBBox);
-
-	}
-	*/
-
-	/*
-	if (group->hasClass("MAIN")){
-		group->transform.translate.x = -group->getBoundingBox().x;
-		group->transform.translate.y = -group->getBoundingBox().y;
-	}
-	*/
-
 
 }
 

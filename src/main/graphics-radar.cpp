@@ -51,6 +51,7 @@ DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC) = {
 		DRAIN_ENUM_ENTRY(rack::Graphic, ANNULUS),
 		DRAIN_ENUM_ENTRY(rack::Graphic, CIRCLE),
 		DRAIN_ENUM_ENTRY(rack::Graphic, RECTANGLE),
+		// DRAIN_ENUM_ENTRY(rack::Graphic, OVERLAY),
 };
 
 /*

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,6,1)
+#define RACK_VERSION drain::Version<>(20,6,2, "beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -94,6 +94,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 20.6.1
  *  - Tree: proper swapData() through template specification: NodeHi5::swap, NodeSVG::swap, ...
  *  - Partially revised imagePanelGroup (mouse interaction)
+ *  Version 20.6.2beta
+ *  - ImagePanel object under construction
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

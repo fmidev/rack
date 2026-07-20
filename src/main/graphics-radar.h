@@ -62,6 +62,7 @@ public:
 		RECTANGLE,  // Box, freely located or located at radar site
 		SPOT,       // External
 		LABEL, 		// External
+		// OVERLAY, // Standard subgroup name inside IMAGE_PANEL group.
 	};
 
 	const drain::ClassXML cls;

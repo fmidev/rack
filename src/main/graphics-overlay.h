@@ -87,6 +87,13 @@ public:
 	static
 	const std::string DATA_ID; // "data-latest"
 
+	/**
+	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
+	 */
+	static
+	void updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG);
+
+
 
 	/**
 	 *  \param shared - if false, create private object ("layer") for each radar; else use common.

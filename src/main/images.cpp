@@ -1100,7 +1100,7 @@ public:
 				// OLD: create a new image panel
 				// RackSVG::addImage(ctx, svg, filepath);
 				// New: attach "directly" to current panel.
-				TreeSVG & paletteImage = RackSVG::getImagePanelGroup(ctx)["palette"](svg::IMAGE);
+				TreeSVG & paletteImage = RackSVG::getImagePanelGroupPlain(ctx)["palette"](svg::IMAGE);
 				paletteImage->setFrame(svg->getBoundingBox().getFrame());
 				paletteImage->setUrl(filepath.str());
 				RackSVG::consumeAlignRequest(ctx, paletteImage);
