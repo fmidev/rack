@@ -179,13 +179,15 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, svg::tag_t type) const {
 
 		// if ((type == svg::RECT) && (parent.hasChild(svg::IMAGE))){
 		if (parent.hasChild(svg::IMAGE)){
-			if (type != svg::RECT){
-				drain::Logger(__FILE__, __FUNCTION__).suspicious("Not RECT: ", '(', type, ')');
+			if (elem->typeIs(svg::GROUP, svg::RECT)){ // , svg::IMAGE
+				elem->setMyAlignAnchor(svg::IMAGE);
+				elem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+				// "Alternatively":
+				elem->setFrame(imagePanelGroup[svg::IMAGE]->getBoundingBox().getFrame());
 			}
-			elem->setMyAlignAnchor(svg::IMAGE);
-			elem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-			// "Alternatively":
-			elem->setFrame(imagePanelGroup[svg::IMAGE]->getBoundingBox().getFrame());
+			else {
+				drain::Logger(__FILE__, __FUNCTION__).reject("Not RECT: ", elem->getTag());
+			}
 		}
 	}
 
@@ -926,23 +928,24 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 
 	addImageNEW(ctx, filepath, src.getGeometry().getAreaGeometry());
 
-
 	TreeSVG & imagePanelGroup = getImagePanelGroupNEW(ctx); // getImagePanelGroup(ctx, filepath);
 
 	ImagePanel superPanel(imagePanelGroup);
-	drain::image::TreeSVG & mouseGroup = superPanel.getMouseListenerLayer();
+	drain::image::TreeSVG & mouseGroup = superPanel.getMouseListenerFrame();
 
 	// practical...
 	if (src.properties.hasKey("where:EPSG")){
+		mouseGroup->addClass("GEOREF");
 		mouseGroup->set("data-epsg", src.properties["where:EPSG"]);
 	}
 
 	if (src.properties.hasKey("where:BBOX_native")){
+		mouseGroup->addClass("GEOREF");
 		mouseGroup->set("data-bbox", src.properties["where:BBOX_native"]);
 	}
 
 	// Metadata:
-	TreeSVG & metadata = imagePanelGroup[svg::METADATA](svg::METADATA);
+	TreeSVG & metadata = superPanel.getMetadata(); // imagePanelGroup[svg::METADATA](svg::METADATA);
 
 	// Note assign: char * -> string  , "where:lat", "where:lon"
 	if (src.properties.hasKey("what:source")){
@@ -973,7 +976,10 @@ void RackSVG::addImage(RackContext & ctx, const drain::image::Image & src, const
 
 
 	TreeSVG & description = superPanel.getImage()[svg::DESC](svg::DESC);
+	mout.attention(drain::sprinter(metadata->getAttributes()));
 	description->set(metadata->getAttributes());
+	//mout.attention(drain::sprinter(description->getAttributes()));
+	//description->set("MIKA", "MÄKI");
 
 
 }
@@ -1006,7 +1012,7 @@ void RackSVG::addImageNEW(RackContext & ctx, const drain::FilePath & filepath, c
 	// addMousePlane(imagePanel);
 	// drain::image::TreeSVG & mouseGroup = imagePanelGroup[RackSVG::ElemClass::MOUSE](svg::GROUP);
 	drain::image::TreeSVG & mouseGroup = overlayGroup;
-	mouseGroup->addClass(RackSVG::ElemClass::MOUSE);
+	// mouseGroup->addClass(RackSVG::ElemClass::MOUSE);
 	mouseGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	// mouseGroup.addChild()->setComment("Mouse interaction");
 
@@ -1081,12 +1087,17 @@ drain::image::TreeSVG & RackSVG::getImageBorder(drain::image::TreeSVG & imagePan
 	return imageBorder;
 }
 
-drain::image::TreeSVG& ImagePanel::getMouseListenerLayer() const {
+drain::image::TreeSVG& ImagePanel::getMouseListenerFrame() const {
+
 	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
-	TreeSVG & mouseListenerLayer = getImageBorder(); // same!
-	mouseListenerLayer->addClass(MouseXML::ElemClass::MOUSE_LISTENER);
+
+	TreeSVG & mouseListenerFrame = getImageBorder(); // same!
+	mouseListenerFrame->addClass(MouseXML::ElemClass::MOUSE_LISTENER);
+	mouseListenerFrame->setStyle("fill", "lightblue");       //
+	mouseListenerFrame->setStyle("fill-opacity", 0.1);
 	// mouseListenerLayer.addChild()->setComment("Mouse interaction");
-	return mouseListenerLayer;
+
+	return mouseListenerFrame;
 }
 
 

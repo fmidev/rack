@@ -40,16 +40,17 @@ function image_coord_tracker(){
 	    return;
 	}
 
-	// var epsg = null;
-	if (group.hasAttribute('data-epsg')){
-	    var epsg = group.getAttribute('data-epsg');
+	// TODO: consider CSS class GEOREF MouseXML.cpp
+	// if (group.hasAttribute('data-epsg')){
+	if (coordTracker.hasAttribute('data-epsg')){
+	    var epsg = coordTracker.getAttribute('data-epsg');
 	    console.info('EPSG='+epsg);
 	}
 	
 	// const BBOX_KEY='data-bbox';
 	var bbox = [0,0,1,1];
-	if (group.hasAttribute('data-bbox')){
-	    bbox = group.getAttribute('data-bbox').split(',');
+	if (coordTracker.hasAttribute('data-bbox')){
+	    bbox = coordTracker.getAttribute('data-bbox').split(',');
 	    console.log('data-bbox: ', bbox);
 	}
 	else {

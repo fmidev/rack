@@ -132,7 +132,8 @@ async function set_image_value_tracker(listenerElem, dataElem, encoding, coordMo
 function image_value_tracker(){
 
     // const elems = document.querySelectorAll("metadata[data-base64]");
-    const elems = document.querySelectorAll(".MOUSE_VALUE"); // group
+    const elems = document.querySelectorAll(".MOUSE"); // group
+    // const elems = document.querySelectorAll(".MOUSE_VALUE"); // group
 
     elems.forEach(elem => {
 
@@ -141,13 +142,13 @@ function image_value_tracker(){
 
 	if (!listenerElem){
 	    console.info(group);
-	    console.error('elem .MOUSE_VALUE found without child elem .MOUSE_LISTENER');
+	    console.warn('elem .MOUSE/_VALUE found without child elem .MOUSE_LISTENER');
 	    return
 	}
 	
 	if (!dataElem){
 	    console.info(group);
-	    console.error('elem .MOUSE_VALUE found without child elem .MOUSE_VALUE_DATA');
+	    console.warn('elem .MOUSE/_VALUE found without child elem .MOUSE_VALUE_DATA');
 	    return
 	}
 	

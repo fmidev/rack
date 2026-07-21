@@ -301,7 +301,7 @@ public:
 	};
 
 
-	TreeSVG & getMouseListenerLayer() const;
+	TreeSVG & getMouseListenerFrame() const;
 
 	TreeSVG & getDataImage(const drain::FilePath & filepath = drain::FilePath(), const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
 
