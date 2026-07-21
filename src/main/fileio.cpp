@@ -449,7 +449,13 @@ void CmdOutputFile::exec() const {
 		//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		if (IMAGE_PNG){
-			RackSVG::addImage(ctx, srcImage, filepath);
+			// RackSVG::addImage(ctx, srcImage, filepath);
+			TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(filepath); //adapterGroup[ctx.currentImagePanel];
+			// ImagePanel superPanel(imagePanelGroup, filepath, srcImage.getGeometry().getAreaGeometry());
+			//ctx.consumeAlignRequest(imagePanelGroup);
+
+			ImagePanel superPanel(imagePanelGroup, srcImage, filepath);
+			// superPanel.getImage(srcImage, filepath);
 			/*
 			TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
 			TreeSVG::generateKey(adapterGroup, ctx.currentImagePanel);
@@ -507,7 +513,7 @@ void CmdOutputFile::exec() const {
 	}
 	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
-		TreeSVG & svgGroup = RackSVG::getMainGroup(ctx);
+		TreeSVG & svgGroup = ctx.getMainGroup();
 
 		svgGroup->set("id", path.tail);
 		if (!ctx.outputPrefix.empty()){
@@ -555,7 +561,7 @@ void CmdOutputFile::exec() const {
 		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
 		TreeLayoutSVG::superAlign(ctx.svgTrack);
 
-		const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
+		const BBoxSVG & bb = ctx.getMainGroup()->getBoundingBox();
 		ctx.svgTrack->setFrame(bb.getFrame()); // width, height
 		ctx.svgTrack->setViewBox(bb);
 

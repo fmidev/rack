@@ -101,7 +101,7 @@ public:
 		drain::Frame2D<double> frame = {150,480};
 
 		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
-		drain::image::TreeSVG & group = RackSVG::getCurrentAdapterGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = ctx.getCurrentAdapterGroup()[value](svg::GROUP);
 		group->setId(value);
 		group->addClass(LayoutSVG::INDEPENDENT);
 
@@ -110,7 +110,7 @@ public:
 		//group->setAlignAnchorHorz(ANCHOR_ELEM);
 		group->setDefaultAlignAnchor(ANCHOR_ELEM);
 
-		RackSVG::consumeAlignRequest(ctx, group);
+		ctx.consumeAlignRequest(group);
 
 		/*
 		if (ctx.alignHorz.topol != AlignSVG::UNDEFINED_TOPOL){
@@ -239,7 +239,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		//drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
-		drain::image::TreeSVG & style = RackSVG::getStyle(ctx); // consider static/global?
+		drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
 
 		std::string cssSelector, cssConf;
 		if (drain::StringTools::split2(value, cssSelector, cssConf, '=')){
@@ -298,11 +298,11 @@ public:
 
 		drain::Frame2D<double> frame = {160,300};
 
-		drain::image::TreeSVG & group = RackSVG::getCurrentAdapterGroup(ctx)[RackSVG::SIDE_PANEL](svg::GROUP);
+		drain::image::TreeSVG & group = ctx.getCurrentAdapterGroup()[RackSVG::SIDE_PANEL](svg::GROUP);
 		group->setId(value);
 		group->addClass(RackSVG::SIDE_PANEL);
 
-		RackSVG::consumeAlignRequest(ctx, group);
+		ctx.consumeAlignRequest(group);
 
 		/*
 		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
@@ -476,7 +476,7 @@ public:
 		drain::Frame2D<double> frame = {300,600};
 
 		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
-		drain::image::TreeSVG & group = RackSVG::getCurrentAdapterGroup(ctx)[value](svg::GROUP);
+		drain::image::TreeSVG & group = ctx.getCurrentAdapterGroup()[value](svg::GROUP);
 		group->setId(value);
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("anchor-elem");
@@ -761,7 +761,7 @@ public:
 
 		ctx.svgTrack->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 
-		drain::image::TreeSVG & debugStyle = RackSVG::getStyle(ctx)[".DEBUG"];
+		drain::image::TreeSVG & debugStyle = ctx.getStyle()[".DEBUG"];
 		if (debugStyle.empty()){
 			debugStyle->set({
 				{"stroke-width", 2},
@@ -773,7 +773,7 @@ public:
 		}
 
 		// drain::image::TreeSVG & group = getPlayGround(ctx);
-		drain::image::TreeSVG & group = RackSVG::getImagePanelGroupPlain(ctx);
+		drain::image::TreeSVG & group = ctx.getImagePanelGroup();
 
 		// const drain::Frame2D<double> frame2 = group->getBoundingBox().getFrame();
 
@@ -786,7 +786,7 @@ public:
 			// node.setMyAlignAnchor(myAnchor);
 		}
 
-		RackSVG::consumeAlignRequest(ctx, node);
+		ctx.consumeAlignRequest(node);
 		// default? node.setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
 
 		drain::image::NodeSVG & text = compoundObject[svg::TEXT](svg::TEXT);
@@ -952,14 +952,14 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdStyle>();
 
 	DRAIN_CMD_INSTALL(Cmd, RadarDot)();
-	DRAIN_CMD_INSTALL(Cmd, RadarDotTest)(); // .section = HIDDEN;
+	// DRAIN_CMD_INSTALL(Cmd, RadarDotTest)(); // .section = HIDDEN;
 	DRAIN_CMD_INSTALL(Cmd, RadarGrid)();
 	DRAIN_CMD_INSTALL(Cmd, RadarSector)();
 	DRAIN_CMD_INSTALL(Cmd, RadarLabel)();
 	// DRAIN_CMD_INSTALL(Cmd, RadarMarker)();
 	DRAIN_CMD_INSTALL(Cmd, RadarRay)();
 	linkRelatedCommands(RadarDot, RadarGrid, RadarRay, RadarSector, RadarLabel); // RadarMarker,
-	linkRelatedCommands(RadarDot, RadarDotTest);
+	// linkRelatedCommands(RadarDot, RadarDotTest);
 
 
 	DRAIN_CMD_INSTALL(Cmd, Dot)();

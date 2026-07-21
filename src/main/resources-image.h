@@ -30,8 +30,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 // # pragma once
-#ifndef RACK_RESOURCES_IMG_H
-#define RACK_RESOURCES_IMG_H
+#ifndef RACK_RESOURCES_IMG
+#define RACK_RESOURCES_IMG
 
 #include <string>
 
@@ -54,91 +54,8 @@ namespace rack {
 
 
 
-struct ConfSVG {
 
-	typedef drain::EnumFlagger<drain::MultiFlagger<FileSVG::IncludePolicy> > IncludeFlagger;
-
-	IncludeFlagger svgIncludes;
-
-	/// SVG file may contain several "modules", for example rows or columns of IMAGE:s. This is the name of the current module, contained in a GROUP.
-	typedef drain::EnumFlagger<drain::MultiFlagger<FileSVG::PathPolicy> > PathPolicyFlagger;
-
-	PathPolicyFlagger pathPolicyFlagger = FileSVG::ABSOLUTE;
-	std::string pathPolicy = "ABSOLUTE";
-
-	// Could be better here:
-	// bool absolutePaths = true;
-
-	std::string mainTitle = "AUTO";   // redesign?
-	std::string groupIdentifier = ""; // NEW = "AUTO"; // redesign?
-	std::string groupTitle = "AUTO";  // NEW
-	// std::string groupTitleFormatted; dynamic, so better store in data-title attribute
-
-	// On hold...
-	/*
-	typedef drain::EnumFlagger<drain::MultiFlagger<ElemClass> > TitleFlagger;
-	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
-	*/
-
-	/**
-	 *   0 - mainTitle.main
-	 *   1 - mainTitle.second and groupTile.main
-	 *   2 - groupTitle.second
-	 *   3 - imageTitle
-	 */
-	drain::UniTuple<double,3>  fontSizes = {15.0, 12.0, 10.0};
-
-	/**
-	 *   0 - mainTitle
-	 *   1 - groupTitle
-	 */
-	drain::UniTuple<double,3>  boxHeights = {30.0, 25.0, 15.0};
-
-	int debug = 0;
-
-	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
-	ConfSVG() : svgIncludes(FileSVG::IncludePolicy::ALL), pathPolicyFlagger(FileSVG::PathPolicy::ABSOLUTE), pathPolicy("ABSOLUTE") { // absolutePaths(true){
-	}
-
-
-};
-
-using namespace drain::image;
-
-class GraphicsContext { // : public drain::BasicCommand {
-
-
-public:
-
-
-
-	/// Default constructor
-	GraphicsContext();
-
-	/// Copy constructor
-	GraphicsContext(const GraphicsContext & ctx);
-
-	TreeSVG svgTrack;
-
-	// SVG output configuration (layout)
-	ConfSVG svgPanelConf; // under constr
-
-	AlignBase::Axis mainOrientation = AlignBase::Axis::HORZ;
-	//LayoutSVG::Direction mainDirection = LayoutSVG::Direction::INCR;
-	LayoutSVG::DirectionHorz mainDirectionHorz = LayoutSVG::DirectionHorz::RIGHT;
-	LayoutSVG::DirectionVert mainDirectionVert = LayoutSVG::DirectionVert::DOWN;
-
-	// Here AlignSVG::HorzAlign and AlignSVG::VertAlign unused, as they contain no Topol(ogy).
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz = {MutualAlign::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
-	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert = {MutualAlign::Topol::INSIDE, AlignBase::Pos::UNDEFINED_POS};
-
-	AlignAnchorSVG::anchor_t anchorHorz;
-	AlignAnchorSVG::anchor_t anchorVert;
-
-	//int svgDebug = 0;
-	std::string currentImagePanel;
-};
-
+// using namespace drain::image;
 
 
 
@@ -169,12 +86,12 @@ public:
 
 
 	inline
-	void setCurrentImageColor(const Image & src){
+	void setCurrentImageColor(const drain::image::Image & src){
 		currentImage     = &src;
 	}
 
 	inline
-	void setCurrentImages(const Image & src){
+	void setCurrentImages(const drain::image::Image & src){
 		currentImage     = &src;
 		currentGrayImage = &src;
 	}
@@ -201,11 +118,11 @@ public:
 	std::string paletteKey;
 	int paletteResolution = 0;
 
-	Palette & getPalette();
+	drain::image::Palette & getPalette();
 
-	Palette & getPalette(const std::string & key);
+	drain::image::Palette & getPalette(const std::string & key);
 
-	void refinePalette(Palette & palette);
+	void refinePalette(drain::image::Palette & palette);
 
 
 	// New, returns also the actual key.
@@ -213,7 +130,7 @@ public:
 
 	/// Given image pointer (null ok), get properties.
 	static
-	void getImageInfo(const Image *ptr, drain::Variable & entry);
+	void getImageInfo(const drain::image::Image *ptr, drain::Variable & entry);
 
 
 
@@ -228,13 +145,7 @@ public:
 };
 
 
-
-
-
-
-
-
-} /* namespace rack */
+}
 
 #endif /* RACKLET_H_ */
 

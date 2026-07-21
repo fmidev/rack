@@ -88,10 +88,10 @@ void CmdDot::exec() const  {
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG);
 
-	drain::image::TreeSVG & overlayGroup = RackSVG::getImagePanelGroupNEW(ctx);
+	drain::image::TreeSVG & overlayGroup = ctx.getImagePanelGroup();
 
 	ImagePanel superPanel(overlayGroup);
-	drain::image::TreeSVG & overlay = superPanel.getOverlay();
+	drain::image::TreeSVG & overlay = superPanel.getOverlayGroup();
 
 	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " imageCoords=", imageCoords);
 
@@ -326,12 +326,13 @@ void addVisibilitySwitch(NodeSVG & dstElem, NodeSVG & controlElem, const std::st
  *
  *   Move to graphics-interactive.
  */
+/*
 TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD) const {
 
 	using namespace drain::image;
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
+	TreeSVG & adapterGroup = ctx.getCurrentAdapterGroup();
 
 	TreeSVG & imagePanelGroup = adapterGroup[ctx.currentImagePanel];
 	if (imagePanelGroup->isUndefined()){
@@ -430,20 +431,12 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 
 	mouseGroup.addChild()->setComment("Plane with a mouse listener1");
 	// NOte: mouseGroup == overlayGroup
-	/*
-	drain::image::TreeSVG & mouseListenerElem = RackSVG::getImageBorder(mouseGroup);
-	mouseListenerElem->setFrame(radarSVG.geoFrame.getGeometry());
-	mouseListenerElem->setStyle("fill", "gray");      // TODO: transparent tracker
-	mouseListenerElem->setStyle("fill-opacity", 0.0); // TODO: transparent tracker
-	mouseListenerElem->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
-	mouseListenerElem->setAttribute("fillo", "garo");
-	*/
 	// mouseListenerElem->addClass("MIKA");
 	// mouseListenerElem->setStyle("opacity", 0);
 
 	return imagePanelGroup;
 }
-
+*/
 
 void CmdRect::exec() const {
 
@@ -470,14 +463,14 @@ void CmdRect::exec() const {
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coord_handler")       = coord_handler;
 
-	RackSVG::getOnLoadScript(ctx)["image_coord_tracker"] = "image_coord_tracker();";
+	ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
 	// RackSVG::getOnLoadScript(ctx)["test"] = "// Test";
 
 	// Experimental
-	RackSVG::addJavaScripsDef(ctx, "MONITOR2_BOX", "cls");
+	ctx.addJavaScripsDef("MONITOR2_BOX", "cls");
 
 
-	TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroupNEW(ctx); //adapterGroup[ctx.currentImagePanel];
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
 	ImagePanel superPanel(imagePanelGroup);
 	// TODO: pack inside ImagePanel
 	// imagePanelGroup->addClass("MOUSE_VALUE");
@@ -485,7 +478,7 @@ void CmdRect::exec() const {
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG); // undependent?
 
-	drain::image::TreeSVG & visualGroup = superPanel.getOverlay();
+	drain::image::TreeSVG & visualGroup = superPanel.getOverlayGroup();
 
 	// Reserve slot (implemented below).
 	visualGroup.addChild()->setComment("Visualisation of the selection");
@@ -608,7 +601,7 @@ void CmdCoords::exec() const {
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coord_handler")       = coord_handler;
 
-	RackSVG::getOnLoadScript(ctx)["image_coord_tracker"] = "image_coord_tracker();";
+	ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
 
 
 
@@ -735,9 +728,9 @@ void CmdData::exec() const {
 
 	//  Modify SVG header. Ensure the script is available.
 	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_value_tracker") = image_value_tracker;
-	RackSVG::getOnLoadScript(ctx)["image_value_tracker"] = "image_value_tracker();";
+	ctx.getOnLoadScript()["image_value_tracker"] = "image_value_tracker();";
 
-	TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroupNEW(ctx); //adapterGroup[ctx.currentImagePanel];
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
 
 	// NEW
 	ImagePanel superPanel(imagePanelGroup);
@@ -745,7 +738,7 @@ void CmdData::exec() const {
 	// TODO: pack inside ImagePanel
 	imagePanelGroup->addClass("MOUSE_VALUE");
 
-	drain::image::TreeSVG & overlay = superPanel.getOverlay();
+	drain::image::TreeSVG & overlay = superPanel.getOverlayGroup();
 
 	drain::image::TreeSVG & coordMonitor = overlay["MOUSE_COORD"](svg::TEXT); // imagePanelGroup
 	coordMonitor->setId();
@@ -861,7 +854,7 @@ void CmdTestData::exec() const {
 	// test(img, uint16Vector, mout);
 
 
-	TreeSVG & onloadJS = RackSVG::getOnLoadScript(ctx);
+	TreeSVG & onloadJS = ctx.getOnLoadScript();
 	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
 	onloadJS["demo_base64"] = "demo_base64();";
 

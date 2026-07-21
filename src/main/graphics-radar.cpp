@@ -80,58 +80,8 @@ drain::image::TreeSVG & Graphic::getGraphicStyle(drain::image::TreeSVG & svgDoc)
 
 	TreeSVG & style = UtilsXML::getHeaderObject(svgDoc, svg::STYLE);
 
-	/*
-	styleX[Select(svg::POLYGON, "LAUNO")]->set({
-		{"stroke-linejoin", "round"},
-		{"paint-order", "stroke"},
-	});
-
-	styleX[Select("TAUNO")]->set({
-		{"stroke-linejoin", "tound"},
-		{"paint-order", "toke"},
-	});
-
-	UtilsXML::ensureStyle(svgDoc, Select(svg::POLYGON, "LAUNO"), {
-			{"stroke-linejoin", "round"},
-			{"paint-order", "stroke"},
-	});
-
-	UtilsXML::ensureStyle(svgDoc, Select(ClassXML("MAUNO")), {
-			{"stroke-linejoin", "bound"},
-			{"paint-order", "strike"},
-	});
-
-	UtilsXML::ensureStyle(svgDoc, Select("TAUNO"), {
-			{"stroke-linejoin", "bound"},
-			{"paint-order", "strike"},
-	});
-
-	UtilsXML::ensureStyle(svgDoc, "KAUNO", {
-			{"stroke-linejoin", "bound"},
-			{"paint-order", "strike"},
-	});
-	*/
-
-	/*
-	static
-	const std::string OVERLAY_STYLE = "OVERLAY_STYLE"; // TODO enum
 
 
-	if (!svgDoc.hasChild(OVERLAY_STYLE)){
-		// Ensure element position at the beginning of the doc.
-		svgDoc.prependChild(OVERLAY_STYLE);
-	}
-	*/
-
-
-	//TreeSVG & style = svgDoc[OVERLAY_STYLE];
-	//TreeSVG & style = drain::UtilsXML::getHeaderObject(svgDoc, svg::STYLE, OVERLAY_STYLE);
-
-	// if (true || style->isUndefined()){
-
-	// mout.debug("initializing style");
-
-	// style->setType(svg::STYLE);
 
 	typedef SelectXML<svg::tag_t> Select;
 	// These could be

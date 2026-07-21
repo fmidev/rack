@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 // #include "graphics.h" // SVG
 
-#include "resources-image.h"
+#include "resources-image.h" // move?
 
 
 namespace rack {

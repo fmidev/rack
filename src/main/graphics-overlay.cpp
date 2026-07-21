@@ -53,25 +53,36 @@ namespace drain {
 
 
 namespace rack {
+
 /*
-template <int D,typename T,size_t N>
-inline
-void convert(const drain::TupleBase<T,N> &src, drain::TupleBase<T,N> & dst){
-	typename drain::TupleBase<T,N>::const_iterator sit = src.begin();
-	typename drain::TupleBase<T,N>::const_iterator dit = dst.begin();
-	while (sit != src.end()){
- *dit = D*(*sit);
-		++sit;
-		++dit;
+class VectorFrame : protected ImagePanel {
+public:
+
+	inline
+	VectorFrame(drain::image::TreeSVG & imagePanelGroup) : ImagePanel(imagePanelGroup){
+
+	};
+
+	drain::image::TreeSVG & getVectorGroup() const;
+
+
+};
+
+drain::image::TreeSVG & VectorFrame::getVectorGroup(const std::string key = "") const {
+	drain::image::TreeSVG & overlay = getOverlay();
+
+	if (key.empty()){
+		std::string k;
+		drain::image::TreeSVG::generateKey(overlay, k);
+		return getVectorGroup(k);
 	}
-}
- */
 
 
-
-
+};
+*/
 
 const std::string CmdPolarBase::DATA_ID = "data-latest";
+
 
 /**
  *
@@ -147,6 +158,7 @@ void CmdPolarBase::updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG){
 /**
  *  \param shared - if false, create private object ("layer") for each radar; else use common.
  */
+/*
 drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG){ // , bool prepend=false){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
@@ -187,7 +199,9 @@ drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSV
 	return overlayGroup;
 
 };
+*/
 
+/*
 drain::image::TreeSVG & CmdPolarBase::getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label) const {
 
 	//std::string srcLabel = overlayGroup->getAttributes().get("data-latest", "unknown");
@@ -201,6 +215,7 @@ drain::image::TreeSVG & CmdPolarBase::getOverlay(drain::image::TreeSVG & overlay
 	return overlay;
 
 }
+*/
 
 double CmdPolarBase::ensureMetricRange(double maxRange, double range){
 	if (range < -1.0){
@@ -379,7 +394,7 @@ void CmdRadarDot::exec() const {
 		imagePanelGroup->addClass(FloaterSVG::FLOATING);
 	}
 	*/
-	TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroupNEW(ctx);
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup();
 
 	updateRadarSVG(ctx, radarSVG);
 	// ctx.getStatusMap().get("what:source", "unknown-source");
@@ -391,7 +406,7 @@ void CmdRadarDot::exec() const {
 	imagePanelGroup->addClass(LayoutSVG::INDEPENDENT);
 	imagePanelGroup->addClass(ClipperSVG::CLIPPED);
 
-	TreeSVG & overlayGroup = superPanel.getOverlay();
+	TreeSVG & overlayGroup = superPanel.getOverlayGroup();
 
 	overlayGroup->set(DATA_ID, radarSVG.source); // needed? changes for each radar?
 
@@ -454,6 +469,7 @@ void CmdRadarDot::exec() const {
 
 };
 
+/*
 void CmdRadarDotTest::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
@@ -517,7 +533,7 @@ void CmdRadarDotTest::exec() const {
 
 
 };
-
+*/
 
 
 void CmdRadarLabel::exec() const  {
@@ -530,15 +546,15 @@ void CmdRadarLabel::exec() const  {
 	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
 
-	getOverlayGroup(ctx, radarSVG);
-
+	// getOverlayGroup(ctx, radarSVG);
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup();
 	/*  1) Radar-PROJ-yleistys! Ehkä erillinen svg, parametreilla?
 	 *  2) ks FIRST! RackSVG::getVectorImagePanelGroup(ctx);
 	 *  3)
 	 *
 	 */
 
-	TreeSVG & imagePanelGroup = RackSVG::getVectorImagePanelGroup(ctx);
+	// TreeSVG & imagePanelGroup = RackSVG::getVectorImagePanelGroup(ctx);
 	/*
 	TreeSVG & vectGroup =  RackSVG::getSourceSpecificGroup(ctx, imagePanelGroup);
 
@@ -549,7 +565,7 @@ void CmdRadarLabel::exec() const  {
 	*/
 	ImagePanel superPanel(imagePanelGroup);
 
-	TreeSVG & vectGroup = superPanel.getOverlay();
+	TreeSVG & vectGroup = superPanel.getOverlayGroup();
 
 	// const std::string source = ctx.getStatus("what:source", false);
 	// TreeSVG & vectGroup =  imagePanel[source](svg::GROUP);
@@ -708,7 +724,14 @@ void CmdRadarGrid::exec() const  {
 
 	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
-	TreeSVG & imagePanelGroup = getOverlayGroup(ctx, radarSVG);
+	updateRadarSVG(ctx, radarSVG);
+
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(radarSVG.geoFrame.getGeometry()); // (ctx, radarSVG);
+	ImagePanel superPanel(imagePanelGroup);
+	Graphic::getGraphicStyle(ctx.svgTrack);
+
+	mout.attention(DRAIN_LOG(radarSVG.geoFrame.getGeometry()));
+	mout.attention(DRAIN_LOG(imagePanelGroup->getBoundingBox()));
 
 	/// Step 2a: check distance parameter
 	drain::SteppedRange<double> dist(0.0, 0.0, 1.0);  // double -> int
@@ -735,12 +758,11 @@ void CmdRadarGrid::exec() const  {
 	}
 
 
-	// TreeSVG & imagePanel = RackSVG::getVectorImagePanelGroup(ctx);
+	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
 
-	TreeSVG & vectorGroup = RackSVG::getSourceSpecificGroup(ctx, imagePanelGroup);
-	//TreeSVG & vectorGroup = imagePanel[cls](svg::GROUP);
 	vectorGroup->addClass(cls); // GRID
-
+	// TODO: ensureDefaultStyles(cls, cls2, cls3)
+	vectorGroup->setFrame(radarSVG.geoFrame.getGeometry());
 
 	vectorGroup.addChild()->setComment("Rays: ", dist.range.tuple());
 	double angleRad = 0.0;
@@ -823,14 +845,31 @@ void CmdRadarSector::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	/*
 	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	updateRadarSVG(ctx, radarSVG);
 
-	// overlay.addChild()->setComment(getName(), ' ', getParameters());
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroupNEW(); // (ctx, radarSVG);
+	ImagePanel superPanel(imagePanelGroup);
+	Graphic::getGraphicStyle(ctx.svgTrack); // TODO: automatic
+	*/
 
-	drain::image::TreeSVG & curve = overlay[getName()+getLastParameters()](drain::image::svg::PATH);
-	curve -> addClass(cls); // SECTOR
+	RadarSVG radarSVG;
+	updateRadarSVG(ctx, radarSVG);
+	const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
+
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(geom); // (ctx, radarSVG);
+	ImagePanel superPanel(imagePanelGroup);
+	Graphic::getGraphicStyle(ctx.svgTrack);
+
+	//drain::image::TreeSVG & curve = overlay[getName()+getLastParameters()](drain::image::svg::PATH);
+
+	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
+	vectorGroup->addClass(cls); // SECTOR
+	// vectorGroup->setFrame(radarSVG.geoFrame.getGeometry());
+	drain::image::TreeSVG & curve = vectorGroup.addChild()(drain::image::svg::PATH);
+	//curve -> addClass(cls); // SECTOR
+
 	// drain::image::TreeUtilsSVG\n
 	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
 			{"fill", "none"},
@@ -865,7 +904,7 @@ void CmdRadarSector::exec() const  {
 	if (MASK){
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
+		MaskerSVG::createMask(ctx.svgTrack, imagePanelGroup, w, h, curve.data);
 	}
 
 
@@ -881,10 +920,15 @@ void CmdRadarRay::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	RadarSVG radarSVG;
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-	drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
+	// RadarSVG radarSVG;
+	// drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
+	// drain::image::TreeSVG & overlay = getOverlay(overlayGroup);
 	// overlay.addChild()->setComment(getName(), ' ', getParameters());
+	RadarSVG radarSVG;
+	updateRadarSVG(ctx, radarSVG);
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (ctx, radarSVG);
+	ImagePanel superPanel(imagePanelGroup);
+	drain::image::TreeSVG & overlay = superPanel.getOverlayGroup();
 
 	drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
 	curve->addClass(cls); // SECTOR
@@ -909,14 +953,7 @@ void CmdRadarRay::exec() const {
 		radarSVG.lineTo(rayElem, static_cast<double>(i), azmR);
 	}
 
-	// needed?
-	if (MASK){
-		/*
-			const int w = radarSVG.geoFrame.getFrameWidth();
-			const int h = radarSVG.geoFrame.getFrameHeight();
-			MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, curve.data);
-		 */
-	}
+	// NOT needed if (MASK){ }
 
 };
 

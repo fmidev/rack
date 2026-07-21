@@ -29,6 +29,7 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
+#include <drain/image/TreeSVG.h>
 
 #include "resources-image.h"
 
@@ -37,22 +38,6 @@ using namespace drain;
 using namespace drain::image;
 
 namespace rack {
-
-
-GraphicsContext::GraphicsContext() {
-}
-
-GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
-	//svgPanelConf.absolutePaths = ctx.svgPanelConf.absolutePaths;
-	svgPanelConf.pathPolicyFlagger = ctx.svgPanelConf.pathPolicyFlagger;
-	svgPanelConf.pathPolicy = ctx.svgPanelConf.pathPolicy;
-	svgPanelConf.groupIdentifier = ctx.svgPanelConf.groupIdentifier;
-	// svgTitles    = ctx.svgTitles;
-}
-
-
-
-
 
 
 ImageContext::ImageContext(): imagePhysical(true), qualityGroups(ODIMPathElem::NONE),

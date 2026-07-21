@@ -55,7 +55,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "radar/PolarSector.h"
 #include "radar/RadarAccumulator.h"
 
+#include "resources-image.h"
 #include "resources-base.h"
+
+#include "resources-svg.h"
 
 namespace rack {
 
@@ -79,6 +82,9 @@ public:
 	virtual
 	~RackContext(){};
 
+
+	virtual
+	drain::image::TreeSVG & getStackedGroup() final override;
 
 	static
 	RackContext & getSharedContext(){

@@ -59,18 +59,6 @@ protected:
 
 public:
 
-	/*
-	enum GRAPHIC {
-		GRID, // overlapping with element class?
-		DOT,
-		LABEL, // External
-		RAY,
-		SECTOR,
-		ANNULUS,
-		CIRCLE,
-	};
-	const drain::ClassXML cssClass;
-	*/
 
 
 	inline
@@ -98,11 +86,11 @@ public:
 	/**
 	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
 	 */
-	static
-	drain::image::TreeSVG & getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG);
+	// static
+	// drain::image::TreeSVG & getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG);
 
 	// static
-	drain::image::TreeSVG & getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label="") const;
+	// drain::image::TreeSVG & getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label="") const;
 
 	static
 	double ensureMetricRange(double maxRange, double range=1.0);
@@ -166,6 +154,8 @@ public:
 
 };
 
+
+/*
 class CmdRadarDotTest : public CmdPolarBase { //  drain::BasicCommand,
 
 public:
@@ -186,6 +176,7 @@ public:
 	void exec() const override;
 
 };
+*/
 
 
 /**

@@ -61,6 +61,38 @@ RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), Ima
 	outputPrefix = ctx.outputPrefix;
 }
 
+
+drain::image::TreeSVG & RackContext::getStackedGroup(){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	drain::image::TreeSVG & mainGroup = getMainGroup();
+
+	getUpdatedStatusMap();
+	// status also updated upon each PNG file save?
+	std::string groupId             = getFormattedStatus(svgPanelConf.groupIdentifier);
+	std::string groupTitleFormatted = getFormattedStatus(svgPanelConf.groupTitle);
+
+	if (groupId.empty()){
+		groupId = "defaultStackedGroup";
+	}
+
+	drain::image::TreeSVG & stackedGroup = mainGroup[groupId];
+
+	if (stackedGroup -> isUndefined()){
+		// mout.attention()
+		stackedGroup->setType(svg::GROUP);
+		stackedGroup->set("data-id",    groupId);
+		stackedGroup->set("data-title", groupTitleFormatted);
+		stackedGroup->addClass(drain::image::LayoutSVG::STACK_LAYOUT);
+		stackedGroup.addChild()->setCommentSafe(DRAIN_LOG(groupId));
+		mainGroup.addChild()->setCommentSafe("End of STACK_LAYOUT ", groupId, " (", svgPanelConf.groupIdentifier, ")");
+	}
+
+	return stackedGroup;
+}
+
+
 void RackContext::resolveFilePath(const std::string & prefix, const std::string & filePath, std::string & finalFilePath){
 
 	drain::Logger mout(this->log, __FILE__, __FUNCTION__);
