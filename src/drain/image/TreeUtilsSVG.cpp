@@ -265,16 +265,14 @@ int FloaterSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			child->setId();
 			child->removeClass(FLOATING); // prevent infinite loop...
 			child->addClass("FLOATED");
-			mout.experimental("Lifting floating element #", child->getId()," at: ", path, "//", entry.first);
-			mout.experimental("child -> ", child->getStyle());
+			mout.experimental<LOG_INFO>("Lifting floating element #", child->getId()," at: ", path, "//", entry.first);
+			// mout.experimental("child -> ", child->getStyle());
 			TreeSVG & childNew = parent.addChild();
 			childNew->setComment("FLOAT id='", child->getId(), "' moved...");
 			child.swap(childNew);
-			mout.experimental("child    -> ", child   ->getStyle());
-			mout.experimental("childNew -> ", childNew->getStyle());
-			// t.second->setType(svg::COMMENT);
-			// t.second->setComment("FLOAT id='", dummy->getId(), "' moved...", t.second->getId());
-			mout.experimental("Swapper: -> ", entry.first);
+			// mout.experimental("child    -> ", child   ->getStyle());
+			// mout.experimental("childNew -> ", childNew->getStyle());
+			// mout.experimental("Swapper: -> ", entry.first);
 		}
 	}
 
@@ -476,15 +474,6 @@ drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int 
 TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node, MaskerSVG::MaskPosition pos){
 
 	const drain::FlexibleVariable & maskId = ensureMaskId(group);
-	/*
-	std::string description;
-	if (group.hasChild(svg::DESC)){
-		description = group[svg::DESC].data.getText();
-	}
-	else {
-		description = group->getId();
-	}
-	*/
 
 	drain::image::TreeSVG & mask = getMask(root, maskId);
 	if ((width != 0) && (height != 0)){
