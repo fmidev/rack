@@ -390,7 +390,9 @@ void CmdRadarDot::exec() const {
 	drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
 	title->setText(ctx.getFormattedStatus("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}"));
 
-	if (MASK){
+	MaskerSVG::MaskPosition pos = drain::Enum<MaskerSVG::MaskPosition>::dict.getValue(MASK, false);
+	if (pos != MaskerSVG::MaskPosition::NONE){
+		// if (MASK){
 		// Note: mask is full 100% range.
 		drain::image::TreeSVG & localMask = vectGroup[svg::MASK];
 		{
@@ -401,7 +403,7 @@ void CmdRadarDot::exec() const {
 		// Copy this localMask to shared mask...
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data);
+		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, w, h, localMask.data, pos);
 		// ... and "delete" the object.
 		localMask->setType(svg::COMMENT);
 		localMask->setComment("Original position of MASK:", getName(), getParameters());
@@ -671,14 +673,10 @@ void CmdRadarGrid::exec() const  {
 	updateRadarSVG(ctx, radarSVG);
 
 
-	// const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
+	const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
+
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (geom); // (ctx, radarSVG);
-	ImagePanel superPanel(imagePanelGroup, radarSVG.geoFrame.getGeometry());
-
-
-	// superPanel.getOverlayGroup()->setFrame(geom); // generalize
-	// mout.attention(DRAIN_LOG(radarSVG.geoFrame.getGeometry()));
-	// mout.attention(DRAIN_LOG(imagePanelGroup->getBoundingBox()));
+	ImagePanel superPanel(imagePanelGroup, geom);
 
 	/// Step 2a: check distance parameter
 	drain::SteppedRange<double> dist(0.0, 0.0, 1.0);  // double -> int
@@ -775,8 +773,8 @@ void CmdRadarGrid::exec() const  {
 
 	}
 
-
-	if (MASK){
+	MaskerSVG::MaskPosition pos = drain::Enum<MaskerSVG::MaskPosition>::dict.getValue(MASK, false);
+	if (pos != MaskerSVG::MaskPosition::NONE){
 
 		TreeSVG & localMask = imagePanelGroup[MaskerSVG::COVER];
 		{
@@ -784,11 +782,10 @@ void CmdRadarGrid::exec() const  {
 			drain::svgPATH elem(localMask);
 			radarSVG.drawCircle(elem, {0,  dist.range.max});
 		}
-		const int w = radarSVG.geoFrame.getFrameWidth();
-		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, imagePanelGroup, w, h, localMask.data);
-		// comment->setText("applied by: ", getName(), ' ', getParameters());
-		localMask->setType(svg::COMMENT);
+
+		MaskerSVG::createMask(ctx.svgTrack, superPanel.getOverlayGroup(), geom.width, geom.height, localMask.data, pos);
+		localMask->setType(svg::COMMENT); // "delete"
+
 	}
 
 
@@ -821,27 +818,11 @@ void CmdRadarSector::exec() const  {
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (geom); // (ctx, radarSVG);
 	ImagePanel superPanel(imagePanelGroup, radarSVG.geoFrame.getGeometry());
 
-	/*
-	RadarSVG radarSVG;
-	updateRadarSVG(ctx, radarSVG);
-	const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
-
-	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(geom); // (ctx, radarSVG);
-	ImagePanel superPanel(imagePanelGroup);
-	Graphic::getGraphicStyle(ctx.svgTrack);
-
-	*/
-	//drain::image::TreeSVG & curve = overlay[getName()+getLastParameters()](drain::image::svg::PATH);
-
-	// TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
 	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
 	vectorGroup->addClass(cls); // SECTOR
-	// vectorGroup->setFrame(radarSVG.geoFrame.getGeometry());
 	drain::image::TreeSVG & curve = vectorGroup.addChild()(drain::image::svg::PATH);
-	//curve -> addClass(cls); // SECTOR
 
-	// drain::image::TreeUtilsSVG\n
-
+	// Main
 	drain::SteppedRange<double> dist(0,0,1.0); // (distanceMetres.range); // double -> int
 	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());
 
@@ -850,6 +831,7 @@ void CmdRadarSector::exec() const  {
 	const drain::Range<double> azmR(azm.range.min * drain::DEG2RAD, azm.range.max * drain::DEG2RAD);
 
 	{
+		// Sub scope to ensure writing data (bezier curve points)
 		drain::svgPATH svgElem(curve);
 		radarSVG.drawSector(svgElem, dist.range, azmR);
 	}
@@ -865,10 +847,12 @@ void CmdRadarSector::exec() const  {
 		}
 	}
 
-	if (MASK){
+	MaskerSVG::MaskPosition pos = drain::Enum<MaskerSVG::MaskPosition>::dict.getValue(MASK, false);
+	if (pos){
+		// In this case, the mask shape is equal to the original elshape.
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, imagePanelGroup, w, h, curve.data);
+		MaskerSVG::createMask(ctx.svgTrack, superPanel.getOverlayGroup(), w, h, curve.data, pos);
 	}
 
 

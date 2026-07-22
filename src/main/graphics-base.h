@@ -92,46 +92,6 @@ public:
 	const std::string & guessFormat(const std::string & key);
 
 
-	/// Applicable for PNG images.
-	/*
-	static
-	drain::image::TreeSVG & getImagePanelGroup(RackContext & ctx, const drain::FilePath & filepath, bool unique=false);
-
-	static
-	drain::image::TreeSVG & getImagePanelGroupPlain(RackContext & ctx);
-
-	/// Applicable for vector graphics.
-	static
-	drain::image::TreeSVG & getVectorImagePanelGroup(RackContext & ctx);
-
-	static
-	drain::image::TreeSVG & getOverlayGroup(TreeSVG & imagePanelGroup);
-
-	static
-	drain::image::TreeSVG & getFloatingGroupFOO(TreeSVG & imagePanel);
-	// drain::image::TreeSVG & getFloatingGroup(RackContext & ctx);
-	*/
-
-	// static
-	// drain::image::TreeSVG & getSourceSpecificGroup(RackContext & ctx, drain::image::TreeSVG & panel);
-
-	//static
-	// void addImage(RackContext & ctx, const drain::image::Image & src, const drain::FilePath & filepath);
-
-	// static
-	// void addImageNEW(RackContext & ctx, const drain::FilePath & filepath, const drain::Frame2D<drain::image::svg::coord_t> & frame);
-
-	/// Currently, uses file link (does not embed)
-	// static
-	// void addImage(RackContext & ctx, const drain::image::TreeSVG & svg, const drain::FilePath & filepath);
-
-	/// Add external image from a file path.
-	/**
-	 *   \param styleClass - optional style class, possibly FLOAT
-	 */
-	// static
-	// void addExternalImage(RackContext & ctx, const drain::Frame2D<drain::image::svg::coord_t> & frame, const drain::FilePath & filepath, const std::string & styleClass = "");
-
 
 	/// Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)
 	/**
@@ -161,21 +121,6 @@ public:
 	}
 
 
-	/// Add rectangle
-	// static
-	// drain::image::TreeSVG & addRectangleGroup(RackContext & ctx, const drain::Frame2D<double> & frame = {200,200});
-
-
-	/// Add
-	/**
-	 *  \param imagePanel
-	 */
-	// static
-	// drain::image::TreeSVG & getImageBorder(drain::image::TreeSVG & imagePanel); // , const drain::Frame2D<double> & frame = {200,200});
-
-
-protected:
-
 
 };
 
@@ -190,7 +135,7 @@ DRAIN_ENUM_OSTREAM(rack::RackSVG::ElemClass);
 
 DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::RackSVG::ElemClass);
 
-
 }
+
 #endif
 

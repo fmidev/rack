@@ -104,6 +104,19 @@ ImagePanel::ImagePanel(TreeSVG & imagePanelGroup, const drain::FilePath & filePa
 };
 
 
+
+TreeSVG& ImagePanel::getOverlayGroup() const {
+	drain::image::TreeSVG & overlayGroup = getUniqueElem(imagePanelGroup, RackSVG::ElemClass::OVERLAY, svg::GROUP);
+	// overlayGroup->addClass(Graphic::GRID);
+	if (overlayGroup->getId().empty()){
+		imagePanelGroup->setId();
+		overlayGroup->setId("overlay_", imagePanelGroup->getId());
+	}
+	return overlayGroup;
+	//return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::OVERLAY, svg::GROUP);
+}
+
+
 TreeSVG & ImagePanel::getImage(const drain::FilePath & filepath, const drain::Frame2D<drain::image::svg::coord_t> & geom) const {
 
 
@@ -117,7 +130,7 @@ TreeSVG & ImagePanel::getImage(const drain::FilePath & filepath, const drain::Fr
 		// imagePanelGroup.addChild()->setComment("NEW ", __FUNCTION__);
 		imagePanelGroup->setId(filepath.tail);
 
-		TreeSVG & overlayGroup = getOverlayGroup();
+		// TreeSVG & overlayGroup = getOverlayGroup();
 
 		//if (!(filepath.extension.empty() && geom.empty())){
 		if (! filepath.extension.empty()){
@@ -230,8 +243,9 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, RackSVG::ElemClass cls, sv
 		//elem.addChild()->setComment("NEW ", __FUNCTION__, '/', cls);
 		//if ((type == svg::RECT) && (parent.hasChild(svg::IMAGE))){
 		if (parent.hasChild(svg::IMAGE)){
-			if (type != svg::RECT){
-				drain::Logger(__FILE__, __FUNCTION__).suspicious("Not RECT: ", ':', cls, '(', type, ')');
+			if (elem->typeIs(svg::RECT,svg::GROUP)){
+				// drain::SelectXML<svg::tag_t>(elem->getTag(), cls).str()
+				drain::Logger(__FILE__, __FUNCTION__).suspicious("Not RECT: ", ':', elem->getTag(), '.', cls, '(', type, ')');
 			}
 			elem->setMyAlignAnchor(svg::IMAGE);
 			elem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
@@ -301,7 +315,7 @@ drain::image::TreeSVG& ImagePanel::getDataImage(const drain::FilePath & filepath
 	dataImage->addClass("MOUSE_VALUE_DATA");
 	dataImage->setLocation(20,10);
 	// dataImage->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	dataImage.addChild()->setComment("NEX ", __FUNCTION__);
+	dataImage.addChild()->setComment(__FUNCTION__, " - RGB encoded data not for viewing as an image");
 
 	drain::image::TreeSVG & desc = dataImage[svg::DESC](svg::DESC);
 	desc->setText("Data channels: 0[red]: 8 higher bits, 1[green]: 8 lower bits, 2(blue) unused");

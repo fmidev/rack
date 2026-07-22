@@ -55,7 +55,8 @@ protected:
 
 	drain::SteppedRange<double> radiusMetres = {0.0, 0.0, 0.0};// (50000.0, 0.0, 250000.0);
 	drain::SteppedRange<double> azimuthDegrees = {0.0, 0.0, 0.0}; // (30, 0, 360);
-	bool MASK = false;
+	//bool MASK = false;
+	std::string MASK = drain::Enum<MaskerSVG::MaskPosition>::dict.getKey(MaskerSVG::MaskPosition::NONE);
 
 public:
 

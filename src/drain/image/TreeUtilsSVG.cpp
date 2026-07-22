@@ -402,7 +402,8 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 
 
 
-const std::string MaskerSVG::MASK_ID = "data-mask";
+const std::string MaskerSVG::MASK_ID  = "data-mask";
+const std::string MaskerSVG::MASK_POS = "data-mask-pos";
 
 const ClassXML MaskerSVG::COVER("COVER");
 
@@ -472,7 +473,7 @@ drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int 
 	return hole;
 }
 
-TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node){
+TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int height, const NodeSVG & node, MaskerSVG::MaskPosition pos){
 
 	const drain::FlexibleVariable & maskId = ensureMaskId(group);
 	/*
@@ -487,27 +488,24 @@ TreeSVG & MaskerSVG::createMask(TreeSVG & root, TreeSVG & group, int width, int 
 
 	drain::image::TreeSVG & mask = getMask(root, maskId);
 	if ((width != 0) && (height != 0)){
+		// Punch hole = additive mask image.
 		TreeSVG & hole = updateMask(mask, width, height, node);
-		// hole[svg::DESC](svg::DESC)->setText(description);
 		const std::string & description = group.hasChild(svg::DESC) ? group[svg::DESC].data.getText() : group->getId();
 		hole[svg::DESC](svg::DESC)->setText(description);
-		/*
-		if (group.hasChild(svg::DESC)){
-			hole[svg::DESC](svg::DESC)->setText(group[svg::DESC].data.getText());
-			// description = group[svg::DESC].data.getText();
-		}
-		else {
-			hole[svg::DESC](svg::DESC)->setText(group->getId());
-			// description = group->getId();
-		}
-		*/
 	}
+	group->set(MASK_POS, pos);
 
 	return mask;
 }
 
-void MaskerSVG::addCoverRect(const TreeSVG & mask, TreeSVG & group) {
-	drain::image::TreeSVG & cover = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+void MaskerSVG::addCoverRect(const TreeSVG & mask, TreeSVG & group, MaskPosition pos) {
+	// drain::image::TreeSVG & cover = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+	if (pos == BOTTOM){
+		group.prependChild(COVER);
+	}
+
+	drain::image::TreeSVG & cover = group[COVER](drain::image::svg::RECT);
+
 	cover->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
 	cover->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
 	cover->addClass(COVER);
@@ -530,10 +528,11 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		const drain::image::TreeSVG & mask = getMask(tree, group->get(MASK_ID));
 
 		if (group->typeIs(drain::image::svg::GROUP)){
-			//drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
-			//drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
-
-			addCoverRect(mask, group);
+			// drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
+			// drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
+			// std::string p = group->get(MASK_POS, "TOP");
+			const MaskPosition pos = drain::Enum<MaskPosition>::dict.getValue(group->get(MASK_POS, "TOP"), false);
+			addCoverRect(mask, group, pos);
 			//drain::image::TreeSVG & rect = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
 			//linkMask(mask, rect);
 		}
@@ -582,6 +581,12 @@ int  AttributeCheckerXML::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & pa
 
 }  // image::
 
-
+DRAIN_ENUM_DICT(image::MaskerSVG::MaskPosition) = {
+		DRAIN_ENUM_ENTRY(image::MaskerSVG::MaskPosition, NONE),
+		DRAIN_ENUM_ENTRY(image::MaskerSVG::MaskPosition, TOP),
+		DRAIN_ENUM_ENTRY(image::MaskerSVG::MaskPosition, BOTTOM),
+		{"true", image::MaskerSVG::MaskPosition::TOP}, // the default, to support MASK="true" on cmd line
+		{"false", image::MaskerSVG::MaskPosition::NONE}, // the default, to support MASK="true" on cmd line
+};
 
 }  // drain::

@@ -46,11 +46,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+/// using namespace drain::image;
 
-
-
-using namespace drain::image;
-
+/// Creator of SVG image elements located in a SVG group with fixed structure.
+/**
+ *   Preferred way to add images (and related vector overlays.
+ *   Creates a structure accessible with methods.
+ *
+ *   The panel structure consists of a group (svg::GROUP.IMAGE_PANEL) with
+ *   - one svg::IMAGE element, optionally removed (changed to DESC)
+ *   - an overlay layer svg::GROUP.OVERLAY designed for vector graphics, initially containing a background svg::RECT.BACKGROUND_RECT applied for aligning subsequent elements.
+ *   - image border (svg::RECT.IMAGE_BORDER), optionally with a visible outline style (.IMAGE_BORDER), and optionally with a mouse event listener
+ *   - an extra overlay (svg::RECT.COVER) masking the image and vector elements
+ */
 class ImagePanel {
 
 
@@ -84,13 +92,8 @@ public:
 		return getUniqueElem(imagePanelGroup, svg::METADATA);
 	}
 
-	inline
-	drain::image::TreeSVG & getOverlayGroup() const {
-		drain::image::TreeSVG & overlayGroup = getUniqueElem(imagePanelGroup, RackSVG::ElemClass::OVERLAY, svg::GROUP);
-		overlayGroup->addClass(Graphic::GRID);
-		return overlayGroup;
-		//return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::OVERLAY, svg::GROUP);
-	};
+	drain::image::TreeSVG& getOverlayGroup() const;
+
 
 	inline
 	drain::image::TreeSVG & getBackGround() const {
@@ -128,7 +131,6 @@ protected:
 	drain::image::TreeSVG & getUniqueElem(drain::image::TreeSVG & parent, drain::image::svg::tag_t type = drain::image::svg::GROUP) const;
 
 };
-
 
 } // rack::
 

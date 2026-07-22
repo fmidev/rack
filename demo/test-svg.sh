@@ -341,7 +341,7 @@ RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'Grouping by time: \${what
 
 WRITE_SECTION svg_data_tooltip  'Interactive data value display'
 
-RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputConf "'svg:paths=PREFIXED'" \\ --outputPrefix "/opt/cache/svg/" \\ --gGroupTitle "'Time: \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gData  data-${what:date}T${what:time}-${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_data_tooltip"
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputConf "'svg:paths=PREFIXED'" \\ --outputPrefix "/opt/cache/svg/" \\ --gGroupTitle "'Time: \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gData  data-\${what:date}T\${what:time}-\${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_data_tooltip"
 
 
 

@@ -273,7 +273,18 @@ public:
 	const std::string MASK_ID;
 
 	static
+	const std::string MASK_POS;
+
+	static
 	const ClassXML COVER;
+
+
+	enum MaskPosition {
+		NONE=0,     // alias "false", No mask applied
+		TOP=1,      // alias "true", Highest (last) element in a group, added by TreeSVG::addChild(COVER)
+		BOTTOM=2,   // Lowest (first) element in a group, added by TreeSVG::prependChild(COVER)
+		// Note: also "false" and "true" supported, see Enum dict
+	};
 
 	inline
 	MaskerSVG(){
@@ -307,10 +318,13 @@ public:
 
 	/// Calls createMaskId(), getMask() and updateMask().
 	/**
-	 *
+	 *   Saves the following attributes to \c group
+	 *   - data-mask-id
+	 *   - data-mask-pos
 	 */
 	static
-	TreeSVG & createMask(TreeSVG & root, TreeSVG & group, int width=0, int height=0, const NodeSVG & node = NodeSVG(svg::UNDEFINED));
+	TreeSVG & createMask(TreeSVG & root, TreeSVG & group, int width=0, int height=0, const NodeSVG & node = NodeSVG(svg::UNDEFINED),
+			MaskerSVG::MaskPosition pos=MaskerSVG::MaskPosition::BOTTOM);
 
 	/// Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object.
 	/**
@@ -332,7 +346,7 @@ public:
 	 *
 	 */
 	static
-	void addCoverRect(const TreeSVG & mask, TreeSVG & group);
+	void addCoverRect(const TreeSVG & mask, TreeSVG & group, MaskPosition pos=TOP);
 
 
 	/// Ensures a clipping path o f type RECT of given size.
@@ -375,6 +389,14 @@ public:
 
 
 }  // image::
+
+
+
+DRAIN_ENUM_DICT(image::MaskerSVG::MaskPosition);
+DRAIN_ENUM_OSTREAM(image::MaskerSVG::MaskPosition);
+
+//DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::RackSVG::ElemClass);
+
 
 }  // drain::
 
