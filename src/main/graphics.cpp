@@ -41,19 +41,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeLayoutSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
-#include <main/graphics-interactive.h>
-#include <main/graphics-overlay.h>
-#include <main/graphics-panel.h>
 
-// #include <js/koe.h>
-
-
-//#include "radar/PolarSector.h"
-//#include "fileio-svg.h"
 
 #include "graphics.h"
+#include "graphics-base.h"
 #include "graphics-panel.h"
 #include "graphics-overlay.h"
+#include "graphics-interactive.h"
 
 
 
@@ -240,6 +234,7 @@ public:
 
 		//drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
 		drain::image::TreeSVG & style = ctx.getStyle(); // consider static/global?
+		RackSVG::addStyle(style);
 
 		std::string cssSelector, cssConf;
 		if (drain::StringTools::split2(value, cssSelector, cssConf, '=')){

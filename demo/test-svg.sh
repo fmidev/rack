@@ -334,10 +334,16 @@ WRITE_SECTION svg_crange_clip Visualisation of clipping
 
 RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'\${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" \\ --script "'--cReset -Q DBZH --cProj 3067 --cSize 300 --cRange 220000 --cCreate  -P -o cart-\${NOD}-\${what:time}-RadarGrid.png --gRadarGrid 50000:1,15,MASK=true'"  'data-kiira/201708121?00_radar.polar.fi{kor,ika,van}.h5' \\  --gStyle "'.COVER=fill:darkblue;opacity:0.5'" --gStyle ".GRID='stroke-width:1px'"  --gStyle ".IMAGE_BORDER='stroke:lightblue;stroke-width:2px'"  \\  -o "radar_crange_clip"
 
-WRITE_SECTION svg_select_rect1  'Highlighting details with rectangles (AEQD projection)'
+WRITE_SECTION svg_select_rect1  'Highlighting details with rectangles (AEQD projection), interactive'
 
 RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'Grouping by time: \${what:date|%A, %d %B %Y} at \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gRect -200000,0,-50000,-120000m'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_select_rect1"
 # --gStyle "rect.SELECTOR='stroke:white;stroke-width:3px'
+
+WRITE_SECTION svg_data_tooltip  'Interactive data value display'
+
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputConf "'svg:paths=PREFIXED'" \\ --outputPrefix "/opt/cache/svg/" \\ --gGroupTitle "'Time: \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gData  data-${what:date}T${what:time}-${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_data_tooltip"
+
+
 
 ls -1t ${OUTFILES[*]//.png/.cmd}
 

@@ -139,13 +139,19 @@ const std::map<char,std::string> XML::encodingMap = {
 void XML::setType(intval_t t){
 
 	if (type != t){
+		//const bool CHANGE = ((type>1) && (t > 1));
+		//const std::string & tag = getTag();
+
 		if ((type>1) && (t > 1)){
 			// Major "semantic" change
-			Logger(__FILE__, __FUNCTION__).warn("Changing type from ", getType(), " to ", t);
+			//Logger(__FILE__, __FUNCTION__).warn("Changing type from ", getType(), " to ", t);
 		}
 		reset();
 		type = t;     // also UNDEFINED accepted here
 		handleType(); // NOTE: problems, if copy constructor etc. calls setType on a base class – trying to link future members
+		// if (CHANGE){
+		//	Logger(__FILE__, __FUNCTION__).warn("Changed type from ", tag, " to ", getTag(), '(', t, ')');
+		// }
 	}
 
 }

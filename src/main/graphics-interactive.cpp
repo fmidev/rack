@@ -41,7 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/GeoFrame.h>
 #include <drain/image/MouseXML.h>
 
+#include "graphics-base.h"
 #include "graphics-panel.h"
+#include "graphics-imagepanel.h"
 #include "graphics-interactive.h"
 
 namespace drain {

@@ -41,33 +41,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/SourceODIM.h" // for NOD
 
+#include "graphics-base.h"
 #include "graphics-panel.h"
+#include "graphics-imagepanel.h"
 
 
-DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, NONE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MAIN_TITLE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MAIN_TITLE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, GROUP_TITLE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_TITLE),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, TITLE),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, LOCATION),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, TIME),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, GENERAL),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_PANEL),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_BORDER),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BACKGROUND_RECT),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BORDER),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
-		// ---
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, DATA_ARRAY),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SHARED_METADATA),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, OVERLAY),
-};
 
 
 

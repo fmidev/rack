@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/prog/Command.h>
 #include <drain/util/Base64.h>
 
-#include "hi5/Hi5.h"
+// #include "hi5/Hi5.h"
 #include "resources.h" // ctx
 #include "graphics-radar.h" // ctx
 

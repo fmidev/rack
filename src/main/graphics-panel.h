@@ -51,22 +51,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 
-namespace drain {
 
-DRAIN_TYPENAME(rack::ImagePanel);
-
-}  // drain
-
-
-namespace drain {
-
-DRAIN_ENUM_DICT(rack::RackSVG::ElemClass);
-DRAIN_ENUM_OSTREAM(rack::RackSVG::ElemClass);
-
-DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::RackSVG::ElemClass);
-
-
-}
 
 
 namespace rack {

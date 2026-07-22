@@ -260,7 +260,8 @@ void RadarSVG::updateCartesianConf(const Composite & comp) {
 	geoFrame.setGeometry(comp.getFrameWidth(), comp.getFrameHeight());
 	// mout.accept<LOG_WARNING>(DRAIN_LOG(geoFrame.getBoundingBoxDeg()));
 
-	source = comp.odim.source;
+	// mout.attention(DRAIN_LOG(source), '|', DRAIN_LOG(comp.odim.source));
+	// source = comp.odim.source;
 
 }
 

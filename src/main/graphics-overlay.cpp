@@ -44,6 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-panel.h"
 #include "graphics-radar.h"
 #include "graphics-overlay.h"
+#include "graphics-imagepanel.h"
 
 
 namespace drain {
@@ -155,67 +156,7 @@ void CmdPolarBase::updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG){
 
 }
 
-/**
- *  \param shared - if false, create private object ("layer") for each radar; else use common.
- */
-/*
-drain::image::TreeSVG & CmdPolarBase::getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG){ // , bool prepend=false){
 
-	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-
-	Graphic::getGraphicStyle(ctx.svgTrack);
-
-	// OLD drain::image::TreeSVG & group = ...
-	// NEW:..
-	RackSVG::getCurrentAdapterGroup(ctx);
-	drain::image::TreeSVG & overlayGroup = RackSVG::getVectorImagePanelGroup(ctx);
-	RackSVG::consumeAlignRequest(ctx, overlayGroup);
-
-
-	updateRadarSVG(ctx, radarSVG);
-
-	overlayGroup->set(DATA_ID, radarSVG.source); // Rack necessity.
-	// New. For mouse coords: // drain::Sprinter::plainLayout
-
-
-	// TODO: should these be in shared level? Also Overlays should be for each vertical "stack".
-	if (radarSVG.geoFrame.getEPSG()){
-		overlayGroup->set("data-epsg", radarSVG.geoFrame.getEPSG());
-	}
-
-	if (radarSVG.geoFrame.isLongLat()){
-		overlayGroup->set("data-bbox", drain::sprinter(radarSVG.geoFrame.getBoundingBoxDeg().tuple(), drain::Sprinter::plainLayout).str());
-
-	}
-	else {
-		std::vector<int> geoBBOX;
-		radarSVG.geoFrame.getBoundingBoxNat().toSequence(geoBBOX);
-		overlayGroup->set("data-bbox", drain::sprinter(geoBBOX, drain::Sprinter::plainLayout).str());
-	}
-	// DOES not work overlayGroup->set("data-epsg", radarSVG.geoFrame.getEPSG());
-
-	overlayGroup[svg::DESC](svg::DESC)->setText(radarSVG.source); // General SVG comment
-	return overlayGroup;
-
-};
-*/
-
-/*
-drain::image::TreeSVG & CmdPolarBase::getOverlay(drain::image::TreeSVG & overlayGroup, const std::string & label) const {
-
-	//std::string srcLabel = overlayGroup->getAttributes().get("data-latest", "unknown");
-	std::string srcLabel = overlayGroup->get(DATA_ID, "unknown");
-	const std::string & key = label.empty() ? srcLabel : label;
-	drain::image::TreeSVG & overlay = overlayGroup[key](drain::image::svg::GROUP); // (drain::image::svg::GROUP);
-	overlay->addClass(GRID);
-	overlay->set("data-src", srcLabel); // just info
-	overlay.addChild()->setComment(getName(), ' ', getParameters(), " getOverLay");
-
-	return overlay;
-
-}
-*/
 
 double CmdPolarBase::ensureMetricRange(double maxRange, double range){
 	if (range < -1.0){
@@ -722,16 +663,22 @@ void CmdRadarGrid::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	// General
+	Graphic::getGraphicStyle(ctx.svgTrack);
+
 	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG);
 
-	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(radarSVG.geoFrame.getGeometry()); // (ctx, radarSVG);
-	ImagePanel superPanel(imagePanelGroup);
-	Graphic::getGraphicStyle(ctx.svgTrack);
 
-	mout.attention(DRAIN_LOG(radarSVG.geoFrame.getGeometry()));
-	mout.attention(DRAIN_LOG(imagePanelGroup->getBoundingBox()));
+	// const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (geom); // (ctx, radarSVG);
+	ImagePanel superPanel(imagePanelGroup, radarSVG.geoFrame.getGeometry());
+
+
+	// superPanel.getOverlayGroup()->setFrame(geom); // generalize
+	// mout.attention(DRAIN_LOG(radarSVG.geoFrame.getGeometry()));
+	// mout.attention(DRAIN_LOG(imagePanelGroup->getBoundingBox()));
 
 	/// Step 2a: check distance parameter
 	drain::SteppedRange<double> dist(0.0, 0.0, 1.0);  // double -> int
@@ -759,10 +706,14 @@ void CmdRadarGrid::exec() const  {
 
 
 	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
-
+	/*
+	std::string id;
+	drain::StringTools::getSafeKey(radarSVG.source, id, "-",",:");
+	vectorGroup->setId(id);
+	*/
 	vectorGroup->addClass(cls); // GRID
 	// TODO: ensureDefaultStyles(cls, cls2, cls3)
-	vectorGroup->setFrame(radarSVG.geoFrame.getGeometry());
+	// vectorGroup->setFrame(geom);
 
 	vectorGroup.addChild()->setComment("Rays: ", dist.range.tuple());
 	double angleRad = 0.0;
@@ -790,7 +741,13 @@ void CmdRadarGrid::exec() const  {
 
 	vectorGroup.addChild()->setComment("Circles/arcs: ", azm.range.tuple(), " - ", azmRad.tuple());
 
-	for (int i=dist.range.min + dist.step; i<=dist.range.max; i += dist.step){
+	// double distMin = dist.range.min;
+	if (dist.range.min == 0){
+		// Dont draw arc in origin...
+		dist.range.min += dist.step;
+	}
+
+	for (int i=dist.range.min; i<=dist.range.max; i += dist.step){
 
 		drain::image::TreeSVG & g = vectorGroup.addChild()(svg::GROUP);
 		g->addClass(Graphic::HIGHLIGHT);
@@ -845,15 +802,26 @@ void CmdRadarSector::exec() const  {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	/*
+	// General
+	Graphic::getGraphicStyle(ctx.svgTrack);
+
+	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
+			{"fill", "none"},
+			// {"stroke", "rgb(160,255,160)"},
+			{"stroke-width", 5.0},
+			// {"opacity", 0.65}
+	});
+
+	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG);
 
-	TreeSVG & imagePanelGroup = ctx.getImagePanelGroupNEW(); // (ctx, radarSVG);
-	ImagePanel superPanel(imagePanelGroup);
-	Graphic::getGraphicStyle(ctx.svgTrack); // TODO: automatic
-	*/
 
+	// const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (geom); // (ctx, radarSVG);
+	ImagePanel superPanel(imagePanelGroup, radarSVG.geoFrame.getGeometry());
+
+	/*
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG);
 	const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
@@ -862,21 +830,17 @@ void CmdRadarSector::exec() const  {
 	ImagePanel superPanel(imagePanelGroup);
 	Graphic::getGraphicStyle(ctx.svgTrack);
 
+	*/
 	//drain::image::TreeSVG & curve = overlay[getName()+getLastParameters()](drain::image::svg::PATH);
 
-	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
+	// TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
+	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
 	vectorGroup->addClass(cls); // SECTOR
 	// vectorGroup->setFrame(radarSVG.geoFrame.getGeometry());
 	drain::image::TreeSVG & curve = vectorGroup.addChild()(drain::image::svg::PATH);
 	//curve -> addClass(cls); // SECTOR
 
 	// drain::image::TreeUtilsSVG\n
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
-			{"fill", "none"},
-			// {"stroke", "rgb(160,255,160)"},
-			{"stroke-width", 5.0},
-			// {"opacity", 0.65}
-	});
 
 	drain::SteppedRange<double> dist(0,0,1.0); // (distanceMetres.range); // double -> int
 	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());

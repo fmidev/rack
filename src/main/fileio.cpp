@@ -77,8 +77,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio-html.h"
 #include "file-hist.h"
 #include "images.h"  // ImageSection
-#include "graphics.h"
+//#include "graphics.h"
 #include "graphics-panel.h"
+#include "graphics-imagepanel.h"
 
 
 namespace rack {
