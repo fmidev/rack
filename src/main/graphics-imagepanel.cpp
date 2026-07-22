@@ -243,7 +243,7 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, RackSVG::ElemClass cls, sv
 		//elem.addChild()->setComment("NEW ", __FUNCTION__, '/', cls);
 		//if ((type == svg::RECT) && (parent.hasChild(svg::IMAGE))){
 		if (parent.hasChild(svg::IMAGE)){
-			if (elem->typeIs(svg::RECT,svg::GROUP)){
+			if (!elem->typeIs(svg::RECT,svg::GROUP)){
 				// drain::SelectXML<svg::tag_t>(elem->getTag(), cls).str()
 				drain::Logger(__FILE__, __FUNCTION__).suspicious("Not RECT: ", ':', elem->getTag(), '.', cls, '(', type, ')');
 			}
@@ -341,13 +341,16 @@ drain::image::TreeSVG& ImagePanel::getDataImage(const drain::FilePath & filepath
 
 drain::image::TreeSVG & ImagePanel::getVectorOverlayGroup(const std::string & key, const drain::Frame2D<drain::image::svg::coord_t> & geom) const {
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup();
 
 	if (key.empty()){
 		std::string k;
 		drain::image::TreeSVG::generateKey(overlayGroup, k);
 		if (k.empty()){
-			std::runtime_error(__FUNCTION__);
+			mout.error("empty key generated");
+			//std::runtime_error(__FUNCTION__);
 		}
 		return getVectorOverlayGroup(k, geom);
 	}
@@ -380,6 +383,10 @@ drain::image::TreeSVG & ImagePanel::getVectorOverlayGroup(const std::string & ke
 
 	if (!vectorGroup->getBoundingBox().getFrame().empty()){
 		overlayGroup->addClass(ClipperSVG::CLIPPED);
+		mout.warn(__FUNCTION__, " geometry=", vectorGroup->getBoundingBox().getFrame(), " elem=", vectorGroup->getId());
+	}
+	else {
+		mout.warn(__FUNCTION__, " empty geometry, elem=", vectorGroup->getId());
 	}
 
 	//vectorGroup->addClass(ClipperSVG::CLIPPED);

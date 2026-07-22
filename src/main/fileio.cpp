@@ -523,16 +523,16 @@ void CmdOutputFile::exec() const {
 
 		// mout.experimental("writing SVG file: ", path);
 		drain::image::OverlayMoverSVG overlayMover;
-		//drain::TreeUtils::traverse(overlayMover, ctx.svgTrack);
+		//drain::TreeUtils::traverse(overlayMover, ctx.getSVG());
 
 		drain::image::FloaterSVG floater;
-		drain::TreeUtils::traverse(floater, ctx.svgTrack);
+		drain::TreeUtils::traverse(floater, ctx.getSVG());
 
 		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
 			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::PREFIXED) ? "./" : "";
 			RelativePathSetterSVG pathSetter(path.dir, prefix); // consider "file://"
-			drain::TreeUtils::traverse(pathSetter, ctx.svgTrack);
+			drain::TreeUtils::traverse(pathSetter, ctx.getSVG());
 			// TreeUtilsSVG::setRelativePaths(RackSVG::getMain(ctx), path.dir);
 		}
 		else {
@@ -540,37 +540,37 @@ void CmdOutputFile::exec() const {
 		}
 
 		/*
-		if (ctx.svgTrack->get("data-version") == 2){
+		if (ctx.getSVG()->get("data-version") == 2){
 			mout.attention("skipping alignment");
 
 			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
-			ctx.svgTrack->setFrame(bb.getFrame()); // width, height
+			ctx.getSVG()->setFrame(bb.getFrame()); // width, height
 			// Finalize view box
-			ctx.svgTrack->setViewBox(bb);
+			ctx.getSVG()->setViewBox(bb);
 		}
 		else {
 		*/
 			//
 		MetaDataCollectorSVG metadataPruner;
-		drain::TreeUtils::traverse(metadataPruner, ctx.svgTrack);
+		drain::TreeUtils::traverse(metadataPruner, ctx.getSVG());
 
 		ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
 
 		TitleCreatorSVG titleCreator(ctx.svgPanelConf);
-		drain::TreeUtils::traverse(titleCreator, ctx.svgTrack); // or mainTrack enough?
+		drain::TreeUtils::traverse(titleCreator, ctx.getSVG()); // or mainTrack enough?
 
-		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
-		TreeLayoutSVG::superAlign(ctx.svgTrack);
+		TreeLayoutSVG::addStackLayout(ctx.getSVG(), ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
+		TreeLayoutSVG::superAlign(ctx.getSVG());
 
 		const BBoxSVG & bb = ctx.getMainGroup()->getBoundingBox();
-		ctx.svgTrack->setFrame(bb.getFrame()); // width, height
-		ctx.svgTrack->setViewBox(bb);
+		ctx.getSVG()->setFrame(bb.getFrame()); // width, height
+		ctx.getSVG()->setViewBox(bb);
 
 		{
 			// using namespace drain::image;
 			// typedef svg::tag_t tag_t;
-			// TreeSVG & subGroup = ctx.svgTrack[RackSVG::BORDER];
-			NodeSVG::Elem<svg::tag_t::RECT> frame(ctx.svgTrack[RackSVG::BORDER]);
+			// TreeSVG & subGroup = ctx.getSVG()[RackSVG::BORDER];
+			NodeSVG::Elem<svg::tag_t::RECT> frame(ctx.getSVG()[RackSVG::BORDER]);
 			frame.width  = bb.width;
 			frame.height = bb.height;
 			frame.node.addClass(RackSVG::BORDER);
@@ -600,17 +600,17 @@ void CmdOutputFile::exec() const {
 		// Remove all TSPAN elements which have no text
 		textPruner.tagSelector[svg::TSPAN] = drain::XmlEmptiness::TEXT;
 		*/
-		drain::TreeUtils::traverse(textPruner, ctx.svgTrack);
+		drain::TreeUtils::traverse(textPruner, ctx.getSVG());
 
-		drain::image::ClipperSVG clipper(ctx.svgTrack);
-		drain::TreeUtils::traverse(clipper, ctx.svgTrack);
+		drain::image::ClipperSVG clipper(ctx.getSVG());
+		drain::TreeUtils::traverse(clipper, ctx.getSVG());
 
 		drain::image::MaskerSVG masker;
-		drain::TreeUtils::traverse(masker, ctx.svgTrack);
+		drain::TreeUtils::traverse(masker, ctx.getSVG());
 
 		drain::Output ofstr(filepath);
 
-		drain::image::NodeSVG::toStream(ofstr, ctx.svgTrack);
+		drain::image::NodeSVG::toStream(ofstr, ctx.getSVG());
 		mout.hint<LOG_DEBUG>("For converting to PNG, consider: ");
 		mout.hint<LOG_DEBUG>("\t inkscape -o out.png ", path, "  # Relative paths ok");
 		mout.hint<LOG_DEBUG>("\t convert ", path, " out.png # Use full system paths");

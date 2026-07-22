@@ -319,7 +319,10 @@ void CmdRadarDot::exec() const {
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+
+	// General
+	Graphic::getGraphicStyle(ctx.getSVG()); // needed?
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, {
 			{"fill", "white"},
 			{"stroke", "black"},
 			{"stroke-width", 2.0},
@@ -334,12 +337,13 @@ void CmdRadarDot::exec() const {
 
 	// ctx.getStatusMap().get("what:source", "unknown-source");
 
-	ImagePanel superPanel(imagePanelGroup);
-
+	ImagePanel superPanel(imagePanelGroup, geom);
+	/*
 	imagePanelGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	imagePanelGroup->addClass(LayoutSVG::NEUTRAL);
 	imagePanelGroup->addClass(LayoutSVG::INDEPENDENT);
 	imagePanelGroup->addClass(ClipperSVG::CLIPPED);
+	*/
 
 	TreeSVG & overlayGroup = superPanel.getOverlayGroup();
 
@@ -359,8 +363,8 @@ void CmdRadarDot::exec() const {
 
 	// drain::image::TreeUtilsSVG\n
 
-
-	TreeSVG & vectGroup = superPanel.getSourceSpecificGroup(radarSVG.source);
+	TreeSVG & vectGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
+	//TreeSVG & vectGroup = superPanel.getSourceSpecificGroup(radarSVG.source);
 	vectGroup->addClass(GRAPHIC::GRID);
 	// RackSVG::getSourceSpecificGroup(ctx, overlayGroup);
 
@@ -392,7 +396,7 @@ void CmdRadarDot::exec() const {
 		// Copy this localMask to shared mask...
 		// const int w = radarSVG.geoFrame.getFrameWidth();
 		// const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, overlayGroup, geom.width, geom.height, localMask.data, pos);
+		MaskerSVG::createMask(ctx.getSVG(), overlayGroup, geom.width, geom.height, localMask.data, pos);
 		// ... and "delete" the object.
 		localMask->setType(svg::COMMENT);
 		localMask->setComment("Original position of MASK:", getName(), getParameters());
@@ -428,7 +432,7 @@ void CmdRadarDotTest::exec() const {
 
 
 	// drain::image::TreeUtilsSVG\n
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, {
 			{"fill", "white"},
 			{"stroke", "black"},
 			{"stroke-width", 2.0},
@@ -458,7 +462,7 @@ void CmdRadarDotTest::exec() const {
 		// Copy this localMask to shared mask...
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, imagePanel, w, h, tmpMask.data);
+		MaskerSVG::createMask(ctx.getSVG(), imagePanel, w, h, tmpMask.data);
 		// ... and "delete" the object.
 		tmpMask->setType(svg::COMMENT);
 	}
@@ -476,9 +480,9 @@ void CmdRadarLabel::exec() const  {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// General
-	Graphic::getGraphicStyle(ctx.svgTrack);
+	Graphic::getGraphicStyle(ctx.getSVG());
 
-	TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, {
+	TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, {
 			{"font-size", "12"},
 			{"stroke", "black"},
 			{"stroke-width", "0.2"},
@@ -490,7 +494,7 @@ void CmdRadarLabel::exec() const  {
 			{"paint-order", "stroke"},
 	});
 
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, "DEBUG", { // ?
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), "DEBUG", { // ?
 			//{"font-size", "12"},
 			{"fill", "white"},
 			{"fill-opacity", 0.1},
@@ -644,7 +648,7 @@ void CmdRadarGrid::exec() const  {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// General
-	Graphic::getGraphicStyle(ctx.svgTrack);
+	Graphic::getGraphicStyle(ctx.getSVG());
 
 	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
@@ -753,7 +757,7 @@ void CmdRadarGrid::exec() const  {
 			radarSVG.drawCircle(elem, {0,  dist.range.max});
 		}
 
-		MaskerSVG::createMask(ctx.svgTrack, superPanel.getOverlayGroup(), geom.width, geom.height, localMask.data, pos);
+		MaskerSVG::createMask(ctx.getSVG(), superPanel.getOverlayGroup(), geom.width, geom.height, localMask.data, pos);
 		localMask->setType(svg::COMMENT); // "delete"
 
 	}
@@ -770,9 +774,9 @@ void CmdRadarSector::exec() const  {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	// General
-	Graphic::getGraphicStyle(ctx.svgTrack);
+	Graphic::getGraphicStyle(ctx.getSVG());
 
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, { // SECTOR
 			{"fill", "none"},
 			// {"stroke", "rgb(160,255,160)"},
 			{"stroke-width", 5.0},
@@ -823,7 +827,7 @@ void CmdRadarSector::exec() const  {
 		// In this case, the mask shape is equal to the original elshape.
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
-		MaskerSVG::createMask(ctx.svgTrack, superPanel.getOverlayGroup(), w, h, curve.data, pos);
+		MaskerSVG::createMask(ctx.getSVG(), superPanel.getOverlayGroup(), w, h, curve.data, pos);
 	}
 
 
@@ -852,7 +856,7 @@ void CmdRadarRay::exec() const {
 	drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);
 	curve->addClass(cls); // SECTOR
 	// drain::image::TreeUtilsSVG\n
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, cls, { // SECTOR
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, { // SECTOR
 			{"fill", "none"},
 			{"stroke", "rgb(160,255,160)"},
 			{"stroke-width", 5.0},

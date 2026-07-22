@@ -115,7 +115,7 @@ void CmdDot::exec() const  {
 
 	// const std::string SPOT = "SPOT";
 	//drain::image::TreeUtilsSVG
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, SPOT, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), SPOT, {
 			{"fill", "green"},
 			{"stroke", "white"},
 			{"stroke-width", 2.0},
@@ -175,7 +175,7 @@ void CmdDotTest::exec() const  {
 
 	// const std::string SPOT = "SPOT";
 	//drain::image::TreeUtilsSVG
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, SPOT, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), SPOT, {
 			{"fill", "green"},
 			{"stroke", "white"},
 			{"stroke-width", 2.0},
@@ -454,7 +454,7 @@ void CmdRect::exec() const {
 	}
 
 	/*
-	TreeSVG & monitorStyle = drain::UtilsXML::ensureStyle(ctx.svgTrack, Interactive::ElemClass::MONITOR, {
+	TreeSVG & monitorStyle = drain::UtilsXML::ensureStyle(ctx.getSVG(), Interactive::ElemClass::MONITOR, {
 			{"fill", "white"},
 			{"stroke", "none"},
 			{"font-size", "14px"},
@@ -462,8 +462,8 @@ void CmdRect::exec() const {
 	*/
 
 	// Modify SVG header. Notice inverse order (for prepend() )
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coord_handler")       = coord_handler;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
 
 	ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
 	// RackSVG::getOnLoadScript(ctx)["test"] = "// Test";
@@ -578,7 +578,7 @@ void CmdRect::exec() const {
 		const int w = radarSVG.geoFrame.getFrameWidth();
 		const int h = radarSVG.geoFrame.getFrameHeight();
 		//drain::image::TreeSVG & mask =
-		// MaskerSVG::createMask(ctx.svgTrack, mouseGroup, w, h, mouseListenerElem);
+		// MaskerSVG::createMask(ctx.getSVG(), mouseGroup, w, h, mouseListenerElem);
 	}
 	*/
 
@@ -600,8 +600,8 @@ void CmdCoords::exec() const {
 	}
 
 	// Modify SVG header. Notice inverse order (for prepend() )
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "coord_handler")       = coord_handler;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
 
 	ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
 
@@ -716,7 +716,7 @@ void CmdData::exec() const {
 
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
-	drain::UtilsXML::ensureStyle(ctx.svgTrack, RackSVG::ElemClass::DATA_ARRAY, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), RackSVG::ElemClass::DATA_ARRAY, {
 			{"opacity", 0.1},  // some browsers disable mouse listener, if fully invisible?
 	});
 
@@ -729,7 +729,7 @@ void CmdData::exec() const {
 	// mout.attention(data);
 
 	//  Modify SVG header. Ensure the script is available.
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "image_value_tracker") = image_value_tracker;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 	ctx.getOnLoadScript()["image_value_tracker"] = "image_value_tracker();";
 
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
@@ -839,7 +839,7 @@ void CmdTestData::exec() const {
 	// drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
 
 	/// Ensure that the script is available.
-	drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
 
 	// TEST 1: float vector
 	const std::vector<float> floatVector(11*11, 1.2345);

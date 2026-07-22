@@ -35,7 +35,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
-// #include <drain/RegExp.h>
 #include <drain/image/Image.h>
 #include <drain/image/LayoutSVG.h>
 #include <drain/image/TreeSVG.h>
@@ -95,90 +94,6 @@ struct ConfSVG {
 };
 
 
-/*
-/// SVG support for creating aligned image panels
-class RackSVG {
-
-
-public:
-
-	//typedef drain::StyleSelectorXML<NodeSVG> Select;
-
-	// Identifier for the anchor background
-	// static const std::string BACKGROUND_RECT; //  = "mainRect";
-
-	// \see rack::Interactive::ElemClass
-
-	enum ElemClass {
-		NONE = 0,
-		MAIN_TITLE  = 1, // Main title in SVG image
-		GROUP_TITLE = 2, // Group title
-		IMAGE_TITLE = 4, // Image title: small text (time, location) in corners of radar images
-		// Topical
-		TIME = 8,        // Date and time attributes
-		LOCATION = 16,   // Place (coordinates, municipality)
-		GENERAL = 32,    // Default type
-		ALL = (63),
-		// MAIN,
-		IMAGE_PANEL,     // Group containing and image and, potentially, title TEXTs.
-		IMAGE_BORDER,    // RECT surrounding the image, potentially also a COORD_TRACKER
-		BACKGROUND_RECT, // invisible RECT used for aligning titles.
-		SIDE_PANEL,
-		BORDER,          // Overall border (RECT) around the SVG document, invisible by default
-		// --
-		MOUSE,			 // A group marked for mouse event listeners
-		// MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
-		// MONITOR,         // Display of interactive operations
-		SELECTOR,        // Interactive element illustrating a selection by the user
-		DATA_ARRAY,      // Image used as data array only, not to be displayed
-		// SHARED_METADATA, // Something that should not be repeated in panels.
-		// --- unused ? ---
-		// TITLE,      // Default title
-		OVERLAY,          // Standard subgroup name inside IMAGE_PANEL group.
-	};
-
-
-
-	/// returns timeformat
-	static
-	const std::string & guessFormat(const std::string & key);
-
-
-
-	/// Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)
-	//   \return TEXT element located at child(GENERAL)
-
-	static
-	drain::image::TreeSVG & addTitleBox(const ConfSVG & conf, drain::image::TreeSVG & object, RackSVG::ElemClass elemClass);
-
-	// TODO: title area "filling order", by group class.
-	/// Add title elements in given group, to "reserve slots" for actual text content to be added later.
-
-	static
-	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const std::string &anchor, RackSVG::ElemClass elemClass);
-
-	static inline
-	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const char * anchor, RackSVG::ElemClass elemClass){
-		return appendTitleElements(conf, group, std::string(anchor), elemClass);
-	}
-
-	template <class T>
-	static inline
-	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const T & anchorId, RackSVG::ElemClass elemClass){
-		//const drain::StringWrapper<T> anchor(anchorId);
-		const drain::EnumWrapper<T> anchor(anchorId);
-		// const std::string & s = anchor;
-		return appendTitleElements(conf, group, (const std::string &)anchor, elemClass);
-	}
-
-
-
-protected:
-
-
-};
-
-*/
 
 
 using namespace drain::image;
@@ -200,7 +115,13 @@ public:
 	inline virtual
 	~GraphicsContext(){};
 
+	// To be protected:
 	drain::image::TreeSVG svgTrack;
+
+	inline
+	drain::image::TreeSVG & getSVG(){
+		return svgTrack;
+	}
 
 	// SVG output configuration (layout)
 	ConfSVG svgPanelConf; // under constr

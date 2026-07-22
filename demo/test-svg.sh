@@ -3,9 +3,9 @@
 DOCFILE=~/eclipse-workspace/rack/src/main/graphics.inc
 TMPDIR=out
 #RACK="rack --outputPrefix \$PWD/$TMPDIR/ --outputConf svg:absolutePaths=true "
-RACK="rack --outputPrefix \$PWD/$TMPDIR/ "
+RACK="rack "
 
-
+OUTPUT_PREFIX="\$PWD/$TMPDIR/"
 
 #exit 0
 
@@ -66,7 +66,8 @@ function WRITE_HELP(){
 
 function RUN_TEST(){
 
-    local cmd="$RACK $*"
+    local output_prefix=${OUTPUT_PREFIX:+"\\ --outputPrefix ${OUTPUT_PREFIX}"}
+    local cmd="$RACK $output_prefix $*"
     local args=( $* )
     local argc=${#args[*]}
 
@@ -130,6 +131,7 @@ function RUN_TEST(){
 
 	if [ $? == 0 ]; then
 	    echo "# OK: created $TMPDIR/$OUTFILE_PNG"
+	    #OUTFILES+=($TMPDIR/$OUTFILE_PNG)
 	    OUTFILES+=($TMPDIR/$OUTFILE_PNG)
 	    cp -v $TMPDIR/$OUTFILE_PNG ../doxygen/
 	else
@@ -341,7 +343,8 @@ RUN_TEST \\  --inputPrefix '$PWD/' \\  --gGroupTitle "'Grouping by time: \${what
 
 WRITE_SECTION svg_data_tooltip  'Interactive data value display'
 
-RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputConf "'svg:paths=PREFIXED'" \\ --outputPrefix "/opt/cache/svg/" \\ --gGroupTitle "'Time: \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gData  data-\${what:date}T\${what:time}-\${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_data_tooltip"
+OUTPUT_PREFIX="/opt/cache/svg"
+RUN_TEST \\  --inputPrefix '$PWD/' \\  --outputConf "'svg:paths=PREFIXED'" \\ --gGroupTitle "'Time: \${what:time|%H:%M} UTC'" \\   --script "'--cReset --cSize 300 -Q DBZH -c --paletteDefault -o out-\${what:date}T\${what:time}-\${NOD}.png --gData  data-\${what:date}T\${what:time}-\${NOD}.png'" \\  'data-kiira/201708121?00_radar.polar.fi{van,ika,kor}.h5'  -o "radar_svg_data_tooltip"
 
 
 

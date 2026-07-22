@@ -78,7 +78,7 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//TreeSVG & style = ctx.svgTrack[svg::STYLE]; // convention: main style section in the document
+	//TreeSVG & style = ctx.getSVG()[svg::STYLE]; // convention: main style section in the document
 	if (!style->typeIs(svg::STYLE)){
 		mout.suspicious("Changing ", style->getTag(), " to ", svg::STYLE);
 		style->setType(svg::STYLE);

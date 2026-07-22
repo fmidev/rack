@@ -64,9 +64,9 @@ drain::image::TreeSVG & RackSVG::getStyle(RackContext & ctx){
 
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	//TreeSVG & style = ctx.svgTrack[svg::STYLE]; // convention: main style section in the document
+	//TreeSVG & style = ctx.getSVG()[svg::STYLE]; // convention: main style section in the document
 
-	TreeSVG & style = ctx.svgTrack[svg::STYLE](svg::STYLE); // convention: main style section in the document
+	TreeSVG & style = ctx.getSVG()[svg::STYLE](svg::STYLE); // convention: main style section in the document
 
 	using namespace drain;
 
@@ -217,10 +217,10 @@ drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
 
 	mout.experimental<LOG_INFO>("Adding mouse interaction: SVG onload=", onload_fnc_name, "()");
 
-	ctx.svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
+	ctx.getSVG()->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
 
-	return drain::UtilsXML::ensureJavaScriptFunction(ctx.svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.svgTrack, onload_fnc_name);
+	return drain::UtilsXML::ensureJavaScriptFunction(ctx.getSVG(), onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
 
 }
 */
@@ -228,7 +228,7 @@ drain::image::TreeSVG & RackSVG::getOnLoadScript(RackContext & ctx){
 /*
 drain::image::TreeSVG & RackSVG::getJavaScriptDefs(RackContext & ctx){
 
-	drain::image::TreeSVG & scope = drain::UtilsXML::getHeaderObject(ctx.svgTrack, svg::SCRIPT, "Rack");
+	drain::image::TreeSVG & scope = drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "Rack");
 	if (scope.empty()){
 		scope->setText("const Rack = {cls:{}, test:{}};\n");
 	}
@@ -336,7 +336,7 @@ drain::image::TreeSVG & RackSVG::getMainGroup(RackContext & ctx){ // , const std
 	// Ensure STYLE elem and definitions
 	RackSVG::getStyle(ctx);
 
-	TreeSVG & mainGroup = ctx.svgTrack[MAIN];
+	TreeSVG & mainGroup = ctx.getSVG()[MAIN];
 
 	if (mainGroup -> isUndefined()){
 		mainGroup->setType(svg::GROUP);

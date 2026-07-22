@@ -87,7 +87,7 @@ drain::image::TreeSVG & GraphicsContext::getOnLoadScript(){
 	svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
 
 	return drain::UtilsXML::ensureJavaScriptFunction(svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.svgTrack, onload_fnc_name);
+	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
 
 }
 
@@ -257,7 +257,7 @@ drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(){
 		imagePanelGroup->addClass(LayoutSVG::FIXED);
 		imagePanelGroup->addClass(LayoutSVG::INDEPENDENT);
 		imagePanelGroup->addClass(LayoutSVG::NEUTRAL);
-		imagePanelGroup->setFrame(100,100);
+		// imagePanelGroup->setFrame(123, 456);
 		// Experimental cmd location.
 		if (consumeAlignRequest(imagePanelGroup)){
 			mout.revised<LOG_NOTICE>("handled PENDING alignRequest");

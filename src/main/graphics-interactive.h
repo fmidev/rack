@@ -55,17 +55,19 @@ namespace rack {
  *  \see MouseXML
  *
  */
+
 class InteractiveSVG {
 
 public:
 
-	TreeSVG & getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
+	// TreeSVG & getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
 
 	bool cursorCoord = false;
 };
 
 
-class CmdRect : public CmdPolarBase, InteractiveSVG { // , public drain::image::MouseXML { //  drain::BasicCommand,
+
+class CmdRect : public CmdPolarBase, InteractiveSVG { // x, public drain::image::MouseXML { //  drain::BasicCommand,
 
 public:
 
@@ -118,7 +120,7 @@ public:
 
 };
 
-class CmdData : public CmdPolarBase, InteractiveSVG { //  drain::BasicCommand,
+class CmdData : public CmdPolarBase { // , InteractiveSVG drain::BasicCommand,
 
 public:
 

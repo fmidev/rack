@@ -262,7 +262,7 @@ public:
 			//style[cssSelector]->setStyle(cssConf); // TODO fix -> ->getAttributes().setValues(cssConf, ':', ';');
 
 			// style[cssSelector].data = {{"koe", "black"}};      // OK but parallel..
-			//drain::TreeUtils::dump(ctx.svgTrack);
+			//drain::TreeUtils::dump(ctx.getSVG());
 		}
 		else {
 			mout.error("Missing '=' in assigment");
@@ -750,11 +750,11 @@ public:
 
 		const drain::Frame2D<double> frame = {768.0, 640.0};
 
-		ctx.svgTrack->set("data-version", 2);
-		ctx.svgTrack->setWidth(1.2 * frame.width);
-		ctx.svgTrack->setHeight(1.2 * frame.height);
+		ctx.getSVG()->set("data-version", 2);
+		ctx.getSVG()->setWidth(1.2 * frame.width);
+		ctx.getSVG()->setHeight(1.2 * frame.height);
 
-		ctx.svgTrack->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
+		ctx.getSVG()->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 
 		drain::image::TreeSVG & debugStyle = ctx.getStyle()[".DEBUG"];
 		if (debugStyle.empty()){
@@ -794,11 +794,11 @@ public:
 		text.setAlign(drain::image::AlignSVG::CENTER);
 
 		// BBoxSVG bbox;
-		// TreeUtilsSVG::detectBoxNEW(ctx.svgTrack, true);
-		mout.attention("Stacking: ", ctx.svgTrack.data);
-		TreeLayoutSVG::addStackLayout(ctx.svgTrack, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
-		mout.attention("Aligning: ", ctx.svgTrack.data);
-		TreeLayoutSVG::superAlign(ctx.svgTrack); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		// TreeUtilsSVG::detectBoxNEW(ctx.getSVG(), true);
+		mout.attention("Stacking: ", ctx.getSVG().data);
+		TreeLayoutSVG::addStackLayout(ctx.getSVG(), ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert); // AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
+		mout.attention("Aligning: ", ctx.getSVG().data);
+		TreeLayoutSVG::superAlign(ctx.getSVG()); //, AlignBase::Axis::HORZ, LayoutSVG::Direction::INCR);
 
 	}
 
@@ -842,7 +842,7 @@ public:
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
 		NodeVisitor visitor;
-		// drain::TreeUtils::traverse(ctx.svgTrack, visitor);
+		// drain::TreeUtils::traverse(ctx.getSVG(), visitor);
 
 
 	}
@@ -865,7 +865,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::UtilsXML::ensureJavaScriptUrl(ctx.svgTrack, value);
+		drain::UtilsXML::ensureJavaScriptUrl(ctx.getSVG(), value);
 
 	}
 };
