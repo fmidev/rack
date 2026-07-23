@@ -251,9 +251,15 @@ public:
 		// getParameters().link("sizes", fontSizes);
 	}
 
-	template <class T, size_t N=2>
+	// template <class T, size_t N=2>
+	//ConfSVG::sizeConf
+	void adjust(ConfSVG::sizeConf & tuple, float decay = 0.8) const;
+
+	/*
 	void adjust(drain::UniTuple<T,N> & tuple, float decay = 0.8) const{
 
+		RackContext & ctx = getContext<RackContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		double defaultValue = decay * tuple[0];
 
@@ -262,6 +268,7 @@ public:
 		drain::Reference ref(tuple);
 		ref.setFill(false);
 		ref = value;
+		mout.attention(value, " => ", DRAIN_LOG(ref));
 
 		for (double & s: tuple){
 			defaultValue = 0.1 * ::round(10.0 * defaultValue);
@@ -277,11 +284,13 @@ public:
 			}
 			defaultValue *= decay;
 		}
+
+		mout.attention("new values: ", DRAIN_LOG(ref));
 		// mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
 
 
 	}
-
+	*/
 
 };
 

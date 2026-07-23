@@ -699,7 +699,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 		node.transform.translate.x = coord;
 		if (node.getBoundingBox().isDefined()){
 			if (node.getBoundingBox().x != 0.0){
-				mout.warn("Node to be translated also has non-zero x coordinate: ", node.getBoundingBox());
+				mout.warn(node.getTag(), " #", node.getId(), " to be translated also has non-zero x coordinate: ", node.getBoundingBox().getLocation());
 			}
 		}
 		mout.debug("translated: ", ns, " <- ", anchorSpan, "  -> (", node.getBoundingBox(), ") TRANSLATED: tr=", node.transform.translate.tuple());

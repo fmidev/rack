@@ -43,6 +43,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 #include <sstream>
 
+// NEW
+#include <list>
+#include "UniTuple.h"
+
 
 
 namespace drain {
@@ -479,6 +483,18 @@ private:
 		typename T::value_type tmp;
 		sequence.insert(sequence.end(), StringTools::lazyConvert(str, tmp));
 	}
+
+	template <class T, size_t N>
+	static
+	void appendString(drain::UniTuple<T,N> & tuple, const std::string & str){
+		std::list<T> l;
+		appendString(l, str);
+		tuple.assignSequence(l);
+		// if (tuple.fill && (l.size() < N)){ ... }
+		//typename T::value_type tmp;
+		//sequence.insert(sequence.end(), StringTools::lazyConvert(str, tmp));
+	}
+
 
 	template <class T>
 	static

@@ -177,6 +177,9 @@ public:
 	};
 	*/
 
+	// Below all:
+	// TODO: iterator it = retrieve(arg);
+
 	inline
 	bool has(const std::string & arg) const {
 		return (find(arg) != end());
@@ -194,9 +197,37 @@ public:
 	};
 
 
+
+	/*
 	inline
 	void remove(const std::string & arg) {
 		iterator it = find(arg);
+		if (it != end()){
+			erase(it);
+		}
+	};
+
+	inline
+	void remove(const char *arg) {
+		iterator it = find(arg);
+		if (it != end()){
+			erase(it);
+		}
+	};
+
+	inline
+	void remove(const ClassXML & arg) {
+		iterator it = find(arg);
+		if (it != end()){
+			erase(it);
+		}
+	};
+	*/
+
+	template <typename E>
+	inline
+	void remove(const E & arg){
+		iterator it = retrieve(arg); // find(drain::Enum<E>::dict.getKey(arg));
 		if (it != end()){
 			erase(it);
 		}
@@ -210,6 +241,28 @@ protected:
 
 	inline
 	void add(){};
+
+	inline
+	iterator retrieve(const std::string & arg) const {
+		return find(arg);
+	}
+
+	inline
+	iterator retrieve(const char *arg) const {
+		return find(arg);
+	}
+
+	inline
+	iterator retrieve(const ClassXML & arg) const {
+		return find(arg);
+	}
+
+	template <typename E>
+	inline
+	iterator retrieve(const E & arg) const {
+		return find(drain::Enum<E>::dict.getKey(arg));
+	}
+
 
 };
 

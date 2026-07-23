@@ -1201,13 +1201,51 @@ void CmdAlign::exec() const  {
 }
 
 
+void CmdAdjustSizes::adjust(ConfSVG::sizeConf & tuple, float decay) const{
+
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	double defaultValue = 15.0; // decay * tuple[0];
+
+	drain::Reference values(tuple);
+	tuple.clear();
+	values.setFill(false);
+	values = value;
+	mout.attention(value, " => ", DRAIN_LOG(values));
+
+	for (double & s: tuple){
+		// Round to 1 decimal.
+		// defaultValue = 0.1 * ::round(10.0 * defaultValue);
+		if (s == 0.0){
+			s = defaultValue;
+		}
+		else {
+			if (s > defaultValue){
+				// mout.suspicious<LOG_WARNING>("font size increasing (",  s, '>', defaultValue, ") unexpectedly");
+			}
+			defaultValue = s;
+		}
+		// defaultValue *= decay;
+		defaultValue = 0.1 * ::round(10.0 * defaultValue * decay);
+	}
+
+	mout.info(getName(), ": new values: ", DRAIN_LOG(values));
+	// mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
+
+
+}
+
 
 void CmdFontSizes::exec() const {
 
 	RackContext & ctx = getContext<RackContext>();
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-	adjust(ctx.svgPanelConf.boxHeights, 0.8);
-	mout.accept<LOG_WARNING>("new values: ", ctx.svgPanelConf.fontSizes);
+	drain::UniTuple<double,3> t;
+	drain::StringTools::split(value, t, ',');
+	// adjust(ctx.svgPanelConf.boxHeights, 0.8);
+	adjust(ctx.svgPanelConf.fontSizes, 0.8);
+	mout.accept<LOG_WARNING>("new values: ", DRAIN_LOG(ctx.svgPanelConf.fontSizes), DRAIN_LOG(ctx.svgPanelConf.boxHeights));
 
 }
 
@@ -1218,12 +1256,12 @@ void CmdTitleHeights::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	adjust(ctx.svgPanelConf.boxHeights, 0.8);
-	mout.accept<LOG_DEBUG>("new BOX  values: ", ctx.svgPanelConf.boxHeights);
+	mout.accept<LOG_DEBUG>(DRAIN_LOG(ctx.svgPanelConf.boxHeights));
 
 	for (size_t i= 0; i<ctx.svgPanelConf.boxHeights.size(); ++i){
 		ctx.svgPanelConf.fontSizes[i] = 0.65 * ctx.svgPanelConf.boxHeights[i];
 	}
-	mout.accept<LOG_DEBUG>("new FONT values: ", ctx.svgPanelConf.fontSizes);
+	mout.accept<LOG_DEBUG>(DRAIN_LOG(ctx.svgPanelConf.fontSizes));
 
 	// CmdFontSizes::updateFontStyles(ctx);
 }

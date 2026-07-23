@@ -667,9 +667,11 @@ public:
 		return classList.has(cls);
 	}
 
+
+	template <class V>
 	inline
-	void removeClass(const std::string & s) {
-		classList.remove(s);
+	void removeClass(const V & cls) {
+		classList.remove(cls);
 	}
 
 	inline

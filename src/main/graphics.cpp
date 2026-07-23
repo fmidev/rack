@@ -468,7 +468,24 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::Frame2D<double> frame = {300,600};
+		// Graphic::getGraphicStyle(ctx.getSVG());
+		drain::UtilsXML::ensureStyle(ctx.getSVG(), "BOX", {
+				{"fill", "green"},
+				{"opacity", 0.15},
+				{"stroke-width", "2px"},
+				{"stroke", "black"},
+				{"border-radius", "5px"},
+		});
+
+		const double fontSize  = ctx.svgPanelConf.fontSizes[0];
+		const double boxHeight = ctx.svgPanelConf.boxHeights[0];
+
+		const drain::Frame2D<double> frame = {640,400};
+		const drain::Frame2D<double> miniFrame = {80, boxHeight};
+
+		mout.note(DRAIN_LOG(fontSize), DRAIN_LOG(boxHeight));
+		mout.advice("Use --gFontSizes <size> to tune");
+
 
 		//drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP);
 		drain::image::TreeSVG & group = ctx.getCurrentAdapterGroup()[value](svg::GROUP);
@@ -490,10 +507,13 @@ public:
 
 
 		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
-		rect->set("width", frame.width);
-		rect->set("height", frame.height);
-		rect->set("label", ANCHOR_ELEM);
+		rect->setFrame(frame);
+		rect->setId(ANCHOR_ELEM);
 		rect->setStyle("fill", "red");
+		rect->set("rx", "10px");
+		rect->set("ry", "5px");
+
+		//rx="15"
 
 		// rect->addClass(LayoutSVG::INDEPENDENT);
 
@@ -512,55 +532,59 @@ public:
 
 		const drain::Enum<Pos>::dict_t & dict = drain::Enum<Pos>::dict;
 
+		const std::list<Pos> positions = {AlignBase::MIN, AlignBase::MID, AlignBase::MAX};
 
-		//const std::list<Pos> pos = {AlignBase::MAX, AlignBase::MIN, AlignBase::MID};
-		// for (const drain::image::LayoutSVG::Axis & ax: {AlignAxis::HORZ, AlignAxis::VERT}){
 		for (const Pos & posVert: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){ // {AlignBase::MID} pos
 
-			char pv = dict.getKey(posVert)[2];
+			char pv = dict.getKey(posVert)[2]; // N,D,X
 
 			for (const Pos & posHorz: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // pos
 
-				char ph = dict.getKey(posHorz)[2];
+				char ph = dict.getKey(posHorz)[2]; // N,D,X
 
 				for (const Pos & posVertAnhor: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ // {AlignBase::MID}){
 
-					char rv = dict.getKey(posVertAnhor)[2];
+					char rv = dict.getKey(posVertAnhor)[2]; // N,D,X
 
 					for (const Pos & posHorzAnchor: {AlignBase::MIN, AlignBase::MID, AlignBase::MAX}){ //pos){
 
-						char rh = dict.getKey(posHorzAnchor)[2];
+						char rh = dict.getKey(posHorzAnchor)[2]; // N,D,X
 
 						//const std::string label = drain::StringBuilder<'-'>(posHorzRef, posVertRef, posHorz, posVert, '-', ph, pv, rh, rv);
 						const std::string label = drain::StringBuilder<'-'>(ph, pv, rh, rv);
 
-						drain::image::TreeSVG & text = group[label + "text"](svg::TEXT);
-						text->setId(label+"_T");
-						text->getBoundingBox().setArea(60,30);
+						drain::image::TreeSVG & text = group.addChild()(svg::TEXT); // group[label + "text"](svg::TEXT);
+						text->setId(svg::TEXT, '_', label);
+						//text->setFrame(frame.width/8, frame.height/8);
+						text->setFrame(miniFrame);
 						text->setAlign(Owner::ANCHOR, AlignBase::HORZ, posHorzAnchor);
 						text->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
 						text->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
 						text->setAlign(Owner::OBJECT, AlignBase::VERT, posVert);
 						text->setText(label);
-						text->setFontSize(6.0, 8.0);
+						//text->setFontSize(6.0, 8.0);
+						text->setFontSize(fontSize, boxHeight); // , 1.25*fontsize);
 
-						drain::image::TreeSVG & textBox = group[label](svg::RECT);
-						textBox->setId(label+"_R");
-						textBox->getBoundingBox().setArea(60,30);
+						drain::image::TreeSVG & textBox = group.addChild()(svg::RECT);
+						textBox->setId(svg::RECT, '_', label);
+						textBox->addClass("BOX");
+						textBox->setFrame(miniFrame);
+						//textBox->setFrame(frame.width/8, frame.height/8);
+						textBox->set("rx", "10px");
+						textBox->set("ry", "5px");
+
 						//textBox->set("mika", textBox->getAlignStr()); // textBox->set("mika", textBox->getAlignStr());
-						textBox->setStyle("fill", "green");
-						textBox->setStyle("opacity", 0.15);
-						textBox->setStyle("stroke-width", "2px");
-						textBox->setStyle("stroke", "black");
+
 						textBox->setAlign(Owner::ANCHOR, AlignBase::HORZ, posHorzAnchor);
 						textBox->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
 						textBox->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
 						textBox->setAlign(Owner::OBJECT, AlignBase::VERT, posVert);
 						//textBox->addClass(LayoutSVG::INDEPENDENT);
 
-						//text->addClass(LayoutSVG::INDEPENDENT);
+						// text->addClass(LayoutSVG::INDEPENDENT);
 						// drain::image::TreeSVG & textSpan = text["tspan"](svg::TSPAN);
 						// textSpan->setText(text->getAlignStr());
+						// break;
 
 					}
 				}

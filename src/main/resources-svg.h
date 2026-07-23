@@ -70,19 +70,21 @@ struct ConfSVG {
 	TitleFlagger svgImageTitles; //  = ElemClass::TIME|ElemClass::LOCATION|ElemClass::GENERAL;
 	*/
 
+	typedef drain::UniTuple<double,3> sizeConf;
+
 	/**
 	 *   0 - mainTitle.main
 	 *   1 - mainTitle.second and groupTile.main
 	 *   2 - groupTitle.second
 	 *   3 - imageTitle
 	 */
-	drain::UniTuple<double,3>  fontSizes = {15.0, 12.0, 10.0};
+	sizeConf fontSizes = {15.0, 12.0, 10.0};
 
 	/**
 	 *   0 - mainTitle
 	 *   1 - groupTitle
 	 */
-	drain::UniTuple<double,3>  boxHeights = {30.0, 25.0, 15.0};
+	sizeConf boxHeights = {30.0, 25.0, 15.0};
 
 	int debug = 0;
 

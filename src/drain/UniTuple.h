@@ -121,7 +121,7 @@ public:
 	}
 
 	tuple_t & operator=(const value_type & value){
-		this->assign(value);
+		this->set(value);
 		return *this;
 	}
 
