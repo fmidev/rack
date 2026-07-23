@@ -124,7 +124,8 @@ public:
 		svgConf.link("paths", ctx.svgPanelConf.pathPolicy);
 		svgConf.link("resolution", drain::image::FileSVG::radialBezierResolution, "radial Bezier point density");
 		// svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
-		svgConf.link("debug", ctx.svgPanelConf.debug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		//svgConf.link("debug", ctx.svgPanelConf.debug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		svgConf.link("debug", drain::image::FileSVG::visualDebugLevel); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 
 #ifndef USE_GEOTIFF_NO
 
@@ -514,12 +515,39 @@ void CmdOutputFile::exec() const {
 	}
 	else if (IMAGE_SVG){ // drain::image::NodeSVG::fileInfo.checkPath(path)) {
 
+		if (FileSVG::visualDebugLevel > 0){
+			TreeSVG & rootSVG = ctx.getSVG();
+			drain::UtilsXML::ensureStyle(rootSVG, FileSVG::DEBUG, { // ?
+					// {"font-size", "12"},
+					{"fill", "none"},
+					// {"fill-opacity", 0.1},
+					{"stroke", "red"},  // replace these with image-title etc soft transit
+					{"stroke-dasharray", {5, 5}},
+					{"stroke-width", "1px"},
+			});
+
+			// SelectSVG(FileSVG::DEBUG, svg::RECT)
+			drain::UtilsXML::ensureStyle(rootSVG, FileSVG::DEBUG_ALIGN, {
+					{"stroke", "none"},
+					// {"stroke-dasharray", {5, 5}},
+					{"fill", "red"},
+					{"fill-opacity", 0.5},
+			});
+
+		}
+
+		TreeSVG & style = ctx.getStyle();
+		style[drain::ClassXML(RackSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
+		style[drain::ClassXML(RackSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
+		style[drain::ClassXML(RackSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+
 		TreeSVG & svgGroup = ctx.getMainGroup();
 
 		svgGroup->set("id", path.tail);
 		if (!ctx.outputPrefix.empty()){
 			svgGroup->set("data-outputPrefix", ctx.outputPrefix); // add "data:..."
 		}
+
 
 		// mout.experimental("writing SVG file: ", path);
 		drain::image::OverlayMoverSVG overlayMover;

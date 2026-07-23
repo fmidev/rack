@@ -59,7 +59,6 @@ DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy) = {
 };
 
 
-int image::FileSVG::radialBezierResolution = 8;
 
 
 // // DRAIN_TYPENAME_DEF(image::NodeSVG);
@@ -106,9 +105,14 @@ DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG) = {
 
 namespace image {
 
-const drain::FileInfo FileSVG::fileInfo("svg");
-// const drain::FileInfo NodeSVG::fileInfo("svg");
 
+const drain::FileInfo FileSVG::fileInfo("svg");
+
+int FileSVG::radialBezierResolution = 8;
+int FileSVG::visualDebugLevel = 0;
+
+std::string FileSVG::DEBUG = "SVG_DEBUG";
+std::string FileSVG::DEBUG_ALIGN = "SVG_DEBUG_ALIGN";
 
 template <>
 NodeSVG::xmldoc_attrib_map_t NodeSVG::xml_node_t::xmldoc_attribs = {

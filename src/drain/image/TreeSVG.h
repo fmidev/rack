@@ -89,6 +89,15 @@ public:
 	static
 	int radialBezierResolution;
 
+	static
+	int visualDebugLevel;
+
+	static
+	std::string DEBUG;
+
+	static
+	std::string DEBUG_ALIGN;
+
 };
 
 }
@@ -98,6 +107,7 @@ DRAIN_ENUM_OSTREAM(image::FileSVG::IncludePolicy);
 
 DRAIN_ENUM_DICT(image::FileSVG::PathPolicy);
 DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy);
+
 
 namespace image {
 
@@ -123,6 +133,9 @@ class NodeSVG;
 
 // typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 typedef DRAIN_XML_TREE(NodeSVG) TreeSVG;
+
+typedef SelectXML<svg::tag_t> SelectSVG;
+
 
 } // image::
 

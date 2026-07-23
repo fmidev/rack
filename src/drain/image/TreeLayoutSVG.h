@@ -55,37 +55,54 @@ namespace image {
 /**
  *
  */
+class CoordSpanBase {
 
-
-//template <>
-// const drain::Enum<AlignSVG_FOO>::dict_t  drain::Enum<AlignSVG_FOO>::dict;
-
-template <AlignBase::Axis AX>
-struct CoordSpan {
-
-	inline
-	CoordSpan(svg::coord_t pos = 0, svg::coord_t span = 0) : pos(pos), span(span) {
-	}
-
-	inline
-	CoordSpan(const CoordSpan & cspan) : pos(cspan.pos), span(cspan.span) {
-	}
+public:
 
 	// Starting coordinate (x or y).
-	svg::coord_t pos = 0; //BBoxSVG::undefined;
+	svg::coord_t pos = 0;  // BBoxSVG::undefined;
 
 	// Width or height
 	svg::coord_t span = 0; // BBoxSVG::undefined;
+
+	inline
+	CoordSpanBase(svg::coord_t pos = 0, svg::coord_t span = 0) : pos(pos), span(span) {
+	}
+
+	inline
+	CoordSpanBase(const CoordSpanBase & cspan) : pos(cspan.pos), span(cspan.span) {
+	}
+
+	inline
+	bool isDefined() const {
+		return ! (std::isnan(pos) || std::isnan(span));
+	}
+
+	bool getPosition(AlignBase::Pos alignLoc, svg::coord_t & coord) const;
+
+};
+
+
+// template <>
+// const drain::Enum<AlignSVG_FOO>::dict_t  drain::Enum<AlignSVG_FOO>::dict;
+
+template <AlignBase::Axis AX>
+struct CoordSpan : public CoordSpanBase {
+
+	inline
+	CoordSpan(svg::coord_t pos = 0, svg::coord_t span = 0) : CoordSpanBase(pos, span) {
+	}
+
+	inline
+	CoordSpan(const CoordSpan & cspan) : CoordSpanBase(cspan.pos, cspan.span) {
+	}
+
 
 	// ? void getTranslatedCoordSpan(const BBoxSVG & bbox);
 	void copyFrom(const NodeSVG & node);
 
 	void copyFrom(const BBoxSVG & bbox);
 
-	inline
-	bool isDefined(){
-		return ! (std::isnan(pos) || std::isnan(span));
-	}
 };
 
 // TODO: separate TreeLayoutUtilsSVG

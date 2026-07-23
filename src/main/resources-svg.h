@@ -86,7 +86,7 @@ struct ConfSVG {
 	 */
 	sizeConf boxHeights = {30.0, 25.0, 15.0};
 
-	int debug = 0;
+	// int debug = 0;
 
 	inline  // maxPerGroup(10), layout(Alignment::HORZ, LayoutSVG::INCR), legend(LEFT, EMBED),
 	ConfSVG() : svgIncludes(drain::image::FileSVG::IncludePolicy::ALL), pathPolicyFlagger(drain::image::FileSVG::PathPolicy::ABSOLUTE), pathPolicy("ABSOLUTE") { // absolutePaths(true){

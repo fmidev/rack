@@ -481,6 +481,7 @@ void CmdRadarLabel::exec() const  {
 			{"paint-order", "stroke"},
 	});
 
+	/*
 	drain::UtilsXML::ensureStyle(ctx.getSVG(), "DEBUG", { // ?
 			//{"font-size", "12"},
 			{"fill", "white"},
@@ -488,6 +489,7 @@ void CmdRadarLabel::exec() const  {
 			{"stroke", "red"},  // replace these with image-title etc soft transit
 			{"stroke-width", "2"},
 	});
+	*/
 
 
 	/// Step 1: initialize radarSVG

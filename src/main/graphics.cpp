@@ -481,7 +481,7 @@ public:
 		const double boxHeight = ctx.svgPanelConf.boxHeights[0];
 
 		const drain::Frame2D<double> frame = {640,400};
-		const drain::Frame2D<double> miniFrame = {80, boxHeight};
+		const drain::Frame2D<double> miniFrame = {frame.width/5, boxHeight};
 
 		mout.note(DRAIN_LOG(fontSize), DRAIN_LOG(boxHeight));
 		mout.advice("Use --gFontSizes <size> to tune");
@@ -509,7 +509,7 @@ public:
 		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
 		rect->setFrame(frame);
 		rect->setId(ANCHOR_ELEM);
-		rect->setStyle("fill", "red");
+		rect->setStyle("fill", "lightblue");
 		rect->set("rx", "10px");
 		rect->set("ry", "5px");
 
@@ -564,6 +564,7 @@ public:
 						text->setText(label);
 						//text->setFontSize(6.0, 8.0);
 						text->setFontSize(fontSize, boxHeight); // , 1.25*fontsize);
+						text->setMargin((boxHeight - fontSize)/2.0);
 
 						drain::image::TreeSVG & textBox = group.addChild()(svg::RECT);
 						textBox->setId(svg::RECT, '_', label);

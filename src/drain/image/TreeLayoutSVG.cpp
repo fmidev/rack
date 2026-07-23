@@ -39,9 +39,39 @@ namespace drain {
 
 namespace image {
 
+bool CoordSpanBase::getPosition(AlignBase::Pos alignLoc, svg::coord_t & coord) const {
 
+	Logger mout(__FILE__, __FUNCTION__);
 
+	switch (alignLoc){
 
+	case AlignBase::Pos::MIN:
+		coord = pos; // "+ 0%"
+		return true;
+
+	case AlignBase::Pos::MID:
+		coord = pos + span/2.0; // " + 50%"
+		return true;
+
+	case AlignBase::Pos::MAX:
+		coord = pos + span; // " + 100%"
+		return true;
+
+	case AlignBase::Pos::FILL:
+		// Maybe ok, since GROUP can be an anchor but also
+		// mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
+		break;
+	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
+		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
+		break;
+	default:
+		// assert undefined value.
+		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
+	}
+
+	return false;
+
+}
 
 void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 
@@ -530,6 +560,37 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			// Vert
 			adjustLocation(group, node, anchorSpanVert);
 			// mout.special("VERT: mid ", anchorSpanVert);
+
+			if (FileSVG::visualDebugLevel > 0){
+				if (node.typeIs(svg::TEXT, svg::RECT)){
+					TreeSVG & visual = group.addChild()(svg::RECT);
+					visual->addClass(LayoutSVG::FIXED);
+					visual->setBoundingBox(node.getBoundingBox());
+					//visual->transform.setTranslate(node.transform.translate);
+
+					// visual->transform.translate.set(node.transform.translate);
+					// visual->transform.translate.set();
+					//visual->setStyle("fill:cyan; opacity:0.5");
+					if (node.typeIs(svg::TEXT)){
+						visual->addClass(FileSVG::DEBUG_ALIGN); // replace with FileSVG::DEBUG
+						visual->transform.translate.x = node.getMargin();
+						visual->transform.translate.y = node.getHeight() - node.getMargin();
+						TreeSVG & visualAnchor = group.addChild()(svg::CIRCLE);
+
+						visualAnchor->setLocation(anchorSpanHorz.pos + anchorSpanHorz.span/2.0, anchorSpanVert.pos + anchorSpanVert.span/2.0);
+						visualAnchor->set("r", 50);
+
+						//svgCIRCLE circ(group.addChild());
+						//TreeElemUtilsSVG.h
+					}
+					else {
+						visual->transform.translate.set(node.transform.translate);
+					}
+					visual->addClass(FileSVG::DEBUG);
+				}
+			}
+
+
 		}
 
 		/*
@@ -609,6 +670,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 	mout.debug("Adjusting ", ns, " with ", anchorSpan);
 
+	/*
 	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:
 		coord = anchorSpan.pos; // "+ 0%"
@@ -630,6 +692,10 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 		// assert undefined value.
 		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
 	}
+	*/
+
+	anchorSpan.getPosition(node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ), coord);
+
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
 
@@ -726,7 +792,8 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 
 	// STEP 1: derive reference point at the ANCHOR
-
+	anchorSpan.getPosition(node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT), coord);
+	/*
 	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
 	case AlignBase::Pos::MIN:
 		coord = anchorSpan.pos;
@@ -750,6 +817,9 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getMyAlignAnchor<AlignBase::Axis::VERT>()));
 		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
 	}
+	*/
+
+
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
 	// mout.special("Vertical adjust: after anchor:", alignLoc, " coord=", coord, " based on abox:", anchorBoxVert);
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");

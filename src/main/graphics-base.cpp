@@ -88,7 +88,7 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 	using namespace drain;
 
 	//style->setType(svg::STYLE);
-	typedef SelectXML<svg::tag_t> Select;
+	typedef SelectXML<svg::tag_t> SelectSVG;
 
 	UtilsXML::ensureStyle(style, svg::TEXT, {
 			{"font-family","Helvetica, Arial, sans-serif"},
@@ -105,7 +105,11 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 			{"fill", "none"},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::IMAGE_TITLE), {
+	UtilsXML::ensureStyle(style, RackSVG::IMAGE_TITLE, {
+			{"font-size", 10}
+	});
+
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, RackSVG::IMAGE_TITLE), {
 			{"stroke", "white"},
 			{"stroke-opacity", "0.75"},
 			{"stroke-width", "0.3em"},
@@ -114,34 +118,41 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 			{"paint-order", "stroke"},
 	});
 
+	UtilsXML::ensureStyle(style, RackSVG::GROUP_TITLE, {
+			{"font-size", 12}
+	});
 
-	UtilsXML::ensureStyle(style, Select(svg::RECT, RackSVG::GROUP_TITLE), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, RackSVG::GROUP_TITLE), {
 			{"fill", "gray"},
 			{"stroke", "white"},
 			{"stroke-width", "1px"},
 			{"opacity", 1.0},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::GROUP_TITLE), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, RackSVG::GROUP_TITLE), {
 			// {"font-size", 20}, dynamic, see below
 			{"fill", "black"},
 			//{"stroke", "white"},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::RECT, RackSVG::MAIN_TITLE), {
+	UtilsXML::ensureStyle(style, RackSVG::MAIN_TITLE, {
+			{"font-size", 14}
+	});
+
+	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, RackSVG::MAIN_TITLE), {
 			{"fill", "darkblue"},
 			//{"fill", "gray"},
 			{"opacity", 1.0},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::MAIN_TITLE), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, RackSVG::MAIN_TITLE), {
 			//
 			{"fill", "white"},
 			// {"stroke", "black"},
 	});
 
 	// Currently, image titles have no background RECT, but let's keep this for clarity.
-	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::IMAGE_TITLE), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, RackSVG::IMAGE_TITLE), {
 			{"font-size", "12px"},
 	});
 
@@ -179,12 +190,12 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 			// {"stroke-width", 1.0},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::RECT, RackSVG::SELECTOR), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, RackSVG::SELECTOR), {
 				// {"stroke", "white"},
 				{"stroke-width", "2px"},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::TEXT, RackSVG::SELECTOR), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, RackSVG::SELECTOR), {
 			{"font-size", "large"},
 			//{"stroke", "none"},
 			{"stroke", "black"},
@@ -198,13 +209,13 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 	});
 
 
-	UtilsXML::ensureStyle(style, Select(svg::RECT,RackSVG::SIDE_PANEL), { // TODO: add leading '.' ?
+	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT,RackSVG::SIDE_PANEL), { // TODO: add leading '.' ?
 			{"fill", "black"},
 			{"stroke", "white"},
 			{"stroke-width", 2.0},
 	});
 
-	UtilsXML::ensureStyle(style, Select(svg::TEXT,RackSVG::SIDE_PANEL), { // TODO: add leading '.' ?
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT,RackSVG::SIDE_PANEL), { // TODO: add leading '.' ?
 			{"font-size", "12px"},
 			{"stroke", "none"},
 			{"fill", "white"},
