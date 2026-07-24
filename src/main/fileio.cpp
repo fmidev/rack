@@ -572,7 +572,7 @@ void CmdOutputFile::exec() const {
 			mout.attention("skipping alignment");
 
 			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
-			ctx.getSVG()->setFrame(bb.getFrame()); // width, height
+			ctx.getSVG()->setGeometry(bb.getFrame()); // width, height
 			// Finalize view box
 			ctx.getSVG()->setViewBox(bb);
 		}
@@ -591,7 +591,7 @@ void CmdOutputFile::exec() const {
 		TreeLayoutSVG::superAlign(ctx.getSVG());
 
 		const BBoxSVG & bb = ctx.getMainGroup()->getBoundingBox();
-		ctx.getSVG()->setFrame(bb.getFrame()); // width, height
+		ctx.getSVG()->setGeometry(bb.getFrame()); // width, height
 		ctx.getSVG()->setViewBox(bb);
 
 		{

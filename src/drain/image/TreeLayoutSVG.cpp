@@ -168,7 +168,7 @@ void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 			debugRect.getBoundingBox() = b;
 			debugRect.set("x", b.x);
 			debugRect.set("y", b.y);
-			debugRect.setFrame(b.getFrame());
+			debugRect.setGeometry(b.getFrame());
 		}
 
 	}
@@ -200,14 +200,14 @@ void TreeLayoutSVG::addStackLayout(TreeSVG & object, AlignBase::Axis orientation
 	// mout.attention("ACCEPT:", object->getTag());
 	mout.special<LOG_DEBUG>(__FUNCTION__, " start: ", node); //, object->getId(), " -> ", object->getBoundingBox());
 
-	if (node.hasClass(LayoutSVG::INDEPENDENT)){
+	if (node.hasClass(AlignSVG::INDEPENDENT)){
 		if (!node.isAligned()){
-			mout.revised("Keeping ", LayoutSVG::INDEPENDENT, " unaligned,  check results...");
+			mout.revised("Keeping ", AlignSVG::INDEPENDENT, " unaligned,  check results...");
 			// somewhat atribitrary
 			// node.setAlign(AlignSVG::MIDDLE, AlignSVG::CENTER); // check
 		}
 	}
-	else if (node.hasClass(LayoutSVG::FIXED)){
+	else if (node.hasClass(AlignSVG::FIXED)){
 		// don't align, so don't add instructions either
 		return;
 	}
@@ -496,6 +496,10 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 	 */
 
 	// std::list<TreeSVG::path_elem_t> alignWaitingForCollectiveBBox;
+	if (FileSVG::visualDebugLevel > 0){
+		group->setId();
+		group.addChild()->setComment(__FUNCTION__, ": traverse children of ", group->getId());
+	}
 
 	for (TreeSVG::pair_t & entry: group){
 
@@ -505,22 +509,27 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			continue;
 		}
 
-		if (node.hasClass(LayoutSVG::FIXED)){ // consider joining this with COMPOUND?
+		if (node.hasClass(AlignSVG::FIXED)){ // consider joining this with COMPOUND?
 			// mout.attention("fixed, ok ", node);
+			if (FileSVG::visualDebugLevel > 0){
+				// group->setId();
+				entry.second.addChild()->setComment(__FUNCTION__, ": not aligned, skipping ", AlignSVG::FIXED);
+			}
 			continue;
 		}
 
 		// else
-		if (!node.hasClass(LayoutSVG::COMPOUND)){
+		if (!node.hasClass(AlignSVG::COMPOUND)){
 			// First, align the children of this node, recursively
 			superAlign(entry.second);
 		}
 		else { // COMPOUND - or require detectBox being already calculated?
 			// Unused at the moment?
-			mout.attention("COMPOUND - detecting bbox of ", node);
+			mout.attention(AlignSVG::COMPOUND, " in detecting bbox of ", node);
 			detectBox(entry.second, true); // only
 		}
 	}
+
 
 	// Separated to two loops for future option: @NEXT and @COLLECTIVE_FINAL (bbox) – using several iterations if needed.
 
@@ -544,7 +553,7 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			continue;
 		}
 
-		if (node.hasClass(LayoutSVG::FIXED)){
+		if (node.hasClass(AlignSVG::FIXED)){
 			// skip moving/translating
 			continue;
 		}
@@ -562,9 +571,14 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			// mout.special("VERT: mid ", anchorSpanVert);
 
 			if (FileSVG::visualDebugLevel > 0){
+				node.setId();
+				entry.second.addChild()->setComment(__FUNCTION__, ": aligned ", node.getId());
+			}
+
+			if (FileSVG::visualDebugLevel > 1){
 				if (node.typeIs(svg::TEXT, svg::RECT)){
 					TreeSVG & visual = group.addChild()(svg::RECT);
-					visual->addClass(LayoutSVG::FIXED);
+					visual->setAlign(AlignSVG::FIXED);
 					visual->setBoundingBox(node.getBoundingBox());
 					//visual->transform.setTranslate(node.transform.translate);
 
@@ -625,7 +639,8 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 		//mout.special("VERT: önd ", anchorSpanVert);
 
-		if (!node.hasClass(LayoutSVG::NEUTRAL)){
+		//if (!node.hasClass(AlignSVG::NEUTRAL)){
+		if (!node.getClasses().hasAny(AlignSVG::NEUTRAL, AlignSVG::FIXED)){
 			compoundBBox.expandHorz(anchorSpanHorz.pos);
 			compoundBBox.expandHorz(anchorSpanHorz.pos + anchorSpanHorz.span);
 			compoundBBox.expandVert(anchorSpanVert.pos);

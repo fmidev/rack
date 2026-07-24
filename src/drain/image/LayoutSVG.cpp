@@ -45,10 +45,12 @@ namespace drain {
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType) = {
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
+		/*
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, COMPOUND),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, FIXED),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, INDEPENDENT),
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, NEUTRAL),
+		*/
 		DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
 		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
 		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),

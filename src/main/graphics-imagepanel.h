@@ -98,7 +98,7 @@ public:
 	inline
 	drain::image::TreeSVG & getBackGround() const {
 		drain::image::TreeSVG & overlay = getOverlayGroup();
-		return getUniqueElem(overlay, RackSVG::ElemClass::BACKGROUND_RECT, svg::RECT);
+		return getUniqueElem(overlay, RackSVG::ElemClass::BACKGROUND, svg::RECT);
 	};
 
 

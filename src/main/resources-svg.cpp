@@ -55,27 +55,6 @@ GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
 }
 
 
-drain::image::TreeSVG & GraphicsContext::getMainGroup(){ // , const std::string & name
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	static std::string MAIN("MAIN");
-
-	// Ensure STYLE elem and definitions
-	RackSVG::addStyle(getStyle());
-
-	TreeSVG & mainGroup = svgTrack[MAIN];
-
-	if (mainGroup -> isUndefined()){
-		mainGroup->setType(svg::GROUP);
-		mainGroup->addClass(MAIN); // TitleCreatorSVG::visitPostfix
-		mainGroup->addClass(LayoutSVG::ADAPTER); // needed?
-	}
-
-	return mainGroup;
-
-}
-
 drain::image::TreeSVG & GraphicsContext::getOnLoadScript(){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -159,7 +138,7 @@ bool GraphicsContext::consumeAlignRequest(drain::image::NodeSVG & node){
 	//if (ctx.alignHorz.pos != AlignBase::UNDEFINED_POS){
 	if (alignHorz.isSet()){ // experimental...
 		node.setAlign(AlignBase::HORZ, alignHorz.pos, alignHorz.getOrDefault(MutualAlign::INSIDE));  // simplify
-		node.addClass(LayoutSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
+		node.setAlign(AlignSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
 		// mout.attention("updated Horz align: ",  node); // , " -> all:", node.getAlignStr()
 		alignHorz.reset();
 		alignHorz.set(AlignBase::UNDEFINED_POS, MutualAlign::INSIDE);
@@ -171,7 +150,7 @@ bool GraphicsContext::consumeAlignRequest(drain::image::NodeSVG & node){
 	//if (ctx.alignVert.pos != AlignBase::UNDEFINED_POS){
 	if (alignVert.isSet()){ // experimental...
 		node.setAlign(AlignBase::VERT, alignVert.pos, alignVert.getOrDefault(MutualAlign::INSIDE)); // simplify
-		node.addClass(LayoutSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
+		node.setAlign(AlignSVG::INDEPENDENT); // why is this? hmm explicitly, specifically aligned element is "separate"
 		// mout.attention("updated Vert align: ",  node); //  " -> all:", node.getAlignStr()
 		alignVert.reset();
 		alignVert.set(AlignBase::UNDEFINED_POS, MutualAlign::INSIDE);
@@ -183,6 +162,27 @@ bool GraphicsContext::consumeAlignRequest(drain::image::NodeSVG & node){
 }
 
 
+
+drain::image::TreeSVG & GraphicsContext::getMainGroup(){ // , const std::string & name
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	static std::string MAIN("MAIN");
+
+	// Ensure STYLE elem and definitions
+	RackSVG::addStyle(getStyle());
+
+	TreeSVG & mainGroup = svgTrack[MAIN];
+
+	if (mainGroup -> isUndefined()){
+		mainGroup->setType(svg::GROUP);
+		mainGroup->addClass(MAIN); // TitleCreatorSVG::visitPostfix
+		mainGroup->addClass(LayoutSVG::ADAPTER); // needed?
+	}
+
+	return mainGroup;
+
+}
 
 drain::image::TreeSVG & GraphicsContext::getCurrentAdapterGroup(){ // what about prefix?
 
@@ -245,7 +245,7 @@ drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(){
 	if (!currentImagePanel.empty()){
 		mout.revised<LOG_NOTICE>("completing: ", currentImagePanel);
 		TreeSVG & imagePanelGroup = adapterGroup[currentImagePanel];
-		if (consumeAlignRequest(imagePanelGroup)){
+		if (consumeAlignRequest(imagePanelGroup)){ // is this ever useful here?
 			mout.revised<LOG_NOTICE>("handled alignRequest: ", currentImagePanel);
 		}
 		return imagePanelGroup;
@@ -254,10 +254,11 @@ drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(){
 		TreeSVG & imagePanelGroup = adapterGroup["pending"];
 		imagePanelGroup->setId("floating", drain::image::NodeSVG::getNewIndex());
 		imagePanelGroup->addClass(FloaterSVG::FLOATING);
-		imagePanelGroup->addClass(LayoutSVG::FIXED);
-		imagePanelGroup->addClass(LayoutSVG::INDEPENDENT);
-		imagePanelGroup->addClass(LayoutSVG::NEUTRAL);
-		// imagePanelGroup->setFrame(123, 456);
+		//
+		imagePanelGroup->setAlign(AlignSVG::FIXED);
+		imagePanelGroup->setAlign(AlignSVG::INDEPENDENT);
+		imagePanelGroup->setAlign(AlignSVG::NEUTRAL);
+		// imagePanelGroup->setGeometry(123, 456);
 		// Experimental cmd location.
 		if (consumeAlignRequest(imagePanelGroup)){
 			mout.revised<LOG_NOTICE>("handled PENDING alignRequest");
@@ -274,7 +275,7 @@ drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(){
 drain::image::TreeSVG & GraphicsContext::getImagePanelGroup(const drain::Frame2D<int> & frame){
 	TreeSVG & imagePanelGroup = getImagePanelGroup();
 	if (!frame.empty()){
-		imagePanelGroup->setFrame(frame);
+		imagePanelGroup->setGeometry(frame);
 	}
 
 	// imagePanelGroup->addClass(drain::image::LayoutSVG::COMPOUND);

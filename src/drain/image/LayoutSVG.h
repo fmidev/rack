@@ -109,10 +109,12 @@ public:
 		STACK_LAYOUT, // Align elements in rows or columns. (Alternate the axis in nesting STACK_LAYOUT levels)
 		ADAPTER,      // Translate this group object such that the upper right corner of graphics are in the origin (0,0).
 		// ALIGN,        // Align this object, with applicable rules and preferences (populate me with align instructions, unless already set)
+		/* Moved to AlignSVG, for setAlign{Class}(AlignSVG::enum)
 		COMPOUND,     // Internal elements are already aligned, bypass recursion.
 		FIXED,        // Absolute position - do not align. (Do not adjust coordinates, but allow internal recursion.
 		INDEPENDENT,  // No anchoring allowed – but inclusion by collective bounding box applies, unless NEUTRAL.
 		NEUTRAL,      // Excluded from the collective bounding box – but anchoring supported, unless INDEPENDENT)
+		*/
 		//
 		CROP,         // minimize bbox covering all the included objects. \see GroupType::FIXED
 		// Future options

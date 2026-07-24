@@ -302,16 +302,16 @@ public:
 
 
 
-	/// Get position (x,y), width and height of an object.
+	/// Get location (x,y) and geometry (width,height) of an object.
 	inline
 	const BBoxSVG & getBoundingBox() const {
 		return box;
 	}
 	// Consider also with conversion:  getBoundingBox(Box<T> &b)
 
-	/// Get position (x,y), width and height of an object.
+	/// Get location (x,y) and geometry (width,height) of an object.
 	inline
-	BBoxSVG & getBoundingBox(){
+	BBoxSVG & getBoundingBox(){ // needed? (by AlignSVG, perhaps?)
 		return box;
 	}
 
@@ -320,8 +320,30 @@ public:
 	inline
 	void setBoundingBox(const drain::Box<T> & b){
 		setLocation(b);
-		setFrame(b);
+		setGeometry(b);
 		// setAttribute("data:bbox", StringBuilder<' '>(b.x, b.y, b.getWidth(), b.getHeight()));
+	}
+
+	/// Get location (x,y) and geometry (width,height) of an object.
+	inline
+	const Frame2D<svg::coord_t> & getGeometry() const {
+		return box.getFrame();
+	}
+
+	/// Get location (x,y) and geometry (width,height) of an object.
+	inline
+	Frame2D<svg::coord_t> & getGeometry() {
+		return box.getFrame();
+	}
+
+	inline
+	const Point2D<svg::coord_t> & getLocation() const {
+		return box.getLocation();
+	}
+
+	inline
+	Point2D<svg::coord_t> & getLocation() {
+		return box.getLocation();
 	}
 
 	template <typename T>
@@ -358,7 +380,7 @@ public:
 
 	template <typename T>
 	inline
-	void setFrame(const drain::Frame2D<T> & frame){
+	void setGeometry(const drain::Frame2D<T> & frame){
 		box.width  = frame.width;
 		box.height = frame.height;
 	}
@@ -369,9 +391,28 @@ public:
 	 */
 	template <typename T>
 	inline
-	void setFrame(const T & w, const T & h){
+	void setGeometry(const T & w, const T & h){
 		box.setArea(w, h);
 	}
+
+	/*
+	template <typename T>
+	inline
+	void setGeometry(const drain::Frame2D<T> & frame){
+		box.width  = frame.width;
+		box.height = frame.height;
+	}
+	*/
+
+	/**
+	 *
+	 *  Future option: std::string args.
+	template <typename T>
+	inline
+	void setGeometry(const T & w, const T & h){
+		box.setArea(w, h);
+	}
+	 */
 
 
 	/**
@@ -458,6 +499,11 @@ protected:
 
 	// TODO: allowedUnits drain::Units
 	BBoxSVG box;
+
+	virtual inline
+	void setAlignClass(AlignClass cls) override final {
+		addClass(cls);
+	};
 
 };
 
@@ -622,6 +668,16 @@ DRAIN_XML_DEFAULT_INIT(image::TreeSVG);
 template <>
 void image::TreeSVG::swapData(image::NodeSVG & node);
 
+
+/// Add child of given type
+/**
+ *  Note that in UnorderedTree, the children are not unique.
+ *
+ *  TODO: repeat with HTML?
+ */
+template <> // for T - Tree class
+template <> // for K - argument
+image::TreeSVG & image::TreeSVG::addChild(const image::svg::tag_t & type);
 
 } // drain::
 

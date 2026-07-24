@@ -81,8 +81,8 @@ ImagePanel::ImagePanel(TreeSVG & group, const drain::Frame2D<int> & geom) : imag
 	imagePanelGroup.addChild()->setComment("Added image:", image->getId());
 
 	if (!geom.empty()){
-		imagePanelGroup->setFrame(geom);
-		getOverlayGroup()->setFrame(geom);
+		imagePanelGroup->setGeometry(geom);
+		getOverlayGroup()->setGeometry(geom);
 	}
 
 };
@@ -141,7 +141,7 @@ TreeSVG & ImagePanel::getImage(const drain::FilePath & filepath, const drain::Fr
 			// image->setId(filepath.tail);
 			// image->setId(ctx.currentImagePanel);
 			image->setUrl(filepath);
-			// image->setFrame(geom);
+			// image->setGeometry(geom);
 			//image.addChild()->setComment("NEW ", __FUNCTION__);
 			image[svg::TITLE](svg::TITLE) = filepath.tail;
 
@@ -150,15 +150,15 @@ TreeSVG & ImagePanel::getImage(const drain::FilePath & filepath, const drain::Fr
 			// Smells like vector graphics
 			// overlayGroup->addClass(Graphic::GRID);
 			image->setType(svg::DESC);
-			image->setText("Super vector group by ", __FUNCTION__, " - image removed here ");
+			image->setText("Super vector group by ", __FUNCTION__, " (IMAGE removed from here)");
 			imagePanelGroup.addChild()->setComment("Vector B image added by ", __FUNCTION__);
 		}
 
 
 		if (!geom.empty()){
-			image->setFrame(geom);
-			getBackGround()->setFrame(geom);
-			getImageBorder()->setFrame(geom);
+			image->setGeometry(geom);
+			getBackGround()->setGeometry(geom);
+			getImageBorder()->setGeometry(geom);
 		}
 	}
 
@@ -250,8 +250,8 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, RackSVG::ElemClass cls, sv
 			elem->setMyAlignAnchor(svg::IMAGE);
 			elem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 			// "Alternatively":
-			//elem->setFrame(imagePanelGroup[svg::IMAGE]->getBoundingBox().getFrame());
-			elem->setFrame(parent[svg::IMAGE]->getBoundingBox().getFrame());
+			//elem->setGeometry(imagePanelGroup[svg::IMAGE]->getGeometry());
+			elem->setGeometry(parent[svg::IMAGE]->getGeometry());
 		}
 	}
 
@@ -276,7 +276,7 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, svg::tag_t type) const {
 				elem->setMyAlignAnchor(svg::IMAGE);
 				elem->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 				// "Alternatively":
-				elem->setFrame(imagePanelGroup[svg::IMAGE]->getBoundingBox().getFrame());
+				elem->setGeometry(imagePanelGroup[svg::IMAGE]->getGeometry());
 			}
 			else {
 				drain::Logger(__FILE__, __FUNCTION__).reject("Not RECT: ", elem->getTag());
@@ -295,7 +295,7 @@ drain::image::TreeSVG& ImagePanel::getMouseListenerFrame() const {
 	TreeSVG & mouseListenerFrame = getImageBorder(); // same!
 	mouseListenerFrame->addClass(MouseXML::ElemClass::MOUSE_LISTENER);
 	mouseListenerFrame->setStyle("fill", "lightblue");       //
-	mouseListenerFrame->setStyle("fill-opacity", 0.1);
+	mouseListenerFrame->setStyle("fill-opacity", 0.05);
 	// mouseListenerLayer.addChild()->setComment("Mouse interaction");
 
 	return mouseListenerFrame;
@@ -309,11 +309,12 @@ drain::image::TreeSVG& ImagePanel::getDataImage(const drain::FilePath & filepath
 	TreeSVG & overlay = getOverlayGroup();
 	drain::image::TreeSVG & dataImage = getUniqueElem(overlay, RackSVG::ElemClass::DATA_ARRAY, svg::IMAGE); // imagePanelGroup[RackSVG::ElemClass::DATA_ARRAY];
 
-	dataImage->addClass(LayoutSVG::FIXED);
-	dataImage->addClass(LayoutSVG::NEUTRAL);
-	dataImage->addClass(LayoutSVG::INDEPENDENT);
+	dataImage->setAlign(AlignSVG::FIXED);
+	// dataImage->addClass(AlignSVG::FIXED);
+	dataImage->setAlign(AlignSVG::NEUTRAL);
+	dataImage->setAlign(AlignSVG::INDEPENDENT);
 	dataImage->addClass("MOUSE_VALUE_DATA");
-	dataImage->setLocation(20,10);
+	// dataImage->setLocation(20,10);
 	// dataImage->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	dataImage.addChild()->setComment(__FUNCTION__, " - RGB encoded data not for viewing as an image");
 
@@ -328,11 +329,11 @@ drain::image::TreeSVG& ImagePanel::getDataImage(const drain::FilePath & filepath
 	}
 
 	if (!geom.empty()){
-		dataImage->setFrame(geom);
+		dataImage->setGeometry(geom);
 	}
 	else {
 		// Copy
-		dataImage->setFrame(getImage()->getBoundingBox().getFrame());
+		dataImage->setGeometry(getImage()->getGeometry());
 	}
 
 	return dataImage;
@@ -363,33 +364,32 @@ drain::image::TreeSVG & ImagePanel::getVectorOverlayGroup(const std::string & ke
 		drain::StringTools::getSafeKey(key, id, "-",",:");
 		vectorGroup->setId(id);
 	}
-	vectorGroup->addClass(LayoutSVG::NEUTRAL);
-	vectorGroup->addClass(LayoutSVG::INDEPENDENT);
+	vectorGroup->setAlign(AlignSVG::NEUTRAL);
+	vectorGroup->setAlign(AlignSVG::INDEPENDENT);
 
 	if (!geom.empty()){
-		vectorGroup->setFrame(geom);
-		vectorGroup->addClass(ClipperSVG::CLIPPED);
+		vectorGroup->setGeometry(geom);
 	}
-	else if (overlayGroup.hasChild(RackSVG::BACKGROUND_RECT)){
-		vectorGroup->setFrame(overlayGroup[RackSVG::BACKGROUND_RECT]->getBoundingBox().getFrame());
+	else if (overlayGroup.hasChild(RackSVG::BACKGROUND)){
+		vectorGroup->setGeometry(overlayGroup[RackSVG::BACKGROUND]->getGeometry());
 	}
 	else if (imagePanelGroup.hasChild(svg::IMAGE)){
-		vectorGroup->setFrame(imagePanelGroup[svg::IMAGE]->getBoundingBox().getFrame());
+		vectorGroup->setGeometry(imagePanelGroup[svg::IMAGE]->getGeometry());
 	}
 	else {
+		vectorGroup->setGeometry(overlayGroup->getGeometry());
+	}
+
+	if (!vectorGroup->getGeometry().empty()){
+		mout.debug("geometry=", vectorGroup->getGeometry(), " elem=", vectorGroup->getId());
+	}
+	else {
+		mout.warn("empty geometry, elem=", vectorGroup->getId());
 		vectorGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 		vectorGroup.addChild("No explicit geometry available, relying on Alignment (Anchor)");
 	}
 
-	if (!vectorGroup->getBoundingBox().getFrame().empty()){
-		overlayGroup->addClass(ClipperSVG::CLIPPED);
-		mout.warn(__FUNCTION__, " geometry=", vectorGroup->getBoundingBox().getFrame(), " elem=", vectorGroup->getId());
-	}
-	else {
-		mout.warn(__FUNCTION__, " empty geometry, elem=", vectorGroup->getId());
-	}
-
-	//vectorGroup->addClass(ClipperSVG::CLIPPED);
+	vectorGroup->addClass(ClipperSVG::CLIPPED);
 
 	return vectorGroup;
 }

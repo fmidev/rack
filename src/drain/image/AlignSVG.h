@@ -423,6 +423,13 @@ struct AlignSVG { // : protected Align {
 	};
 
 
+	/// Moved from Layput
+	enum AlignClass {
+		COMPOUND,     // Internal elements are already aligned, bypass recursion.
+		FIXED,        // Absolute position - do not align. (Do not adjust coordinates, but allow internal recursion.
+		INDEPENDENT,  // No anchoring allowed – but inclusion by collective bounding box applies, unless NEUTRAL.
+		NEUTRAL,      // Excluded from the collective bounding box – but anchoring supported, unless INDEPENDENT)
+	};
 
 
 	/// Low-level, "atomic" setter of alignment for OBJECT itself or its ANCHOR object.
@@ -532,6 +539,15 @@ struct AlignSVG { // : protected Align {
 	void setAlign(const std::string & align);
 	// Note: no mixed type, ANCHOR:LEFT
 
+	void setAlign(AlignClass cls){
+		setAlignClass(cls);
+	}
+
+protected:
+	virtual
+	void setAlignClass(AlignClass cls) = 0;
+
+public:
 	/// Returns true, if any setting is set...
 	bool isAligned() const;
 
@@ -707,12 +723,17 @@ std::ostream & operator<<(std::ostream &ostr, const CompleteAlignment<AX,A> & ad
 DRAIN_TYPENAME(image::AlignSVG::HorzAlign);
 DRAIN_TYPENAME(image::AlignSVG::VertAlign);
 
+// NEW
+DRAIN_ENUM_DICT(image::AlignSVG::AlignClass);
+// DRAIN_XML_ENUM_KEY(image::TreeSVG, image::AlignSVG::AlignClass); // NO GOOD
+
 }  // drain::
 
 
 DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Axis);
 DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Pos);
 DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
+
 
 
 #endif // DRAIN_ALIGN_SVG_H_

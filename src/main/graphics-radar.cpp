@@ -174,7 +174,7 @@ drain::image::TreeSVG & RadarSVG::getOverlayGroup(drain::image::TreeSVG & group)
 		overlayGroup->setType(svg::GROUP);
 		overlayGroup->addClass(Graphic::VECTOR_OVERLAY);
 		//overlayGroup->addClass(StyleClasses::GRID);
-		overlayGroup->addClass(LayoutSVG::NEUTRAL);
+		overlayGroup->setAlign(AlignSVG::NEUTRAL);
 		overlayGroup->setAlign(drain::image::AlignSVG::HORZ_FILL, drain::image::AlignSVG::VERT_FILL);
 		overlayGroup->setId(Graphic::VECTOR_OVERLAY, '_', group->getId());
 		group.addChild(svg::COMMENT)(svg::COMMENT)->setText("Above slot reserved for (OLD) VECTOR_OVERLAY");

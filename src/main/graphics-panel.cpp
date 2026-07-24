@@ -88,7 +88,7 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 
 	drain::image::TreeSVG & comment = object.addChild()(svg::COMMENT);
 
-	drain::image::TreeSVG & backgroundRect = object[BACKGROUND_RECT](svg::RECT);
+	drain::image::TreeSVG & backgroundRect = object[BACKGROUND](svg::RECT);
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::CURRENT_COMPOUND); // ("*");
@@ -121,7 +121,7 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 		break;
 	}
 
-	return appendTitleElements(conf, object, BACKGROUND_RECT, elemClass); // Enum wrapper?
+	return appendTitleElements(conf, object, BACKGROUND, elemClass); // Enum wrapper?
 
 }
 
@@ -134,7 +134,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const ConfSVG &conf, drain:
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	TreeSVG &mainHeader = group[RackSVG::ElemClass::GENERAL](svg::TEXT);
-	mainHeader->addClass(LayoutSVG::NEUTRAL);
+	mainHeader->setAlign(AlignSVG::NEUTRAL);
 	mainHeader->addClass(elemClass); // also GENERAL?
 	mainHeader->setMyAlignAnchor(anchor);
 
@@ -153,7 +153,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const ConfSVG &conf, drain:
 	// Layout principle: there should be always time... so start/continue from left.
 	TreeSVG &timeHeader = group[RackSVG::ElemClass::TIME](svg::TEXT);
 	timeHeader->addClass(elemClass, RackSVG::ElemClass::TIME);
-	timeHeader->addClass(LayoutSVG::NEUTRAL);
+	timeHeader->setAlign(AlignSVG::NEUTRAL);
 	timeHeader->setMyAlignAnchor(anchor);
 	timeHeader["date"](svg::TSPAN);
 	timeHeader["date"]->addClass("date"); // PanelConfSVG::ElemClass::TIME);
@@ -163,7 +163,7 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const ConfSVG &conf, drain:
 
 	TreeSVG &locationHeader = group[RackSVG::ElemClass::LOCATION](svg::TEXT);
 	locationHeader->addClass(elemClass, RackSVG::ElemClass::LOCATION);
-	locationHeader->addClass(LayoutSVG::NEUTRAL); // testing LayoutSVG::NEUTRAL
+	locationHeader->setAlign(AlignSVG::NEUTRAL); // testing LayoutSVG::NEUTRAL
 	locationHeader->setMyAlignAnchor(anchor);
 	locationHeader["NOD"](svg::TSPAN);
 	locationHeader["NOD"]->addClass("NOD");

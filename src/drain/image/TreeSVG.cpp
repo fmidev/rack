@@ -326,11 +326,23 @@ void NodeSVG::specificAttributesToStream(std::ostream & ostr) const {
 
 }  // image::
 
+
+/// Add child of given type, not necessarily unique.
+template <> // for T - Tree class
+template <> // for K - argument
+image::TreeSVG & image::TreeSVG::addChild(const image::svg::tag_t & type){
+	image::TreeSVG & child = addChild(image::TreeSVG::getKey(type));
+	child->setType(type);
+	return child;
+}
+
+
 template <>
 void image::TreeSVG::swapData(image::NodeSVG & node){
 	// std::cout << __FILE__ << '#' << __FUNCTION__ << ':' << __LINE__ << '\n';
 	data.swapDataSVG(node);
 }
+
 
 }  // drain::
 

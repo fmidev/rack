@@ -151,10 +151,10 @@ public:
 	 *   Issues compile time error if type not applicable, or dictionary undefined.
 	 *   Enum types should be used, although template allows any types, but strict
 	 */
-	template <typename E, typename ...TT>
+	template <typename T, typename ...TT>
 	inline
-	void add(const E & arg, const TT &... args) {
-		insert(drain::Enum<E>::dict.getKey(arg));
+	void add(const T & arg, const TT &... args) {
+		insert(drain::Enum<T>::dict.getKey(arg));
 		add(args...);
 	};
 
@@ -180,6 +180,7 @@ public:
 	// Below all:
 	// TODO: iterator it = retrieve(arg);
 
+	/*
 	inline
 	bool has(const std::string & arg) const {
 		return (find(arg) != end());
@@ -189,11 +190,20 @@ public:
 	bool has(const char *arg) const {
 		return (find(arg) != end());
 	};
+	*/
 
-	template <typename E>
+	template <typename T, typename ...TT>
 	inline
-	bool has(const E & arg) const {
-		return (find(drain::Enum<E>::dict.getKey(arg)) != end());
+	bool has(const T & arg) const {
+		return (retrieve(arg) != end());
+		//return (find(drain::Enum<E>::dict.getKey(arg)) != end());
+	};
+
+	template <typename T, typename ...TT>
+	inline
+	bool hasAny(const T & arg, const TT &... args) const {
+		return has(arg) || hasAny(args...);
+		//return (find(drain::Enum<E>::dict.getKey(arg)) != end());
 	};
 
 
@@ -263,7 +273,10 @@ protected:
 		return find(drain::Enum<E>::dict.getKey(arg));
 	}
 
-
+	inline
+	bool hasAny() const {
+		return false;
+	}
 };
 
 

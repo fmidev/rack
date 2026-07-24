@@ -69,7 +69,7 @@ public:
 		// MAIN,
 		IMAGE_PANEL,     // Group containing and image and, potentially, title TEXTs.
 		IMAGE_BORDER,    // RECT surrounding the image, potentially also a COORD_TRACKER
-		BACKGROUND_RECT, // invisible RECT used for aligning titles.
+		BACKGROUND, // invisible RECT used for aligning titles.
 		SIDE_PANEL,
 		BORDER,          // Overall border (RECT) around the SVG document, invisible by default
 		// --

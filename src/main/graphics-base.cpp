@@ -52,7 +52,7 @@ DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, GENERAL),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_PANEL),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_BORDER),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BACKGROUND_RECT),
+		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BACKGROUND),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BORDER),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
 		// ---
@@ -100,7 +100,7 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 			{"stroke", "none"},
 	});
 
-	UtilsXML::ensureStyle(style, ClassXML(RackSVG::BACKGROUND_RECT), {
+	UtilsXML::ensureStyle(style, ClassXML(RackSVG::BACKGROUND), {
 			{"stroke", "none"},
 			{"fill", "none"},
 	});

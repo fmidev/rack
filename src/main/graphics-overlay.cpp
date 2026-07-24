@@ -350,15 +350,25 @@ void CmdRadarDot::exec() const {
 	}
 
 
-	// drain::image::TreeUtilsSVG\n
-
-	TreeSVG & vectGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
-	vectGroup->addClass(GRAPHIC::GRID);
+	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
+	vectorGroup->addClass(GRAPHIC::GRID);
 
 	// vectGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	vectGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', getParameters(), " for ", radarSVG.source);
+	vectorGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', getParameters(), " for ", radarSVG.source);
+
+	TreeSVG & overlayGroup = superPanel.getOverlayGroup();
+
+	drain::image::TreeSVG & test = overlayGroup(radarSVG.source + "TEXT")(svg::TEXT);
+	test->addClass(AlignSVG::FIXED);
+	drain::Point2D<int> imgPoint;
+	radarSVG.convert(0.0, 0.0, imgPoint);
+	test->setLocation(imgPoint);
+	test->setTextSafe("EKA_", radarSVG.source);
+	//test->setAlign(AlignSVG::CENTER, AlignSVG::MIDDLE);
+
+
 	// vectGroup.addChild()->setComment(getName(), ' ', getParameters());
-	drain::image::TreeSVG & curve = vectGroup[DOT](drain::image::svg::PATH);
+	drain::image::TreeSVG & curve = vectorGroup[DOT](drain::image::svg::PATH);
 	curve->addClass(DOT);
 
 	{
@@ -368,13 +378,24 @@ void CmdRadarDot::exec() const {
 	}
 
 	drain::image::TreeSVG & title = curve[svg::TITLE](svg::TITLE);
-	title->setText(ctx.getFormattedStatus("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}"));
+	const std::string t = ctx.getFormattedStatus("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}");
+	title->setText(t);
+
+	drain::image::TreeSVG & test2 = vectorGroup[svg::TEXT](svg::TEXT);
+	test2->setText(t);
+	// test2->addClass(AlignSVG::FIXED);
+	test2->setAlign(AlignSVG::FIXED);
+	test2->setLocation(imgPoint);
+	test2->setStyle(drain::StyleXML::TEXT_ANCHOR, "end");
+	test2->setStyle("fill", "green");
+	test2->setStyle("stroke-width", "1px");
+
 
 	MaskerSVG::MaskPosition pos = drain::Enum<MaskerSVG::MaskPosition>::dict.getValue(MASK, false);
 	if (pos != MaskerSVG::MaskPosition::NONE){
 		// if (MASK){
 		// Note: mask is full 100% range.
-		drain::image::TreeSVG & localMask = vectGroup[svg::MASK];
+		drain::image::TreeSVG & localMask = vectorGroup[svg::MASK];
 		{
 			// Private scope, to call bezierElem destructor.
 			drain::svgPATH elem(localMask);
@@ -499,10 +520,13 @@ void CmdRadarLabel::exec() const  {
 
 	ImagePanel superPanel(ctx.getImagePanelGroup(), geom);
 
-	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
-	vectorGroup->removeClass(LayoutSVG::INDEPENDENT);
-	vectorGroup->removeClass(LayoutSVG::NEUTRAL);
+	// Geom is needed (for CLIPPER), as it will not be derived from contained PATH element(s),
+	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
+	vectorGroup->removeClass(AlignSVG::INDEPENDENT);
+	vectorGroup->removeClass(AlignSVG::NEUTRAL);
 	vectorGroup->addClass(GRAPHIC::GRID);
+	vectorGroup->setGeometry(geom);
+	mout.attention(DRAIN_LOG(geom));
 
 	if (label.empty()){
 		vectorGroup.addChild()->setComment(getName(), '[', cls, ']', " - empty label skipped");
@@ -530,6 +554,16 @@ void CmdRadarLabel::exec() const  {
 		drain::svgPATH bezierElem(curve);
 		radarSVG.drawCircle(bezierElem, {15000,55000});
 	}
+
+	drain::image::TreeSVG & test = vectorGroup[radarSVG.source + "TEST"](svg::TEXT);
+	test->addClass(AlignSVG::FIXED);
+	// drain::Point2D<int> imgPoint;
+	// radarSVG.convert(0.0, 0.0, imgPoint);
+	test->setLocation(imgPoint);
+	test->setTextSafe("TEST_", radarSVG.source);
+	//test->setStyle({"fill", "pink"});
+	test->setStyle({{"fill", "pink"}});
+
 
 	const std::string LABEL_ANCHOR = "labelAnchor";
 
@@ -568,16 +602,31 @@ void CmdRadarLabel::exec() const  {
 
 	const int fontSize = style->get("font-size", 12);
 	mout.special(DRAIN_LOG(fontSize));
+	labelAnchor->setAlign(AlignSVG::FIXED);
 	labelAnchor->setLocation(imgPoint.x, imgPoint.y - int(fontSize*lines.size())/2);
-	labelAnchor->setFrame(40,25);
+	labelAnchor->setGeometry(40,25);
 	labelAnchor->setId(LABEL_ANCHOR, NodeSVG::getNewIndex());
-
+	labelAnchor->setStyle("fill", "pink");
+	/*
 	TreeSVG & dummy = vectorGroup.addChild()(svg::RECT);
-	dummy->setFrame(30,30);
+	dummy->setGeometry(100,100);
 	//dummy->setMyAlignAnchor(LABEL_ANCHOR);
 	dummy->setMyAlignAnchor(AnchorElem::PREVIOUS);
 	dummy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	dummy->setStyle("fill:green");
+
+	TreeSVG & sammy = vectorGroup.addChild()(svg::TEXT);
+	// sammy->setGeometry(30,30);
+	//sammy->setMyAlignAnchor(AnchorElem::PREVIOUS);
+	//sammy->setMyAlignAnchor(LABEL_ANCHOR);
+	sammy->setMyAlignAnchor(AnchorElem::PREVIOUS);
+	// sammy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	//sammy->setStyle("fill:cyan;text-anchor:end");
+	sammy->setStyle("fill:black;stroke:white;paint-order:stroke;font-size:20");
+	sammy->setText("RAUNO KÄKI");
+	sammy->setLocation(150,150);
+	// return;
+	*/
 
 	for (std::string & line: lines){
 
@@ -616,9 +665,9 @@ void CmdRadarLabel::exec() const  {
 
 				text->setFontSize(fontSize, (15*fontSize)/10);
 				text->setText(part);
-				// text->setFrame(fontSize*2, fontSize);
+				// text->setGeometry(fontSize*2, fontSize);
 				text->addClass(this->cls);
-				text->addClass(LayoutSVG::GroupType::NEUTRAL);
+				text->setAlign(AlignSVG::NEUTRAL);
 
 				text->setMyAlignAnchor<AlignBase::Axis::HORZ>(LABEL_ANCHOR);
 				text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS); // For the first element, this is "labelAnchor"
@@ -724,7 +773,7 @@ void CmdRadarGrid::exec() const  {
 
 		drain::image::TreeSVG & g = vectorGroup.addChild()(svg::GROUP);
 		g->addClass(Graphic::HIGHLIGHT); //?
-		g->addClass(drain::image::LayoutSVG::FIXED); // NEW 2026?
+		g->addClass(drain::image::AlignSVG::FIXED); // NEW 2026?
 		g->addClass(Graphic::GRID);
 
 		drain::image::TreeSVG & arcNode = g.addChild();
@@ -788,13 +837,12 @@ void CmdRadarSector::exec() const  {
 	/// Step 1: initialize radarSVG
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG);
+	const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
 
-
-	// const drain::Frame2D<int> & geom = radarSVG.geoFrame.getGeometry();
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (geom); // (ctx, radarSVG);
-	ImagePanel superPanel(imagePanelGroup, radarSVG.geoFrame.getGeometry());
+	ImagePanel superPanel(imagePanelGroup, geom);
 
-	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source);
+	TreeSVG & vectorGroup = superPanel.getVectorOverlayGroup(radarSVG.source, geom);
 	vectorGroup->addClass(Graphic::GRID, cls); // SECTOR
 	// vectorGroup->addClass(Graphic::GRID);
 	drain::image::TreeSVG & curve = vectorGroup.addChild()(drain::image::svg::PATH);

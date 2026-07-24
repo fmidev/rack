@@ -387,7 +387,7 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 		const svg::coord_t w = t->getWidth();
 		const svg::coord_t h = t->getHeight();
 		if ((w==0) || (h==0)){
-			mout.reject<LOG_WARNING>("Clipping skipped for ", w, 'x', h, " element at ", path);
+			mout.reject<LOG_WARNING>("Clipping skipped for ", w, 'x', h, " element #", t->getId(), ", at ", path);
 			return 1;
 		}
 		// TODO: try relying on tree == root  (and forget separate root)
@@ -442,7 +442,7 @@ TreeSVG & MaskerSVG::getMask(TreeSVG & root, const std::string & maskId){
 		// comment->setText("This base RECT is also the reference for (width, height)");
 		mask.addChild()->setComment("This base RECT is also the reference for (width, height)");
 		drain::image::TreeSVG & rect = mask[svg::RECT](svg::RECT);
-		rect->setFrame(123, 123); // debugging (remove)
+		rect->setGeometry(123, 123); // debugging (remove)
 		rect->set("fill", "white");
 	}
 
@@ -455,7 +455,7 @@ drain::image::TreeSVG & MaskerSVG::updateMask(drain::image::TreeSVG & mask, int 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mask[svg::RECT]->setFrame(width, height);
+	mask[svg::RECT]->setGeometry(width, height);
 
 	// Punch hole
 	drain::image::TreeSVG & hole = mask.addChild();
@@ -496,14 +496,14 @@ void MaskerSVG::addCoverRect(const TreeSVG & mask, TreeSVG & group, MaskPosition
 	drain::image::TreeSVG & cover = group[COVER](drain::image::svg::RECT);
 
 	cover->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
-	cover->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
+	cover->setGeometry(mask[svg::RECT]->getGeometry());
 	cover->addClass(COVER);
 }
 
 /*
 void MaskerSVG::linkMask(const TreeSVG & mask, TreeSVG & obj) {
 	obj->set("mask", drain::StringBuilder<>("url(#", mask->getId(), ")").str());
-	obj->setFrame(mask[svg::RECT]->getBoundingBox().getFrame());
+	obj->setGeometry(mask[svg::RECT]->getGeometry());
 	obj->addClass(COVER);
 }
 */

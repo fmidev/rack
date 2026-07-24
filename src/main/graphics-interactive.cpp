@@ -259,7 +259,7 @@ drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, Mous
 	textObject->setType(svg::TEXT); // ensure
 	textObject->setFontSize(15,18);
 	textObject->addClass(RackSVG::ElemClass::SELECTOR);
-	textObject->addClass(LayoutSVG::NEUTRAL);
+	textObject->setAlign(AlignSVG::NEUTRAL);
 	// textObject->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 	// textObject->setAlign(AlignSVG::RIGHT);
 
@@ -425,9 +425,9 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	}
 
 	drain::image::TreeSVG & bgRect = visualGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
-	bgRect->setFrame(radarSVG.geoFrame.getGeometry());
+	bgRect->setGeometry(radarSVG.geoFrame.getGeometry());
 	bgRect->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
-	bgRect->addClass(LayoutSVG::FIXED); // check
+	bgRect->addClass(AlignSVG::FIXED); // check
 	// mout.attention(DRAIN_LOG(radarSVG.geoFrame));
 	// radarSVG.radarProj.setProjectionDst();
 
@@ -487,12 +487,14 @@ void CmdRect::exec() const {
 
 	// Reserve slot
 	drain::image::TreeSVG & selectRect = visualGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
-	selectRect->addClass(LayoutSVG::FIXED, LayoutSVG::NEUTRAL); // check
+	// selectRect->addClass(AlignSVG::FIXED, AlignSVG::NEUTRAL); // check
+	selectRect->setAlign(AlignSVG::FIXED); // check
+	selectRect->setAlign(AlignSVG::NEUTRAL); // check
 	selectRect->setLocation(10,20);
-	selectRect->setFrame(30,40);
+	selectRect->setGeometry(30,40);
 
 	TreeSVG & coordMoveText = visualGroup[MouseXML::ElemClass::MONITOR](svg::TEXT);
-	coordMoveText->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
+	coordMoveText->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND);
 	coordMoveText->setAlign(AlignSVG::BOTTOM, AlignSVG::RIGHT);
 	if (cursorCoord){
 		coordMoveText->addClass("CURSOR");
@@ -545,12 +547,12 @@ void CmdRect::exec() const {
 
 	selectRect->addClass(RackSVG::ElemClass::SELECTOR);
 	selectRect->setLocation(std::min(bboxImg.lowerLeft.x, bboxImg.upperRight.x), std::min(bboxImg.lowerLeft.y, bboxImg.upperRight.y));
-	selectRect->setFrame(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
+	selectRect->setGeometry(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
 
 	TreeSVG & coordSpanDisplay = visualGroup[MouseXML::ElemClass::MONITOR_DRAG];
 	coordSpanDisplay->addClass(RackSVG::ElemClass::SELECTOR);
 	coordSpanDisplay->addClass(MouseXML::ElemClass::MONITOR_DRAG); // From JS
-	coordSpanDisplay->addClass(LayoutSVG::NEUTRAL); // ?
+	coordSpanDisplay->setAlign(AlignSVG::NEUTRAL); // ?
 
 	coordSpanDisplay.addChild()->setComment("Start coordinates");
 	TreeSVG & monitorDown = addCoordMonitor(coordSpanDisplay, MouseXML::ElemClass::MONITOR_DOWN);
@@ -644,9 +646,9 @@ void CmdCoords::exec() const {
 	addCoordMonitor(coordSpanDisplay, MouseXML::ElemClass::MONITOR_UP);
 
 	drain::image::TreeSVG & selectRect = imagePanelGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
-	selectRect->addClass(RackSVG::ElemClass::SELECTOR, LayoutSVG::FIXED);
+	selectRect->addClass(RackSVG::ElemClass::SELECTOR, AlignSVG::FIXED);
 	selectRect->setLocation(200,100);
-	selectRect->setFrame(400,200);
+	selectRect->setGeometry(400,200);
 
 	/// Create yet another plane (RECT) to receive mouse events
 	drain::image::TreeSVG & coordTracker = imagePanelGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
@@ -717,7 +719,7 @@ void CmdData::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
 	drain::UtilsXML::ensureStyle(ctx.getSVG(), RackSVG::ElemClass::DATA_ARRAY, {
-			{"opacity", 0.1},  // some browsers disable mouse listener, if fully invisible?
+			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
 	});
 
 	const Image & data = ctx.getCurrentGrayImage();
@@ -745,7 +747,7 @@ void CmdData::exec() const {
 	drain::image::TreeSVG & coordMonitor = overlay["MOUSE_COORD"](svg::TEXT); // imagePanelGroup
 	coordMonitor->setId();
 	//coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
-	coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
+	coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND);
 	coordMonitor->setAlign(AlignSVG::RIGHT, AlignSVG::BOTTOM);
 	coordMonitor->addClass("COORD_MONITOR");
 	coordMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::TIME); // check

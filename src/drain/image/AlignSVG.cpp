@@ -304,11 +304,23 @@ bool AlignSVG::isAligned() const {
 
 }  // image::
 
-DRAIN_ENUM_DICT(image::MutualAlign::Topol)= {
+DRAIN_ENUM_DICT(image::MutualAlign::Topol) = {
 		DRAIN_ENUM_ENTRY(image::MutualAlign::Topol, INSIDE),
 		DRAIN_ENUM_ENTRY(image::MutualAlign::Topol, OUTSIDE),
 };
 
+
+DRAIN_ENUM_DICT(image::AlignSVG::AlignClass) = {
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, COMPOUND),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, FIXED),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, INDEPENDENT),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, NEUTRAL),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
+};
 }  // drain::
 
 

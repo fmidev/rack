@@ -97,7 +97,7 @@ public:
 		// drain::image::TreeSVG & group = ctx.getCurrentAlignedGroup()[value](svg::GROUP); // RackSVG::getCurrentAlignedGroup(ctx)[value](svg::GROUP);
 		drain::image::TreeSVG & group = ctx.getCurrentAdapterGroup()[value](svg::GROUP);
 		group->setId(value);
-		group->addClass(LayoutSVG::INDEPENDENT);
+		group->setAlign(AlignSVG::INDEPENDENT);
 
 		// rectGroup->addClass(drain::image::LayoutSVG::ALIG NED);
 		const std::string ANCHOR_ELEM("myRect"); // not RackSVG::MAIN
@@ -366,7 +366,7 @@ public:
 		}
 
 
-		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND_RECT](svg::RECT); // +EXT!
+		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND](svg::RECT); // +EXT!
 		rect->addClass(RackSVG::ElemClass::SIDE_PANEL);
 		// rect->setWidth(frame.width);
 		// rect->setHeight(frame.height);
@@ -389,7 +389,7 @@ public:
 
 				drain::image::TreeSVG & tkey = group[key](svg::TEXT);
 				tkey->setId(key);
-				tkey->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND_RECT);
+				tkey->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND);
 				tkey->setMyAlignAnchor<AlignBase::VERT>(anchorVert);
 				anchorVert.clear();
 				// tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);
@@ -507,7 +507,7 @@ public:
 
 
 		drain::image::TreeSVG & rect = group[ANCHOR_ELEM](svg::RECT); // +EXT!
-		rect->setFrame(frame);
+		rect->setGeometry(frame);
 		rect->setId(ANCHOR_ELEM);
 		rect->setStyle("fill", "lightblue");
 		rect->set("rx", "10px");
@@ -515,7 +515,7 @@ public:
 
 		//rx="15"
 
-		// rect->addClass(LayoutSVG::INDEPENDENT);
+		// rect->setAlign(AlignSVG::INDEPENDENT);
 
 		// rect->setAlign(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
 		// rect->setAlign<AlignSVG::OUTSIDE>(AlignSVG::OBJECT, AlignBase::HORZ,  AlignBase::MAX);
@@ -555,8 +555,8 @@ public:
 
 						drain::image::TreeSVG & text = group.addChild()(svg::TEXT); // group[label + "text"](svg::TEXT);
 						text->setId(svg::TEXT, '_', label);
-						//text->setFrame(frame.width/8, frame.height/8);
-						text->setFrame(miniFrame);
+						//text->setGeometry(frame.width/8, frame.height/8);
+						text->setGeometry(miniFrame);
 						text->setAlign(Owner::ANCHOR, AlignBase::HORZ, posHorzAnchor);
 						text->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
 						text->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
@@ -569,8 +569,8 @@ public:
 						drain::image::TreeSVG & textBox = group.addChild()(svg::RECT);
 						textBox->setId(svg::RECT, '_', label);
 						textBox->addClass("BOX");
-						textBox->setFrame(miniFrame);
-						//textBox->setFrame(frame.width/8, frame.height/8);
+						textBox->setGeometry(miniFrame);
+						//textBox->setGeometry(frame.width/8, frame.height/8);
 						textBox->set("rx", "10px");
 						textBox->set("ry", "5px");
 
@@ -580,9 +580,9 @@ public:
 						textBox->setAlign(Owner::ANCHOR, AlignBase::VERT, posVertAnhor);
 						textBox->setAlign(Owner::OBJECT, AlignBase::HORZ, posHorz);
 						textBox->setAlign(Owner::OBJECT, AlignBase::VERT, posVert);
-						//textBox->addClass(LayoutSVG::INDEPENDENT);
+						//textBox->setAlign(AlignSVG::INDEPENDENT);
 
-						// text->addClass(LayoutSVG::INDEPENDENT);
+						// text->setAlign(AlignSVG::INDEPENDENT);
 						// drain::image::TreeSVG & textSpan = text["tspan"](svg::TSPAN);
 						// textSpan->setText(text->getAlignStr());
 						// break;
@@ -624,7 +624,7 @@ drain::image::TreeSVG & addDummyObject(drain::image::TreeSVG & group){ // , doub
 	TreeSVG & subGroup = group[name](tag_t::GROUP);
 	subGroup->setId(name);
 	//
-	subGroup->addClass(LayoutSVG::COMPOUND); // Compute (add) BBOx, skip recursion, do not align sub elements.
+	subGroup->setAlign(AlignSVG::COMPOUND); // Compute (add) BBOx, skip recursion, do not align sub elements.
 	// subGroup->addClass("COMPOUND"); // Compute (add) BBOx, skip recursion, do not align sub elements.
 	// subGroup->addClass("DETECT_BBOX");
 
@@ -795,7 +795,7 @@ public:
 		// drain::image::TreeSVG & group = getPlayGround(ctx);
 		drain::image::TreeSVG & group = ctx.getImagePanelGroup();
 
-		// const drain::Frame2D<double> frame2 = group->getBoundingBox().getFrame();
+		// const drain::Frame2D<double> frame2 = group->getGeometry();
 
 		// Three sample objects, each consisting of three elements.
 		drain::image::TreeSVG & compoundObject = addDummyObject(group); //, 0.5*frame.width, 0.1*frame.height );
