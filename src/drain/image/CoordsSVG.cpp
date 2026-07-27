@@ -118,6 +118,24 @@ void CoordSpan<AlignBase::Axis::VERT>::copyFrom(const NodeSVG & node){
 	}
 };
 
+/* UNUSED?
+template <AlignBase::Axis AX>
+void expandBBox(BBoxSVG & bbox, CoordSpan<AX> & anchorSpan){
+	Logger(__FILE__, __FUNCTION__).error("Unimplemented method");
+}
+
+template <>
+void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::HORZ> & anchorSpan){
+	bbox.expandHorz(anchorSpan.pos);
+	bbox.expandHorz(anchorSpan.pos + anchorSpan.span);
+}
+
+template <>
+void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::VERT> & anchorSpan){
+	bbox.expandVert(anchorSpan.pos);
+	bbox.expandVert(anchorSpan.pos + anchorSpan.span);
+}
+*/
 
 
 }  // image::

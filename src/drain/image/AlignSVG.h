@@ -116,8 +116,8 @@ struct AlignSVG { // : protected Align {
 
 	/// Moved from Layput
 	enum AlignClass {
-		COMPOUND,     // Internal elements are already aligned, bypass recursion.
-		FIXED,        // Absolute position - do not align. (Do not adjust coordinates, but allow internal recursion.
+		COMPOUND,     // Completed already. Internal elements are already aligned, bypass recursion.
+		FIXED,        // Absolute position - do not change bbox, but traverse (align) children. (Do not adjust coordinates, but allow internal recursion.
 		INDEPENDENT,  // No anchoring allowed – but inclusion by collective bounding box applies, unless NEUTRAL.
 		NEUTRAL,      // Excluded from the collective bounding box – but anchoring supported, unless INDEPENDENT)
 	};

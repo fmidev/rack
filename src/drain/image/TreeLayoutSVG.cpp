@@ -30,10 +30,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
-#include "CoordsSVG.h"
-#include <drain/util/Output.h> // Debugging
+#include "drain/util/Output.h" // Debugging
 
-#include "TransformSVG.h"
+#include "CoordsSVG.h"
+//#include "TransformSVG.h"
 #include "TreeLayoutSVG.h"
 
 
@@ -232,81 +232,6 @@ void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, 
 	}
 }
 
-/*
-template <>
-inline
-void CoordSpan<AlignBase::Axis::HORZ>::copyFrom(const BBoxSVG & bbox){
-	if (bbox.isDefined()){
-		pos  = bbox.x;
-		span = bbox.width;
-	}
-};
-
-template <>
-inline
-void CoordSpan<AlignBase::Axis::VERT>::copyFrom(const BBoxSVG & bbox){
-	if (bbox.isDefined()){
-		pos  = bbox.y;
-		span = bbox.height;
-	}
-};
-
-
-template <>
-inline
-void CoordSpan<AlignBase::Axis::HORZ>::copyFrom(const NodeSVG & node){
-	const BBoxSVG & bbox = node.getBoundingBox();
-	if (bbox.isDefined()){
-		CoordSpan<AlignBase::Axis::HORZ>::copyFrom(bbox);
-		if (!node.typeIs(svg::TEXT)){
-			pos += node.transform.translate.x;
-		}
-	}
-};
-
-template <>
-inline
-void CoordSpan<AlignBase::Axis::VERT>::copyFrom(const NodeSVG & node){
-	const BBoxSVG & bbox = node.getBoundingBox();
-	if (bbox.isDefined()){
-		CoordSpan<AlignBase::Axis::VERT>::copyFrom(bbox);
-		if (!node.typeIs(svg::TEXT)){
-			pos += node.transform.translate.y;
-		}
-	}
-};
-
-template <AlignBase::Axis AX>
-std::ostream & operator<<(std::ostream & ostr, const CoordSpan<AX> &span){
-	ostr << "span" << AX << "=" << span.pos << "(+" << span.span <<  ')';
-	return ostr;
-}
-*/
-
-/*
-std::ostream & operator<<(std::ostream & ostr, const NodePrinter &np){
-	ostr << "span" << AX << "=" << span.pos << "(+" << span.pos <<  ')';
-	return ostr;
-}
-*/
-/* UNUSED?
-template <AlignBase::Axis AX>
-void expandBBox(BBoxSVG & bbox, CoordSpan<AX> & anchorSpan){
-	Logger(__FILE__, __FUNCTION__).error("Unimplemented method");
-}
-
-template <>
-void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::HORZ> & anchorSpan){
-	bbox.expandHorz(anchorSpan.pos);
-	bbox.expandHorz(anchorSpan.pos + anchorSpan.span);
-}
-
-template <>
-void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::VERT> & anchorSpan){
-	bbox.expandVert(anchorSpan.pos);
-	bbox.expandVert(anchorSpan.pos + anchorSpan.span);
-}
-*/
 
 /**
    Semantics:
@@ -487,16 +412,15 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			continue;
 		}
 
+		/*
 		if (node.hasClass(AlignSVG::FIXED)){ // consider joining this with COMPOUND?
 			// mout.attention("fixed, ok ", node);
 			if (FileSVG::visualDebugLevel > 0){
 				// group->setId();
 				entry.second.addChild()->setComment(__FUNCTION__, ": not aligned, skipping ", AlignSVG::FIXED);
 			}
-			continue;
 		}
-
-		// else
+		else */
 		if (!node.hasClass(AlignSVG::COMPOUND)){
 			// First, align the children of this node, recursively
 			superAlign(entry.second);
@@ -514,7 +438,9 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 	// Host element's |STACK_LAYOUT| bbox, to be updated below
 	// Incrementally growing extent: not only width/height but also x,y.
 	BBoxSVG & compoundBBox = group->getBoundingBox();
-	compoundBBox.reset();
+	if (!group->getClasses().hasAny(AlignSVG::FIXED, AlignSVG::COMPOUND)){
+		compoundBBox.reset();
+	}
 
 	// Future option / Iterative loop starts here
 
@@ -536,13 +462,9 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			// continue;
 		}
 		else if (node.isAligned()){
+
 			// Horz
 			adjustLocation(group, node, anchorSpanHorz);
-			// if false (has store HORZ request) skip?
-			if (!node.ctext.empty()){
-				// mout.attention("Aligning: ", node.ctext, " with vert ", anchorSpanVert);
-			}
-			// Vert
 			adjustLocation(group, node, anchorSpanVert);
 			// mout.special("VERT: mid ", anchorSpanVert);
 
@@ -660,41 +582,16 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 	AlignBase::Pos alignLoc;
 
-	// STEP 1: derive reference point at the ANCHOR
 
 	const std::string ns = NodePrinter(node).str();
 
 	mout.debug("Adjusting ", ns, " with ", anchorSpan);
 
-	/*
-	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ)){
-	case AlignBase::Pos::MIN:
-		coord = anchorSpan.pos; // "+ 0%"
-		break;
-	case AlignBase::Pos::MID:
-		coord = anchorSpan.pos + anchorSpan.span/2; // " + 50%"
-		break;
-	case AlignBase::Pos::MAX:
-		coord = anchorSpan.pos + anchorSpan.span; // " + 50%"
-		break;
-	case AlignBase::Pos::FILL:
-		// Maybe ok, since GROUP can be an anchor but also
-		// mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
-		break;
-	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
-		break;
-	default:
-		// assert undefined value.
-		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
-	}
-	*/
-
+	// STEP 1: derive reference point at the ANCHOR
 	anchorSpan.getPosition(node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::HORZ), coord);
 
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
 	// mout.debug("Adjusting ", axis, " pos (", alignLoc, ") with OBJECT's own reference point");
-
 
 	// STEP 2: OBJECT itself – define the reference point of the object to be aligned, i.e. adjusted.
 	Box<svg::coord_t> & obox = node.getBoundingBox();
@@ -790,31 +687,6 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 	// STEP 1: derive reference point at the ANCHOR
 	anchorSpan.getPosition(node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT), coord);
-	/*
-	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::ANCHOR, AlignBase::Axis::VERT)){
-	case AlignBase::Pos::MIN:
-		coord = anchorSpan.pos;
-		break;
-	case AlignBase::Pos::MID:
-		coord = anchorSpan.pos + anchorSpan.span/2.0;
-		break;
-	case AlignBase::Pos::MAX:
-		coord = anchorSpan.pos + anchorSpan.span;
-		break;
-	case AlignBase::Pos::FILL:
-		mout.suspicious<LOG_NOTICE>("Alignment:: ANCHOR has fill request: HORZ FILL");
-		break;
-	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
-		break;
-	default:
-		// assert undefined value.
-		mout.unimplemented<LOG_WARNING>("Node: ", node);
-		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getId()));
-		mout.unimplemented<LOG_WARNING>(DRAIN_LOG(node.getMyAlignAnchor<AlignBase::Axis::VERT>()));
-		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
-	}
-	*/
 
 
 	// mout.debug("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', axis, '=', alignLoc);
@@ -876,68 +748,6 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 
 
-
-// ---------------------------------------------------
-
-
-//#include <drain/util/TreeUtils.h>
-/*
-class BBoxRetrieverSVG2 : public drain::TreeVisitor<TreeSVG> {
-
-public:
-
-	BBoxSVG box;
-
-	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
-
-
-		BBoxSVG b;
-
-		NodeSVG & node = tree(path).data;
-
-		if (node.isAbstract()){
-			return 1;
-		}
-
-		// node.get("data-bb") = 0.0;
-
-		double r=0.0;
-		switch (node.getNativeType()){
-		//switch (tree->getType()){
-		case svg::CIRCLE:
-			r = node.get("r");
-			b.setLocation(node.get("cx", 0.0)-r, node.get("cy", 0.0)-r);
-			b.setArea(2.0*r, 2.0*r);
-			// node.get("data-bb") = b.getLocation().tuple();
-			node.get("data-bb") << b.x << b.y << b.width << b.height;
-			// node.get("data-bb") << b.width << b.height;
-			break;
-		//case svg::RECT:
-		default:
-			drain::Logger(__FILE__, "BBoxRetrieverSVG2::visitPrefix").warn("unhandled type: ", tree->getNativeType());
-
-		}
-
-		if (box.empty()){
-			box = b; // .set(b.x, b.y, b.width, b.height);
-			//box.set(b.tuple());
-		}
-		else {
-			box.expand(b);
-		}
-
-
-		return 0; // continue
-	}
-
-	//int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
-
-};
- */
-
-
 }  // image::
-
-
 
 }  // drain::

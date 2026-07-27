@@ -547,6 +547,7 @@ void CmdRadarLabel::exec() const  {
 	radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
 	mout.attention(DRAIN_LOG(imgPoint));
 
+	/*
 	drain::image::TreeSVG & curve = vectorGroup[DOT](drain::image::svg::PATH);
 	curve->addClass(DOT);
 	{
@@ -554,7 +555,9 @@ void CmdRadarLabel::exec() const  {
 		drain::svgPATH bezierElem(curve);
 		radarSVG.drawCircle(bezierElem, {15000,55000});
 	}
+	*/
 
+	/*
 	drain::image::TreeSVG & test = vectorGroup[radarSVG.source + "TEST"](svg::TEXT);
 	test->addClass(AlignSVG::FIXED);
 	// drain::Point2D<int> imgPoint;
@@ -563,7 +566,7 @@ void CmdRadarLabel::exec() const  {
 	test->setTextSafe("TEST_", radarSVG.source);
 	//test->setStyle({"fill", "pink"});
 	test->setStyle({{"fill", "pink"}});
-
+	*/
 
 	const std::string LABEL_ANCHOR = "labelAnchor";
 
@@ -604,9 +607,10 @@ void CmdRadarLabel::exec() const  {
 	mout.special(DRAIN_LOG(fontSize));
 	labelAnchor->setAlign(AlignSVG::FIXED);
 	labelAnchor->setLocation(imgPoint.x, imgPoint.y - int(fontSize*lines.size())/2);
-	labelAnchor->setGeometry(40,25);
+	//labelAnchor->setGeometry(40,25);
+	labelAnchor->setGeometry(1,2);
 	labelAnchor->setId(LABEL_ANCHOR, NodeSVG::getNewIndex());
-	labelAnchor->setStyle("fill", "pink");
+	// labelAnchor->setStyle("fill", "pink");
 	/*
 	TreeSVG & dummy = vectorGroup.addChild()(svg::RECT);
 	dummy->setGeometry(100,100);
