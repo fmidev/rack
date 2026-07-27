@@ -38,326 +38,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_ALIGN_SVG
 #define DRAIN_ALIGN_SVG
 
-#include <drain/Enum.h>
 #include <string>
+
+#include "drain/Enum.h"
+#include "Alignment.h"
+
 
 namespace drain {
 
 namespace image {
 
 
-/// Low level alignment instructions
-struct AlignBase {
-
-public:
-
-	/// Reference position at Axis (HORZ or VERT)
-	enum Pos {
-		UNDEFINED_POS = 0,
-		MIN = 1, // LEFT  (if HORZ) or TOP    (when VERT) 0b01010101,
-		MAX = 2, // RIGHT (if HORZ) or BOTTOM (when VERT) 0b10101010,
-		MID = 3, // 0b11111111,
-		FILL = 4, /// Maximize, with respect to HORZ or VERT extent. Currently, for OBJECT only.
-		// ABSOLUTE?
-	};
-
-	enum Axis {
-		// Index, must contain 0 and 1 for HORZ and VERT
-		HORZ      = 0, // 0b00110011,
-		VERT      = 1, // b11001100,
-		UNDEFINED_AXIS = 2,
-	};
-
-
-	/// supporting simultaneous HORZ|VERT
-	/*
-	enum Axis {
-		// Index, must contain 0 and 1 for HORZ and VERT
-		UNDEFINED_AXIS = 0,
-		HORZ      = 1, // 0b00110011,
-		VERT      = 2, // b11001100,
-	};
-	*/
-
-	static inline
-	Axis flip(Axis axis){
-		switch (axis){
-		case HORZ:
-			return VERT;
-		case VERT:
-			return HORZ;
-		default:
-			return UNDEFINED_AXIS;
-		}
-	};
-
-	//typedef drain::Enum<Coord>::dict_t pos_dict_t;
-
-	static inline
-	AlignBase::Pos flip(AlignBase::Pos pos){
-		switch (pos){
-		case MAX:
-			return MIN;
-		case MIN:
-			return MAX;
-		case MID:
-		case FILL:
-		case UNDEFINED_POS:
-		default:
-			return pos;
-		}
-	};
-
-};
-
-
-// template <> const drain::Enum<AlignBase::Axis>::dict_t drain::Enum<AlignBase::Axis>::dict;
-DRAIN_ENUM_DICT(AlignBase::Axis);
-DRAIN_ENUM_OSTREAM(AlignBase::Axis);
-
-// template <>const drain::Enum<AlignBase::Pos>::dict_t drain::Enum<AlignBase::Pos>::dict;
-DRAIN_ENUM_DICT(AlignBase::Pos);
-DRAIN_ENUM_OSTREAM(AlignBase::Pos);
-
-
-/// Container for Axis and Pos.
-/**
- *   Explicit type parameters AX supports setting member \c axis a non-const or const value (HORZ or VERT).
- *
- *   \tparam AX - const or non-const Align::Axis
- *   \tparam  A - axis init value AlignBase::Axis::HORZ or AlignBase::Axis::VERT
- *
- *
- *   For \c const implementations, see AlignSVG
- *   Alignment<Align::Axis::HORZ>
- *   Alignment<Align::Axis::VERT>
- */
-template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> //, typename POS = AlignBase::Pos> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
-struct Alignment {
-
-	// Align::Axis
-	AX axis; // = V; // compiler error if different type?
-
-	//AlignBase::Pos pos
-	AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS; // or middle?
-	//POS pos = AlignBase::Pos::UNDEFINED_POS; // or middle?
-
-	/// Default constructor
-	inline
-	Alignment(AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS) : axis(A), pos(pos){
-	}
-
-	/// Copy constructor
-	inline
-	Alignment(const Alignment & ac) : axis(ac.axis), pos(ac.pos){
-	}
-
-
-	inline
-	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS): axis(axis), pos(pos){
-	}
-
-	template <typename AX2, AlignBase::Axis A2>
-	inline
-	Alignment(const Alignment<AX2,A2> & align) : pos(align.pos){ // axis(ac.axis),
-		axis = align.axis; // error if const
-	}
-
-	/// Destructor.
-	inline virtual
-	~Alignment(){};
-
-
-	inline
-	const AlignBase::Axis & get(const AlignBase::Axis & defaultValue) const {
-		if (axis != AlignBase::Axis::UNDEFINED_AXIS){
-			return axis;
-		}
-		else {
-			return defaultValue;
-		}
-	}
-
-	inline
-	const AlignBase::Pos & get(const AlignBase::Pos & defaultValue) const {
-		if (pos != AlignBase::Pos::UNDEFINED_POS){
-			return pos;
-		}
-		else {
-			return defaultValue;
-		}
-	}
-
-
-	virtual inline
-	void reset(){
-		axis = AlignBase::Axis::UNDEFINED_AXIS;
-		pos  = AlignBase::Pos::UNDEFINED_POS;
-	}
-
-
-	template <typename AX2, AlignBase::Axis A2>
-	inline
-	bool operator==(const Alignment<AX2,A2> & align) const {
-		return (align.axis == axis) && (align.pos == pos);
-		// return compare(ad) == 0;
-	}
-
-	/*
-	inline
-	Alignment<AX,A> & operator=(Alignment<AX,A> & align){
-		// axis = align.axis;
-		pos  = align.pos;
-		return *this;
-	}
-	*/
-
-
-
-
-};
-
-
-
-template <typename AX, AlignBase::Axis V>
-inline
-std::ostream & operator<<(std::ostream &ostr, const Alignment<AX,V> & align){
-	//return ostr << align.axis << '_' << align.pos; // enums resolved above
-	return ostr << align.axis << '_' << align.pos;
-}
-
-struct MutualAlign {
-
-	enum Topol {
-		INSIDE = 0,
-		OUTSIDE = 1,
-		UNDEFINED_TOPOL = 2,
-	};
-
-
-};
-
-
-/// "Alternative" \e partial alignment configuration for single object. Partial means that either \c OBJECT itself or \c ANCHOR object is set.
-/**
- *  Extends Alignment with topology, \c Topol (\c INSIDE or \c OUTSIDE ).
- *
- *  Essentially, a triplet of types <Topol,Axis,Coordinate>, out of which Axis may be const.
- *
- *
- *  Designed to handle command line arguments, adjusting AlignSVG::HorzAlign and AlignSVG::VertAlign
- *
- *  \see AlignSVG::HorzAlign
- *  \see AlignSVG::VertAlign
- *
- *
- */
-template <typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS> // , Align::Coord POS = Align::Coord::UNDEFINED_POS>
-struct CompleteAlignment : public Alignment<AX,A> {
-
-	MutualAlign::Topol topol = MutualAlign::Topol::INSIDE; // or undef?
-
-	/// Constructor not setting Axis.
-	template <class ...TT>
-	CompleteAlignment(const TT... args) : Alignment<AX,A>() {
-		set(args...);
-	}
-
-	inline
-	~CompleteAlignment(){};
-
-	virtual inline
-	bool isSet() const {
-		return (this->axis != AlignBase::Axis::UNDEFINED_AXIS) &&
-				(this->pos != AlignBase::Pos::UNDEFINED_POS) &&
-				(topol != MutualAlign::Topol::UNDEFINED_TOPOL);
-		// return Alignment<AX,A>::isSet() && (topol != MutualAlign::Topol::UNDEFINED_TOPOL);
-	}
-
-	inline
-	const MutualAlign::Topol & getOrDefault(const MutualAlign::Topol & defaultValue) const {
-		if (topol != MutualAlign::Topol::UNDEFINED_TOPOL){
-			return topol;
-		}
-		else {
-			return defaultValue;
-		}
-	}
-
-
-	// Sets all members to UNDEFINED state.
-	virtual inline
-	void reset(){
-		Alignment<AX,A>::reset();
-		topol = MutualAlign::Topol::UNDEFINED_TOPOL;
-		// this->updateAlign();
-	}
-
-
-	template <typename AX2, AlignBase::Axis A2, class ...TT>
-	void set(const Alignment<AX2,A2> & align, const TT... args){
-		this->axis = align.axis;
-		this->pos  = align.pos;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(MutualAlign::Topol topol, const TT... args){
-		this->topol = topol;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(AlignBase::Axis axis, const TT... args){
-		this->axis = axis;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(AlignBase::Pos coord, const TT... args){
-		this->pos = coord;
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(const std::string & key, const TT... args){
-		if (Enum<MutualAlign::Topol>::setValue(key, topol)){
-			// ok
-		}
-		else if (Enum<Alignment<> >::setValue(key, *this)){ // RIGHT or?
-			// ok
-		}
-		else if (Enum<AlignBase::Axis>::setValue(key, this->axis)){
-			// ok
-		}
-		else if (Enum<AlignBase::Pos>::setValue(key, this->pos)){
-			// ok
-		}
-		else {
-			// Advice: keys
-			throw std::runtime_error(drain::StringBuilder<>("key '", key, "' not found. Appeared in: ", args...));
-		}
-
-		set(args...);
-	}
-
-	template <class ...TT>
-	void set(const char *key, const TT... args){
-		set(std::string(key), args...);
-	}
-
-
-protected:
-
-	inline
-	void set(){
-		// this->updateAlign(); // ok?
-	}
-
-};
-
-
-//struct Alignment2;
 
 /// User-friendly programming interface for alignment considering two elements.
 /**
@@ -634,24 +325,37 @@ protected:
 
 };
 
-
-inline
-std::ostream & operator<<(std::ostream &ostr, const AlignSVG & align){
-	//return ostr << align.axis << '_' << align.pos; // enums resolved above
-	align.confToStream(ostr);
-	return ostr; //  << "UNDER CONSTR...";  // RESOLVE!
 }
 
+// const drain::Enum<AlignSVG::Owner>::dict_t drain::Enum<AlignSVG::Owner>::dict;
+DRAIN_ENUM_DICT(image::AlignSVG::Owner);
+DRAIN_ENUM_DICT(image::AlignSVG::AlignClass);
+DRAIN_ENUM_DICT(image::Alignment<>);
+
+DRAIN_ENUM_DICT(image::AlignSVG::HorzAlign);
+DRAIN_ENUM_DICT(image::AlignSVG::VertAlign);
+
+// NEW
+
+}
+
+//DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
 
 // template <>
-// const drain::Enum<AlignSVG::Owner>::dict_t drain::Enum<AlignSVG::Owner>::dict;
-DRAIN_ENUM_DICT(AlignSVG::Owner);
-DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
 
-//template <>
-//const drain::Enum<MutualAlign::Topol>::dict_t drain::Enum<MutualAlign::Topol>::dict;
-DRAIN_ENUM_DICT(MutualAlign::Topol);
-DRAIN_ENUM_OSTREAM(MutualAlign::Topol);
+// DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
+
+namespace drain {
+
+DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
+DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::AlignClass);
+
+
+namespace image {
+
+DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
+DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::HorzAlign);
+DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::VertAlign);
 
 template <>
 inline
@@ -677,15 +381,11 @@ const drain::Enum<AlignSVG::HorzAlign>::dict_t  drain::Enum<AlignSVG::HorzAlign>
 template <>
 const drain::Enum<AlignSVG::VertAlign>::dict_t  drain::Enum<AlignSVG::VertAlign>::dict;
 
-
 /// Dictionary combining horizontal (LEFT,CENTER,RIGHT) and vertical (TOP,MIDDLE,BOTTOM) flags
 template <>
 const drain::Enum<Alignment<> >::dict_t  drain::Enum<Alignment<> >::dict;
 */
 
-DRAIN_ENUM_DICT(AlignSVG::HorzAlign);
-DRAIN_ENUM_DICT(AlignSVG::VertAlign);
-DRAIN_ENUM_DICT(Alignment<>);
 
 
 
@@ -704,35 +404,30 @@ const AlignBase::Pos & AlignSVG::getAlignPos(const OBJ & owner, const A & axis) 
 }
 
 
-
-
-
-template <typename AX, AlignBase::Axis A>
-std::ostream & operator<<(std::ostream &ostr, const CompleteAlignment<AX,A> & ad){
-	return ostr << ad.topol << '_' << ad.axis << ':' << ad.pos;
-}
-
-
-
-
-
-
-
 }  // image::
+
 
 DRAIN_TYPENAME(image::AlignSVG::HorzAlign);
 DRAIN_TYPENAME(image::AlignSVG::VertAlign);
 
 // NEW
+/*
 DRAIN_ENUM_DICT(image::AlignSVG::AlignClass);
-// DRAIN_XML_ENUM_KEY(image::TreeSVG, image::AlignSVG::AlignClass); // NO GOOD
+DRAIN_ENUM_DICT(image::Alignment<>);
+*/
 
 }  // drain::
 
+// DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
+// DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
 
-DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Axis);
-DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Pos);
-DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const drain::image::AlignSVG & align){
+	//return ostr << align.axis << '_' << align.pos; // enums resolved above
+	align.confToStream(ostr);
+	return ostr; //  << "UNDER CONSTR...";  // RESOLVE!
+}
 
 
 

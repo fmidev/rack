@@ -30,48 +30,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 
+#include "CoordsSVG.h"
 #include <drain/util/Output.h> // Debugging
 
 #include "TransformSVG.h"
 #include "TreeLayoutSVG.h"
 
+
 namespace drain {
 
 namespace image {
-
-bool CoordSpanBase::getPosition(AlignBase::Pos alignLoc, svg::coord_t & coord) const {
-
-	Logger mout(__FILE__, __FUNCTION__);
-
-	switch (alignLoc){
-
-	case AlignBase::Pos::MIN:
-		coord = pos; // "+ 0%"
-		return true;
-
-	case AlignBase::Pos::MID:
-		coord = pos + span/2.0; // " + 50%"
-		return true;
-
-	case AlignBase::Pos::MAX:
-		coord = pos + span; // " + 100%"
-		return true;
-
-	case AlignBase::Pos::FILL:
-		// Maybe ok, since GROUP can be an anchor but also
-		// mout.suspicious<LOG_WARNING>("Alignment:: ANCHOR has fill request: HORZ FILL");
-		break;
-	case AlignBase::Pos::UNDEFINED_POS:  // -> consider MID or some absolute value, or margin. Or error:
-		// mout.unimplemented<LOG_WARNING>("Alignment::Pos: ", AlignSVG::Owner::ANCHOR, '/', AlignBase::Axis::HORZ, '=', pos);
-		break;
-	default:
-		// assert undefined value.
-		mout.unimplemented<LOG_ERR>("Alignment::Pos: ", (int)alignLoc);
-	}
-
-	return false;
-
-}
 
 void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 
@@ -264,7 +232,7 @@ void TreeLayoutSVG::setStackLayout(NodeSVG & node, AlignBase::Axis orientation, 
 	}
 }
 
-
+/*
 template <>
 inline
 void CoordSpan<AlignBase::Axis::HORZ>::copyFrom(const BBoxSVG & bbox){
@@ -313,7 +281,7 @@ std::ostream & operator<<(std::ostream & ostr, const CoordSpan<AX> &span){
 	ostr << "span" << AX << "=" << span.pos << "(+" << span.span <<  ')';
 	return ostr;
 }
-
+*/
 
 /*
 std::ostream & operator<<(std::ostream & ostr, const NodePrinter &np){
@@ -321,6 +289,7 @@ std::ostream & operator<<(std::ostream & ostr, const NodePrinter &np){
 	return ostr;
 }
 */
+/* UNUSED?
 template <AlignBase::Axis AX>
 void expandBBox(BBoxSVG & bbox, CoordSpan<AX> & anchorSpan){
 	Logger(__FILE__, __FUNCTION__).error("Unimplemented method");
@@ -337,29 +306,36 @@ void expandBBox(BBoxSVG & bbox, CoordSpan<AlignBase::Axis::VERT> & anchorSpan){
 	bbox.expandVert(anchorSpan.pos);
 	bbox.expandVert(anchorSpan.pos + anchorSpan.span);
 }
+*/
 
 /**
    Semantics:
 
-   if myAnchor is set, use it.
-   if myAnchor is unset, use group anchor; it servers as a default anchor
-   if also groupAnchor is unset -> use previous object as anchor.
+   - if myAnchor is set, use it.
+   - if myAnchor is unset, use groups  \ c defaultAlignAnchor .
+   - if also default anchor is unset, use previous object as anchor.
 
-   GroupAnchor (default anchor):
+   defaultAlignAnchor (defined at GROUP):
 	    DEFAULT(=UNSET): use previous object
-		NONE: use nothing, don't align
+		NONE: use nothing, don't align (equal to FIXED class?)
 		PREVIOUS: use previous (unneeded, this is the default for group)
 		COLLECTIVE: use compound bounding bbox
 
-		MyAnchor (specific anchor, always overrides)
+	myAlignAnchor (specific anchor defined at the element, always overrides)
 		DEFAULT(=UNSET) -> use GroupAnchor
-		NONE: don't align me! (raise error if Align set?)
+		NONE: don't align me! (raise error if Align set?) (equal to FIXED class?)
 		PREVIOUS: use previous object
 		COLLECTIVE: use compound bounding box
 
 		SPECIAL: both DEFAULT: use PREVIOUS
 
  */
+/*
+ // Currently, replaced with:
+  *
+  * node.getMyAlignAnchor<AX>().isSet() ? node.getMyAlignAnchor<AX>() : group->getDefaultAlignAnchor<AX>();
+  *
+  *
 template <AlignBase::Axis AX>
 const AnchorElem & getAnchorElem(TreeSVG & group, NodeSVG & node){
 
@@ -380,6 +356,7 @@ const AnchorElem & getAnchorElem(TreeSVG & group, NodeSVG & node){
 	}
 
 }
+*/
 
 // To be under TreeLayoutSVG
 /**
@@ -412,6 +389,7 @@ void TreeLayoutSVG::adjustLocation(TreeSVG & group, NodeSVG & node, CoordSpan<AX
 			mout.suspicious("contradiction: anchor(", AX, ") =[", anchorElem,"] for element requesting Alignment: ", id, " ALIGN:", node.getAlignStr());
 		}
 		mout.experimental("SKIPPING anchor(", AX, ") =[", anchorElem,"] for ", id);
+		mout.revised<LOG_ERR>("anchorNone deprecating?");
 		//return;
 	}
 	else if (anchorElem.isCollective()){
@@ -544,7 +522,7 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 	CoordSpan<AlignBase::Axis::HORZ> anchorSpanHorz(0, 0); // rename collective/compound ?
 	CoordSpan<AlignBase::Axis::VERT> anchorSpanVert(0, 0);
 
-	// mout.special("VERT: START");
+	// mout.special("VERT:  START");
 	for (TreeSVG::pair_t & entry: group){
 
 		NodeSVG & node = entry.second.data;
@@ -555,11 +533,9 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 		if (node.hasClass(AlignSVG::FIXED)){
 			// skip moving/translating
-			continue;
+			// continue;
 		}
-
-		// else
-		if (node.isAligned()){
+		else if (node.isAligned()){
 			// Horz
 			adjustLocation(group, node, anchorSpanHorz);
 			// if false (has store HORZ request) skip?
@@ -628,6 +604,12 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 			// anchorSpanHorz.copyFrom(node); // adjusted by transform.x
 			// anchorSpanVert.copyFrom(node); // adjusted by transform.y
 			// mout.accept<LOG_NOTICE>(" adapt2: ", NodePrinter(node).str() );
+			if (FileSVG::visualDebugLevel > 2){
+				NodeSVG & debug = group.addChild(svg::RECT);
+				debug.setGeometry(node.getGeometry());
+				debug.setStyle("stroke", "magenta");
+
+			}
 		}
 		else {
 			// Save the last one
@@ -639,8 +621,8 @@ void TreeLayoutSVG::superAlign(TreeSVG & group){
 
 		//mout.special("VERT: önd ", anchorSpanVert);
 
-		//if (!node.hasClass(AlignSVG::NEUTRAL)){
-		if (!node.getClasses().hasAny(AlignSVG::NEUTRAL, AlignSVG::FIXED)){
+		if (!node.hasClass(AlignSVG::NEUTRAL)){
+		//if (!node.getClasses().hasAny(AlignSVG::NEUTRAL, AlignSVG::FIXED)){
 			compoundBBox.expandHorz(anchorSpanHorz.pos);
 			compoundBBox.expandHorz(anchorSpanHorz.pos + anchorSpanHorz.span);
 			compoundBBox.expandVert(anchorSpanVert.pos);
@@ -673,7 +655,6 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 	// Elements with x and y attributes (typically declaring Upper Right corner, except for TEXT)
 	const bool HAS_TRUE_ORIGIN = node.typeIs(svg::IMAGE, svg::RECT, svg::TEXT, svg::CIRCLE); // 2026/03
 
-	Box<svg::coord_t> & obox = node.getBoundingBox();
 
 	svg::coord_t coord = 0;
 
@@ -716,6 +697,7 @@ void TreeLayoutSVG::realignObject(NodeSVG & node, const CoordSpan<AlignBase::Axi
 
 
 	// STEP 2: OBJECT itself – define the reference point of the object to be aligned, i.e. adjusted.
+	Box<svg::coord_t> & obox = node.getBoundingBox();
 
 	switch (alignLoc = node.getAlignPos(AlignSVG::Owner::OBJECT, AlignBase::Axis::HORZ)){
 	case AlignBase::Pos::MIN:

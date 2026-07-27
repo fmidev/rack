@@ -37,36 +37,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Log.h>
 #include <drain/StringTools.h>
-#include <drain/image/AlignAnchorSVG.h>
+//#include <drain/image/AlignAnchorSVG.h>
+#include "AlignSVG.h"
 
 namespace drain {
 
-
 namespace image {
-
-/** Future option: re-map to normalized coordinates: MIN=0.0, MID=0.5, MAX=1.0
- *  FILL must be left as a flag.
- *
- */
-DRAIN_ENUM_DICT(AlignBase::Pos) = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, UNDEFINED_POS),
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MAX),
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MID),
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, MIN),
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Pos, FILL),
-};
-
-DRAIN_ENUM_DICT(AlignBase::Axis) = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Axis, HORZ),
-		DRAIN_ENUM_ENTRY(drain::image::AlignBase::Axis, VERT),
-};
-
-// -----------------------------------------------------------------------------------------------------------
-
-DRAIN_ENUM_DICT(AlignSVG::Owner) = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, OBJECT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, ANCHOR),
-};
 
 
 const AlignSVG::HorzAlign AlignSVG::RIGHT(AlignBase::Pos::MAX);
@@ -75,40 +51,52 @@ const AlignSVG::HorzAlign AlignSVG::LEFT(AlignBase::Pos::MIN);
 const AlignSVG::HorzAlign AlignSVG::HORZ_FILL(AlignBase::Pos::FILL);
 const AlignSVG::HorzAlign AlignSVG::UNDEFINED_HORZ(AlignBase::Pos::UNDEFINED_POS);
 
-// template <>
-// const drain::Enum<AlignSVG::HorzAlign>::dict_t  drain::Enum<AlignSVG::HorzAlign>::dict = {
-DRAIN_ENUM_DICT(AlignSVG::HorzAlign) = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, HORZ_FILL),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
-};
-
 const AlignSVG::VertAlign AlignSVG::BOTTOM(AlignBase::Pos::MAX);
 const AlignSVG::VertAlign AlignSVG::MIDDLE(AlignBase::Pos::MID);
 const AlignSVG::VertAlign AlignSVG::TOP(AlignBase::Pos::MIN);
 const AlignSVG::VertAlign AlignSVG::VERT_FILL(AlignBase::Pos::FILL);
 const AlignSVG::VertAlign AlignSVG::UNDEFINED_VERT(AlignBase::Pos::UNDEFINED_POS);
 
-// template <>
-// const drain::Enum<AlignSVG::VertAlign>::dict_t  drain::Enum<AlignSVG::VertAlign>::dict
-DRAIN_ENUM_DICT(AlignSVG::VertAlign) = {
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, TOP),
-		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, MIDDLE),
+
+
+} // image::
+
+
+DRAIN_ENUM_DICT(image::AlignSVG::Owner) = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, OBJECT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG::Owner, ANCHOR),
+};
+
+DRAIN_ENUM_DICT(image::AlignSVG::AlignClass) = {
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, COMPOUND),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, FIXED),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, INDEPENDENT),
+		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, NEUTRAL),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
+		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
+};
+
+
+DRAIN_ENUM_DICT(image::AlignSVG::HorzAlign) = {
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, HORZ_FILL),
+		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_HORZ),
+};
+
+DRAIN_ENUM_DICT(image::AlignSVG::VertAlign) = {
+		DRAIN_ENUM_ENTRY(image::AlignSVG, TOP),
+		DRAIN_ENUM_ENTRY(image::AlignSVG, MIDDLE),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, BOTTOM),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, VERT_FILL),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
 
-// // DRAIN_TYPENAME_DEF(AlignSVG::HorzAlign);
-// // DRAIN_TYPENAME_DEF(AlignSVG::VertAlign);
-
-
-
-// template <>
-// const drain::Enum<Alignment<> >::dict_t  drain::Enum<Alignment<> >::dict = {
-DRAIN_ENUM_DICT(Alignment<>) = {
+DRAIN_ENUM_DICT(image::Alignment<>) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, LEFT),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, CENTER),
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, RIGHT),
@@ -121,9 +109,16 @@ DRAIN_ENUM_DICT(Alignment<>) = {
 		DRAIN_ENUM_ENTRY(drain::image::AlignSVG, UNDEFINED_VERT),
 };
 
+}
 
-// Alignment<> test(drain::image::AlignSVG::LEFT);
-// Alignment<> test2 = drain::image::AlignSVG::LEFT;
+
+
+
+// DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
+
+namespace drain {
+
+namespace image {
 
 /// Handler for command line or configuration file arguments
 void AlignSVG::setAlign(const std::string & align){
@@ -209,59 +204,7 @@ void AlignSVG::confToStream(std::ostream & ostr) const {
 
 }
 
-/*
-void AlignSVG::confToStream(std::ostream & ostr) const {
 
-	// std::stringstream sstr;
-	char sep=0;
-
-	alignment = 0;
-
-	int bitShift=0;
-
-	for (AlignBase::Axis axis: {AlignBase::Axis::HORZ, AlignBase::Axis::VERT}){
-
-		bitShift += (axis == AlignBase::Axis::HORZ) ? 0 : 2;
-
-		for (AlignSVG::Owner owner: {Owner::ANCHOR, Owner::OBJECT}){
-
-			bitShift = (owner == Owner::OBJECT) ? 0 : 4;
-
-			const AlignBase::Pos & pos = getAlignPos(owner, axis);
-
-			if (pos != AlignBase::UNDEFINED_POS){
-
-				if (sep){
-					ostr << sep;
-				}
-				else {
-				}
-				sep='.';
-
-				if (owner == Owner::ANCHOR){
-				}
-				else {
-				}
-
-				const std::string & key = drain::Enum<Alignment<> >::dict.getKey(Alignment<>(axis, pos), true);
-				if (!key.empty()){
-					ostr << key;
-				}
-				else {
-					ostr << axis << '-' << pos;
-				}
-
-				//std::cerr << __FUNCTION__ << ':' << Enum<AlignAnchorSVG::Owner>::dict.getKey(p) << '_' << Enum<AlignAnchorSVG::axis_t>::dict.getKey(a) << '_' << Enum<AlignAnchorSVG::Coord>::dict.getKey(v) << '_' << (int)v << '\n';
-			}
-
-			alignment |= (((bitvect_t)pos)<<bitShift);
-		}
-
-		sep=' ';
-	}
-
-}
-*/
 void AlignSVG::updateAlignStr(){
 	std::stringstream sstr;
 	confToStream(sstr);
@@ -304,23 +247,14 @@ bool AlignSVG::isAligned() const {
 
 }  // image::
 
+/*
 DRAIN_ENUM_DICT(image::MutualAlign::Topol) = {
 		DRAIN_ENUM_ENTRY(image::MutualAlign::Topol, INSIDE),
 		DRAIN_ENUM_ENTRY(image::MutualAlign::Topol, OUTSIDE),
 };
+*/
 
 
-DRAIN_ENUM_DICT(image::AlignSVG::AlignClass) = {
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, STACK_LAYOUT),
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ADAPTER),
-		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, COMPOUND),
-		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, FIXED),
-		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, INDEPENDENT),
-		DRAIN_ENUM_ENTRY(image::AlignSVG::AlignClass, NEUTRAL),
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, CROP),
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, HEADER),
-		// DRAIN_ENUM_ENTRY(drain::image::LayoutSVG::GroupType, ALIGN),
-};
 }  // drain::
 
 

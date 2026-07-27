@@ -45,6 +45,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "drain/util/SelectorXML.h"
 #include "drain/util/TreeXML.h"
 #include "drain/util/UtilsXML.h"
+
+#include "SVG.h"
 #include "TransformSVG.h"
 
 namespace drain {
@@ -111,73 +113,12 @@ DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy);
 
 namespace image {
 
-struct svg {
-
-	typedef float coord_t;
-
-	enum tag_t {
-		UNDEFINED=XML::UNDEFINED,
-		COMMENT=XML::COMMENT,
-		CTEXT=XML::CTEXT,
-		SCRIPT=XML::SCRIPT,
-		STYLE=XML::STYLE,
-		STYLE_SELECT=XML::STYLE_SELECT,
-		JAVASCRIPT_SCOPE=XML::JAVASCRIPT_SCOPE,
-		SVG=10,
-		CIRCLE, CLIP_PATH, DEFS, DESC, GROUP, IMAGE, LINE, LINEAR_GRADIENT, MASK, METADATA, PATH, POLYGON, RECT, TEXT, TITLE, TSPAN };
-	// check CTEXT, maybe implement in XML
-
-};
-
 class NodeSVG;
 
 // typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 typedef DRAIN_XML_TREE(NodeSVG) TreeSVG;
 
 typedef SelectXML<svg::tag_t> SelectSVG;
-
-
-} // image::
-
-
-
-
-
-// template <>
-// const Enum<image::svg::tag_t>::dict_t Enum<image::svg::tag_t>::dict;
-DRAIN_ENUM_DICT(image::svg::tag_t);
-
-DRAIN_ENUM_OSTREAM(image::svg::tag_t)
-
-
-
-namespace image {
-
-class BBoxSVG : public drain::Box<svg::coord_t> {
-
-public:
-
-	inline
-	BBoxSVG(svg::coord_t x=0, svg::coord_t y=0, svg::coord_t width=0, svg::coord_t height=0) : drain::Box<svg::coord_t>(x, y, width, height)  {
-	}
-
-	inline
-	BBoxSVG(const BBoxSVG & bbox) : drain::Box<svg::coord_t>(bbox)  {
-	}
-
-
-	// New
-
-
-
-	// Future option - also other units!
-	/*
-	bool x_PERCENTAGE = false;
-	bool y_PERCENTAGE = false;
-	bool width_PERCENTAGE = false;
-	bool height_PERCENTAGE = false;
-	*/
-};
 
 
 //typedef drain::StyleSelectorXML<NodeSVG> SelectSVG;

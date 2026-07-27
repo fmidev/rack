@@ -261,9 +261,7 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, RackSVG::ElemClass cls, sv
 
 TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, svg::tag_t type) const {
 
-	if (!parent.hasChild(type)){
-		// parent.addChild()->setComment("NEW2 ", __FUNCTION__, '(', type, ')');
-	}
+
 
 	TreeSVG & elem = parent[type];
 
@@ -287,6 +285,22 @@ TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, svg::tag_t type) const {
 	return elem;
 
 }
+
+/*
+drain::image::TreeSVG& ImagePanel::getBackGround() const {
+
+	drain::image::TreeSVG &overlay = getOverlayGroup();
+
+	if (!overlay.hasChild(RackSVG::ElemClass::BACKGROUND)){
+		return overlay[RackSVG::ElemClass::BACKGROUND];
+		// parent.addChild()->setComment("NEW2 ", __FUNCTION__, '(', type, ')');
+	}
+	else {
+		return overlay.prependChild(RackSVG::ElemClass::BACKGROUND)(svg::RECT);
+	}
+	// return getUniqueElem(overlay, RackSVG::ElemClass::BACKGROUND, svg::RECT);
+}
+*/
 
 drain::image::TreeSVG& ImagePanel::getMouseListenerFrame() const {
 
@@ -374,6 +388,7 @@ drain::image::TreeSVG & ImagePanel::getVectorOverlayGroup(const std::string & ke
 		vectorGroup->setGeometry(overlayGroup[RackSVG::BACKGROUND]->getGeometry());
 	}
 	else if (imagePanelGroup.hasChild(svg::IMAGE)){
+		// This should not occur, by definition...
 		vectorGroup->setGeometry(imagePanelGroup[svg::IMAGE]->getGeometry());
 	}
 	else {
@@ -390,10 +405,13 @@ drain::image::TreeSVG & ImagePanel::getVectorOverlayGroup(const std::string & ke
 	}
 
 	vectorGroup->addClass(ClipperSVG::CLIPPED);
+	vectorGroup->addClass(AlignSVG::FIXED);
+	mout.accept<LOG_NOTICE>("Added ", ClipperSVG::CLIPPED, " with ", vectorGroup->getGeometry(), " for vector group ", vectorGroup->getId());
 
 	return vectorGroup;
 }
 
+/* unused
 drain::image::TreeSVG & ImagePanel::getSourceSpecificGroup(const std::string & source) const {
 
 	if (!source.empty()){
@@ -411,9 +429,67 @@ drain::image::TreeSVG & ImagePanel::getSourceSpecificGroup(const std::string & s
 
 	// return panel[statusMap.get("what:source", "unknown-source")](svg::GROUP);
 }
+*/
 
 
+class TextBox {
 
+	TextBox(ImagePanel & imagePanel) : imagePanel(imagePanel), textGroup(imagePanel.getOverlayGroup().addChild(svg::GROUP)){
+		alignVert.set(AlignBase::MIN, MutualAlign::Topol::INSIDE);
+		alignHorz.set(AlignBase::MIN, MutualAlign::Topol::INSIDE);
+		// textGroup->addClass(AlignSVG::NEUTRAL);     // compound bbox not affected (well... vertically it should?)
+		textGroup->addClass(AlignSVG::INDEPENDENT); // no anchoring here please
+	};
+
+	template <class ...TT>
+	void addLine(const TT & ...args){
+
+		const bool FIRST = textGroup.empty();
+
+		TreeSVG & textLine = textGroup.addChild()(svg::TEXT);
+
+		// HORZ alignment
+		if (sharedHorzAnchor.isSet()){
+			textLine->setMyAlignAnchor<AlignBase::Axis::HORZ>(sharedHorzAnchor);
+		}
+		else if (!FIRST){
+			textLine->setMyAlignAnchor<AlignBase::Axis::HORZ>(AnchorElem::PREVIOUS);
+		}
+		textLine->setAlign(alignHorz);
+
+		// VERT alignment
+		if (FIRST){
+			// textLine->setMyAlignAnchor<AlignBase::Axis::VERT>(sharedHorzAnchor);
+			textLine->setAlign(alignVert);
+		}
+		else {
+			textLine->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS);
+			AlignBase::Pos pos = alignVert.pos;
+			if (alignVert.topol == MutualAlign::Topol::INSIDE){
+				// In this case, invert the direction, because:
+				// - if first elem was at the top, continue down.
+				// - if first elem was at the bottom, continue up.
+				pos = AlignBase::flip(pos);
+			}
+			textLine->setAlign(AlignBase::Axis::VERT, pos, MutualAlign::Topol::OUTSIDE);
+		}
+	}
+
+	void setAlign(){
+		// implement
+		// alignHorz.set(AlignSVG::BOTTOM);
+	};
+
+	ImagePanel & imagePanel;
+	TreeSVG & textGroup;
+	AnchorElem sharedHorzAnchor;
+
+	// ??
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz; // (AlignSVG::CENTER, MutualAlign::OUTSIDE)
+	CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert;
+
+
+};
 
 } // rack::
 

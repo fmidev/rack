@@ -42,68 +42,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/Enum.h>
 
+
+#include "TreeSVG.h"
+#include "CoordsSVG.h"
 #include "AlignAnchorSVG.h"
 #include "LayoutSVG.h"
-#include "TreeSVG.h"
 
 namespace drain {
 
 namespace image {
 
 
-/// SVG classes marking requests of relative horizontal and vertical alignment.
-/**
- *
- */
-class CoordSpanBase {
-
-public:
-
-	// Starting coordinate (x or y).
-	svg::coord_t pos = 0;  // BBoxSVG::undefined;
-
-	// Width or height
-	svg::coord_t span = 0; // BBoxSVG::undefined;
-
-	inline
-	CoordSpanBase(svg::coord_t pos = 0, svg::coord_t span = 0) : pos(pos), span(span) {
-	}
-
-	inline
-	CoordSpanBase(const CoordSpanBase & cspan) : pos(cspan.pos), span(cspan.span) {
-	}
-
-	inline
-	bool isDefined() const {
-		return ! (std::isnan(pos) || std::isnan(span));
-	}
-
-	bool getPosition(AlignBase::Pos alignLoc, svg::coord_t & coord) const;
-
-};
-
-
-// template <>
-// const drain::Enum<AlignSVG_FOO>::dict_t  drain::Enum<AlignSVG_FOO>::dict;
-
-template <AlignBase::Axis AX>
-struct CoordSpan : public CoordSpanBase {
-
-	inline
-	CoordSpan(svg::coord_t pos = 0, svg::coord_t span = 0) : CoordSpanBase(pos, span) {
-	}
-
-	inline
-	CoordSpan(const CoordSpan & cspan) : CoordSpanBase(cspan.pos, cspan.span) {
-	}
-
-
-	// ? void getTranslatedCoordSpan(const BBoxSVG & bbox);
-	void copyFrom(const NodeSVG & node);
-
-	void copyFrom(const BBoxSVG & bbox);
-
-};
 
 // TODO: separate TreeLayoutUtilsSVG
 struct TreeLayoutSVG {

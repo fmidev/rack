@@ -94,11 +94,11 @@ public:
 
 	drain::image::TreeSVG& getOverlayGroup() const;
 
-
 	inline
-	drain::image::TreeSVG & getBackGround() const {
+	drain::image::TreeSVG& getBackGround() const {
 		drain::image::TreeSVG & overlay = getOverlayGroup();
 		return getUniqueElem(overlay, RackSVG::ElemClass::BACKGROUND, svg::RECT);
+		// return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::BACKGROUND, svg::RECT);
 	};
 
 
@@ -108,7 +108,7 @@ public:
 	};
 
 	// Not recommended (yet)
-	drain::image::TreeSVG & getSourceSpecificGroup(const std::string & source) const;
+	// drain::image::TreeSVG & getSourceSpecificGroup(const std::string & source) const;
 
 	/// For vector graphics (grids, sectors)
 	/**
@@ -131,6 +131,7 @@ protected:
 	drain::image::TreeSVG & getUniqueElem(drain::image::TreeSVG & parent, drain::image::svg::tag_t type = drain::image::svg::GROUP) const;
 
 };
+
 
 } // rack::
 

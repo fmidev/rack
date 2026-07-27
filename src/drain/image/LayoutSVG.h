@@ -191,22 +191,13 @@ DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionHorz);
 DRAIN_ENUM_DICT(image::LayoutSVG::DirectionVert);
 DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionVert);
 
-
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
-
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::GroupType);
 DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
-
 
 
 }  // drain::
 
-
-//DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::Direction);
-DRAIN_ENUM_OSTREAM(drain::image::LayoutSVG::GroupType);
-
-namespace drain {
-//DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
-}
 
 #endif // DRAIN_ALIGN_SVG_H_
 

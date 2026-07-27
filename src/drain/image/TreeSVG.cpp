@@ -64,34 +64,6 @@ DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy) = {
 // // DRAIN_TYPENAME_DEF(image::NodeSVG);
 // // DRAIN_TYPENAME_DEF(image::svg::tag_t);
 
-DRAIN_ENUM_DICT(image::svg::tag_t) = {
-		{"UNDEFINED", drain::image::svg::UNDEFINED},
-		{"#", drain::image::svg::COMMENT},
-		{"CTEXT", drain::image::svg::CTEXT},
-		{"script", drain::image::svg::SCRIPT},
-		{"style", drain::image::svg::STYLE},
-		{"style_select", drain::image::svg::STYLE_SELECT},
-		{"javascript_scope", drain::image::svg::JAVASCRIPT_SCOPE},
-		// -- Actual SVG elems
-		{"svg", drain::image::svg::SVG},
-		{"circle", drain::image::svg::CIRCLE},
-		{"clipPath", drain::image::svg::CLIP_PATH},
-		{"defs", drain::image::svg::DEFS},
-		{"desc", drain::image::svg::DESC},
-		{"g", drain::image::svg::GROUP},
-		{"image", drain::image::svg::IMAGE},
-		{"line", drain::image::svg::LINE},
-		{"linearGradient", drain::image::svg::LINEAR_GRADIENT},
-		{"mask", drain::image::svg::MASK},
-		{"metadata", drain::image::svg::METADATA},
-		{"polygon", drain::image::svg::POLYGON},
-		{"path", drain::image::svg::PATH},
-		{"rect", drain::image::svg::RECT},
-		{"style", drain::image::svg::STYLE}, // raise?
-		{"text", drain::image::svg::TEXT},
-		{"title", drain::image::svg::TITLE},
-		{"tspan", drain::image::svg::TSPAN},
-};
 
 
 

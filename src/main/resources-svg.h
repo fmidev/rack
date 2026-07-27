@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/Image.h>
 #include <drain/image/LayoutSVG.h>
 #include <drain/image/TreeSVG.h>
+#include <drain/image/Alignment.h>
 #include <drain/image/TreeUtilsSVG.h>
 
 

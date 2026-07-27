@@ -34,6 +34,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/image/FilePng.h>
 #include <drain/image/MouseXML.h>
+#include <drain/image/Alignment.h>
 #include <drain/image/TreeSVG.h>
 #include <drain/prog/CommandInstaller.h>
 #include <drain/prog/CommandBank.h>
@@ -468,7 +469,7 @@ void CmdLayout::exec() const  {
  *  Warns if both are outside, ie. diagonally aligned to original image (or other graphical object).
  */
 //class CmdAlign : public drain::SimpleCommand<std::string> {
-
+// DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
 
 void CmdAlign::exec() const  {
 
@@ -517,12 +518,17 @@ void CmdAlign::exec() const  {
 			switch (align.axis) {
 			case AlignBase::Axis::HORZ:
 				ctx.alignHorz.set(align.topol, align.pos);
-				mout.accept<LOG_DEBUG>(align.topol, AlignBase::Axis::HORZ, align.pos, " -> ", ctx.alignHorz.topol, '/', ctx.alignHorz.axis, '/', ctx.alignHorz);
+				mout.accept<LOG_DEBUG>(align.topol);
+				mout.accept<LOG_DEBUG>(AlignBase::Axis::HORZ);
+				mout.accept<LOG_DEBUG>(align.pos);
+				mout.accept<LOG_DEBUG>(ctx.alignHorz.axis);
+				mout.accept<LOG_DEBUG>(ctx.alignHorz);
+				// mout.accept<LOG_DEBUG>(align.topol, AlignBase::Axis::HORZ, align.pos, " -> ", ctx.alignHorz.topol, '/', ctx.alignHorz.axis, '/', ctx.alignHorz);
 				// ctx.alignHorz.set(align);
 				break;
 			case AlignBase::Axis::VERT:
 				ctx.alignVert.set(align.topol, align.pos);
-				mout.accept<LOG_DEBUG>(align.topol, AlignBase::Axis::VERT, align.pos, " -> ", ctx.alignVert.topol, '/', ctx.alignVert.axis, '/', ctx.alignVert);
+				// mout.accept<LOG_DEBUG>(align.topol, AlignBase::Axis::VERT, align.pos, " -> ", ctx.alignVert.topol, '/', ctx.alignVert.axis, '/', ctx.alignVert);
 				// ctx.alignVert(align);
 				break;
 			case AlignBase::Axis::UNDEFINED_AXIS:
