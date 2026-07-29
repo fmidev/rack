@@ -105,13 +105,14 @@ public:
 }
 
 DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy);
-DRAIN_ENUM_OSTREAM(image::FileSVG::IncludePolicy);
-
 DRAIN_ENUM_DICT(image::FileSVG::PathPolicy);
-DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy);
 
 
 namespace image {
+
+DRAIN_ENUM_OSTREAM(image::FileSVG::IncludePolicy);
+DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy);
+
 
 class NodeSVG;
 
@@ -120,9 +121,6 @@ typedef DRAIN_XML_TREE(NodeSVG) TreeSVG;
 
 typedef SelectXML<svg::tag_t> SelectSVG;
 
-
-//typedef drain::StyleSelectorXML<NodeSVG> SelectSVG;
-// typedef drain::SelectorXML SelectSVG;
 
 /// A node structure for drain::UnorderedMultiTree<NodeSVG>, compatible with TreeXML
 /**
@@ -145,10 +143,6 @@ public:
 	static
 	std::string svg_decl;
 
-	/* -> FileSVG
-	static
-	const drain::FileInfo fileInfo;
-	*/
 
 	/// Default constructor. Create a node of given type.
 	NodeSVG(svg::tag_t t = svg::UNDEFINED);
@@ -215,23 +209,6 @@ public:
 		return *this;
 	}
 
-	// Dangerous, if XML has codes not registered by SVG?
-	/*
-	inline
-	NodeSVG & operator=(xml_tag_t type){
-		setType(type);
-		return *this;
-	}
-	*/
-
-	// virtual
-	// void swapNode(NodeSVG & node);
-
-
-	/* Well, every graphic obj may have DESC and TITLE?
-	virtual
-	bool isSingular() const override final;
-	*/
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
@@ -291,8 +268,6 @@ public:
 	inline
 	void setViewBox(const drain::Box<T> & bb){
 		setViewBox(bb.x, bb.y, bb.width, bb.height);
-		//set("viewBox", drain::StringBuilder<' '>(bb.x, bb.y, bb.width, bb.height));
-		// setAttribute("data:bbox", StringBuilder<' '>(b.x, b.y, b.getWidth(), b.getHeight()));
 	}
 
 	template <typename T>
@@ -336,25 +311,6 @@ public:
 		box.setArea(w, h);
 	}
 
-	/*
-	template <typename T>
-	inline
-	void setGeometry(const drain::Frame2D<T> & frame){
-		box.width  = frame.width;
-		box.height = frame.height;
-	}
-	*/
-
-	/**
-	 *
-	 *  Future option: std::string args.
-	template <typename T>
-	inline
-	void setGeometry(const T & w, const T & h){
-		box.setArea(w, h);
-	}
-	 */
-
 
 	/**
 	 *
@@ -378,9 +334,9 @@ public:
 	template <typename T>
 	inline
 	void setMargin(T w){
-		getMap()["data-margin"].link(box.width = w);
-		// link("data-margin", box.width);
-		// box.width = w;
+		// getMap()["data-margin"].link(box.width = w);
+		//getMap()["data-margin"].link(margin = w);
+		setUserAttribute("margin", w);
 	}
 
 	/// Get margin of a TEXT element (non-standard).
@@ -389,7 +345,9 @@ public:
 	 */
 	inline
 	svg::coord_t getMargin() const {
-		return box.width;
+		//return box.width;
+		// return margin;
+		return getUserAttribute("margin");
 	}
 
 
@@ -445,6 +403,9 @@ protected:
 	void setAlignClass(AlignClass cls) override final {
 		addClass(cls);
 	};
+
+	// For TEXT elems only...
+	// svg::coord_t margin = 0;
 
 };
 

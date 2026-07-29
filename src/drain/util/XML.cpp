@@ -61,6 +61,8 @@ const XML::intval_t XML::JAVASCRIPT_SCOPE;
 
 const XML::intval_t XML::XMLBASE;
 
+
+const std::string XML::USER_ATTR_PREFIX = "data-";
 /**
  *
  *  https://www.w3schools.com/charsets/ref_utf_basic_latin.asp

@@ -49,7 +49,6 @@ namespace drain {
 namespace image {
 
 
-
 /// User-friendly programming interface for alignment considering two elements.
 /**
  *   Designed to be contained by SVG elements.

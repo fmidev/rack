@@ -158,6 +158,10 @@ bool GraphicsContext::consumeAlignRequest(drain::image::NodeSVG & node){
 		CHANGE = true;
 	}
 
+	if (CHANGE){
+		mout.attention("New Align:", node.getAlignStr());
+	}
+
 	return CHANGE;
 }
 

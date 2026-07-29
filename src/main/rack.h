@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,6,3)
+#define RACK_VERSION drain::Version<>(20,7)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -96,6 +96,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Partially revised imagePanelGroup (mouse interaction)
  *  Version 20.6.2
  *  - ImagePanel object
+ *  Version 20.7
+ *  - Fixed text alignment (gLabel)
+ *  - TextPanel object
+ *  - setUserAttribute, getUserAttribute with XML::USER_ATTR_PREFIX="data-"
+ *  - SVG margin now plain (not linked) Variable
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

@@ -225,14 +225,17 @@ struct MutualAlign {
 /// "Alternative" \e partial alignment configuration for single object. Partial means that either \c OBJECT itself or \c ANCHOR object is set.
 /**
  *  Extends Alignment with topology, \c Topol (\c INSIDE or \c OUTSIDE ).
+ *  Note: still for one axis only.
  *
- *  Essentially, a triplet of types <Topol,Axis,Coordinate>, out of which Axis may be const.
+ *  Essentially, CompleteAlignment is a triplet of types <Topol,Axis,Coordinate>, out of which Axis may be const.
  *
  *
  *  Designed to handle command line arguments, adjusting AlignSVG::HorzAlign and AlignSVG::VertAlign
  *
  *  \see AlignSVG::HorzAlign
  *  \see AlignSVG::VertAlign
+ *  \see CompleteHorzAlign
+ *  \see CompleteVertAlign
  *
  *
  */
@@ -277,13 +280,28 @@ struct CompleteAlignment : public Alignment<AX,A> {
 		// this->updateAlign();
 	}
 
+	/// Variant for same-AX-type, HORZ or VERT
+	/**
+	 *  Does not try to change axis...
+	 */
+	// template <typename AX2, AlignBase::Axis A2, class ...TT>
+	//void set(const Alignment<const AX2,A2> & align, const TT... args){
+	template <class ...TT>
+	void set(const Alignment<AX,A> & align, const TT... args){
+		// this->axis = align.axis;
+		this->pos  = align.pos;
+		set(args...);
+	}
 
+	/// Variant for non-const axis AX2.
 	template <typename AX2, AlignBase::Axis A2, class ...TT>
 	void set(const Alignment<AX2,A2> & align, const TT... args){
 		this->axis = align.axis;
 		this->pos  = align.pos;
 		set(args...);
 	}
+
+
 
 	template <class ...TT>
 	void set(MutualAlign::Topol topol, const TT... args){
@@ -341,8 +359,8 @@ protected:
 };
 
 
-
-
+typedef CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> CompleteHorzAlign;
+typedef CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> CompleteVertAlign;
 
 
 }  // image::

@@ -123,6 +123,10 @@ public:
 		DEGREE = 176,
 	};
 
+	/// In XML variants, like SVG, it is possible to use any user defined attributes using prefix \c "data-" .
+	static
+	const std::string USER_ATTR_PREFIX;
+
 	/* Variants of entity map */
 
 	/// Characters that must be avoided in XML attribute keys: space, tab, =
@@ -414,6 +418,11 @@ public:
 	};
 
 	inline
+	bool hasUserAttribute(const std::string & key){
+		return MapTools::hasKey(getMap(), USER_ATTR_PREFIX+key);
+	};
+
+	inline
 	const map_t & getAttributes() const {
 		return *this;
 	};
@@ -454,6 +463,22 @@ public:
 		//return map_t::get(key, defaultValue);
 	}
 
+	inline
+	const drain::FlexibleVariable & getUserAttribute(const std::string & key) const {
+		return get(USER_ATTR_PREFIX+key);
+	}
+
+	inline
+	drain::FlexibleVariable & getUserAttribute(const std::string & key){
+		return get(USER_ATTR_PREFIX+key);
+	}
+
+	template <class V>
+	inline
+	V getUserAttribute(const std::string & key, const V & defaultValue) const {
+		return get(USER_ATTR_PREFIX+key, defaultValue);
+	}
+
 	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
 	//   But otherways confusing?
 	virtual inline
@@ -483,6 +508,11 @@ public:
 		(*this)[key] = StringBuilder<>(args...).str();
 	}
 
+	template <class ... TT>
+	inline
+	void setUserAttribute(const std::string & key, const TT &... args){
+		setAttribute(USER_ATTR_PREFIX+key, args...);
+	}
 
 
 	inline
@@ -527,6 +557,23 @@ public:
 	const StyleXML & getStyle() const {
 		return style;
 	}
+
+	Variable & getStyle(const std::string & key){
+		return style[key];
+	}
+
+	/*
+	const Variable & getStyle(const std::string & key) const {
+		return style[key];
+	}
+	*/
+
+	template <class T>
+	T getStyle(const std::string & key, const T & defaultValue) const {
+		return MapTools::get(style, key, defaultValue);
+		// return style[value];
+	}
+
 
 	inline
 	void setStyle(const StyleXML & s){

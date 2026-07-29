@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/FilePng.h>
 #include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
+#include <drain/image/TextSVG.h>
 
 #include "graphics.h"
 #include "graphics-panel.h"
@@ -356,8 +357,9 @@ void CmdRadarDot::exec() const {
 	// vectGroup->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	vectorGroup.addChild()->setComment(getName(), '[', cls, ']', ' ', getParameters(), " for ", radarSVG.source);
 
-	TreeSVG & overlayGroup = superPanel.getOverlayGroup();
+	// TreeSVG & overlayGroup = superPanel.getOverlayGroup();
 
+	/*
 	drain::image::TreeSVG & test = overlayGroup(radarSVG.source + "TEXT")(svg::TEXT);
 	test->addClass(AlignSVG::FIXED);
 	drain::Point2D<int> imgPoint;
@@ -365,7 +367,7 @@ void CmdRadarDot::exec() const {
 	test->setLocation(imgPoint);
 	test->setTextSafe("EKA_", radarSVG.source);
 	//test->setAlign(AlignSVG::CENTER, AlignSVG::MIDDLE);
-
+	*/
 
 	// vectGroup.addChild()->setComment(getName(), ' ', getParameters());
 	drain::image::TreeSVG & curve = vectorGroup[DOT](drain::image::svg::PATH);
@@ -381,6 +383,7 @@ void CmdRadarDot::exec() const {
 	const std::string t = ctx.getFormattedStatus("${NOD} ${what:startdate|%Y/%m/%d} ${what:starttime|%H:%M:%S}");
 	title->setText(t);
 
+	/*
 	drain::image::TreeSVG & test2 = vectorGroup[svg::TEXT](svg::TEXT);
 	test2->setText(t);
 	// test2->addClass(AlignSVG::FIXED);
@@ -389,6 +392,7 @@ void CmdRadarDot::exec() const {
 	test2->setStyle(drain::StyleXML::TEXT_ANCHOR, "end");
 	test2->setStyle("fill", "green");
 	test2->setStyle("stroke-width", "1px");
+	*/
 
 
 	MaskerSVG::MaskPosition pos = drain::Enum<MaskerSVG::MaskPosition>::dict.getValue(MASK, false);
@@ -480,6 +484,12 @@ void CmdRadarDotTest::exec() const {
 */
 
 
+
+
+
+
+
+
 void CmdRadarLabel::exec() const  {
 
 	using namespace drain::image;
@@ -526,7 +536,7 @@ void CmdRadarLabel::exec() const  {
 	vectorGroup->removeClass(AlignSVG::NEUTRAL);
 	vectorGroup->addClass(GRAPHIC::GRID);
 	vectorGroup->setGeometry(geom);
-	mout.attention(DRAIN_LOG(geom));
+	// mout.attention(DRAIN_LOG(geom));
 
 	if (label.empty()){
 		vectorGroup.addChild()->setComment(getName(), '[', cls, ']', " - empty label skipped");
@@ -545,7 +555,7 @@ void CmdRadarLabel::exec() const  {
 	// TODO: group for all (font size etc)
 	drain::Point2D<int> imgPoint;
 	radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
-	mout.attention(DRAIN_LOG(imgPoint));
+	// mout.attention(DRAIN_LOG(imgPoint));
 
 	/*
 	drain::image::TreeSVG & curve = vectorGroup[DOT](drain::image::svg::PATH);
@@ -568,9 +578,9 @@ void CmdRadarLabel::exec() const  {
 	test->setStyle({{"fill", "pink"}});
 	*/
 
-	const std::string LABEL_ANCHOR = "labelAnchor";
+	// const std::string LABEL_ANCHOR = "labelAnchor";
 
-	TreeSVG & labelAnchor = vectorGroup[LABEL_ANCHOR](svg::RECT);
+	// TreeSVG & labelAnchor = vectorGroup[LABEL_ANCHOR](svg::RECT);
 	// labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
 	// labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL); // IMPORTANT! Else, other elems of the same group (like DOTS) become translated...
 	// labelAnchor->addClass("DEBUG");
@@ -597,10 +607,57 @@ void CmdRadarLabel::exec() const  {
 	const std::string formattedLabel = ctx.getFormattedStatus(label);
 	// mout.special(DRAIN_LOG(formattedLabel));
 
-	// int fontSize=10;
-	mout.attention(drain::sprinter(style->getAttributes()));
 
-	std::list<std::string> lines;
+
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), TextBox::TEXTBOX, {
+			//{"font-size", "12"},
+			{"fill", "white"},
+			{"stroke", "black"},
+			{"stroke-opacity", 0.5},
+			{"stroke-width", "4px"},
+			{"stroke-linejoin", "round"},
+			{"paint-order", "stroke"},
+	});
+
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), SelectSVG(svg::RECT, TextBox::TEXTBOX), {
+			{"fill", "brown"},
+			{"stroke", "white 5px"},
+	});
+
+	/*
+	TreeSVG & overlay = superPanel.getOverlayGroup();
+	drain::StringBuilder<'_'> anchorLabel("ANCHOR", imgPoint.x, imgPoint.y);
+	TreeSVG & siteAnchor = overlay.prependChild(anchorLabel.str())(svg::RECT);
+	siteAnchor->setId(anchorLabel.str());
+	siteAnchor->setLocation(imgPoint);
+	siteAnchor->setAlign(AlignSVG::FIXED);
+	// ..
+	// textBox.textGroup->setMyAlignAnchor(anchorLabel.str());
+	// textBox.textGroup->setAlign(AlignSVG::CENTER, AlignSVG::MIDDLE);
+	*/
+
+	drain::image::TextBox textBox(superPanel.getOverlayGroup());
+	textBox.setFontSize(style->get("font-size", 15));
+	textBox.textGroup->addClass(cls);
+	textBox.textGroup->setAlign(AlignSVG::FIXED);
+	textBox.textGroup->transform.translate.set(imgPoint);
+	ctx.consumeAlignRequest(textBox.textGroup);
+	textBox.addLines(formattedLabel);
+
+	TreeSVG &bg = textBox.getBackground();
+	//bg->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
+	bg->setGeometry(120,60);
+	bg->setAlign(AlignSVG::NEUTRAL);
+	bg->setAlign(AlignSVG::INDEPENDENT);
+	bg->setStyle("fill", "cyan");
+	bg->setStyle("fill-opacity", 0.5);
+
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "flipTextBox") = drain::image::TextBox::FLIP_FUNCTION_JS;
+};
+
+
+/*
+ 	std::list<std::string> lines;
 	drain::StringTools::split(formattedLabel, lines,'\n');
 
 	const int fontSize = style->get("font-size", 12);
@@ -611,26 +668,7 @@ void CmdRadarLabel::exec() const  {
 	labelAnchor->setGeometry(1,2);
 	labelAnchor->setId(LABEL_ANCHOR, NodeSVG::getNewIndex());
 	// labelAnchor->setStyle("fill", "pink");
-	/*
-	TreeSVG & dummy = vectorGroup.addChild()(svg::RECT);
-	dummy->setGeometry(100,100);
-	//dummy->setMyAlignAnchor(LABEL_ANCHOR);
-	dummy->setMyAlignAnchor(AnchorElem::PREVIOUS);
-	dummy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	dummy->setStyle("fill:green");
 
-	TreeSVG & sammy = vectorGroup.addChild()(svg::TEXT);
-	// sammy->setGeometry(30,30);
-	//sammy->setMyAlignAnchor(AnchorElem::PREVIOUS);
-	//sammy->setMyAlignAnchor(LABEL_ANCHOR);
-	sammy->setMyAlignAnchor(AnchorElem::PREVIOUS);
-	// sammy->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	//sammy->setStyle("fill:cyan;text-anchor:end");
-	sammy->setStyle("fill:black;stroke:white;paint-order:stroke;font-size:20");
-	sammy->setText("RAUNO KÄKI");
-	sammy->setLocation(150,150);
-	// return;
-	*/
 
 	for (std::string & line: lines){
 
@@ -639,25 +677,25 @@ void CmdRadarLabel::exec() const  {
 			continue;
 		}
 
-		// AlignSVG::HorzAlign alignHorz = drain::image::AlignSVG::CENTER;
-		// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignBase::Pos::MID); // , MutualAlign::INSIDE);
-		// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
-		// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignBase::Pos::MAX, MutualAlign::OUTSIDE);
-
-		CompleteAlignment<AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
-		CompleteAlignment<AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+		// AlignSVG::HorzAlign alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);
+		// AlignSVG::VertAlign alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
+		CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
+		CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 
 		std::list<std::string> parts;
 		drain::StringTools::split(line, parts, '|');
 		switch (parts.size()) {
 		case 1:
-			alignHorz.pos = AlignBase::Pos::MID;
+			alignHorz.set(AlignBase::Pos::MID);
+			//alignHorz.pos = AlignBase::Pos::MID;
 			break;
 		case 2:
-			alignHorz.pos = AlignBase::Pos::MIN;
+			alignHorz.set(AlignBase::Pos::MIN);
+			// alignHorz.pos = AlignBase::Pos::MIN;
 			break;
 		default:
-			alignHorz.pos = AlignBase::Pos::MIN;
+			alignHorz.set(AlignBase::Pos::MIN);
+			// alignHorz.pos = AlignBase::Pos::MIN;
 			mout.warn("Text contained several alignment markers '|'");
 			break;
 		}
@@ -681,15 +719,14 @@ void CmdRadarLabel::exec() const  {
 
 				text[svg::TITLE](svg::TITLE)->setText(part);
 			}
-			alignHorz.pos = AlignBase::Pos::MAX;
+			//alignHorz.pos = AlignBase::Pos::MAX;
+			alignHorz.set(AlignBase::Pos::MAX);
+			alignHorz.set(AlignSVG::RIGHT);
 		}
 
 	}
 
-};
-
-
-
+ */
 
 /**
  *

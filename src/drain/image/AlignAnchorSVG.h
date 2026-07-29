@@ -147,9 +147,11 @@ struct AnchorElem : public std::string {
 // namespace drain {
 
 DRAIN_ENUM_DICT(image::AnchorElem::Anchor);
-DRAIN_ENUM_OSTREAM(image::AnchorElem::Anchor);
+//DRAIN_ENUM_OSTREAM(image::AnchorElem::Anchor);
 
 namespace image {
+
+DRAIN_ENUM_OSTREAM(AnchorElem::Anchor);
 
 /// Adapter designed for NodeSVG
 struct AlignAnchorSVG { // : public AlignSVG {
