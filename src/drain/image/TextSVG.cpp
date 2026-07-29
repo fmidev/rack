@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *      Author: mpeura
  */
 
+#include "drain/util/Units.h"
 #include "LayoutSVG.h"
 #include "TextSVG.h"
 
@@ -120,17 +121,19 @@ void TextBox::init(){
 void TextBox::setLineHeight(const svg::coord_t height){
 	textGroup->set(LINE_HEIGHT, height);
 	Variable & fontSize = textGroup->getStyle("font-size");
-	if (fontSize == 0){
+	if (fontSize.empty()){
 		fontSize = (3*height)/4;
+		textGroup->setStyle("font-size", fontSize, drain::Unit::PIXEL);
 	}
 };
 
-void TextBox::setFontSize(const svg::coord_t height){
-	textGroup->setStyle("font-size", height);
+void TextBox::setFontSize(const svg::coord_t size){
+	textGroup->setStyle("font-size", size, drain::Unit::PIXEL);
 	// svg::coord_t lineHeight = textGroup->get(LINE_HEIGHT);
 	FlexibleVariable & lineHeight = textGroup->get(LINE_HEIGHT);
 	if (lineHeight == 0){
-		lineHeight = 4*height/3;
+		lineHeight = 4*size/3;
+		textGroup->setAttribute(LINE_HEIGHT, lineHeight, drain::Unit::PIXEL);
 	}
 };
 
@@ -159,27 +162,17 @@ void TextBox::setLocation(const drain::Point2D<int> & point){
 
 TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 
-
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//TreeSVG & textLine = textGroup.addChild()(svg::TEXT);
-	TreeSVG & group = adapterGroup;
 
-	float fontSize =  group->getStyle("font-size", 0.0f);
+	float fontSize =  textGroup->getStyle("font-size", 0.0f);
 	if (fontSize == 0.0f){
-		fontSize = group->get(LINE_HEIGHT, 20);
-		group->setStyle("font-size", fontSize);
+		fontSize = textGroup->get(LINE_HEIGHT, 20);
+		textGroup->setStyle("font-size", fontSize);
 	}
+	const int lineHeight =  textGroup->get(LINE_HEIGHT, (4*fontSize)/3);
 
-	const int lineHeight =  group->get(LINE_HEIGHT, (4*fontSize)/3);
-
-	/*
-	if (line.empty()){
-		// TODO: consider allowing empty line
-		return; //  textLine;
-	}
-	*/
-
+	TreeSVG & group = adapterGroup;
 
 	CompleteHorzAlign alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
 	CompleteVertAlign alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);

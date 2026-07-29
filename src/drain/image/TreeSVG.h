@@ -211,13 +211,14 @@ public:
 
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
+	/*
 	virtual
 	void setAttribute(const std::string & key, const std::string &value) override;
 
 	/// Set attribute value, handling units in string arguments, like in "50%" or "640px".
 	virtual
 	void setAttribute(const std::string & key, const char *value) override;
-
+	*/
 
 
 	/// Get location (x,y) and geometry (width,height) of an object.

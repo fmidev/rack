@@ -637,13 +637,17 @@ void CmdRadarLabel::exec() const  {
 	*/
 
 	drain::image::TextBox textBox(superPanel.getOverlayGroup());
-	textBox.setFontSize(style->get("font-size", 15));
+	// textBox.setFontSize(style->get("font-size", 15));
+	textBox.setFontSize(ctx.svgPanelConf.fontSizes[1]);
+	textBox.setLineHeight(ctx.svgPanelConf.boxHeights[1]);
 	textBox.textGroup->addClass(cls);
-	textBox.textGroup->setAlign(AlignSVG::FIXED);
-	textBox.textGroup->transform.translate.set(imgPoint);
-	ctx.consumeAlignRequest(textBox.textGroup);
+	// textBox.textGroup->setAlign(AlignSVG::FIXED);
+	textBox.setLocation(imgPoint);
+	// textBox.textGroup->transform.translate.set(imgPoint);
+	// ctx.consumeAlignRequest(textBox.textGroup);
 	textBox.addLines(formattedLabel);
 
+	/*
 	TreeSVG &bg = textBox.getBackground();
 	//bg->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	bg->setGeometry(120,60);
@@ -651,6 +655,7 @@ void CmdRadarLabel::exec() const  {
 	bg->setAlign(AlignSVG::INDEPENDENT);
 	bg->setStyle("fill", "cyan");
 	bg->setStyle("fill-opacity", 0.5);
+	*/
 
 	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "flipTextBox") = drain::image::TextBox::FLIP_FUNCTION_JS;
 };

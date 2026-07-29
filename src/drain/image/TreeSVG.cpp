@@ -200,7 +200,9 @@ bool NodeSVG::isSingular() const {
 };
  */
 
+/*
 /// Needed for handling units in strings, like "50%" or "640px".
+
 void NodeSVG::setAttribute(const std::string & key, const std::string &value){
 	(*this)[key] = value;
 }
@@ -209,6 +211,7 @@ void NodeSVG::setAttribute(const std::string & key, const std::string &value){
 void NodeSVG::setAttribute(const std::string & key, const char *value){
 	(*this)[key] = value; // -> handleString()
 }
+*/
 
 void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 	switch (getNativeType()) {
