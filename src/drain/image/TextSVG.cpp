@@ -157,7 +157,7 @@ void TextBox::setLocation(const drain::Point2D<int> & point){
 	textGroup->transform.translate.set(point);
 }
 
-void TextBox::addLine(const std::string & line) const {
+TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -173,11 +173,12 @@ void TextBox::addLine(const std::string & line) const {
 
 	const int lineHeight =  group->get(LINE_HEIGHT, (4*fontSize)/3);
 
-
+	/*
 	if (line.empty()){
 		// TODO: consider allowing empty line
 		return; //  textLine;
 	}
+	*/
 
 
 	CompleteHorzAlign alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
@@ -186,6 +187,9 @@ void TextBox::addLine(const std::string & line) const {
 	std::list<std::string> parts;
 	drain::StringTools::split(line, parts, '|');
 	switch (parts.size()) {
+	case 0:
+		mout.warn("String split failed for line=", line);
+		break;
 	case 1:
 		// alignHorz.set(AlignSVG::CENTER);
 		alignHorz.reset();
@@ -199,23 +203,22 @@ void TextBox::addLine(const std::string & line) const {
 		break;
 	}
 
+	TreeSVG *lastElem = nullptr;
+
 	for (const std::string & part: parts){ // Maximally two.
 
 		if (!part.empty()){
 
 			TreeSVG & text = group.addChild()(svg::TEXT);
-			// text->addClass(TEXTBOX);
+			lastElem = &text;
+			text->addClass(TEXTBOX);
 
 			//text->setFontSize(fontSize, (15*fontSize)/10);
 			text->setHeight(lineHeight);
 			text->setMargin(lineHeight/4);
 			text->setText(part);
 
-			//text->setMyAlignAnchor<AlignBase::Axis::HORZ>(RackSVG::ElemClass::BACKGROUND);
-
 			text->setAlign(alignHorz);
-
-			// text->setMyAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS); // For the first element, this is "labelAnchor"
 			text->setAlign(alignVert);
 
 			// text[svg::TITLE](svg::TITLE)->setText(part);
@@ -227,6 +230,11 @@ void TextBox::addLine(const std::string & line) const {
 		alignHorz.set(AlignSVG::RIGHT, MutualAlign::OUTSIDE);
 	}
 
+	if (lastElem == nullptr){
+		lastElem = & group.addChild()(svg::TEXT);
+		lastElem->addChild()->setComment("Parsing text argument failed");
+	}
+	return *lastElem;
 }
 
 
@@ -243,7 +251,7 @@ void TextBox::addLines(const std::string & lines, char separator, char edge) con
 			continue;
 		}
 
-		addLine(line);
+		addLineAligned(line, edge);
 	}
 
 }

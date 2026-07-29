@@ -131,28 +131,34 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 	case image::svg::TITLE:
 		break;
 	case image::svg::GROUP:
-		getMap()["data-pos"].link(box.getLocation().tuple());
-		getMap()["data-frm"].link(box.getFrame().tuple());
+		// getMap()["data-pos"].link(box.getLocation().tuple());
+		// getMap()["data-frm"].link(box.getFrame().tuple());
+		getUserAttribute("x").link(box.x);
+		getUserAttribute("y").link(box.y);
+		getUserAttribute("width").link(box.width);
+		getUserAttribute("height").link(box.height);
 		break;
 	case image::svg::RECT:
-		getMap()["x"].link(box.x = 0);
-		getMap()["y"].link(box.y = 0);
-		getMap()["width"].link(box.width); // = 0);
-		getMap()["height"].link(box.height); // = 0);
+		get("x").link(box.x = 0);
+		get("y").link(box.y = 0);
+		// getMap()["x"].link(box.x = 0);
+		// getMap()["y"].link(box.y = 0);
+		get("width").link(box.width); // = 0);
+		get("height").link(box.height); // = 0);
 		break;
 	case image::svg::CIRCLE:
-		getMap()["cx"].link(box.x = 0);
-		getMap()["cy"].link(box.y = 0);
+		get("cx").link(box.x = 0);
+		get("cy").link(box.y = 0);
 		set("r", svg::coord_t(0));
 		// getMap()["r"].link(radius = 0);
 		break;
 	case image::svg::IMAGE:
-		getMap()["x"].link(box.x = 0);
-		getMap()["y"].link(box.y = 0);
-		getMap()["width"].link(box.width); //  = 0);
-		getMap()["height"].link(box.height); //  = 0);
+		get("x").link(box.x = 0);
+		get("y").link(box.y = 0);
+		get("width").link(box.width); //  = 0);
+		get("height").link(box.height); //  = 0);
 		// if (version == 1) {
-		getMap()["xlink:href"].link(url); // text_anchor
+		get("xlink:href").link(url); // text_anchor
 		// if (version > 2.x ?) {
 		break;
 	case image::svg::PATH:

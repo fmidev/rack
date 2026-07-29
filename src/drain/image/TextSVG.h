@@ -75,12 +75,12 @@ public:
 
 	void setFontSize(const svg::coord_t w);
 
-	void addLine(const std::string & s) const ;
+	TreeSVG & addLineAligned(const std::string & s, char edge='|') const ;
 
 	/// Adds a TEXT elem, containing concatenated arguments.
 	template <char SEP=0, class ...TT>
-	void addLine(const TT &... args) const {
-		addLine(drain::StringBuilder<SEP>(args...).str());
+	TreeSVG & addLine(const TT &... args) const {
+		return addLineAligned(drain::StringBuilder<SEP>(args...).str(), '|');
 	}
 
 	void addLines(const std::string & lines, char separator='\n', char edge='|') const;
