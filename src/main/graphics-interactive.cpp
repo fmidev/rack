@@ -40,6 +40,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/GeoFrame.h>
 #include <drain/image/MouseXML.h>
+#include <drain/image/TextSVG.h>
 
 #include "graphics-base.h"
 #include "graphics-panel.h"
@@ -602,14 +603,33 @@ void CmdCoords::exec() const {
 	}
 
 	// Modify SVG header. Notice inverse order (for prepend() )
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
+	//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
+	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
 
-	ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
-
-
-
+	// ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
 	RadarSVG radarSVG;
+	updateRadarSVG(ctx, radarSVG);
+
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
+
+	// NEW
+	ImagePanel superPanel(imagePanelGroup);
+
+	TreeSVG & fct = MouseXML::addMouseListener(ctx.getSVG(), superPanel.getMouseListenerFrame(), "move");
+	// fct.addChild() = "console.info(`${x},${y}`)";
+
+	TextBox textBox(imagePanelGroup, "coord_display");
+
+	textBox.setLocation({100,100});
+	TreeSVG & line = textBox.addLine();
+	line->setId("coord_display", NodeSVG::getNewIndex());
+	line->addClass(RackSVG::ElemClass::IMAGE_TITLE);
+	fct["var elem"] = "var elem";
+	fct.addChild()->setText("elem = document.getElementById('", line->getId(), "')");
+	fct.addChild() = "elem.textContent=`${x},${y}`;";
+	fct.addChild() = "elem.setAttribute('x', x);";
+
+	// drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 
 	/*
 	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
