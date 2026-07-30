@@ -56,7 +56,7 @@ DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BORDER),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
 		// ---
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),

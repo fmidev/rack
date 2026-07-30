@@ -414,7 +414,7 @@ const drain::FlexibleVariable & MaskerSVG::ensureMaskId(TreeSVG & group){
 		group.addChild()->setComment("added MASK_ID=", maskId);
 	}
 
-	return group->get(MASK_ID);
+	return group->getAttribute(MASK_ID);
 
 }
 
@@ -514,13 +514,13 @@ int MaskerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 	TreeSVG & group = tree(path);
 
 	if (group->hasAttribute(MASK_ID)){
-		const drain::image::TreeSVG & mask = getMask(tree, group->get(MASK_ID));
+		const drain::image::TreeSVG & mask = getMask(tree, group->getAttribute(MASK_ID));
 
 		if (group->typeIs(drain::image::svg::GROUP)){
 			// drain::image::TreeSVG & rect = group.prependChild(drain::Enum<drain::image::svg::tag_t>::dict.getKey(drain::image::svg::RECT))(drain::image::svg::RECT);
 			// drain::image::TreeSVG & rect = group.prependChild(drain::image::svg::RECT)(drain::image::svg::RECT);
 			// std::string p = group->get(MASK_POS, "TOP");
-			const MaskPosition pos = drain::Enum<MaskPosition>::dict.getValue(group->get(MASK_POS, "TOP"), false);
+			const MaskPosition pos = drain::Enum<MaskPosition>::dict.getValue(group->getAttribute(MASK_POS, "TOP"), false);
 			addCoverRect(mask, group, pos);
 			//drain::image::TreeSVG & rect = group.addChild(drain::image::svg::RECT)(drain::image::svg::RECT);
 			//linkMask(mask, rect);

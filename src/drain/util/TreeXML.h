@@ -494,7 +494,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			*/
 			for (const auto & entry: getMap()){
 				//std::string v = get(entry.first, std::string(""));
-				std::string v = get(entry.first, "");
+				std::string v = getAttribute(entry.first, "");
 				// Skip empties (so Sprinter::toStream not applicable)
 				if (!v.empty()){
 					xmlAttribToStream(ostr, entry.first, v);

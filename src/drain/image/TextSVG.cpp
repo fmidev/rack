@@ -126,7 +126,7 @@ void TextBox::init(){
 }
 
 void TextBox::setLineHeight(const svg::coord_t height){
-	textGroup->set(LINE_HEIGHT, height);
+	textGroup->setAttribute(LINE_HEIGHT, height);
 	Variable & fontSize = textGroup->getStyle("font-size");
 	if (fontSize.empty()){
 		fontSize = (3*height)/4;
@@ -137,7 +137,7 @@ void TextBox::setLineHeight(const svg::coord_t height){
 void TextBox::setFontSize(const svg::coord_t size){
 	textGroup->setStyle("font-size", size, drain::Unit::PIXEL);
 	// svg::coord_t lineHeight = textGroup->get(LINE_HEIGHT);
-	FlexibleVariable & lineHeight = textGroup->get(LINE_HEIGHT);
+	FlexibleVariable & lineHeight = textGroup->getAttribute(LINE_HEIGHT);
 	if (lineHeight == 0){
 		lineHeight = 4*size/3;
 		textGroup->setAttribute(LINE_HEIGHT, lineHeight, drain::Unit::PIXEL);
@@ -174,10 +174,10 @@ TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 
 	float fontSize =  textGroup->getStyle("font-size", 0.0f);
 	if (fontSize == 0.0f){
-		fontSize = textGroup->get(LINE_HEIGHT, 20);
+		fontSize = textGroup->getAttribute(LINE_HEIGHT, 20);
 		textGroup->setStyle("font-size", fontSize);
 	}
-	const int lineHeight =  textGroup->get(LINE_HEIGHT, (4*fontSize)/3);
+	const int lineHeight =  textGroup->getAttribute(LINE_HEIGHT, (4*fontSize)/3);
 
 	TreeSVG & group = adapterGroup;
 

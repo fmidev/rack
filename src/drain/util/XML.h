@@ -435,14 +435,14 @@ public:
 
 	// Rename getAttribute?
 	inline
-	const drain::FlexibleVariable & get(const std::string & key) const {
+	const drain::FlexibleVariable & getAttribute(const std::string & key) const {
 		return MapTools::get(getMap(), key);
 		//return (*this)[key];
 	}
 
 	// Rename getAttribute?
 	inline
-	drain::FlexibleVariable & get(const std::string & key){
+	drain::FlexibleVariable & getAttribute(const std::string & key){
 		return MapTools::get(getMap(), key);
 		// return (*this)[key];
 	}
@@ -451,32 +451,37 @@ public:
 	// Rename getAttribute?
 	template <class V>
 	inline
-	V get(const std::string & key, const V & defaultValue) const {
+	V getAttribute(const std::string & key, const V & defaultValue) const {
 		return MapTools::get(getMap(), key, defaultValue);
 		//return map_t::get(key, defaultValue);
 	}
 
 	// Rename getAttribute?
 	inline
-	std::string get(const std::string & key, const char * defaultValue) const {
+	std::string getAttribute(const std::string & key, const char * defaultValue) const {
 		return MapTools::get(getMap(), key, defaultValue);
 		//return map_t::get(key, defaultValue);
 	}
 
 	inline
 	const drain::FlexibleVariable & getUserAttribute(const std::string & key) const {
-		return get(USER_ATTR_PREFIX+key);
+		return getAttribute(USER_ATTR_PREFIX+key);
 	}
 
 	inline
 	drain::FlexibleVariable & getUserAttribute(const std::string & key){
-		return get(USER_ATTR_PREFIX+key);
+		return getAttribute(USER_ATTR_PREFIX+key);
 	}
 
 	template <class V>
 	inline
 	V getUserAttribute(const std::string & key, const V & defaultValue) const {
-		return get(USER_ATTR_PREFIX+key, defaultValue);
+		return getAttribute(USER_ATTR_PREFIX+key, defaultValue);
+	}
+
+	inline
+	std::string getUserAttribute(const std::string & key, const char *defaultValue) const {
+		return getAttribute(USER_ATTR_PREFIX+key, defaultValue);
 	}
 
 	/// Default implementation. Needed for handling units in strings, like "50%" or "640px".
@@ -896,7 +901,7 @@ std::ostream & XML::textToStream(std::ostream & ostr, const UnorderedMultiTree<N
 	}
 
 	if (data.isScopeJS()){
-		ostr << fill << "};";
+		ostr << fill << "}"; // Note: semicolon not supported at end of argument, consider: .forEach( elem => {});
 	}
 
 	return ostr;

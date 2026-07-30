@@ -368,7 +368,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 			}
 			else {
 				// group->get("data-title", "");
-				mainText->setTextSafe(group->get("data-title", "- - -"));
+				mainText->setTextSafe(group->getUserAttribute("title", "- - -"));
 			}
 		}
 	}

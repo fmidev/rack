@@ -77,9 +77,9 @@ void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 
 				switch (node.getNativeType()){
 				case svg::CIRCLE: {
-					double cx = node.get("cx");
-					double cy = node.get("cy");
-					double r  = node.get("r");
+					double cx = node.getAttribute("cx");
+					double cy = node.getAttribute("cy");
+					double r  = node.getAttribute("r");
 					b.expand(cx + r, cy + r);
 					b.expand(cx - r, cy - r);
 					// mout.accept<LOG_NOTICE>("BBOX after svg::CIRCLE: ", b);
@@ -95,7 +95,7 @@ void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 				case svg::POLYGON: {
 					std::list<std::string> points;
 					double x=0.0, y=0.0;
-					drain::StringTools::split(node.get("points",""), points, ' '); // note: separator not comma
+					drain::StringTools::split(node.getAttribute("points",""), points, ' '); // note: separator not comma
 					for (const auto & point: points){
 						drain::StringTools::split2(point, x,y, ','); // note: separator not comma
 						b.expand(x, y);
@@ -134,8 +134,8 @@ void TreeLayoutSVG::detectBox(drain::image::TreeSVG & group, bool debug){
 			// debugRect.setStyle("stroke-width", 3);
 			// debugRect.setStyle("stroke-style", "dotted");
 			debugRect.getBoundingBox() = b;
-			debugRect.set("x", b.x);
-			debugRect.set("y", b.y);
+			debugRect.setAttribute("x", b.x);
+			debugRect.setAttribute("y", b.y);
 			debugRect.setGeometry(b.getFrame());
 		}
 

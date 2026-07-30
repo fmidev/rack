@@ -73,7 +73,7 @@ public:
 		SIDE_PANEL,
 		BORDER,          // Overall border (RECT) around the SVG document, invisible by default
 		// --
-		MOUSE,			 // A group marked for mouse event listeners
+		// MOUSE,			 // A group marked for mouse event listeners
 		// MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
 		// MONITOR,         // Display of interactive operations
 		SELECTOR,        // Interactive element illustrating a selection by the user

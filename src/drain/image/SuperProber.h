@@ -172,7 +172,7 @@ public:
 					edgeTracker.track(pos, dir);
 					if (edgeTracker.contour.size() > 0){
 						TreeSVG & contour = tree[drain::StringBuilder<'-'>("cont", pos.i, pos.j).str()](svg::POLYGON);
-						FlexibleVariable & c = contour->get("points");
+						FlexibleVariable & c = contour->getAttribute("points");
 						c.setType(typeid(std::string));
 						c.setSeparator(0);
 						for (const Position & p: edgeTracker.contour){

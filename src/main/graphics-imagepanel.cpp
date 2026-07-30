@@ -304,7 +304,8 @@ drain::image::TreeSVG& ImagePanel::getBackGround() const {
 
 drain::image::TreeSVG& ImagePanel::getMouseListenerFrame() const {
 
-	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
+	//imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE);
+	imagePanelGroup->addClass(MouseXML::ElemClass::MOUSE);
 
 	TreeSVG & mouseListenerFrame = getImageBorder(); // same!
 	mouseListenerFrame->addClass(MouseXML::ElemClass::MOUSE_LISTENER);

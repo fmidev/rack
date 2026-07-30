@@ -37,7 +37,7 @@ namespace drain {
 
 
 DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
-		// DRAIN_ENUM_ENTRY(rack::Interactive::ElemClass, MOUSE),
+		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MOUSE),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MOUSE_LISTENER),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_MOVE),
@@ -47,6 +47,30 @@ DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
 };
 
 namespace image {
+
+void MouseXML::getEventFunctionName(std::string & eventName, const std::string prefix){
+
+	if (eventName.empty()){
+		Logger(__FILE__, __FUNCTION__).error("mouse eventName empty - use move, down, up, etc");
+	}
+	// std::cout << prefix << '+' <<  eventName << '\n';
+
+	drain::StringTools::lowerCase(eventName);
+	if (prefix.empty()){
+		eventName = drain::StringBuilder<>("onmouse", eventName);
+	}
+	else {
+		//drain::StringTools::upperCase(eventName[0]);
+		drain::StringTools::upperCase(eventName, 1);
+		eventName = drain::StringBuilder<>(prefix, eventName);
+	}
+	// std::cout << eventName << std::endl;
+	/*
+	if (eventName.find("onmouse") != 0){
+		eventName = drain::StringBuilder<>("onmouse", eventName);
+	}
+	*/
+}
 
 void MouseXML::addVisibilitySwitch(XML &dstElem,
 		XML &controlElem, const std::string &scope,

@@ -615,19 +615,85 @@ void CmdCoords::exec() const {
 	// NEW
 	ImagePanel superPanel(imagePanelGroup);
 
-	TreeSVG & fct = MouseXML::addMouseListener(ctx.getSVG(), superPanel.getMouseListenerFrame(), "move");
+	TreeSVG & mouseElem = superPanel.getMouseListenerFrame();
+	TreeSVG & fct = MouseXML::ensureMouseListener(ctx.getSVG(), mouseElem, "move");
+
+	TreeSVG & mouseInit = MouseXML::ensureMouseListenerInit(ctx.getSVG(), mouseElem, "move");
+	TreeSVG & forEach = mouseInit["foreach_MOUSE_LISTENER"]; // (svg::JAVASCRIPT_SCOPE);
+	forEach->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
+
+	TreeSVG & forEach2 = forEach["scope"](svg::JAVASCRIPT_SCOPE);
+	if (forEach2.empty()){
+		forEach2->setText("group =>");
+		forEach2.addChild()->setText("/* koe */");
+		// TreeSVG & forEach2b = forEach2.addChild()
+		forEach2.addChild()->setText("var elem = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
+		forEach2.addChild() = "if (elem)";
+		forEach2.addChild(svg::JAVASCRIPT_SCOPE);
+		// forEach2.addChild() = "});";
+		forEach.addChild() = "";
+	}
+	forEach["end"]->setText(")"); // indented
+
+	//forEach.addChild()->addText();
+	// forEach.addChild()->addText("");
+
 	// fct.addChild() = "console.info(`${x},${y}`)";
+	// connect "elem.myElem69 = document.getElementById()"
+	//drain::Variable & inits = mouseElem->getAttribute("moveInits");
+
+	static
+	const std::string COORD_DISPLAY = "COORD_DISPLAY";
 
 	TextBox textBox(imagePanelGroup, "coord_display");
 
 	textBox.setLocation({100,100});
+	textBox.setLineHeight(15);
+	textBox.setFontSize(12);
 	TreeSVG & line = textBox.addLine();
-	line->setId("coord_display", NodeSVG::getNewIndex());
+	// OLD
+	// line->setId("coord_display", NodeSVG::getNewIndex());
+	// NEW:
+	line->addClass(COORD_DISPLAY);
 	line->addClass(RackSVG::ElemClass::IMAGE_TITLE);
+	line->setText("*");
+
+	/// add comment scope added by...
 	fct["var elem"] = "var elem";
-	fct.addChild()->setText("elem = document.getElementById('", line->getId(), "')");
-	fct.addChild() = "elem.textContent=`${x},${y}`;";
-	fct.addChild() = "elem.setAttribute('x', x);";
+
+	//fct.addChild()->setText("elem = target['", line->getId(), "']");
+	fct.addChild()->setText("/* Added by ", getName(), " */");
+	fct["coord_display1"]->setText("elem = target['", COORD_DISPLAY, "']");
+	//fct.addChild()->setText("elem = document.getElementById('", line->getId(), "')");
+	fct["coord_display2"] = "elem.textContent=`${x},${y}`;";
+	fct["coord_display3"]->setText("elem = target['", TextBox::TEXTBOX, "']");
+	fct["coord_display4"] = "elem.setAttribute('transform', `translate(${x},${y})`);";
+
+
+	TreeSVG & init = forEach2[svg::JAVASCRIPT_SCOPE];
+	// const std::string & id = line->getId();
+	//init[id]->setText("elem['", id, "'] = group.querySelector('#", id, "')");
+	// const std::string & id = line->getId();
+	init[COORD_DISPLAY+"_comment"] ->setText("/* Added by ", getName(), "*/");
+	init[COORD_DISPLAY]->setText("elem['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
+	// consider COORD_BOX
+	init[TextBox::TEXTBOX]->setText("elem['", TextBox::TEXTBOX, "'] = group.querySelector('.", TextBox::TEXTBOX, "')");
+
+	forEach["pause"]->setText("");
+
+	/*
+	std::set<std::string> inits;
+	imagePanelGroup->getUserAttribute("moveInits").toSequence(inits, ',');
+	inits.insert(line->getId());
+	imagePanelGroup->setUserAttribute("moveInits", drain::sprinter(inits,","));
+
+	mouseInit["initIds"]->setText("/ * var initIds = ", drain::sprinter(inits),  " * /");
+	*/
+
+	TreeSVG & onLoadScope = MouseXML::getOnLoadScript(ctx.getSVG());
+
+	onLoadScope[mouseInit->getId()+"_comment"] ->setText("/* Added by ", getName(), "*/");
+	onLoadScope[mouseInit->getId()] = mouseInit->getId()+"();";
 
 	// drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
 

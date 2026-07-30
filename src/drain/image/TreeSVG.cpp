@@ -139,37 +139,37 @@ void NodeSVG::handleType() { // setType(const elem_t & t) {
 		getUserAttribute("height").link(box.height);
 		break;
 	case image::svg::RECT:
-		get("x").link(box.x = 0);
-		get("y").link(box.y = 0);
+		getAttribute("x").link(box.x = 0);
+		getAttribute("y").link(box.y = 0);
 		// getMap()["x"].link(box.x = 0);
 		// getMap()["y"].link(box.y = 0);
-		get("width").link(box.width); // = 0);
-		get("height").link(box.height); // = 0);
+		getAttribute("width").link(box.width); // = 0);
+		getAttribute("height").link(box.height); // = 0);
 		break;
 	case image::svg::CIRCLE:
-		get("cx").link(box.x = 0);
-		get("cy").link(box.y = 0);
-		set("r", svg::coord_t(0));
+		getAttribute("cx").link(box.x = 0);
+		getAttribute("cy").link(box.y = 0);
+		setAttribute("r", svg::coord_t(0));
 		// getMap()["r"].link(radius = 0);
 		break;
 	case image::svg::IMAGE:
-		get("x").link(box.x = 0);
-		get("y").link(box.y = 0);
-		get("width").link(box.width); //  = 0);
-		get("height").link(box.height); //  = 0);
+		getAttribute("x").link(box.x = 0);
+		getAttribute("y").link(box.y = 0);
+		getAttribute("width").link(box.width); //  = 0);
+		getAttribute("height").link(box.height); //  = 0);
 		// if (version == 1) {
-		get("xlink:href").link(url); // text_anchor
+		getAttribute("xlink:href").link(url); // text_anchor
 		// if (version > 2.x ?) {
 		break;
 	case image::svg::PATH:
-		get("d").setType<std::string>();
-		get("d").setSeparator(0);
+		getAttribute("d").setType<std::string>();
+		getAttribute("d").setSeparator(0);
 		break;
 	case image::svg::POLYGON:
 		// getMap()["path"].link(ctext);
 		// set("path", "");
-		get("points").setType<std::string>();
-		get("points").setSeparator(0);
+		getAttribute("points").setType<std::string>();
+		getAttribute("points").setSeparator(0);
 		break;
 	case image::svg::TEXT:
 		getMap()["x"].link(box.x); //  = 0);
