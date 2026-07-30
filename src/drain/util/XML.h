@@ -756,6 +756,13 @@ public:
 	static
 	std::ostream & toStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent=0);
 
+	template <class N>
+	static
+	std::ostream & styleToStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent=0);
+
+	template <class N>
+	static
+	std::ostream & textToStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent=0);
 
 
 	/// Handy map for converting characters to XML entities. Example: '&' -> "&amp;"
@@ -852,6 +859,134 @@ public:
 DRAIN_ENUM_DICT(XML::entity_t);
 DRAIN_ENUM_OSTREAM(XML::entity_t);
 
+template <class N>
+std::ostream & XML::textToStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent){
+
+	drain::Logger mout(__FILE__,__FUNCTION__);
+
+	std::string fill(2*indent, ' ');
+
+	typedef UnorderedMultiTree<N> TR;
+	const typename TR::node_data_t & data = tree.data;
+
+	char sep = 0;
+
+	// if (!data.ctext.empty()){
+	ostr << fill << data.ctext;
+	// }
+
+	if (data.isScopeJS()){
+		ostr << "{";
+		if (tree.hasChildren()){
+			ostr << '\n';
+		}
+		sep = '\n';
+	}
+
+	if (indent > 0){
+		indent += 2;
+	}
+
+	for (const auto & entry: tree.getChildren()){
+		textToStream(ostr, entry.second, indent);
+		if (sep){
+			ostr << sep;
+		}
+
+	}
+
+	if (data.isScopeJS()){
+		ostr << fill << "};";
+	}
+
+	return ostr;
+}
+
+
+template <class N>
+std::ostream & XML::styleToStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent){
+
+	drain::Logger mout(__FILE__,__FUNCTION__);
+
+	std::string fill(2*indent, ' ');
+
+	typedef UnorderedMultiTree<N> TR;
+	const typename TR::node_data_t & data = tree.data;
+
+	if (!data.ctext.empty()){
+		// TODO: indent
+		ostr << fill << data.ctext;
+		StyleXML::commentToStream(ostr, " TEXT ");
+		ostr << '\n';
+	}
+
+	if (!data.getAttributes().empty()){
+		mout.warn("STYLE elem ", data.getId()," contains attributes, probably meant as style: ", sprinter(data.getAttributes()));
+		ostr << "\n\t /" << "* <!-- DISCARDED attribs ";
+		Sprinter::toStream(ostr, data.getAttributes()); //, StyleXML::styleRecordLayout
+		ostr << " /--> *" << "/" << '\n';
+	}
+
+	if (!data.style.empty()){
+		ostr << fill;
+		StyleXML::commentToStream(ostr, "STYLE OBJ");
+		ostr << '\n';
+		for (const auto & attr: data.style){
+			ostr << fill << "  ";
+			Sprinter::pairToStream(ostr, attr, StyleXML::styleRecordLayout); // {" :;"}
+			//attr.first << ':' attr.first << ':';
+			ostr << '\n';
+		}
+		// ostr << fill << "}\n";
+		// Sprinter::sequenceToStream(ostr, entry.second->getAttributes(), StyleXML::styleRecordLayoutActual);
+		// ostr << '\n';
+	}
+	ostr << '\n';
+
+	ostr << fill;
+	StyleXML::commentToStream(ostr, "style ELEMS");
+	ostr << '\n';
+
+	for (const auto & entry: tree.getChildren()){
+
+		if (entry.second->isComment()){
+			// StringTools::replace();
+			ostr << fill << "/* "<< entry.second->ctext << " */" << '\n';
+			// XML::toStream(ostr, entry.second, defaultTag, indent); // indent not used?
+			continue;
+		}
+
+		if (!entry.second->ctext.empty()){
+			//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
+			ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} /* CTEXT */ \n";
+		}
+
+		if (!entry.second->getAttributes().empty()){
+			ostr << fill << "  " << entry.first << " {\n";
+			for (const auto & attr: entry.second->getAttributes()){
+				ostr << fill  << "    ";
+				if (attr.first == "id"){
+					StyleXML::commentToStream(ostr, "id=", attr.second);
+					// mout.suspicious("Style elem has id (", attr.second, ")");
+				}
+				else {
+					ostr << attr.first << ':' << attr.second << ';';
+				}
+				ostr << '\n';
+			}
+			ostr << fill << "  }\n";
+			ostr << '\n';
+		}
+
+	}
+	ostr << "\n"; // end CTEXT
+	// ostr << " ]]>\n"; // end CTEXT
+	// end STYLE defs
+	ostr << fill;
+
+	return ostr;
+}
+
 // drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 // , const std::string & defaultTag
 // template <class TR>
@@ -869,7 +1004,18 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 
 	tag_display_mode mode = EMPTY_TAG;
 
+	/// NEW
 	if (data.isCText()){ // this can be true only at root, and rarely so...? (because recursive call not reached, if ctext)
+		textToStream(ostr, tree, indent);
+		return ostr;
+	}
+	else if (data.isScopeJS()){ // this can be true only at root, and rarely so...? (because recursive call not reached, if ctext)
+		// ostr << '{';
+		textToStream(ostr, tree, indent);
+		// ostr << '}' << ';' << '\n';
+		return ostr;
+	}
+	else if (data.isCText()){ // this can be true only at root, and rarely so...? (because recursive call not reached, if ctext)
 		// data.nodeToStream(ostr, mode);
 		// ostr << "<!--TX-->";
 		// NEW
@@ -911,7 +1057,10 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 
 	// Indent
 	std::string fill(2*indent, ' ');
-	ostr << fill;
+	if (!data.isScopeJS()){
+		ostr << fill;
+	}
+
 
 	// Print opening tag and attributes.
 	// NEW: js scope print also its CTEXT
@@ -929,15 +1078,20 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 	// TODO: consider unintended, "packed" class for TSPAN etc.
 
 	if (mode == EMPTY_TAG){
-		//ostr << "<!--ET-->";
+		// ostr << "<!--ET-->";
+		// if (!SCRIPT_NONEMPTY){
 		ostr << '\n';
+		// }
 		return ostr;
 	}
 	else if (data.isStyle()){
+
+		styleToStream(ostr, tree, indent);
+
 		// https://www.w3.org/TR/xml/#sec-cdata-sect
 		// ostr << "<![CDATA[ \n";
 		// ostr << "<!-- STYLE -->"; WRONG!
-
+		/*
 		if (!data.ctext.empty()){
 			// TODO: indent
 			ostr << fill << data.ctext;
@@ -976,14 +1130,14 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 
 			if (entry.second->isComment()){
 				// StringTools::replace();
-				ostr << fill << "/* "<< entry.second->ctext << " */" << '\n';
+				ostr << fill << "/ * "<< entry.second->ctext << " * /" << '\n';
 				// XML::toStream(ostr, entry.second, defaultTag, indent); // indent not used?
 				continue;
 			}
 
 			if (!entry.second->ctext.empty()){
 				//ostr << fill << "<!-- elem("<< entry.first << ") ctext /-->" << '\n';
-				ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} /* CTEXT */ \n";
+				ostr << fill << "  " << entry.first << " {" << entry.second->ctext << "} / * CTEXT * / \n";
 			}
 
 			if (!entry.second->getAttributes().empty()){
@@ -1008,7 +1162,7 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 		// ostr << " ]]>\n"; // end CTEXT
 		// end STYLE defs
 		ostr << fill;
-
+		 */
 	}
 	else {
 
@@ -1030,12 +1184,14 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 		}
 		*/
 
+		ostr << data.ctext;
+		/*
 		if (!data.isScopeJS()){
-			ostr << data.ctext;
 			if (!data.ctext.empty()){
 				//ostr << data.ctext << '\n'; // newline nice in scripts, but else where?
 			}
 		}
+		*/
 
 		// Detect if all the children are of type CTEXT, to be rendered in a single line.
 		// Note: potential re-parsing will probably detect them as a single CTEXT element.
@@ -1071,8 +1227,10 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 			}
 		}
 		else {
-			// ostr << "<!-- RECURSION -->";
-			ostr << '\n';
+			//ostr << "<!-- RECURSION -->";
+			if (!data.isScopeJS()){
+				ostr << '\n';
+			}
 			/// iterate children - note the use of default tag
 			for (const auto & entry: children){
 				//toStream(ostr, entry.second, entry.first, indent+1); // Notice, no ++indent
@@ -1099,7 +1257,10 @@ std::ostream & XML::toStream(std::ostream & ostr, const UnorderedMultiTree<N> & 
 
 
 	data.nodeToStream(ostr, CLOSING_TAG);
+	// if (!data.isScopeJS()){
 	ostr << '\n';  // Always after closing tag!
+	//}
+
 
 	return ostr;
 }

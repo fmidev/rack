@@ -64,7 +64,9 @@ public:
 	/**
 	 *  \param group - host
 	 */
-	TextBox(TreeSVG & group, const drain::Frame2D<int> & geom = {0,0});
+	TextBox(TreeSVG & group); // , const drain::Frame2D<int> & geom = {0,0});
+
+	TextBox(TreeSVG & group, const TreeSVG::path_elem_t & identifier); // , const drain::Frame2D<int> & geom = {0,0});
 
 	/**
 	 *  This should be rarely needed...

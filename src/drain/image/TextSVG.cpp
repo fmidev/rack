@@ -76,9 +76,16 @@ const std::string TextBox::FLIP_FUNCTION_JS =
 		"}\n"
 		;
 
-//TextBox::TextBox(ImagePanel &imagePanel, const drain::Frame2D<int> & geom) : imagePanel(imagePanel), textGroup(imagePanel.getOverlayGroup().addChild(svg::GROUP)) {
-TextBox::TextBox(TreeSVG & group, const drain::Frame2D<int> & geom) :
+TextBox::TextBox(TreeSVG & group) :
 		textGroup(group.addChild(svg::GROUP)),
+		adapterGroup(textGroup.addChild(svg::GROUP)) {
+	init();
+}
+
+
+//TextBox::TextBox(ImagePanel &imagePanel, const drain::Frame2D<int> & geom) : imagePanel(imagePanel), textGroup(imagePanel.getOverlayGroup().addChild(svg::GROUP)) {
+TextBox::TextBox(TreeSVG & group, const TreeSVG::path_elem_t & identifier) :
+		textGroup(group[identifier](svg::GROUP)),
 		adapterGroup(textGroup.addChild(svg::GROUP)) {
 	init();
 }

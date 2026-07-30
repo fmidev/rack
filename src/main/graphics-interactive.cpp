@@ -733,6 +733,7 @@ void CmdData::exec() const {
 	//  Modify SVG header. Ensure the script is available.
 	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 	ctx.getOnLoadScript()["image_value_tracker"] = "image_value_tracker();";
+	ctx.getOnLoadScript()["image_value_tracker2"] = "/* test tracker */";
 
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
 

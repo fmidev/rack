@@ -368,8 +368,6 @@ public:
 
 protected:
 
-
-
 	/// Control constant variables of  (note: templated, through Node<T>::)
 	typedef std::list<std::pair<std::string,std::string> > xmldoc_attrib_map_t;
 	static xmldoc_attrib_map_t xmldoc_attribs;
@@ -377,30 +375,6 @@ protected:
 
 };
 
-/*
-template <class T>
-void NodeXML<T>::swapNode(NodeXML<T> & node){
-
-	if (this != &node){
-
-		// Swap attributes
-		// Risky? FlexibleVariableMap contains references. Should be moved with copy-struct-kind of mechanism...
-		map_t::swap(node);
-		// Swap text content
-
-		ctext.swap(node.ctext);
-
-		// Swap classes
-		classList.swap(node.classList);
-
-		style.swap(node.style);
-	}
-	else {
-		// // Consider conditional (strict => exception)
-	}
-
-}
-*/
 
 
 
@@ -458,7 +432,7 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 			// Newline good in avoiding potential comment line
 			ostr << "\n}";
 		}
-		return ostr;
+		// return ostr;
 	}
 	else {
 
@@ -565,8 +539,13 @@ std::ostream & NodeXML<N>::nodeToStream(std::ostream &ostr, tag_display_mode mod
 		*/
 	}
 	else if (mode==EMPTY_TAG){ // OR no ctext!
-		// close TAG
-		ostr << "/>"; // \n <- check newline - add before indent?
+		if (isScopeJS()){
+			ostr << "}";
+		}
+		else {
+			// close TAG
+			ostr << "/>"; // \n <- check newline - add before indent?
+		}
 	}
 	else {
 		ostr << ">";

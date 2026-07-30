@@ -118,7 +118,8 @@ async function set_image_value_tracker(listenerElem, dataElem, encoding, coordMo
 	const x = Math.floor(p.x);
 	const y = Math.floor(p.y);
 	*/
-	var my_bbox  = listenerElem.getBoundingClientRect();
+	// var my_bbox  = listenerElem.getBoundingClientRect();
+	var my_bbox = ev.target.getBoundingClientRect();
 	var x = Math.floor(ev.clientX - my_bbox.left);
 	var y = Math.floor(ev.clientY - my_bbox.top);
 	coordMonitorElem.textContent = '('+x+','+y+')' //.toFixed(2);

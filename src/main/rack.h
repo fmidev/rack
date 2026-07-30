@@ -94,13 +94,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 20.6.1
  *  - Tree: proper swapData() through template specification: NodeHi5::swap, NodeSVG::swap, ...
  *  - Partially revised imagePanelGroup (mouse interaction)
- *  Version 20.6.2
+ *  Release 20.6.2
  *  - ImagePanel object
  *  Version 20.7
  *  - Fixed text alignment (gLabel)
  *  - TextPanel object
  *  - setUserAttribute, getUserAttribute with XML::USER_ATTR_PREFIX="data-"
  *  - SVG margin now plain (not linked) Variable
+ *  Release 20.7.1
+ *  - MouseXML: shared event handling
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

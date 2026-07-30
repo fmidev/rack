@@ -63,9 +63,10 @@ drain::image::TreeSVG & GraphicsContext::getOnLoadScript(){
 
 	mout.experimental<LOG_INFO>("Adding mouse interaction: SVG onload=", onload_fnc_name, "()");
 
-	svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
+	//svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
+	svgTrack->setAttribute("onload", onload_fnc_name, "()"); // perhaps repeatedly
 
-	return drain::UtilsXML::ensureJavaScriptFunction(svgTrack, onload_fnc_name)[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	return drain::UtilsXML::ensureJavaScriptFunction(svgTrack, onload_fnc_name); // [svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
 	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
 
 }

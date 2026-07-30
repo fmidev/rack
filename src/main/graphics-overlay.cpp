@@ -652,12 +652,19 @@ void CmdRadarLabel::exec() const  {
 	//bg->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
 	bg->setGeometry(120,60);
 	bg->setAlign(AlignSVG::NEUTRAL);
-	bg->setAlign(AlignSVG::INDEPENDENT);
+	bg->setAlign(AlignSVG::IkNDEPENDENT);
 	bg->setStyle("fill", "cyan");
 	bg->setStyle("fill-opacity", 0.5);
 	*/
 
 	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "flipTextBox") = drain::image::TextBox::FLIP_FUNCTION_JS;
+
+	TreeSVG & hieno = drain::UtilsXML::ensureJavaScriptFunction(ctx.getSVG(), "onMouseHieno", "ev", "elem");
+	hieno["eka"]    = "window.mika = ev; // EKA";
+	hieno["toka"]   = "console.info(ev);\n";
+	hieno["kolkka"] = "console.info('mika');\n";
+
+
 };
 
 

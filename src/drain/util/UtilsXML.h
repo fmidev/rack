@@ -281,12 +281,21 @@ public:
 	 *  \tparam N - Tree node type (T::node_data_t)
 	 *  \tparam TT - function parameter names (strings).
 	 */
+	/*
 	template <typename N, typename ...TT>
 	static
 	UnorderedMultiTree<N> & ensureJavaScriptFunctionScope(UnorderedMultiTree<N> & root, const std::string & name, const TT & ...args){
 
 		typedef UnorderedMultiTree<N> T;
-		T & scriptElem = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
+
+		T & scriptElem = ensureJavaScriptFunction(root, name, args);
+
+
+
+		return scriptElem[N::xml_tag_t::JAVASCRIPT_SCOPE](N::xml_tag_t::JAVASCRIPT_SCOPE);
+
+		//////
+		//T & scriptElem = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
 
 		if (!scriptElem.hasChild(name)){
 			T & jsFunction = scriptElem[name];
@@ -301,8 +310,9 @@ public:
 			return scriptElem[name][N::xml_tag_t::JAVASCRIPT_SCOPE];
 		}
 		// T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
-
+		///
 	}
+	*/
 
 	/**
 	 *   Creates...
@@ -314,11 +324,15 @@ public:
 		typedef UnorderedMultiTree<N> T;
 		T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, name);
 
-		if (jsFunction.empty()){
-			jsFunction->setText("function ", name, '(', args..., ')');
+		T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE](N::xml_tag_t::JAVASCRIPT_SCOPE);
+
+		if (jsFunctionScope.empty()){
+			jsFunctionScope->setText("function ", name, '(', StringBuilder<','>(args...), ')');
+			// jsFunction.addChild()->setComment("end of ", name);
 		}
 
-		return jsFunction; // [XML::JAVASCRIPT_SCOPE];
+
+		return jsFunctionScope; // [XML::JAVASCRIPT_SCOPE];
 	}
 
 	/**

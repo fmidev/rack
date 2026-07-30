@@ -36,6 +36,7 @@ SOFTWARE.
 #include "drain/Enum.h"
 #include "drain/StringBuilder.h"
 #include "drain/util/TreeXML.h"
+#include "drain/util/UtilsXML.h"
 
 namespace drain {
 
@@ -72,6 +73,11 @@ public:
 			const std::string &mouseEventOn = "onmouseenter",
 			const std::string &mouseEventOff = "onmouseleave");
 
+
+	template <class N>
+	static
+	DRAIN_XML_TREE(N) & addMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventName = "move", const std::string & handlerName = "");
+
 };
 
 // Display something when mouse is dragged
@@ -106,9 +112,47 @@ inline void MouseXML::addVisibilitySwitch(NodeXML<T> &dstElem,
 }
 */
 
+template <class N>
+DRAIN_XML_TREE(N) & MouseXML::addMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventName, const std::string & handlerName){
+	// DRAIN_XML_TREE(N)
+
+	std::string event = eventName; //StringBuilder<>("onmouse", eventName);
+	std::string handler;
+	StringTools::lowerCase(event);
+
+	if (!handlerName.empty()){
+		handler = handlerName;
+	}
+	else {
+		handler = event; // now all-lowercase
+		StringTools::upperCase(handler, 1);
+		handler = StringBuilder<>("handle", handler); // now camelCase
+	}
+
+
+	event = StringBuilder<>("onmouse", event); // all lowercase
+	elem.setAttribute(event, handler, "(evt)");
+
+	// evt is a standard name?
+	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handler, "evt");
+
+	if (!scopeJS.hasChildren()){
+		scopeJS.addChild()->setText("/* Std init by ", __FUNCTION__, "*/");
+		scopeJS.addChild() = "const target = evt.target;";
+		scopeJS.addChild() = "const target_bbox = evt.target.getBoundingClientRect();";
+		scopeJS.addChild() = "const x = Math.floor(evt.clientX - target_bbox.left);";
+		scopeJS.addChild() = "const y = Math.floor(evt.clientY - target_bbox.top);";
+		scopeJS.addChild() = "/* end init */" ;
+	}
+
+	return scopeJS;
+}
+
 }
 
 DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
+
+
 
 }
 
