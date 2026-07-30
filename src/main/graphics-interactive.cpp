@@ -588,6 +588,31 @@ void CmdRect::exec() const {
 
 }
 
+class MouseSVG {
+
+public:
+
+	MouseSVG(TreeSVG & root, const std::string & mouseEvent) : root(root), mouseEvent(mouseEvent) {
+	}
+
+	inline
+	TreeSVG & getMouseListener(TreeSVG & elem){
+		return MouseXML::ensureMouseListener(root, elem, mouseEvent);
+	};
+
+	inline
+	TreeSVG & getMouseListenerInit(){
+		return MouseXML::ensureMouseListenerInit(root, mouseEvent);
+	};
+
+protected:
+
+	TreeSVG & root;
+
+	const std::string & mouseEvent;
+
+
+};
 
 void CmdCoords::exec() const {
 
@@ -607,8 +632,8 @@ void CmdCoords::exec() const {
 	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
 
 	// ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
-	RadarSVG radarSVG;
-	updateRadarSVG(ctx, radarSVG);
+	// RadarSVG radarSVG;
+	// updateRadarSVG(ctx, radarSVG);
 
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
 
@@ -618,7 +643,7 @@ void CmdCoords::exec() const {
 	TreeSVG & mouseElem = superPanel.getMouseListenerFrame();
 	TreeSVG & fct = MouseXML::ensureMouseListener(ctx.getSVG(), mouseElem, "move");
 
-	TreeSVG & mouseInit = MouseXML::ensureMouseListenerInit(ctx.getSVG(), mouseElem, "move");
+	TreeSVG & mouseInit = MouseXML::ensureMouseListenerInit(ctx.getSVG(), "move");
 	TreeSVG & forEach = mouseInit["foreach_MOUSE_LISTENER"]; // (svg::JAVASCRIPT_SCOPE);
 	forEach->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
 
@@ -627,9 +652,10 @@ void CmdCoords::exec() const {
 		forEach2->setText("group =>");
 		forEach2.addChild()->setText("/* koe */");
 		// TreeSVG & forEach2b = forEach2.addChild()
-		forEach2.addChild()->setText("var elem = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
-		forEach2.addChild() = "if (elem)";
+		forEach2.addChild()->setText("var ctx = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
+		forEach2.addChild() = "if (ctx)";
 		forEach2.addChild(svg::JAVASCRIPT_SCOPE);
+		forEach2.addChild()->setText("else { console.warn('could not find ", MouseXML::MOUSE_LISTENER, " elem under ", MouseXML::MOUSE, ")}");
 		// forEach2.addChild() = "});";
 		forEach.addChild() = "";
 	}

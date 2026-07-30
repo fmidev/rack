@@ -59,6 +59,9 @@ public:
 		MONITOR_DRAG,    // Display something when mouse is dragged
 	};
 
+
+	//DRAIN_XML_TREE(N) & root;
+
 	template <class N>
 	static
 	DRAIN_XML_TREE(N) & getOnLoadScript(DRAIN_XML_TREE(N) & root);
@@ -75,7 +78,7 @@ public:
 	 */
 	static
 	void addVisibilitySwitch(XML &dstElem, XML &controlElem, const std::string &scope = "document",
-			const std::string &mouseEventOn = "onmouseenter",
+			const std::string &mouseEventOn  = "onmouseenter",
 			const std::string &mouseEventOff = "onmouseleave");
 
 
@@ -90,25 +93,13 @@ public:
 	void getEventFunctionName(std::string & eventName, const std::string prefix="");
 
 
-	/*
-	static inline
-	void getHandlerName(std::string & eventName, ){
-		if (eventName.empty()){
-			Logger(__FILE__, __FUNCTION__).error("mouse eventName empty - use move, down, up, etc");
-		}
-		drain::StringTools::lowerCase(eventName);
-		drain::StringTools::upperCase(eventName[0]);
-		eventName = drain::StringBuilder<>("handler", eventName);
-	}
-	*/
+	template <class N>
+	static
+	DRAIN_XML_TREE(N) & ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventName); // , const std::string & handlerName = "");
 
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventName = "move"); // , const std::string & handlerName = "");
-
-	template <class N>
-	static
-	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventName = "move"); // , const std::string & handlerName = "");
+	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const std::string & eventName); // , const std::string & handlerName = "");
 
 
 };
@@ -188,7 +179,7 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 }
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey){ // , const std::string & handlerName){
+DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const std::string & eventKey){
 
 	std::string eventName = eventKey; //StringBuilder<>("onmouse", eventName);
 	getEventFunctionName(eventName); // "onmouse + move"
@@ -196,17 +187,10 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, 
 	std::string handlerName = eventKey;
 	getEventFunctionName(handlerName, "initMouse");
 
-	// ELEM UNUSED!
-	// elem.setUserAttribute(eventName, "mouse-init", handlerName, '+', eventKey);
-
 	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName);
 	scopeJS->setId(handlerName);
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
-		// const std::string & id = elem.getId();
-		// scopeJS.addChild()->setText("/*  jotain['", id,"']=document.findElementById('", id,"')*/");
-		// scopeJS.addChild() = "eventKeyconst target = document.findElementById()";
-		// scopeJS.addChild() = "/* end init */" ;
 	}
 
 	return scopeJS;
