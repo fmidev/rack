@@ -322,13 +322,16 @@ public:
 	UnorderedMultiTree<N> & ensureJavaScriptFunction(UnorderedMultiTree<N> & root, const std::string & name, const TT & ...args){
 
 		typedef UnorderedMultiTree<N> T;
-		T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, name);
+		// T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, name);
+		// T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE](N::xml_tag_t::JAVASCRIPT_SCOPE);
+		T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
 
-		T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE](N::xml_tag_t::JAVASCRIPT_SCOPE);
+		T & jsFunctionScope = jsFunction[name](N::xml_tag_t::JAVASCRIPT_SCOPE);
 
 		if (jsFunctionScope.empty()){
 			jsFunctionScope->setText("function ", name, '(', StringBuilder<','>(args...), ')');
 			// jsFunction.addChild()->setComment("end of ", name);
+			jsFunction.addChild()->setText('\n');
 		}
 
 

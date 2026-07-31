@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,7)
+#define RACK_VERSION drain::Version<>(20,7,2,"beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -103,6 +103,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - SVG margin now plain (not linked) Variable
  *  Release 20.7.1
  *  - MouseXML: shared event handling
+ *  Release 20.7.2beta
+ *  - Interactive SVG: combined event initialisation and handling
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

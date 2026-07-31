@@ -168,10 +168,13 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Std init by ", __FUNCTION__, "*/");
-		scopeJS.addChild() = "const target = evt.target;";
-		scopeJS.addChild() = "const target_bbox = evt.target.getBoundingClientRect();";
-		scopeJS.addChild() = "const x = Math.floor(evt.clientX - target_bbox.left);";
-		scopeJS.addChild() = "const y = Math.floor(evt.clientY - target_bbox.top);";
+		scopeJS.addChild() = "const ctx = evt.target;";
+		scopeJS.addChild() = "const ctx_bbox = ctx.getBoundingClientRect();";
+		scopeJS.addChild() = "const x = Math.floor(evt.clientX - ctx_bbox.left);";
+		scopeJS.addChild() = "const y = Math.floor(evt.clientY - ctx_bbox.top);";
+		scopeJS.addChild() = "const rx = x / ctx_bbox.width;";
+		scopeJS.addChild() = "const ry = y / ctx_bbox.height;";
+		scopeJS.addChild() = "var elem;";
 		scopeJS.addChild() = "/* end init */" ;
 	}
 
@@ -192,6 +195,10 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, 
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
 	}
+
+	// Ensure init
+	DRAIN_XML_TREE(N) & onLoadScope = MouseXML::getOnLoadScript(root);
+	onLoadScope[handlerName]->setText(handlerName, "();");
 
 	return scopeJS;
 }

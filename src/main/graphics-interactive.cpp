@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Units.h>
 
 #include <drain/image/FilePng.h>
+#include <drain/image/ImageData.h>
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/GeoFrame.h>
 #include <drain/image/MouseXML.h>
@@ -47,12 +48,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-imagepanel.h"
 #include "graphics-interactive.h"
 
-namespace drain {
-
-
-// DRAIN_XML_NODE_SWAP(drain::image::TreeSVG);
-
-}
 
 namespace rack {
 
@@ -596,23 +591,53 @@ public:
 	}
 
 	inline
-	TreeSVG & getMouseListener(TreeSVG & elem){
+	TreeSVG & setListener(TreeSVG & elem) const {
 		return MouseXML::ensureMouseListener(root, elem, mouseEvent);
 	};
 
 	inline
-	TreeSVG & getMouseListenerInit(){
+	TreeSVG & setListenerInit() const {
 		return MouseXML::ensureMouseListenerInit(root, mouseEvent);
 	};
+
+	TreeSVG & getListenerInitScope();
+
 
 protected:
 
 	TreeSVG & root;
 
-	const std::string & mouseEvent;
+	const std::string mouseEvent;
 
 
 };
+
+
+TreeSVG & MouseSVG::getListenerInitScope(){
+
+	TreeSVG & mouseInit = setListenerInit();
+
+	TreeSVG & installer = mouseInit[mouseEvent+"INSTALLER"]; // (svg::JAVASCRIPT_SCOPE);
+	installer->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
+
+	TreeSVG & scope = installer[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	if (scope.empty()){
+		scope->setText("group =>");
+		scope.addChild()->setText("/* koe */");
+		// TreeSVG & forEach2b = scope.addChild()
+		scope.addChild()->setText("var ctx = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
+		scope.addChild() = "if (ctx)";
+		//scope.addChild(svg::JAVASCRIPT_SCOPE);
+		scope[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+		// forEach2.addChild()->setText("else { console.warn('could not find ", MouseXML::MOUSE_LISTENER, " elem under ", MouseXML::MOUSE, ")}");
+		// forEach2.addChild() = "});";
+		installer.addChild() = "";
+	}
+
+	installer["end-foreach"]->setText(")"); // end-foreach, indented
+
+	return scope[svg::JAVASCRIPT_SCOPE];
+}
 
 void CmdCoords::exec() const {
 
@@ -628,7 +653,7 @@ void CmdCoords::exec() const {
 	}
 
 	// Modify SVG header. Notice inverse order (for prepend() )
-	//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
+	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
 	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
 
 	// ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
@@ -641,148 +666,49 @@ void CmdCoords::exec() const {
 	ImagePanel superPanel(imagePanelGroup);
 
 	TreeSVG & mouseElem = superPanel.getMouseListenerFrame();
-	TreeSVG & fct = MouseXML::ensureMouseListener(ctx.getSVG(), mouseElem, "move");
 
-	TreeSVG & mouseInit = MouseXML::ensureMouseListenerInit(ctx.getSVG(), "move");
-	TreeSVG & forEach = mouseInit["foreach_MOUSE_LISTENER"]; // (svg::JAVASCRIPT_SCOPE);
-	forEach->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
+	MouseSVG mouseSVG(ctx.getSVG(), "move");
 
-	TreeSVG & forEach2 = forEach["scope"](svg::JAVASCRIPT_SCOPE);
-	if (forEach2.empty()){
-		forEach2->setText("group =>");
-		forEach2.addChild()->setText("/* koe */");
-		// TreeSVG & forEach2b = forEach2.addChild()
-		forEach2.addChild()->setText("var ctx = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
-		forEach2.addChild() = "if (ctx)";
-		forEach2.addChild(svg::JAVASCRIPT_SCOPE);
-		forEach2.addChild()->setText("else { console.warn('could not find ", MouseXML::MOUSE_LISTENER, " elem under ", MouseXML::MOUSE, ")}");
-		// forEach2.addChild() = "});";
-		forEach.addChild() = "";
-	}
-	forEach["end"]->setText(")"); // indented
 
-	//forEach.addChild()->addText();
-	// forEach.addChild()->addText("");
-
-	// fct.addChild() = "console.info(`${x},${y}`)";
-	// connect "elem.myElem69 = document.getElementById()"
-	//drain::Variable & inits = mouseElem->getAttribute("moveInits");
 
 	static
 	const std::string COORD_DISPLAY = "COORD_DISPLAY";
 
-	TextBox textBox(imagePanelGroup, "coord_display");
+	TextBox textBox(imagePanelGroup, COORD_DISPLAY); // "coord_display");
 
 	textBox.setLocation({100,100});
 	textBox.setLineHeight(15);
 	textBox.setFontSize(12);
 	TreeSVG & line = textBox.addLine();
-	// OLD
-	// line->setId("coord_display", NodeSVG::getNewIndex());
-	// NEW:
 	line->addClass(COORD_DISPLAY);
 	line->addClass(RackSVG::ElemClass::IMAGE_TITLE);
 	line->setText("*");
 
-	/// add comment scope added by...
-	fct["var elem"] = "var elem";
-
-	//fct.addChild()->setText("elem = target['", line->getId(), "']");
-	fct.addChild()->setText("/* Added by ", getName(), " */");
-	fct["coord_display1"]->setText("elem = target['", COORD_DISPLAY, "']");
-	//fct.addChild()->setText("elem = document.getElementById('", line->getId(), "')");
-	fct["coord_display2"] = "elem.textContent=`${x},${y}`;";
-	fct["coord_display3"]->setText("elem = target['", TextBox::TEXTBOX, "']");
-	fct["coord_display4"] = "elem.setAttribute('transform', `translate(${x},${y})`);";
-
-
-	TreeSVG & init = forEach2[svg::JAVASCRIPT_SCOPE];
-	// const std::string & id = line->getId();
-	//init[id]->setText("elem['", id, "'] = group.querySelector('#", id, "')");
-	// const std::string & id = line->getId();
-	init[COORD_DISPLAY+"_comment"] ->setText("/* Added by ", getName(), "*/");
-	init[COORD_DISPLAY]->setText("elem['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
-	// consider COORD_BOX
-	init[TextBox::TEXTBOX]->setText("elem['", TextBox::TEXTBOX, "'] = group.querySelector('.", TextBox::TEXTBOX, "')");
-
-	forEach["pause"]->setText("");
-
-	/*
-	std::set<std::string> inits;
-	imagePanelGroup->getUserAttribute("moveInits").toSequence(inits, ',');
-	inits.insert(line->getId());
-	imagePanelGroup->setUserAttribute("moveInits", drain::sprinter(inits,","));
-
-	mouseInit["initIds"]->setText("/ * var initIds = ", drain::sprinter(inits),  " * /");
-	*/
-
-	TreeSVG & onLoadScope = MouseXML::getOnLoadScript(ctx.getSVG());
-
-	onLoadScope[mouseInit->getId()+"_comment"] ->setText("/* Added by ", getName(), "*/");
-	onLoadScope[mouseInit->getId()] = mouseInit->getId()+"();";
-
-	// drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG);
-
-	/*
-	drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	overlayGroup->setId("over", overlayGroup->getId()); // visible
-	std::string bbox = overlayGroup->get("data-bbox","");
-	if (!bbox.empty()){
-		mout.special("Attaching coordinate monitor to overlaygroup #", overlayGroup->getId());
+	TreeSVG & fct = mouseSVG.setListener(mouseElem);
+	if (!fct.hasChild(getName())){
+		fct[getName()]->setText("/* Added by ", getName(), " */");
+		fct["coord_display1"]->setText("elem = ctx['", COORD_DISPLAY, "']");
+		fct["coord_display2"] = "elem.textContent=`${x},${y}`;";
+		fct["coord_display3"]->setText("elem = ctx['", TextBox::TEXTBOX, "']");
+		fct["coord_display4"] = "elem.setAttribute('transform', `translate(${x},${y})`);";
 	}
-	else {
-		mout.warn("Could not attach coordinate monitor - overlaygroup #", overlayGroup->getId(), "has no 'data-bbox' attribute ");
+
+	TreeSVG & init =  mouseSVG.getListenerInitScope();
+	if (!init.hasChild(getName())){
+		init[getName()] ->setText("/* Added by ", getName(), "*/");
+		init[COORD_DISPLAY]->setText("ctx['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
+		// consider COORD_BOX
+		init[TextBox::TEXTBOX]->setText("ctx['", TextBox::TEXTBOX, "'] = group.querySelector('.", TextBox::TEXTBOX, "')");
 	}
 
 
-	drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
-	imagePanelGroup->addClass(RackSVG::ElemClass::MOUSE); //  COORD_TRACKER
-	// imagePanelGroup->setAttribute("data-mouse-plane", overlayGroup->getId());
-	// -> track IMAGE_BORDER
-	// -> write to COORDS
-	// drain::image::TreeSVG & coordCatcher = imagePanelGroup[RackSVG::ElemClass::BACKGROUND_RECT](svg::RECT);
-	// coordCatcher->addClass(RackSVG::ElemClass::BACKGROUND_RECT);
-
-	drain::image::TreeSVG & coordDisplay = imagePanelGroup[MouseXML::ElemClass::MONITOR];
-	addCoordMonitor(coordDisplay, MouseXML::ElemClass::MONITOR_MOVE);
-	drain::ClassXML clsTest;
-	clsTest = "kks";
-	coordDisplay->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
-	coordDisplay->setAlign(AlignSVG::TOP);
-	// coordDisplay->setAlign(AlignSVG::RIGHT);
-	drain::image::TreeSVG & coordSpanDisplay = imagePanelGroup["MONITOR_RECT"];
-	coordSpanDisplay->setMyAlignAnchor<AlignBase::Axis::VERT>(drain::image::AnchorElem::PREVIOUS);
-	coordSpanDisplay->setAlign(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
-	addCoordMonitor(coordSpanDisplay, MouseXML::ElemClass::MONITOR_DOWN);
-	coordSpanDisplay.addChild("COMMA")(svg::TSPAN) = ",";
-	addCoordMonitor(coordSpanDisplay, MouseXML::ElemClass::MONITOR_UP);
-
-	drain::image::TreeSVG & selectRect = imagePanelGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
-	selectRect->addClass(RackSVG::ElemClass::SELECTOR, AlignSVG::FIXED);
-	selectRect->setLocation(200,100);
-	selectRect->setGeometry(400,200);
-
-	/// Create yet another plane (RECT) to receive mouse events
-	drain::image::TreeSVG & coordTracker = imagePanelGroup[MouseXML::ElemClass::MOUSE_TRACKER](svg::RECT);
-	coordTracker->setMyAlignAnchor(svg::IMAGE);
-	coordTracker->setAlign(AlignSVG::HORZ_FILL, AlignSVG::VERT_FILL);
-	/// Todo: move/share/generalize
-	coordTracker->set("data-bbox", bbox);
-	coordTracker->set("data-epsg", overlayGroup->get("data-epsg",""));
-	coordTracker->set("data-resolution", resolution.tuple());
-	coordTracker->addClass(MouseXML::ElemClass::MOUSE_TRACKER);
-
-	coordTracker->setStyle("fill", "white"); // TODO: transparent tracker
-	// coordTracker->setStyle("stroke", "green");
-	coordTracker->setStyle("opacity", 0.0001);
-
-	*/
 
 }
 
 
 #include "js/image_value_tracker.h"
 
+/*
 template <typename T>
 void encodeToRGBAimage(const Image & data, drain::image::ImageT<uint8_t> & dataImage){
 
@@ -821,6 +747,7 @@ void encodeToRGBAimage(const Image & data, drain::image::ImageT<uint8_t> & dataI
 	}
 
 }
+*/
 
 void CmdData::exec() const {
 
@@ -886,44 +813,8 @@ void CmdData::exec() const {
 	//dataImageElem->setUrl(filenameFinal);
 
 	// Construct actual data (RGB) and save it.
-	const std::type_info & type = data.getType();
-	const int bits = 8 * drain::Type::call<drain::sizeGetter>(type);
-	const int bias = drain::Type::call<drain::typeMin, int>(type);
-	mout.attention(DRAIN_LOG(bits), ' ', DRAIN_LOG(bias));
-
-	drain::image::ImageT<uint8_t> dataImage(data.getWidth(), data.getHeight(), 3);
-	drain::image::Channel & red   = dataImage.getChannel(0);
-	drain::image::Channel & green = dataImage.getChannel(1);
-	//drain::image::Channel & blue  = dataImage.getChannel(2);
-
-
-	int value;
-
-	drain::image::Channel::iterator rit = red.begin();   // More significant bits
-	drain::image::Channel::iterator git = green.begin(); // Less significant bits
-
-	if (bits == 8){
-		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-			value = static_cast<int>(*it) - bias;
-			*rit =  value     & 0xff;
-			*git =  0;
-			++rit;
-			++git;
-		}
-	}
-	else if (bits == 16){
-		for (drain::image::Image::const_iterator it=data.begin(); it!=data.end(); ++it){
-			value = static_cast<int>(*it) - bias;
-			*rit = (value>>8) & 0xff;
-			*git =  value     & 0xff;
-			++rit;
-			++git;
-		}
-	}
-	else {
-		mout.error(__LINE__, "unsupported bit depth:", bits);
-	}
-
+	drain::image::ImageData dataImage;
+	dataImage.createFrom(data);
 	drain::image::FilePng::write(dataImage, filenameFinal);
 
 	// drain::image::TreeSVG & mouseListenerElem =
