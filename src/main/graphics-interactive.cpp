@@ -541,26 +541,49 @@ void CmdCoords::exec() const {
 
 	//textBox.addLine(__FUNCTION__); // ->setText(__FUNCTION__); // debug
 	//textBox.addLine()->setText(__FUNCTION__); // debug
+	TreeSVG & listenerPlane = superPanel.getMouseListenerFrame();
 
-	TreeSVG & fct = mouseMoveSVG.setListener(superPanel.getMouseListenerFrame());
-	if (!fct.hasChild(getName())){
-		fct[getName()]->setText("/* Added by ", getName(), " */");
-		fct++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
-		fct++ = "elem.textContent=`${x},${y}`;";
-		fct++ ->setText("elem = ctx['", TextBox::TEXTBOX, "']");
-		fct++ = "elem.setAttribute('transform', `translate(${x},${y})`);";
-		fct++ ->setText("elem = ctx['ADAPTER']");
-		fct++ = "flipTextBoxWithThreshold(elem, rx, ry, 0.33);";
+	TreeSVG & moveRoutine = mouseMoveSVG.setListener(listenerPlane);
+	if (!moveRoutine.hasChild(getName())){
+		moveRoutine[getName()]->setText("/* Added by ", getName(), " */");
+		moveRoutine++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
+		moveRoutine++ = "elem.textContent=`${x},${y}`;";
+		moveRoutine++ ->setText("elem = ctx['", TextBox::TEXTBOX, "']");
+		moveRoutine++ = "elem.setAttribute('transform', `translate(${x},${y})`);";
+		moveRoutine++ ->setText("elem = ctx['ADAPTER']");
+		moveRoutine++ = "flipTextBoxWithThreshold(elem, rx, ry, 0.33);";
 	}
 
 	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "textbox_flipper") = textbox_flipper;
-	MouseXML::addVisibilitySwitch(line, superPanel.getMouseListenerFrame());
+	// MouseXML::addVisibilitySwitch(line, listenerPlane);
 
 	// Todo: visible Switch
 	MouseSVG mouseEnterSVG(ctx.getSVG(), "enter");
+	TreeSVG & enterRoutine = mouseEnterSVG.setListener(listenerPlane);
+	if (!enterRoutine.hasChild(getName())){
+		enterRoutine[getName()]->setText("/* Added by ", getName(), " */");
+		enterRoutine++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
+		enterRoutine++ = "elem.style.visibility='visible';";
+	}
 	MouseSVG mouseLeaveSVG(ctx.getSVG(), "leave");
-	mouseEnterSVG.getListenerInitScope();
-	mouseLeaveSVG.getListenerInitScope();
+	TreeSVG & leaveRoutine = mouseLeaveSVG.setListener(listenerPlane);
+	if (!leaveRoutine.hasChild(getName())){
+		leaveRoutine[getName()]->setText("/* Added by ", getName(), " */");
+		leaveRoutine++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
+		leaveRoutine++ = "elem.style.visibility='hidden';";
+	}
+
+	TreeSVG & enterInit = mouseEnterSVG.getListenerInitScope();
+	if (!enterInit.hasChild(getName())){
+		enterInit[getName()] ->setText("/* Added by ", getName(), "*/");
+		enterInit[COORD_DISPLAY]->setText("ctx['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
+	}
+
+	TreeSVG & leaveInit = mouseLeaveSVG.getListenerInitScope();
+	if (!leaveInit.hasChild(getName())){
+		leaveInit[getName()] ->setText("/* Added by ", getName(), "*/");
+		leaveInit[COORD_DISPLAY]->setText("ctx['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
+	}
 
 	TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
 	if (!initMoveScope.hasChild(getName())){
