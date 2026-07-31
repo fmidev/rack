@@ -326,7 +326,7 @@ public:
 
 	/// Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.
 	/**
-	 *   \param text - if given, replaces current CTEXT.
+	 *   \param text - replaces current CTEXT.
 	 *
 	 */
 	template <class ...T>
@@ -338,10 +338,10 @@ public:
 		setText(args...);
 	}
 
+	/// Sets XML style comment \c <--...--> of concatenated arguments.
 	template <class ...T>
 	inline
 	void setCommentSafe(const T & ...args) {
-
 		this->reset();
 		//this->clear(); // what if also uncommenting needed?
 		type = COMMENT;
@@ -362,6 +362,16 @@ public:
 		setText(StringBuilder<>(args...).str()); // str() to avoid infinite loop
 	}
 
+	/// Sets slightly converted text, ensuring some XML entities.
+	/**
+	 *  At least these characters become encoded:
+	 *
+	 *  - entity_t::LESS_THAN
+	 *  - entity_t::GREATER_THAN
+	 *  - entity_t::NONBREAKABLE_SPACE
+	 *
+	 *  Future implementation may add more.
+	 */
 	template <class ...T>
 	void setTextSafe(const T & ...args) {
 		std::string dst;
@@ -369,6 +379,25 @@ public:
 		setText(dst);
 		//setText(StringTools::replace(m, StringBuilder<>(args...).str(), ctext)); // str() to avoid infinite loop
 	}
+
+	/// Sets text surrounded by C language comment marks.
+	/**
+	 *   Does not change type of this node.
+	 *
+	 *   This comment style is applicable in
+	 *   - Cascaded Style Sheets (CSS)
+	 *   - C code
+	 *   - JavaScript code
+	 *
+	 *   \param text - replaces current CTEXT, sc
+	 *
+	 */
+	template <class ...T>
+	inline
+	void setProgramComment(const T & ...args) {
+		setText('/', '*', ' ', args..., ' ', '*', '/');
+	}
+
 
 	virtual inline
 	const std::string & getText() const {

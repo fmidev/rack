@@ -45,15 +45,14 @@ namespace image {
 
 const drain::ClassXML TextBox::TEXTBOX("TEXTBOX");
 
-const std::string TextBox::LINE_HEIGHT("data-line-height");
+const std::string TextBox::LINE_HEIGHT("line-height");
 
+/*  moved to js/textbox_flipper.js
 const std::string TextBox::FLIP_FUNCTION_JS =
 		"function flipTextBox(elem, horzFlip, vertFlip){\n"
-		"  const adapterGroups = elem.getElementsByClassName('ADAPTER');\n"
-//		"  const adapterGroups = elem.getElementsByTagName('g');\n"
-		"  if (adapterGroups.length == 0){ return }\n"
+		"  const adapterGroup = group.querySelector('ADAPTER');\n"
 		" \n"
-		"  const adapterGroup = adapterGroups[0];\n"
+		"  if (!adapterGroup){ return };\n"
 		" \n"
 		" var textAnchor = 'middle';\n"
 		"  if (horzFlip===null) horzFlip=0;\n"
@@ -75,24 +74,25 @@ const std::string TextBox::FLIP_FUNCTION_JS =
 		" \n"
 		"}\n"
 		;
+*/
 
 TextBox::TextBox(TreeSVG & group) :
-		textGroup(group.addChild(svg::GROUP)),
-		adapterGroup(textGroup.addChild(svg::GROUP)) {
+		topGroup(group.addChild(svg::GROUP)),
+		adapterGroup(topGroup.addChild(svg::GROUP)) {
 	init();
 }
 
 
 //TextBox::TextBox(ImagePanel &imagePanel, const drain::Frame2D<int> & geom) : imagePanel(imagePanel), textGroup(imagePanel.getOverlayGroup().addChild(svg::GROUP)) {
 TextBox::TextBox(TreeSVG & group, const TreeSVG::path_elem_t & identifier) :
-		textGroup(group[identifier](svg::GROUP)),
-		adapterGroup(textGroup.addChild(svg::GROUP)) {
+		topGroup(group[identifier](svg::GROUP)),
+		adapterGroup(topGroup.addChild(svg::GROUP)) {
 	init();
 }
 
 // imagePanel(textBox.imagePanel),
 // TODO: if still needed, fix class to contain host group
-TextBox::TextBox(TextBox &textBox) : textGroup(textBox.textGroup), adapterGroup(textBox.adapterGroup) {
+TextBox::TextBox(TextBox &textBox) : topGroup(textBox.topGroup), adapterGroup(textBox.adapterGroup) {
 	init();
 	drain::Logger(__FILE__, __FUNCTION__).suspicious<LOG_ERR>("");
 }
@@ -100,10 +100,12 @@ TextBox::TextBox(TextBox &textBox) : textGroup(textBox.textGroup), adapterGroup(
 
 void TextBox::init(){
 
-	textGroup->setId(TEXTBOX, NodeSVG::getNewIndex());
-	textGroup->addClass(TEXTBOX);
+	topGroup->setId(TEXTBOX, NodeSVG::getNewIndex());
+	topGroup->addClass(TEXTBOX);
 	adapterGroup->addClass(LayoutSVG::ADAPTER);
 	adapterGroup->setStyle(StyleXML::TEXT_ANCHOR, "middle");
+
+	setLocation({0,0});
 
 	// Background is the anchor and also the reference for
 	/*
@@ -112,72 +114,49 @@ void TextBox::init(){
 	backGround->setGeometry(10,20);
 	*/
 
-	// The first VERT anchor is effectively BACKGROUND rectangle (set explicitly by addLine), and after that, the previous TEXT line:
-	// Row by row:
-	// textGroup->setDefaultAlignAnchor<AlignBase::Axis::VERT>(AnchorElem::PREVIOUS);
-	// alignVert.set(AlignSVG::BOTTOM, MutualAlign::Topol::OUTSIDE);
-
-	// The HORZ anchor is always the (edge or the centre) of BACKGROUND rectangle.
-	//textGroup->setDefaultAlignAnchor<AlignBase::Axis::HORZ>(RackSVG::ElemClass::BACKGROUND);
-	// alignHorz.set(AlignSVG::LEFT, MutualAlign::Topol::INSIDE);
-	// textGroup->addClass(AlignSVG::NEUTRAL);     // compound bbox not affected (well... vertically it should?)
-	// textGroup->addClass(AlignSVG::INDEPENDENT); // no anchoring here please
-
 }
 
 void TextBox::setLineHeight(const svg::coord_t height){
-	textGroup->setAttribute(LINE_HEIGHT, height);
-	Variable & fontSize = textGroup->getStyle("font-size");
+
+	topGroup->setUserAttribute(LINE_HEIGHT, height);
+
+	Variable & fontSize = topGroup->getStyle("font-size");
+
 	if (fontSize.empty()){
 		fontSize = (3*height)/4;
-		textGroup->setStyle("font-size", fontSize, drain::Unit::PIXEL);
+		topGroup->setStyle("font-size", fontSize, drain::Unit::PIXEL);
 	}
+
 };
 
 void TextBox::setFontSize(const svg::coord_t size){
-	textGroup->setStyle("font-size", size, drain::Unit::PIXEL);
+	topGroup->setStyle("font-size", size, drain::Unit::PIXEL);
 	// svg::coord_t lineHeight = textGroup->get(LINE_HEIGHT);
-	FlexibleVariable & lineHeight = textGroup->getAttribute(LINE_HEIGHT);
+	FlexibleVariable & lineHeight = topGroup->getUserAttribute(LINE_HEIGHT);
 	if (lineHeight == 0){
 		lineHeight = 4*size/3;
-		textGroup->setAttribute(LINE_HEIGHT, lineHeight, drain::Unit::PIXEL);
+		topGroup->setUserAttribute(LINE_HEIGHT, lineHeight, drain::Unit::PIXEL);
 	}
 };
 
-/*
-void TextBox::setWidth(const svg::coord_t w){
-	getBackground()->setWidth(w);
+void TextBox::setLocation(const drain::Point2D<int> & point){
+	topGroup->setAlign(AlignSVG::FIXED);
+	topGroup->transform.translate.set(point);
 }
 
-void TextBox::setHeight(const svg::coord_t h){
-	getBackground()->setHeight(h);
-}
-
-void TextBox::setGeometry(const drain::Frame2D<int> & geom){
-	textGroup->setGeometry(geom);
-	//getBackground()->setGeometry(geom);
-}
-*/
 
 // Todo: "opposite": setAlign(T... )
-void TextBox::setLocation(const drain::Point2D<int> & point){
-	// textGroup->setLocation(point);        // Future design
-	// getBackground()->setLocation(point);  // Deprecating design
-	textGroup->setAlign(AlignSVG::FIXED);
-	textGroup->transform.translate.set(point);
-}
 
 TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-
-	float fontSize =  textGroup->getStyle("font-size", 0.0f);
+	float fontSize =  topGroup->getStyle("font-size", 0.0f);
 	if (fontSize == 0.0f){
-		fontSize = textGroup->getAttribute(LINE_HEIGHT, 20);
-		textGroup->setStyle("font-size", fontSize);
+		fontSize = topGroup->getUserAttribute(LINE_HEIGHT, 20);
+		topGroup->setStyle("font-size", fontSize);
 	}
-	const int lineHeight =  textGroup->getAttribute(LINE_HEIGHT, (4*fontSize)/3);
+	const int lineHeight =  topGroup->getUserAttribute(LINE_HEIGHT, (4*fontSize)/3);
 
 	TreeSVG & group = adapterGroup;
 
@@ -185,7 +164,14 @@ TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 	CompleteVertAlign alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
 
 	std::list<std::string> parts;
-	drain::StringTools::split(line, parts, '|');
+	if (edge){
+		// Check: needs no check?
+		drain::StringTools::split(line, parts, edge);
+	}
+	else {
+		parts.push_back(line);
+	}
+
 	switch (parts.size()) {
 	case 0:
 		mout.warn("String split failed for line=", line);
@@ -207,7 +193,7 @@ TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 
 	for (const std::string & part: parts){ // Maximally two.
 
-		if (!part.empty()){
+		if ((parts.size()==1) || !part.empty()){
 
 			TreeSVG & text = group.addChild()(svg::TEXT);
 			lastElem = &text;
@@ -273,6 +259,20 @@ TreeSVG & TextBox::getBackground() const {
 	// return textGroup[RackSVG::ElemClass::BACKGROUND](svg::RECT);
 }
 
+/*
+void TextBox::setWidth(const svg::coord_t w){
+	getBackground()->setWidth(w);
+}
+
+void TextBox::setHeight(const svg::coord_t h){
+	getBackground()->setHeight(h);
+}
+
+void TextBox::setGeometry(const drain::Frame2D<int> & geom){
+	textGroup->setGeometry(geom);
+	//getBackground()->setGeometry(geom);
+}
+*/
 
 }  // image::
 

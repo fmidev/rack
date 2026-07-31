@@ -104,7 +104,10 @@ public:
 
 	inline
 	drain::image::TreeSVG & getImageBorder() const {
-		return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::IMAGE_BORDER, svg::RECT);
+		drain::image::TreeSVG & imageBorder = getUniqueElem(imagePanelGroup, RackSVG::ElemClass::IMAGE_BORDER, svg::RECT);
+		imageBorder->addClass(FloaterSVG::FLOATING);
+		return imageBorder;
+		//return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::IMAGE_BORDER, svg::RECT);
 	};
 
 	// Not recommended (yet)

@@ -550,11 +550,13 @@ void CmdOutputFile::exec() const {
 
 
 		// mout.experimental("writing SVG file: ", path);
-		drain::image::OverlayMoverSVG overlayMover;
-		//drain::TreeUtils::traverse(overlayMover, ctx.getSVG());
+		// drain::image::OverlayMoverSVG overlayMover;
+		// drain::TreeUtils::traverse(overlayMover, ctx.getSVG());
 
+		/*
 		drain::image::FloaterSVG floater;
 		drain::TreeUtils::traverse(floater, ctx.getSVG());
+		*/
 
 		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
@@ -586,6 +588,11 @@ void CmdOutputFile::exec() const {
 
 		TitleCreatorSVG titleCreator(ctx.svgPanelConf);
 		drain::TreeUtils::traverse(titleCreator, ctx.getSVG()); // or mainTrack enough?
+
+		// NEW pos
+		drain::image::FloaterSVG floater;
+		drain::TreeUtils::traverse(floater, ctx.getSVG());
+
 
 		TreeLayoutSVG::addStackLayout(ctx.getSVG(), ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
 		TreeLayoutSVG::superAlign(ctx.getSVG());

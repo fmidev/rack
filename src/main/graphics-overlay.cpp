@@ -486,10 +486,6 @@ void CmdRadarDotTest::exec() const {
 
 
 
-
-
-
-
 void CmdRadarLabel::exec() const  {
 
 	using namespace drain::image;
@@ -557,57 +553,9 @@ void CmdRadarLabel::exec() const  {
 	radarSVG.convert(0.0, 0.0, imgPoint); // radar center (radius=0, azm=0)
 	// mout.attention(DRAIN_LOG(imgPoint));
 
-	/*
-	drain::image::TreeSVG & curve = vectorGroup[DOT](drain::image::svg::PATH);
-	curve->addClass(DOT);
-	{
-		// Private scope, to call bezierElem destructor.
-		drain::svgPATH bezierElem(curve);
-		radarSVG.drawCircle(bezierElem, {15000,55000});
-	}
-	*/
-
-	/*
-	drain::image::TreeSVG & test = vectorGroup[radarSVG.source + "TEST"](svg::TEXT);
-	test->addClass(AlignSVG::FIXED);
-	// drain::Point2D<int> imgPoint;
-	// radarSVG.convert(0.0, 0.0, imgPoint);
-	test->setLocation(imgPoint);
-	test->setTextSafe("TEST_", radarSVG.source);
-	//test->setStyle({"fill", "pink"});
-	test->setStyle({{"fill", "pink"}});
-	*/
-
-	// const std::string LABEL_ANCHOR = "labelAnchor";
-
-	// TreeSVG & labelAnchor = vectorGroup[LABEL_ANCHOR](svg::RECT);
-	// labelAnchor->addClass(LayoutSVG::GroupType::FIXED);
-	// labelAnchor->addClass(LayoutSVG::GroupType::NEUTRAL); // IMPORTANT! Else, other elems of the same group (like DOTS) become translated...
-	// labelAnchor->addClass("DEBUG");
-	// labelAnchor->setMyAlignAnchor("munDOT");
-	/*
-		drain::svgCIRCLE circle(labelAnchor);
-			circle.cx = imgPoint.x;
-			circle.cy = imgPoint.y;
-			circle.r = 10.0;
-			// svgPATH has no "natural" origin...
-			// drain::svgPATH bezierElem(labelAnchor);
-			// radarSVG.drawCircle(bezierElem, {0.0,15000.0});
-	 */
-	/*
-	{
-		drain::svgRECT rect(labelAnchor);
-		rect.width  = 5.0;
-		rect.height = 10.0;
-		rect.x = imgPoint.x - 10.0;
-		rect.y = imgPoint.y -  5.0;
-	}
-	*/
 
 	const std::string formattedLabel = ctx.getFormattedStatus(label);
 	// mout.special(DRAIN_LOG(formattedLabel));
-
-
 
 	drain::UtilsXML::ensureStyle(ctx.getSVG(), TextBox::TEXTBOX, {
 			//{"font-size", "12"},
@@ -640,7 +588,7 @@ void CmdRadarLabel::exec() const  {
 	// textBox.setFontSize(style->get("font-size", 15));
 	textBox.setFontSize(ctx.svgPanelConf.fontSizes[1]);
 	textBox.setLineHeight(ctx.svgPanelConf.boxHeights[1]);
-	textBox.textGroup->addClass(cls);
+	textBox.topGroup->addClass(cls);
 	// textBox.textGroup->setAlign(AlignSVG::FIXED);
 	textBox.setLocation(imgPoint);
 	// textBox.textGroup->transform.translate.set(imgPoint);
@@ -656,13 +604,6 @@ void CmdRadarLabel::exec() const  {
 	bg->setStyle("fill", "cyan");
 	bg->setStyle("fill-opacity", 0.5);
 	*/
-
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "flipTextBox") = drain::image::TextBox::FLIP_FUNCTION_JS;
-
-	TreeSVG & hieno = drain::UtilsXML::ensureJavaScriptFunction(ctx.getSVG(), "onMouseHieno", "ev", "elem");
-	hieno["eka"]    = "window.mika = ev; // EKA";
-	hieno["toka"]   = "console.info(ev);\n";
-	hieno["kolkka"] = "console.info('mika');\n";
 
 
 };

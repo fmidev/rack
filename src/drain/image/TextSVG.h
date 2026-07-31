@@ -108,7 +108,7 @@ public:
 	*/
 
 	// Top-level element.
-	TreeSVG & textGroup;
+	TreeSVG & topGroup;
 
 	// Main group, immediately under textGroup.
 	TreeSVG & adapterGroup;
@@ -118,8 +118,8 @@ public:
 	// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::HORZ> alignHorz; // (AlignSVG::CENTER, MutualAlign::OUTSIDE)
 	// CompleteAlignment<const AlignBase::Axis, AlignBase::Axis::VERT> alignVert;
 
-	static
-	const std::string FLIP_FUNCTION_JS;
+	// static
+	// const std::string FLIP_FUNCTION_JS;
 
 
 protected:

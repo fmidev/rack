@@ -856,8 +856,17 @@ public:
 
 	};
 
+	/// Shorthand for prependChild().
+	inline
+	tree_t & operator++(){
+		return prependChild();
+	}
 
-
+	/// Shorthand for appendChild().
+	inline
+	tree_t & operator++(int){ // int: dummy arg
+		return addChild();
+	}
 
 
 	// Functions perhaps less relevant ....................................

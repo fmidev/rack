@@ -73,7 +73,7 @@ void MouseXML::getEventFunctionName(std::string & eventName, const std::string p
 }
 
 void MouseXML::addVisibilitySwitch(XML &dstElem,
-		XML &controlElem, const std::string &scope,
+		XML & listenerElem, const std::string &scope,
 		const std::string &mouseEventOn, const std::string &mouseEventOff) {
 
 	if (dstElem.getId().empty()){
@@ -86,9 +86,9 @@ void MouseXML::addVisibilitySwitch(XML &dstElem,
 
 	// controlElem.setAttribute(mouseEventOn, drain::StringBuilder<>("setVisibile(", ,",true)"));
 	// Consider setVisibility(value=[true|false], elemId, scope=null)
-	controlElem.setAttribute(mouseEventOn,
+	listenerElem.setAttribute(mouseEventOn,
 			drain::StringBuilder<>(fct, "('", id, "').style.visibility='visible'"));
-	controlElem.setAttribute(mouseEventOff,
+	listenerElem.setAttribute(mouseEventOff,
 			drain::StringBuilder<>(fct, "('", id, "').style.visibility='hidden'"));
 
 }

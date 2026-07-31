@@ -77,9 +77,9 @@ public:
 			const std::string &mouseEventOff = "onmouseleave");
 	 */
 	static
-	void addVisibilitySwitch(XML &dstElem, XML &controlElem, const std::string &scope = "document",
-			const std::string &mouseEventOn  = "onmouseenter",
-			const std::string &mouseEventOff = "onmouseleave");
+	void addVisibilitySwitch(XML &dstElem, XML &listenerElem, const std::string & scope = "document",
+			const std::string & mouseEventOn  = "onmouseenter",
+			const std::string & mouseEventOff = "onmouseleave");
 
 
 	/// Modifies short mouse event name like "click" to "onmouseclick", or prefixed form "handleClick".
