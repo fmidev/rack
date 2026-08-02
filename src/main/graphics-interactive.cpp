@@ -41,6 +41,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/GeoFrame.h>
 #include <drain/image/MouseXML.h>
+#include <drain/image/MouseSVG.h>
 #include <drain/image/TextSVG.h>
 
 #include "graphics-base.h"
@@ -440,61 +441,7 @@ void CmdRect::exec() const {
 
 }
 
-class MouseSVG {
 
-public:
-
-	MouseSVG(TreeSVG & root, const std::string & mouseEvent) : root(root), mouseEvent(mouseEvent) {
-	}
-
-	inline
-	TreeSVG & setListener(TreeSVG & elem) const {
-		return MouseXML::ensureMouseListener(root, elem, mouseEvent);
-	};
-
-	inline
-	TreeSVG & setListenerInit() const {
-		return MouseXML::ensureMouseListenerInit(root, mouseEvent);
-	};
-
-	TreeSVG & getListenerInitScope();
-
-
-protected:
-
-	TreeSVG & root;
-
-	const std::string mouseEvent;
-
-
-};
-
-
-TreeSVG & MouseSVG::getListenerInitScope(){
-
-	TreeSVG & mouseInit = setListenerInit();
-
-	TreeSVG & installer = mouseInit[mouseEvent+"INSTALLER"]; // (svg::JAVASCRIPT_SCOPE);
-	installer->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
-
-	TreeSVG & scope = installer[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-	if (scope.empty()){
-		scope->setText("group =>");
-		scope.addChild()->setText("/* koe */");
-		// TreeSVG & forEach2b = scope.addChild()
-		scope.addChild()->setText("var ctx = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
-		scope.addChild() = "if (ctx)";
-		//scope.addChild(svg::JAVASCRIPT_SCOPE);
-		scope[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-		// forEach2.addChild()->setText("else { console.warn('could not find ", MouseXML::MOUSE_LISTENER, " elem under ", MouseXML::MOUSE, ")}");
-		// forEach2.addChild() = "});";
-		installer.addChild() = "";
-	}
-
-	installer["end-foreach"]->setText(")"); // end-foreach, indented
-
-	return scope[svg::JAVASCRIPT_SCOPE];
-}
 
 //#include "js/textbox_flipper.h"
 
@@ -523,83 +470,52 @@ void CmdCoords::exec() const {
 
 	// TreeSVG & mouseElem = superPanel.getMouseListenerFrame();
 
-	MouseSVG mouseMoveSVG(ctx.getSVG(), "move");
+	drain::image::MouseXML::getOnLoadScript(ctx.getSVG());
 
+	/// Define directly as a CSS class, to support prefix ('.')
 	static
-	const std::string COORD_DISPLAY = "COORD_DISPLAY";
+	const drain::ClassXML COORD_DISPLAY = "COORD_DISPLAY";
 
-	//TextBox textBox(imagePanelGroup, COORD_DISPLAY);
 	TextBox textBox(superPanel.getOverlayGroup(), COORD_DISPLAY);
 	// textBox.setLocation({100,100});
 	textBox.setLineHeight(15);
 	textBox.setFontSize(12);
-	//TreeSVG & line = textBox.addLine("(x,y)");
-	TreeSVG & line = textBox.addLine();
+	TreeSVG & line = textBox.addLine("(x,y)");
 	line->addClass(COORD_DISPLAY);
 	line->addClass(RackSVG::ElemClass::IMAGE_TITLE);
-	line->setText("(x,y)");
-
-	//textBox.addLine(__FUNCTION__); // ->setText(__FUNCTION__); // debug
-	//textBox.addLine()->setText(__FUNCTION__); // debug
+	// textBox.addLine()->setText(__FUNCTION__); // debug
 	TreeSVG & listenerPlane = superPanel.getMouseListenerFrame();
 
-	TreeSVG & moveRoutine = mouseMoveSVG.setListener(listenerPlane);
-	if (!moveRoutine.hasChild(getName())){
-		moveRoutine[getName()]->setText("/* Added by ", getName(), " */");
-		moveRoutine++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
-		moveRoutine++ = "elem.textContent=`${x},${y}`;";
-		moveRoutine++ ->setText("elem = ctx['", TextBox::TEXTBOX, "']");
-		moveRoutine++ = "elem.setAttribute('transform', `translate(${x},${y})`);";
-		moveRoutine++ ->setText("elem = ctx['ADAPTER']");
-		moveRoutine++ = "flipTextBoxWithThreshold(elem, rx, ry, 0.33);";
-	}
-
 	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "textbox_flipper") = textbox_flipper;
-	// MouseXML::addVisibilitySwitch(line, listenerPlane);
 
-	// Todo: visible Switch
-	MouseSVG mouseEnterSVG(ctx.getSVG(), "enter");
-	TreeSVG & enterRoutine = mouseEnterSVG.setListener(listenerPlane);
-	if (!enterRoutine.hasChild(getName())){
-		enterRoutine[getName()]->setText("/* Added by ", getName(), " */");
-		enterRoutine++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
-		enterRoutine++ = "elem.style.visibility='visible';";
+	MouseSVG mouseMoveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName());
+	if (!mouseMoveSVG.listenerIsSet(listenerPlane)){
+		TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane, COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
+		routine++ ->setText(COORD_DISPLAY, ".textContent=`${x},${y}`;");
+		// conditional MOVE, like conditional MASK?:
+		if (true){
+			routine++ ->setText(TextBox::TEXTBOX, ".setAttribute('transform', `translate(${x},${y})`);");
+			routine++ ->setText("flipTextBoxWithThreshold(", LayoutSVG::ADAPTER, ", rx, ry, 0.33);");
+		}
+		// routine++ ->setProgramComment("Modified by ", getName());
 	}
-	MouseSVG mouseLeaveSVG(ctx.getSVG(), "leave");
-	TreeSVG & leaveRoutine = mouseLeaveSVG.setListener(listenerPlane);
-	if (!leaveRoutine.hasChild(getName())){
-		leaveRoutine[getName()]->setText("/* Added by ", getName(), " */");
-		leaveRoutine++ ->setText("elem = ctx['", COORD_DISPLAY, "']");
-		leaveRoutine++ = "elem.style.visibility='hidden';";
-	}
+	// Optional extra modifications with:
+	// TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
 
-	TreeSVG & enterInit = mouseEnterSVG.getListenerInitScope();
-	if (!enterInit.hasChild(getName())){
-		enterInit[getName()] ->setText("/* Added by ", getName(), "*/");
-		enterInit[COORD_DISPLAY]->setText("ctx['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
+	MouseSVG mouseEnterSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::ENTER, getName());
+	if (!mouseEnterSVG.listenerIsSet(listenerPlane)){
+		TreeSVG & routine = mouseEnterSVG.setListener(listenerPlane, COORD_DISPLAY);
+		routine++ ->setText(COORD_DISPLAY, ".style.visibility='visible';");
 	}
 
-	TreeSVG & leaveInit = mouseLeaveSVG.getListenerInitScope();
-	if (!leaveInit.hasChild(getName())){
-		leaveInit[getName()] ->setText("/* Added by ", getName(), "*/");
-		leaveInit[COORD_DISPLAY]->setText("ctx['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
+	MouseSVG mouseLeaveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::LEAVE, getName());
+	if (!mouseLeaveSVG.listenerIsSet(listenerPlane)){
+		TreeSVG & routine = mouseLeaveSVG.setListener(listenerPlane, COORD_DISPLAY);
+		routine++ ->setText(COORD_DISPLAY, ".style.visibility='hidden';");
 	}
-
-	TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
-	if (!initMoveScope.hasChild(getName())){
-		initMoveScope[getName()] ->setText("/* Added by ", getName(), "*/");
-		initMoveScope[COORD_DISPLAY]->setText("ctx['", COORD_DISPLAY, "'] = group.querySelector('.", COORD_DISPLAY, "')");
-		// consider COORD_BOX
-		initMoveScope[TextBox::TEXTBOX]->setText("ctx['", TextBox::TEXTBOX, "'] = group.querySelector('.", TextBox::TEXTBOX, "')");
-		initMoveScope["ADAPTER"] ->setText("ctx['", "ADAPTER", "'] = group.querySelector('.ADAPTER')");
-		//flipTextBoxByThreshold
-	}
+	// OLD: MouseXML::addVisibilitySwitch(line, listenerPlane);
 
 
-
-
-	//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "flipTextBox") = drain::image::TextBox::FLIP_FUNCTION_JS;
-	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT)["flipTextBox"] = drain::image::TextBox::FLIP_FUNCTION_JS;
 }
 
 

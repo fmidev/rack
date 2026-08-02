@@ -46,6 +46,12 @@ DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DRAG),
 };
 
+DRAIN_ENUM_DICT(image::MouseXML::EventClass) = {
+		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, ENTER),
+		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, LEAVE),
+		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, MOVE),
+};
+
 namespace image {
 
 void MouseXML::getEventFunctionName(std::string & eventName, const std::string prefix){

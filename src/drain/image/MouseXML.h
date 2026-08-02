@@ -48,6 +48,8 @@ public:
 
 	/**
 	 *  \see rack::RackSVG::ElemClass
+	 *
+	 *  Note: Event based entries will be deprecated as they are listed by EventClass
 	 */
 	enum ElemClass {
 		MOUSE,	     // A group marked for interaction (mouse event listeners)
@@ -57,6 +59,16 @@ public:
 		MONITOR_DOWN,    // Display something when mouse is pressed
 		MONITOR_UP,      // Display something when mouse is released
 		MONITOR_DRAG,    // Display something when mouse is dragged
+	};
+
+	// NEW
+	enum EventClass {
+		ENTER,
+		LEAVE,
+		MOVE,
+		DOWN,
+		UP,
+		CLICK,
 	};
 
 
@@ -92,17 +104,43 @@ public:
 	static
 	void getEventFunctionName(std::string & eventName, const std::string prefix="");
 
+	enum Processing {
+		UNDEFINED = 0,
+		BASIC = 1,
+		COORDS = 2,
+		RELATIVE_COORDS = 3,
+		GEOGRAPHIC_COORDS = 4,
+	};
+
 
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventName); // , const std::string & handlerName = "");
+	DRAIN_XML_TREE(N) & ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName, Processing proc = UNDEFINED);
 
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const std::string & eventName); // , const std::string & handlerName = "");
+	DRAIN_XML_TREE(N) & getMouseListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName, Processing proc = UNDEFINED);
+
+	template <class N>
+	static
+	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventName); //const std::string & eventName);
 
 
 };
+
+
+}
+
+DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
+DRAIN_ENUM_DICT(image::MouseXML::EventClass);
+
+
+
+namespace image {
+
+DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass);
+DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
+
 
 template <class N>
 DRAIN_XML_TREE(N) & MouseXML::getOnLoadScript(DRAIN_XML_TREE(N) & root){
@@ -118,6 +156,113 @@ DRAIN_XML_TREE(N) & MouseXML::getOnLoadScript(DRAIN_XML_TREE(N) & root){
 	return drain::UtilsXML::ensureJavaScriptFunction(root, onload_fnc_name); // [svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
 	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
 
+
+}
+
+template <class N>
+//DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey, Processing proc){ // , const std::string & handlerName){
+DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, Processing proc){
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::string eventName = drain::Enum<EventClass>::getKey(eventKey); //StringBuilder<>("onmouse", eventName);
+	getEventFunctionName(eventName); // MOVE =: "onmouse + move"
+
+	std::string handlerName = drain::Enum<EventClass>::getKey(eventKey); //eventKey;
+	getEventFunctionName(handlerName, "handleMouse");
+
+	elem.setAttribute(eventName, handlerName, "(evt)");
+
+	// mout.attention("ensure ",eventName, '/',handlerName);
+
+	// evt is a standard name?
+	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName, "evt");
+
+	if (proc == UNDEFINED){
+		if (eventKey == EventClass::MOVE){ // "move"){
+			proc = GEOGRAPHIC_COORDS;
+		}
+		else { // if ( eventKey == "move")
+			proc = BASIC;
+		}
+	}
+
+	if (!scopeJS.hasChild(__FUNCTION__)){
+		scopeJS.addChild(__FUNCTION__)->setProgramComment("Std init by ", __FUNCTION__);
+		scopeJS++ = "const ctx = evt.target.ctx;";
+		// scopeJS++ = "ctx.listerer = evt.target;";
+		int level = static_cast<int>(proc);
+		if (level >= COORDS){
+			// TODO: detect if MOVE has already been defined, and drop (duplicated) coordinate processing from here.
+			scopeJS++ = "ctx.bbox = evt.target.getBoundingClientRect();";
+			scopeJS++ = "ctx.x = Math.floor(evt.clientX - ctx.bbox.left);";
+			scopeJS++ = "ctx.y = Math.floor(evt.clientY - ctx.bbox.top);";
+			if (level >= RELATIVE_COORDS){
+				scopeJS++ = "ctx.rx = ctx.x / ctx.bbox.width;";
+				scopeJS++ = "ctx.ry = ctx.y / ctx.bbox.height;";
+			}
+		}
+		// scopeJS++ = "ctx.elem = null;";
+		// scopeJS++ = "ctx.ctx = evt.target.ctx;"; // remove
+		// scopeJS++ = "/* end init */" ;
+	}
+
+	return scopeJS;
+}
+
+template <class N>
+//DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey, Processing proc){ // , const std::string & handlerName){
+DRAIN_XML_TREE(N) & MouseXML::getMouseListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, Processing proc){ // , const std::string & handlerName){
+
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	DRAIN_XML_TREE(N) & scopeJS = ensureMouseListener(root, elem, eventKey, proc);
+
+	DRAIN_XML_TREE(N) & subScopeJS =  scopeJS["SUBSCOPE"];
+	subScopeJS->setType(XML::JAVASCRIPT_SCOPE);
+	// subScopeJS->setId();
+	subScopeJS->setText("with(ctx)");
+	// subScopeJS["COMMENT"]->setProgramComment(" local scope ");
+
+	// TODO: support direct scope?
+
+	return subScopeJS;
+	// return scopeJS;
+}
+
+template <class N>
+DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventKey){ // , const std::string & eventKey){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	std::string eventName = drain::Enum<EventClass>::getKey(eventKey); //eventKey; //StringBuilder<>("onmouse", eventName);
+	getEventFunctionName(eventName); // "onmouse + move"
+
+	std::string handlerName = drain::Enum<EventClass>::getKey(eventKey); //eventKey;
+	getEventFunctionName(handlerName, "initMouse");
+
+	// mout.attention("init ", eventName, '/', handlerName);
+
+	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName);
+	scopeJS->setId(handlerName);
+	if (!scopeJS.hasChildren()){
+		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
+	}
+
+	// Ensure init
+	DRAIN_XML_TREE(N) & onLoadScope = MouseXML::getOnLoadScript(root);
+	onLoadScope[handlerName]->setText(handlerName, "();");
+
+	return scopeJS;
+}
+
+
+
+}
+
+
+// DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
+// DRAIN_ENUM_DICT(image::MouseXML::EventClass);
 
 }
 // Display something when mouse is dragged
@@ -151,65 +296,6 @@ inline void MouseXML::addVisibilitySwitch(NodeXML<T> &dstElem,
 	}
 }
 */
-
-template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey){ // , const std::string & handlerName){
-
-	std::string eventName = eventKey; //StringBuilder<>("onmouse", eventName);
-	getEventFunctionName(eventName); // "onmouse + move"
-
-	std::string handlerName = eventKey;
-	getEventFunctionName(handlerName, "handle");
-
-	elem.setAttribute(eventName, handlerName, "(evt)");
-
-	// evt is a standard name?
-	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName, "evt");
-
-	if (!scopeJS.hasChildren()){
-		scopeJS.addChild()->setText("/* Std init by ", __FUNCTION__, "*/");
-		scopeJS.addChild() = "const ctx = evt.target;";
-		scopeJS.addChild() = "const ctx_bbox = ctx.getBoundingClientRect();";
-		scopeJS.addChild() = "const x = Math.floor(evt.clientX - ctx_bbox.left);";
-		scopeJS.addChild() = "const y = Math.floor(evt.clientY - ctx_bbox.top);";
-		scopeJS.addChild() = "const rx = x / ctx_bbox.width;";
-		scopeJS.addChild() = "const ry = y / ctx_bbox.height;";
-		scopeJS.addChild() = "var elem;";
-		scopeJS.addChild() = "/* end init */" ;
-	}
-
-	return scopeJS;
-}
-
-template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const std::string & eventKey){
-
-	std::string eventName = eventKey; //StringBuilder<>("onmouse", eventName);
-	getEventFunctionName(eventName); // "onmouse + move"
-
-	std::string handlerName = eventKey;
-	getEventFunctionName(handlerName, "initMouse");
-
-	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName);
-	scopeJS->setId(handlerName);
-	if (!scopeJS.hasChildren()){
-		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
-	}
-
-	// Ensure init
-	DRAIN_XML_TREE(N) & onLoadScope = MouseXML::getOnLoadScript(root);
-	onLoadScope[handlerName]->setText(handlerName, "();");
-
-	return scopeJS;
-}
-
-
-
-}
-
-DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
-
-}
 
  // 
 
