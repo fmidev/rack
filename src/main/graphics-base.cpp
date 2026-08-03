@@ -50,19 +50,21 @@ DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, LOCATION),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, TIME),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, GENERAL),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_PANEL),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_BORDER),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BACKGROUND),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BORDER),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
 		// ---
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, DATA_ARRAY),
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),
+		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, DATA_ARRAY),
 		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SHARED_METADATA),
+		/*
+		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_PANEL),
+		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_BORDER),
+		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BACKGROUND),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, OVERLAY),
+		*/
 };
 
 namespace rack {
@@ -100,7 +102,7 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 			{"stroke", "none"},
 	});
 
-	UtilsXML::ensureStyle(style, ClassXML(RackSVG::BACKGROUND), {
+	UtilsXML::ensureStyle(style, drain::image::ImagePanel::BACKGROUND, {
 			{"stroke", "none"},
 			{"fill", "none"},
 	});
@@ -167,7 +169,7 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 	});
 
 	// Option: set stroke to make borders appear. Future option: borders OUTSIDE the image.
-	UtilsXML::ensureStyle(style, ClassXML(RackSVG::IMAGE_BORDER), {
+	UtilsXML::ensureStyle(style, drain::image::ImagePanel::IMAGE_BORDER, {
 			{"fill", "none"},
 			{"stroke", "none"},
 			// {"stroke-opacity", 0.0},
@@ -184,18 +186,18 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 	});
 
 	// User selection
-	UtilsXML::ensureStyle(style, ClassXML(RackSVG::SELECTOR), {
+	UtilsXML::ensureStyle(style, ClassXML(MouseXML::SELECTOR), {
 			{"fill", "none"},
 			{"stroke", "white"},
 			// {"stroke-width", 1.0},
 	});
 
-	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, RackSVG::SELECTOR), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, MouseXML::SELECTOR), {
 				// {"stroke", "white"},
 				{"stroke-width", "2px"},
 	});
 
-	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, RackSVG::SELECTOR), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, MouseXML::SELECTOR), {
 			{"font-size", "large"},
 			//{"stroke", "none"},
 			{"stroke", "black"},
@@ -236,6 +238,64 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 	//    style[ClassXML(RackSVG::IMAGE_TITLE)]->get("font-size", 10);
 
 	// return style;
+
+
+}
+
+void RackSVG::addMetaData(const drain::image::Image & src, drain::image::ImagePanel & imagePanel){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	//drain::image::TreeSVG & mouseGroup = getMouseListenerFrame(); // MOUSE properties really needed?
+	drain::image::TreeSVG & geoElem = imagePanel.getImageBorder();
+
+	// practical...
+	if (src.properties.hasKey("where:EPSG")){
+		geoElem->addClass("GEOREF");
+		geoElem->set("data-epsg", src.properties["where:EPSG"]);
+	}
+
+	if (src.properties.hasKey("where:BBOX_native")){
+		geoElem->addClass("GEOREF");
+		geoElem->set("data-bbox", src.properties["where:BBOX_native"]);
+	}
+
+	// Metadata:
+	TreeSVG & metadata = imagePanel.getMetadata(); // imagePanelGroup[svg::METADATA](svg::METADATA);
+
+	// Note assign: char * -> string  , "where:lat", "where:lon"
+	if (src.properties.hasKey("what:source")){
+		SourceODIM odimSrc(src.properties.get("what:source",""));
+		metadata->set("NOD", odimSrc.NOD);
+		metadata->set("PLC", odimSrc.PLC);
+		mout.debug(DRAIN_LOG(odimSrc));
+	}
+
+	// TODO: 1) time formatting 2) priority (startdate, starttime)
+	for (const std::string key: {
+		"what:date", "what:time", "what:product", "what:prodpar", "what:quantity",
+		"where:elangle", "where:lon", "where:lat", "where:EPSG", // "where:projdef",
+		"how:camethod",
+		"prevCmdKey"}){ // consider other than prevCmd (product or so)
+
+		if (src.properties.hasKey(key)){
+			size_t i = key.find(':');
+			if (i == std::string::npos){
+				metadata->set(key, src.properties[key]);
+			}
+			else {
+				metadata->set(key.substr(i+1), src.properties[key]);
+			}
+		}
+
+	}
+
+
+	TreeSVG & description = imagePanel.getDescription(); // [svg::DESC](svg::DESC);
+	// mout.attention(drain::sprinter(metadata->getAttributes()));
+	description->set(metadata->getAttributes());
+	//mout.attention(drain::sprinter(description->getAttributes()));
+	//description->set("MIKA", "MÄKI");
 
 }
 

@@ -366,7 +366,7 @@ public:
 		}
 
 
-		drain::image::TreeSVG & rect = group[RackSVG::BACKGROUND](svg::RECT); // +EXT!
+		drain::image::TreeSVG & rect = group[ImagePanel::BACKGROUND](svg::RECT); // +EXT!
 		rect->addClass(RackSVG::ElemClass::SIDE_PANEL);
 		// rect->setWidth(frame.width);
 		// rect->setHeight(frame.height);
@@ -389,7 +389,7 @@ public:
 
 				drain::image::TreeSVG & tkey = group[key](svg::TEXT);
 				tkey->setId(key);
-				tkey->setMyAlignAnchor<AlignBase::HORZ>(RackSVG::BACKGROUND);
+				tkey->setMyAlignAnchor<AlignBase::HORZ>(ImagePanel::BACKGROUND);
 				tkey->setMyAlignAnchor<AlignBase::VERT>(anchorVert);
 				anchorVert.clear();
 				// tkey->setAlign(AlignSVG::LEFT, AlignSVG::INSIDE);

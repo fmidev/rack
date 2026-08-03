@@ -38,6 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/image/FilePng.h>
 #include <drain/image/ImageData.h>
+#include <drain/image/ImageSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/GeoFrame.h>
 #include <drain/image/MouseXML.h>
@@ -89,7 +90,7 @@ void CmdDot::exec() const  {
 
 	drain::image::TreeSVG & overlayGroup = ctx.getImagePanelGroup();
 
-	ImagePanel superPanel(overlayGroup);
+	drain::image::ImagePanel superPanel(overlayGroup);
 	drain::image::TreeSVG & overlay = superPanel.getOverlayGroup();
 
 	//overlay.addChild()(svg::COMMENT)->setText(getName(), ' ', getParameters(), " imageCoords=", imageCoords);
@@ -255,7 +256,7 @@ drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, Mous
 
 	textObject->setType(svg::TEXT); // ensure
 	textObject->setFontSize(15,18);
-	textObject->addClass(RackSVG::ElemClass::SELECTOR);
+	textObject->addClass(MouseXML::ElemClass::SELECTOR);
 	textObject->setAlign(AlignSVG::NEUTRAL);
 	// textObject->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 	// textObject->setAlign(AlignSVG::RIGHT);
@@ -340,7 +341,7 @@ void CmdRect::exec() const {
 	visualGroup.addChild()->setComment("Visualisation of the selection");
 
 	// Reserve slot
-	drain::image::TreeSVG & selectRect = visualGroup[RackSVG::ElemClass::SELECTOR](svg::RECT);
+	drain::image::TreeSVG & selectRect = visualGroup[MouseXML::ElemClass::SELECTOR](svg::RECT);
 	// selectRect->addClass(AlignSVG::FIXED, AlignSVG::NEUTRAL); // check
 	selectRect->setAlign(AlignSVG::FIXED); // check
 	selectRect->setAlign(AlignSVG::NEUTRAL); // check
@@ -348,7 +349,7 @@ void CmdRect::exec() const {
 	selectRect->setGeometry(30,40);
 
 	TreeSVG & coordMoveText = visualGroup[MouseXML::ElemClass::MONITOR](svg::TEXT);
-	coordMoveText->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND);
+	coordMoveText->setMyAlignAnchor(ImagePanel::BACKGROUND);
 	coordMoveText->setAlign(AlignSVG::BOTTOM, AlignSVG::RIGHT);
 	if (cursorCoord){
 		coordMoveText->addClass("CURSOR");
@@ -399,12 +400,12 @@ void CmdRect::exec() const {
 	mout.attention(DRAIN_LOG(bboxImg));
 
 
-	selectRect->addClass(RackSVG::ElemClass::SELECTOR);
+	selectRect->addClass(MouseXML::ElemClass::SELECTOR);
 	selectRect->setLocation(std::min(bboxImg.lowerLeft.x, bboxImg.upperRight.x), std::min(bboxImg.lowerLeft.y, bboxImg.upperRight.y));
 	selectRect->setGeometry(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
 
 	TreeSVG & coordSpanDisplay = visualGroup[MouseXML::ElemClass::MONITOR_DRAG];
-	coordSpanDisplay->addClass(RackSVG::ElemClass::SELECTOR);
+	coordSpanDisplay->addClass(MouseXML::ElemClass::SELECTOR);
 	coordSpanDisplay->addClass(MouseXML::ElemClass::MONITOR_DRAG); // From JS
 	coordSpanDisplay->setAlign(AlignSVG::NEUTRAL); // ?
 
@@ -417,7 +418,7 @@ void CmdRect::exec() const {
 	monitorUp->setText(bboxImg.upperRight, " px");
 
 	coordSpanDisplay->resetAlign();
-	coordSpanDisplay->setMyAlignAnchor(RackSVG::ElemClass::SELECTOR);
+	coordSpanDisplay->setMyAlignAnchor(MouseXML::ElemClass::SELECTOR);
 	coordSpanDisplay->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 
 	// RackSVG::consumeAlignRequest(ctx, coordSpanDisplay); // TODO return bool, if applied
@@ -444,6 +445,7 @@ void CmdRect::exec() const {
 
 
 //#include "js/textbox_flipper.h"
+#include "js/image_value_tracker.h"
 
 void CmdCoords::exec() const {
 
@@ -480,9 +482,9 @@ void CmdCoords::exec() const {
 	// textBox.setLocation({100,100});
 	textBox.setLineHeight(15);
 	textBox.setFontSize(12);
-	TreeSVG & line = textBox.addLine("(x,y)");
-	line->addClass(COORD_DISPLAY);
-	line->addClass(RackSVG::ElemClass::IMAGE_TITLE);
+	TreeSVG & lineCoords = textBox.addLine("(x,y)");
+	lineCoords->addClass(COORD_DISPLAY);
+	lineCoords->addClass(RackSVG::ElemClass::IMAGE_TITLE);
 	// textBox.addLine()->setText(__FUNCTION__); // debug
 	TreeSVG & listenerPlane = superPanel.getMouseListenerFrame();
 
@@ -516,10 +518,108 @@ void CmdCoords::exec() const {
 	// OLD: MouseXML::addVisibilitySwitch(line, listenerPlane);
 
 
+	// TEST for gData / gRect
+	const Image & data = ctx.getCurrentGrayImage();
+	std::string filename = "foo.png";
+	const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);
+
+	// Construct actual data (RGB) and save it.
+	drain::image::ImageData dataImage;
+	dataImage.createFrom(data);
+	drain::image::FilePng::write(dataImage, filenameFinal);
+
+	//
+	drain::image::TreeSVG & dataImageElem = superPanel.getDataImage(filenameFinal, data.getGeometry().getAreaGeometry());
+	addGeoData(data, dataImageElem);
+	//dataImageElem->setUrl(filenameFinal);
+
+	static
+	const drain::ClassXML VALUE_DISPLAY = "VALUE_DISPLAY";
+	TreeSVG & valueCoords = textBox.addLine("(x,y)");
+	valueCoords->addClass(VALUE_DISPLAY);
+	valueCoords->addClass(RackSVG::ElemClass::IMAGE_TITLE);
+
+	//MouseSVG mouseDownSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::DOWN, getName());
+	MouseSVG mouseMove2SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"2");
+	if (!mouseMove2SVG.listenerIsSet(listenerPlane)){
+		mouseMove2SVG.addListenerInitGeoConf();
+
+		drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
+
+		TreeSVG & routine = mouseMove2SVG.setListener(listenerPlane, VALUE_DISPLAY, drain::image::MouseXML::ElemClass::DATA_ARRAY);
+		// routine++ ->setText(VALUE_DISPLAY, ".textContent=`VALUE=${x},${y}`;");
+		routine++ ->setText(VALUE_DISPLAY, ".textContent=getDataValue(", MouseXML::ElemClass::DATA_ARRAY, ",x,y);");
+
+		TreeSVG & inits =  mouseMove2SVG.getListenerInitSubScope();
+		inits++ ->setText("init_data_elem(", MouseXML::ElemClass::DATA_ARRAY,")");
+
+	}
+
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), drain::image::MouseXML::ElemClass::DATA_ARRAY, {
+			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
+	});
+
+
+	/// TEST for gRect
+	drain::image::TreeSVG & visualGroup = superPanel.getOverlayGroup();
+	// Reserve a slot.
+	visualGroup.addChild()->setComment("Visualisation of the selection");
+	drain::image::TreeSVG & selectRect = visualGroup[MouseXML::ElemClass::SELECTOR](svg::RECT);
+	selectRect->addClass(MouseXML::ElemClass::SELECTOR);
+	selectRect->setGeometry(160,100);
+
+	static
+	const drain::ClassXML BBOX_DISPLAY = "BBOX_DISPLAY";
+	TreeSVG & bboxCoords = textBox.addLine("(bbox)");
+	bboxCoords->addClass(BBOX_DISPLAY);
+	bboxCoords->addClass(RackSVG::ElemClass::IMAGE_TITLE);
+
+	//MouseSVG mouseDownSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::DOWN, getName());
+	MouseSVG mouseDownSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::DOWN, getName());
+	if (!mouseDownSVG.listenerIsSet(listenerPlane)){
+		mouseDownSVG.addListenerInitGeoConf();
+		//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
+		TreeSVG & routine = mouseDownSVG.setListener(listenerPlane, BBOX_DISPLAY);
+		//routine++ ->setText(MouseXML::ElemClass::SELECTOR, ".draw = true");
+		routine++ ->setText("if (!drawSelection){ drawSelection=true; x0=x; y0=y}");
+		// routine++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('x', x);");
+		// routine++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('y', y);");
+		routine++ ->setText(BBOX_DISPLAY, ".textContent=`BBOX=${x},${y}`;");
+
+		TreeSVG & inits =  mouseDownSVG.getListenerInitSubScope();
+		inits++ ->setText("drawSelection=false");
+	}
+
+	MouseSVG mouseMove3SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"Rect");
+	if (!mouseMove3SVG.listenerIsSet(listenerPlane)){
+		TreeSVG & routine = mouseMove3SVG.setListener(listenerPlane, MouseXML::ElemClass::SELECTOR, BBOX_DISPLAY);
+		TreeSVG & subScope = routine["draw_scope"](svg::JAVASCRIPT_SCOPE);
+		subScope->setText("if (drawSelection)");
+		subScope++ ->setText("var xMin = Math.min(x0, x);");
+		subScope++ ->setText("var xMax = Math.max(x0, x);");
+		subScope++ ->setText("var yMin = Math.min(y0, y);");
+		subScope++ ->setText("var yMax = Math.max(y0, y);");
+		subScope++ ->setText("var width  = Math.abs(x-x0);");
+		subScope++ ->setText("var height = Math.max(y-y0);");
+		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('x', xMin);");
+		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('y', yMin);");
+		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('width',  width)");
+		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('height', height)");
+		subScope++ ->setText(BBOX_DISPLAY, ".textContent=`IMGBBOX=${xMin},${yMin},${xMax},${yMax}`;");
+
+	}
+
+
+	MouseSVG mouseUpRectSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::UP, getName()+"Rect");
+	if (!mouseUpRectSVG.listenerIsSet(listenerPlane)){
+		TreeSVG & routine = mouseUpRectSVG.setListener(listenerPlane);
+		routine++ ->setText("drawSelection=false");
+	}
+
+
 }
 
 
-#include "js/image_value_tracker.h"
 
 
 void CmdData::exec() const {
@@ -530,7 +630,7 @@ void CmdData::exec() const {
 
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
-	drain::UtilsXML::ensureStyle(ctx.getSVG(), RackSVG::ElemClass::DATA_ARRAY, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), drain::image::MouseXML::ElemClass::DATA_ARRAY, {
 			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
 	});
 
@@ -550,7 +650,7 @@ void CmdData::exec() const {
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
 
 	// NEW
-	ImagePanel superPanel(imagePanelGroup);
+	drain::image::ImagePanel superPanel(imagePanelGroup);
 
 	// TODO: pack inside ImagePanel
 	imagePanelGroup->addClass("MOUSE_VALUE");
@@ -560,7 +660,7 @@ void CmdData::exec() const {
 	drain::image::TreeSVG & coordMonitor = overlay["MOUSE_COORD"](svg::TEXT); // imagePanelGroup
 	coordMonitor->setId();
 	//coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::IMAGE_BORDER);
-	coordMonitor->setMyAlignAnchor(RackSVG::ElemClass::BACKGROUND);
+	coordMonitor->setMyAlignAnchor(ImagePanel::BACKGROUND);
 	coordMonitor->setAlign(AlignSVG::RIGHT, AlignSVG::BOTTOM);
 	coordMonitor->addClass("COORD_MONITOR");
 	coordMonitor->addClass(RackSVG::ElemClass::IMAGE_TITLE); // , RackSVG::ElemClass::TIME); // check
@@ -668,7 +768,7 @@ TreeSVG & getImagePanelNEW(RackContext & ctx, TreeSVG & imagePanelGroup) {
 	mouseGroup->addClass(ClipperSVG::CLIPPED);
 	// mouseGroup.addChild()->setComment("Mouse tracker modified by ", getName(), ' ', getLastParameters());
 
-	drain::image::TreeSVG & visualGroup = mouseGroup[RackSVG::ElemClass::SELECTOR](svg::GROUP);
+	drain::image::TreeSVG & visualGroup = mouseGroup[MouseXML::ElemClass::SELECTOR](svg::GROUP);
 	visualGroup->addClass(MouseXML::ElemClass::MONITOR); // handles visualGroup->setStyle("visibility", ...);
 	visualGroup->setDefaultAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
 	visualGroup.addChild()->setComment("Visualisation of the selection");
@@ -822,7 +922,7 @@ TreeSVG & InteractiveSVG::getInteractiveOverlay(RackContext & ctx, RadarSVG & ra
 	mouseGroup->addClass(ClipperSVG::CLIPPED);
 	// mouseGroup.addChild()->setComment("Mouse tracker modified by ", getName(), ' ', getLastParameters());
 
-	drain::image::TreeSVG & visualGroup = mouseGroup[RackSVG::ElemClass::SELECTOR](svg::GROUP);
+	drain::image::TreeSVG & visualGroup = mouseGroup[MouseXML::ElemClass::SELECTOR](svg::GROUP);
 	visualGroup->addClass(MouseXML::ElemClass::MONITOR); // handles visualGroup->setStyle("visibility", ...);
 	visualGroup->setDefaultAlignAnchor(RackSVG::ElemClass::BACKGROUND_RECT);
 	visualGroup.addChild()->setComment("Visualisation of the selection");

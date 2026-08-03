@@ -97,7 +97,17 @@ public:
 		return MouseXML::ensureMouseListenerInit(root, mouseEvent);
 	};
 
+	/// Scope inside which ctx is associated under listener element
+	/**
+	 *
+	 */
 	TreeSVG & getListenerInitScope() const;
+
+	/// Scope inside ctx
+	/**
+	 *  \see  getListenerInitScope()
+	 */
+	TreeSVG & getListenerInitSubScope() const;
 
 	void connectClass(const drain::ClassXML & cls) const;
 
@@ -133,6 +143,7 @@ public:
 		connect(args...);
 	};
 
+	void addListenerInitGeoConf() const;
 
 protected:
 
@@ -154,8 +165,8 @@ protected:
 
 }
 
-DRAIN_XML_ENUM_KEY(image::TreeSVG, image::MouseXML::ElemClass);
-DRAIN_XML_ENUM_KEY(image::TreeSVG, image::MouseXML::EventClass);
+DRAIN_GETKEY_ENUM(image::TreeSVG, image::MouseXML::ElemClass);
+DRAIN_GETKEY_ENUM(image::TreeSVG, image::MouseXML::EventClass);
 
 }
 

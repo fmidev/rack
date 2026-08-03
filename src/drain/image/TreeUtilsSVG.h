@@ -395,7 +395,7 @@ public:
 DRAIN_ENUM_DICT(image::MaskerSVG::MaskPosition);
 DRAIN_ENUM_OSTREAM(image::MaskerSVG::MaskPosition);
 
-//DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::RackSVG::ElemClass);
+//DRAIN_GETKEY_ENUM(image::TreeSVG, rack::RackSVG::ElemClass);
 
 
 }  // drain::

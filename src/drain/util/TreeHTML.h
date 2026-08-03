@@ -181,7 +181,7 @@ void TreeHTML::initChild(TreeHTML & child) const {
 }
 
 
-DRAIN_XML_ENUM_KEY(TreeHTML, Html::tag_t);
+DRAIN_GETKEY_ENUM(TreeHTML, Html::tag_t);
 // const TreeHTML::key_t & TreeHTML::getKey(const Html::tag_t & type){
 // return Enum<Html::tag_t>::dict.getKey(type, false);
 

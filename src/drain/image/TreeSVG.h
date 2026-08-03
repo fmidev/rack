@@ -540,7 +540,7 @@ image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
 
 DRAIN_XML_EASY_TYPE(image::TreeSVG);
 
-DRAIN_XML_ENUM_KEY(image::TreeSVG, image::svg::tag_t);
+DRAIN_GETKEY_ENUM(image::TreeSVG, image::svg::tag_t);
 
 
 template <> // for T (Tree class)

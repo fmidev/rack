@@ -49,6 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/FilePnm.h>
 #include <drain/image/FileGeoTIFF.h>
 #include <drain/image/Image.h>
+#include <drain/image/ImageSVG.h>
 #include <drain/image/TreeSVG.h>
 #include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeLayoutSVG.h>
@@ -77,9 +78,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "fileio-html.h"
 #include "file-hist.h"
 #include "images.h"  // ImageSection
-//#include "graphics.h"
+//
+#include "graphics-base.h"
 #include "graphics-panel.h"
-#include "graphics-imagepanel.h"
+//#include "graphics-imagepanel.h"
 
 
 namespace rack {

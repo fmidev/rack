@@ -65,7 +65,10 @@ DRAIN_ENUM_CONV(PseudoClassCSS); // for StringWrapper?
 
 
 
-/** NEW! 2026
+/** NEW
+ *  \tparam T - element tag_t (enum or integer)
+
+ 	OLD
  *  \tparam T - element tag_t (enum or integer)
  */
 template <typename E>
@@ -91,14 +94,6 @@ public:
 		set(args...);
 	}
 
-	template <class T>
-	void set(const T & arg){
-		//Logger mout(__FILE__, __FUNCTION__);
-		cls.set(arg);
-		// Logger(__FILE__, __FUNCTION__).experimental<LOG_INFO>("arg '", arg, "' of type:", typeid(T).name(), ", -> CSS class: ", cls);
-		//elem = drain::Enum<E>::dict.getValue(arg, false);
-	};
-
 	/// Set element
 	/**
 	 *  \tparam E
@@ -111,6 +106,16 @@ public:
 		elem = arg;
 	};
 
+
+	template <class T>
+	void set(const T & arg){
+		//Logger mout(__FILE__, __FUNCTION__);
+		cls.set(arg);
+		// cls = arg;
+		// Logger(__FILE__, __FUNCTION__).experimental<LOG_INFO>("arg '", arg, "' of type:", typeid(T).name(), ", -> CSS class: ", cls);
+		//elem = drain::Enum<E>::dict.getValue(arg, false);
+	};
+
 	/// Set CSS class
 	/**
 	 *    In CSS style definitions class "EXAMPLE" appears as ".EXAMPLE".
@@ -118,22 +123,25 @@ public:
 	 */
 	inline
 	void set(const std::string & arg){
-		cls.assign(arg);
-		//elem = drain::Enum<E>::dict.getValue(arg, false);
+		cls.set(arg);
+		// cls.assign(arg);
+		// elem = drain::Enum<E>::dict.getValue(arg, false);
 	};
 
 	/// Set CSS class
 	inline
 	void set(const char *arg){
-		cls.assign(arg);
-		// elem = drain::Enum<E>::dict.getValue(arg, false);
+		cls.set(arg);
+		// cls.assign(arg);
 	};
 
 
 	/// Set CSS class
 	inline
 	void set(const ClassXML & arg){
-		cls.assign(arg);
+		cls.set(arg);
+		// str = arg.baseStr;
+		//cls.assign(arg);
 	};
 
 	/// Set one of the element pseudo classes: focus, hover
@@ -162,12 +170,16 @@ public:
 	 *
 	 *  \see template E
 	 *  \see drain::Enum<E>
-	 */
+	*
+	*  NEW Enum dropped, redefine this if needed
+	*/
 	template <class T>
 	inline
 	void setElement(const T & arg){
-		elem = drain::Enum<E>::dict.getValue(arg, false);
+		//elem = drain::Enum<E>::dict.getValue(arg, false);
+		elem = arg;
 	};
+
 
 
 	template <class T>
@@ -210,7 +222,7 @@ public:
 		}
 
 		if (!cls.empty()){
-			ostr << '.' << cls;
+			ostr << cls.strPrefixed();
 		}
 
 		if (!pseudoClass.empty()){

@@ -256,6 +256,30 @@ public:
 		}
 	}
 
+	// Needed?
+	/*s
+	template <typename T>
+	static
+	T & ensureStyle(T & elem, const std::string & cls, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+
+		//T & style = getHeaderObject(elem, T::node_data_t::xml_tag_t::STYLE);
+		T & style = ensureStyleElem(elem);
+
+		T & styleEntry = style[cls];
+		if (styleEntry.empty()){
+			styleEntry = styleDef;
+			// styleEntry->setStyle(styleDef); WRONG (did not work)
+		}
+		return styleEntry;
+	}
+
+	template <typename T>
+	static
+	T & ensureStyle(T & elem, const ClassXML & cls, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+		return ensureStyle(elem, cls.strPrefixed(), styleDef);
+	}
+	*/
+
 	template <typename T>
 	static
 	T & ensureStyle(T & elem, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){

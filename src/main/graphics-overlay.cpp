@@ -37,6 +37,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Units.h>
 
 #include <drain/image/FilePng.h>
+#include <drain/image/ImageSVG.h>
 #include <drain/image/TreeElemUtilsSVG.h>
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/TextSVG.h>
@@ -894,7 +895,7 @@ void CmdRadarRay::exec() const {
 	RadarSVG radarSVG;
 	updateRadarSVG(ctx, radarSVG);
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); // (ctx, radarSVG);
-	ImagePanel superPanel(imagePanelGroup);
+	drain::image::ImagePanel superPanel(imagePanelGroup);
 	drain::image::TreeSVG & overlay = superPanel.getOverlayGroup();
 
 	drain::image::TreeSVG & curve = overlay[getName()](drain::image::svg::PATH);

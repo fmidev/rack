@@ -616,7 +616,7 @@ std::ostream & operator<<(std::ostream &ostr, const UnorderedMultiTree<NodeXML<E
 
 
 /// Enable using keys of enum_type to be used as path elements.
-#define DRAIN_XML_ENUM_KEY(xml_tree, enum_type) template <> template <> inline const xml_tree::key_t & xml_tree::getKey(const enum_type & type){ return Enum<enum_type>::dict.getKey(type, false); }
+#define DRAIN_GETKEY_ENUM(xml_tree, enum_type) template <> template <> inline const xml_tree::key_t & xml_tree::getKey(const enum_type & type){ return Enum<enum_type>::dict.getKey(type, false); }
 
 
 #endif /* DRAIN_TREE_XML */

@@ -59,6 +59,9 @@ public:
 		MONITOR_DOWN,    // Display something when mouse is pressed
 		MONITOR_UP,      // Display something when mouse is released
 		MONITOR_DRAG,    // Display something when mouse is dragged
+		// new:
+		DATA_ARRAY,		 // Image used as data array only, not to be displayed
+		SELECTOR,        // Interactive element illustrating a selection by the user
 	};
 
 	// NEW
@@ -123,7 +126,7 @@ public:
 
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventName); //const std::string & eventName);
+	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventName, Processing proc = UNDEFINED); //const std::string & eventName);
 
 
 };
@@ -134,6 +137,7 @@ public:
 DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
 DRAIN_ENUM_DICT(image::MouseXML::EventClass);
 
+DRAIN_ENUM_CLASSXML(image::MouseXML::ElemClass);
 
 
 namespace image {
@@ -142,12 +146,14 @@ DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass);
 DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
 
 
+
 template <class N>
 DRAIN_XML_TREE(N) & MouseXML::getOnLoadScript(DRAIN_XML_TREE(N) & root){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	static const std::string onload_fnc_name("drain_onload");
+	static
+	const std::string onload_fnc_name("drain_onload");
 
 	mout.experimental<LOG_INFO>("Adding mouse interaction: SVG onload=", onload_fnc_name, "()");
 
@@ -199,6 +205,9 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 			if (level >= RELATIVE_COORDS){
 				scopeJS++ = "ctx.rx = ctx.x / ctx.bbox.width;";
 				scopeJS++ = "ctx.ry = ctx.y / ctx.bbox.height;";
+				if (level >= GEOGRAPHIC_COORDS){
+					scopeJS++ -> setProgramComment("todo: GeoCoords");
+				}
 			}
 		}
 		// scopeJS++ = "ctx.elem = null;";
@@ -231,7 +240,8 @@ DRAIN_XML_TREE(N) & MouseXML::getMouseListenerScope(DRAIN_XML_TREE(N) & root, XM
 }
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventKey){ // , const std::string & eventKey){
+DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
+		const EventClass & eventKey, Processing proc){ // , const std::string & eventKey){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -247,6 +257,10 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, 
 	scopeJS->setId(handlerName);
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
+		int level = static_cast<int>(proc);
+		if (level >= GEOGRAPHIC_COORDS){
+			scopeJS++ -> setProgramComment("todo: GeoCoords");
+		}
 	}
 
 	// Ensure init

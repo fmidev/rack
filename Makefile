@@ -19,6 +19,10 @@ release:
 
 
 src/js/%.h: src/js/%.js
+	@ echo 'Checking syntax...'
+	js $<
+	@ echo 'Ok'
+	@ echo 'Wrapping to a C++ char array...'
 	@ echo    '/** Automatically wrapped from "' $< '" */' > $@
 	@ echo >> $@
 	@ echo -n 'const char* ' >> $@
@@ -27,6 +31,7 @@ src/js/%.h: src/js/%.js
 	@ echo    ' = R"JS(/* ' $< ' */' >> $@
 	cat  $<    >> $@
 	@ echo ')JS";' >> $@
+	@ echo 'Checking version control...'
 	git status $*
 #       @ echo '//]]>)JS";' >> $@
 

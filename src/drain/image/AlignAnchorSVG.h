@@ -44,7 +44,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <string>
 //#include "drain/util/EnumFlags.h"
 #include <drain/Log.h>
-
+#include <drain/util/ClassXML.h>
 #include "AlignSVG.h"
 
 namespace drain {
@@ -238,6 +238,11 @@ protected:
 	static inline
 	void adjustAnchor(AnchorElem & anchor, const AnchorElem & elem){
 		anchor.assign(elem);
+	}
+
+	static inline
+	void adjustAnchor(AnchorElem & anchor, const ClassXML & cls){
+		anchor.assign(cls);
 	}
 
 	template <class T>

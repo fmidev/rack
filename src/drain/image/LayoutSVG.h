@@ -183,18 +183,23 @@ protected:
 }  // image::
 
 DRAIN_ENUM_DICT(image::LayoutSVG::Direction);
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::Direction);
-
 DRAIN_ENUM_DICT(image::LayoutSVG::DirectionHorz);
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionHorz);
-
 DRAIN_ENUM_DICT(image::LayoutSVG::DirectionVert);
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionVert);
-
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::GroupType);
-DRAIN_XML_ENUM_KEY(image::TreeSVG, image::LayoutSVG::GroupType);
 
+DRAIN_GETKEY_ENUM(image::TreeSVG, image::LayoutSVG::GroupType);
+
+DRAIN_ENUM_CLASSXML(image::LayoutSVG::GroupType);
+
+
+namespace image {
+
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::Direction);
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionHorz);
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionVert);
+DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
+
+}
 
 }  // drain::
 

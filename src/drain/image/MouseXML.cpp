@@ -44,12 +44,18 @@ DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DOWN),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_UP),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DRAG),
+		// NEW
+		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, DATA_ARRAY),
+		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, SELECTOR),
 };
 
 DRAIN_ENUM_DICT(image::MouseXML::EventClass) = {
 		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, ENTER),
 		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, LEAVE),
 		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, MOVE),
+		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, DOWN),
+		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, UP),
+		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, CLICK),
 };
 
 namespace image {

@@ -239,7 +239,7 @@ namespace drain {
 
 // DRAIN_ENUM_DICT(rack::MouseXML::ElemClass);
 //DRAIN_ENUM_OSTREAM(rack::MouseXML::ElemClass);
-//DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::MouseXML::ElemClass);
+//DRAIN_GETKEY_ENUM(image::TreeSVG, rack::MouseXML::ElemClass);
 
 }
 

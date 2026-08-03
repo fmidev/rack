@@ -39,6 +39,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/image/GeoFrame.h>
 #include <drain/image/TreeElemUtilsSVG.h>
+#include <drain/util/ClassXML.h>
 
 #include "radar/Composite.h"
 #include "radar/RadarProj.h"
@@ -89,8 +90,14 @@ public:
 
 }
 
+
+
 DRAIN_ENUM_DICT(rack::Graphic::GRAPHIC);
 DRAIN_ENUM_OSTREAM(rack::Graphic::GRAPHIC);
+
+namespace drain {
+DRAIN_ENUM_CLASSXML(rack::Graphic::GRAPHIC);
+}
 
 namespace rack {
 

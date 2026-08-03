@@ -34,7 +34,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 
 #include <drain/Enum.h>
+#include <drain/util/ClassXML.h>
 #include <drain/image/TreeSVG.h>
+#include <drain/image/ImageSVG.h>
 
 
 namespace rack {
@@ -67,21 +69,17 @@ public:
 		GENERAL = 32,    // Default type
 		ALL = (63),
 		// MAIN,
-		IMAGE_PANEL,     // Group containing and image and, potentially, title TEXTs.
-		IMAGE_BORDER,    // RECT surrounding the image, potentially also a COORD_TRACKER
-		BACKGROUND, // invisible RECT used for aligning titles.
 		SIDE_PANEL,
 		BORDER,          // Overall border (RECT) around the SVG document, invisible by default
 		// --
 		// MOUSE,			 // A group marked for mouse event listeners
 		// MOUSE_TRACKER,   // Area inside which mouse events will be tracked.
 		// MONITOR,         // Display of interactive operations
-		SELECTOR,        // Interactive element illustrating a selection by the user
-		DATA_ARRAY,      // Image used as data array only, not to be displayed
+		//SELECTOR,        // Interactive element illustrating a selection by the user
+		// DATA_ARRAY,      // Image used as data array only, not to be displayed
 		// SHARED_METADATA, // Something that should not be repeated in panels.
 		// --- unused ? ---
 		// TITLE,      // Default title
-		OVERLAY,          // Standard subgroup name inside IMAGE_PANEL group.
 	};
 
 	static
@@ -120,10 +118,12 @@ public:
 		return appendTitleElements(conf, group, (const std::string &)anchor, elemClass);
 	}
 
-
+	static
+	void addMetaData(const drain::image::Image & src, drain::image::ImagePanel & imagePanel);
 
 };
 
+DRAIN_ENUM_OSTREAM(RackSVG::ElemClass);
 
 } // rack::
 
@@ -131,9 +131,9 @@ public:
 namespace drain {
 
 DRAIN_ENUM_DICT(rack::RackSVG::ElemClass);
-DRAIN_ENUM_OSTREAM(rack::RackSVG::ElemClass);
 
-DRAIN_XML_ENUM_KEY(image::TreeSVG, rack::RackSVG::ElemClass);
+DRAIN_GETKEY_ENUM(image::TreeSVG, rack::RackSVG::ElemClass);
+DRAIN_ENUM_CLASSXML(rack::RackSVG::ElemClass);
 
 }
 

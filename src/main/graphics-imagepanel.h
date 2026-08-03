@@ -46,102 +46,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
-/// using namespace drain::image;
-
-/// Creator of SVG image elements located in a SVG group with fixed structure.
-/**
- *   Preferred way to add images (and related vector overlays.
- *   Creates a structure accessible with methods.
- *
- *   The panel structure consists of a group (svg::GROUP.IMAGE_PANEL) with
- *   - one svg::IMAGE element, optionally removed (changed to DESC)
- *   - an overlay layer svg::GROUP.OVERLAY designed for vector graphics, initially containing a background svg::RECT.BACKGROUND_RECT applied for aligning subsequent elements.
- *   - image border (svg::RECT.IMAGE_BORDER), optionally with a visible outline style (.IMAGE_BORDER), and optionally with a mouse event listener
- *   - an extra overlay (svg::RECT.COVER) masking the image and vector elements
- */
-class ImagePanel {
-
-
-public:
-
-	/// Recommended constructor, if Image is defined: stores also METADATA.
-	/**
-	 *
-	 */
-	ImagePanel(drain::image::TreeSVG & imagePanelGroup, const drain::image::Image & src, const drain::FilePath & filePath);
-
-	ImagePanel(drain::image::TreeSVG & imagePanelGroup, const drain::FilePath & filePath, const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0});
-
-	/// Retrieves the group defined last, or creates...
-	ImagePanel(drain::image::TreeSVG & imagePanelGroup, const drain::Frame2D<int> & geom = {0,0}); // drain::image::svg::coord_t
-
-
-
-	/// Recommended polymorphic function, if Image is defined: stores also METADATA.
-	/**
-	 *
-	 */
-	drain::image::TreeSVG & getImage(const drain::image::Image & src, const drain::FilePath & filepath) const;
-
-
-	drain::image::TreeSVG & getImage(const drain::FilePath & filePath = drain::FilePath(), const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
-
-
-	inline
-	drain::image::TreeSVG & getMetadata() const {
-		return getUniqueElem(imagePanelGroup, svg::METADATA);
-	}
-
-	drain::image::TreeSVG& getOverlayGroup() const;
-
-	inline
-	drain::image::TreeSVG& getBackGround() const {
-		drain::image::TreeSVG & overlay = getOverlayGroup();
-		return getUniqueElem(overlay, RackSVG::ElemClass::BACKGROUND, svg::RECT);
-		// return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::BACKGROUND, svg::RECT);
-	};
-
-
-	inline
-	drain::image::TreeSVG & getImageBorder() const {
-		drain::image::TreeSVG & imageBorder = getUniqueElem(imagePanelGroup, RackSVG::ElemClass::IMAGE_BORDER, svg::RECT);
-		imageBorder->addClass(FloaterSVG::FLOATING);
-		return imageBorder;
-		//return getUniqueElem(imagePanelGroup, RackSVG::ElemClass::IMAGE_BORDER, svg::RECT);
-	};
-
-	// Not recommended (yet)
-	// drain::image::TreeSVG & getSourceSpecificGroup(const std::string & source) const;
-
-	/// For vector graphics (grids, sectors)
-	/**
-	 *   For
-	 */
-	drain::image::TreeSVG & getVectorOverlayGroup(const std::string & key="", const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
-
-	drain::image::TreeSVG & getMouseListenerFrame() const;
-
-	drain::image::TreeSVG & getDataImage(const drain::FilePath & filepath = drain::FilePath(), const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
-
-
-
-protected:
-
-	drain::image::TreeSVG & imagePanelGroup;
-
-	drain::image::TreeSVG & getUniqueElem(drain::image::TreeSVG & parent, RackSVG::ElemClass cls, drain::image::svg::tag_t type = drain::image::svg::GROUP) const;
-
-	drain::image::TreeSVG & getUniqueElem(drain::image::TreeSVG & parent, drain::image::svg::tag_t type = drain::image::svg::GROUP) const;
-
-};
 
 
 } // rack::
 
 
 namespace drain {
-
-DRAIN_TYPENAME(rack::ImagePanel);
 
 }  // drain
 

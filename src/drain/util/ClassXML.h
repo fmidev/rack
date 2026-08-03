@@ -54,12 +54,15 @@ namespace drain {
 /// A wrapper marking string an CSS effect
 // Note: Currently separate from ClassListXML
 //class ClassXML : public StringWrapper<std::string> {
-class ClassXML : public MultiEnumWrapper {
+class ClassXML : public std::string {  // : public MultiEnumWrapper {
+
+	// consider : public std::string?
 
 public:
 
+	/*
 	inline
-	ClassXML(const std::string & s="") : MultiEnumWrapper(s){};
+	ClassXML(const std::string & s="")  : MultiEnumWrapper(s){};
 
 	template <typename T>
 	inline
@@ -71,6 +74,36 @@ public:
 
 	inline
 	ClassXML(const char *arg) : MultiEnumWrapper(std::string(arg)){};
+	*/
+	// Redefine for enums, for example
+
+	inline
+	ClassXML(const std::string & arg=""){ //  : std::string(arg)
+		set(arg);
+	};
+
+	inline
+	ClassXML(const char *arg){
+		set(arg);
+	};
+
+	template <typename T>
+	inline
+	ClassXML(const T & arg){
+		set(arg);
+	};
+
+	inline
+	ClassXML(const ClassXML & e){
+		set(e.str());
+	};
+
+	//ClassXML(const T & x) : StringWrapper<std::string>(drain::Enum<T>::dict.getKey(x)){};
+
+	// inline
+	// ClassXML(const ClassXML & e) : MultiEnumWrapper((const std::string &)e){};
+
+
 
 
 	virtual inline
@@ -78,28 +111,87 @@ public:
 
 	/*
 	inline
-	operator const std::string & () const {
-		return *this;
+	bool empty() const {
+		return baseStr.empty();
 	}
+
 	inline
-	const std::string & str() const {
-		return *this;
+	void clear(){
+		baseStr.clear();
 	}
 	*/
 
+	inline
+	void set(const char *arg){
+		assign(arg);
+	}
+
+	void set(const std::string & arg){
+		// baseStr =
+		assign(arg);
+	}
+
+
+	void set(const ClassXML & cls){
+		// baseStr =
+		assign(cls);
+	}
+
+	// Must be specialised for any class other than string and ClassXML.
+	template <typename T>
+	void set(const T & arg);
+
+	/*
+	inline
+	operator const std::string & () const {
+		return baseStr; // *this;
+	}
+	*/
+
+	inline
+	const std::string & str() const {
+		return *this; // baseStr; //*this;
+	}
+
+	inline
 	const std::string & strPrefixed() const {
 		prefixed = ".";
-		prefixed += *this;
+		prefixed += str();
 		return prefixed;
 	}
 
 protected:
+
+	//std::string baseStr;
 
 	// Class name prefixed with ".".
 	mutable
 	std::string prefixed;
 
 };
+
+
+inline
+std::ostream & operator<<(std::ostream &ostr, const ClassXML & cls){
+	// static const SprinterLayout layout = {" "}; // , "\n", "=", ""};
+	//ostr << '.' << cls.baseStr;
+	ostr << cls.str();
+	return ostr;
+}
+
+/*
+template <class E>
+inline void ClassXML::set(const E & arg)
+{ assign(drain::Enum<E>::dict.getKey(arg));}
+
+template <class T>
+inline void ClassXML::set(const T & arg){
+	Logger(__FILE__, __FUNCTION__).unimplemented<LOG_ERR>("Unknown argument type: ", drain::TypeName<T>::str(), " value=", arg);
+}
+*/
+
+/// Specialise for Enum type
+#define DRAIN_ENUM_CLASSXML(enumtype) template <> inline void ClassXML::set(const enumtype & arg){ assign(drain::Enum<enumtype>::dict.getKey(arg));}
 
 
 /// Container for style classes. Essentially a set of strings, with space-separated output support.

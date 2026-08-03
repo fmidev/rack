@@ -32,9 +32,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <string>
 
+#include <drain/image/Alignment.h>
+#include <drain/image/ImageSVG.h>
 #include <drain/image/FilePng.h>
 #include <drain/image/MouseXML.h>
-#include <drain/image/Alignment.h>
 #include <drain/image/TreeSVG.h>
 #include <drain/prog/CommandInstaller.h>
 #include <drain/prog/CommandBank.h>
@@ -89,7 +90,7 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 
 	drain::image::TreeSVG & comment = object.addChild()(svg::COMMENT);
 
-	drain::image::TreeSVG & backgroundRect = object[BACKGROUND](svg::RECT);
+	drain::image::TreeSVG & backgroundRect = object[ImagePanel::BACKGROUND](svg::RECT);
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::CURRENT_COMPOUND); // ("*");
@@ -122,7 +123,7 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 		break;
 	}
 
-	return appendTitleElements(conf, object, BACKGROUND, elemClass); // Enum wrapper?
+	return appendTitleElements(conf, object, ImagePanel::BACKGROUND.str(), elemClass); // Enum wrapper?
 
 }
 
@@ -372,7 +373,7 @@ int TitleCreatorSVG::visitPostfix(TreeSVG &root, const TreeSVG::path_t &path){
 			}
 		}
 	}
-	else if (group->hasClass(RackSVG::ElemClass::IMAGE_PANEL)) {
+	else if (group->hasClass(ImagePanel::IMAGE_PANEL)) {
 		// Add elements directly on the image (corners), skip creating a background rectangle.
 		// Use IMAGE element "image" as anchor.
 		// RackSVG::appendTitleElements(svgConf, group, "image", RackSVG::ElemClass::IMAGE_TITLE);
