@@ -48,21 +48,44 @@ typedef drain::Enum<XML::entity_t> xml_entity;
 /// Uses spaces as separators.
 const SprinterLayout ClassListXML::layout = {" ", "", "", ""}; // , "\n", "=", ""};
 
+
+
 int XML::nextID = 0;
+const XML::intval_t XML::XML_LIKE;
+const XML::intval_t XML::CURLY;       // || flag_TEXT
+const XML::intval_t XML::PARENTHESES; // || flag_TEXT
+const XML::intval_t XML::BRACES;      // || flag_EXPLICIT || flag_TEXT
 
 const XML::intval_t XML::UNDEFINED;
 const XML::intval_t XML::COMMENT;
 const XML::intval_t XML::CTEXT;
 const XML::intval_t XML::STYLE;
 const XML::intval_t XML::STYLE_SELECT;
-const XML::intval_t XML::SCRIPT;
+const XML::intval_t XML::SCRIPT; // difference?
 const XML::intval_t XML::JAVASCRIPT;
-const XML::intval_t XML::JAVASCRIPT_SCOPE;
+const XML::intval_t XML::SCOPE;
+const XML::intval_t XML::SCOPE_CURLY;
 
 const XML::intval_t XML::XMLBASE;
 
 
 const std::string XML::USER_ATTR_PREFIX = "data-";
+
+
+const std::string XML::SCOPE_BEGIN("SCOPE-BEGIN");
+const std::string XML::SCOPE_END("SCOPE-END");
+const std::string XML::COMMENT_BEGIN("COMMENT-BEGIN");
+const std::string XML::COMMENT_END("COMMENT-END");
+
+const StyleXML XML::curlyStyleXML = {
+	{SCOPE_BEGIN, "{"},
+	{SCOPE_END,   "}"},
+	{COMMENT_BEGIN, "<!-- "},
+	{COMMENT_END,   " -->"}
+};
+
+
+
 /**
  *
  *  https://www.w3schools.com/charsets/ref_utf_basic_latin.asp

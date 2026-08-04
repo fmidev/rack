@@ -62,6 +62,11 @@ public:
 	StyleXML(){};
 
 	inline
+	StyleXML(const std::initializer_list<std::pair<std::string, Variable> > & inits){
+		MapTools::setValues(*this, inits);
+	};
+
+	inline
 	StyleXML(const StyleXML & stl){
 		MapTools::setValues(*this, stl);
 	};

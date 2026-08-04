@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,8, "beta")
+#define RACK_VERSION drain::Version<>(20,8,1, "beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -107,6 +107,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - MouseSVG: combined mouse event initialisation and handling
  *  Version 20.8beta
  *  - ImagePanelSVG - cCoord, cRect, cData using shared code & objects
+ *  Version 20.8.1beta
+ *  - JavaScript //?#include header
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

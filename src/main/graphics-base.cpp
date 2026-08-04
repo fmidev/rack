@@ -186,18 +186,18 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 	});
 
 	// User selection
-	UtilsXML::ensureStyle(style, ClassXML(MouseXML::SELECTOR), {
+	UtilsXML::ensureStyle(style, ClassXML(ImagePanel::SELECTOR), {
 			{"fill", "none"},
 			{"stroke", "white"},
 			// {"stroke-width", 1.0},
 	});
 
-	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, MouseXML::SELECTOR), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::RECT, ImagePanel::SELECTOR), {
 				// {"stroke", "white"},
 				{"stroke-width", "2px"},
 	});
 
-	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, MouseXML::SELECTOR), {
+	UtilsXML::ensureStyle(style, SelectSVG(svg::TEXT, ImagePanel::SELECTOR), {
 			{"font-size", "large"},
 			//{"stroke", "none"},
 			{"stroke", "black"},

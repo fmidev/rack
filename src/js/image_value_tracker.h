@@ -1,6 +1,11 @@
-/** Automatically wrapped from " src/js/image_value_tracker.js " */
+/** Automatically generated from " src/js/image_value_tracker.js " */
 
-const char* image_value_tracker = R"JS(/*  src/js/image_value_tracker.js  */
+#ifndef JS_INCLUDE_image_value_tracker
+#define JS_INCLUDE_image_value_tracker
+
+
+namespace javascript {
+const char* image_value_tracker = R"JS(// Source:  src/js/image_value_tracker.js
 function RadarDataEncoding(encoding){
 
     this.type   = "";
@@ -230,3 +235,5 @@ function image_value_tracker(){
     
 }
 )JS";
+} // javascript::
+#endif

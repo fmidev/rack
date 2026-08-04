@@ -35,6 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/Output.h>
 #include <drain/util/StringMapper.h>
 #include <drain/util/Units.h>
+#include <drain/util/JavaScriptXML.h>
 
 #include <drain/image/FilePng.h>
 #include <drain/image/ImageData.h>
@@ -50,9 +51,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-imagepanel.h"
 #include "graphics-interactive.h"
 
+// #include "js/add_mouse_listeners.h"
+
 
 namespace rack {
 
+#include "drain/js/coord_handler.h"
+#include "drain/js/textbox_flipper.h"
+#include "js/image_coord_tracker.h"
+#include "js/image_value_tracker.h"
 
 
 // const std::string CmdPolarBase::DATA_ID = "data-latest";
@@ -246,17 +253,13 @@ public:
 };
  */
 
-// #include "js/add_mouse_listeners.h"
-#include "js/coord_handler.h"
-#include "js/image_coord_tracker.h"
-#include "js/textbox_flipper.h"
 
 //drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, const std::string & cls){
 drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, MouseXML::ElemClass cls){
 
 	textObject->setType(svg::TEXT); // ensure
 	textObject->setFontSize(15,18);
-	textObject->addClass(MouseXML::ElemClass::SELECTOR);
+	textObject->addClass(ImagePanel::SELECTOR);
 	textObject->setAlign(AlignSVG::NEUTRAL);
 	// textObject->addClass(RackSVG::ElemClass::IMAGE_TITLE, RackSVG::ElemClass::LOCATION);
 	// textObject->setAlign(AlignSVG::RIGHT);
@@ -279,12 +282,12 @@ drain::UnorderedMultiTree<N> & ensureJSFunctionScope(drain::UnorderedMultiTree<N
 
 	if (!scriptElem.hasChild(name)){
 		T & jsFunction = scriptElem[name];
-		jsFunction->setType(N::xml_tag_t::JAVASCRIPT_SCOPE);
+		jsFunction->setType(N::xml_tag_t::SCOPE_CURLY);
 
 		jsFunction->setText("var ", name, " = function(", drain::StringBuilder<','>(args...), ')');
 		// T & jsFunctionScope = jsFunction.addChild();
-		// T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE]; // maybe string best?
-		// jsFunctionScope->setType(N::xml_tag_t::JAVASCRIPT_SCOPE);
+		// T & jsFunctionScope = jsFunction[N::xml_tag_t::SCOPE_CURLY]; // maybe string best?
+		// jsFunctionScope->setType(N::xml_tag_t::SCOPE_CURLY);
 		return jsFunction;
 	}
 	else {
@@ -317,10 +320,12 @@ void CmdRect::exec() const {
 	*/
 
 	// Modify SVG header. Notice inverse order (for prepend() )
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = coord_handler;
+	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = javascript::image_coord_tracker;
+	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = javascript::coord_handler;
+	ctx.ensureScript("image_coord_tracker", javascript::image_coord_tracker);
+	ctx.ensureScript("coord_handler",       javascript::coord_handler);
 
-	ctx.getOnLoadScript()["image_coord_tracker"] = "image_coord_tracker();";
+	ctx.ensureOnLoad("image_coord_tracker") = "image_coord_tracker();";
 	// RackSVG::getOnLoadScript(ctx)["test"] = "// Test";
 
 	// Experimental
@@ -341,7 +346,7 @@ void CmdRect::exec() const {
 	visualGroup.addChild()->setComment("Visualisation of the selection");
 
 	// Reserve slot
-	drain::image::TreeSVG & selectRect = visualGroup[MouseXML::ElemClass::SELECTOR](svg::RECT);
+	drain::image::TreeSVG & selectRect = visualGroup[ImagePanel::SELECTOR](svg::RECT);
 	// selectRect->addClass(AlignSVG::FIXED, AlignSVG::NEUTRAL); // check
 	selectRect->setAlign(AlignSVG::FIXED); // check
 	selectRect->setAlign(AlignSVG::NEUTRAL); // check
@@ -400,12 +405,12 @@ void CmdRect::exec() const {
 	mout.attention(DRAIN_LOG(bboxImg));
 
 
-	selectRect->addClass(MouseXML::ElemClass::SELECTOR);
+	selectRect->addClass(ImagePanel::SELECTOR);
 	selectRect->setLocation(std::min(bboxImg.lowerLeft.x, bboxImg.upperRight.x), std::min(bboxImg.lowerLeft.y, bboxImg.upperRight.y));
 	selectRect->setGeometry(::abs(bboxImg.getWidth()), ::abs(bboxImg.getHeight()));
 
 	TreeSVG & coordSpanDisplay = visualGroup[MouseXML::ElemClass::MONITOR_DRAG];
-	coordSpanDisplay->addClass(MouseXML::ElemClass::SELECTOR);
+	coordSpanDisplay->addClass(ImagePanel::SELECTOR);
 	coordSpanDisplay->addClass(MouseXML::ElemClass::MONITOR_DRAG); // From JS
 	coordSpanDisplay->setAlign(AlignSVG::NEUTRAL); // ?
 
@@ -418,7 +423,7 @@ void CmdRect::exec() const {
 	monitorUp->setText(bboxImg.upperRight, " px");
 
 	coordSpanDisplay->resetAlign();
-	coordSpanDisplay->setMyAlignAnchor(MouseXML::ElemClass::SELECTOR);
+	coordSpanDisplay->setMyAlignAnchor(ImagePanel::SELECTOR);
 	coordSpanDisplay->setAlign(AlignSVG::TOP, AlignSVG::LEFT);
 
 	// RackSVG::consumeAlignRequest(ctx, coordSpanDisplay); // TODO return bool, if applied
@@ -445,7 +450,6 @@ void CmdRect::exec() const {
 
 
 //#include "js/textbox_flipper.h"
-#include "js/image_value_tracker.h"
 
 void CmdCoords::exec() const {
 
@@ -466,13 +470,10 @@ void CmdCoords::exec() const {
 	// updateRadarSVG(ctx, radarSVG);
 
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
-
-	// NEW
 	ImagePanel superPanel(imagePanelGroup);
 
-	// TreeSVG & mouseElem = superPanel.getMouseListenerFrame();
-
-	drain::image::MouseXML::getOnLoadScript(ctx.getSVG());
+	// drain::image::MouseXML::getOnLoadScript(ctx.getSVG());
+	ctx.ensureOnLoad("/* test tracker */");
 
 	/// Define directly as a CSS class, to support prefix ('.')
 	static
@@ -488,11 +489,20 @@ void CmdCoords::exec() const {
 	// textBox.addLine()->setText(__FUNCTION__); // debug
 	TreeSVG & listenerPlane = superPanel.getMouseListenerFrame();
 
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "textbox_flipper") = textbox_flipper;
+	//image_coord_tracker.h
+
+	//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "textbox_flipper") = textbox_flipper;
+	ctx.ensureScript("textbox_flipper", javascript::textbox_flipper);
+	// ctx.ensureScript("image_coord_tracker", image_coord_tracker);
+	ctx.ensureScript("coords",     javascript::coords);
+	ctx.ensureScript("coord_handler",     javascript::coord_handler);
+	ctx.ensureScript("image_coord_tracker", javascript::image_coord_tracker);
 
 	MouseSVG mouseMoveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName());
 	if (!mouseMoveSVG.listenerIsSet(listenerPlane)){
-		TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane, COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
+		//TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane, COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
+		mouseMoveSVG.connect(COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
+		TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane);
 		routine++ ->setText(COORD_DISPLAY, ".textContent=`${x},${y}`;");
 		// conditional MOVE, like conditional MASK?:
 		if (true){
@@ -500,20 +510,25 @@ void CmdCoords::exec() const {
 			routine++ ->setText("flipTextBoxWithThreshold(", LayoutSVG::ADAPTER, ", rx, ry, 0.33);");
 		}
 		// routine++ ->setProgramComment("Modified by ", getName());
+		TreeSVG & inits =  mouseMoveSVG.getListenerInitScope();
+		inits++ ->setText("// ");
 	}
 	// Optional extra modifications with:
 	// TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
 
 	MouseSVG mouseEnterSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::ENTER, getName());
 	if (!mouseEnterSVG.listenerIsSet(listenerPlane)){
-		TreeSVG & routine = mouseEnterSVG.setListener(listenerPlane, COORD_DISPLAY);
-		routine++ ->setText(COORD_DISPLAY, ".style.visibility='visible';");
+		mouseEnterSVG.connect(TextBox::TEXTBOX); //, COORD_DISPLAY);
+		TreeSVG & routine = mouseEnterSVG.setListener(listenerPlane); //, COORD_DISPLAY);
+		//textBox.topGroup
+		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='visible';");
 	}
 
 	MouseSVG mouseLeaveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::LEAVE, getName());
 	if (!mouseLeaveSVG.listenerIsSet(listenerPlane)){
-		TreeSVG & routine = mouseLeaveSVG.setListener(listenerPlane, COORD_DISPLAY);
-		routine++ ->setText(COORD_DISPLAY, ".style.visibility='hidden';");
+		mouseEnterSVG.connect(TextBox::TEXTBOX); //, COORD_DISPLAY);
+		TreeSVG & routine = mouseLeaveSVG.setListener(listenerPlane); // , COORD_DISPLAY);
+		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='hidden';");
 	}
 	// OLD: MouseXML::addVisibilitySwitch(line, listenerPlane);
 
@@ -543,8 +558,8 @@ void CmdCoords::exec() const {
 	MouseSVG mouseMove2SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"2");
 	if (!mouseMove2SVG.listenerIsSet(listenerPlane)){
 		mouseMove2SVG.addListenerInitGeoConf();
-
-		drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
+		ctx.ensureScript("image_value_tracker", javascript::image_value_tracker);
+		// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 
 		TreeSVG & routine = mouseMove2SVG.setListener(listenerPlane, VALUE_DISPLAY, drain::image::MouseXML::ElemClass::DATA_ARRAY);
 		// routine++ ->setText(VALUE_DISPLAY, ".textContent=`VALUE=${x},${y}`;");
@@ -561,11 +576,12 @@ void CmdCoords::exec() const {
 
 
 	/// TEST for gRect
-	drain::image::TreeSVG & visualGroup = superPanel.getOverlayGroup();
+	RackSVG::addMetaData(data, superPanel);
+	drain::image::TreeSVG & overlayGroup = superPanel.getOverlayGroup();
 	// Reserve a slot.
-	visualGroup.addChild()->setComment("Visualisation of the selection");
-	drain::image::TreeSVG & selectRect = visualGroup[MouseXML::ElemClass::SELECTOR](svg::RECT);
-	selectRect->addClass(MouseXML::ElemClass::SELECTOR);
+	overlayGroup.addChild()->setComment("Visualisation of the selection");
+	drain::image::TreeSVG & selectRect = overlayGroup[ImagePanel::SELECTOR](svg::RECT);
+	selectRect->addClass(ImagePanel::SELECTOR);
 	selectRect->setGeometry(160,100);
 
 	static
@@ -592,19 +608,19 @@ void CmdCoords::exec() const {
 
 	MouseSVG mouseMove3SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"Rect");
 	if (!mouseMove3SVG.listenerIsSet(listenerPlane)){
-		TreeSVG & routine = mouseMove3SVG.setListener(listenerPlane, MouseXML::ElemClass::SELECTOR, BBOX_DISPLAY);
-		TreeSVG & subScope = routine["draw_scope"](svg::JAVASCRIPT_SCOPE);
+		TreeSVG & routine = mouseMove3SVG.setListener(listenerPlane, ImagePanel::SELECTOR, BBOX_DISPLAY);
+		TreeSVG & subScope = routine["draw_scope"](svg::SCOPE_CURLY);
 		subScope->setText("if (drawSelection)");
 		subScope++ ->setText("var xMin = Math.min(x0, x);");
 		subScope++ ->setText("var xMax = Math.max(x0, x);");
 		subScope++ ->setText("var yMin = Math.min(y0, y);");
 		subScope++ ->setText("var yMax = Math.max(y0, y);");
 		subScope++ ->setText("var width  = Math.abs(x-x0);");
-		subScope++ ->setText("var height = Math.max(y-y0);");
-		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('x', xMin);");
-		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('y', yMin);");
-		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('width',  width)");
-		subScope++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('height', height)");
+		subScope++ ->setText("var height = Math.abs(y-y0);");
+		subScope++ ->setText(ImagePanel::SELECTOR, ".setAttribute('x', xMin);");
+		subScope++ ->setText(ImagePanel::SELECTOR, ".setAttribute('y', yMin);");
+		subScope++ ->setText(ImagePanel::SELECTOR, ".setAttribute('width',  width)");
+		subScope++ ->setText(ImagePanel::SELECTOR, ".setAttribute('height', height)");
 		subScope++ ->setText(BBOX_DISPLAY, ".textContent=`IMGBBOX=${xMin},${yMin},${xMax},${yMax}`;");
 
 	}
@@ -643,9 +659,10 @@ void CmdData::exec() const {
 	// mout.attention(data);
 
 	//  Modify SVG header. Ensure the script is available.
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
-	ctx.getOnLoadScript()["image_value_tracker"] = "image_value_tracker();";
-	ctx.getOnLoadScript()["image_value_tracker2"] = "/* test tracker */";
+	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = javascript::image_value_tracker;
+	ctx.ensureScript("image_value_tracker", javascript::image_value_tracker);
+	ctx.ensureOnLoad("image_value_tracker();"); // = "image_value_tracker();";
+	ctx.ensureOnLoad("/* test tracker */");
 
 	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(); //adapterGroup[ctx.currentImagePanel];
 
@@ -713,12 +730,12 @@ void CmdTestData::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 	RadarSVG radarSVG;
-	//drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
-	//drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
+	// drain::image::TreeSVG & overlayGroup = getOverlayGroup(ctx, radarSVG); // ensure BBOX + track class
+	// drain::image::TreeSVG & imagePanelGroup = RackSVG::getImagePanelGroup(ctx);
 	// drain::image::TreeSVG & img = imagePanelGroup[svg::IMAGE];
 
 	/// Ensure that the script is available.
-	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "base64ToArrayLE") = base64ToArrayLE;
+	drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "base64ToArrayLE") = javascript::base64ToArrayLE;
 
 	// TEST 1: float vector
 	const std::vector<float> floatVector(11*11, 1.2345);
@@ -735,9 +752,10 @@ void CmdTestData::exec() const {
 	// test(img, uint16Vector, mout);
 
 
-	TreeSVG & onloadJS = ctx.getOnLoadScript();
+	// TreeSVG & onloadJS = ctx.getOnLoadScript();
 	// onloadJS["set_image_value_tracker"] = "set_image_value_tracker();";
-	onloadJS["demo_base64"] = "demo_base64();";
+	//ctx.ensureOnLoad("demo_base64") = "demo_base64();";
+	ctx.ensureOnLoad("demo_base64();");
 
 
 }

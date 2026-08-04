@@ -1,6 +1,11 @@
-/** Automatically wrapped from " src/js/textbox_flipper.js " */
+/** Automatically generated from " src/drain/js/textbox_flipper.js " */
 
-const char* textbox_flipper = R"JS(/*  src/js/textbox_flipper.js  */
+#ifndef JS_INCLUDE_textbox_flipper
+#define JS_INCLUDE_textbox_flipper
+
+
+namespace javascript {
+const char* textbox_flipper = R"JS(// Source:  src/drain/js/textbox_flipper.js
 
 /// Flips text inside a group - usually to keep it visible (inside image area).
 /**
@@ -93,3 +98,5 @@ function getThresholdedFlip(name, value, threshold){
     
 }
 )JS";
+} // javascript::
+#endif

@@ -316,22 +316,22 @@ public:
 
 
 
-		return scriptElem[N::xml_tag_t::JAVASCRIPT_SCOPE](N::xml_tag_t::JAVASCRIPT_SCOPE);
+		return scriptElem[N::xml_tag_t::SCOPE_CURLY](N::xml_tag_t::SCOPE_CURLY);
 
 		//////
 		//T & scriptElem = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
 
 		if (!scriptElem.hasChild(name)){
 			T & jsFunction = scriptElem[name];
-			//jsFunction->setType(N::xml_tag_t::JAVASCRIPT_SCOPE);
+			//jsFunction->setType(N::xml_tag_t::SCOPE_CURLY);
 			jsFunction->setText("var ", name, " = function(", args..., ')');
 			// T & jsFunctionScope = jsFunction.addChild();
-			T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE]; // maybe string best?
-			jsFunctionScope->setType(N::xml_tag_t::JAVASCRIPT_SCOPE);
+			T & jsFunctionScope = jsFunction[N::xml_tag_t::SCOPE_CURLY]; // maybe string best?
+			jsFunctionScope->setType(N::xml_tag_t::SCOPE_CURLY);
 			return jsFunctionScope;
 		}
 		else {
-			return scriptElem[name][N::xml_tag_t::JAVASCRIPT_SCOPE];
+			return scriptElem[name][N::xml_tag_t::SCOPE_CURLY];
 		}
 		// T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
 		///
@@ -340,17 +340,17 @@ public:
 
 	/**
 	 *   Creates...
-	 */
+
 	template <typename N, typename ...TT>
 	static
 	UnorderedMultiTree<N> & ensureJavaScriptFunction(UnorderedMultiTree<N> & root, const std::string & name, const TT & ...args){
 
 		typedef UnorderedMultiTree<N> T;
 		// T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, name);
-		// T & jsFunctionScope = jsFunction[N::xml_tag_t::JAVASCRIPT_SCOPE](N::xml_tag_t::JAVASCRIPT_SCOPE);
+		// T & jsFunctionScope = jsFunction[N::xml_tag_t::SCOPE_CURLY](N::xml_tag_t::SCOPE_CURLY);
 		T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
 
-		T & jsFunctionScope = jsFunction[name](N::xml_tag_t::JAVASCRIPT_SCOPE);
+		T & jsFunctionScope = jsFunction[name](N::xml_tag_t::SCOPE_CURLY);
 
 		if (jsFunctionScope.empty()){
 			jsFunctionScope->setText("function ", name, '(', StringBuilder<','>(args...), ')');
@@ -359,35 +359,9 @@ public:
 		}
 
 
-		return jsFunctionScope; // [XML::JAVASCRIPT_SCOPE];
+		return jsFunctionScope; // [XML::SCOPE_CURLY];
 	}
-
-	/**
-	 *  \param path
-	 */
-	template <typename N>
-	static
-	UnorderedMultiTree<N> & ensureJavaScriptUrl(UnorderedMultiTree<N> & root, const std::string & url){
-
-		drain::Logger mout(__FILE__, __FUNCTION__);
-
-		typedef UnorderedMultiTree<N> T;
-
-		std::string id(url);
-		for (auto & c : id){
-			// drain::PathSeparatorPolicy
-			if (c == T::path_t::separator.character){
-				c = '|';
-			}
-		}
-		mout.note("mapped id:", id);
-
-		T & treeJS = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT, id);
-
-		treeJS->setUrl(url);
-
-		return treeJS; // [XML::JAVASCRIPT_SCOPE];
-	}
+	*/
 
 
 };

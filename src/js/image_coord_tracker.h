@@ -1,6 +1,11 @@
-/** Automatically wrapped from " src/js/image_coord_tracker.js " */
+/** Automatically generated from " src/js/image_coord_tracker.js " */
 
-const char* image_coord_tracker = R"JS(/*  src/js/image_coord_tracker.js  */
+#ifndef JS_INCLUDE_image_coord_tracker
+#define JS_INCLUDE_image_coord_tracker
+
+
+namespace javascript {
+const char* image_coord_tracker = R"JS(// Source:  src/js/image_coord_tracker.js
 /// Utility
 
 /// Realign text
@@ -186,3 +191,5 @@ CoordHandler.prototype.updateSpanElem = function(elem, x,y,width,height){
 
 
 )JS";
+} // javascript::
+#endif

@@ -890,7 +890,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		drain::UtilsXML::ensureJavaScriptUrl(ctx.getSVG(), value);
+		drain::JavaScriptXML::ensureJavaScriptUrl(ctx.getSVG(), value);
 
 	}
 };

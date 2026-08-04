@@ -55,7 +55,6 @@ namespace drain {
 
 
 
-
 /// Base class for XML "nodes", to be data elements T for drain::Tree<T>
 /**
  *
@@ -85,6 +84,20 @@ public:
 	// static const intval_t flag_OPEN = 128;
 	// static const intval_t flag_TEXT = 256;
 
+	/*  "basetype" for COMMENTs and SCOPEs
+	 *  0 - XML
+	 *  1 - Style and C/C++
+	 *  2 - parentheses
+	 *  3 - braces
+	 */
+protected:
+	static const intval_t XML_LIKE = 0;
+	static const intval_t CURLY       = 1; // || flag_TEXT
+	static const intval_t PARENTHESES = 2; // || flag_TEXT
+	static const intval_t BRACES      = 3; // || flag_EXPLICIT || flag_TEXT
+
+
+public:
 
 	static const intval_t UNDEFINED = 0;
 	static const intval_t COMMENT   = 1; // || flag_TEXT
@@ -93,10 +106,23 @@ public:
 	static const intval_t STYLE     = 4; // || flag_EXPLICIT
 	static const intval_t STYLE_SELECT = 5;
 	static const intval_t JAVASCRIPT       = 6; // future extension
-	static const intval_t JAVASCRIPT_SCOPE = 7; // future extension
+	static const intval_t SCOPE = 8;       // future extension
+	static const intval_t SCOPE_CURLY = SCOPE|CURLY ; // JavaScript,
 	static const intval_t XMLBASE = 10; // for debugging basic XML doc
 
 	typedef std::map<std::string,FlexibleVariable> map_t;
+
+protected:
+
+	static
+	const StyleXML curlyStyleXML;
+
+	static const std::string SCOPE_BEGIN;
+	static const std::string SCOPE_END;
+	static const std::string COMMENT_BEGIN;
+	static const std::string COMMENT_END;
+
+public:
 
 	map_t & getMap(){
 		return *this;
@@ -290,9 +316,20 @@ public:
 	}
 
 	inline
-	bool isScopeJS() const {
-		return type == JAVASCRIPT_SCOPE;
+	bool isScopePlain() const {
+		return type == SCOPE;
 	}
+
+	inline
+	bool isScopeJS() const {
+		return type == SCOPE_CURLY;
+	}
+
+	inline
+	bool isScope() const {
+		return isScopePlain() || isScopeJS();
+	}
+
 
 	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
 	virtual

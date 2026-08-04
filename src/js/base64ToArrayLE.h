@@ -1,6 +1,11 @@
-/** Automatically wrapped from " src/js/base64ToArrayLE.js " */
+/** Automatically generated from " src/js/base64ToArrayLE.js " */
 
-const char* base64ToArrayLE = R"JS(/*  src/js/base64ToArrayLE.js  */
+#ifndef JS_INCLUDE_base64ToArrayLE
+#define JS_INCLUDE_base64ToArrayLE
+
+
+namespace javascript {
+const char* base64ToArrayLE = R"JS(// Source:  src/js/base64ToArrayLE.js
 /**
  *  \param b64:string - base64 data 
  *  \param ArrayCls   - Array class, like Float32Array
@@ -96,3 +101,5 @@ function demo_base64(){
     })
 }
 )JS";
+} // javascript::
+#endif

@@ -31,7 +31,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 //
 // #include <drain/image/MouseXML.h>
-// #include <drain/image/LayoutSVG.h>
+//
+#include <drain/util/JavaScriptXML.h>
 
 // #include "data/SourceODIM.h"
 #include "resources-svg.h"
@@ -55,9 +56,19 @@ GraphicsContext::GraphicsContext(const GraphicsContext & ctx) {
 }
 
 
-drain::image::TreeSVG & GraphicsContext::getOnLoadScript(){
+/*
+void GraphicsContext::ensureScript(const std::string & label, const std::string & content){
+	drain::UtilsXML::getHeaderObject(getSVG(), svg::SCRIPT, label) = content;
+}
+*/
+
+
+//drain::image::TreeSVG & GraphicsContext::getOnLoadScript(){
+drain::image::TreeSVG & GraphicsContext::ensureOnLoad(const std::string & expr){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	/*
 
 	static const std::string onload_fnc_name("rack_onload");
 
@@ -66,8 +77,29 @@ drain::image::TreeSVG & GraphicsContext::getOnLoadScript(){
 	//svgTrack->set("onload", onload_fnc_name+"()"); // perhaps repeatedly
 	svgTrack->setAttribute("onload", onload_fnc_name, "()"); // perhaps repeatedly
 
-	return drain::UtilsXML::ensureJavaScriptFunction(svgTrack, onload_fnc_name); // [svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	drain::image::TreeSVG & onloadFunction = drain::JavaScriptXML::ensureJavaScriptFunction(svgTrack, onload_fnc_name); // [svg::SCOPE_CURLY](svg::SCOPE_CURLY);
 	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
+	*/
+
+	drain::image::TreeSVG & onloadFunction = drain::JavaScriptXML::getOnLoadScript(svgTrack);
+
+	// Above all, this is to separate syntactically equivalent duplicate entries
+	// Hence also pruning semicolon ';'
+	std::string exprTrimmed = drain::StringTools::trim(expr, " \t\n;");
+
+	if (exprTrimmed.find(drain::image::TreeSVG::path_t::separator.character) == std::string::npos){
+		drain::image::TreeSVG & line = onloadFunction[exprTrimmed];
+		line->setText(expr);
+		return line;
+	}
+	else {
+		std::string safeKey;
+		drain::StringTools::getSafeKey(exprTrimmed, safeKey);
+		drain::image::TreeSVG & line = onloadFunction[safeKey];
+		mout.note("created entry '", safeKey, "' for '", exprTrimmed, "'");
+		line->setText(exprTrimmed);
+		return line;
+	}
 
 }
 

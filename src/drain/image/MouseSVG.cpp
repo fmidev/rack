@@ -31,6 +31,8 @@ SOFTWARE.
  */
 
 
+#include "drain/util/UtilsXML.h"
+
 #include "MouseSVG.h"
 
 namespace drain {
@@ -53,10 +55,10 @@ TreeSVG & MouseSVG::getListenerInitScope() const {
 
 	TreeSVG & mouseInit = setListenerInit();
 
-	TreeSVG & installer = mouseInit[mouseEvent+"INSTALLER"]; // (svg::JAVASCRIPT_SCOPE);
+	TreeSVG & installer = mouseInit[mouseEvent+"INSTALLER"]; // (svg::SCOPE_CURLY);
 	installer->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
 
-	TreeSVG & scope = installer[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	TreeSVG & scope = installer[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
 	if (scope.empty()){
 		scope->setText("group =>");
 		scope.addChild()->setProgramComment("MouseSVG");
@@ -65,20 +67,20 @@ TreeSVG & MouseSVG::getListenerInitScope() const {
 		//scope.addChild() = "if (listener) with (listener)";
 		scope.addChild() = "if (listener)";
 		//scope.addChild() = "ctx = listener; ";
-		scope[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
-		scope[svg::JAVASCRIPT_SCOPE]["ensure_CTX"] = "if (!('ctx' in listener))  listener.ctx = {};";
+		scope[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
+		scope[svg::SCOPE_CURLY]["ensure_CTX"] = "if (!('ctx' in listener))  listener.ctx = {};";
 		// installer.addChild() = "}";
-		//TreeSVG & subScope = scope[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+		//TreeSVG & subScope = scope[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
 	}
 	installer["end-foreach"]->setText(")"); // end-foreach, indented
 
 
-	return scope[svg::JAVASCRIPT_SCOPE];
+	return scope[svg::SCOPE_CURLY];
 }
 
 TreeSVG & MouseSVG::getListenerInitSubScope() const {
 	TreeSVG & scope = getListenerInitScope();
-	TreeSVG & subScope = scope[svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	TreeSVG & subScope = scope[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
 	if (subScope.empty()){
 		subScope->setText("with(listener.ctx)");
 	}
@@ -87,7 +89,16 @@ TreeSVG & MouseSVG::getListenerInitSubScope() const {
 
 void MouseSVG::addListenerInitGeoConf() const {
 	TreeSVG & scope = getListenerInitScope();
-	scope["bbox"]->setText("if (listener.hasAttribute('data-bbox')){ listener.bbox = listener.getAttribute('data-bbox') }");
+	// BBOX requires
+	drain::UtilsXML::getHeaderObject(root, svg::SCRIPT, "BBox") =
+			"function BBox(bbox){"
+			"if (typeof(bbox) === 'string'){ bbox = bbox.split(',') }"
+			"  this.left   = parseFloat(bbox[0]);"
+			"  this.top    = parseFloat(bbox[3]);"
+			"  this.width  = parseFloat(bbox[2]) - this.left;"
+			"  this.height = parseFloat(bbox[1]) - this.top;"
+			"}";
+	scope["bbox"]->setText("if (listener.hasAttribute('data-bbox')){ listener.bbox = new BBox(listener.getAttribute('data-bbox'))}");
 	scope["epsg"]->setText("if (listener.hasAttribute('data-epsg')){ listener.epsg = listener.getAttribute('data-epsg') }");
 
 }
@@ -95,7 +106,7 @@ void MouseSVG::addListenerInitGeoConf() const {
 void MouseSVG::connectClass(const drain::ClassXML & cls) const {
 	Logger mout(__FILE__, __FUNCTION__);
 
-	mout.attention("connecting CLASS ", cls , " = ", cls.strPrefixed());
+	mout.debug("connecting CLASS ", cls , " = ", cls.strPrefixed());
 	TreeSVG & scope = getListenerInitScope();
 	scope[cls]->setText("listener.ctx['", cls, "'] = group.querySelector('", cls.strPrefixed(), "')");
 	connectedObjects.insert(cls);

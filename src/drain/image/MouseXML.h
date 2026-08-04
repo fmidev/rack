@@ -37,6 +37,7 @@ SOFTWARE.
 #include "drain/StringBuilder.h"
 #include "drain/util/TreeXML.h"
 #include "drain/util/UtilsXML.h"
+#include "drain/util/JavaScriptXML.h"
 
 namespace drain {
 
@@ -61,7 +62,7 @@ public:
 		MONITOR_DRAG,    // Display something when mouse is dragged
 		// new:
 		DATA_ARRAY,		 // Image used as data array only, not to be displayed
-		SELECTOR,        // Interactive element illustrating a selection by the user
+		//SELECTOR,        // Interactive element illustrating a selection by the user
 	};
 
 	// NEW
@@ -77,9 +78,9 @@ public:
 
 	//DRAIN_XML_TREE(N) & root;
 
-	template <class N>
-	static
-	DRAIN_XML_TREE(N) & getOnLoadScript(DRAIN_XML_TREE(N) & root);
+	// template <class N>
+	// static
+	// DRAIN_XML_TREE(N) & getOnLoadScript(DRAIN_XML_TREE(N) & root);
 
 
 	// bool cursorCoord = false;
@@ -146,7 +147,7 @@ DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass);
 DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
 
 
-
+/*
 template <class N>
 DRAIN_XML_TREE(N) & MouseXML::getOnLoadScript(DRAIN_XML_TREE(N) & root){
 
@@ -159,11 +160,12 @@ DRAIN_XML_TREE(N) & MouseXML::getOnLoadScript(DRAIN_XML_TREE(N) & root){
 
 	root->setAttribute("onload", onload_fnc_name, "()"); // perhaps repeatedly
 
-	return drain::UtilsXML::ensureJavaScriptFunction(root, onload_fnc_name); // [svg::JAVASCRIPT_SCOPE](svg::JAVASCRIPT_SCOPE);
+	return drain::UtilsXML::ensureJavaScriptFunction(root, onload_fnc_name); // [svg::SCOPE_CURLY](svg::SCOPE_CURLY);
 	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
 
 
 }
+*/
 
 template <class N>
 //DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey, Processing proc){ // , const std::string & handlerName){
@@ -181,7 +183,7 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 	// mout.attention("ensure ",eventName, '/',handlerName);
 
 	// evt is a standard name?
-	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName, "evt");
+	DRAIN_XML_TREE(N) & scopeJS = JavaScriptXML::ensureJavaScriptFunction(root, handlerName, "evt");
 
 	if (proc == UNDEFINED){
 		if (eventKey == EventClass::MOVE){ // "move"){
@@ -228,7 +230,7 @@ DRAIN_XML_TREE(N) & MouseXML::getMouseListenerScope(DRAIN_XML_TREE(N) & root, XM
 	DRAIN_XML_TREE(N) & scopeJS = ensureMouseListener(root, elem, eventKey, proc);
 
 	DRAIN_XML_TREE(N) & subScopeJS =  scopeJS["SUBSCOPE"];
-	subScopeJS->setType(XML::JAVASCRIPT_SCOPE);
+	subScopeJS->setType(XML::SCOPE_CURLY);
 	// subScopeJS->setId();
 	subScopeJS->setText("with(ctx)");
 	// subScopeJS["COMMENT"]->setProgramComment(" local scope ");
@@ -253,7 +255,7 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
 
 	// mout.attention("init ", eventName, '/', handlerName);
 
-	DRAIN_XML_TREE(N) & scopeJS = UtilsXML::ensureJavaScriptFunction(root, handlerName);
+	DRAIN_XML_TREE(N) & scopeJS =  JavaScriptXML::ensureJavaScriptFunction(root, handlerName);
 	scopeJS->setId(handlerName);
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
@@ -264,7 +266,7 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
 	}
 
 	// Ensure init
-	DRAIN_XML_TREE(N) & onLoadScope = MouseXML::getOnLoadScript(root);
+	DRAIN_XML_TREE(N) & onLoadScope = JavaScriptXML::getOnLoadScript(root);
 	onLoadScope[handlerName]->setText(handlerName, "();");
 
 	return scopeJS;

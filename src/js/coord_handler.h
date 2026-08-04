@@ -4,6 +4,9 @@ const char* coord_handler = R"JS(/*  src/js/coord_handler.js  */
 /// Utilities for coordinate handling 
 
 function BBox(bbox){
+    if (typeof(bbox) === 'string'){
+	bbox = bbox.split(',')
+    }
     this.left   = parseFloat(bbox[0]);
     this.top    = parseFloat(bbox[3]);
     this.width  = parseFloat(bbox[2]) - this.left;
@@ -139,7 +142,7 @@ CoordHandler.prototype.getPosString = function(x,y){
 
 
 
-/// Default actions. Can be overridden by C++ code XML::JAVASCRIPT_SCOPE (see below)
+/// Default actions. Can be overridden by C++ code XML::SCOPE_CURLY (see below)
 /**
    Available "context variables":
    this.bboxFrame: SVG element BBOX rect

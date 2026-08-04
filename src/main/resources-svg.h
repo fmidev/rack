@@ -126,6 +126,20 @@ public:
 		return svgTrack;
 	}
 
+	/// Reserve slot for JavaScript code.
+	/**
+	 *   For consistency, the label should be same as the filename (base).
+	 *   For example, if the code is in file "js/mouse_listener.h", the label
+	 *   should be "mouse_listener"
+	 *
+	 */
+	inline
+	void ensureScript(const std::string & label, const std::string & code){
+		//drain::JavaScriptXML::ensureJavaScriptFunction()
+		drain::UtilsXML::getHeaderObject(getSVG(), svg::SCRIPT, label) = code;
+	}
+
+
 	// SVG output configuration (layout)
 	ConfSVG svgPanelConf; // under constr
 
@@ -155,7 +169,8 @@ public:
 	};
 
 
-	drain::image::TreeSVG & getOnLoadScript();
+	//drain::image::TreeSVG & getOnLoadScript();
+	drain::image::TreeSVG & ensureOnLoad(const std::string & function);
 
 	/**
 	 * 	  // static

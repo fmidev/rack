@@ -50,7 +50,7 @@ DRAIN_ENUM_DICT(image::svg::tag_t) = {
 		{"script",    image::svg::SCRIPT},
 		{"style",     image::svg::STYLE},
 		{"style_select", drain::image::svg::STYLE_SELECT},
-		{"javascript_scope", drain::image::svg::JAVASCRIPT_SCOPE},
+		{"javascript_scope", drain::image::svg::SCOPE_CURLY},
 		// -- Actual SVG elems
 		{"svg",       image::svg::SVG},
 		{"circle",    image::svg::CIRCLE},
