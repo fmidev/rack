@@ -102,8 +102,19 @@ class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
 
 public:
 
+	enum CoordUnit {
+		UNDEFINED=0,
+		PX=1,
+		M=2,
+		D=4,
+	};
+
+
+
+
 	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
-		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true);
+		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true);  // .setFill(true)
+		getParameters().link("units", units, drain::sprinter(drain::Enum<rack::CmdCoords::CoordUnit>::dict.getKeys()).str()).setSeparator(':');
 		getParameters().link("MASK", MASK, "Fill outside using CSS class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
@@ -115,10 +126,24 @@ public:
 
 	void exec() const override ;
 
+	std::string units;
+
 	drain::Range<int> resolution;
 
 
 };
+
+
+}
+
+namespace drain {
+
+DRAIN_ENUM_DICT(rack::CmdCoords::CoordUnit);
+
+}
+
+namespace rack {
+
 
 class CmdData : public CmdPolarBase { // , InteractiveSVG drain::BasicCommand,
 

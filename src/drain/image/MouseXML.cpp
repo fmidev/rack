@@ -45,7 +45,7 @@ DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_UP),
 		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DRAG),
 		// NEW
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, DATA_ARRAY),
+		// DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, DATA_ARRAY),
 		// DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, SELECTOR),
 };
 

@@ -547,14 +547,17 @@ template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const ClassXML & cls){
-	return image::TreeSVG::getKey(cls.strPrefixed()); // const !
+	//return image::TreeSVG::getKey(cls.strPrefixed()); // const !
+	//return image::TreeSVG::getKey((const std::string &)cls); // const !
+	return (const std::string &)cls;
 }
 
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 inline
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const drain::SelectXML<image::svg::tag_t> & sel){
-	return image::TreeSVG::getKey(sel.str()); // const !
+	// return image::TreeSVG::getKey(sel.str()); // const !
+	return (const std::string &)sel;
 }
 
 

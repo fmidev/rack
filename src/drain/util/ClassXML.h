@@ -109,7 +109,7 @@ public:
 	virtual inline
 	~ClassXML(){};
 
-	/*
+	/* from string
 	inline
 	bool empty() const {
 		return baseStr.empty();
@@ -141,12 +141,6 @@ public:
 	template <typename T>
 	void set(const T & arg);
 
-	/*
-	inline
-	operator const std::string & () const {
-		return baseStr; // *this;
-	}
-	*/
 
 	inline
 	const std::string & str() const {

@@ -37,17 +37,8 @@ SOFTWARE.
 
 namespace drain {
 
-/*
-DRAIN_ENUM_DICT(image::MouseXML::ElemClass) = {
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MOUSE),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MOUSE_LISTENER),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_MOVE),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DOWN),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_UP),
-		DRAIN_ENUM_ENTRY(image::MouseXML::ElemClass, MONITOR_DRAG),
-};
-*/
+#include "drain/js/coords.h"
+
 
 namespace image {
 
@@ -88,8 +79,14 @@ TreeSVG & MouseSVG::getListenerInitSubScope() const {
 }
 
 void MouseSVG::addListenerInitGeoConf() const {
+
+	// const TreeSVG & functBBox =
+	drain::JavaScriptXML::ensureScript(root, "coords", javascript::coords);
+
 	TreeSVG & scope = getListenerInitScope();
 	// BBOX requires
+
+	/*
 	drain::UtilsXML::getHeaderObject(root, svg::SCRIPT, "BBox") =
 			"function BBox(bbox){"
 			"if (typeof(bbox) === 'string'){ bbox = bbox.split(',') }"
@@ -98,6 +95,7 @@ void MouseSVG::addListenerInitGeoConf() const {
 			"  this.width  = parseFloat(bbox[2]) - this.left;"
 			"  this.height = parseFloat(bbox[1]) - this.top;"
 			"}";
+	 */
 	scope["bbox"]->setText("if (listener.hasAttribute('data-bbox')){ listener.bbox = new BBox(listener.getAttribute('data-bbox'))}");
 	scope["epsg"]->setText("if (listener.hasAttribute('data-epsg')){ listener.epsg = listener.getAttribute('data-epsg') }");
 

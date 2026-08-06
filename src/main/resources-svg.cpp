@@ -96,7 +96,7 @@ drain::image::TreeSVG & GraphicsContext::ensureOnLoad(const std::string & expr){
 		std::string safeKey;
 		drain::StringTools::getSafeKey(exprTrimmed, safeKey);
 		drain::image::TreeSVG & line = onloadFunction[safeKey];
-		mout.note("created entry '", safeKey, "' for '", exprTrimmed, "'");
+		mout.info("created safe key '", safeKey, "' for '", exprTrimmed, "'");
 		line->setText(exprTrimmed);
 		return line;
 	}

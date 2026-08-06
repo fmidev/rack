@@ -109,6 +109,12 @@ public:
 		return appendTitleElements(conf, group, std::string(anchor), elemClass);
 	}
 
+	static inline
+	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const drain::ClassXML & anchor, RackSVG::ElemClass elemClass){
+		return appendTitleElements(conf, group, (const std::string &)anchor, elemClass);
+	}
+
+
 	template <class T>
 	static inline
 	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const T & anchorId, RackSVG::ElemClass elemClass){

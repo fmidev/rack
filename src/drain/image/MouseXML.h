@@ -61,7 +61,7 @@ public:
 		MONITOR_UP,      // Display something when mouse is released
 		MONITOR_DRAG,    // Display something when mouse is dragged
 		// new:
-		DATA_ARRAY,		 // Image used as data array only, not to be displayed
+		// DATA_ARRAY,		 // Image used as data array only, not to be displayed
 		//SELECTOR,        // Interactive element illustrating a selection by the user
 	};
 
@@ -75,22 +75,10 @@ public:
 		CLICK,
 	};
 
-
-	//DRAIN_XML_TREE(N) & root;
-
-	// template <class N>
-	// static
-	// DRAIN_XML_TREE(N) & getOnLoadScript(DRAIN_XML_TREE(N) & root);
-
-
 	// bool cursorCoord = false;
+
 	/**
-	 *   Future option: other scope them document
-	template <class T>
-	static void addVisibilitySwitch(NodeXML<T> &dstElem,
-			NodeXML<T> &controlElem, const std::string &scope = "document",
-			const std::string &mouseEventOn = "onmouseenter",
-			const std::string &mouseEventOff = "onmouseleave");
+	 *   Future option: other scope than document
 	 */
 	static
 	void addVisibilitySwitch(XML &dstElem, XML &listenerElem, const std::string & scope = "document",

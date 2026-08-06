@@ -96,6 +96,7 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::CURRENT_COMPOUND); // ("*");
 	backgroundRect->setAlign(AlignSVG::HORZ_FILL);
 	// backgroundRect->setHeight(40); // TODO!!
+	backgroundRect->setAttribute("name", ImagePanel::BACKGROUND);
 
 	// Lower... for GENERAL as well.
 	switch (elemClass) {
@@ -123,7 +124,9 @@ drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image:
 		break;
 	}
 
-	return appendTitleElements(conf, object, ImagePanel::BACKGROUND.str(), elemClass); // Enum wrapper?
+	// const std::string & keijo = ImagePanel::BACKGROUND;
+
+	return appendTitleElements(conf, object, ImagePanel::BACKGROUND, elemClass); // Enum wrapper?
 
 }
 

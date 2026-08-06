@@ -37,8 +37,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef DRAIN_UTILS_XML
 #define DRAIN_UTILS_XML
 
-#include "XML.h"
+// #include "XML.h"
 #include "SelectorXML.h" // Only for StyleUtils :-/
+#include "TreeXML.h"
+
 
 namespace drain {
 
@@ -205,7 +207,41 @@ public:
 	}
 
 
+	template <typename N>
+	static
+	DRAIN_XML_TREE(N) & getHeaderObject(DRAIN_XML_TREE(N) & root, typename N::xml_tag_t tag,
+			const typename DRAIN_XML_TREE(N)::path_elem_t & key = typename DRAIN_XML_TREE(N)::path_elem_t()){
 
+		const typename DRAIN_XML_TREE(N)::path_elem_t & finalKey = !key.empty() ? key : Enum<typename N::xml_tag_t>::getKey(tag);
+
+		if (!root.hasChild(finalKey)){
+			DRAIN_XML_TREE(N) & child = root.prependChild(finalKey); // consider path type! getDefaultObject
+			child->setType(tag);
+			return child;
+		}
+		else {
+			return root[finalKey];
+		}
+	};
+
+	template <typename N>
+	static
+	DRAIN_XML_TREE(N) & appendHeaderObject(DRAIN_XML_TREE(N) & root, typename N::xml_tag_t tag,
+			const typename DRAIN_XML_TREE(N)::path_elem_t & key = typename DRAIN_XML_TREE(N)::path_elem_t()){
+
+		const typename DRAIN_XML_TREE(N)::path_elem_t & finalKey = !key.empty() ? key : Enum<typename N::xml_tag_t>::getKey(tag);
+
+		if (!root.hasChild(finalKey)){
+			DRAIN_XML_TREE(N) & child = root.add(finalKey); // consider path type! getDefaultObject
+			child->setType(tag);
+			return child;
+		}
+		else {
+			return root[finalKey];
+		}
+	};
+
+	/*
 	template <typename T>
 	static
 	T & getHeaderObject(T & root, typename T::node_data_t::xml_tag_t tag, const typename T::path_elem_t & key = typename T::path_elem_t()){
@@ -237,6 +273,7 @@ public:
 			return root[finalKey];
 		}
 	};
+	*/
 
 	/// If element is of type STYLE, return it. If not, return header object of type STYLE
 	/**

@@ -57,10 +57,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 #include "drain/js/coord_handler.h"
+#include "drain/js/data_value_tracker.h"
 #include "drain/js/textbox_flipper.h"
 #include "js/image_coord_tracker.h"
 #include "js/image_value_tracker.h"
-
+#include "js/radar_data_encoding.h"
 
 // const std::string CmdPolarBase::DATA_ID = "data-latest";
 
@@ -271,7 +272,7 @@ drain::image::TreeSVG & addCoordMonitor(drain::image::TreeSVG & textObject, Mous
 }
 
 // Under construction...
-
+/*
 template <typename N, typename ...TT>
 static
 drain::UnorderedMultiTree<N> & ensureJSFunctionScope(drain::UnorderedMultiTree<N> & root,
@@ -296,7 +297,7 @@ drain::UnorderedMultiTree<N> & ensureJSFunctionScope(drain::UnorderedMultiTree<N
 	// T & jsFunction = getHeaderObject(root, T::node_data_t::xml_tag_t::SCRIPT);
 
 }
-
+*/
 
 void CmdRect::exec() const {
 
@@ -447,8 +448,20 @@ void CmdRect::exec() const {
 
 }
 
+}
 
+namespace drain {
 
+DRAIN_ENUM_DICT(rack::CmdCoords::CoordUnit) = {
+		DRAIN_ENUM_ENTRY(rack::CmdCoords::CoordUnit, UNDEFINED),
+		DRAIN_ENUM_ENTRY(rack::CmdCoords::CoordUnit, PX),
+		DRAIN_ENUM_ENTRY(rack::CmdCoords::CoordUnit, D),
+		DRAIN_ENUM_ENTRY(rack::CmdCoords::CoordUnit, M),
+};
+
+}
+
+namespace rack {
 //#include "js/textbox_flipper.h"
 
 void CmdCoords::exec() const {
@@ -463,6 +476,11 @@ void CmdCoords::exec() const {
 		mout.warn("currentImagePanel empty");
 		return;
 	}
+
+	drain::EnumFlagger<drain::MultiFlagger<CoordUnit> > unitFlagger;
+	unitFlagger.separator = ':';
+	unitFlagger.set(units);
+	mout.attention(unitFlagger.str());
 
 	// Modify SVG header. Notice inverse order (for prepend() )
 	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = image_coord_tracker;
@@ -491,15 +509,15 @@ void CmdCoords::exec() const {
 
 	//image_coord_tracker.h
 
-	//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "textbox_flipper") = textbox_flipper;
-	ctx.ensureScript("textbox_flipper", javascript::textbox_flipper);
-	// ctx.ensureScript("image_coord_tracker", image_coord_tracker);
 	ctx.ensureScript("coords",     javascript::coords);
-	ctx.ensureScript("coord_handler",     javascript::coord_handler);
-	ctx.ensureScript("image_coord_tracker", javascript::image_coord_tracker);
+	ctx.ensureScript("textbox_flipper", javascript::textbox_flipper);
+
 
 	MouseSVG mouseMoveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName());
 	if (!mouseMoveSVG.listenerIsSet(listenerPlane)){
+		// TreeSVG & inits =  mouseMoveSVG.getListenerInitScope();
+		// inits++ ->setText("// ");
+
 		//TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane, COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
 		mouseMoveSVG.connect(COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
 		TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane);
@@ -510,8 +528,6 @@ void CmdCoords::exec() const {
 			routine++ ->setText("flipTextBoxWithThreshold(", LayoutSVG::ADAPTER, ", rx, ry, 0.33);");
 		}
 		// routine++ ->setProgramComment("Modified by ", getName());
-		TreeSVG & inits =  mouseMoveSVG.getListenerInitScope();
-		inits++ ->setText("// ");
 	}
 	// Optional extra modifications with:
 	// TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
@@ -546,6 +562,7 @@ void CmdCoords::exec() const {
 	//
 	drain::image::TreeSVG & dataImageElem = superPanel.getDataImage(filenameFinal, data.getGeometry().getAreaGeometry());
 	addGeoData(data, dataImageElem);
+	dataImageElem->setId();
 	//dataImageElem->setUrl(filenameFinal);
 
 	static
@@ -557,20 +574,27 @@ void CmdCoords::exec() const {
 	//MouseSVG mouseDownSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::DOWN, getName());
 	MouseSVG mouseMove2SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"2");
 	if (!mouseMove2SVG.listenerIsSet(listenerPlane)){
-		mouseMove2SVG.addListenerInitGeoConf();
-		ctx.ensureScript("image_value_tracker", javascript::image_value_tracker);
-		// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 
-		TreeSVG & routine = mouseMove2SVG.setListener(listenerPlane, VALUE_DISPLAY, drain::image::MouseXML::ElemClass::DATA_ARRAY);
-		// routine++ ->setText(VALUE_DISPLAY, ".textContent=`VALUE=${x},${y}`;");
-		routine++ ->setText(VALUE_DISPLAY, ".textContent=getDataValue(", MouseXML::ElemClass::DATA_ARRAY, ",x,y);");
+		mouseMove2SVG.addListenerInitGeoConf();
+		mouseMove2SVG.connect(VALUE_DISPLAY, ImagePanel::DATA_ARRAY);
 
 		TreeSVG & inits =  mouseMove2SVG.getListenerInitSubScope();
-		inits++ ->setText("init_data_elem(", MouseXML::ElemClass::DATA_ARRAY,")");
+		// inits++ ->setText("init_data_elem(", ImagePanel::DATA_ARRAY, ',',  " );");
+		// inits++ ->setText(ImagePanel::DATA_ARRAY,".encoding = new RadarDataEncoding(", ImagePanel::DATA_ARRAY,".getAttribute('data-encoding'));");
+		inits++ ->setText("init_data_elem(", ImagePanel::DATA_ARRAY, ", new RadarDataEncoding(", ImagePanel::DATA_ARRAY,".getAttribute('data-encoding')) );");
+		// inits++ ->setText("console.log(", ImagePanel::DATA_ARRAY, ")");
+
+		ctx.ensureScript("radar_data_encoding", javascript::radar_data_encoding); // RadarDataEncoding
+		ctx.ensureScript("data_value_tracker",  javascript::data_value_tracker);
+
+		TreeSVG & routine = mouseMove2SVG.setListener(listenerPlane); //, VALUE_DISPLAY, ImagePanel::DATA_ARRAY);
+		// routine++ ->setText(VALUE_DISPLAY, ".textContent=`VALUE=${x},${y}`;");
+		routine++ ->setText(VALUE_DISPLAY, ".textContent=getDataValue(", ImagePanel::DATA_ARRAY, ",x,y);");
+
 
 	}
 
-	drain::UtilsXML::ensureStyle(ctx.getSVG(), drain::image::MouseXML::ElemClass::DATA_ARRAY, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), ImagePanel::DATA_ARRAY, {
 			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
 	});
 
@@ -646,7 +670,7 @@ void CmdData::exec() const {
 
 	drain::Logger mout(ctx.log, __FILE__, getName(), __FUNCTION__, __LINE__);
 
-	drain::UtilsXML::ensureStyle(ctx.getSVG(), drain::image::MouseXML::ElemClass::DATA_ARRAY, {
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), ImagePanel::DATA_ARRAY, {
 			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
 	});
 
