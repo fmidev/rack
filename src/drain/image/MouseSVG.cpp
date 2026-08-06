@@ -37,86 +37,11 @@ SOFTWARE.
 
 namespace drain {
 
-#include "drain/js/coords.h"
+// #include "drain/js/coords.h"
 
 
 namespace image {
 
-TreeSVG & MouseSVG::getListenerInitScope() const {
-
-	TreeSVG & mouseInit = setListenerInit();
-
-	TreeSVG & installer = mouseInit[mouseEvent+"INSTALLER"]; // (svg::SCOPE_CURLY);
-	installer->setText("document.querySelectorAll('.", MouseXML::MOUSE ,"').forEach(\n");
-
-	TreeSVG & scope = installer[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
-	if (scope.empty()){
-		scope->setText("group =>");
-		scope.addChild()->setProgramComment("MouseSVG");
-		// TreeSVG & forEach2b = scope.addChild()
-		scope.addChild()->setText("var listener = group.querySelector('.", MouseXML::MOUSE_LISTENER ,"');");
-		//scope.addChild() = "if (listener) with (listener)";
-		scope.addChild() = "if (listener)";
-		//scope.addChild() = "ctx = listener; ";
-		scope[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
-		scope[svg::SCOPE_CURLY]["ensure_CTX"] = "if (!('ctx' in listener))  listener.ctx = {};";
-		// installer.addChild() = "}";
-		//TreeSVG & subScope = scope[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
-	}
-	installer["end-foreach"]->setText(")"); // end-foreach, indented
-
-
-	return scope[svg::SCOPE_CURLY];
-}
-
-TreeSVG & MouseSVG::getListenerInitSubScope() const {
-	TreeSVG & scope = getListenerInitScope();
-	TreeSVG & subScope = scope[svg::SCOPE_CURLY](svg::SCOPE_CURLY);
-	if (subScope.empty()){
-		subScope->setText("with(listener.ctx)");
-	}
-	return subScope;
-}
-
-void MouseSVG::addListenerInitGeoConf() const {
-
-	// const TreeSVG & functBBox =
-	drain::JavaScriptXML::ensureScript(root, "coords", javascript::coords);
-
-	TreeSVG & scope = getListenerInitScope();
-	// BBOX requires
-
-	/*
-	drain::UtilsXML::getHeaderObject(root, svg::SCRIPT, "BBox") =
-			"function BBox(bbox){"
-			"if (typeof(bbox) === 'string'){ bbox = bbox.split(',') }"
-			"  this.left   = parseFloat(bbox[0]);"
-			"  this.top    = parseFloat(bbox[3]);"
-			"  this.width  = parseFloat(bbox[2]) - this.left;"
-			"  this.height = parseFloat(bbox[1]) - this.top;"
-			"}";
-	 */
-	scope["bbox"]->setText("if (listener.hasAttribute('data-bbox')){ listener.bbox = new BBox(listener.getAttribute('data-bbox'))}");
-	scope["epsg"]->setText("if (listener.hasAttribute('data-epsg')){ listener.epsg = listener.getAttribute('data-epsg') }");
-
-}
-
-void MouseSVG::connectClass(const drain::ClassXML & cls) const {
-	Logger mout(__FILE__, __FUNCTION__);
-
-	mout.debug("connecting CLASS ", cls , " = ", cls.strPrefixed());
-	TreeSVG & scope = getListenerInitScope();
-	scope[cls]->setText("listener.ctx['", cls, "'] = group.querySelector('", cls.strPrefixed(), "')");
-	connectedObjects.insert(cls);
-}
-
-void MouseSVG::connectTag(const std::string & arg) const {
-	// Logger mout(__FILE__, __FUNCTION__);
-
-	TreeSVG & scope = getListenerInitScope();
-	scope[arg]->setText("listener.ctx['", arg, "'] = group.querySelector('", arg, "')");
-	connectedObjects.insert(arg);
-}
 
 
 

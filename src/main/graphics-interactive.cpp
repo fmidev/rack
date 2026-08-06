@@ -509,7 +509,7 @@ void CmdCoords::exec() const {
 
 	//image_coord_tracker.h
 
-	ctx.ensureScript("coords",     javascript::coords);
+	ctx.ensureScript("coords",          ::javascript::coords);
 	ctx.ensureScript("textbox_flipper", javascript::textbox_flipper);
 
 
