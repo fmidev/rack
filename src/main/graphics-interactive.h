@@ -35,14 +35,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <vector>
 #include <drain/prog/Command.h>
+#include <drain/image/MouseXML2.h>
 #include <drain/util/Base64.h>
-
-#include <drain/image/MouseXML.h>
 
 #include "hi5/Hi5.h"
 #include "resources.h"
 #include "graphics-overlay.h"
 
+typedef MouseXML2<drain::image::NodeSVG> MouseSVG;
+DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::ElemClass);
+DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::EventClass);
 
 //
 

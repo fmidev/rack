@@ -135,28 +135,8 @@ DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass);
 DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
 
 
-/*
-template <class N>
-DRAIN_XML_TREE(N) & MouseXML::getOnLoadScript(DRAIN_XML_TREE(N) & root){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	static
-	const std::string onload_fnc_name("drain_onload");
-
-	mout.experimental<LOG_INFO>("Adding mouse interaction: SVG onload=", onload_fnc_name, "()");
-
-	root->setAttribute("onload", onload_fnc_name, "()"); // perhaps repeatedly
-
-	return drain::UtilsXML::ensureJavaScriptFunction(root, onload_fnc_name); // [svg::SCOPE_CURLY](svg::SCOPE_CURLY);
-	// return drain::UtilsXML::ensureJavaScriptFunctionScope(ctx.getSVG(), onload_fnc_name);
-
-
-}
-*/
 
 template <class N>
-//DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey, Processing proc){ // , const std::string & handlerName){
 DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, Processing proc){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -209,7 +189,6 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 }
 
 template <class N>
-//DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const std::string & eventKey, Processing proc){ // , const std::string & handlerName){
 DRAIN_XML_TREE(N) & MouseXML::getMouseListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, Processing proc){ // , const std::string & handlerName){
 
 
@@ -260,15 +239,16 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
 	return scopeJS;
 }
 
-
-
 }
-
 
 // DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
 // DRAIN_ENUM_DICT(image::MouseXML::EventClass);
 
 }
+
+#endif // DRAIN_IMAGE_MOUSEXML_H_
+
+
 // Display something when mouse is dragged
 /**
  *   Future option: other scope them document
@@ -303,4 +283,3 @@ inline void MouseXML::addVisibilitySwitch(NodeXML<T> &dstElem,
 
  // 
 
-#endif // DRAIN_IMAGE_MOUSEXML_H_ 

@@ -48,12 +48,14 @@ namespace drain {
 
 namespace image {
 
-typedef MouseXML2<NodeSVG> MouseSVG;
+// typedef MouseXML2<NodeSVG> MouseSVG;
 
 }
 
+/*
 DRAIN_GETKEY_ENUM(image::TreeSVG, image::MouseXML::ElemClass);
 DRAIN_GETKEY_ENUM(image::TreeSVG, image::MouseXML::EventClass);
+*/
 
 }
 

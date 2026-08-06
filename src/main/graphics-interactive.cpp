@@ -45,6 +45,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/MouseXML.h>
 #include <drain/image/MouseSVG.h>
 #include <drain/image/TextSVG.h>
+#include <drain/js/coord_handler.h>
+#include <drain/js/data_value_tracker.h>
+#include <drain/js/textbox_flipper.h>
 
 #include "graphics-base.h"
 #include "graphics-panel.h"
@@ -52,9 +55,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-interactive.h"
 
 // #include "js/add_mouse_listeners.h"
-#include "drain/js/coord_handler.h"
-#include "drain/js/data_value_tracker.h"
-#include "drain/js/textbox_flipper.h"
 #include "js/image_coord_tracker.h"
 #include "js/image_value_tracker.h"
 #include "js/radar_data_encoding.h"
