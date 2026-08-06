@@ -52,16 +52,19 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-interactive.h"
 
 // #include "js/add_mouse_listeners.h"
-
-
-namespace rack {
-
 #include "drain/js/coord_handler.h"
 #include "drain/js/data_value_tracker.h"
 #include "drain/js/textbox_flipper.h"
 #include "js/image_coord_tracker.h"
 #include "js/image_value_tracker.h"
 #include "js/radar_data_encoding.h"
+
+// ---- Experimental ----
+
+#include "js/base64ToArrayLE.h"
+
+namespace rack {
+
 
 // const std::string CmdPolarBase::DATA_ID = "data-latest";
 
@@ -741,9 +744,6 @@ void CmdData::exec() const {
 }
 
 
-// ---- Experimental ----
-
-#include "js/base64ToArrayLE.h"
 
 
 // Important. Keep this as future option.

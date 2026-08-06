@@ -1,3 +1,6 @@
+/** Automatically generated from " src/drain/js/data_value_tracker.js " */
+namespace javascript {
+const char *data_value_tracker = R"JS(
 
 // NEW2, pruned!
 
@@ -64,4 +67,7 @@ function getDataValue(dataElem, x, y) {
     return dataElem.encoding.decode(v);
     
 }
+
+)JS";
+} // javascript::
 

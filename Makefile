@@ -20,8 +20,14 @@ release:
 
 #xINCLUDE_TAG='//|#include'
 
-#src/js/%.h: src/js/%.js
 %.h: %.js
+	src/js2cpp.sh $<
+	@ echo 'Checking version control...'
+	git status $< $@ $(basename $@).cpp 
+
+
+#src/js/%.h: src/js/%.js
+%.H_OLD: %.js
 	@ echo 'Checking syntax...'
 	js --check $<
 	@ echo 'Ok'
@@ -57,8 +63,10 @@ release:
 #https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html
 
 javascript: src/drain/js/coords.h src/drain/js/coord_handler.h src/drain/js/textbox_flipper.h src/drain/js/data_value_tracker.h src/js/radar_data_encoding.h  src/js/image_coord_tracker.h  src/js/image_value_tracker.h src/js/base64ToArrayLE.h
-	git status $^
+	git status --short $^ $(patsubst %.h,%.cpp,$^)
+#git status 
 	@echo Completed $@
+
 
 include Makefile-doxygen
 
