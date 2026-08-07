@@ -34,15 +34,33 @@ SOFTWARE.
 #define DRAIN_IMAGE_MOUSEXML_H_
 
 #include "drain/Enum.h"
+#include "drain/util/EnumFlagger.h"
+
 #include "drain/StringBuilder.h"
 #include "drain/util/TreeXML.h"
 #include "drain/util/UtilsXML.h"
 #include "drain/util/JavaScriptXML.h"
+#include "drain/js/coords.h"
 
 namespace drain {
 
 namespace image {
 
+/**
+ *  In running JavaScript on the rendered (SVG or HTML) document,
+ *  the processing is divided in two sections:
+ *
+ *  - initialisation of the listener routine
+ *  - running the listener routine
+ *
+ *  The idea in initialisation is to minimize processing time/load of the actual listener routine.
+ *  For example, the final routine should not repeatedly call query functions whose return value is constant.
+ *  Examples of such functions are getElementById() and queryElem().
+ *
+ *  Also, coordinate handling is optimised such that georeferenced coordinates are not computed unless
+ *  they are explicitly requested by a routine.
+ *
+ */
 class MouseXML {
 
 public:
@@ -77,8 +95,9 @@ public:
 
 	// bool cursorCoord = false;
 
+	/// Show an element only if the mouse is on another specified element (listenerElem).
 	/**
-	 *   Future option: other scope than document
+	 *
 	 */
 	static
 	void addVisibilitySwitch(XML &dstElem, XML &listenerElem, const std::string & scope = "document",
@@ -96,7 +115,7 @@ public:
 	static
 	void getEventFunctionName(std::string & eventName, const std::string prefix="");
 
-	enum Processing {
+	enum CoordinateProcessing {
 		UNDEFINED = 0,
 		BASIC = 1,
 		COORDS = 2,
@@ -104,18 +123,38 @@ public:
 		GEOGRAPHIC_COORDS = 4,
 	};
 
+	typedef drain::EnumFlagger<drain::MultiFlagger<CoordinateProcessing> > CoordFlagger;
 
+
+	/// Return internal ("top-level") routine for mouse event. The routine calls subroutine (that has a sub scope).
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName, Processing proc = UNDEFINED);
+	DRAIN_XML_TREE(N) & getListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName);
 
 	template <class N>
-	static
-	DRAIN_XML_TREE(N) & getMouseListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName, Processing proc = UNDEFINED);
+	DRAIN_XML_TREE(N) & adjustListenerGeoRef(DRAIN_XML_TREE(N) & scopeJS, CoordFlagger::ivalue_t  coords);
 
+
+	/// Return ("top-level") initialisation script scope for a mouse event. The routine calls subroutine (that has a sub scope).
+	template <class N>
+	inline
+	DRAIN_XML_TREE(N) & getListenerInitScope(DRAIN_XML_TREE(N) & root, const EventClass & mouseEventKey) const;
+
+	// template <class N>
+	//inline
+	//DRAIN_XML_TREE(N) & adjustListenerInitGeoRef(DRAIN_XML_TREE(N) & root, const EventClass & mouseEventKey) const;
+
+protected:
+
+	/// Create internal ("top-level") routine for mouse event, if it does not exist.
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureMouseListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventName, Processing proc = UNDEFINED); //const std::string & eventName);
+	DRAIN_XML_TREE(N) & ensureListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName, CoordinateProcessing proc = UNDEFINED);
+
+	/// Create internal ("top-level") initialisation script scope for mouse event, if it does not exist.
+	template <class N>
+	static
+	DRAIN_XML_TREE(N) & ensureListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventName, CoordinateProcessing proc = UNDEFINED); //const std::string & eventName);
 
 
 };
@@ -135,9 +174,36 @@ DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass);
 DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
 
 
+template <class N>
+DRAIN_XML_TREE(N) & MouseXML::adjustListenerGeoRef(DRAIN_XML_TREE(N) & scopeJS, CoordFlagger::ivalue_t  coords){
+
+	const CoordFlagger flags(coords);
+
+	if (flags.isSet(COORDS)){
+		scopeJS[flags.str()] -> setProgramComment("Coord request: ", flags.str());
+		// TODO: detect if MOVE has already been defined, and drop (duplicated) coordinate processing from here.
+		scopeJS["ctx.bbox"] = "ctx.bbox = evt.target.getBoundingClientRect();";
+		scopeJS["COORDS"] -> setProgramComment("Image coordinates");
+		scopeJS["ctx.x"] = "ctx.x = Math.floor(evt.clientX - ctx.bbox.left);";
+		scopeJS["ctx.y"] = "ctx.y = Math.floor(evt.clientY - ctx.bbox.top);";
+		if (flags.isSet(RELATIVE_COORDS)){
+			scopeJS["RELATIVE_COORDS"] -> setProgramComment("Relative coordinates");
+			scopeJS["ctx.rx"] = "ctx.rx = ctx.x / ctx.bbox.width;";
+			scopeJS["ctx.ry"] = "ctx.ry = ctx.y / ctx.bbox.height;";
+			if (flags.isSet(GEOGRAPHIC_COORDS)){
+				scopeJS["GEOGRAPHIC_COORDS"] -> setProgramComment("Geographic coordinates");
+				// geo_bbox.left + rx*geo_bbox.width
+				scopeJS["ctx.gx"] = "ctx.gx = ctx.georef.bbox.left + ctx.rx*ctx.georef.bbox.width;";
+				scopeJS["ctx.gy"] = "ctx.gy = ctx.georef.bbox.top  + ctx.ry*ctx.georef.bbox.height;";
+			}
+		}
+	}
+
+}
+
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, Processing proc){
+DRAIN_XML_TREE(N) & MouseXML::ensureListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, CoordinateProcessing proc){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	std::string eventName = drain::Enum<EventClass>::getKey(eventKey); //StringBuilder<>("onmouse", eventName);
@@ -170,13 +236,18 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 		if (level >= COORDS){
 			// TODO: detect if MOVE has already been defined, and drop (duplicated) coordinate processing from here.
 			scopeJS++ = "ctx.bbox = evt.target.getBoundingClientRect();";
+			scopeJS++ -> setProgramComment("Image coordinates");
 			scopeJS++ = "ctx.x = Math.floor(evt.clientX - ctx.bbox.left);";
 			scopeJS++ = "ctx.y = Math.floor(evt.clientY - ctx.bbox.top);";
 			if (level >= RELATIVE_COORDS){
+				scopeJS++ -> setProgramComment("Relative coordinates");
 				scopeJS++ = "ctx.rx = ctx.x / ctx.bbox.width;";
 				scopeJS++ = "ctx.ry = ctx.y / ctx.bbox.height;";
 				if (level >= GEOGRAPHIC_COORDS){
-					scopeJS++ -> setProgramComment("todo: GeoCoords");
+					scopeJS++ -> setProgramComment("Geographic coordinates");
+					// geo_bbox.left + rx*geo_bbox.width
+					scopeJS++ = "ctx.gx = ctx.georef.bbox.left + ctx.rx*ctx.georef.bbox.width;";
+					scopeJS++ = "ctx.gy = ctx.georef.bbox.top  + ctx.ry*ctx.georef.bbox.height;";
 				}
 			}
 		}
@@ -189,12 +260,12 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListener(DRAIN_XML_TREE(N) & root, XML 
 }
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::getMouseListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, Processing proc){ // , const std::string & handlerName){
-
+DRAIN_XML_TREE(N) & MouseXML::getListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey){
+	// , CoordinateProcessing proc){ // , const std::string & handlerName){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	DRAIN_XML_TREE(N) & scopeJS = ensureMouseListener(root, elem, eventKey, proc);
+	DRAIN_XML_TREE(N) & scopeJS = ensureListener(root, elem, eventKey);
 
 	DRAIN_XML_TREE(N) & subScopeJS =  scopeJS["SUBSCOPE"];
 	subScopeJS->setType(XML::SCOPE_CURLY);
@@ -209,8 +280,8 @@ DRAIN_XML_TREE(N) & MouseXML::getMouseListenerScope(DRAIN_XML_TREE(N) & root, XM
 }
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
-		const EventClass & eventKey, Processing proc){ // , const std::string & eventKey){
+DRAIN_XML_TREE(N) & MouseXML::ensureListenerInit(DRAIN_XML_TREE(N) & root,
+		const EventClass & eventKey, CoordinateProcessing proc){ // , const std::string & eventKey){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -227,6 +298,7 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
 		int level = static_cast<int>(proc);
+		scopeJS++ -> setProgramComment("GeoCoords:");
 		if (level >= GEOGRAPHIC_COORDS){
 			scopeJS++ -> setProgramComment("todo: GeoCoords");
 		}
@@ -239,47 +311,76 @@ DRAIN_XML_TREE(N) & MouseXML::ensureMouseListenerInit(DRAIN_XML_TREE(N) & root,
 	return scopeJS;
 }
 
+/**
+ * \tparam N - Node type for the tree, DRAIN_XML_TREE(N)
+ */
+template <class N>
+inline
+DRAIN_XML_TREE(N) & MouseXML::getListenerInitScope(DRAIN_XML_TREE(N) & root, const EventClass & mouseEventKey) const {
+
+	DRAIN_XML_TREE(N) & mouseInit = ensureListenerInit(root, mouseEventKey);
+	//setListenerInit();
+
+	std::string installerKey = drain::Enum<MouseXML::EventClass>::getKey(mouseEventKey) + "INSTALLER";
+
+	DRAIN_XML_TREE(N) & installer = mouseInit[installerKey];
+	installer->setText("document.querySelectorAll('.", MouseXML::MOUSE, "').forEach(\n");
+
+	DRAIN_XML_TREE(N) & scope = installer[N::tag_t::SCOPE_CURLY](N::tag_t::SCOPE_CURLY);
+	if (scope.empty()){
+		scope->setText("group =>");
+		scope.addChild()->setProgramComment("MouseXML");
+		scope.addChild()->setText("var listener = group.querySelector('.", MouseXML::MOUSE_LISTENER, "');");
+	}
+	installer["end-foreach"]->setText(")");
+
+	DRAIN_XML_TREE(N) & initScope = scope[N::tag_t::SCOPE_CURLY];
+	if (initScope.empty()){
+		initScope->setType(N::tag_t::SCOPE_CURLY);
+		initScope->setText("if (listener)");
+		initScope["ensure_CTX"] = "if (!('ctx' in listener))  listener.ctx = {};";
+	}
+
+	// if GEOREF
+	if (!initScope.hasChild("georef")){
+		initScope["georef_comment"]->setProgramComment("Georeference added by ", __FUNCTION__, " (unconditional for now)");
+		initScope["georef"]->setText("if (!('georef' in listener.ctx)){ listener.ctx.georef = {}; }");
+		initScope["georef_bbox"]->setText("if (listener.hasAttribute('data-bbox')){ listener.ctx.georef.bbox = new BBox(listener.getAttribute('data-bbox'))};");
+		// consider other element (IMAGE title)
+		initScope["georef_epsg"]->setText("if (listener.hasAttribute('data-epsg')){ listener.ctx.georef.epsg = listener.getAttribute('data-epsg') };");
+	}
+
+	return initScope;
+	//return scope[N::tag_t::SCOPE_CURLY];
 }
+
+/*
+template <class N>
+inline
+DRAIN_XML_TREE(N) & MouseXML::adjustListenerInitGeoRef(DRAIN_XML_TREE(N) & root, const EventClass & mouseEventKey) const {
+
+	DRAIN_XML_TREE(N) & initScope = getListenerInitScope(root, mouseEventKey);
+
+	if (!initScope.hasChild("georef")){
+		initScope["georef"]->setText("if (!('georef' in listener.ctx)){ listener.ctx.georef = {}; }");
+		initScope["georef_bbox"]->setText("if (listener.hasAttribute('data-bbox')){ listener.ctx.georef.bbox = new BBox(listener.getAttribute('data-bbox'))};");
+		// consider other element (IMAGE title)
+		initScope["georef_epsg"]->setText("if (listener.hasAttribute('data-epsg')){ listener.ctx.georef.epsg = listener.getAttribute('data-epsg') };");
+	}
+
+}
+*/
+
+} // image::
 
 // DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
 // DRAIN_ENUM_DICT(image::MouseXML::EventClass);
 
-}
+} // drain::
 
 #endif // DRAIN_IMAGE_MOUSEXML_H_
 
 
-// Display something when mouse is dragged
-/**
- *   Future option: other scope them document
- */
-/*
-template<class T>
-inline void MouseXML::addVisibilitySwitch(NodeXML<T> &dstElem,
-		drain::NodeXML<T> &controlElem, const std::string &scope,
-		const std::string &mouseEventOn, const std::string &mouseEventOff) {
-
-	// dst->setId("coordMove", dst->getId());
-	if (dstElem.getId().empty()){
-		dstElem.setId("mouseMonitor_", dstElem.getTag(), NodeXML<T>::getNewIndex());
-	}
-
-	const std::string &id = dstElem.getId(); // ->setId();
-
-	if (scope.empty()) {
-		controlElem.setAttribute(mouseEventOn,
-				drain::StringBuilder<>("getElementById('", id, "').style.visibility='visible'"));
-		controlElem.setAttribute(mouseEventOff,
-				drain::StringBuilder<>("getElementById('", id, "').style.visibility='hidden'"));
-	}
-	else {
-		controlElem.setAttribute(mouseEventOn,
-				drain::StringBuilder<>(scope, ".getElementById('", id, "').style.visibility='visible'"));
-		controlElem.setAttribute(mouseEventOff,
-				drain::StringBuilder<>(scope, ".getElementById('", id, "').style.visibility='hidden'"));
-	}
-}
-*/
 
  // 
 

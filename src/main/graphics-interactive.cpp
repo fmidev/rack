@@ -43,7 +43,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/GeoFrame.h>
 #include <drain/image/MouseXML.h>
-#include <drain/image/MouseSVG.h>
+#include <drain/image/MouseXML2.h>
 #include <drain/image/TextSVG.h>
 #include <drain/js/coord_handler.h>
 #include <drain/js/data_value_tracker.h>
@@ -434,7 +434,7 @@ void CmdRect::exec() const {
 
 	/// Create the actual another plane (RECT) to receive mouse events
 	//drain::image::TreeSVG & mouseListenerElem = RackSVG::getImageBorder(mouseGroup);
-	drain::image::TreeSVG & mouseListener = superPanel.getMouseListenerFrame();
+	drain::image::TreeSVG & mouseListener = superPanel.getMouseListenerElem();
 	mouseListener->set("data-resolution", resolution.tuple());
 	MouseXML::addVisibilitySwitch(coordMoveText, mouseListener);
 
@@ -494,7 +494,7 @@ void CmdCoords::exec() const {
 	ImagePanel superPanel(imagePanelGroup);
 
 	// drain::image::MouseXML::getOnLoadScript(ctx.getSVG());
-	ctx.ensureOnLoad("/* test tracker */");
+	ctx.ensureOnLoad(getName())->setProgramComment(getName());
 
 	/// Define directly as a CSS class, to support prefix ('.')
 	static
@@ -508,7 +508,7 @@ void CmdCoords::exec() const {
 	lineCoords->addClass(COORD_DISPLAY);
 	lineCoords->addClass(RackSVG::ElemClass::IMAGE_TITLE);
 	// textBox.addLine()->setText(__FUNCTION__); // debug
-	TreeSVG & listenerPlane = superPanel.getMouseListenerFrame();
+	TreeSVG & listenerPlane = superPanel.getMouseListenerElem();
 
 	//image_coord_tracker.h
 
@@ -518,18 +518,29 @@ void CmdCoords::exec() const {
 
 	MouseSVG mouseMoveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName());
 	if (!mouseMoveSVG.listenerIsSet(listenerPlane)){
-		// TreeSVG & inits =  mouseMoveSVG.getListenerInitScope();
-		// inits++ ->setText("// ");
 
-		//TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane, COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
 		mouseMoveSVG.connect(COORD_DISPLAY, TextBox::TEXTBOX, LayoutSVG::ADAPTER);
+		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+			// mouseMoveSVG.addListenerInitGeoConf();
+		}
+
 		TreeSVG & routine = mouseMoveSVG.setListener(listenerPlane);
-		routine++ ->setText(COORD_DISPLAY, ".textContent=`${x},${y}`;");
+
 		// conditional MOVE, like conditional MASK?:
 		if (true){
 			routine++ ->setText(TextBox::TEXTBOX, ".setAttribute('transform', `translate(${x},${y})`);");
 			routine++ ->setText("flipTextBoxWithThreshold(", LayoutSVG::ADAPTER, ", rx, ry, 0.33);");
 		}
+
+		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+			// routine++ ->setText("console.info(geo_bbox.left + rx*geo_bbox.width);");
+			routine++ ->setText(COORD_DISPLAY, ".textContent=`${gx},${gy}`;");
+		}
+		else {
+			routine++ ->setText(COORD_DISPLAY, ".textContent=`${x},${y}`;");
+		}
+
+
 		// routine++ ->setProgramComment("Modified by ", getName());
 	}
 	// Optional extra modifications with:
@@ -541,6 +552,8 @@ void CmdCoords::exec() const {
 		TreeSVG & routine = mouseEnterSVG.setListener(listenerPlane); //, COORD_DISPLAY);
 		//textBox.topGroup
 		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='visible';");
+		routine++ ->setText("window.lastCtx = ctx;");
+		routine++ ->setText("console.info('window.lastCtx = ', ctx);");
 	}
 
 	MouseSVG mouseLeaveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::LEAVE, getName());
@@ -549,8 +562,6 @@ void CmdCoords::exec() const {
 		TreeSVG & routine = mouseLeaveSVG.setListener(listenerPlane); // , COORD_DISPLAY);
 		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='hidden';");
 	}
-	// OLD: MouseXML::addVisibilitySwitch(line, listenerPlane);
-
 
 	// TEST for gData / gRect
 	const Image & data = ctx.getCurrentGrayImage();
@@ -578,7 +589,12 @@ void CmdCoords::exec() const {
 	MouseSVG mouseMove2SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"2");
 	if (!mouseMove2SVG.listenerIsSet(listenerPlane)){
 
-		mouseMove2SVG.addListenerInitGeoConf();
+		ctx.ensureScript("radar_data_encoding", javascript::radar_data_encoding); // RadarDataEncoding
+		ctx.ensureScript("data_value_tracker",  javascript::data_value_tracker);
+
+		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+			// mouseMove2SVG.addListenerInitGeoConf();
+		}
 		mouseMove2SVG.connect(VALUE_DISPLAY, ImagePanel::DATA_ARRAY);
 
 		TreeSVG & inits =  mouseMove2SVG.getListenerInitSubScope();
@@ -587,12 +603,13 @@ void CmdCoords::exec() const {
 		inits++ ->setText("init_data_elem(", ImagePanel::DATA_ARRAY, ", new RadarDataEncoding(", ImagePanel::DATA_ARRAY,".getAttribute('data-encoding')) );");
 		// inits++ ->setText("console.log(", ImagePanel::DATA_ARRAY, ")");
 
-		ctx.ensureScript("radar_data_encoding", javascript::radar_data_encoding); // RadarDataEncoding
-		ctx.ensureScript("data_value_tracker",  javascript::data_value_tracker);
 
 		TreeSVG & routine = mouseMove2SVG.setListener(listenerPlane); //, VALUE_DISPLAY, ImagePanel::DATA_ARRAY);
 		// routine++ ->setText(VALUE_DISPLAY, ".textContent=`VALUE=${x},${y}`;");
 		routine++ ->setText(VALUE_DISPLAY, ".textContent=getDataValue(", ImagePanel::DATA_ARRAY, ",x,y);");
+		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+			// routine++ ->setText();
+		}
 
 
 	}
@@ -620,7 +637,22 @@ void CmdCoords::exec() const {
 	//MouseSVG mouseDownSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::DOWN, getName());
 	MouseSVG mouseDownSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::DOWN, getName());
 	if (!mouseDownSVG.listenerIsSet(listenerPlane)){
-		mouseDownSVG.addListenerInitGeoConf();
+
+		//TreeSVG & inits =  mouseDownSVG.getListenerInitSubScope();
+		mouseDownSVG.defineVariable("drawSelection", false);
+		mouseDownSVG.defineVariable("x0", 0);
+		mouseDownSVG.defineVariable("y0", 0);
+		mouseDownSVG.defineVariable("gx0", 0);
+		mouseDownSVG.defineVariable("gy0", 0);
+
+		/*
+		mouseDownSVG.defineVariable("drawSelection", std::vector<float>() = {1.2, 2.0f, 4.2});
+		mouseDownSVG.defineVariable("x0", true);
+		mouseDownSVG.defineVariable("y0", "yes");
+		*/
+		// inits++ ->setText("drawSelection=false;");
+
+		// mouseDownSVG.addListenerInitGeoConf();
 		//drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_value_tracker") = image_value_tracker;
 		TreeSVG & routine = mouseDownSVG.setListener(listenerPlane, BBOX_DISPLAY);
 		//routine++ ->setText(MouseXML::ElemClass::SELECTOR, ".draw = true");
@@ -629,13 +661,16 @@ void CmdCoords::exec() const {
 		// routine++ ->setText(MouseXML::ElemClass::SELECTOR, ".setAttribute('y', y);");
 		routine++ ->setText(BBOX_DISPLAY, ".textContent=`BBOX=${x},${y}`;");
 
-		TreeSVG & inits =  mouseDownSVG.getListenerInitSubScope();
-		inits++ ->setText("drawSelection=false");
+
 	}
 
 	MouseSVG mouseMove3SVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName()+"Rect");
 	if (!mouseMove3SVG.listenerIsSet(listenerPlane)){
-		TreeSVG & routine = mouseMove3SVG.setListener(listenerPlane, ImagePanel::SELECTOR, BBOX_DISPLAY);
+
+		mouseMove3SVG.connect(ImagePanel::SELECTOR);
+		mouseMove3SVG.connect(BBOX_DISPLAY);
+
+		TreeSVG & routine = mouseMove3SVG.setListener(listenerPlane);  // , ImagePanel::SELECTOR, BBOX_DISPLAY
 		TreeSVG & subScope = routine["draw_scope"](svg::SCOPE_CURLY);
 		subScope->setText("if (drawSelection)");
 		subScope++ ->setText("var xMin = Math.min(x0, x);");
@@ -735,7 +770,7 @@ void CmdData::exec() const {
 	drain::image::FilePng::write(dataImage, filenameFinal);
 
 	// drain::image::TreeSVG & mouseListenerElem =
-	superPanel.getMouseListenerFrame();
+	superPanel.getMouseListenerElem();
 	// mouseListenerElem->setStyle("fill", "red");       //
 	// mouseListenerElem->setStyle("fill-opacity", 0.1); // TODO: transparent tracker
 

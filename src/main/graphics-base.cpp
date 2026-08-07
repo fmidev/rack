@@ -246,7 +246,7 @@ void RackSVG::addMetaData(const drain::image::Image & src, drain::image::ImagePa
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	//drain::image::TreeSVG & mouseGroup = getMouseListenerFrame(); // MOUSE properties really needed?
+	//drain::image::TreeSVG & mouseGroup = getMouseListenerElem(); // MOUSE properties really needed?
 	drain::image::TreeSVG & geoElem = imagePanel.getImageBorder();
 
 	// practical...
