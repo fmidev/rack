@@ -283,7 +283,7 @@ void CmdPolarBase::resolveAzimuthRange(const drain::SteppedRange<double> & ownAz
 
 /// Designed for CmdData, could be multi-purpose
 /**
- *   Compare with: prepare() below...
+ *   Compare with: prepare() and RackSVG::addMetaData(data, superPanel);
  */
 void CmdPolarBase::addGeoData(const drain::image::Image & imageData, drain::image::NodeSVG & node){
 

@@ -113,14 +113,20 @@ public:
 	 *
 	 */
 	static
-	void getEventFunctionName(std::string & eventName, const std::string prefix="");
+	std::string getEventFunctionName(MouseXML::EventClass eventKey);
+
+	static
+	std::string getHandlerFunctionName(MouseXML::EventClass eventKey);
+
+	static
+	std::string getInitialiserFunctionName(MouseXML::EventClass eventKey);
 
 	enum CoordinateProcessing {
 		UNDEFINED = 0,
-		BASIC = 1,
-		COORDS = 2,
-		RELATIVE_COORDS = 3,
-		GEOGRAPHIC_COORDS = 4,
+		//BASIC = 1,
+		IMAGE_COORDS      = 1,
+		RELATIVE_COORDS   = 3,
+		GEOGRAPHIC_COORDS = 7,
 	};
 
 	typedef drain::EnumFlagger<drain::MultiFlagger<CoordinateProcessing> > CoordFlagger;
@@ -128,17 +134,17 @@ public:
 
 	/// Return internal ("top-level") routine for mouse event. The routine calls subroutine (that has a sub scope).
 	template <class N>
-	static
-	DRAIN_XML_TREE(N) & getListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName);
+	static // , XML & elem , const EventClass & eventName
+	DRAIN_XML_TREE(N) & getListenerScope(DRAIN_XML_TREE(N) & root, const std::string & handlerName);
 
 	template <class N>
-	DRAIN_XML_TREE(N) & adjustListenerGeoRef(DRAIN_XML_TREE(N) & scopeJS, CoordFlagger::ivalue_t  coords);
+	void adjustListenerGeoRef(DRAIN_XML_TREE(N) & handlerScopeJS, CoordFlagger::ivalue_t  coords) const ;
 
 
 	/// Return ("top-level") initialisation script scope for a mouse event. The routine calls subroutine (that has a sub scope).
 	template <class N>
-	inline
-	DRAIN_XML_TREE(N) & getListenerInitScope(DRAIN_XML_TREE(N) & root, const EventClass & mouseEventKey) const;
+	static inline // const EventClass & mouseEventKey
+	DRAIN_XML_TREE(N) & getListenerInitScope(DRAIN_XML_TREE(N) & root, const std::string & initFnctName);
 
 	// template <class N>
 	//inline
@@ -149,14 +155,27 @@ protected:
 	/// Create internal ("top-level") routine for mouse event, if it does not exist.
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventName, CoordinateProcessing proc = UNDEFINED);
+	DRAIN_XML_TREE(N) & ensureListenerUNUSED(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventCls);
+
+	// template <class N>
+	static inline
+	void attachListener(XML & elem, const std::string & eventName, const std::string & handlerName){
+		elem.setAttribute(eventName, handlerName, "(evt)");
+	}
+
+	template <class N>
+	static
+	DRAIN_XML_TREE(N) & ensureListenerHandler(DRAIN_XML_TREE(N) & root, const std::string & handlerName);
+
 
 	/// Create internal ("top-level") initialisation script scope for mouse event, if it does not exist.
 	template <class N>
 	static
-	DRAIN_XML_TREE(N) & ensureListenerInit(DRAIN_XML_TREE(N) & root, const EventClass & eventName, CoordinateProcessing proc = UNDEFINED); //const std::string & eventName);
+	DRAIN_XML_TREE(N) & ensureListenerInit(DRAIN_XML_TREE(N) & root, const std::string & initFnctName);
+	//const EventClass & eventName, CoordinateProcessing proc = UNDEFINED); //const std::string & eventName);
 
-
+	static
+	const std::string COORD_INIT_SCOPE;
 };
 
 
@@ -164,6 +183,7 @@ protected:
 
 DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
 DRAIN_ENUM_DICT(image::MouseXML::EventClass);
+DRAIN_ENUM_DICT(image::MouseXML::CoordinateProcessing);
 
 DRAIN_ENUM_CLASSXML(image::MouseXML::ElemClass);
 
@@ -175,26 +195,28 @@ DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
 
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::adjustListenerGeoRef(DRAIN_XML_TREE(N) & scopeJS, CoordFlagger::ivalue_t  coords){
+void MouseXML::adjustListenerGeoRef(DRAIN_XML_TREE(N) & handlerScopeJS, CoordFlagger::ivalue_t  coords) const {
 
 	const CoordFlagger flags(coords);
 
-	if (flags.isSet(COORDS)){
-		scopeJS[flags.str()] -> setProgramComment("Coord request: ", flags.str());
+	DRAIN_XML_TREE(N) & coordScopeJS = handlerScopeJS(COORD_INIT_SCOPE);
+
+	if (flags.isSet(IMAGE_COORDS)){
+		coordScopeJS[flags.str()] -> setProgramComment("Coord request: ", flags.str());
 		// TODO: detect if MOVE has already been defined, and drop (duplicated) coordinate processing from here.
-		scopeJS["ctx.bbox"] = "ctx.bbox = evt.target.getBoundingClientRect();";
-		scopeJS["COORDS"] -> setProgramComment("Image coordinates");
-		scopeJS["ctx.x"] = "ctx.x = Math.floor(evt.clientX - ctx.bbox.left);";
-		scopeJS["ctx.y"] = "ctx.y = Math.floor(evt.clientY - ctx.bbox.top);";
+		coordScopeJS["ctx.bbox"] = "ctx.bbox = evt.target.getBoundingClientRect();";
+		coordScopeJS["COORDS"] -> setProgramComment("Image coordinates");
+		coordScopeJS["ctx.x"] = "ctx.x = Math.floor(evt.clientX - ctx.bbox.left);";
+		coordScopeJS["ctx.y"] = "ctx.y = Math.floor(evt.clientY - ctx.bbox.top);";
 		if (flags.isSet(RELATIVE_COORDS)){
-			scopeJS["RELATIVE_COORDS"] -> setProgramComment("Relative coordinates");
-			scopeJS["ctx.rx"] = "ctx.rx = ctx.x / ctx.bbox.width;";
-			scopeJS["ctx.ry"] = "ctx.ry = ctx.y / ctx.bbox.height;";
+			coordScopeJS["RELATIVE_COORDS"] -> setProgramComment("Relative coordinates");
+			coordScopeJS["ctx.rx"] = "ctx.rx = ctx.x / ctx.bbox.width;";
+			coordScopeJS["ctx.ry"] = "ctx.ry = ctx.y / ctx.bbox.height;";
 			if (flags.isSet(GEOGRAPHIC_COORDS)){
-				scopeJS["GEOGRAPHIC_COORDS"] -> setProgramComment("Geographic coordinates");
+				coordScopeJS["GEOGRAPHIC_COORDS"] -> setProgramComment("Geographic coordinates");
 				// geo_bbox.left + rx*geo_bbox.width
-				scopeJS["ctx.gx"] = "ctx.gx = ctx.georef.bbox.left + ctx.rx*ctx.georef.bbox.width;";
-				scopeJS["ctx.gy"] = "ctx.gy = ctx.georef.bbox.top  + ctx.ry*ctx.georef.bbox.height;";
+				coordScopeJS["ctx.gx"] = "ctx.gx = ctx.georef.bbox.left + ctx.rx*ctx.georef.bbox.width;";
+				coordScopeJS["ctx.gy"] = "ctx.gy = ctx.georef.bbox.top  + ctx.ry*ctx.georef.bbox.height;";
 			}
 		}
 	}
@@ -203,22 +225,43 @@ DRAIN_XML_TREE(N) & MouseXML::adjustListenerGeoRef(DRAIN_XML_TREE(N) & scopeJS, 
 
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::ensureListener(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey, CoordinateProcessing proc){
+DRAIN_XML_TREE(N) & MouseXML::ensureListenerUNUSED(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey){
+
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	std::string eventName = drain::Enum<EventClass>::getKey(eventKey); //StringBuilder<>("onmouse", eventName);
-	getEventFunctionName(eventName); // MOVE =: "onmouse + move"
+	std::string handlerName = getHandlerFunctionName(eventKey);
+	ensureListenerHandler(root, handlerName);
 
-	std::string handlerName = drain::Enum<EventClass>::getKey(eventKey); //eventKey;
-	getEventFunctionName(handlerName, "handleMouse");
+	std::string eventName = getEventFunctionName(eventKey);
+	attachListener(elem, eventName, handlerName);
 
+}
+
+/*
+void MouseXML::attachListener(XML & elem, const std::string & eventName, const std::string & handlerName){
 	elem.setAttribute(eventName, handlerName, "(evt)");
+}
+*/
+
+template <class N>
+DRAIN_XML_TREE(N) & MouseXML::ensureListenerHandler(DRAIN_XML_TREE(N) & root, const std::string & handlerName){
 
 	// mout.attention("ensure ",eventName, '/',handlerName);
 
 	// evt is a standard name?
-	DRAIN_XML_TREE(N) & scopeJS = JavaScriptXML::ensureJavaScriptFunction(root, handlerName, "evt");
+	DRAIN_XML_TREE(N) & handlerFunctionScope = JavaScriptXML::ensureJavaScriptFunction(root, handlerName, "evt");
 
+	if (!handlerFunctionScope.hasChild(__FUNCTION__)){
+		handlerFunctionScope[__FUNCTION__]->setProgramComment("Std init by ", __FUNCTION__);
+		handlerFunctionScope["const_ctx"] = "const ctx = evt.target.ctx;";
+		DRAIN_XML_TREE(N) & coordInitSubScope = handlerFunctionScope[COORD_INIT_SCOPE];
+		coordInitSubScope->setType(N::SCOPE_CURLY);
+		coordInitSubScope->setText("if (true)");
+		coordInitSubScope.addChild()->setProgramComment("Reserved for coordinates by ", __FUNCTION__);
+	}
+	return handlerFunctionScope;
+
+	/*
 	if (proc == UNDEFINED){
 		if (eventKey == EventClass::MOVE){ // "move"){
 			proc = GEOGRAPHIC_COORDS;
@@ -253,19 +296,19 @@ DRAIN_XML_TREE(N) & MouseXML::ensureListener(DRAIN_XML_TREE(N) & root, XML & ele
 		}
 		// scopeJS++ = "ctx.elem = null;";
 		// scopeJS++ = "ctx.ctx = evt.target.ctx;"; // remove
-		// scopeJS++ = "/* end init */" ;
+		// scopeJS++ = "/ * end init * /" ;
 	}
+	*/
 
-	return scopeJS;
 }
 
 template <class N>
-DRAIN_XML_TREE(N) & MouseXML::getListenerScope(DRAIN_XML_TREE(N) & root, XML & elem, const EventClass & eventKey){
+DRAIN_XML_TREE(N) & MouseXML::getListenerScope(DRAIN_XML_TREE(N) & root, const std::string & handlerName){ //const EventClass & eventKey){
 	// , CoordinateProcessing proc){ // , const std::string & handlerName){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	DRAIN_XML_TREE(N) & scopeJS = ensureListener(root, elem, eventKey);
+	DRAIN_XML_TREE(N) & scopeJS = ensureListenerHandler(root, handlerName); //  ensureListener(root, elem, eventKey);
 
 	DRAIN_XML_TREE(N) & subScopeJS =  scopeJS["SUBSCOPE"];
 	subScopeJS->setType(XML::SCOPE_CURLY);
@@ -281,32 +324,30 @@ DRAIN_XML_TREE(N) & MouseXML::getListenerScope(DRAIN_XML_TREE(N) & root, XML & e
 
 template <class N>
 DRAIN_XML_TREE(N) & MouseXML::ensureListenerInit(DRAIN_XML_TREE(N) & root,
-		const EventClass & eventKey, CoordinateProcessing proc){ // , const std::string & eventKey){
+		const std::string & initFnctName){ // , const std::string & eventKey){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	std::string eventName = drain::Enum<EventClass>::getKey(eventKey); //eventKey; //StringBuilder<>("onmouse", eventName);
-	getEventFunctionName(eventName); // "onmouse + move"
-
-	std::string handlerName = drain::Enum<EventClass>::getKey(eventKey); //eventKey;
-	getEventFunctionName(handlerName, "initMouse");
-
+	//std::string initFnctName = getInitialiserFunctionName(eventKey);
 	// mout.attention("init ", eventName, '/', handlerName);
 
-	DRAIN_XML_TREE(N) & scopeJS =  JavaScriptXML::ensureJavaScriptFunction(root, handlerName);
-	scopeJS->setId(handlerName);
+	DRAIN_XML_TREE(N) & scopeJS =  JavaScriptXML::ensureJavaScriptFunction(root, initFnctName);
+	scopeJS->setId(initFnctName);
 	if (!scopeJS.hasChildren()){
 		scopeJS.addChild()->setText("/* Added by ", __FUNCTION__, "*/");
+		scopeJS.addChild()->setText("console.info('", __FUNCTION__, ':', initFnctName,"')");
+		/*
 		int level = static_cast<int>(proc);
 		scopeJS++ -> setProgramComment("GeoCoords:");
 		if (level >= GEOGRAPHIC_COORDS){
 			scopeJS++ -> setProgramComment("todo: GeoCoords");
 		}
+		*/
 	}
 
 	// Ensure init
 	DRAIN_XML_TREE(N) & onLoadScope = JavaScriptXML::getOnLoadScript(root);
-	onLoadScope[handlerName]->setText(handlerName, "();");
+	onLoadScope[initFnctName]->setText(initFnctName, "();");
 
 	return scopeJS;
 }
@@ -315,13 +356,13 @@ DRAIN_XML_TREE(N) & MouseXML::ensureListenerInit(DRAIN_XML_TREE(N) & root,
  * \tparam N - Node type for the tree, DRAIN_XML_TREE(N)
  */
 template <class N>
-inline
-DRAIN_XML_TREE(N) & MouseXML::getListenerInitScope(DRAIN_XML_TREE(N) & root, const EventClass & mouseEventKey) const {
+inline //const EventClass & mouseEventKey
+DRAIN_XML_TREE(N) & MouseXML::getListenerInitScope(DRAIN_XML_TREE(N) & root, const std::string & initFnctName) {
 
-	DRAIN_XML_TREE(N) & mouseInit = ensureListenerInit(root, mouseEventKey);
+	DRAIN_XML_TREE(N) & mouseInit = ensureListenerInit(root, initFnctName);
 	//setListenerInit();
 
-	std::string installerKey = drain::Enum<MouseXML::EventClass>::getKey(mouseEventKey) + "INSTALLER";
+	std::string installerKey = initFnctName+"Installer"; // drain::Enum<MouseXML::EventClass>::getKey(mouseEventKey) + "INSTALLER";
 
 	DRAIN_XML_TREE(N) & installer = mouseInit[installerKey];
 	installer->setText("document.querySelectorAll('.", MouseXML::MOUSE, "').forEach(\n");

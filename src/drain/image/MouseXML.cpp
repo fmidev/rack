@@ -58,30 +58,36 @@ DRAIN_ENUM_DICT(image::MouseXML::EventClass) = {
 		DRAIN_ENUM_ENTRY(image::MouseXML::EventClass, CLICK),
 };
 
+DRAIN_ENUM_DICT(image::MouseXML::CoordinateProcessing) = {
+		DRAIN_ENUM_ENTRY(image::MouseXML::CoordinateProcessing, UNDEFINED),
+		DRAIN_ENUM_ENTRY(image::MouseXML::CoordinateProcessing, IMAGE_COORDS),
+		DRAIN_ENUM_ENTRY(image::MouseXML::CoordinateProcessing, RELATIVE_COORDS),
+		DRAIN_ENUM_ENTRY(image::MouseXML::CoordinateProcessing, GEOGRAPHIC_COORDS),
+};
+
+
 namespace image {
 
-void MouseXML::getEventFunctionName(std::string & eventName, const std::string prefix){
+const std::string MouseXML::COORD_INIT_SCOPE("COORD_INIT_SCOPE");
 
-	if (eventName.empty()){
-		Logger(__FILE__, __FUNCTION__).error("mouse eventName empty - use move, down, up, etc");
-	}
-	// std::cout << prefix << '+' <<  eventName << '\n';
+std::string MouseXML::getEventFunctionName(MouseXML::EventClass eventKey){
+	std::string s(drain::Enum<EventClass>::getKey(eventKey));
+	drain::StringTools::lowerCase(s);
+	return drain::StringBuilder<>("onmouse", s);
+}
 
-	drain::StringTools::lowerCase(eventName);
-	if (prefix.empty()){
-		eventName = drain::StringBuilder<>("onmouse", eventName);
-	}
-	else {
-		//drain::StringTools::upperCase(eventName[0]);
-		drain::StringTools::upperCase(eventName, 1);
-		eventName = drain::StringBuilder<>(prefix, eventName);
-	}
-	// std::cout << eventName << std::endl;
-	/*
-	if (eventName.find("onmouse") != 0){
-		eventName = drain::StringBuilder<>("onmouse", eventName);
-	}
-	*/
+std::string MouseXML::getHandlerFunctionName(MouseXML::EventClass eventKey){
+	std::string s(drain::Enum<EventClass>::getKey(eventKey));
+	drain::StringTools::lowerCase(s);
+	drain::StringTools::upperCase(s, 1);
+	return drain::StringBuilder<>("handleMouse", s);
+}
+
+std::string MouseXML::getInitialiserFunctionName(MouseXML::EventClass eventKey){
+	std::string s(drain::Enum<EventClass>::getKey(eventKey));
+	drain::StringTools::lowerCase(s);
+	drain::StringTools::upperCase(s, 1);
+	return drain::StringBuilder<>("initMouse", s);
 }
 
 void MouseXML::addVisibilitySwitch(XML &dstElem,

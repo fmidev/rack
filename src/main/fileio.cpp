@@ -459,6 +459,8 @@ void CmdOutputFile::exec() const {
 			//ctx.consumeAlignRequest(imagePanelGroup);
 
 			ImagePanel superPanel(imagePanelGroup, srcImage, filepath);
+
+			RackSVG::addMetaData(srcImage, superPanel);
 			// superPanel.getImage(srcImage, filepath);
 			/*
 			TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
