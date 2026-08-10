@@ -56,8 +56,8 @@ endif
 CXXFLAGS := -std=gnu++11 $(OPTS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
 
 # ---- Source / object lists ----------------------------------------------------
-SRC_DIRS := andre data drain drain/image drain/imageops drain/util drain/prog \
-            hi5 main product radar
+SRC_DIRS := andre data drain drain/image drain/imageops drain/util drain/prog drain/js \
+            hi5 main product radar js
 
 SRCS := $(foreach d,$(SRC_DIRS),$(wildcard $(d)/*.cpp))
 OBJS := $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(SRCS))
