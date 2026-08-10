@@ -2311,6 +2311,7 @@ public:
 		//std::cout << "GeoTIFF support: ";
 #ifndef  USE_GEOTIFF_NO
 		std::cout << "GeoTIFF " << LIBGEOTIFF_VERSION <<  '\n';
+		//std::cout << "GeoTIFF " << LIBGEOTIFF_STRING_VERSION <<  '\n';
 #else
 		std::cout << "GeoTIFF not supported" << '\n';
 #endif

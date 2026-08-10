@@ -230,7 +230,7 @@ void FileGeoTIFF::close(){
 		mout.debug("Closing GeoTIFF...");
 		//GTIFWriteKeys(gtif); // moved to writeMetadata() for cloud optimized GeoTIFF, COG.
 
-		/*
+		/* Caused problems on some compilers:
 		// enum {VERSION=0,MAJOR,MINOR};
 		int version[3] = {0,0,0};
 		int keycount = 0;
@@ -241,7 +241,7 @@ void FileGeoTIFF::close(){
 		GTIFFree(gtif);
 		gtif = nullptr;
 	}
-	FileTIFF::close(); // ?
+	FileTIFF::close();
 }
 
 
