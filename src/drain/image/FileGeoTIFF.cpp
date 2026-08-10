@@ -230,12 +230,14 @@ void FileGeoTIFF::close(){
 		mout.debug("Closing GeoTIFF...");
 		//GTIFWriteKeys(gtif); // moved to writeMetadata() for cloud optimized GeoTIFF, COG.
 
-
-		enum {VERSION=0,MAJOR,MINOR};
+		/*
+		// enum {VERSION=0,MAJOR,MINOR};
 		int version[3] = {0,0,0};
 		int keycount = 0;
 		GTIFDirectoryInfo(gtif, version, &keycount);
-		mout.info("GTIFDirectoryInfo: version:", version[VERSION], '.', version[MAJOR], '.', version[MINOR], " keycount:", keycount);
+		mout.info("GTIFDirectoryInfo: version:", version[0], '.', version[1], '.', version[2], " keycount:", keycount);
+		// mout.info("GTIFDirectoryInfo: version:", version[VERSION], '.', version[MAJOR], '.', version[MINOR], " keycount:", keycount);
+		*/
 		GTIFFree(gtif);
 		gtif = nullptr;
 	}
