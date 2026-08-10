@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,8,3)
+#define RACK_VERSION drain::Version<>(20,8,4)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -107,11 +107,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - MouseSVG: combined mouse event initialisation and handling
  *  Version 20.8beta
  *  - ImagePanelSVG - cCoord, cRect, cData using shared code & objects
- *  Version 20.8.2
+ *  Release 20.8.2
  *  - JavaScript //?#include header
  *  - Reorganized JS code
- *  Version 20.8.3
+ *  Release 20.8.3
  *  - FileGeoTIFF::close(): removed GeoTIFF version debugging
+ *  Release 20.8.4
+ *  - Renamed MouseXML2 to MouseEventXML
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)
