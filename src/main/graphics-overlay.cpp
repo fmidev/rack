@@ -290,7 +290,6 @@ void CmdPolarBase::addGeoData(const drain::image::Image & imageData, drain::imag
 	CartesianODIM odim(ODIMPathElem::DATA|ODIMPathElem::ROOT); // Encoding + quantity + geo
 	odim.copyFrom(imageData);
 	// ODIM odim(ODIMPathElem::DATA); // Encoding + quantity
-	// mout.attention(DRAIN_LOG(myOdim));
 
 	node.set("data-epsg", odim.epsg);
 	// Currently unused:

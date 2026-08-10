@@ -38,7 +38,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 // #include "drain/util/Units.h"
 #include "ImageSVG.h"
 #include "LayoutSVG.h"
-#include "MouseXML2.h"
+#include "MouseEventXML.h"
 
 
 namespace drain {

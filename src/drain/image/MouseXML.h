@@ -131,6 +131,8 @@ public:
 
 	typedef drain::EnumFlagger<drain::MultiFlagger<CoordinateProcessing> > CoordFlagger;
 
+protected:
+
 
 	/// Return internal ("top-level") routine for mouse event. The routine calls subroutine (that has a sub scope).
 	template <class N>

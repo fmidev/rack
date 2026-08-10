@@ -238,7 +238,9 @@ public:
 	CmdRadarRay() : CmdPolarBase(__FUNCTION__, "Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector", RAY) { // __FUNCTION__, "Adjust font sizes in CSS style section.") {
 		getParameters().link("radius", radiusMetres.range.tuple(0.0, 1.0), "start:end (metres)").fillArray = true;
 		getParameters().link("azimuth", azimuthDegrees.range.min, "(degrees)");
-		getParameters().link("MASK", MASK, "add a mask");
+		getParameters().link("MASK", MASK, drain::sprinter(drain::Enum<MaskerSVG::MaskPosition>::dict.getKeys()).str());
+		// drain::Enum<MaskerSVG::MaskPosition>::dict.getKeys();
+		// drain::Enum<MaskerSVG::MaskPosition>::dict
 	};
 
 	// Copy constructor

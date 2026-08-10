@@ -42,6 +42,7 @@ extern const double RAD2DEG;
 extern const int   EARTH_RADIUSi;
 extern const double EARTH_RADIUS;
 
+
 // Basically "extensible". Other enum lists may be used. Consider reflectivity (Z) and dBZ.
 enum Unit {
 	UNDEFINED = 0,

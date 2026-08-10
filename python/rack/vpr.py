@@ -228,7 +228,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
     progBuilder.gRadarSector(
         radius  = rack.typical(args.range, [int], r'[,:]'), 
         azimuth = rack.typical(args.azm,   [int], r'[,:]'), 
-        MASK=True)
+        MASK="true")
     progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select)
     progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
 
