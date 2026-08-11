@@ -55,8 +55,8 @@ namespace drain {
 
 DRAIN_ENUM_DICT(rack::CmdPolarBase::CoordUnit) = {
 		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, UNDEFINED),
-		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, PX),
-		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, D),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, PIX),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, DEG),
 		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, M),
 };
 
@@ -128,7 +128,7 @@ void CmdPolarBase::addCoordView(RackContext & ctx, const ImagePanel & superPanel
 
 	drain::EnumFlagger<drain::MultiFlagger<CoordUnit> > unitFlagger;
 	unitFlagger.separator = ':';
-	unitFlagger.set(units);
+	unitFlagger.set(coordinateUnits);
 
 	MouseSVG mouseMoveSVG(ctx.getSVG(), MouseXML::EventClass::MOVE, getName());
 	mouseMoveSVG.setListenerNEW(listenerPlane);
@@ -161,7 +161,7 @@ void CmdPolarBase::addCoordView(RackContext & ctx, const ImagePanel & superPanel
 		// mout.attention("EPSG:", listenerPlane->getUserAttribute("epsg"));
 		//mout.attention("EPSG:", sprinter(listenerPlane->getAttributes()));
 
-		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+		if (unitFlagger.isSet(CoordUnit::DEG) || unitFlagger.isSet(CoordUnit::M)){
 			// Adds image handler computation (gx,gy).
 			mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::GEOGRAPHIC_COORDS);
 			mouseMoveSVG.connectElement(CoordBox::COORDS_GEO);
@@ -182,7 +182,7 @@ void CmdPolarBase::addCoordView(RackContext & ctx, const ImagePanel & superPanel
 		}
 
 
-		if (unitFlagger.isSet(CoordUnit::PX)){
+		if (unitFlagger.isSet(CoordUnit::PIX)){
 			// Image coordinates (pixels)
 			mouseMoveSVG.connectElement(CoordBox::COORDS_IMG);
 			routine++ ->setText(CoordBox::COORDS_IMG, ".textContent=`${x},${y}`;");

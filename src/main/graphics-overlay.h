@@ -87,14 +87,14 @@ public:
 
 	enum CoordUnit {
 		UNDEFINED=0,
-		PX=1,
+		PIX=1,
 		M=2,
-		D=4,
-		GEO=M+D,
+		DEG=4,
+		GEO=M|DEG,
 	};
 
 	// Coord units
-	std::string units = "D:M";
+	std::string coordinateUnits = "D:M"; // better to init in gCoords only?
 
 
 	inline

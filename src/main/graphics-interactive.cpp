@@ -484,7 +484,7 @@ void CmdCoords::exec() const {
 
 	drain::EnumFlagger<drain::MultiFlagger<CoordUnit> > unitFlagger;
 	unitFlagger.separator = ':';
-	unitFlagger.set(units);
+	unitFlagger.set(coordinateUnits);
 	mout.attention(unitFlagger.str());
 
 	// Modify SVG header. Notice inverse order (for prepend() )
@@ -648,7 +648,7 @@ void CmdCoords::exec() const {
 		TreeSVG & routine = mouseMove2SVG.getListenerRoutine(); //, VALUE_DISPLAY, ImagePanel::DATA_ARRAY);
 		routine++ ->setText(VALUE_DISPLAY, ".textContent=getDataValue(", ImagePanel::DATA_ARRAY, ",x,y);");
 
-		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+		if (unitFlagger.isSet(CoordUnit::DEG) || unitFlagger.isSet(CoordUnit::M)){
 			// mouseMove2SVG.addListenerInitGeoConf();
 		}
 		mouseMove2SVG.connectElement(VALUE_DISPLAY);

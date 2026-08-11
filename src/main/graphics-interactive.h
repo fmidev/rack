@@ -116,7 +116,7 @@ public:
 
 	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
 		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true);  // .setFill(true)
-		getParameters().link("units", units, drain::sprinter(drain::Enum<rack::CmdCoords::CoordUnit>::dict.getKeys()).str()).setSeparator(':');
+		getParameters().link("units", coordinateUnits, drain::sprinter(drain::Enum<rack::CmdCoords::CoordUnit>::dict.getKeys()).str()).setSeparator(':');
 		linkMask();
 		//getParameters().link("MASK", MASK, "Fill outside using CSS class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
