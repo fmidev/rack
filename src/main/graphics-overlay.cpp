@@ -42,47 +42,63 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TreeUtilsSVG.h>
 #include <drain/image/TextSVG.h>
 
+#include <drain/js/coords.h>
+#include <drain/js/textbox_flipper.h>
+
 #include "graphics.h"
 #include "graphics-panel.h"
 #include "graphics-radar.h"
 #include "graphics-overlay.h"
 #include "graphics-imagepanel.h"
 
-
 namespace drain {
 
+DRAIN_ENUM_DICT(rack::CmdPolarBase::CoordUnit) = {
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, UNDEFINED),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, PX),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, D),
+		DRAIN_ENUM_ENTRY(rack::CmdPolarBase::CoordUnit, M),
+};
 
 }
 
 
 namespace rack {
 
-/*
-class VectorFrame : protected ImagePanel {
-public:
 
-	inline
-	VectorFrame(drain::image::TreeSVG & imagePanelGroup) : ImagePanel(imagePanelGroup){
+const drain::ClassXML CoordBox::COORD_DISPLAY = "COORD_DISPLAY";
+const drain::ClassXML CoordBox::COORDS_GEO    = "COORDS_GEO";
+const drain::ClassXML CoordBox::COORDS_IMG    = "COORDS_IMG";
 
-	};
+CoordBox::CoordBox(TreeSVG & group) : TextBox (group, COORD_DISPLAY){
 
-	drain::image::TreeSVG & getVectorGroup() const;
-
-
-};
-
-drain::image::TreeSVG & VectorFrame::getVectorGroup(const std::string key = "") const {
-	drain::image::TreeSVG & overlay = getOverlay();
-
-	if (key.empty()){
-		std::string k;
-		drain::image::TreeSVG::generateKey(overlay, k);
-		return getVectorGroup(k);
+	if (!adapterGroup.hasChild(svg::COMMENT)){
+		adapterGroup[svg::COMMENT]->setProgramComment(__FUNCTION__);
 	}
 
+	// Main TEXT element: .COORD_DISPLAY
+	if (!adapterGroup.hasChild(COORD_DISPLAY)){
 
-};
-*/
+		setLineHeight(15);
+		setFontSize(12);
+
+		TreeSVG & lineCoords = adapterGroup[COORD_DISPLAY](svg::TEXT);
+		lineCoords->addClass(COORD_DISPLAY);
+		lineCoords->addClass(RackSVG::ElemClass::IMAGE_TITLE);
+
+		TreeSVG & imageCoords = lineCoords[COORDS_IMG](svg::TSPAN);
+		imageCoords->addClass(COORDS_IMG);
+		// Otherways gets deleted as an empty node...
+		imageCoords->setText(drain::XML::NONBREAKABLE_SPACE);
+
+		TreeSVG & geoCoords   = lineCoords[COORDS_GEO](svg::TSPAN);
+		geoCoords->addClass(COORDS_GEO);
+		// Otherways gets deleted...
+		geoCoords->setText(drain::XML::NONBREAKABLE_SPACE);
+	}
+
+	// NodeSVG::toStream(std::cout, group);
+}
 
 const std::string CmdPolarBase::DATA_ID = "data-latest";
 
@@ -95,6 +111,119 @@ const std::string CmdPolarBase::DATA_ID = "data-latest";
  *
  *
  */
+
+void CmdPolarBase::linkMask(){
+	static const std::string info = std::string("Add cover with style '.MASK'")+
+			drain::sprinter(drain::Enum<MaskerSVG::MaskPosition>::dict.getKeys()).str();
+	getParameters().link("MASK", MASK, info);
+}
+
+void CmdPolarBase::addCoordView(RackContext & ctx, const ImagePanel & superPanel) const {
+	TreeSVG & listenerPlane = superPanel.getMouseListenerElem();
+
+	//image_coord_tracker.h
+
+	ctx.ensureScript("coords",          javascript::coords);
+	ctx.ensureScript("textbox_flipper", javascript::textbox_flipper);
+
+	drain::EnumFlagger<drain::MultiFlagger<CoordUnit> > unitFlagger;
+	unitFlagger.separator = ':';
+	unitFlagger.set(units);
+
+	MouseSVG mouseMoveSVG(ctx.getSVG(), MouseXML::EventClass::MOVE, getName());
+	mouseMoveSVG.setListenerNEW(listenerPlane);
+	if (!mouseMoveSVG.routineIsSet(listenerPlane)){
+
+		// Relative coords used(rx, ry) below.
+		// Note: at least this level - conditionally
+		mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::RELATIVE_COORDS);
+		/*
+			if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+				mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::GEOGRAPHIC_COORDS);
+			}
+			else {
+				mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::RELATIVE_COORDS);
+			}
+		 */
+
+		mouseMoveSVG.connectElement(TextBox::TEXTBOX);
+		mouseMoveSVG.connectElement(CoordBox::COORD_DISPLAY);
+		mouseMoveSVG.connectElement(LayoutSVG::ADAPTER);
+
+
+		TreeSVG & routine = mouseMoveSVG.getListenerRoutine();
+		// conditional MOVE, like conditional MASK?:
+		if (true){
+			routine++ ->setText(TextBox::TEXTBOX, ".setAttribute('transform', `translate(${x},${y})`);");
+			routine++ ->setText("flipTextBoxWithThreshold(", LayoutSVG::ADAPTER, ", rx, ry, 0.33);");
+		}
+
+		// mout.attention("EPSG:", listenerPlane->getUserAttribute("epsg"));
+		//mout.attention("EPSG:", sprinter(listenerPlane->getAttributes()));
+
+		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+			// Adds image handler computation (gx,gy).
+			mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::GEOGRAPHIC_COORDS);
+			mouseMoveSVG.connectElement(CoordBox::COORDS_GEO);
+
+			// Format geographic coords according to projection.
+			if (listenerPlane->getUserAttribute("epsg") == 4326){
+				// EPSG:4326 = lon-lat (degrees)
+				routine++ ->setText("gx = gx.toFixed(1)");
+				routine++ ->setText("gy = gy.toFixed(1)");
+			}
+			else {
+				// Metric (consider KM)
+				routine++ ->setText("gx = 1000*Math.round(0.001*gx)");
+				routine++ ->setText("gy = 1000*Math.round(0.001*gy)");
+			}
+			// routine++ ->setText("console.info(geo_bbox.left + rx*geo_bbox.width);");
+			routine++ ->setText(CoordBox::COORDS_GEO, ".textContent=`${gx},${gy}`;");
+		}
+
+
+		if (unitFlagger.isSet(CoordUnit::PX)){
+			// Image coordinates (pixels)
+			mouseMoveSVG.connectElement(CoordBox::COORDS_IMG);
+			routine++ ->setText(CoordBox::COORDS_IMG, ".textContent=`${x},${y}`;");
+		}
+
+
+		// routine++ ->setProgramComment("Modified by ", getName());
+	}
+	// Optional extra modifications with:
+	// TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
+
+	adjustCoordBoxPosition(ctx, superPanel);
+
+}
+
+
+void CmdPolarBase::adjustCoordBoxPosition(RackContext & ctx, const ImagePanel & superPanel) const {
+
+	TreeSVG & listenerPlane = superPanel.getMouseListenerElem();
+	MouseSVG mouseEnterSVG(ctx.getSVG(), MouseXML::EventClass::ENTER, getName());
+	mouseEnterSVG.setListenerNEW(listenerPlane);
+
+	if (!mouseEnterSVG.routineIsSet(listenerPlane)){
+		mouseEnterSVG.connectElement(TextBox::TEXTBOX); //, COORD_DISPLAY);
+		TreeSVG & routine = mouseEnterSVG.getListenerRoutine(); //, COORD_DISPLAY);
+		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='visible';");
+		routine++ ->setText("window.lastCtx = ctx;");
+		// debugging
+		// routine++ ->setText("console.info('window.lastCtx = ', ctx);");
+	}
+
+	MouseSVG mouseLeaveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::LEAVE, getName());
+	mouseLeaveSVG.setListenerNEW(listenerPlane);
+	if (!mouseLeaveSVG.routineIsSet(listenerPlane)){
+		//if (!mouseLeaveSVG.listenerIsSet(listenerPlane)){
+		mouseEnterSVG.connectElement(TextBox::TEXTBOX); //, COORD_DISPLAY);
+		TreeSVG & routine = mouseLeaveSVG.getListenerRoutine(); // , COORD_DISPLAY);
+		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='hidden';");
+	}
+}
+
 
 // New.. Keep this?
 void CmdPolarBase::updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG){
@@ -154,7 +283,7 @@ void CmdPolarBase::updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG){
 	mout.attention(DRAIN_LOG(radarSVG.radarProj.getDst().getEPSG()));
 	mout.accept<LOG_WARNING>(DRAIN_LOG(radarSVG.geoFrame));
 	mout.reject<LOG_WARNING>(DRAIN_LOG(radarSVG.radarProj));
-	*/
+	 */
 
 }
 
@@ -367,7 +496,7 @@ void CmdRadarDot::exec() const {
 	test->setLocation(imgPoint);
 	test->setTextSafe("EKA_", radarSVG.source);
 	//test->setAlign(AlignSVG::CENTER, AlignSVG::MIDDLE);
-	*/
+	 */
 
 	// vectGroup.addChild()->setComment(getName(), ' ', getParameters());
 	drain::image::TreeSVG & curve = vectorGroup[DOT](drain::image::svg::PATH);
@@ -392,7 +521,7 @@ void CmdRadarDot::exec() const {
 	test2->setStyle(drain::StyleXML::TEXT_ANCHOR, "end");
 	test2->setStyle("fill", "green");
 	test2->setStyle("stroke-width", "1px");
-	*/
+	 */
 
 
 	MaskerSVG::MaskPosition pos = drain::Enum<MaskerSVG::MaskPosition>::dict.getValue(MASK, false);
@@ -481,7 +610,7 @@ void CmdRadarDotTest::exec() const {
 
 
 };
-*/
+ */
 
 
 
@@ -517,7 +646,7 @@ void CmdRadarLabel::exec() const  {
 			{"stroke", "red"},  // replace these with image-title etc soft transit
 			{"stroke-width", "2"},
 	});
-	*/
+	 */
 
 
 	/// Step 1: initialize radarSVG
@@ -583,7 +712,7 @@ void CmdRadarLabel::exec() const  {
 	// ..
 	// textBox.textGroup->setMyAlignAnchor(anchorLabel.str());
 	// textBox.textGroup->setAlign(AlignSVG::CENTER, AlignSVG::MIDDLE);
-	*/
+	 */
 
 	drain::image::TextBox textBox(superPanel.getOverlayGroup());
 	// textBox.setFontSize(style->get("font-size", 15));
@@ -604,7 +733,7 @@ void CmdRadarLabel::exec() const  {
 	bg->setAlign(AlignSVG::IkNDEPENDENT);
 	bg->setStyle("fill", "cyan");
 	bg->setStyle("fill-opacity", 0.5);
-	*/
+	 */
 
 
 };

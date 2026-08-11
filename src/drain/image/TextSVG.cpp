@@ -100,6 +100,8 @@ TextBox::TextBox(TextBox &textBox) : topGroup(textBox.topGroup), adapterGroup(te
 
 void TextBox::init(){
 
+	// Note: functions (rack cmd line commands) may call this repeatedly.
+
 	topGroup->setId(TEXTBOX, NodeSVG::getNewIndex());
 	topGroup->addClass(TEXTBOX);
 	adapterGroup->addClass(LayoutSVG::ADAPTER);
@@ -158,7 +160,7 @@ TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 	}
 	const int lineHeight =  topGroup->getUserAttribute(LINE_HEIGHT, (4*fontSize)/3);
 
-	TreeSVG & group = adapterGroup;
+	//TreeSVG & group = adapterGroup;
 
 	CompleteHorzAlign alignHorz(AlignSVG::CENTER, MutualAlign::OUTSIDE);  // , MutualAlign::INSIDE);
 	CompleteVertAlign alignVert(AlignSVG::BOTTOM, MutualAlign::OUTSIDE);
@@ -195,7 +197,7 @@ TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 
 		if ((parts.size()==1) || !part.empty()){
 
-			TreeSVG & text = group.addChild()(svg::TEXT);
+			TreeSVG & text = adapterGroup.addChild()(svg::TEXT);
 			lastElem = &text;
 			text->addClass(TEXTBOX);
 
@@ -217,7 +219,7 @@ TreeSVG & TextBox::addLineAligned(const std::string & line, char edge) const {
 	}
 
 	if (lastElem == nullptr){
-		lastElem = & group.addChild()(svg::TEXT);
+		lastElem = & adapterGroup.addChild()(svg::TEXT);
 		lastElem->addChild()->setComment("Parsing text argument failed");
 	}
 	return *lastElem;

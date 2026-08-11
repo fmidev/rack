@@ -47,7 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/TextSVG.h>
 #include <drain/js/coord_handler.h>
 #include <drain/js/data_value_tracker.h>
-#include <drain/js/textbox_flipper.h>
+
+#include <drain/js/textbox_flipper.h> // remove later?
 
 #include "graphics-base.h"
 #include "graphics-panel.h"
@@ -452,7 +453,7 @@ void CmdRect::exec() const {
 }
 
 }
-
+/*
 namespace drain {
 
 DRAIN_ENUM_DICT(rack::CmdCoords::CoordUnit) = {
@@ -463,9 +464,10 @@ DRAIN_ENUM_DICT(rack::CmdCoords::CoordUnit) = {
 };
 
 }
-
+*/
 namespace rack {
 //#include "js/textbox_flipper.h"
+
 
 void CmdCoords::exec() const {
 
@@ -500,9 +502,10 @@ void CmdCoords::exec() const {
 	ctx.ensureOnLoad(getName())->setProgramComment(getName());
 
 	/// Define directly as a CSS class, to support prefix ('.')
-	static
-	const drain::ClassXML COORD_DISPLAY = "COORD_DISPLAY";
+	//static
+	// const drain::ClassXML COORD_DISPLAY = "COORD_DISPLAY";
 
+	/*
 	TextBox textBox(superPanel.getOverlayGroup(), COORD_DISPLAY);
 	// textBox.setLocation({100,100});
 	textBox.setLineHeight(15);
@@ -510,27 +513,33 @@ void CmdCoords::exec() const {
 	TreeSVG & lineCoords = textBox.addLine("(x,y)");
 	lineCoords->addClass(COORD_DISPLAY);
 	lineCoords->addClass(RackSVG::ElemClass::IMAGE_TITLE);
-	// textBox.addLine()->setText(__FUNCTION__); // debug
+	*/
+	CoordBox textBox(superPanel.getOverlayGroup());
+
+	addCoordView(ctx, superPanel);
+
+	// for below...
 	TreeSVG & listenerPlane = superPanel.getMouseListenerElem();
 
-	//image_coord_tracker.h
+	/*
+	TreeSVG & listenerPlane = superPanel.getMouseListenerElem();
 
-	ctx.ensureScript("coords",          ::javascript::coords);
+	ctx.ensureScript("coords",          javascript::coords);
 	ctx.ensureScript("textbox_flipper", javascript::textbox_flipper);
 
 
-	MouseSVG mouseMoveSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::MOVE, getName());
+	MouseSVG mouseMoveSVG(ctx.getSVG(), MouseXML::EventClass::MOVE, getName());
 	mouseMoveSVG.setListenerNEW(listenerPlane);
 	if (!mouseMoveSVG.routineIsSet(listenerPlane)){
 
-		mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::GEOGRAPHIC_COORDS);
-		mouseMoveSVG.connectElement(COORD_DISPLAY);
+		// Relative coords used(rx, ry) below.
+		// Note: at least this level - conditionally
+		mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::RELATIVE_COORDS);
+
 		mouseMoveSVG.connectElement(TextBox::TEXTBOX);
+		mouseMoveSVG.connectElement(CoordBox::COORD_DISPLAY);
 		mouseMoveSVG.connectElement(LayoutSVG::ADAPTER);
 
-		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
-			// mouseMoveSVG.addListenerInitGeoConf();
-		}
 
 		TreeSVG & routine = mouseMoveSVG.getListenerRoutine();
 		// conditional MOVE, like conditional MASK?:
@@ -539,23 +548,34 @@ void CmdCoords::exec() const {
 			routine++ ->setText("flipTextBoxWithThreshold(", LayoutSVG::ADAPTER, ", rx, ry, 0.33);");
 		}
 
-		mout.attention("EPSG:", listenerPlane->getUserAttribute("epsg"));
-		mout.attention("EPSG:", sprinter(listenerPlane->getAttributes()));
-		if (listenerPlane->getUserAttribute("epsg") == 4326){
-			routine++ ->setText("gx = gx.toFixed(1)");
-			routine++ ->setText("gy = gy.toFixed(1)");
-		}
-		else {
-			routine++ ->setText("gx = 1000*Math.round(0.001*gx)");
-			routine++ ->setText("gy = 1000*Math.round(0.001*gy)");
-		}
+		// mout.attention("EPSG:", listenerPlane->getUserAttribute("epsg"));
+		//mout.attention("EPSG:", sprinter(listenerPlane->getAttributes()));
 
 		if (unitFlagger.isSet(CoordUnit::D) || unitFlagger.isSet(CoordUnit::M)){
+			// Adds image handler computation (gx,gy).
+			mouseMoveSVG.useCoordinates(MouseXML::CoordinateProcessing::GEOGRAPHIC_COORDS);
+			mouseMoveSVG.connectElement(CoordBox::COORDS_GEO);
+
+			// Format geographic coords according to projection.
+			if (listenerPlane->getUserAttribute("epsg") == 4326){
+				// EPSG:4326 = lon-lat (degrees)
+				routine++ ->setText("gx = gx.toFixed(1)");
+				routine++ ->setText("gy = gy.toFixed(1)");
+			}
+			else {
+				// Metric (consider KM)
+				routine++ ->setText("gx = 1000*Math.round(0.001*gx)");
+				routine++ ->setText("gy = 1000*Math.round(0.001*gy)");
+			}
 			// routine++ ->setText("console.info(geo_bbox.left + rx*geo_bbox.width);");
-			routine++ ->setText(COORD_DISPLAY, ".textContent=`${gx},${gy}`;");
+			routine++ ->setText(CoordBox::COORDS_GEO, ".textContent=`${gx},${gy}`;");
 		}
-		else {
-			routine++ ->setText(COORD_DISPLAY, ".textContent=`${x},${y}`;");
+
+
+		if (unitFlagger.isSet(CoordUnit::PX)){
+			// Image coordinates (pixels)
+			mouseMoveSVG.connectElement(CoordBox::COORDS_IMG);
+			routine++ ->setText(CoordBox::COORDS_IMG, ".textContent=`${x},${y}`;");
 		}
 
 
@@ -564,7 +584,11 @@ void CmdCoords::exec() const {
 	// Optional extra modifications with:
 	// TreeSVG & initMoveScope =  mouseMoveSVG.getListenerInitScope();
 
-	MouseSVG mouseEnterSVG(ctx.getSVG(), drain::image::MouseXML::EventClass::ENTER, getName());
+	adjustCoordBoxPosition(ctx, superPanel);
+	*/
+
+	/*
+	MouseSVG mouseEnterSVG(ctx.getSVG(), MouseXML::EventClass::ENTER, getName());
 	mouseEnterSVG.setListenerNEW(listenerPlane);
 	// mouseEnterSVG.attachListener()
 	if (!mouseEnterSVG.routineIsSet(listenerPlane)){
@@ -584,6 +608,7 @@ void CmdCoords::exec() const {
 		TreeSVG & routine = mouseLeaveSVG.getListenerRoutine(); // , COORD_DISPLAY);
 		routine++ ->setText(TextBox::TEXTBOX, ".style.visibility='hidden';");
 	}
+	*/
 
 	// TEST for gData / gRect
 	//const Image & data = ctx.getCurrentGrayImage();
@@ -600,6 +625,10 @@ void CmdCoords::exec() const {
 	addGeoData(data, dataImageElem); // encoding
 	dataImageElem->setId();
 	//dataImageElem->setUrl(filenameFinal);
+
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), ImagePanel::DATA_ARRAY, {
+			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
+	});
 
 	static
 	const drain::ClassXML VALUE_DISPLAY = "VALUE_DISPLAY";
@@ -642,9 +671,6 @@ void CmdCoords::exec() const {
 
 	}
 
-	drain::UtilsXML::ensureStyle(ctx.getSVG(), ImagePanel::DATA_ARRAY, {
-			{"opacity", 0.0},  // some browsers disable mouse listener, if fully invisible?
-	});
 
 
 	/// TEST for gRect

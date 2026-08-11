@@ -42,9 +42,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "resources.h"
 #include "graphics-overlay.h"
 
+/*
 typedef MouseEventXML<drain::image::NodeSVG> MouseSVG;
 DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::ElemClass);
 DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::EventClass);
+*/
 
 //
 
@@ -65,6 +67,9 @@ public:
 	// TreeSVG & getInteractiveOverlay(RackContext & ctx, RadarSVG & radarSVG, bool fixedAEQD=true) const;
 
 	bool cursorCoord = false;
+
+
+
 };
 
 
@@ -82,7 +87,8 @@ public:
 		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true).setSeparator(',');
 		getParameters().link("fixedAEQD", fixedAEQD, "fix origin to the first radar");
 		getParameters().link("cursorCoord", cursorCoord, "show cursor coordinate");
-		getParameters().link("MASK", MASK, "Render outer region with style class '.MASK'");
+		linkMask();
+		// getParameters().link("MASK", MASK, "Render outer region with style class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
@@ -104,12 +110,6 @@ class CmdCoords : public CmdPolarBase { //  drain::BasicCommand,
 
 public:
 
-	enum CoordUnit {
-		UNDEFINED=0,
-		PX=1,
-		M=2,
-		D=4,
-	};
 
 
 
@@ -117,7 +117,8 @@ public:
 	CmdCoords() : CmdPolarBase(__FUNCTION__, "SVG test product") {
 		getParameters().link("resolution", resolution.tuple(), "pixel").setFill(true);  // .setFill(true)
 		getParameters().link("units", units, drain::sprinter(drain::Enum<rack::CmdCoords::CoordUnit>::dict.getKeys()).str()).setSeparator(':');
-		getParameters().link("MASK", MASK, "Fill outside using CSS class '.MASK'");
+		linkMask();
+		//getParameters().link("MASK", MASK, "Fill outside using CSS class '.MASK'");
 		// getParameters().link("panel",  panel, "label");
 		// getParameters().link("anchor", myAnchor, drain::sprinter(drain::Enum<drain::image::AnchorElem::Anchor>::dict.getKeys(), "|", "<>").str());
 	}
@@ -128,7 +129,7 @@ public:
 
 	void exec() const override ;
 
-	std::string units;
+	//std::string units;
 
 	drain::Range<int> resolution;
 

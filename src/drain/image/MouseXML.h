@@ -105,6 +105,19 @@ public:
 			const std::string & mouseEventOff = "onmouseleave");
 
 
+
+	enum CoordinateProcessing {
+		UNDEFINED = 0,
+		//BASIC = 1,
+		IMAGE_COORDS      = 1,
+		RELATIVE_COORDS   = 3,
+		GEOGRAPHIC_COORDS = 7,
+	};
+
+	typedef drain::EnumFlagger<drain::MultiFlagger<CoordinateProcessing> > CoordFlagger;
+
+protected:
+
 	/// Modifies short mouse event name like "click" to "onmouseclick", or prefixed form "handleClick".
 	/**
 	 *   Examples:
@@ -120,19 +133,6 @@ public:
 
 	static
 	std::string getInitialiserFunctionName(MouseXML::EventClass eventKey);
-
-	enum CoordinateProcessing {
-		UNDEFINED = 0,
-		//BASIC = 1,
-		IMAGE_COORDS      = 1,
-		RELATIVE_COORDS   = 3,
-		GEOGRAPHIC_COORDS = 7,
-	};
-
-	typedef drain::EnumFlagger<drain::MultiFlagger<CoordinateProcessing> > CoordFlagger;
-
-protected:
-
 
 	/// Return internal ("top-level") routine for mouse event. The routine calls subroutine (that has a sub scope).
 	template <class N>

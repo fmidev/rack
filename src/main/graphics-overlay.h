@@ -37,17 +37,36 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include <drain/prog/Command.h>
 #include <drain/util/Base64.h>
+#include <drain/image/MouseEventXML.h>
+#include <drain/image/TextSVG.h>
 
 // #include "hi5/Hi5.h"
 #include "resources.h" // ctx
 #include "graphics-radar.h" // ctx
 
-
+typedef MouseEventXML<drain::image::NodeSVG> MouseSVG;
+DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::ElemClass);
+DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::EventClass);
 
 
 namespace rack {
 
+class CoordBox : public drain::image::TextBox {
 
+public:
+
+	static
+	const drain::ClassXML COORD_DISPLAY; //  = "COORD_DISPLAY";
+
+	static
+	const drain::ClassXML COORDS_IMG; //
+
+	static
+	const drain::ClassXML COORDS_GEO; //
+
+	CoordBox(TreeSVG & group);
+
+};
 
 class CmdPolarBase : public Graphic, public drain::BasicCommand {
 
@@ -58,8 +77,24 @@ protected:
 	//bool MASK = false;
 	std::string MASK = drain::Enum<MaskerSVG::MaskPosition>::dict.getKey(MaskerSVG::MaskPosition::NONE);
 
+	void linkMask();
+
+	void addCoordView(RackContext & ctx, const ImagePanel & superPanel) const ;
+
+	void adjustCoordBoxPosition(RackContext & ctx, const ImagePanel & superPanel) const ;
+
 public:
 
+	enum CoordUnit {
+		UNDEFINED=0,
+		PX=1,
+		M=2,
+		D=4,
+		GEO=M+D,
+	};
+
+	// Coord units
+	std::string units = "D:M";
 
 
 	inline
@@ -125,6 +160,15 @@ public:
 
 };
 
+}
+
+namespace drain {
+
+DRAIN_ENUM_DICT(rack::CmdPolarBase::CoordUnit);
+
+}
+
+namespace rack {
 
 /**
  *
