@@ -452,7 +452,7 @@ void CmdOutputFile::exec() const {
 
 		//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
-		if (IMAGE_PNG){
+		if (IMAGE_PNG && !ctx.svgPanelConf.svgIncludes.isSet(drain::image::FileSVG::IncludePolicy::SKIP)){
 			// RackSVG::addImage(ctx, srcImage, filepath);
 			TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(filepath); //adapterGroup[ctx.currentImagePanel];
 			// ImagePanel superPanel(imagePanelGroup, filepath, srcImage.getGeometry().getAreaGeometry());
@@ -470,6 +470,9 @@ void CmdOutputFile::exec() const {
 			imagePanel.getImage(filepath, srcImage.getGeometry().getAreaGeometry());
 			drain::image::NodeSVG::toStream(std::cout, adapterGroup);
 			*/
+		}
+		else {
+			ctx.svgPanelConf.svgIncludes.unset(drain::image::FileSVG::IncludePolicy::SKIP);
 		}
 
 		mout.info("Retrieved image: ", srcImage, " [", srcImage.properties.get("what:quantity", ""), "]");

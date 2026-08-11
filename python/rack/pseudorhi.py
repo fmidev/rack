@@ -119,7 +119,11 @@ def handle_outfiles_prhi(args, cmdBuilder: rack.core.Rack) -> str:
 
 def handle_vert_product(args, progBuilder: rack.core.Rack):
     # range is already in metres; pass directly to gRadarSector
-    progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
+    #if isinstance(args.range, list):
+    #    progBuilder.gRadarRay(radius=':'.join(args.range), azimuth=args.az_angle)
+    #else:
+    #progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
+    progBuilder.gRadarRay(radius=args.range, azimuth=args.az_angle)
 
 
 def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
