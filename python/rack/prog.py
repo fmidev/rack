@@ -251,7 +251,7 @@ class Register:
             return s2.upper()
         
         if name_mapper == True:
-            logger.warning(f"No name mapper given for {func.__name__}, using default (camel to upper-underscore)")
+            logger.debug(f"No name mapper given for {func.__name__}, using default (camel to upper-underscore)")
             name_mapper = camel_to_upper_underscore
 
         if not name_mapper:

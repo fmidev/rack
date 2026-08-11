@@ -496,7 +496,8 @@ void CmdRadarLabel::exec() const  {
 	// General
 	Graphic::getGraphicStyle(ctx.getSVG());
 
-	TreeSVG & style = drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, {
+	//TreeSVG & style =
+	drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, {
 			{"font-size", "12"},
 			{"stroke", "black"},
 			{"stroke-width", "0.2"},

@@ -944,12 +944,12 @@ class Rack(rack.prog.Register):
 
 
     def cRange(self,
-        range:int=250000):
+        range:float=250000):
         """ Force a range for single-radar cartesian products (0=use-metadata).
 
         Parameters
         ----------
-        range:int
+        range:float
           km
 
         """
@@ -1346,7 +1346,7 @@ class Rack(rack.prog.Register):
         position:str
           INSIDE|OUTSIDE:LEFT|CENTER|RIGHT|HORZ_FILL|UNDEFINED_HORZ,INSIDE|OUTSIDE:TOP|MIDDLE|BOTTOM|VERT_FILL|UNDEFINED_VERT
         anchor:str
-          <name>|<empty>|@NONE|@PREVIOUS|@NEXT|@COLLECTIVE_CURRENT|@COLLECTIVE_FINAL
+          <name>|<empty>|@NONE|@PREVIOUS|@NEXT|@CURRENT_COMPOUND|@COLLECTIVE_FINAL
         anchorHorz:str
           ...
         anchorVert:str
@@ -1378,14 +1378,17 @@ class Rack(rack.prog.Register):
 
     def gCoords(self,
         resolution:list=[0,0],
-        MASK:bool=False):
+        units:str='',
+        MASK:str='NONE'):
         """ SVG test product. CSS classes: GRID,GRID
 
         Parameters
         ----------
         resolution:list
           pixel
-        MASK:bool
+        units:str
+          ["UNDEFINED","PX","D","M"]
+        MASK:str
           Fill outside using CSS class '.MASK'
 
         """
@@ -1609,32 +1612,14 @@ class Rack(rack.prog.Register):
 
     def gRadarDot(self,
         radius:list=[10000,10000],
-        MASK:bool=False):
+        MASK:str='NONE'):
         """ Mark the radar position with a circle. CSS classes: GRID,DOT
 
         Parameters
         ----------
         radius:list
           metres or relative
-        MASK:bool
-          add mask
-
-        """
-
-        cmd = self.make_cmd(locals())
-        return cmd
-
-
-    def gRadarDotTest(self,
-        radius:list=[10000,10000],
-        MASK:bool=False):
-        """ Mark the radar position with a circle. CSS classes: GRID,DOT
-
-        Parameters
-        ----------
-        radius:list
-          metres or relative
-        MASK:bool
+        MASK:str
           add mask
 
         """
@@ -1646,7 +1631,7 @@ class Rack(rack.prog.Register):
     def gRadarGrid(self,
         radius:list=[0,0,0],
         azimuth:list=[30,0,360],
-        MASK:bool=False):
+        MASK:str='NONE'):
         """ Draw polar sectors and rings. CSS classes: GRID,GRID
 
         Parameters
@@ -1655,7 +1640,7 @@ class Rack(rack.prog.Register):
           step:start:end (metres or relative)
         azimuth:list
           step:start:end (degrees)
-        MASK:bool
+        MASK:str
           add a mask
 
         """
@@ -1682,7 +1667,7 @@ class Rack(rack.prog.Register):
     def gRadarRay(self,
         radius:list=[0,1],
         azimuth:float=0,
-        MASK:bool=False):
+        MASK:str='NONE'):
         """ Draw a sector, annulus or a disc. Styles: GRID,HIGHLIGHT,CmdPolarSector. CSS classes: GRID,RAY
 
         Parameters
@@ -1691,8 +1676,8 @@ class Rack(rack.prog.Register):
           start:end (metres)
         azimuth:float
           (degrees)
-        MASK:bool
-          add a mask
+        MASK:str
+          ["NONE","TOP","BOTTOM","true","false"]
 
         """
 
@@ -1703,7 +1688,7 @@ class Rack(rack.prog.Register):
     def gRadarSector(self,
         radius:list=[0,1],
         azimuth:list=[0,0],
-        MASK:bool=False):
+        MASK:str='NONE'):
         """ Draw a sector, annulus or a disc.. CSS classes: GRID,SECTOR
 
         Parameters
@@ -1712,7 +1697,7 @@ class Rack(rack.prog.Register):
           start:end (metres or relative)
         azimuth:list
           start:end (degrees)
-        MASK:bool
+        MASK:str
           add a mask
 
         """
@@ -1724,7 +1709,9 @@ class Rack(rack.prog.Register):
     def gRect(self,
         bbox:str='',
         resolution:list=[0,0],
-        MASK:bool=False):
+        fixedAEQD:bool=True,
+        cursorCoord:bool=False,
+        MASK:str='NONE'):
         """ Draw rectangle or circle. CSS classes: GRID,RECTANGLE
 
         Parameters
@@ -1733,7 +1720,11 @@ class Rack(rack.prog.Register):
           xLL,yLL,xUR,yUR[px|m|deg] or xLL,yLL,r
         resolution:list
           pixel
-        MASK:bool
+        fixedAEQD:bool
+          fix origin to the first radar
+        cursorCoord:bool
+          show cursor coordinate
+        MASK:str
           Render outer region with style class '.MASK'
 
         """
@@ -4196,7 +4187,7 @@ class Rack(rack.prog.Register):
         Parameters
         ----------
         range:list
-          km
+          m
         height:list
           m
         levels:int
@@ -4358,7 +4349,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95285e-310,
+        a:float=6.95307e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4376,9 +4367,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95285e-310,
+        a:float=6.95307e-310,
         b:float=1.4822e-323,
-        c:float=6.95285e-310):
+        c:float=6.95307e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters

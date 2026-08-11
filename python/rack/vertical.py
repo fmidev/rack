@@ -153,7 +153,7 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
 
     if not args.OUTDIR:
         args.OUTDIR = p.parent
-        args.OUTFILE = f"{p.stem}.{p.suffix}"
+        args.OUTFILE = f"{p.stem}{p.suffix}"
 
     args.OUTDIR = str(args.OUTDIR)
 
@@ -172,6 +172,8 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
     if args.PRODUCT:
         logger.debug("An auxiliary radar overview image with sector indicator is requested")
         args.FORMAT.add('svg')
+
+    # logger.warning(f"Output formats: {args.FORMAT}") 
 
     cmdBuilder.gTitle('${what:date|%Y-%m-%d} ${what:time|%H:%M} ${NOD}-${PLC}')
     # spoils vertical layout...
@@ -202,7 +204,7 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
 
     logger.debug(f"args.OUTDIR={args.OUTDIR}")
     logger.debug(f"args.OUTFILE={args.OUTFILE}")
-    logger.debug(f"args.FORMAT={args.FORMAT}")
+    logger.warning(f"args.FORMAT={args.FORMAT}")
     logger.debug(f"args.basename={args.basename}")
 
 def handle_infile(args, progBuilder: rack.core.Rack):
