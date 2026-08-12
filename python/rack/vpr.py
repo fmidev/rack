@@ -55,6 +55,11 @@ def build_parser():
         default=".SECTOR=stroke:white;stroke-width:3",
         help="Adjust CSS styles for the SVG output")
 
+    parser.add_argument(
+        "--MASK",
+        default="false",
+        help="Masking of radar sector in SVG output. Options: 'true','false'")
+
     return parser
 
 
@@ -228,7 +233,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
     progBuilder.gRadarSector(
         radius  = rack.typical(args.range, [int], r'[,:]'), 
         azimuth = rack.typical(args.azm,   [int], r'[,:]'), 
-        MASK="true")
+        MASK=args.MASK)  #
+        #MASK="true")
     progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select)
     progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
 

@@ -64,7 +64,7 @@ ImagePanel::ImagePanel(TreeSVG & group, const drain::image::Image & src, const d
 
 	imagePanelGroup->addClass(IMAGE_PANEL);
 
-	TreeSVG & image = getImageNew(src, filePath);
+	TreeSVG & image = getImage(src, filePath);
 	imagePanelGroup.addChild()->setComment("Added image:", image->getId());
 
 };
@@ -171,7 +171,8 @@ TreeSVG & ImagePanel::getImage(const drain::FilePath & filepath, const drain::Fr
 	return image;
 };
 
-TreeSVG & ImagePanel::getImageNew(const drain::image::Image & src, const drain::FilePath & filepath) const { // what about prefix?
+/*
+TreeSVG & ImagePanel::getImage(const drain::image::Image & src, const drain::FilePath & filepath) const { // what about prefix?
 
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -179,64 +180,66 @@ TreeSVG & ImagePanel::getImageNew(const drain::image::Image & src, const drain::
 
 	TreeSVG & imageElem = getImage(filepath, src.getGeometry().getAreaGeometry());
 
-	/*
-	//drain::image::TreeSVG & mouseGroup = getMouseListenerElem(); // MOUSE properties really needed?
-	drain::image::TreeSVG & geoElem = getImageBorder();
-
-	// practical...
-	if (src.properties.hasKey("where:EPSG")){
-		geoElem->addClass("GEOREF");
-		geoElem->set("data-epsg", src.properties["where:EPSG"]);
-	}
-
-	if (src.properties.hasKey("where:BBOX_native")){
-		geoElem->addClass("GEOREF");
-		geoElem->set("data-bbox", src.properties["where:BBOX_native"]);
-	}
-
-	// Metadata:
-	TreeSVG & metadata = getMetadata(); // imagePanelGroup[svg::METADATA](svg::METADATA);
-
-	// Note assign: char * -> string  , "where:lat", "where:lon"
-	if (src.properties.hasKey("what:source")){
-		SourceODIM odimSrc(src.properties.get("what:source",""));
-		metadata->set("NOD", odimSrc.NOD);
-		metadata->set("PLC", odimSrc.PLC);
-		mout.debug(DRAIN_LOG(odimSrc));
-	}
-
-	// TODO: 1) time formatting 2) priority (startdate, starttime)
-	for (const std::string key: {
-		"what:date", "what:time", "what:product", "what:prodpar", "what:quantity",
-		"where:elangle", "where:lon", "where:lat", "where:EPSG", // "where:projdef",
-		"how:camethod",
-		"prevCmdKey"}){ // consider other than prevCmd (product or so)
-
-		if (src.properties.hasKey(key)){
-			size_t i = key.find(':');
-			if (i == std::string::npos){
-				metadata->set(key, src.properties[key]);
-			}
-			else {
-				metadata->set(key.substr(i+1), src.properties[key]);
-			}
-		}
-
-	}
-
-
-	TreeSVG & description = imageElem[svg::DESC](svg::DESC);
-	// mout.attention(drain::sprinter(metadata->getAttributes()));
-	description->set(metadata->getAttributes());
-	//mout.attention(drain::sprinter(description->getAttributes()));
-	//description->set("MIKA", "MÄKI");
-
-	*/
-	mout.revised<LOG_WARNING>("GEODATA not added here");
+	mout.revised<LOG_DEBUG>("GEODATA not added here");
 
 	return imageElem;
 
 }
+*/
+
+/*
+//drain::image::TreeSVG & mouseGroup = getMouseListenerElem(); // MOUSE properties really needed?
+drain::image::TreeSVG & geoElem = getImageBorder();
+
+// practical...
+if (src.properties.hasKey("where:EPSG")){
+	geoElem->addClass("GEOREF");
+	geoElem->set("data-epsg", src.properties["where:EPSG"]);
+}
+
+if (src.properties.hasKey("where:BBOX_native")){
+	geoElem->addClass("GEOREF");
+	geoElem->set("data-bbox", src.properties["where:BBOX_native"]);
+}
+
+// Metadata:
+TreeSVG & metadata = getMetadata(); // imagePanelGroup[svg::METADATA](svg::METADATA);
+
+// Note assign: char * -> string  , "where:lat", "where:lon"
+if (src.properties.hasKey("what:source")){
+	SourceODIM odimSrc(src.properties.get("what:source",""));
+	metadata->set("NOD", odimSrc.NOD);
+	metadata->set("PLC", odimSrc.PLC);
+	mout.debug(DRAIN_LOG(odimSrc));
+}
+
+// TODO: 1) time formatting 2) priority (startdate, starttime)
+for (const std::string key: {
+	"what:date", "what:time", "what:product", "what:prodpar", "what:quantity",
+	"where:elangle", "where:lon", "where:lat", "where:EPSG", // "where:projdef",
+	"how:camethod",
+	"prevCmdKey"}){ // consider other than prevCmd (product or so)
+
+	if (src.properties.hasKey(key)){
+		size_t i = key.find(':');
+		if (i == std::string::npos){
+			metadata->set(key, src.properties[key]);
+		}
+		else {
+			metadata->set(key.substr(i+1), src.properties[key]);
+		}
+	}
+
+}
+
+
+TreeSVG & description = imageElem[svg::DESC](svg::DESC);
+// mout.attention(drain::sprinter(metadata->getAttributes()));
+description->set(metadata->getAttributes());
+//mout.attention(drain::sprinter(description->getAttributes()));
+//description->set("MIKA", "MÄKI");
+
+*/
 
 
 TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, const drain::ClassXML & cls, svg::tag_t type) const {

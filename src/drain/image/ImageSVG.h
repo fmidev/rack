@@ -115,14 +115,17 @@ public:
 	const ClassXML IMAGE_BORDER;
 
 
-	/// Recommended polymorphic function, if Image is defined: stores also METADATA.
-	/**
-	 *
-	 */
-	drain::image::TreeSVG & getImageNew(const drain::image::Image & src, const drain::FilePath & filepath) const;
-
 
 	drain::image::TreeSVG & getImage(const drain::FilePath & filePath = drain::FilePath(), const drain::Frame2D<drain::image::svg::coord_t> & geom = {0,0}) const;
+
+	/// Recommended version, if image is defined
+	/**
+	 *   Note: current version does not store METADATA.
+	 */
+	inline
+	drain::image::TreeSVG & getImage(const drain::image::Image & src, const drain::FilePath & filepath) const {
+		return getImage(filepath, src.getGeometry().getAreaGeometry());
+	}
 
 
 	inline

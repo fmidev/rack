@@ -109,9 +109,10 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
     parser.add_argument(
         "--ALIGN",
         #metavar="[TOP|BOTTOM|LEFT|RIGHT]",
-        metavar="[BOTTOM|RIGHT]",
+        metavar="[TOP|BOTTOM|RIGHT]",
+        # metavar="[HORZ|VERT]",
         default="",
-        help="Position of the Pseudo RHI image wrt. radar image")
+        help="Position of the plot image wrt. radar image")
 
 
 def initialize_rack(args, rackCmdReg: rack.core.Rack):
@@ -181,14 +182,16 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
 
     if args.ALIGN:
         align = args.ALIGN.upper()
-        if align == 'TOP':
-            cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
-        elif align == 'BOTTOM':
-            cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
+        if align == 'RIGHT':
+            cmdBuilder.gLayout("HORZ", directionHorz="RIGHT")
         elif align == 'LEFT':
+            logger.warning("LEFT alignment is not supported yet. Using RIGHT instead.")
+            cmdBuilder.gLayout("HORZ", directionHorz="RIGHT")
+            #cmdBuilder.gLayout("VERT", "DOWN", "LEFT")
+        elif align == 'TOP':
             cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
             cmdBuilder.gLayout("HORZ", "UP", "RIGHT")
-        elif align == 'RIGHT':
+        elif align == 'BOTTOM':
             cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
             cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
         else:
@@ -335,6 +338,10 @@ def run_module(module):
 
     if getattr(args, 'test', False):
         logger.info("Running tests..")
+        sys.exit(0)
+
+    if not args.INFILE:
+        parser.print_help()
         sys.exit(0)
 
     prog = module.compose_command(args)
