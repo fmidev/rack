@@ -214,7 +214,7 @@ class Register:
         Separate commands --RANGE... --HEIGHT=...
         """
         
-        logger.info(f"Expanding options of {func.__name__} to argparse options")
+        logger.debug(f"Expanding options of {func.__name__} to argparse options")
         
         if isinstance(func, str):
             caller_name = func

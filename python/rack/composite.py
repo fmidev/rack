@@ -317,34 +317,55 @@ def read_default_args(parser):
     # final_args = parser.parse_args()
     # return final_args
 
+def resolve_geoconf(geoconf_arg: str) -> tuple:
+    """Resolve a --GEOCONF value (a bare KEY or a path like <prefix>-<KEY>.<ext>)
+    to (key, geoconf_dict), without touching args/parser state.
+    """
+
+    filepath = Path(geoconf_arg)
+    key = filepath.name
+
+    m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', key)
+    if not m:
+        raise ValueError(f'--GEOCONF: could not extract KEY from argument: {geoconf_arg}')
+
+    if key == m.group(1):
+        # Nothing removed - plain key given.
+        filepath = Path(f'mapconf/geo-{key}')
+        formats = ['.json', '.cnf']
+        logger.info(f"Reading geoconfs '{key}' -> {filepath}{formats}")
+        geoconf = rack.config.read_if_found(filepath, formats)
+    else:
+        # Adopt keyword "reduced" from filepath.
+        key = m.group(1)
+        logger.info(f"Reading geoconf '{key}' -> {filepath}")
+        # Notice: does not check if variables other than BBOX, PROJ, SIZE are given
+        geoconf = rack.config.read(filepath)
+
+    return key, geoconf
+
+
+def apply_geoconf(args, geoconf: dict, defaults: dict = None):
+    """Overlay a geoconf dict onto args, without clobbering values already set away
+    from the parser default - i.e. CLI-explicit / caller-supplied values win over geoconf.
+    """
+
+    if defaults is None:
+        defaults = {a.dest: a.default for a in build_parser()._actions}
+
+    for k, v in geoconf.items():
+        if k in defaults and getattr(args, k, defaults[k]) != defaults[k]:
+            logger.info(f"Keeping already-set '{k}'={getattr(args, k)!r}, not overriding with geoconf value {v!r}")
+            continue
+        setattr(args, k, v)
+
+
 def read_geoconf(args): #, parser):
 
     # First, assume it is a full path.
-    filepath = Path(args.GEOCONF)
-    args.GEOCONF = str(filepath.name)
-
-    geoconf = {}
-
-    m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', args.GEOCONF)
-    if m:
-        if args.GEOCONF == m.group(1):
-            # Nothing removed - plain key given.
-            filepath = Path(f'geoconf/geoconf-{args.GEOCONF}')
-            formats = ['.json', '.cnf']
-            logger.info(f"Reading geoconfs '{args.GEOCONF}' -> {filepath}{formats}")
-            geoconf = rack.config.read_if_found(filepath, formats)
-        else:
-            # Adopt keyword "reduced" from filepath.
-            args.GEOCONF = m.group(1)
-            logger.info(f"Reading geoconf '{args.GEOCONF}' -> {filepath}")
-            # Notice: does not check if variables other than BBOX, PROJ, SIZE are given 
-            geoconf = rack.config.read(filepath)
-    
-    else:
-        Exception(f'--GEOCONF: could not extract KEY from argument: {args.GEOCONF}')
-
-    
-    vars(args).update(geoconf)
+    key, geoconf = resolve_geoconf(args.GEOCONF)
+    args.GEOCONF = key
+    apply_geoconf(args, geoconf)
     return geoconf
 
 
@@ -716,12 +737,22 @@ def main():
 
     # read_default_args(parser)
     # More readable:
-    args, unknown_args = parser.parse_known_args()
-    if args.config:
-        config = rack.config.read(args.config)
+    # Apply --config and --GEOCONF as new parser defaults *before* the real
+    # parse, so that CLI-given values (which always beat argparse defaults)
+    # still win over them, and they still win over the built-in defaults.
+    known_args, unknown_args = parser.parse_known_args()
+    if known_args.config:
+        config = rack.config.read(known_args.config)
         parser.set_defaults(**config)
 
+    geoconf_key = None
+    if known_args.GEOCONF:
+        geoconf_key, geoconf = resolve_geoconf(known_args.GEOCONF)
+        parser.set_defaults(**geoconf)
+
     args = parser.parse_args()
+    if geoconf_key:
+        args.GEOCONF = geoconf_key
 
     # check if no args given, then print help and exit
     if len(sys.argv) == 1:

@@ -72,7 +72,12 @@ def write_output_vpr(args, cmdBuilder: rack.core.Rack):
     if args.gnuplot:
         SIZE = str(args.size).replace(':', ',').split(',')
         cmdBuilder.cSize(SIZE[0], SIZE[1])
-        cmdBuilder.gLinkImage(f"{args.OUTDIR}{args.gnuplot}")
+        p = rack.vertical.get_full_path(args.OUTDIR, args.gnuplot)
+        if (p.is_absolute()):
+            cmdBuilder.gLinkImage(p)
+        else: 
+            cmdBuilder.gLinkImage(f"{p.stem}{p.suffix}")
+        #cmdBuilder.gLinkImage(f"{args.OUTDIR}{args.gnuplot}")
 
     # optional: PNG, if az_slots?
 
@@ -91,22 +96,13 @@ def write_output_vpr(args, cmdBuilder: rack.core.Rack):
     # cmdBuilder.outputFile(f"{args.basename}.mat")
     cmdBuilder.outputFile(args.datafilename)
 
-
 def create_gnuplot_script(args, progBuilder: rack.core.Rack):
 
     if not args.gnuplot:
         return
 
-    terminal = args.gnuplot.split('.').pop()
-    if terminal not in ['png', 'svg', 'tif']:
-        logger.warning(f"Unsupported gnuplot terminal format: {terminal}, defaulting to png")
-        terminal = 'png'
-
-    plotScript = rack.prog.CommandSequence()
-    plotScript.fmt = rack.gnuplot.GnuPlotFormatter(param_separator=',\n  ')
-    plotScript.fmt.CMD_SEPARATOR = '\n'
-
-    plotBuilder = rack.gnuplot.Registry(plotScript)
+    terminal = rack.vertical.gnuplot_terminal(args)
+    plotScript, plotBuilder = rack.vertical.gnuplot_new_script()
 
     
     plotBuilder.comment(f"GnuPlot script created by {__name__}")
@@ -152,7 +148,8 @@ def create_gnuplot_script(args, progBuilder: rack.core.Rack):
     # y: altitude
     plotBuilder.yrange(height_tuple)
 
-    mat_file = args.datafilename
+    mat_file = str(rack.vertical.get_full_path(args.OUTDIR, args.datafilename))
+    # args.datafilename
     column_index = 1 # HGHT, to be skipped
     plotBuilder.comment(f"Quantities: HGHT and {quantities}")
 
@@ -186,18 +183,11 @@ def create_gnuplot_script(args, progBuilder: rack.core.Rack):
 
     plotBuilder.plot(*plots)
 
-    script_text = plotScript.to_string()+'\n'
-    if args.print != None:
-        #if args.print == '':
-        #    args.print = ' \\n  '  # default separator 
+    script_text = plotScript.to_string() + '\n'
+    if args.print is not None:
         logger.info("# GnuPlot script:")
         print(script_text)
-
-    if not args.gnuplot_script:
-        args.gnuplot_script = f"{args.gnuplot}.gnu"
-    with open(args.gnuplot_script, "w") as f:
-        f.write(script_text)
-        logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
+    rack.vertical.gnuplot_write_script(args, script_text)
 
     return script_text
 
@@ -235,10 +225,12 @@ def compose_command(args) -> rack.prog.CommandSequence:
         azimuth = rack.typical(args.azm,   [int], r'[,:]'), 
         MASK=args.MASK)  #
         #MASK="true")
-    progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select)
+    progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select) # works bad!
     progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
 
     v["datafilename"] = f'{args.basename}.mat'
+    #rack.vertical.get_full_path(args.OUTDIR, f'{args.basename}.mat')
+    #f'{args.basename}.mat'
     write_output_vpr(args, progBuilder)
     create_gnuplot_script(args, progBuilder)
 

@@ -7,6 +7,8 @@ import shlex
 from pathlib import Path
 
 import logging
+
+import rack
 logging.basicConfig(format='%(levelname)s:\t: %(message)s')
 logger = logging.getLogger(__name__) 
 logger.setLevel(logging.INFO)
@@ -50,6 +52,52 @@ def read_if_found(filename, formats:list = []) -> dict: # todo path prefix?
             return read(path, False)
     logger.warning(f"No config file found for {filename} with formats {formats}")
     return {}
+
+def resolve_path(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple:
+    """Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
+    to (key, geoconf_dict), without touching args/parser state.
+    """
+
+    filepath = Path(confname)
+    key = filepath.name
+
+    m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', key)
+    if not m:
+        raise ValueError(f'smart CONF: could not extract KEY from argument: {confname}')
+
+    # Todo: check ambiguity (several keys in path, or several files with same key but different extension)
+    if key == m.group(1):
+        if len(m.groups()) > 1:
+            logger.warning(f"Ambiguous key extraction from {confname}: {m.groups()}")
+        # Nothing removed - plain key given.
+        filepath = Path(confpath_syntax.format(key=key))
+        #logger.info(f"Reading conf(s) '{key}' -> {filepath.parent}{filepath.stem}{formats}")
+    else:
+        # Adopt keyword "reduced" from filepath.
+        key = m.group(1)
+    
+    return key, filepath
+
+def read_smart(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple:
+    """Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
+    to (key, geoconf_dict), without touching args/parser state.
+    """
+
+    # filepath = Path(confname)
+    # key = filepath.name
+
+    key, filepath = resolve_path(confname, confpath_syntax)
+
+    if filepath.suffix:
+        #ormats = [filepath.suffix]
+        logger.info(f"Reading conf(s) '{key}' -> {filepath}")
+        conf = rack.config.read(filepath)
+    else:
+        formats = ['.json', '.cnf']
+        logger.info(f"Reading conf(s) '{key}' -> {filepath.parent}{filepath.stem}.{formats}")
+        conf = rack.config.read_if_found(filepath, formats)
+            
+    return key, conf
 
 
 def read(filename, lenient=False) -> dict: # todo path prefix?

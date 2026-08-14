@@ -71,6 +71,8 @@ class GnuPlotFormatter(rack.prog.Formatter):
         #    value=value.name
         elif isinstance(value, str):
             value=f'"{value}"'
+        elif isinstance(value, Path):
+            value=f'"{value}"'
         #return super().fmt_value(value)
         else:
             value = str(value)

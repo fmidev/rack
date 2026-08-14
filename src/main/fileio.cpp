@@ -360,6 +360,12 @@ void CmdOutputFile::exec() const {
 		return;
 	}
 
+	if (ctx.statusFlags.isSet(drain::Status::METADATA_ERROR)){
+		//mout.revised("meta data check");
+		mout.warn(__FILE__, ':', drain::Status::METADATA_ERROR);
+		//return;
+	}
+
 	std::string filepath = "-";
 
 	const bool STD_OUTPUT = value.empty() || (value == "-");
@@ -441,8 +447,8 @@ void CmdOutputFile::exec() const {
 	}
 	else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
-		// This is the simple version. See image commands (--iXxxxx)
-		// drain::image::
+		// See also image processing commands (--iXxxxx)
+		//
 
 		mout.info("File format: image");
 
@@ -800,6 +806,10 @@ void CmdOutputFile::exec() const {
 
 		drain::Output output(filepath);
 
+		// NEW2
+		ODIMPathList paths;
+		DataSelector selector; //("dataset1/data1/");
+
 		if (ctx.formatStr.empty()){
 
 			if (textFileExtension.test(filepath) || STD_OUTPUT){ // (value == "-")){
@@ -810,14 +820,18 @@ void CmdOutputFile::exec() const {
 				return;
 			}
 
-			ODIMPathList paths;
+			// ODIMPathList paths;
 
 			if (!ctx.select.empty()){
-				DataSelector selector;
+				// DataSelector selector;
 				selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
 				mout.revised("always using selector in --format'ted output, current selector=", selector);
 				// mout.debug(selector);
 				selector.getPaths(src, paths);
+				if (paths.empty()){
+					mout.warn("No requested data");
+					return;
+				}
 			}
 			else {
 				drain::TreeUtils::getPaths(ctx.getHi5(RackContext::CURRENT), paths);
@@ -831,22 +845,12 @@ void CmdOutputFile::exec() const {
 			drain::StringMapper statusMapper(RackContext::variableMapper);
 			statusMapper.parse(ctx.formatStr, true);
 
-			// mout.attention("Debugging FALSE: ");
-			// statusFormatter.parse(ctx.formatStr, false);
-			// statusFormatter.toStream(std::cerr);
-			// OLD statusFormatter.toStream(output, ctx.getStatusMap());
+			// ODIMPathList paths;
+			// DataSelector selector;
 
-			// NEW
-			ODIMPathList paths;
-			DataSelector selector; //("dataset1/data1/");
-			// selector.setQuantities("DBZH:DBZ.*");
-			// DataSelector selector(ODIMPathElem::DATASET,ODIMPathElem::DATA);
-			// selector.setPathMatcher(ODIMPathElem::DATASET,ODIMPathElem::DATA);
 			if (ctx.select.empty()){
-				// special<LOG_DEBUG>
 				selector.setPathMatcher(ODIMPathElem::DATA); //   "data1");
 				selector.setMaxCount(1);
-				// mout.special("Revised code: always using selector in --format'ted output, default selector=", selector); // <LOG_DEBUG>
 				mout.revised<LOG_NOTICE>("Revised code: default selector=", selector, ", pathMatcher=", selector.getPathMatcher()); // <LOG_DEBUG>
 			}
 			else {
@@ -855,6 +859,10 @@ void CmdOutputFile::exec() const {
 			//mout.debug(selector);
 			selector.getPaths(src, paths);
 
+			if (paths.empty()){
+				mout.warn("No requested data");
+				return;
+			}
 			// ctx.getUpdatedStatusMap();
 			//
 			const drain::VariableMap & vmapShared = ctx.getStatusMap(); // updated above

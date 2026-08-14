@@ -1,18 +1,28 @@
-"""Shared utilities for rack profile plot modules (pseudorhi, vpr, etc.).
+"""Shared utilities for plot modules rack.pseudorhi and rack.vpr .
 
 Modules conforming to rack.cmdline.RackModule — having module-level
 build_parser() and compose_command() — can import these helpers and use
 rack.cmdline.run_module() as their main().
+
+Typical computation flow:
+
+Rack
+- Reads radar data input
+- A meteorological product (like CAPPI 500) is computed and saved as PNG file
+- Data for GnuPlot is produced (text dump for VPR, colour image for pseudo-RHI)
+- An SVG image is created, displaying GnuPlot image together with the product image.
 """
+
 import argparse
 import sys
 from pathlib import Path
 
 from rack.args import export_defaults_to_json, load_config
-from rack.cmdline import RackFormatter, logger
+from rack.cmdline import RackFormatter
 import rack.log
 import rack.core
-from rack.vpr import logger
+import rack.prog
+import rack.gnuplot
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 
@@ -122,13 +132,18 @@ def initialize_rack(args, rackCmdReg: rack.core.Rack):
     # verbosityKey = rack.log.handle_parameters(args)
     rackCmdReg.verbose(level=rack.log.handle_parameters(args))
 
-    rack.vertical.ensure_arguments(args, rackCmdReg)
+    ensure_arguments(args, rackCmdReg)
 
-    rack.vertical.handle_infile(args, rackCmdReg)
+    handle_infile(args, rackCmdReg)
 
     # Optional Cartesian overview with sector indicator
-    rack.vertical.handle_horz_product(args, rackCmdReg)
+    handle_horz_product(args, rackCmdReg)
 
+def get_full_path(prefix, filename) -> Path:
+    if prefix:
+        return Path(prefix, filename)
+    else:
+        return Path(filename)
 
 def ensure_arguments(args, cmdBuilder: rack.core.Rack):
     """ Ensure required arguments are present and set defaults for optional ones.
@@ -150,16 +165,31 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
 
     p = Path(args.OUTFILE)
 
-    v["basename"] = p.stem
-
-    if not args.OUTDIR:
+    if not args.OUTDIR and (p.parent != Path('.')):
+        # Take common prefix of input files, if any, else current directory
         args.OUTDIR = p.parent
         args.OUTFILE = f"{p.stem}{p.suffix}"
+        p = Path(args.OUTFILE)
+        logger.info(f"args.OUTDIR={args.OUTDIR}")
+        
 
-    args.OUTDIR = str(args.OUTDIR)
+    # Hidden argument: basename of the output file (without path or extension)
+    if p.parent != Path('.'):
+        v["basename"] = str(Path(p.parent, p.stem))
+    else:
+        v["basename"] = p.stem
+    # else:
+    #    args.OUTDIR = Path(args.OUTDIR,p.parent)
+    # args.OUTFILE = f"{p.stem}{p.suffix}"
 
     if args.OUTDIR:
+        args.OUTDIR = str(args.OUTDIR)
+        # Ensure trailing slash for OUTDIR, so that it can be used as a prefix for output files
         args.OUTDIR = args.OUTDIR.rstrip('/') + '/'
+
+    logger.info(f"args.OUTDIR={args.OUTDIR}")
+    logger.info(f"args.OUTFILE={args.OUTFILE}")
+    logger.info(f"args.basename={args.basename}")
 
     #if args.size:
     #    args.size = rack.typical(args.size, tuple,',')
@@ -200,15 +230,16 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
 
 
     if 'svg' in args.FORMAT:
+        if not args.exec:
+            logger.info("SVG output, setting also --exec (to generate the PNG images).")
+            args.exec = True  # force execution to generate the SVG output
         if not args.gnuplot:
             args.gnuplot = f"{p.stem}-gnuplot.png"
 
-    cmdBuilder.outputPrefix(args.OUTDIR)
+    if (args.OUTDIR):
+        cmdBuilder.outputPrefix(args.OUTDIR)
 
-    logger.debug(f"args.OUTDIR={args.OUTDIR}")
-    logger.debug(f"args.OUTFILE={args.OUTFILE}")
     logger.warning(f"args.FORMAT={args.FORMAT}")
-    logger.debug(f"args.basename={args.basename}")
 
 def handle_infile(args, progBuilder: rack.core.Rack):
     """Add input file(s) to the rack command sequence."""
@@ -254,7 +285,7 @@ def handle_horz_product(args, progBuilder: rack.core.Rack):
         params = None
         cmd = product[0].strip()
         if len(product) == 2:
-            params = product[0].strip()
+            params = product[1].strip()
         #cmd, params = args.PRODUCT.split(',', 1)
         #cmd = cmd.strip()
         #params = params.strip()
@@ -305,6 +336,36 @@ def finalize_svg_output(args, cmdBuilder: rack.core.Rack):
 
 
 
+def gnuplot_terminal(args) -> str:
+    """Extract and validate the gnuplot terminal type from the output filename."""
+    terminal = args.gnuplot.rsplit('.', 1)[-1]
+    if terminal not in ['png', 'svg', 'tif']:
+        logger.warning(f"Unsupported gnuplot terminal format: {terminal}, defaulting to png")
+        terminal = 'png'
+    return terminal
+
+
+def gnuplot_new_script() -> tuple:
+    """Create a fresh GnuPlot CommandSequence and a Registry builder for it.
+
+    Returns (plotScript, plotBuilder) ready for adding commands.
+    """
+    plotScript = rack.prog.CommandSequence()
+    plotScript.fmt = rack.gnuplot.GnuPlotFormatter(param_separator=',\n  ')
+    plotScript.fmt.CMD_SEPARATOR = '\n'
+    plotBuilder = rack.gnuplot.Registry(plotScript)
+    return plotScript, plotBuilder
+
+
+def gnuplot_write_script(args, script_text: str):
+    """Write *script_text* to file and record the filename in args.gnuplot_script."""
+    if not args.gnuplot_script:
+        args.gnuplot_script = f"{args.gnuplot}.gnu"
+    with open(args.gnuplot_script, "w") as f:
+        f.write(script_text)
+    logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
+
+
 def run_module(module):
     """Drive a RackModule as a standalone program.
 
@@ -321,6 +382,16 @@ def run_module(module):
     import rack.log
     import rack.args
     from rack.args import load_config
+
+    def handle_result(result: subprocess.CompletedProcess, info:str):
+        if result.returncode != 0:
+            if result.stdout:
+                logger.info(f"stdout:\n{result.stdout.rstrip()}")
+            if result.stderr:
+                logger.warning(f"stderr:\n{result.stderr.rstrip()}")
+            logger.warning(f"Failed: \n{info}")
+            logger.error(f"Command exited with code {result.returncode}")
+            exit(result.returncode)
 
     parser = module.build_parser()
     rack.log.add_parameters(parser)
@@ -363,20 +434,14 @@ def run_module(module):
         fmt = RackFormatter()
         cmd = prog.to_token_list(fmt)
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        if result.returncode != 0:
-            if result.stdout:
-                logger.info(f"stdout:\n{result.stdout.rstrip()}")
-            if result.stderr:
-                logger.warning(f"stderr:\n{result.stderr.rstrip()}")
-            logger.warning("Failed: \n"+prog.to_string(fmt))
-            logger.error(f"Command exited with code {result.returncode}")
-            exit(result.returncode)
-
+        handle_result(result, cmd) # prog.to_string(fmt))
+        
         if getattr(args, 'gnuplot_script', None):
             gnuplot_cmd = "gnuplot"
             cmd = [gnuplot_cmd, args.gnuplot_script]
             logger.info(f"# Executing GnuPlot script: {gnuplot_cmd} {args.gnuplot_script}")
-            subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            handle_result(result, cmd)
 
     line = rack.args.args_to_cli(parser, args)
     logger.warning(f"Python command line args: {line}")
