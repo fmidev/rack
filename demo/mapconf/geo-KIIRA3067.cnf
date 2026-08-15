@@ -1,0 +1,12 @@
+# Radar composite for fikor, fiika, fivan
+#
+# Markus.Peura@fmi.fi
+
+# https://epsg.io/3067
+PROJ=3067
+
+# Metric bounding box
+BBOX=-47793,6427699,631909,7104304
+
+# About 1km x 1km resolution:
+SIZE=678,678

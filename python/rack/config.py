@@ -43,15 +43,6 @@ def read_defaults(parser):
         parser.set_defaults(**config)
 
 
-def read_if_found(filename, formats:list = []) -> dict: # todo path prefix?
-    for fmt in formats:
-        path = Path(filename).with_suffix(fmt)
-        logger.info(f"Checking config file: {path}")
-        if path.is_file():
-            logger.info(f"Found config file: {path}")
-            return read(path, False)
-    logger.warning(f"No config file found for {filename} with formats {formats}")
-    return {}
 
 def resolve_path(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple:
     """Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
@@ -78,11 +69,11 @@ def resolve_path(confname: str, confpath_syntax: str = "conf/{key}.json") -> tup
     
     return key, filepath
 
+"""Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
 def read_smart(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple:
-    """Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
+    Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
     to (key, geoconf_dict), without touching args/parser state.
-    """
-
+    
     # filepath = Path(confname)
     # key = filepath.name
 
@@ -90,41 +81,57 @@ def read_smart(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple
 
     if filepath.suffix:
         #ormats = [filepath.suffix]
-        logger.info(f"Reading conf(s) '{key}' -> {filepath}")
+        logger.debug(f"Suffix = {filepath.suffix}, reading conf '{key}' -> {filepath}")
         conf = rack.config.read(filepath)
     else:
         formats = ['.json', '.cnf']
-        logger.info(f"Reading conf(s) '{key}' -> {filepath.parent}{filepath.stem}.{formats}")
-        conf = rack.config.read_if_found(filepath, formats)
+        logger.debug(f"Reading conf(s) '{key}' -> {filepath}.{formats}")
+        conf = rack.config.read(filepath, formats=formats)
             
     return key, conf
+"""
 
 
-def read(filename, lenient=False) -> dict: # todo path prefix?
+
+def read(confname: str, formats:list = [], path_syntax: str = "conf/{key}.json", lenient:bool = False) -> dict: # todo path prefix?
+
     """Load config file.
     
         Parse the file as either JSON file or simple "key=value" file.
     """
 
-    path = Path(filename)
-    
-    if not path.is_file():
-        msg = f"File not found: {filename}"
-        if lenient:
-            logger.warning(msg)
-            return {}
-        else:
-            logger.error(msg)
-            raise Exception(msg)
+    key, filepath = resolve_path(confname, path_syntax)
+
+    #filepath = Path(filepath)
+
+    if not formats:
+        formats = list()
+
+    if filepath.suffix and not (filepath.suffix in formats):
+        formats.append(filepath.suffix)
+    elif not formats:
+        formats = ['.json', '.cnf']
+
+    for fmt in formats:
+        path = Path(filepath).with_suffix(fmt)
+        logger.debug(f"Checking config file: {path}")
+        if path.is_file(): # also link ok
+            logger.debug(f"Found config file: {path}")
+            with open(path, "r") as f:
+                logger.info(f"Reading config file {filepath}")
+                lines = f.readlines()
+                return parse(lines)
+
         
-    with open(path, "r") as f:
-        lines = f.readlines()
-        return parse(lines)
-        #return json.load(f)
-    
-    logger.error(f"Reading file failed")
-    # raise Exception(msg)
-    return {}
+    #if not path.is_file():
+    msg = f"Config file {filepath} not found for {key}: (tried formats: {formats})"
+    if lenient:
+        logger.warning(msg)
+        return {}
+    else:
+        logger.error(msg)
+        raise Exception(msg)
+        
     
     
 PARSE_ERROR  = -1
