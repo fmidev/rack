@@ -104,7 +104,13 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
 
     if not outputs:
         return
-    elif isinstance(outputs, str):
+
+    if args.map:
+        # Should have a full path to the map file, but if not, try to make it absolute?
+        cmdBuilder.gLinkImage(args.map)
+        cmdBuilder.gAlign('HORZ_FILL:VERT_FILL')
+    
+    if isinstance(outputs, str):
         if outputs == "auto":
             if args.EXTRACT:
                 outputs = args.EXTRACT.split(",")
@@ -118,10 +124,10 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
 
     for i in outputs:
         if i == "DATA":
-            #if select...:
+            # if select...:
             # cmdBuilder.select    
             cmdBuilder.paletteDefault()
-            cmdBuilder.imageTransp()
+            cmdBuilder.imageTransp(undetect=0, nodata=1)
         elif i == "WEIGHT":
             cmdBuilder.select(quantity="QIND")
         filename = f"{basename}_{i}.png"
@@ -130,7 +136,7 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     
     if outfile.suffix != ".svg":
         filename = f"{basename}.svg"
-        logger.info(logStyle.emojis(Emoji.DISC).str(f"Saving {filename}"))
+        logger.info(logStyle.emojis(Emoji.DISC).str(f"Saving {filename} with {outfile} "))
         cmdBuilder.outputFile(filename)
 
 

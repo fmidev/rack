@@ -425,31 +425,45 @@ def handle_geoconf(args, Rack: rack.core.Rack):
             raise Exception(f'Unhandled type for GEOCONF: {type(args.GEOCONF)}')
         
 
-    if args.SIZE:
-        Rack.cSize(args.SIZE)
+    if not args.SIZE:
+        args.SIZE = (512, 512)
+    args.SIZE = rack.typical(args.SIZE, [int], ",")
+    Rack.cSize(args.SIZE)
 
     if args.PROJ:
         Rack.cProj(args.PROJ)
 
     if args.BBOX:
+        args.BBOX = rack.typical(args.BBOX, [float], ",")
         Rack.cBBox(args.BBOX)
+    else: raise Exception(f'BBOX not set, cannot continue: {args.BBOX}')
 
     if args.map:
-        if args.OUTDIR:
-            link = Path(args.OUTDIR, args.map)
-        else: 
-            link = Path(args.mapLink)
-    #def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
-        rack.maps.get(mapLink=link, 
+        args.map = Path(args.map)
+        if args.map.parent == Path('.'):
+            if args.OUTDIR:
+                args.map = Path(args.OUTDIR, args.map)
+    # def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+        logger.info(f"Getting map background: {args.map}")
+        #geo_args = {k:v for k,v in vars(args).items() if k in ['BBOX', 'mapServer', 'mapLayers', 'mapForce']}   
+        rack.maps.get(mapLink=args.map, 
                       mapCache=rack.maps.MAP_CACHE_PATH_SYNTAX, 
                       #mapServer=args.mapServer, 
                       #mapLayers=args.mapLayers, 
-                      #mapName=args.mapName, 
+                      mapName=args.map.name, 
+                      WIDTH=args.SIZE[0], 
+                      HEIGHT=args.SIZE[1],
+                      EPSG=args.PROJ,
+                      BBOX=args.BBOX,
+                      CRS=f"EPSG:{args.PROJ}",
+                      FORMAT='image/png',
                       #mapForce=args.mapForce
-                      **vars(args))
+        )
+                      #**vars(args))
+
         #rack.maps.get(mapCache=args.mapCache, mapServer=args.mapServer, #mapLayers=args.mapLayers, mapForce=args.mapForce,
         #              mapLink=args.mapLink, **vars(args))
-        Rack.gLinkImage(link)
+        #Rack.gLinkImage(link)
 
 
     if args.METHOD:
@@ -552,15 +566,14 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
 
     logger.debug(f"formats: {formats}")
 
-    #if 'svg' in formats:
+    if args.svgOutputs:
+        formats.add('svg')
+
+    if 'svg' in formats:
+        if not args.svgOutputs:
+            args.svgOutputs = True
     #    args.svgOutputs = True
     #    formats.add('png') # svg needs png for embedding
-
-    if args.svgOutputs:
-        if args.svgOutputs == True:
-            args.svgOutputs = args.EXTRACT
-        rack.svg.handle_outfiles(args, cmdBuilder)    
-
 
     if 'h5' in formats:
         cmdBuilder.outputFile(f"{output_basename}.h5")
@@ -571,17 +584,25 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
         cmdBuilder.outputFile(f"{output_basename}.tif")
         formats.remove('tif')
 
+    if args.svgOutputs:
+        if args.svgOutputs == True:
+            args.svgOutputs = args.EXTRACT
+        rack.svg.handle_conf(args, cmdBuilder)
+        rack.svg.handle_outfiles(args, cmdBuilder)    
+        #cmdBuilder.outputFile(f"{output_basename}.svg")
+        formats.remove('svg')
+
     if 'png' in formats:
         cmdBuilder.paletteDefault()
         # transparency?
         cmdBuilder.outputFile(f"{output_basename}.png")
         formats.remove('png')
 
-    if 'svg' in formats:
+    #if 'svg' in formats:
         # cmdBuilder.paletteDefault()
         # transparency?
-        cmdBuilder.outputFile(f"{output_basename}.svg")
-        formats.remove('svg')
+    #    cmdBuilder.outputFile(f"{output_basename}.svg")
+    #    formats.remove('svg')
 
 
     if (formats):
@@ -642,7 +663,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
         logger.info(f"Adding explicit verbosity level: {logging.INFO}")
         progBuilder.verbose(level=verbosityKey)
 
-    rack.svg.handle_conf(args, progBuilder)
+    # perhaps not set yet
+    #rack.svg.handle_conf(args, progBuilder)
 
     #logger.info("# args %s", args)
     if isinstance(args.INFILE, str):
