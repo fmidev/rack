@@ -11,7 +11,6 @@ import json
 import sys
 from pathlib import Path
 import os
-import re # GEOCONF filename-KEY extraction
 import logging
 
 #from types import SimpleNamespace
@@ -44,7 +43,7 @@ def build_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(description="Example app with JSON config support")
 
-    rack.maps.add_arguments(parser)
+    rack.maps.add_basic_arguments(parser)
 
     add_arguments(parser)
 
@@ -82,8 +81,17 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="Meteorological product. See: rack -h products") 
 
     """
-    Selection
+        Selection
     """
+    rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=True)
+    parser.add_argument(
+        "--DATASET",
+        default='', 
+        metavar="<index>[:<index2>]",
+        help="Adds path=/dataset<index>:<index2> to --select") 
+
+    """
+    Selection
     parser.add_argument(
         "--SELECT",
         default=None,
@@ -96,17 +104,13 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         metavar="<code>",
         help="Same as --SELECT quantity=<code> , where code is DBZH, VRAD, HGHT") 
 
-    parser.add_argument(
-        "--DATASET",
-        default='', 
-        metavar="<index>[:<index2>]",
-        help="Same as --SELECT path=/dataset<index>") 
 
     parser.add_argument(
         "--PRF",
         default=None, 
         metavar="SINGLE|DOUBLE|ANY",
         help="Same as --SELECT prf=<prf>") 
+    """
 
     parser.add_argument(
         "--PALETTE",
@@ -150,6 +154,12 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
     # SVG related
     rack.svg.add_parameters(parser)
+
+    parser.add_argument(
+        "--map",
+        default=None, 
+        metavar="file.png",
+        help="Background map image for SVG output.") 
 
     """
     parser.add_argument(
@@ -291,15 +301,6 @@ def export_defaults_to_json(parser, args, filename="config_template.json"):
     logger.info(f"✅ Config template written to: {filename}")
 
 
-def load_config_OLD(filename):
-    """Load JSON config if it exists."""
-    path = Path(filename)
-    if not path.is_file():
-        logger.error(f"File not found: {filename}")
-        raise FileNotFoundError(f"Config file not found: {filename}")
-        return {}
-    with open(path, "r") as f:
-        return json.load(f)
 
 
 def read_default_args(parser):
@@ -317,32 +318,7 @@ def read_default_args(parser):
     # final_args = parser.parse_args()
     # return final_args
 
-def resolve_geoconf(geoconf_arg: str) -> tuple:
-    """Resolve a --GEOCONF value (a bare KEY or a path like <prefix>-<KEY>.<ext>)
-    to (key, geoconf_dict), without touching args/parser state.
-    """
-
-    filepath = Path(geoconf_arg)
-    key = filepath.name
-
-    m = re.search('^[^A-Z]*([A-Z]+[A-Z0-9_-]*[A-Z0-9])?[^A-Z]*', key)
-    if not m:
-        raise ValueError(f'--GEOCONF: could not extract KEY from argument: {geoconf_arg}')
-
-    if key == m.group(1):
-        # Nothing removed - plain key given.
-        filepath = Path(f'mapconf/geo-{key}')
-        formats = ['.json', '.cnf']
-        logger.info(f"Reading geoconfs '{key}' -> {filepath}{formats}")
-        geoconf = rack.config.read_if_found(filepath, formats)
-    else:
-        # Adopt keyword "reduced" from filepath.
-        key = m.group(1)
-        logger.info(f"Reading geoconf '{key}' -> {filepath}")
-        # Notice: does not check if variables other than BBOX, PROJ, SIZE are given
-        geoconf = rack.config.read(filepath)
-
-    return key, geoconf
+GEOCONF_PATH_SYNTAX = "mapconf/geo-{key}"
 
 
 def apply_geoconf(args, geoconf: dict, defaults: dict = None):
@@ -362,8 +338,8 @@ def apply_geoconf(args, geoconf: dict, defaults: dict = None):
 
 def read_geoconf(args): #, parser):
 
-    # First, assume it is a full path.
-    key, geoconf = resolve_geoconf(args.GEOCONF)
+    key, filepath = rack.config.resolve_path(args.GEOCONF, GEOCONF_PATH_SYNTAX)
+    geoconf = rack.config.read(filepath)
     args.GEOCONF = key
     apply_geoconf(args, geoconf)
     return geoconf
@@ -458,6 +434,24 @@ def handle_geoconf(args, Rack: rack.core.Rack):
     if args.BBOX:
         Rack.cBBox(args.BBOX)
 
+    if args.map:
+        if args.OUTDIR:
+            link = Path(args.OUTDIR, args.map)
+        else: 
+            link = Path(args.mapLink)
+    #def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+        rack.maps.get(mapLink=link, 
+                      mapCache=rack.maps.MAP_CACHE_PATH_SYNTAX, 
+                      #mapServer=args.mapServer, 
+                      #mapLayers=args.mapLayers, 
+                      #mapName=args.mapName, 
+                      #mapForce=args.mapForce
+                      **vars(args))
+        #rack.maps.get(mapCache=args.mapCache, mapServer=args.mapServer, #mapLayers=args.mapLayers, mapForce=args.mapForce,
+        #              mapLink=args.mapLink, **vars(args))
+        Rack.gLinkImage(link)
+
+
     if args.METHOD:
         Rack.cMethod(args.METHOD)
 
@@ -471,12 +465,20 @@ def handle_prod(args, scriptBuilder: rack.core.Rack):
         else:
             cmd(value)
 
-def handle_select(args, scriptBuilder: rack.core.Rack):
+def handle_dataset(args):
+    if args.DATASET:
+        # logger.info(f"Adding dataset selection: {args.DATASET}")
+        args.path = f"/dataset{args.DATASET}"
+        # ogger.info(args)
+        #scriptBuilder.select(f"path=/dataset{args.DATASET}")
+
+def handle_select_OLD(args, scriptBuilder: rack.core.Rack):
  
     value = []
-    if args.SELECT:
-        value.append(args.SELECT)
+    if args.select:
+        value.append(args.select)
 
+    """
     if args.DATASET:
         value.append(f"path=/dataset{args.DATASET}")
 
@@ -486,6 +488,7 @@ def handle_select(args, scriptBuilder: rack.core.Rack):
     if args.PRF:
         value.append(f"prf={args.PRF}")
 
+    """
     args = ",".join(value)
     if args:
         scriptBuilder.select(",".join(value))
@@ -540,15 +543,18 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     #fmt = args.OUTFILE.split('.').pop()
     #output_basename = output_basename.removesuffix(f".{fmt}")
     output_basename = outfile.stem
-    fmt = outfile.suffix
+    #fmt = outfile.suffix
 
     if args.FORMAT:
-        formats = args.FORMAT.strip().split(',')
+        formats = set(args.FORMAT.strip().split(','))
     else:
-        formats = {fmt[1:]}
+        formats = set([outfile.suffix[1:]]) # drop leading dot
 
     logger.debug(f"formats: {formats}")
 
+    #if 'svg' in formats:
+    #    args.svgOutputs = True
+    #    formats.add('png') # svg needs png for embedding
 
     if args.svgOutputs:
         if args.svgOutputs == True:
@@ -589,10 +595,13 @@ def create_script(args) -> rack.prog.CommandSequence:
     #script = rack.prog.CommandSequence(quote=rack.prog.get_secondary_quote())
     script = rack.prog.CommandSequence(quote="'") # check! Or shlex?
     script.fmt = rack.cmdline.RackFormatter(params_format='"{params}"')   
-    
+
     # This part is common for both TILE and default SCHEME.
     scriptBuilder = rack.core.Rack(script)
-    handle_select(args, scriptBuilder)
+    handle_dataset(args)
+    scriptBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args)
+    #cmd = handle_select(args, scriptBuilder)
+    #logger.warning(f"scriptBuilder-select: {cmd}")
     handle_prod(args, scriptBuilder)
     
     return scriptBuilder
@@ -615,12 +624,17 @@ def compose_command(args) -> rack.prog.CommandSequence:
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
 
+    if not args.select and not args.quantity:
+        args.quantity = 'DBZH'
+    
     # Rack command sequence, the "program" to be executed
     prog = rack.prog.CommandSequence(programName='rack', quote="'")
 
     # Command registry, "factory" for adding command to the program sequence.
     progBuilder = rack.core.Rack(prog)
 
+    #progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select)
+    
 
     # Set Python logging verbosity, and also rack verbosity with verbosityKey
     verbosityKey = rack.log.handle_parameters(args)
@@ -635,7 +649,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         # Todo: if args.GLOB -> expand
         args.INFILE = [args.INFILE]
 
-    logger.info("# args %s", args)
+    logger.info("compose_command # args %s", args)
     handle_geoconf(args, progBuilder)
 
     if (args.SCHEME == 'TILE'):
@@ -702,7 +716,9 @@ def compose_command(args) -> rack.prog.CommandSequence:
             # Hence, here input first.
             handle_infile(args, progBuilder)
             # Then, product generation and mapping to Cartesian.
-            handle_select(args, progBuilder)
+            # handle_select(args, progBuilder)
+            handle_dataset(args)
+            progBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args)
             handle_prod(args, progBuilder)
             progBuilder.cAdd()
 
@@ -747,7 +763,8 @@ def main():
 
     geoconf_key = None
     if known_args.GEOCONF:
-        geoconf_key, geoconf = resolve_geoconf(known_args.GEOCONF)
+        geoconf_key, geoconf_path = rack.config.resolve_path(known_args.GEOCONF, GEOCONF_PATH_SYNTAX)
+        geoconf = rack.config.read(geoconf_path)
         parser.set_defaults(**geoconf)
 
     args = parser.parse_args()
@@ -774,7 +791,7 @@ def main():
         sys.exit(0)
     """
 
-    logger.info("# args %s", type(args))
+    #logger.info("main() # args %s", type(args))
     prog = compose_command(args)
 
     if args.exec:

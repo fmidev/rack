@@ -210,6 +210,7 @@ class Command:
                 # key_list = [0]
             #    key_list = list(self.args.keys())
             #    key_list = [key_list[0]]
+            # logger.warning(f"{self.name}: formatting {self.args} with {key_list}")
             return fmt.fmt_params(self.args, key_list)
         else:
             return None

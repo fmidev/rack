@@ -290,16 +290,17 @@ class Register:
             #else:
             #   logger.warning(f"No parser given for {func.__name__}, skipping argument registration for {name}")
         
-    
+
+        
 
     # @classmethod
-    def handle_expanded_cmd_args(self, args: argparse.Namespace, cmd_func: callable, write_back=False) -> Command:
+    #def handle_expanded_cmd_args(self, args: argparse.Namespace, cmd_func: callable, write_back=False) -> Command:
+    def add_cmd_with_expanded_args(self, cmd_func: callable, args: argparse.Namespace, write_back=False) -> Command:
         """
-        Docstring for handle_exploded_command
         
         :param args: Namespace of arguments, typically from argparse. The keys should match the parameter names of cmd_func.
         :param cmd_func: The function to call with the arguments. Typically, this is a method of the Rack class, e.g., Rack.select or Rack.pPseudoRhi.
-        :return: The result of cmd_func - a Command object.
+        :return: The result of cmd_func - a Command object. (Currently, unused)
         """
     
         sig = inspect.signature(cmd_func)
@@ -318,7 +319,8 @@ class Register:
             cmd.set_separators()        
         cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
         
-        logger.debug(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
+        logger.info(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
+        logger.info(f"Initial cmd state: {cmd.to_string()}")
 
         # explicit args. Notice that they are given as --cmd_func arg=value, 
         # so they are in var_args with key cmd_func and value "arg=value,..."
@@ -347,10 +349,12 @@ class Register:
                 logger.warning(f"Argument {v.name} not found in args or is None, skipping for {cmd_func.__name__}")
         
         cmd.set_args(*pos_args, **kw_args)
-        logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
+        #logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
+        logger.info(f"Revised cmd state: {cmd.to_string()}")
 
         # cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
-        # print("Final explicit args: ", pos_args, kw_args)
+        # print
+        logger.warning(f"Final explicit args: {pos_args}, {kw_args}")
         if write_back:
             # Write back to args, for example, for use in other commands or for logging
             for k,v in kw_args.items():

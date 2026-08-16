@@ -38,7 +38,7 @@ def read_defaults(parser):
     args, remaining_argv = parser.parse_known_args()
 
     if args.config:
-        config = read(args.config, False)
+        config = read(args.config, lenient=False)
         args.config = None
         parser.set_defaults(**config)
 
@@ -69,40 +69,27 @@ def resolve_path(confname: str, confpath_syntax: str = "conf/{key}.json") -> tup
     
     return key, filepath
 
-"""Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
-def read_smart(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple:
-    Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
-    to (key, geoconf_dict), without touching args/parser state.
-    
-    # filepath = Path(confname)
-    # key = filepath.name
+def read(filepath: str|Path, formats:list = None, lenient:bool = False) -> dict:
 
-    key, filepath = resolve_path(confname, confpath_syntax)
-
-    if filepath.suffix:
-        #ormats = [filepath.suffix]
-        logger.debug(f"Suffix = {filepath.suffix}, reading conf '{key}' -> {filepath}")
-        conf = rack.config.read(filepath)
-    else:
-        formats = ['.json', '.cnf']
-        logger.debug(f"Reading conf(s) '{key}' -> {filepath}.{formats}")
-        conf = rack.config.read(filepath, formats=formats)
-            
-    return key, conf
-"""
-
-
-
-def read(confname: str, formats:list = [], path_syntax: str = "conf/{key}.json", lenient:bool = False) -> dict: # todo path prefix?
-
-    """Load config file.
-    
+    """ Load config file.
         Parse the file as either JSON file or simple "key=value" file.
+
+        Does NOT do any KEY-vs-path resolution: `filepath` is a literal path
+        (Path or str). Use resolve_path() first if a bare KEY should be
+        expanded to a path via a path-syntax template.
+
+        Parameters
+        ----------
+        filepath : Path or str
+            Literal path to the config file (with or without a suffix).
+        formats : list, optional
+            File extensions to try if `filepath` has no suffix of its own.
+            Defaults to ['.json', '.cnf'].
+        lenient : bool, optional
+            If True, do not raise an error if the config file is not found; return an empty dictionary instead. Default is False.
     """
 
-    key, filepath = resolve_path(confname, path_syntax)
-
-    #filepath = Path(filepath)
+    filepath = Path(filepath)
 
     if not formats:
         formats = list()
@@ -113,18 +100,17 @@ def read(confname: str, formats:list = [], path_syntax: str = "conf/{key}.json",
         formats = ['.json', '.cnf']
 
     for fmt in formats:
-        path = Path(filepath).with_suffix(fmt)
+        path = filepath.with_suffix(fmt)
         logger.debug(f"Checking config file: {path}")
         if path.is_file(): # also link ok
             logger.debug(f"Found config file: {path}")
             with open(path, "r") as f:
-                logger.info(f"Reading config file {filepath}")
+                logger.info(f"Reading config file {path}")
                 lines = f.readlines()
                 return parse(lines)
 
-        
-    #if not path.is_file():
-    msg = f"Config file {filepath} not found for {key}: (tried formats: {formats})"
+
+    msg = f"Config file not found: {filepath} (tried formats: {formats})"
     if lenient:
         logger.warning(msg)
         return {}

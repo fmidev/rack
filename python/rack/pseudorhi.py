@@ -228,8 +228,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
     
     # Pseudo-RHI specific commands:
     handle_vert_product(args, rackCmdReg)
-    rackCmdReg.handle_expanded_cmd_args(args, rack.core.Rack.select)
-    rackCmdReg.handle_expanded_cmd_args(args, rack.core.Rack.pPseudoRhi, True)
+    rackCmdReg.add_cmd_with_expanded_args(rack.core.Rack.select, args)
+    rackCmdReg.add_cmd_with_expanded_args(rack.core.Rack.pPseudoRhi, args, write_back=True)
     handle_outfiles_prhi(args, rackCmdReg)
     handle_gnuplot(args, rackCmdReg)
 

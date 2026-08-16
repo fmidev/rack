@@ -257,9 +257,10 @@ def ensure_map(composer:rack.cmdline.Composer):
     # STYLES=&CRS=EPSG:3035&BBOX=2500000,1500000,6500000,5500000&WIDTH=800&HEIGHT=600&FORMAT=image/png
     # https://kartta.paikkatietoikkuna.fi/arcgis/rest/services/MASTO/MASTO_ortokuva_2021/ImageServer",
     rack.maps.get(
-        cache="maps/my-current-map.png",
+        mapCache="./mapcache/{mapServer}/{CRS}/BBOX={BBOX}_LAYERS={layers}_SIZE={WIDTH},{HEIGHT}_STYLES={styles}.png",
+        #cache="maps/my-current-map.png",
         #server="terrestris",
-        server="mundialis",
+        mapServer="mundialis",
         mapLayers=["OSM-WMS"],
         BBOX=composer.args.BBOX,
         PROJ=composer.args.PROJ,

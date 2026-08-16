@@ -233,7 +233,7 @@ rack_cmd = prog.to_string(fmt)
 os.system(rack_cmd)
 \endcode
 
-\~stop
+\~stoj
 \~
 
 Upon initialisation of the compositing array, \c Rack stores the encoding parameters – storage type, scaling and marker values (\c undetect , \c nodata) – given explicitly 

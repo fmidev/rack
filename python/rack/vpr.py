@@ -225,8 +225,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
         azimuth = rack.typical(args.azm,   [int], r'[,:]'), 
         MASK=args.MASK)  #
         #MASK="true")
-    progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.select) # works bad!
-    progBuilder.handle_expanded_cmd_args(args, rack.core.Rack.pVerticalProfile, True)
+    progBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args) # works bad!
+    progBuilder.add_cmd_with_expanded_args(rack.core.Rack.pVerticalProfile, args, write_back=True)
 
     v["datafilename"] = f'{args.basename}.mat'
     #rack.vertical.get_full_path(args.OUTDIR, f'{args.basename}.mat')
