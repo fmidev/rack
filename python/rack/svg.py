@@ -135,9 +135,16 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
         cmdBuilder.outputFile(filename)
     
     if outfile.suffix != ".svg":
-        filename = f"{basename}.svg"
-        logger.info(logStyle.emojis(Emoji.DISC).str(f"Saving {filename} with {outfile} "))
-        cmdBuilder.outputFile(filename)
+        # Force SVG in formats option:
+        args_dict = vars(args)
+        formats = rack.typical(args_dict['FORMATS'], [str], ",")
+        if 'svg' not in formats:
+            formats.append('svg')
+            args_dict['FORMATS'] = ",".join(formats)
+        #filename = f"{basename}.svg"
+            logger.info(f"Added SVG format to --FORMATS: {args_dict['FORMATS']}")
+        # logger.info(logStyle.emojis(Emoji.DISC).str(f"Saving {filename} with {outfile} "))
+        #cmdBuilder.outputFile(filename)
 
 
 

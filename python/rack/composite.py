@@ -20,8 +20,10 @@ import rack.cmdline
 import rack.config
 import rack.core
 import rack.maps
+import rack.process
 import rack.prog
 import rack.svg
+import subprocess
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -67,7 +69,7 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     parser.add_argument(
         "--OUTFILE",
         default="",
-        help="Output file (basename). See --FORMAT")
+        help="Output file (basename). See --FORMATS")
     
 
     parser.add_argument(
@@ -119,7 +121,7 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
     # parser.add_argument("--PROCESSES", default='4', help="Apply ") 
     parser.add_argument(
-        "--FORMAT",
+        "--FORMATS",
         default="",
         help="Set formats (h5, png, tif, svg) explicitly") 
 
@@ -286,7 +288,7 @@ def get_defaults(parser):
     return {a.dest: a.default for a in parser._actions if a.dest != 'help'}
 
 
-def export_defaults_to_json(parser, args, filename="config_template.json"):
+def export_defaults_to_json_OLD(parser, args, filename="config_template.json"):
     """Write all parser defaults to a JSON file."""
     logger.debug(f'Writing defaults to a JSON file: {filename}')
     
@@ -470,7 +472,7 @@ def handle_geoconf(args, Rack: rack.core.Rack):
                       EPSG=args.PROJ,
                       BBOX=args.BBOX,
                       CRS=f"EPSG:{args.PROJ}",
-                      FORMAT='image/png',
+                      FORMATS='image/png',
                       **server_conf                    
                       #mapForce=args.mapForce
         )
@@ -574,8 +576,8 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     output_basename = outfile.stem
     #fmt = outfile.suffix
 
-    if args.FORMAT:
-        formats = set(args.FORMAT.strip().split(','))
+    if args.FORMATS:
+        formats = set(args.FORMATS.strip().split(','))
     else:
         formats = set([outfile.suffix[1:]]) # drop leading dot
 
@@ -805,6 +807,7 @@ def main():
         parser.set_defaults(**geoconf)
 
     args = parser.parse_args()
+
     if geoconf_key:
         args.GEOCONF = geoconf_key
 
@@ -818,24 +821,21 @@ def main():
 
     # Export template if user requests it
     if args.export_config:
-        export_defaults_to_json(parser, args, args.export_config)
+        rack.args.export_defaults_to_json(parser, args, args.export_config)
         sys.exit(0)
 
-    """
-    if args.test:
-        logger.info("Running tests..")
-        test()
-        sys.exit(0)
-    """
 
     #logger.info("main() # args %s", type(args))
     prog = compose_command(args)
 
     if args.exec:
-        logger.info("# Executing with os.system(...)")
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
-        print(prog.to_string(fmt))
-        os.system(prog.to_string(fmt))
+        desc = "Executing command sequence with subprocess.run()"
+        logger.info(desc)
+        rack.process.run(prog, description=desc, logger=logger)
+        # fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
+        # print(prog.to_string(fmt))
+        # result = subprocess.run(prog.to_token_list(fmt), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        # rack.process.handle_result(result, description=desc, logger=logger) # prog.to_string(f
 
     # Useful in this order: execute first (with perhaps verbous logging)
     # ... and then print what was done:
