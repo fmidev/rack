@@ -161,6 +161,12 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         metavar="file.png",
         help="Background map image for SVG output.") 
 
+    parser.add_argument(
+        "--mapServer",
+        default=None, 
+        metavar="default",
+        help="Read mapconf/server-<server>.cnf.") 
+
     """
     parser.add_argument(
         "--tiledir",
@@ -443,9 +449,17 @@ def handle_geoconf(args, Rack: rack.core.Rack):
         if args.map.parent == Path('.'):
             if args.OUTDIR:
                 args.map = Path(args.OUTDIR, args.map)
-    # def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+
+
+        server_conf = {} 
+        if args.mapServer:
+            key, path = rack.config.resolve_path(args.mapServer, "mapconf/server-{key}.cnf")
+            logger.info(f"Reading map server config: {path}")
+            server_conf = rack.config.read(path)
+
+        # def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
         logger.info(f"Getting map background: {args.map}")
-        #geo_args = {k:v for k,v in vars(args).items() if k in ['BBOX', 'mapServer', 'mapLayers', 'mapForce']}   
+
         rack.maps.get(mapLink=args.map, 
                       mapCache=rack.maps.MAP_CACHE_PATH_SYNTAX, 
                       #mapServer=args.mapServer, 
@@ -457,6 +471,7 @@ def handle_geoconf(args, Rack: rack.core.Rack):
                       BBOX=args.BBOX,
                       CRS=f"EPSG:{args.PROJ}",
                       FORMAT='image/png',
+                      **server_conf                    
                       #mapForce=args.mapForce
         )
                       #**vars(args))

@@ -42,7 +42,8 @@ namespace drain {
 
 DRAIN_ENUM_DICT(image::FileSVG::PathPolicy) = {
 		DRAIN_ENUM_ENTRY(image::FileSVG::PathPolicy, ABSOLUTE),
-		DRAIN_ENUM_ENTRY(image::FileSVG::PathPolicy, PREFIXED)
+		DRAIN_ENUM_ENTRY(image::FileSVG::PathPolicy, PREFIXED),
+		DRAIN_ENUM_ENTRY(image::FileSVG::PathPolicy, RELATIVE),
 };
 
 DRAIN_ENUM_DICT(image::FileSVG::IncludePolicy) = {

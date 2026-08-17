@@ -69,7 +69,8 @@ public:
 
 	enum PathPolicy {
 		ABSOLUTE = 1,  // Else is relative, stripped away using inputPrefix?
-		PREFIXED = 2,  // file:// is appended
+		PREFIXED = 2,  // file:// is appended, sometimes required?
+		RELATIVE = 2,  // Duplicate, for now.
 	};
 
 	// Rename IncludePolicy ?

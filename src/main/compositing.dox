@@ -500,6 +500,7 @@ from polar data with \c --cCreate .
 \~exec
 # Todo: European composite.
 convert composite-grid.png -resize 600 composite-grid-small.png
+202603160200_radar.rack.comp.map_BBOX=-10.4346,31.7462,57.812,67.621_GRID=5,5_SIZE=950,1100_PROJ=3035_SITES=fi_VDATA=DBZH.png
 \~
 
 
