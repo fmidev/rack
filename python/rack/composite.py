@@ -158,6 +158,13 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     rack.svg.add_parameters(parser)
 
     parser.add_argument(
+        "--transparency",
+        default="nodata=1,undetect=0", 
+        metavar="",
+        help="Radar image transparency for SVG output.") 
+
+    # Use somehow rack.maps.add_parameters(parser, SELECTOR)
+    parser.add_argument(
         "--map",
         default=None, 
         metavar="file.png",
@@ -168,6 +175,13 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         default=None, 
         metavar="default",
         help="Read mapconf/server-<server>.cnf.") 
+
+    parser.add_argument(
+        "--mapLayers",
+        type=str,
+        default="",
+        help="Layers to request, comma-separated, e.g. 'OSM-WMS,TOPO-WMS'") 
+
 
     """
     parser.add_argument(
@@ -469,6 +483,9 @@ def handle_geoconf(args, Rack: rack.core.Rack):
 
         # def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
         logger.info(f"Getting map background: {args.map}")
+
+        if args.mapLayers:
+            server_conf["layers"] = args.mapLayers
 
         rack.maps.get(mapLink=args.map, 
                       mapCache=rack.maps.MAP_CACHE_PATH_SYNTAX, 

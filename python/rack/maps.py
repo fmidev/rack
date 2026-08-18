@@ -502,14 +502,18 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], map
                 text = e.read().decode("utf-8", errors="replace")
                 msg = extract_wms_error(text)
                 logger.error(f"WMS/server message: {msg}")
+                raise e
             except Exception:
-                pass
+                #pass
+                return None
+            #return None
 
         except urllib.error.URLError as e:
             logger.error(f"Connection error: {e.reason}")
-
+            raise e
         except Exception as e:
             logger.error(e)
+            raise e
 
     logger.info(f"EXIST: {cache_path}")
     if mapLink:

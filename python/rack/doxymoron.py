@@ -347,7 +347,7 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
 
     result = None
 
-    script += "-o foo.h5 --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
+    #script += "-o foo.h5 --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
 
     # Note: shlex.split does not handle backslashes well, so we do it ourselves above.
     if shell:
@@ -358,7 +358,7 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
         tokens = shlex.split(script)
 
         # Security check:
-        if not (tokens[0] in ["rack", "echo"]): # add to conf?
+        if not (tokens[0] in ["rack", "echo", "inkscape", "convert"]): # add to conf?
             logger.error(f"Refusing to execute unknown script: {tokens}")
             raise RuntimeError(f"Refusing to execute unknown script: {tokens}")
         

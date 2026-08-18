@@ -131,7 +131,10 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
             # if select...:
             # cmdBuilder.select    
             cmdBuilder.paletteDefault()
-            cmdBuilder.imageTransp(undetect=0, nodata=1)
+            if args.transparency:
+                cmdBuilder.imageTransp(args.transparency)
+            else:
+                cmdBuilder.imageTransp(undetect=0, nodata=1)
         elif i == "WEIGHT":
             cmdBuilder.select(quantity="QIND")
         filename = f"{basename}_{i}.png"
