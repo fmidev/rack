@@ -43,8 +43,9 @@ def typical(obj, dst_type:type=None, separator:str=","):
     elif dst_type == str:
         #if type(obj) == str: HANDLED ABOVE
         #    return obj  
-        #el
-        if separator and isinstance(obj, compound_types):
+        if (obj == None):
+            return ""
+        elif separator and isinstance(obj, compound_types):
             # Ensure string, for join()
             obj = [str(v) for v in obj]
             return separator.join(obj)
@@ -52,7 +53,9 @@ def typical(obj, dst_type:type=None, separator:str=","):
             return str(obj)
     elif dst_type in compound_types:
 
-        if type(obj) == str:
+        if (obj == None):
+            return dst_type()
+        elif type(obj) == str:
             obj = obj.strip()
             if separator:
                 if type(separator) == str:
@@ -66,6 +69,7 @@ def typical(obj, dst_type:type=None, separator:str=","):
             else:
                 return dst_type(obj)  # eg. ["Hello, world!"]
 
+        # Not elif! Continued processing 
         if isinstance(obj, compound_types):
             if elem_type:
                 # Convert elements
