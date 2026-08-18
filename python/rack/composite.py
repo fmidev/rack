@@ -873,6 +873,7 @@ def main():
 
     if getattr(args, 'rack_script', None):
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n  ")
+        #fmt = rack.cmdline.RackFormatter(params_format='"{params}"', cmd_separator=" \\\n  ")
         script_text = prog.to_string(fmt) + '\n'
         with open(args.rack_script, "w") as f:
             f.write(script_text)
