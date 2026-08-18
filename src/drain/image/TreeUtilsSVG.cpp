@@ -74,19 +74,41 @@ int RelativePathSetterSVG::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & p
 		return 0; // continue (traverse also children)
 	}
 	else if (node->typeIs(svg::IMAGE)){
-		drain::image::TreeSVG & imageNode = tree(path);
-		const std::string & imagePath = imageNode->getUrl(); //imageNode->get("xlink:href");
 
+		drain::image::NodeSVG & imageNode = tree(path);
+
+		const std::string & imageUrl = imageNode.getUrl(); //imageNode->get("xlink:href");
+
+		FilePath p(imageUrl); // what if http://... ?
+		bool CHANGE = false;
+		for (const auto & elem: removePath.dir){
+			if (p.dir.front() == elem){
+				p.dir.pop_front();
+				CHANGE = true;
+			}
+			else {
+				break;
+			}
+		}
+
+		if (CHANGE){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.revised("prune ", imageUrl, " -> ", prefixNew, p.str());
+			imageNode.setUrl(prefixNew + p.str());
+		}
+
+		/*
 		if (drain::StringTools::startsWith(imagePath, dir)){
 			// Strip directory part from the imagePath, replace with prefix
 			drain::Logger mout(__FILE__, __FUNCTION__);
-			std::string p = prefix + imagePath.substr(dir.size());
+			std::string p = prefixNew + imagePath.substr(dir.size());
 			mout.info("Modifying: ", imagePath, " -> ", p);
 			imageNode->setUrl(p);
 		}
 		else {
 			// mout.attention("could not set relative path: ", p, " href:", imagePath);
 		}
+		*/
 	}
 	return 1; // skip this subtree
 }

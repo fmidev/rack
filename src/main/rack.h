@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,9,"beta")
+#define RACK_VERSION drain::Version<>(20,9)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -116,6 +116,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Renamed MouseXML2 to MouseEventXML
  *  Version 20.9
  *  - Python: rack.maps, rack.vpr, rack.pseudorhi
+ *  - InputPrefix/OutputPrefix check, better matching for SVG path pruning
  *
  *  Version 19
  *  - Simplified tree path element handling (including lookup table)

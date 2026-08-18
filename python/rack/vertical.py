@@ -105,11 +105,17 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
         help="Set title for GnuPlot output.")
 
     parser.add_argument(
-        "--print", "-p",   
+        "--print", "-p",
         metavar="<line_separator>",
         default=None,
         #action='store_true',
         help="print parsed commands with given line separator (e.g. '\\n' or '\\t')")
+
+    parser.add_argument(
+        "--rack_script",
+        metavar="<filename>",
+        default=None,
+        help="Save rack command to a shell script file (one arg per line with backslash continuation)")
 
     #parser.add_argument(
     #    "--STYLE",
@@ -419,13 +425,20 @@ def run_module(module):
 
 
     if args.print == '':
-        args.print = r' \\n  '  # default separator 
-    
+        args.print = r' \\n  '  # default separator
+
     if args.print:
         logger.info("# Rack cmd:")
         sep = args.print.replace(r'\t', '\t').replace(r'\n', '\n')
         fmt = RackFormatter(params_format="'{params}'", cmd_separator=sep)
         print(prog.to_string(fmt))
+
+    if getattr(args, 'rack_script', None):
+        fmt = RackFormatter(params_format="'{params}'", cmd_separator=" \\\n  ")
+        script_text = prog.to_string(fmt) + '\n'
+        with open(args.rack_script, "w") as f:
+            f.write(script_text)
+        logger.info(f"Rack script written to: {args.rack_script}")
 
     if getattr(args, 'exec', False):
         logger.info("# Executing Rack...")

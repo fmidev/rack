@@ -69,6 +69,7 @@ class TestComposer(unittest.TestCase):
         #cmdline.set(INDIR='/tmp/', OUTFILE='out.h5')
         cmdline.set(OUTFILE='out.h5')
         cmdline.set(SCHEME='TILED')
+        cmdline.set(BBOX=[20,60, 30,70])
         cmdline.set(INFILE=['data-kiira/201708121600_radar.polar.fi???.h5'])
         prog:rack.prog.CommandSequence = cmdline.get_prog()
         #fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n\t")

@@ -102,15 +102,27 @@ class RelativePathSetterSVG : public drain::TreeVisitor<TreeSVG> {
 public:
 
 	// Leading path, maybe partial, to be pruned
-	const std::string dir;
+	// const std::string dir;
+	const FilePath removePath;
 
 	// String starting the modified path, for example "file://"
-	const std::string prefix;
+	const std::string prefixNew;
 
 	inline
-	RelativePathSetterSVG(const drain::FilePath & filepath, const std::string & prefix = "") :
-		dir(filepath.dir.empty() ? "" : filepath.dir.str()+'/'),
-		prefix(prefix) {
+	RelativePathSetterSVG(const drain::FilePath & filepath, const std::string & prefixNew = "") :
+		//dir(filepath.dir.empty() ? "" : filepath.dir.str()),  // +'/'
+		removePath(filepath),
+		prefixNew(prefixNew) {
+		/*
+		drain::Logger mout( __FILE__, __FUNCTION__);
+		drain::FilePath checkPath(dir);
+		mout.warn("checking prefix: ", dir, " to ", checkPath);
+		if (checkPath.str() != dir){
+			mout.warn("consider pruning prefix: ", dir, " to ", checkPath);
+		}
+		*/
+
+
 	}
 
 	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override;

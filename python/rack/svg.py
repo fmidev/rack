@@ -56,6 +56,9 @@ def add_parameters(parser, path_prefix=None):
  
 
 def handle_conf(args, cmdBuilder: rack.core.Rack):
+    """Define formatting options etc prior to saving the actual image files
+        (see args.OUTFILE )
+        """
 
     if not args.svgOutputs:
         return # No SVG output, so no need to handle SVG-specific conf
@@ -64,7 +67,8 @@ def handle_conf(args, cmdBuilder: rack.core.Rack):
         cmdBuilder.gLayout(str(args.svgLayout).split(","))
 
     if args.svgRelativePaths:
-        cmdBuilder.outputConf("svg:paths=PREFIXED")
+        #cmdBuilder.outputConf("svg:paths=PREFIXED")
+        cmdBuilder.outputConf("svg:paths=RELATIVE")
     else:
         cmdBuilder.outputConf("svg:paths=ABSOLUTE")
     # TODO test (difficult: internal params)

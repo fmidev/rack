@@ -281,7 +281,7 @@ public:
 
 
 // Cf. InputPrefix
-class CmdOutputPrefix : public drain::SimpleCommand<std::string> {
+class CmdOutputPrefix : public drain::SimpleCommand<std::string>, protected PrefixChecker {
 	//class CmdOutputPrefix : public drain::BasicCommand {
 
 public:
@@ -291,6 +291,7 @@ public:
 
 	inline
 	void exec() const {
+		check(value);
 		getContext<RackContext>().outputPrefix = value;
 	}
 };

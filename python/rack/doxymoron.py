@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 import rack.config
+import rack.process
 #import rack.style
 from rack.style import *
 
@@ -308,6 +309,7 @@ def save_example_rack(composer:rack.cmdline.Composer, filename: str, dirname="ou
         file.write(cmd)
         #file.write('\n')
 
+# TODO: use rack.process.handle...
 @staticmethod
 def dump_subprocess_output(
         result: subprocess.CompletedProcess[str],
@@ -340,7 +342,7 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
         "stderr": subprocess.PIPE,
         "text": True,
         #"capture_output": True,
-        "shell": shell, 
+        #"shell": shell, 
     }
 
     result = None
@@ -351,7 +353,7 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
     if shell:
         # In shell mode, we pass the whole script as a single string to subprocess.run with shell=True.
         # This allows for more complex shell features, but also requires careful handling of the script content.
-        result = subprocess.run(script, **default_args)
+        result = subprocess.run(script, shell=True, **default_args)
     else:
         tokens = shlex.split(script)
 
@@ -377,8 +379,11 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
     script = [] #'echo']  # debug
     # if 'head' in mainConf: # ???
     #    script.extend(mainConf['head'])
+    content = block
+    if isinstance(block, Block):
+        content = block.content
     
-    for line in block.content:
+    for line in content:
         code = line.split("#", 1)
         code = code[0].strip()
         if code:
@@ -392,9 +397,10 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
     logger.info(f"{Emoji.RUN.value} Executing shell script: {cmd}")
 
     # run_shell_system(cmd)
-    # "Proctocol" for maps: if BBOX, PROJ and SIZE are present, ensure the map is downloaded before running the script. This allows to use {BBOX}, {PROJ} and {SIZE} in the script, for example, to pass them to a map server.
-    cmd += "--format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
+    # "Protocol" for maps: if BBOX, PROJ and SIZE are present, ensure the map is downloaded before running the script. This allows to use {BBOX}, {PROJ} and {SIZE} in the script, for example, to pass them to a map server.
+     # cmd += " --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
      # Example of using conf values in the script, if needed.
+    logger.warning(f"{Emoji.WARNING.value} BBOX handling removed {cmd}")
     logger.warning(f"{Emoji.RUN.value} Executing shell script: {cmd}")
 
     run_shell_subprocess(cmd, cliconf.shell)
@@ -441,7 +447,8 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         code_lines.append(
             f"rack.doxymoron.save_example_py(composer, '{pyconf.include_py_sh}')")
 
-    code_lines.append("rack.doxymoron.ensure_map(composer)")
+    logger.info("rack.doxymoron.ensure_map dropped from here")
+    #code_lines.append("rack.doxymoron.ensure_map(composer)")
 
     if pyconf.include_rack_sh:
         code_lines.append(
@@ -471,8 +478,11 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
             "stderr": subprocess.PIPE,
             "text": True,
         }
+
+        # todo use rack.process.run
         result = subprocess.run(['python3', str(script)], **default_args)
-        
+
+        # todo use rack.process.run
         if result.returncode == 0:
             dump_subprocess_output(result)
             logger.info(Emoji.SUCCESS + " Success!")
@@ -536,10 +546,30 @@ def main() -> int:
             logger.debug(f"[{key}] {obj}")
 
             p = str(obj)
-            if p.endswith('_py.sh'):
+            if p.endswith('py.sh'): # removed trailing _ because LaTeX
                 pyconf.include_py_sh = p
-            elif p.endswith('_rack.sh'):
+            elif p.endswith('rack.sh'):
                 pyconf.include_rack_sh = p
+            elif p.endswith('exec.sh'):
+                # No path search. Script path should include directory (relative ok)
+                logger.info(f"{Emoji.RUN.value}  running {p}")
+                script = Path(p)
+                lines = script.read_text(encoding="utf-8").splitlines()
+                # Drop line-continuation backslashes, so joining produces one clean command line.
+                lines = [line.rstrip().removesuffix("\\").rstrip() for line in lines]
+                if cliconf.append_args:
+                    lines.extend(cliconf.append_args)
+                # Normally, add something useful, but here, a test:
+                # lines.append("--wrong arg")
+                command = " ".join(lines) + "\n"
+                script = Path(p).with_suffix(".tmp")
+                logger.info(f"{Emoji.DISC.value}  writing {script}")
+                logger.info(f"{Emoji.DISC.value}  {command}")
+                script.write_text(command, encoding="utf-8")
+                # logger.debug(f"{Emoji.RUN.value}  Executing file: {script}")
+                rack.process.run(["sh", str(script)], description=script, logger=logger)
+                cliconf.reset()
+                        
             
         elif key == '~conf':
             block: Block = obj 

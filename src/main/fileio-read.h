@@ -57,12 +57,33 @@ public:
 };
 */
 
+class PrefixChecker  {
+
+public:
+
+	static inline
+	bool check(const std::string & prefix){
+
+		drain::FilePath check(prefix);
+		if (check.str() != prefix){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.advice("initial file paths starting with '/' are handled absolute, not prefixed");
+			mout.warn("consider adjusting path ", prefix, " -> ", check.str());
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+};
+
 /// Path prefix string for subsequent input files.
 /**
  *  \see rack::CmdInput
  *  \see rack::CmdInputSelect
  */
-class CmdInputPrefix : public drain::SimpleCommand<std::string> {
+class CmdInputPrefix : public drain::SimpleCommand<std::string>, protected PrefixChecker {
 
 public:
 
@@ -74,6 +95,7 @@ public:
 
 	inline
 	void exec() const {
+		check(value);
 		getContext<RackContext>().inputPrefix = value;
 	}
 };

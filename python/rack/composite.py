@@ -223,11 +223,16 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="verbosity level for python wrapper and Rack cmd")
 
     parser.add_argument(
-        "--print", "-p",   
+        "--print", "-p",
         metavar="<line_separator>",
-        default="",
-        #action='store_true',
+        default=None,
         help="print command line with parameter separator, like ' \\n  '")
+
+    parser.add_argument(
+        "--rack_script",
+        metavar="<filename>",
+        default=None,
+        help="Save rack command to a shell script file (one arg per line with backslash continuation)")
 
     parser.add_argument(
         "--test",
@@ -444,7 +449,10 @@ def handle_geoconf(args, Rack: rack.core.Rack):
     if args.BBOX:
         args.BBOX = rack.typical(args.BBOX, [float], ",")
         Rack.cBBox(args.BBOX)
-    else: raise Exception(f'BBOX not set, cannot continue: {args.BBOX}')
+    else: #raise Exception(f'BBOX not set, cannot continue: {args.BBOX}')
+        logger.info("Bounding box not given, will be set automatically")
+        return
+
 
     if args.map:
         args.map = Path(args.map)
@@ -476,15 +484,11 @@ def handle_geoconf(args, Rack: rack.core.Rack):
                       **server_conf                    
                       #mapForce=args.mapForce
         )
-                      #**vars(args))
-
-        #rack.maps.get(mapCache=args.mapCache, mapServer=args.mapServer, #mapLayers=args.mapLayers, mapForce=args.mapForce,
-        #              mapLink=args.mapLink, **vars(args))
-        #Rack.gLinkImage(link)
-
 
     if args.METHOD:
         Rack.cMethod(args.METHOD)
+
+
 
 def handle_prod(args, scriptBuilder: rack.core.Rack):
      
@@ -577,20 +581,13 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     #fmt = outfile.suffix
 
     if args.FORMATS:
-        formats = set(args.FORMATS.strip().split(','))
+        formats = rack.typical(args.FORMATS, {str}, ",")
+        # set(args.FORMATS.strip().split(','))
     else:
-        formats = set([outfile.suffix[1:]]) # drop leading dot
+        #formats = set([outfile.suffix[1:]]) # drop leading dot
+        formats = {outfile.suffix[1:]} # drop leading dot
 
     logger.debug(f"formats: {formats}")
-
-    if args.svgOutputs:
-        formats.add('svg')
-
-    if 'svg' in formats:
-        if not args.svgOutputs:
-            args.svgOutputs = True
-    #    args.svgOutputs = True
-    #    formats.add('png') # svg needs png for embedding
 
     if 'h5' in formats:
         cmdBuilder.outputFile(f"{output_basename}.h5")
@@ -602,11 +599,18 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
         formats.remove('tif')
 
     if args.svgOutputs:
-        if args.svgOutputs == True:
+        formats.add('svg')
+
+    if 'svg' in formats:
+        if not args.svgOutputs:
+            args.svgOutputs = "auto"
+ 
+    if args.svgOutputs:
+        if args.svgOutputs == "auto":
             args.svgOutputs = args.EXTRACT
         rack.svg.handle_conf(args, cmdBuilder)
         rack.svg.handle_outfiles(args, cmdBuilder)    
-        #cmdBuilder.outputFile(f"{output_basename}.svg")
+        cmdBuilder.outputFile(f"{output_basename}.svg")
         formats.remove('svg')
 
     if 'png' in formats:
@@ -839,14 +843,23 @@ def main():
 
     # Useful in this order: execute first (with perhaps verbous logging)
     # ... and then print what was done:
+    if args.print == '':
+        args.print = r' \\n  '  # default separator
 
-    if args.print != "":
+    if args.print:
         args.print = args.print.replace(r'\t','\t')
         args.print = args.print.replace(r'\n','\n')
         logger.info("# Command line:")
         fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
         print(prog.to_string(fmt))
         # print(cmdList.to_string(" \\\n"))
+
+    if getattr(args, 'rack_script', None):
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n  ")
+        script_text = prog.to_string(fmt) + '\n'
+        with open(args.rack_script, "w") as f:
+            f.write(script_text)
+        logger.info(f"Rack script written to: {args.rack_script}")
 
 
     
