@@ -158,6 +158,24 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     rack.svg.add_parameters(parser)
 
     parser.add_argument(
+        "--svgRadarLabel",
+        default = "",
+        metavar = "string-with-variables",
+        help=
+            "Construct string of ODIM variables, like ${what:source}, ${NOD} or ${SRC}."
+            "Newlines '\\n' and edges '|' accepted."
+        )
+
+    parser.add_argument(
+        "--svgStyle",
+        default = "",
+        metavar = "CSS style definition",
+        help=
+            "Example: text.TEXTBOX=font-size:8px"
+        )
+
+
+    parser.add_argument(
         "--transparency",
         default="nodata=1,undetect=0", 
         metavar="",
@@ -524,27 +542,6 @@ def handle_dataset(args):
         # ogger.info(args)
         #scriptBuilder.select(f"path=/dataset{args.DATASET}")
 
-def handle_select_OLD(args, scriptBuilder: rack.core.Rack):
- 
-    value = []
-    if args.select:
-        value.append(args.select)
-
-    """
-    if args.DATASET:
-        value.append(f"path=/dataset{args.DATASET}")
-
-    if args.QUANTITY:
-        value.append(f"quantity={args.QUANTITY}")
-
-    if args.PRF:
-        value.append(f"prf={args.PRF}")
-
-    """
-    args = ",".join(value)
-    if args:
-        scriptBuilder.select(",".join(value))
-
 
 
 def handle_infile(args, progBuilder: rack.core.Rack):
@@ -710,7 +707,13 @@ def compose_command(args) -> rack.prog.CommandSequence:
         args.INFILE = [args.INFILE]
 
     logger.info("compose_command # args %s", args)
+    # Init
     handle_geoconf(args, progBuilder)
+
+    # Handle svg_conf?
+    if args.svgStyle:
+        progBuilder.gStyle(args.svgStyle)
+
 
     if (args.SCHEME == 'TILE'):
 
@@ -718,7 +721,13 @@ def compose_command(args) -> rack.prog.CommandSequence:
             logger.warning("Several inputs, check that outputs have syntax")
 
         scriptBuilder = create_script(args)
+
+        # todo: svg routine (in script or not)
+        if (args.svgRadarLabel):
+            scriptBuilder.gRadarLabel(args.svgRadarLabel)
+
         scriptBuilder.cCreateTile()
+        # or svgRadarLabel here?
 
         (dirpath,filepath) = handle_tilepath_defaults(args.OUTDIR, args.OUTFILE)
         #logger.debug(dirpath)
@@ -740,24 +749,12 @@ def compose_command(args) -> rack.prog.CommandSequence:
         progBuilder.script(scriptBuilder.getCmdSequence().to_string())
         # prog   <- (inputPrefix) input(s)
         handle_infile(args, progBuilder)
-    elif (args.SCHEME == 'old-TILED'):
-        # ELSE!
-        if args.BBOX and args.PROJ and args.SIZE:
-            progBuilder.cInit()
-
-        scriptBuilder.cAdd()
-
-        progBuilder.script(scriptBuilder.getCmdSequence().to_string())
-        handle_infile(args, progBuilder)
-        progBuilder.cExtract(args.EXTRACT)
-        handle_outfiles(args, progBuilder)
-
     else: #if (args.SCHEME == ''):
 
         if args.BBOX and args.PROJ and args.SIZE:
             progBuilder.cInit()
 
-        if len(args.INFILE) > 1:
+        if len(args.INFILE) > -99: # > 1 !
             logger.info("Several inputs, hence defining a script")
             
             scriptBuilder = create_script(args)
@@ -766,9 +763,16 @@ def compose_command(args) -> rack.prog.CommandSequence:
             #scriptFmt = rack.cmdline.RackFormatter(params_format='"{params}"')
             #handle_select(args, scriptBuilder)
             #handle_prod(args, scriptBuilder)
+
+            
             scriptBuilder.cAdd()
+            # todo: svg routine (in script or not)
+            if (args.svgRadarLabel):
+                scriptBuilder.gRadarLabel(args.svgRadarLabel)
+            
             #progBuilder.script(script.to_string(scriptFmt))
             progBuilder.script(scriptBuilder.getCmdSequence().to_string()) # script.to_string())
+            # force quotes?
 
             handle_infile(args, progBuilder)
         else:
@@ -781,6 +785,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
             progBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args)
             handle_prod(args, progBuilder)
             progBuilder.cAdd()
+            if (args.svgRadarLabel):
+                progBuilder.gRadarLabel(args.svgRadarLabel)
 
         progBuilder.cExtract(args.EXTRACT)
         handle_outfiles(args, progBuilder)

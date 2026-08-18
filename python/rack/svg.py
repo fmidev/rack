@@ -28,6 +28,7 @@ def add_parameters(parser, path_prefix=None):
         metavar = "[RADAR|TIME|DATETIME|DATE|<text>]",
         help="Set titles for vert/horz rows.")
 
+
     parser.add_argument(
         "--svgLayout",
         default = "",

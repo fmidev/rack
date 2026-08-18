@@ -78,7 +78,7 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 		mout.error("empty filename");
 	}
 
-	mout.note("reading: ", fileName);
+	mout.note("reading: '", fileName, "'");
 
 	std::string fullFilename;
 	ctx.resolveFilePath(ctx.inputPrefix, fileName, fullFilename);
@@ -397,7 +397,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffM
 					timeNew.setTime(whatNew.get("date",""), "%Y%m%d");
 					timeNew.setTime(whatNew.get("time",""),   "%H%M%S");
 
-					int mins = abs(timeCurrent.getTime() - timeNew.getTime())/60;
+					const int mins = abs(timeCurrent.getTime() - timeNew.getTime())/60;
 					if (mins > maxTimeDiffMinutes){
 						mout.info("Same source (radar), but not appending – nominal time difference ", mins, " [mins] > max (", maxTimeDiffMinutes, ")");
 						mout.debug(" - current: ", timeCurrent.str("%c"));
@@ -1120,7 +1120,7 @@ void CmdInputFile::readListFile(const drain::FilePath & path) const  {
 					else {
 						// Now expect volume, read sweep(s) directly and append. No script exec after each.
 						//readFile(prefix + inputFileName);
-						readFileH5(prefix + inputFileName, true); // append
+						readFileH5(prefix + inputFileName, 15); // max time difference, still?
 					}
 					//
 				}

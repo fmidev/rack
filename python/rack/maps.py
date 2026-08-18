@@ -286,8 +286,10 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
     """
 
     logger.info(f"First, looking for built-in config for server='{server}', layer='{layers}'")
-    if type(layers) == str:
-        layers = [l.strip() for l in layers.split(',') if l.strip()]
+    if layers:
+        layers = rack.typical(layers, [str])
+    else:
+        layers = []
 
 
     conf = dict(server_conf)
@@ -373,6 +375,9 @@ def link_map(cache_path: pathlib.Path, mapLink: str = None):
         if link_path.resolve() == target:
             logger.info(f"Link already exists and is correct: {link_path} -> {cache_path}")
             return
+        else:
+            logger.warning(f"Dst :{target}")
+            logger.warning(f"New :{link_path.resolve()}")
         raise FileExistsError(
             f"'{link_path}' already exists but is not a link to the expected cache file "
             f"'{cache_path}' (as produced by the current mapCache syntax). Refusing to overwrite."
@@ -386,7 +391,7 @@ def link_map(cache_path: pathlib.Path, mapLink: str = None):
     link_path.symlink_to(target)
 
 
-def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+def get(mapCache:str, mapServer:str="mundialis", mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
     """ Retrieve map, if not already in cache.
 
     Parameters:
@@ -401,8 +406,6 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], map
     - None, if retrieval failed.
     """
 
-    if type(mapLayers) == str:
-        mapLayers = [l.strip() for l in mapLayers.split(',') if l.strip()]
 
     # Currently, built-in defaults...
     # terrestris
@@ -427,6 +430,7 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], map
     #PROJ=3067
     #BBOX=-80000,6390000,944000,7926000
     #SIZE=1024,1536 
+    mapLayers = rack.typical(mapLayers, [str])
 
     server_conf = get_server_conf(server=mapServer, layers=mapLayers)
     if server_conf:
@@ -446,6 +450,7 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], map
             kw_args["BBOX"] = rack.typical(bbox, str, separator=',')
             logger.info(f"WMS {params['VERSION']} : swapping BBOX axis order -> {bbox}")    
             #logger.info(f"WMS {server_conf['VERSION']} + EPSG:{kw_args['PROJ']}: swapping BBOX axis order -> {kw_args['BBOX']}")    
+
 
     params["layers"]  = ",".join(params["layers"])
 

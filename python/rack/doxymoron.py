@@ -390,20 +390,24 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
             script.append(code)
     
     # script.extend(block.content)
-    
+    logger.info(f"{Emoji.RUN.value} Executing shell script: {script}")
+
+    for line in script:
+        logger.info(f"{Emoji.RUN.value} Executing line: {line}")
+        rack.process.run(line, logger=logger, shell=True)
+
     # Join...
-    cmd = " ".join(script)
+    #cmd = " ".join(script)
     # Emoji.SCRIPT.value
-    logger.info(f"{Emoji.RUN.value} Executing shell script: {cmd}")
+    #logger.info(f"{Emoji.RUN.value} Executing shell script: {cmd}")
 
     # run_shell_system(cmd)
     # "Protocol" for maps: if BBOX, PROJ and SIZE are present, ensure the map is downloaded before running the script. This allows to use {BBOX}, {PROJ} and {SIZE} in the script, for example, to pass them to a map server.
-     # cmd += " --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
-     # Example of using conf values in the script, if needed.
-    logger.warning(f"{Emoji.WARNING.value} BBOX handling removed {cmd}")
-    logger.warning(f"{Emoji.RUN.value} Executing shell script: {cmd}")
-
-    run_shell_subprocess(cmd, cliconf.shell)
+    # cmd += " --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
+    # Example of using conf values in the script, if needed.
+    # logger.warning(f"{Emoji.WARNING.value} BBOX handling removed {cmd}")
+    # logger.warning(f"{Emoji.RUN.value} Executing shell script: {cmd}")
+    # run_shell_subprocess(cmd, cliconf.shell)
     
 
 def run_py_block(block: Block, pyconf: PyConf) -> None:
