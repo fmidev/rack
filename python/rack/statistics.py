@@ -319,7 +319,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     # log.info(f"fmt = {fmt}")
 
     # shared_cmd_args = f'--select data: --format {fmt}\n -o -'.split(' ')
-    shared_cmd_args = ['--select','data:', '--format', f"'{fmt}\\n'", '-o', '-']
+    shared_cmd_args = ['--select','data:', '--format', f'{fmt}\\n', '-o', '-']
     # shared_cmd_args = ['--select','dataset1/data3', '--format', f'{fmt}\n', '-o', '-']
     variable_keys = variables.keys()
 
@@ -332,23 +332,23 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
         # Todo: better cmd creator
         cmd = ['rack', INFILE ]
         cmd.extend(shared_cmd_args)
-        logger.info(" ".join(cmd))
+        logger.debug(" ".join(cmd))
         
         # Main loop 1: traverse HDF5 files
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
         result = result.stdout.decode('utf-8')
         # Note: several lines, for each data<N> group!
-        #logger.warning(result)
+        logger.debug(result)
         #logger.warning('\n')
 
         lines = result.splitlines()
         # debug line count
-        logger.debug(f"Number of lines in {INFILE}: {len(lines)}")
+        logger.info(f"Number of lines in {INFILE}: {len(lines)}")
 
         m = None
         for i in lines: # split by NEWline_syntax
 
-            # logger.info(i)
+            logger.info(i)
 
             line = i.split(SEPARATOR)
             
@@ -356,10 +356,18 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
             info = dict(zip(variable_keys, i.split(SEPARATOR)))
 
             # for (k,v) in info.items():
-            #    log.info(f"{k}: '{v}'")
+            #    log.info(f"\t{k}: '{v}'")
             # logger.info(info)
             
-            dataset_id = "{SITECODE}-{TIME_START}".format(**info)
+            try:
+                dataset_id = "{SITECODE}-{TIME_START}".format(**info)
+            except Exception as e:
+                log.warning(f"line: {i}")
+                log.warning(f"line: {line}")
+                log.warning(f"info: {info}")
+                #log.error(e)
+                log.exception(e)
+                exit(3)
             
             if dataset_id not in metadata:
                 # Start new sweep

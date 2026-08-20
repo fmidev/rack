@@ -124,7 +124,8 @@ def handle_vert_product(args, progBuilder: rack.core.Rack):
     #    progBuilder.gRadarRay(radius=':'.join(args.range), azimuth=args.az_angle)
     #else:
     #progBuilder.gRadarRay(radius=args.range.replace(',', ':'), azimuth=args.az_angle)
-    progBuilder.gRadarRay(radius=args.range, azimuth=args.az_angle)
+    rangeM = rack.typical(args.range, [int])
+    progBuilder.gRadarRay(radius=rangeM, azimuth=args.az_angle)
 
 
 def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:tuple=None, height_m:tuple=None):
@@ -172,7 +173,7 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
     #plotCmdReg.plot(filename=get_background_filename(args, prefixed=True), filetype="png", 
     bg_image_file = Path(args.OUTDIR, get_background_filename(args))
     plotScriptBuilder.plot(filename=bg_image_file, filetype="png",     
-                    style=rack.gnuplot.Style.RGBIMAGE) # linecolor='rgb "gray"', linewidth=1)
+                    style=rack.gnuplot.Style.RGBIMAGE, title=None ) # linecolor='rgb "gray"', linewidth=1)
     
     range_args = {
         "xrange": args.range,
@@ -205,6 +206,7 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
 
     plotScriptBuilder.comment("Plotting a dummy line (to ensure gnuplot output is not empty)")
     plotScriptBuilder.plot('x*0', style=rack.gnuplot.Style.LINES) # linecolor='rgb "gray"', linewidth=1)
+    plotScriptBuilder.unset("key") # legend ?
     plotScriptBuilder.comment("Ensure final endline") # plot() bug, fix later.. 
     
     script = plotScript.to_string()

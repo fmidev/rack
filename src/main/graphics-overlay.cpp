@@ -331,6 +331,7 @@ void CmdPolarBase::resolveDistance(const drain::SteppedRange<double> & ownDist, 
 		dist.step =  sharedDist.step;
 	}
 	else {
+		mout.attention(DRAIN_LOG(ownDist), DRAIN_LOG(sharedDist));
 		mout.info("guessing range (0,max)");
 		dist.range.set(0.0, 1.0); // min to max
 		//dist.step = 50000; // 50 km
@@ -339,7 +340,7 @@ void CmdPolarBase::resolveDistance(const drain::SteppedRange<double> & ownDist, 
 
 
 	if (dist.range.min<0){ // Relax this later!
-		//mout.unimplemented("negative start");
+		mout.attention("negative start");
 		// mout.error("negative start of radial range ", dist.range.min, " [metres]");
 		//mout.unimplemented<LOG_ERR>("negative start of radial range ", dist.range.min, " [metres]");
 		//return;
@@ -1037,8 +1038,13 @@ void CmdRadarRay::exec() const {
 			// {"opacity", 0.65}
 	});
 
+	mout.attention(DRAIN_LOG(radiusMetres), DRAIN_LOG(ctx.polarSelector.radius));
+
 	drain::SteppedRange<double> dist; // (distanceMetres.range); // double -> int
 	resolveDistance(radiusMetres, ctx.polarSelector.radius, dist, radarSVG.radarProj.getRange());
+
+	mout.attention(DRAIN_LOG(dist));
+
 
 	const double azmR = azimuthDegrees.range.min * drain::DEG2RAD;
 

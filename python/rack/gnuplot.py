@@ -382,6 +382,13 @@ class Registry(rack.prog.Register):
             elif opts:
                 logger.warning(f"unset 'style' with options={opts}")
 
+            if "title" in opts:
+                if opts["title"] == None:
+                    opts.pop("title")
+                    self.opts["notitle"] = Literal("") 
+                else:
+                    logger.warning("Title not handled yet...")
+
             self.opts.update(opts)
 
             if axes_val is not None:
@@ -479,6 +486,7 @@ class Style(Enum):
     RGBIMAGE = "rgbimage"
     LINESPOINTS = "linespoints"
     POINTS = "points"
+    NOTITLE = "notitle"
 
 
 class ConfSequence(rack.prog.CommandSequence):
