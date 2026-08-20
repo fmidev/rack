@@ -366,17 +366,22 @@ def read_default_args(parser):
 GEOCONF_PATH_SYNTAX = "mapconf/geo-{key}"
 
 
-def apply_geoconf(args, geoconf: dict, defaults: dict = None):
+def apply_geoconf_OLD(args, geoconf: dict, defaults: dict = None):
     """Overlay a geoconf dict onto args, without clobbering values already set away
     from the parser default - i.e. CLI-explicit / caller-supplied values win over geoconf.
     """
+
+    # This is a bit tricky hack, as geoconf does not know which 
+    # arguments were set explicitly by the user, and which were 
+    # left at their default values.
 
     if defaults is None:
         defaults = {a.dest: a.default for a in build_parser()._actions}
 
     for k, v in geoconf.items():
+        v2 = getattr(args, k, None)
         if k in defaults and getattr(args, k, defaults[k]) != defaults[k]:
-            logger.info(f"Keeping already-set '{k}'={getattr(args, k)!r}, not overriding with geoconf value {v!r}")
+            #logger.info(f"Keeping already-set '{k}'={getattr(args, k)!r}, not overriding with geoconf value {v!r}")
             continue
         setattr(args, k, v)
 
@@ -384,9 +389,16 @@ def apply_geoconf(args, geoconf: dict, defaults: dict = None):
 def read_geoconf(args): #, parser):
 
     key, filepath = rack.config.resolve_path(args.GEOCONF, GEOCONF_PATH_SYNTAX)
-    geoconf = rack.config.read(filepath)
+    geoconf = rack.config.read(filepath, formats=['.json', '.cnf'], lenient=False)
+    for k, v in geoconf.items():
+        if hasattr(args, k):
+            if getattr(args, k, None) is None:
+                setattr(args, k, v)
+        else:
+            logger.warning(f"GEOCONF {key} has unknown attribute '{k}' (value {v})")
+
     args.GEOCONF = key
-    apply_geoconf(args, geoconf)
+    # apply_geoconf(args, geoconf)
     return geoconf
 
 
@@ -492,32 +504,40 @@ def handle_geoconf(args, Rack: rack.core.Rack):
             if args.OUTDIR:
                 args.map = Path(args.OUTDIR, args.map)
 
-
-        server_conf = {} 
-        if args.mapServer:
-            key, path = rack.config.resolve_path(args.mapServer, "mapconf/server-{key}.cnf")
-            logger.info(f"Reading map server config: {path}")
-            server_conf = rack.config.read(path)
-
-        # def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
         logger.info(f"Getting map background: {args.map}")
 
-        if args.mapLayers:
-            server_conf["layers"] = args.mapLayers
+        serverConf = {} 
+        if args.mapServer:
+            
+            #key, path = rack.config.resolve_path(args.mapServer, "mapconf/server-{key}.cnf")
+            logger.info(f"Reading config for server: {args.mapServer}")
+            serverConf = rack.maps.get_server_conf(args.mapServer)
+            #server_conf = rack.config.read(path, formats=['.cnf', '.json'], lenient=False)
 
-        rack.maps.get(mapLink=args.map, 
-                      mapCache=rack.maps.MAP_CACHE_PATH_SYNTAX, 
-                      #mapServer=args.mapServer, 
-                      #mapLayers=args.mapLayers, 
-                      mapName=args.map.name, 
-                      WIDTH=args.SIZE[0], 
-                      HEIGHT=args.SIZE[1],
-                      EPSG=args.PROJ,
-                      BBOX=args.BBOX,
-                      CRS=f"EPSG:{args.PROJ}",
-                      FORMATS='image/png',
-                      **server_conf                    
-                      #mapForce=args.mapForce
+        # def get(mapCache:str, mapServer:str="mundialis", mapLayers:list=["OSM-WMS"], mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+        
+
+        if args.mapLayers:
+            serverConf["layers"] = args.mapLayers
+
+        
+        rack.maps.get(
+            serverConf, 
+            mapLink=args.map, 
+            mapCache=rack.maps.MAP_CACHE_PATH_SYNTAX, 
+            #mapServer=args.mapServer, 
+            #mapLayers=args.mapLayers, 
+            mapName=args.map.name, 
+            SIZE=args.SIZE,
+            EPSG=args.PROJ,
+            #WIDTH=args.SIZE[0], 
+            #HEIGHT=args.SIZE[1],
+            #EPSG=args.PROJ,
+            BBOX=args.BBOX,
+            #CRS=f"EPSG:{args.PROJ}",
+            #FORMATS='image/png',
+            #**serverCsonf                    
+            #mapForce=args.mapForce
         )
 
     if args.METHOD:

@@ -127,7 +127,7 @@ class PyConf(BaseConf):
 # ----------------------------
 
 # Recognizes \example and \include commands
-SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include)))\s*(?:(?P<arg>.+))?$")
+SINGLE_LINE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include|section|subsection)))\s*(?:(?P<arg>.+))?$")
 
 # KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
 # Accept either a plain command line, or a line prefixed with "$ "
@@ -190,12 +190,12 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         # line = line.strip()
 
         # Detect single-line command, like \include or \example
-        m = SIMPLE_CMD_RE.match(line.strip()) # keep strip here
+        m = SINGLE_LINE_CMD_RE.match(line.strip()) # keep strip here
         if m:
             cmd = m.group("cmd")
             arg = m.group("arg")
             # Future option: \example and \include files can be tested (implies support of Confs)
-            if cmd in ("example", "include") and arg:
+            if cmd in ("example", "include", "section") and arg:
                 yield (cmd, arg.strip())
                 logger.debug(f"line {i}: handling  {cmd}({arg})")
             else:
@@ -247,6 +247,8 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
 
 def ensure_map(composer:rack.cmdline.Composer):
     """ Check BBOX, PROJ and SIZE
+
+        TODO: new rack.maps 
     """
     prog = composer.get_prog()
     logger.info(f"Debugging geo.py: " + prog.__str__())
@@ -573,7 +575,11 @@ def main() -> int:
                 # logger.debug(f"{Emoji.RUN.value}  Executing file: {script}")
                 rack.process.run(["sh", str(script)], description=script, logger=logger)
                 cliconf.reset()
-                        
+
+        elif key in {"section", "subsection"}:
+            #logger.info(f"{key.upper()}: {obj}")
+            styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
+            logger.info(Emoji.SCRIPT.value + styleWrapper.str(f" {key.upper()}: {obj}"))
             
         elif key == '~conf':
             block: Block = obj 

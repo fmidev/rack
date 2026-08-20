@@ -44,7 +44,9 @@ def read_defaults(parser):
 
 
 
-def resolve_path(confname: str, confpath_syntax: str = "conf/{key}.json") -> tuple:
+def resolve_path(confname: str, 
+                 confpath_syntax: str = "conf/{key}.json" ) -> tuple:
+                 #formats=['.json', '.cnf']) -> tuple:
     """Resolve the key for this configuration  (a bare KEY or a path like <prefix>-<KEY>.<ext>)
     to (key, geoconf_dict), without touching args/parser state.
     """
@@ -83,8 +85,7 @@ def read(filepath: str|Path, formats:list = None, lenient:bool = False) -> dict:
         filepath : Path or str
             Literal path to the config file (with or without a suffix).
         formats : list, optional
-            File extensions to try if `filepath` has no suffix of its own.
-            Defaults to ['.json', '.cnf'].
+            File extensions to try, in given order.
         lenient : bool, optional
             If True, do not raise an error if the config file is not found; return an empty dictionary instead. Default is False.
     """

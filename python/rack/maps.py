@@ -4,6 +4,12 @@ import os
 import re
 import sys
 import urllib.request
+#import xml.etree.ElementTree as ET # getCapabilities
+from urllib.parse import urlencode # getCapabilities
+#import urllib.request
+import urllib.error
+import xml.etree.ElementTree as ET
+from pyproj import CRS
 
 import rack.config
 import rack.log
@@ -15,27 +21,28 @@ logger = rack.log.logger.getChild(pathlib.Path(__file__).stem)
 # http://map.fmi.fi/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&format=image/png&layers=world-map-combo-en&srs=EPSG:3067&bbox=-15000,6508000,625000,6892000&width=1280&height=768    
 # https://ows.terrestris.de/osm/service?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=OSM-WMS&STYLES=&CRS=EPSG:3857&BBOX=2610000,7500000,2620000,7510000&WIDTH=800&HEIGHT=600&FORMAT=image/png
 server_conf = {
-        "fmi": {
+        "internal-fmi": {
             "endpoint": "http://map.fmi.fi/geoserver/wms",
             "version": "1.3.0",
             "layers": ["world-map-combo-en"], # (standard map)
             "epsg": [3067, 4326] # (EPSG:3067 is default, but also support 4326)
         },
-        "terrestris": {
+        "internal-terrestris": {
             "endpoint": "https://ows.terrestris.de/osm/service",
             "version": "1.3.0",
             "layers": ["OSM-WMS"], # default, but shoud be more?
         },
-        "mundialis": {
+        "internal-mundialis": {
             "endpoint": "https://ows.mundialis.de/osm/service",
             "layers": [
                 "OSM-WMS", # (standard map)
                 "TOPO-WMS", # (terrain colored)
                 "TOPO-OSM-WMS" # (overlay combo)
-            ]
+            ],
+            "epsg": [3035, 4326] # (EPSG:3067 is default, but also support 4326)
         },
-        "nasa-neo": {
-            "endpoint": "https://neo.sci.gsfc.nasa.gov/wms/wms", 
+        "internal-nasa-neo": {
+            "endpoint": "https://neo.sci.gsfc.nasa.gov/wms", 
             "version": "1.3.0",
             "layers": ["MODIS_Terra_CorrectedReflectance_TrueColor"]    
         }
@@ -44,7 +51,8 @@ server_conf = {
 
 GEO_CONF_PATH_SYNTAX  = "mapconf/geo-{key}" # (default path syntax for geoconf files)
 SERVER_CONF_PATH_SYNTAX  = "mapconf/server-{key}" # (default path syntax for geoconf files)
-MAP_CACHE_PATH_SYNTAX = "./mapcache/{mapServer}/{CRS}/BBOX={BBOX}_LAYERS={layers}_SIZE={WIDTH},{HEIGHT}_STYLES={styles}.png" # (default path syntax for cached map files)
+#MAP_CACHE_PATH_SYNTAX = "./mapcache/{mapServer}/{CRS}/BBOX={BBOX}_LAYERS={layers}_SIZE={WIDTH},{HEIGHT}_STYLES={styles}.png" # (default path syntax for cached map files)
+MAP_CACHE_PATH_SYNTAX = "./mapcache/{CRS}/BBOX={BBOX}_LAYERS={layers}_SIZE={WIDTH},{HEIGHT}_STYLES={styles}.png" # (default path syntax for cached map files)
 
 def build_parser() -> argparse.ArgumentParser:
 
@@ -78,9 +86,12 @@ def print_argument_help(parser: argparse.ArgumentParser, name: str) -> bool:
 
 
 def add_basic_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-    
+
+    # NOTE: keep None's as default for optional args, 
+    # so GEOCONF can override only those with None value.
     parser.add_argument(
         "--BBOX",
+        default=None,
         #default='6,51.3,49,70.2',
         metavar="<lonLL,latLL,lonUR,latUR>",
         help="Bounding box [cBBox]")  # FMI Scandinavia
@@ -88,16 +99,16 @@ def add_basic_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentPar
     parser.add_argument(
         "--PROJ",
         #"--EPSG",
-        default=3067,
+        default=None,
         metavar="<epsg>",
         help="EPSG code of the target projection (CRS), e.g. 3067 or 4326")
 
     parser.add_argument(
         "--SIZE",
-        #default=None,
-        default="800,800",
+        default=None,
+        #default="800,800",
         metavar="<width>[,<height>]",
-        help="Requested map image size in pixels")
+        help="Requested map image size in pixels (e.g. 800,600)")
 
     parser.add_argument(
         "--GEOCONF",
@@ -156,22 +167,61 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         metavar="path/filename.png",
         help="Link cached file at this path")
 
+    parser.add_argument(
+        "--get_layers",
+        action='store_true',
+        help="Show all available layers from the WMS server")
+
+    parser.add_argument(
+        "--show_layer",
+        type=str,
+        default=None,
+        metavar="<layer_name>",
+        help="Show details for a specific WMS layer")
 
     return parser
     
 
 
 
-# EPSG codes registered with (lat, lon) axis order rather than (lon, lat)/(x, y).
-# WMS 1.3.0 (CRS=) requires BBOX in the CRS's registered axis order, so these need
-# swapping; WMS < 1.3.0 (SRS=) always used (lon,lat)-like order, regardless of CRS.
-# Extend this set if other geographic (lat,lon) CRSs are used, e.g. 4258, 4269.
-LATLON_AXIS_EPSG = {4326}
 
-def bbox_needs_swap(version, epsg) -> bool:
+def bbox_needs_swap(version:str, crs:str|int) -> bool:
+    """
+    Return True if WMS 1.3.0 expects BBOX coordinates in Y,X order
+    for the given CRS.
+
+    Assumes the application's internal BBOX order is always:
+        xmin, ymin, xmax, ymax
+    """
+    if version < "1.3.0":
+        return False
+
+    if type(crs) is int:
+        crs = f"EPSG:{crs}"
+
+    crs = CRS.from_user_input(crs)
+
+    if len(crs.axis_info) < 2:
+        return False
+
+    axis1 = crs.axis_info[0]
+    axis2 = crs.axis_info[1]
+
+    return (
+        axis1.direction.lower() in ("north", "south")
+        and axis2.direction.lower() in ("east", "west")
+    )
+
+def bbox_needs_swap_OLD(version, epsg) -> bool:
     """Whether BBOX=lonLL,latLL,lonUR,latUR needs swapping to latLL,lonLL,latUR,lonUR
     for this WMS `version` and `epsg`, per the WMS 1.3.0 axis-order rule.
     """
+    # EPSG codes registered with (lat, lon) axis order rather than (lon, lat)/(x, y).
+    # WMS 1.3.0 (CRS=) requires BBOX in the CRS's registered axis order, so these need
+    # swapping; WMS < 1.3.0 (SRS=) always used (lon,lat)-like order, regardless of CRS.
+    # Extend this set if other geographic (lat,lon) CRSs are used, e.g. 4258, 4269.
+    LATLON_AXIS_EPSG = {4326}
+
 
     try:
         epsg = int(epsg)
@@ -190,7 +240,17 @@ def bbox_needs_swap(version, epsg) -> bool:
     return version_tuple >= (1, 3)
 
 
-def construct_http_get(defaults: dict, **args) -> dict:
+def construct_http_get(defaults: dict,
+                    layers, 
+                    BBOX,
+                    CRS,
+                    EPSG=0,
+                    SIZE="",
+                    WIDTH=800,
+                    HEIGHT=600,
+                    styles="", 
+                    #format="image/png",
+                    **args) -> dict:
 
     get_params = {} #defaults.copy()
     # keys = args2.keys()
@@ -202,27 +262,31 @@ def construct_http_get(defaults: dict, **args) -> dict:
             v = args[k]
         get_params[k] = v
 
-    if 'PROJ' in args:
-        v = args['PROJ']
-        if not v: # ???
-            v = 3067
-        get_params["CRS"] = f"EPSG:{v}"
+    get_params["layers"] = layers 
+    get_params["styles"] = styles 
 
-    if 'SIZE' in args:
-        (w,h) = rack.typical(args['SIZE'], tuple, separator=',')
-        get_params["WIDTH"]  = w
-        get_params["HEIGHT"] = h
 
-    if 'BBOX' in args and args['BBOX']:
-        # CLI/API convention: always lonLL,latLL,lonUR,latUR.
-        bbox = rack.typical(args['BBOX'], tuple, separator=',')
-        if bbox_needs_swap(defaults.get('VERSION'), args.get('PROJ')):
-            lonLL, latLL, lonUR, latUR = bbox
-            bbox = (latLL, lonLL, latUR, lonUR)
-            logger.info(f"WMS {defaults.get('VERSION')} + EPSG:{args.get('PROJ')}: swapping BBOX axis order -> {bbox}")
-        get_params["BBOX"] = rack.typical(bbox, str, separator=',')
-        #args['BBOX'].strip() # Remove possible quotes, e.g. from JSON string.
 
+    if not CRS:
+        CRS = f"EPSG:{EPSG}"
+    get_params["CRS"] = CRS
+
+    if SIZE:
+        (WIDTH,HEIGHT) = rack.typical(SIZE, tuple, separator=',')
+    get_params["WIDTH"]  = WIDTH
+    get_params["HEIGHT"] = HEIGHT
+
+    VERSION = defaults.get('VERSION')
+    # CLI/API convention: always lonLL,latLL,lonUR,latUR.
+    BBOX = rack.typical(BBOX, tuple, separator=',')
+    if bbox_needs_swap(VERSION, CRS): #args.get('PROJ')):
+        lonLL, latLL, lonUR, latUR = BBOX
+        BBOX = (latLL, lonLL, latUR, lonUR)
+        logger.info(f"WMS {VERSION} + EPSG:{EPSG}: swapping BBOX axis order -> {BBOX}")
+    get_params["BBOX"] = rack.typical(BBOX, str, separator=',')
+        # args['BBOX'].strip() # Remove possible quotes, e.g. from JSON string.
+
+    get_params["format"] = "image/png"
     # logger.info(get_params)
     # print(get_params)
     return get_params
@@ -235,9 +299,6 @@ def get_cache_path(cache_syntax:str, **kw_args):
         logger.error(f"Missing key in cache syntax= {cache_syntax}: {e}")
         raise
 
-import urllib.request
-import urllib.error
-import xml.etree.ElementTree as ET
 
 def extract_wms_error(text):
     """Try to extract a readable WMS ServiceException / ExceptionText."""
@@ -263,8 +324,9 @@ def suggest_server_conf(server: str): # -> dict:
     Create a template file at mapconf/server-<server>.json by copying the
     first entry of rack.maps.server_conf, so there's a starting point to edit.
     """
-
-    filepath = pathlib.Path(f'mapconf/server-{server}.json')
+    #SERVER_CONF_PATH_SYNTAX
+    #filepath = pathlib.Path(f'mapconf/server-{server}.json')
+    filepath = pathlib.Path(SERVER_CONF_PATH_SYNTAX.format(key=server))
     template_name, template = next(iter(server_conf.items()))
     conf = dict(template)
 
@@ -285,7 +347,7 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
         If found, checks if desired layers and projection (epsg) exists.
     """
 
-    logger.info(f"First, looking for built-in config for server='{server}', layer='{layers}'")
+    logger.debug(f"First, looking for built-in config for server='{server}', layer='{layers}'")
     if layers:
         layers = rack.typical(layers, [str])
     else:
@@ -296,12 +358,17 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
 
     if server:
         if server in conf:
+            logger.info(f"Found built-in config for server='{server}'")
             v = conf[server]
         else:
+            logger.info(f"Searching for conf FILE server='{server}'")
             # Not a built-in server: look for a file-based conf next.
             # (Built directly, not via path_syntax: resolve_path only auto-applies
             # path_syntax for ALL-CAPS-style keys, and server names are lowercase.)
-            filename = f'mapconf/server-{server}'
+            # filename = f'mapconf/server-{server}'
+            # filename = pathlib.Path(f'mapconf/server-{server}.json')
+            filename = pathlib.Path(SERVER_CONF_PATH_SYNTAX.format(key=server))
+
             v = rack.config.read(filename, formats=['.json', '.cnf'], lenient=True)
             if v:
                 logger.info(f"Found file-based server conf '{filename}' for '{server}'.")
@@ -310,10 +377,12 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
                 sys.exit(1)
 
         supported_layers = set(v.get("layers", []))
-        if not supported_layers.intersection(set(layers)):
-            #logger.info(f"Found server '{server}' providing some of the layers {layers} in its configuration: {supported_layers}.")
-            #v["layers"] = list(supported_layers.intersection(set(layers))) # Note: order mat change?
-            logger.warning(f"Server '{server}' has no layer '{layers}' but {supported_layers}.")
+        if layers:
+            # Override server's default layers with requested layers
+            if not supported_layers.intersection(set(layers)):
+                logger.warning(f"Server '{server}' may not have all layers '{layers}' in its configuration: {supported_layers}.")
+            v["layers"] = layers
+        
         if epsg is not None:
             supported_epsg = v.get("epsg", [])
             if epsg in supported_epsg:
@@ -350,7 +419,113 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
 
     raise ValueError(f"No layer '{layers}' configurations.")    
     
-    
+def get_wms_capabilities(endpoint):
+    params = {
+        "SERVICE": "WMS",
+        "VERSION": "1.3.0",
+        "REQUEST": "GetCapabilities",
+    }
+
+    url = endpoint + "?" + urlencode(params)
+
+    with urllib.request.urlopen(url, timeout=10) as response:
+        xml_data = response.read()
+
+    return ET.fromstring(xml_data)
+
+def get_endpoint(server:str) -> str:
+    """Return the endpoint URL for a given server name, if known."""
+    conf = get_server_conf(server)
+    return conf.get("endpoint", None)
+    #root = rack.maps.get_wms_capabilities("https://ows.mundialis.de/osm/service")
+
+    # rack.maps.show_wms_layers(root)
+
+
+
+def show_wms_layers(root):
+    """ Show all layers
+    """
+
+    # WMS 1.3.0 normally uses this namespace.
+    ns = {"wms": "http://www.opengis.net/wms"}
+
+    for layer in root.findall(".//wms:Layer", ns):
+        name = layer.findtext("wms:Name", namespaces=ns)
+
+        # Some Layer elements are just containers and have no Name.
+        if not name:
+            continue
+
+        title = layer.findtext("wms:Title", default="", namespaces=ns)
+
+        crs = [
+            elem.text
+            for elem in layer.findall("wms:CRS", ns)
+            if elem.text
+        ]
+
+        styles = []
+        for style in layer.findall("wms:Style", ns):
+            style_name = style.findtext("wms:Name", default="", namespaces=ns)
+            style_title = style.findtext(
+                "wms:Title", default="", namespaces=ns
+            )
+            styles.append((style_name, style_title))
+
+        print()
+        print(f'  "Layer": "{name}",')
+        print(f'  "Title": "{title}",')
+        print(f'  "CRS":    [{','.join(crs)}]')
+
+        if styles:
+            print('  "Styles": {')
+            for style_name, style_title in styles:
+                print(f'    "{style_name}": "{style_title}"')
+            print('  }')
+        else:
+            print("  # Styles: (no named styles advertised)")
+
+
+
+def show_wms_layer(root, requested_name):
+    """ Show details on a specific layer.
+        
+    """
+
+    ns = {"wms": "http://www.opengis.net/wms"}
+
+    for layer in root.findall(".//wms:Layer", ns):
+        name = layer.findtext("wms:Name", namespaces=ns)
+
+        if name != requested_name:
+            continue
+
+        print(f'Layer: "{name}",')
+        print("Title:",
+              layer.findtext("wms:Title", default="", namespaces=ns))
+
+        print("CRS:")
+        for elem in layer.findall("wms:CRS", ns):
+            print(" ", elem.text)
+
+        print("Styles:")
+        styles = layer.findall("wms:Style", ns)
+
+        if not styles:
+            print("  (default style only / no named styles advertised)")
+        else:
+            for style in styles:
+                print(
+                    " ",
+                    style.findtext("wms:Name", default="", namespaces=ns),
+                    "-",
+                    style.findtext("wms:Title", default="", namespaces=ns),
+                )
+
+        return
+
+    print(f"Layer {requested_name!r} not found")
 
 def link_map(cache_path: pathlib.Path, mapLink: str = None):
     """Link `mapLink` to the retrieved/cached file at `cache_path`.
@@ -391,7 +566,7 @@ def link_map(cache_path: pathlib.Path, mapLink: str = None):
     link_path.symlink_to(target)
 
 
-def get(mapCache:str, mapServer:str="mundialis", mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+def get(serverConf, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
     """ Retrieve map, if not already in cache.
 
     Parameters:
@@ -411,15 +586,18 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers=None, mapForce=False,
     # terrestris
     # https://ows.terrestris.de/osm/service?
     # https://ows.terrestris.de/osm/service?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=OSM-WMS&STYLES=&CRS=EPSG:3035&BBOX=2500000,1500000,6500000,5500000&WIDTH=800&HEIGHT=600&FORMAT=image/png
-    params = {
+    server_params = {
         "endpoint": "https://ows.terrestris.de/osm/service",
         "SERVICE": "WMS",
         "VERSION": "1.3.0",
         "REQUEST": "GetMap",
         #"layers": ["OSM-WMS"],
-        "layers": [],
+    }
+
+    get_params = {
+        "layers": "", # should not stay empty
         "styles": "",
-        "CRS": "EPSG:3067",
+        #"CRS": "EPSG:3067",
         "BBOX": "-80000,6390000,944000,7926000",
         #"CRS": "EPSG:3857",
         #"BBOX": "2610000,7500000,2620000,7510000",
@@ -427,53 +605,53 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers=None, mapForce=False,
         "HEIGHT": "600",
         "FORMAT": "image/png"
     }
-    #PROJ=3067
-    #BBOX=-80000,6390000,944000,7926000
-    #SIZE=1024,1536 
-    mapLayers = rack.typical(mapLayers, [str])
+    
+    if serverConf:
+        for i in ["endpoint", "VERSION"]: # "REQUEST", "SERVICE",  
+            if i in serverConf:
+                server_params[i] = serverConf[i]
+        # Default get params (1st value)
+        for i in ["layers", "styles"]:
+            if i in serverConf:
+                v = rack.typical(serverConf[i], [str])
+                logger.warning(f"check {i} {v}")
+                if len(v) > 0:
+                    get_params[i] = v[0]
+        if 'epsg' in serverConf:
+            EPSG = rack.typical(serverConf['epsg'], [str])[0]
+            get_params["CRS"] = f"EPSG:{EPSG}"
+    
 
-    server_conf = get_server_conf(server=mapServer, layers=mapLayers)
-    if server_conf:
-        for i in ["endpoint", "VERSION", "layers"]: # "REQUEST", "SERVICE",  
-            if i in server_conf:
-                params[i] = server_conf[i]
-        #params["SERVICE"] = server_conf.get("SERVICE", params["SERVICE"])
-        #params["VERSION"] = server_conf.get("VERSION", params["VERSION"])
-        #params["layers"]  = ",".join(server_conf.get("layers",  params["layers"])) # "".join(',')
+    logger.debug(f"default server_params: {server_params}")
+    #logger.info(f"get_params: {get_params}")
 
-    # Change coordinate order for BBOX if WMS version is 1.3.0 or higher.
-    if params["VERSION"] >= "1.3.0": # and "PROJ" in kw_args and bbox_needs_swap(server_conf["VERSION"], kw_args["PROJ"]):
-        if "BBOX" in kw_args:
-            bbox = rack.typical(kw_args["BBOX"], tuple, separator=',')
-            lonLL, latLL, lonUR, latUR = bbox
-            bbox = (latLL, lonLL, latUR, lonUR)
-            kw_args["BBOX"] = rack.typical(bbox, str, separator=',')
-            logger.info(f"WMS {params['VERSION']} : swapping BBOX axis order -> {bbox}")    
-            #logger.info(f"WMS {server_conf['VERSION']} + EPSG:{kw_args['PROJ']}: swapping BBOX axis order -> {kw_args['BBOX']}")    
+    get_params.update(kw_args)
+    if mapLayers:
+        get_params["layers"] = mapLayers
+    logger.debug(f"get_params: {get_params}")
+        
+    get_params = construct_http_get(defaults=server_params, **get_params)
+    logger.debug(f"get_param_str: {get_params}")
 
-
-    params["layers"]  = ",".join(params["layers"])
-
-    logger.info(f"defaults: {params}")
-
-    get_params = construct_http_get(params, **kw_args)
-    logger.info(f"get_param_str: {get_params}")
-
-    cache_path = pathlib.Path(get_cache_path(cache_syntax=mapCache,
-                                              mapServer=mapServer,
+    cache_path = pathlib.Path(get_cache_path(cache_syntax=MAP_CACHE_PATH_SYNTAX,
+                                              mapServer="any",
                                               **get_params))
     logger.info(f"Cache path: {cache_path}")
     
-    if not (cache_path.exists() or mapForce):
-        #logger.info(f"Does not exist, retrieving: {cache_path}")
-        logger.info(f"Retrieving: {cache_path}")
-        logger.info(f"Ensure dir: {cache_path.parent}")
+    if not cache_path.exists() or mapForce:
+        # logger.info(f"Does not exist, retrieving: {cache_path}")
+        # logger.info(f"Retrieving: {cache_path}")
+        logger.debug(f"Ensure dir: {cache_path.parent}")
         os.makedirs(cache_path.parent ,exist_ok=True) 
         # TODO: lock and/or tmpfile
-
-        get_param_str = "&".join([f"{k}={v}" for (k,v) in get_params.items()])
+        # todo: urlencode
+        # get_param_str = "&".join([f"{k}={v}" for (k,v) in get_params.items()])
+        #url = urllib.parse.urlencode(url) 
+        #url = urllib.parse.quote_plus(url)
         #url = "https://ows.terrestris.de/osm/service?" + get_param_str
-        url = params["endpoint"] + '?' + get_param_str
+        get_param_str = urllib.parse.urlencode(get_params)
+        url = server_params["endpoint"] + '?' + get_param_str
+        # Good:
         logger.info(f'url: {url}')
 
         # Assume myURL is already defined and valid
@@ -526,19 +704,7 @@ def get(mapCache:str, mapServer:str="mundialis", mapLayers=None, mapForce=False,
         link_map(cache_path, mapLink)
 
     return cache_path
-    #    else:
-
-    #logger.error(f"Did NOT save {cache_path}")
-
-    """
-    with urllib.request.urlopen(url) as response:
-        image_data = response.read()  # bytes
-        with open(cache_path, "wb") as f:
-            f.write(image_data)
-    """
-    #print(f"Saved WMS image to {cache_path}")
-
-    return None
+   
 
 
 """
@@ -575,7 +741,7 @@ def main():
     if known_args.GEOCONF:
         geoconf_key, geoconf_path = rack.config.resolve_path(known_args.GEOCONF, "mapconf/geo-{key}")
         conf = rack.config.read(geoconf_path)
-        logger.info(f"Setting parser defaults: {conf}")
+        logger.debug(f"Setting parser defaults: {conf}")
         parser.set_defaults(**conf)
 
     args = parser.parse_args(argv)
@@ -583,8 +749,29 @@ def main():
         args.GEOCONF = geoconf_key
     #print(args)
 
-    #get(cache=args.cache, server=args.server, layers=args.layers, **vars(args))
-    get(**vars(args))
+    if args.get_layers:
+        logger.info(f"Requested layers: {args.get_layers}")
+        endpoint = get_endpoint(args.mapServer)
+        if endpoint:
+            root = get_wms_capabilities(endpoint)
+            show_wms_layers(root)
+        else:
+            logger.error(f"No endpoint found for server '{args.mapServer}'")
+        return
+    elif args.show_layer:
+        logger.info(f"Requested layer: {args.show_layer}")
+        endpoint = get_endpoint(args.mapServer)
+        if endpoint:
+            root = get_wms_capabilities(endpoint)
+            show_wms_layer(root, args.show_layer)
+        else:
+            logger.error(f"No endpoint found for server '{args.mapServer}'")
+        return
+
+    server_conf = get_server_conf(args.mapServer)
+    logger.info(f"Server: {server_conf}")
+    #get(serverConf=server_conf, **vars(args))
+    get(serverConf=server_conf, **vars(args))
 
 
     #

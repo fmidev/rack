@@ -122,8 +122,14 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
     #    default=".SECTOR=stroke:white;stroke-width:3",
     #    help="Adjust CSS styles for the SVG output")
 
+    # TODO: pick selected SVG commands and handling.
     parser.add_argument(
-        "--ALIGN",
+            "--svgRelativePaths",
+            action='store_true',
+            help="Strip prefix (--OUTDIR) from image links (for WWW usage)")
+
+    parser.add_argument(
+        "--svgAlign",
         #metavar="[TOP|BOTTOM|LEFT|RIGHT]",
         metavar="[TOP|BOTTOM|RIGHT]",
         # metavar="[HORZ|VERT]",
@@ -207,17 +213,24 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
     args.FORMAT.add(p.suffix.strip('.'))
 
     if args.PRODUCT:
-        logger.debug("An auxiliary radar overview image with sector indicator is requested")
-        args.FORMAT.add('svg')
+        logger.info("Generating optional radar image with sector indicator")
+        if not ('svg' in args.FORMAT):
+            logger.info("--FORMAT {args.FORMAT} : adding 'svg', to show both plot and radar images")
+            args.FORMAT.add('svg')
 
     # logger.warning(f"Output formats: {args.FORMAT}") 
 
     cmdBuilder.gTitle('${what:date|%Y-%m-%d} ${what:time|%H:%M} ${NOD}-${PLC}')
     # spoils vertical layout...
     #cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
+    
+    if args.svgRelativePaths:
+        cmdBuilder.outputConf("svg:paths=RELATIVE")
+    else:
+        cmdBuilder.outputConf("svg:paths=ABSOLUTE")
 
-    if args.ALIGN:
-        align = args.ALIGN.upper()
+    if args.svgAlign:
+        align = args.svgAlign.upper()
         if align == 'RIGHT':
             cmdBuilder.gLayout("HORZ", directionHorz="RIGHT")
         elif align == 'LEFT':
@@ -231,16 +244,18 @@ def ensure_arguments(args, cmdBuilder: rack.core.Rack):
             cmdBuilder.gGroupTitle('${what:product} ${what:prodpar} ${what:quantity}')
             cmdBuilder.gLayout("HORZ", "DOWN", "RIGHT")
         else:
-            logger.error(f"Unsupported ALIGN value: {args.ALIGN}. Ignoring.")
+            logger.error(f"Unsupported svgAlign value: {args.svgAlign}. Ignoring.")
             exit(2)
 
 
     if 'svg' in args.FORMAT:
         if not args.exec:
-            logger.info("SVG output, setting also --exec (to generate the PNG images).")
+            logger.info("--exec implicitly set (to generate PNG images for the SVG file)")
             args.exec = True  # force execution to generate the SVG output
         if not args.gnuplot:
             args.gnuplot = f"{p.stem}-gnuplot.png"
+            if (args.OUTDIR):
+                args.gnuplot = Path(args.OUTDIR, args.gnuplot)    
 
     if (args.OUTDIR):
         cmdBuilder.outputPrefix(args.OUTDIR)
@@ -316,7 +331,7 @@ def handle_horz_product(args, progBuilder: rack.core.Rack):
     SIZE = rack.typical(args.size, [int], ',')
 
     logger.warning(f"Parsed size: {SIZE}")
-    if args.ALIGN in ['TOP', 'BOTTOM']:
+    if args.svgAlign in ['TOP', 'BOTTOM']:
         progBuilder.cSize(SIZE[0],SIZE[0]) 
     else:
         progBuilder.cSize(SIZE[1],SIZE[1]) 
@@ -342,9 +357,9 @@ def finalize_svg_output(args, cmdBuilder: rack.core.Rack):
 
 
 
-def gnuplot_terminal(args) -> str:
+def gnuplot_terminal(args: argparse.Namespace) -> str:
     """Extract and validate the gnuplot terminal type from the output filename."""
-    terminal = args.gnuplot.rsplit('.', 1)[-1]
+    terminal = str(args.gnuplot).rsplit('.', 1)[-1]
     if terminal not in ['png', 'svg', 'tif']:
         logger.warning(f"Unsupported gnuplot terminal format: {terminal}, defaulting to png")
         terminal = 'png'
