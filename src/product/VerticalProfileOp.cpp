@@ -53,6 +53,49 @@ namespace rack {
 
 // TODO: implement azSlots
 
+VerticalProfileOp::VerticalProfileOp(double minRange, double range, double minHeight, double maxHeight, long int levels, double startaz, double stopaz, long int azSlots) :
+				VolumeOp<VerticalProfileODIM>(__FUNCTION__ ,"Computes vertical dBZ distribution in within range [minRange,maxRange] km.") { // std::string type="d", double gain=0.5, double offset=-32.0) :
+
+	odim.distanceRange.set(minRange, range);
+	// parameters.link("range",  odim.distanceRange.tuple(), "km"); //  = range
+	parameters.link("range",  odim.distanceRange.tuple(), "m"); //  = range
+
+	if (maxHeight < 300){
+		drain::Logger mout(__FILE__, __FUNCTION__);
+		mout.revised("Unit change: from km to m");
+		minHeight *= 1000.0;
+		maxHeight *= 1000.0;
+		mout.suspicious("Multiplying by 1000:");
+	}
+
+	odim.altitudeRange.set(minHeight, maxHeight);
+	parameters.link("height", odim.altitudeRange.tuple(), "m");
+	//parameters.link("minHeight", odim.height.min = minHeight, "m");
+	//parameters.link("maxHeight", odim.height.max = maxHeight, "m");
+
+	parameters.link("levels", odim.levels = levels);
+
+	odim.azmRange.set(startaz, stopaz);
+	parameters.link("azm", odim.azmRange.tuple(), "deg");
+	// parameters.link("startaz", odim.startaz = startaz, "deg");
+	// parameters.link("stopaz", odim.stopaz = stopaz, "deg");
+	parameters.link("azSlots", odim.azSlots = azSlots);
+
+	odim.link("interval", interval);
+
+	odim.object = "VP";  // used by VolumeOp::processVolume
+	odim.product = "VP"; // used by VericalProfileOp::processVolume
+
+	odim.quantity = "";  // will be chosen by dataselector
+
+	allowedEncoding.link("type", odim.type = "d");
+	//allowedEncoding.link("gain", odim.scaling.scale, 0.5);
+	//allowedEncoding.link("offset", odim.scaling.offset, -32.0);
+
+	dataSelector.setQuantities("^DBZH$");
+
+}
+
 void VerticalProfileOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcSweeps, DataSet<VprDst> & dstProduct) const {
 	//void VerticalProfileOp::filterGroups(const Hi5Tree &src, const ODIMPathList & paths, Hi5Tree &dst) const {
 

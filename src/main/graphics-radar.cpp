@@ -351,6 +351,8 @@ void RadarSVG::drawSector(drain::svgPATH & bezierElem, const drain::Range<double
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
+	mout.attention(DRAIN_LOG(azimuthR));
+
 	if (azimuthR.width() > 0.0){
 		mout.info("Drawing sector");
 		// Scope for destructor. Or flush?

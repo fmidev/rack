@@ -1378,7 +1378,7 @@ class Rack(rack.prog.Register):
 
     def gCoords(self,
         resolution:list=[0,0],
-        units:str='',
+        units:str='D:M',
         MASK:str='NONE'):
         """ SVG test product. CSS classes: GRID,GRID
 
@@ -1387,9 +1387,9 @@ class Rack(rack.prog.Register):
         resolution:list
           pixel
         units:str
-          ["UNDEFINED","PX","D","M"]
+          ["UNDEFINED","PIX","DEG","M"]
         MASK:str
-          Fill outside using CSS class '.MASK'
+          Add cover with style '.MASK'["NONE","TOP","BOTTOM","true","false"]
 
         """
 
@@ -1725,7 +1725,7 @@ class Rack(rack.prog.Register):
         cursorCoord:bool
           show cursor coordinate
         MASK:str
-          Render outer region with style class '.MASK'
+          Add cover with style '.MASK'["NONE","TOP","BOTTOM","true","false"]
 
         """
 
@@ -4180,7 +4180,7 @@ class Rack(rack.prog.Register):
         range:list=[10,100],
         height:list=[0,10000],
         levels:int=100,
-        azm:list=[0,359.99],
+        azm:list=[0,0],
         azSlots:int=1):
         """ Computes vertical dBZ distribution in within range [minRange,maxRange] km.
 
@@ -4349,7 +4349,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95307e-310,
+        a:float=6.95257e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4367,9 +4367,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95307e-310,
+        a:float=6.95257e-310,
         b:float=1.4822e-323,
-        c:float=6.95307e-310):
+        c:float=6.95257e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters

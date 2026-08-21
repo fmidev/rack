@@ -134,6 +134,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 			mout.warn("requested altitude (", altitude, ") less than 0m, using 0m.");
 			altitudeFinal = 0.0;
 		}
+		mout.debug("altitude relative to radar: ", DRAIN_LOG(altitudeFinal), ", radar: ", DRAIN_LOG(sweep.odim.height));
 	}
 
 	mout.debug("Freezing level: " , sweep.odim.freeze );
