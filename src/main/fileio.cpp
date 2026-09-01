@@ -119,6 +119,7 @@ public:
 		RackContext & ctx = getContext<RackContext>();
 
 		hdf5Conf.link("compression", hi5::Writer::compressionLevel, "0...6 recommended in ODIM");
+		hdf5Conf.link("chunkSize", hi5::Writer::chunkSize, "width:height").setFill(true).setSeparator(':');
 
 		pngConf.link("compression", drain::image::FilePng::compressionLevel);
 
@@ -126,17 +127,13 @@ public:
 		svgConf.link("paths", ctx.svgPanelConf.pathPolicy);
 		svgConf.link("resolution", drain::image::FileSVG::radialBezierResolution, "radial Bezier point density");
 		// svgConf.link("fontSize", ctx.svgPanelConf.fontSize.tuple());
-		//svgConf.link("debug", ctx.svgPanelConf.debug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
+		// svgConf.link("debug", ctx.svgPanelConf.debug); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 		svgConf.link("debug", drain::image::FileSVG::visualDebugLevel); // consider struct for svgConf, one for defaults, in TreeUtilsSVG::defaultConf etc...
 
 #ifndef USE_GEOTIFF_NO
-
 		gtiffConf.link("tile", FileTIFF::defaultTile.tuple(), "<width>[:<height>]");
 		gtiffConf.link("compression", FileTIFF::defaultCompression, drain::sprinter(FileTIFF::compressionDict, "|", "<>").str());
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = "EPSG:STRICT", drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
-		// gtiffConf.link("level", FileTIFF::defaultCompressionLevel, "1..10");
-		// gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.str(), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str()); // drain::sprinter(FileGeoTIFF::flagger.getDict(), "|", "<>").str());
-		// gtiffConf.link("compliancy", FileGeoTIFF::compliancy = FileGeoTIFF::compliancyFlagger.getKeysNEW2(FileGeoTIFF::EPSG|FileGeoTIFF::STRICT, ':'), drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
 #endif
 
 	};
@@ -410,7 +407,7 @@ void CmdOutputFile::exec() const {
 	// drain::image::TreeSVG & svgGroup = ctx.getMainGroup();//  RackSVG::getMainGroup(ctx); // , path.tail  //  Note: repeatedly called for svg and png files?
 	// drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.tail  //  Note: repeatedly called for svg and png files?
 
-	//track.data.set("id", STD_OUTPUT ? "stdout" : path.tail);
+	// track.data.set("id", STD_OUTPUT ? "stdout" : path.tail);
 	// std::list<std::string> keys = {"what:lon", "here"};
 
 	//if (h5FileExtension.test(value)){
@@ -422,11 +419,16 @@ void CmdOutputFile::exec() const {
 		mout.info("File format: HDF5");
 
 		drain::Variable & conventions = src.data.attributes["Conventions"];
-
-		for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
-			if (ODIM::versionFlagger.isSet(entry.second)){
-				conventions = entry.first;
-				break;
+		if (!conventions.empty()){
+			mout.revised<LOG_NOTICE>("Conventions: keeping original '", conventions, "'");
+		}
+		else {
+			for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
+				if (ODIM::versionFlagger.isSet(entry.second)){
+					// mout.revised("Conventions empt");
+					conventions = entry.first;
+					break;
+				}
 			}
 		}
 

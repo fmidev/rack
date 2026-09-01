@@ -39,74 +39,95 @@ namespace image
 
 
 void ImpulseAvg::init(const Channel & src, bool horizontal){
+
 	Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
 	const size_t n = horizontal ? src.getWidth() : src.getHeight();
-	data.resize(n);
+	line.resize(n); // , {{0,0}, {0,0}});
 	scaling.assignSequence(src.getScaling());
 
 	mout.debug("Data vector, n=" , n );
 	mout.debug("Scaling: " , scaling );
-
 
 }
 
 
 void ImpulseAvg::reset(){
 
-	latest.first.set(0.0, 0.0);
-	latest.second.set(0.0, 0.0);
+	accumulated.forward.set(0.0, 0.0);
+	accumulated.backward.set(0.0, 0.0);
 
-	for (container::iterator it = data.begin(); it != data.end(); ++it){
-		it->first.set(0.0, 0.0);
-		it->second.set(0.0, 0.0);
+	for (container::iterator it = line.begin(); it != line.end(); ++it){
+		it->forward.set(0.0, 0.0);
+		it->backward.set(0.0, 0.0);
 	}
 
 }
 
+/**
+ *
+ *  \param alpha - proportion of current value (of low quality) used
+ *
+ */
+void ImpulseAvg::update(entry & curr, entry & acc, double decay){
+
+	if (curr.weight < acc.weight){ // or (curr.weight == acc.weight) && (decay == 1.0)
+		const double w1 = (1.0-decay)*curr.weight;
+		const double w2 = decay      *acc.weight;
+		curr.weight = w1 + w2;
+		curr.x =(w1*curr.x + w2*acc.x) / (curr.weight);
+	}
+
+	acc.set(curr.x, curr.weight);
+
+}
+
+
 
 void ImpulseAvg::addLeft(int i, double value, double weight){
-	e.set(scaling.fwd(value), weight);
-	mix(latest.first, e, decays.horz.forward);
-	data[i].first = latest.first;
+	entry & curr = line[i].forward;
+	curr.set(value, weight);
+	update(curr, this->accumulated.forward, decays.horz.forward );
 }
 
 void ImpulseAvg::addRight(int i, double value, double weight){
-	e.set(scaling.fwd(value), weight);
-	mix(latest.second, e, decays.horz.backward);
-	data[i].second = latest.second;
+	entry & curr = line[i].backward;
+	curr.set(value, weight);
+	update(curr, this->accumulated.backward, decays.horz.backward);
 }
 
 void ImpulseAvg::addDown(int i, double value, double weight){
-	e.set(scaling.fwd(value), weight);
-	mix(latest.first, e, decays.vert.forward);
-	data[i].first = latest.first;
+	entry & curr = line[i].forward;
+	curr.set(value, weight);
+	update(curr, this->accumulated.forward, decays.vert.forward);
 }
 
 void ImpulseAvg::addUp(int i, double value, double weight){
-	e.set(scaling.fwd(value), weight);
-	mix(latest.second, e, decays.vert.backward);
-	data[i].second = latest.second;
+	// if (i & 64)
+	entry & curr = line[i].backward;
+	curr.set(value, weight);
+	update(curr, this->accumulated.backward, decays.vert.backward);
 }
+
 
 
 double ImpulseAvg::getWeight(int i){  // TODO const
-	const entryPair & d = data[i];
-	return (d.first.weight + d.second.weight) / 2.0;
+	const entryPair & d = line[i];
+	return (d.forward.weight + d.backward.weight) / 2.0;
 }
 
 double ImpulseAvg::get(int i){ // TODO const
-	const entryPair & d = data[i];
-	double w = d.first.weight + d.second.weight;
+	const entryPair & d = line[i];
+	double w = d.forward.weight + d.backward.weight;
 	if (w > 0.0)
-		return ((d.first.weight*d.first.x + d.second.weight*d.second.x) / w);
+		return ((d.forward.weight*d.forward.x + d.backward.weight*d.backward.x) / w);
 	else
 		return 0.0; // or code?
 }
 
 
 
-} // drain::image::
+} // image::
 
 } // drain::
 

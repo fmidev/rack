@@ -92,26 +92,16 @@ struct ImpulseAvgConf : public BeanLike {
 
 	inline
 	ImpulseAvgConf() : BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(0.75){
-		// this->parameters.link("decayHorz", decayHorz = 0.9);
-		// this->parameters.link("decayVert", decayVert = 0.9);
 		this->parameters.link("decay", decays.tuple()); //.fillArray = true;
-		//this->parameters.link("decay", decay = 0.9);
-		// this->parameters.link("decayVert", decayVert = 0.9);
 	};
 
 	inline
 	ImpulseAvgConf(const ImpulseAvgConf & conf) :
 		BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(0.75){
 		this->parameters.link("decay", decays.tuple()); //.fillArray = true;
-		// this->parameters.link("decayHorz", decayHorz = conf.decayHorz);
-		// this->parameters.link("decayVert", decayVert = conf.decayHorz);
 	};
 
 	Decay4<double> decays;
-	//double decay;
-	//std::vector<double> decays;
-	//double decayHorz;
-	//double decayVert;
 
 };
 
@@ -202,31 +192,25 @@ private:
 	};
 
 	/*
-	 *  \param xNew - value to be added
-	 *  \param wNew - weight of xNew
+	 *  \param curr
+	 *  \param prev
+	 *  \param
 	 */
-	inline
-	void mix(entry & prev, const entry & e, double decay){
+	void update(entry & curr, entry & acc, double decay);
 
-		double w1 = decay*e.weight;
-		double w2 = (1.0-decay);
+	struct entryPair {
+		entry forward;
+		entry backward;
+	};
 
-		if (decay < 1.0)
-			prev.x =(w1*e.x + w2*prev.x) / (w1 + w2);
-		else // decay==1.0
-			prev.x = e.x;
-
-		prev.weight = w1 + w2*prev.weight;
-
-	}
-
-	typedef std::pair<entry,entry> entryPair;
+	// typedef std::pair<entry,entry> entryPair;
 	typedef std::vector<entryPair> container;
 
-	container data;
+	// Horz or vert
+	container line;
 
-	entry e;
-	entryPair latest; // utility
+	// entry e;
+	entryPair accumulated; // utility
 
 
 };

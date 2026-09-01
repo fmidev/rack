@@ -31,11 +31,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef ImpulseResponse2_H
 #define ImpulseResponse2_H
 
-#include <drain/image/CoordinatePolicy.h>
 #include <sstream>
 #include <ostream>
 //#include "drain/utility>
 
+#include "drain/image/ValueHandler.h"
+#include <drain/image/CoordinatePolicy.h>
 #include "drain/image/FilePng.h"
 //#include "drain/image/SegmentProber.h"
 
@@ -50,7 +51,7 @@ namespace image
 /**
  *  \tparam C - conf type, implementing drain::BeanLike concept (getName, getDescription, getParameters)
  */
-template <class C>
+template <class C, class H=ValueHandler>
 class ImpulseBucket : public C {
 
 public:
@@ -58,6 +59,8 @@ public:
 	~ImpulseBucket(){}
 
 	typedef C conf_t;
+	typedef ImpulseBucket<C> bucket_t;
+
 
 	/// Adapt to input geometry, type, and scaling.
 	virtual inline
@@ -95,7 +98,17 @@ public:
 	virtual
 	double getWeight(int i) = 0;
 
+	// Experimental
+
+	typedef H value_handler_t;
+
+	ValueHandler & getValueHandler() {
+		return valueHandler;
+	}
+
 protected:
+
+	value_handler_t valueHandler;
 
 	//ImpulseBucket(conf_t){}
 
@@ -103,18 +116,30 @@ protected:
 
 
 // Important. Guarantees that bucket (parameters) have been initialized.
-
+/*
+ *
+ *  \param T - bucket class, containing ::conf_t
+ */
 template <class T>
 class ImpulseResponseOpBase : public ImageOp {
 public:
+
+	typedef T bucket_t;
+	typename T::conf_t conf;
 
 	inline
 	ImpulseResponseOpBase(){};
 
 	inline
-	ImpulseResponseOpBase(const typename T::conf_t & conf) : conf(conf){
+	ImpulseResponseOpBase(const ImpulseResponseOpBase & op) : conf(op.conf){
+	};
+
+	inline
+	//ImpulseResponseOpBase(const typename T::conf_t & conf) : conf(conf){
+	ImpulseResponseOpBase(const bucket_t & conf) : conf(conf){
 		//std::cerr << "decay now:" << conf.decay << '\n';
 	};
+
 
 	virtual inline
 	~ImpulseResponseOpBase(){};
@@ -130,7 +155,6 @@ public:
 	};
 
 	// instead, consider conf object of type T::conf_t
-	typename T::conf_t conf;
 
 };
 
@@ -147,6 +171,9 @@ template <class T>
 class ImpulseResponseOp : public ImpulseResponseOpBase<T> {
 
 public:
+
+	typedef T bucket_t;
+	typedef typename T::conf_t conf_t;
 
 
 	inline
@@ -167,9 +194,9 @@ public:
 	inline
 	void init(){
 		this->parameters.append(this->conf.getParameters());
-		this->parameters.link("extendHorz", extendHorz = 0, "pix"); // for avoiding border effects, include pixels beyond main area
-		this->parameters.link("extendVert", extendVert = 0, "pix"); // for avoiding border effects, include pixels beyond main area
-		this->parameters.link("weightThreshold", weightThreshold = 0.05, "[0..1.0]"); //
+		this->parameters.link("extendHorz", extendHorz, "pix"); // for avoiding border effects, include pixels beyond main area
+		this->parameters.link("extendVert", extendVert, "pix"); // for avoiding border effects, include pixels beyond main area
+		this->parameters.link("weightThreshold", weightThreshold, "[0..1.0]"); //
 
 	};
 
@@ -222,9 +249,9 @@ public:
 
 protected:
 
-	int extendHorz;
-	int extendVert;
-	double weightThreshold;
+	int extendHorz = 0;
+	int extendVert = 0;
+	double weightThreshold = 0.1;
 	//double undetectQuality;
 
 };
@@ -255,6 +282,7 @@ void ImpulseResponseOp<T>::traverseChannel(const Channel & src, const Channel & 
 
 	traverseChannelHorz(src, srcWeight, dst, dstWeight);
 	traverseChannelVert(dst, dstWeight, dst, dstWeight);
+	// DEBUG traverseChannelVert(src, srcWeight, dst, dstWeight);
 
 }
 
@@ -266,51 +294,67 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 
 	mout.debug(*this );
 
-	const bool UNWEIGHTED = (srcWeight.isEmpty() || dstWeight.isEmpty());
+	const bool WEIGHTED = !(srcWeight.isEmpty() || dstWeight.isEmpty());
+	mout.attention(DRAIN_LOG(WEIGHTED));
 
 	const int width    = src.getWidth();
 	const int widthExt = src.getWidth()+extendHorz;
 	const int height   = src.getHeight();
 	const double defaultWeight = 1.0; //srcWeight.getMax<double>();
 
-	//const double weightThreshold = 0.1;
-	double w;
 
-	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry().area, src.getCoordinatePolicy());
-
+	const CoordinateHandler2D coordHandler(src.getGeometry().area, src.getCoordinatePolicy());
 	drain::Point2D<int> point;
 
-	T bucket(this->conf);
+	T bucketOrig(this->conf); // instance
+	ImpulseBucket<typename T::conf_t> & bucket = bucketOrig;
 	bucket.init(src, true);
 
-	// NOTE: raw data values, but scaled weight values.
+	const ValueHandler & valueHandler = bucket.getValueHandler();
+
+	// mout.attention(DRAIN_LOG(weightThreshold));
+
+	double value;
+	double weight;
 
 	for (int j=0; j<height; ++j){
 
 		bucket.reset();
 
-		if (UNWEIGHTED){
+		if (WEIGHTED){
 
-			// Collect
 			for (int i=-extendHorz; i<widthExt; ++i){
 
 				point.setLocation(i, j);
-				coordHandler.handle(point);
-				//if (coordHandler.validate(point)){
-				bucket.addLeft(point.x, src.get<double>(point.x, point.y), defaultWeight);
-				//}
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point); // src.getScaled(point);
+					if (valueHandler.validate(value)){
+						weight = srcWeight.get<double>(point);
+						bucket.addLeft(point.x, value, weight);
+					}
+				}
 
 				point.setLocation(width-1-i, j);
-				coordHandler.handle(point);
-				// if (coordHandler.validate(point)){
-				bucket.addRight(point.x, src.get<double>(point.x, point.y), defaultWeight);
-				//}
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point); // src.getScaled(point);
+					if (valueHandler.validate(value)){
+						weight = srcWeight.get<double>(point);
+						bucket.addRight(point.x, value, weight);
+					}
+				}
 
 			}
 
 			// Write
 			for (int i=0; i<width; ++i){
-				dst.putScaled(i,j, bucket.get(i));
+				weight = bucket.getWeight(i);
+				if (weight > weightThreshold){
+					dst.put(i,j, bucket.get(i)); // dst.putScaled(i,j, bucket.get(i));
+					dstWeight.put(i,j, bucket.getWeight(i));
+				}
+				else {
+					dstWeight.put(i,j, 0); // TODO zero code
+				}
 			}
 
 		}
@@ -320,30 +364,27 @@ void ImpulseResponseOp<T>::traverseChannelHorz(const Channel & src, const Channe
 			for (int i=-extendHorz; i<widthExt; ++i){
 
 				point.setLocation(i, j);
-				coordHandler.handle(point);
-				//if (coordHandler.validate(point)){
-				bucket.addLeft(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
-				//}
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point);
+					if (valueHandler.validate(value)){
+						bucket.addLeft(point.x, value, defaultWeight);
+					}
+				}
 
 				point.setLocation(width-1-i, j);
-				coordHandler.handle(point);
-				// if (coordHandler.validate(point)){
-				bucket.addRight(point.x, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
-				// }
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point);
+					if (valueHandler.validate(value)){
+						bucket.addRight(point.x, value, defaultWeight);
+					}
+				}
 
 			}
 
 			// Write
 			for (int i=0; i<width; ++i){
-				w = bucket.getWeight(i);
-				if (w > weightThreshold){
-					dst.putScaled(i,j, bucket.get(i));
-					dstWeight.putScaled(i,j, w);
-				}
-				else
-					dstWeight.putScaled(i,j, 0);
-				//dst.putScaled(i,j, bucket.get(i));
-				//dstWeight.putScaled(i,j, bucket.getWeight(i));
+				dst.put(i,j, bucket.get(i));
+				// dst.putScaled(i,j, bucket.get(i));
 			}
 
 		}
@@ -358,84 +399,103 @@ void ImpulseResponseOp<T>::traverseChannelVert(const Channel & src, const Channe
 
 	mout.debug(*this );
 
-	const bool UNWEIGHTED = (srcWeight.isEmpty() || dstWeight.isEmpty());
+	const bool WEIGHTED = !(srcWeight.isEmpty() || dstWeight.isEmpty());
+
+	mout.attention(DRAIN_LOG(WEIGHTED));
 
 	const int width     = src.getWidth();
 	const int height    = src.getHeight();
 	const int heightExt = src.getHeight() + extendVert;
 	const double defaultWeight   = 1.0; //srcWeight.getMax<double>();
-	//const double weightThreshold = 0.1;
-	double w;
 
 	const drain::image::CoordinateHandler2D coordHandler(src.getGeometry(), src.getCoordinatePolicy());
-
 	drain::Point2D<int> point;
 
-	T bucket(this->conf);
+	T bucketOrig(this->conf);
+	ImpulseBucket<typename T::conf_t> & bucket = bucketOrig;
 	bucket.init(src, false);
 
+	const ValueHandler & valueHandler = bucket.getValueHandler();
+
 	// NOTE: raw data values, but scaled weight values.
+
+	double value;
+	double weight;
 
 	for (int i=0; i<width; i++){
 
 		bucket.reset();
 
-		if (UNWEIGHTED){
+		if (WEIGHTED) {
 
-			// Collect
 			for (int j=-extendVert; j<heightExt; ++j){
 
 				point.setLocation(i, j);
-				coordHandler.handle(point); //if (coordHandler.validate(point)){
-				bucket.addLeft(point.y, src.get<double>(point.x, point.y), defaultWeight);
-
-				point.setLocation(i, height-1-j);
-				coordHandler.handle(point); //if (coordHandler.validate(point))
-				bucket.addRight(point.y, src.get<double>(point.x, point.y), defaultWeight);
-
-			}
-
-			// Write
-			for (int j=0; j<height; ++j){
-				dst.putScaled(i,j, bucket.get(j));
-			}
-
-		}
-		else {
-
-			// Collect
-			for (int j=-extendVert; j<heightExt; ++j){
-
-				point.setLocation(i, j);
-				coordHandler.handle(point); //if (coordHandler.validate(point)){
-				bucket.addLeft(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
-
-				point.setLocation(i, height-1-j);
-				coordHandler.handle(point); // if (coordHandler.validate(point)){
-				bucket.addRight(point.y, src.get<double>(point.x, point.y), srcWeight.getScaled(point.x, point.y));
-
-			}
-
-			// Write
-			for (int j=0; j<height; ++j){
-				w = bucket.getWeight(j);
-				if (w > weightThreshold){
-					dst.putScaled(i,j, bucket.get(j));
-					dstWeight.putScaled(i,j, w);
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point); // src.getScaled(point);
+					if (valueHandler.validate(value)){
+						weight = srcWeight.get<double>(point); // srcWeight.getScaled(point);
+						bucket.addDown(point.y, value, weight);
+					}
 				}
-				else
-					dstWeight.putScaled(i,j, 0);
+
+				point.setLocation(i, height-1-j);
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point); // src.getScaled(point);
+					if (valueHandler.validate(value)){
+						weight = srcWeight.get<double>(point); // srcWeight.getScaled(point);
+						bucket.addUp(point.y, value, weight);
+					}
+				}
+
+			}
+
+			// Write
+			for (int j=0; j<height; ++j){
+				weight = bucket.getWeight(j);
+				if (weight > weightThreshold){ // check which are scaled?
+					dst.put(i,j, bucket.get(j));
+					dstWeight.put(i,j, weight);
+				}
+				else {
+					dstWeight.put(i,j, 0); // TODO code
+				}
 			}
 
 		}
+		else { // (UNWEIGHTED)
 
+			// Collect
+			for (int j=-extendVert; j<heightExt; ++j){
+
+				point.setLocation(i, j);
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point);
+					if (valueHandler.validate(value)){
+						weight = srcWeight.get<double>(point); // srcWeight.getScaled(point);
+						bucket.addLeft(point.y, value, defaultWeight);
+					}
+				}
+
+				point.setLocation(i, height-1-j);
+				if (coordHandler.validate(point)){
+					value = src.get<double>(point);
+					if (valueHandler.validate(value)){
+						bucket.addRight(point.y, value, defaultWeight);
+					}
+				}
+
+			}
+
+			// Write
+			for (int j=0; j<height; ++j){
+				dst.putScaled(i,j, bucket.get(j)); // CHECK scaled
+			}
+
+		}
 
 	}
 }
-
-
-
-
 
 
 

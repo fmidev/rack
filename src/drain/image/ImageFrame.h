@@ -231,6 +231,16 @@ public:
 	/**
 	 *  The value becomes scaled so that it (hopefully) fits in the limits of the storage type, say unsigned char (0...255).
 	 */
+	inline
+	void putScaled(size_t i, double x) const {
+		conf.caster.put( & bufferPtr[i*conf.byteSize], getScaling().inv(x));
+		// return getScaling().fwd(conf.caster.get<double>( & bufferPtr[i * conf.byteSize ] ));
+	}
+
+	/// Put intensity using original physical value.
+	/**
+	 *  The value becomes scaled so that it (hopefully) fits in the limits of the storage type, say unsigned char (0...255).
+	 */
 	// TODO: consider virtual, with Channel::scalingPtr->inv(x) and Image::scaling.inv(x)    Could be just as fast, though...
 	inline
 	void putScaled(size_t i, size_t j, double x){
@@ -274,6 +284,12 @@ public:
 	}
 
 	/// Get intensity in original physical scale.
+	inline
+	double getScaled(size_t i) const {
+		return getScaling().fwd(conf.caster.get<double>( & bufferPtr[i * conf.byteSize ] ));
+	}
+
+	/// Get intensity in original physical scale.
 	/**
 	 *  The value becomes scaled so that it (hopefully) fits in the limits of the storage type, say unsigned char (0...255).
 	 */
@@ -291,6 +307,13 @@ public:
 	inline
 	T get(const Point2D<P> &p) const {
 		return conf.caster.get<T>( & bufferPtr[address(p.x,p.y) * conf.byteSize ] );
+	}
+
+	template <class P>
+	inline
+	double getScaled(const Point2D<P> &p) const {
+		return getScaling().fwd(conf.caster.get<double>( & bufferPtr[address(p.x,p.y) * conf.byteSize ] ));
+		// return getScaling().fwd(conf.caster.get<double>( & bufferPtr[address(i,j) * conf.byteSize ] ));
 	}
 
 

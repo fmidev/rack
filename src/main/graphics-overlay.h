@@ -94,7 +94,7 @@ public:
 	};
 
 	// Coord units
-	std::string coordinateUnits = "D:M"; // better to init in gCoords only?
+	std::string coordinateUnits = "DEG:M"; // better to init in gCoords only? But gRect needs also.
 
 
 	inline

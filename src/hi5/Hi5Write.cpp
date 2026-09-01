@@ -51,6 +51,9 @@ namespace hi5 {
 
 unsigned short Writer::compressionLevel = 6;
 
+drain::UniTuple<size_t, 2> Writer::chunkSize = {0,0};
+
+
 void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 
 	drain::Logger mout(__FILE__, __FUNCTION__); //REPL hi5::hi5monitor, __FILE__, __FUNCTION__);
@@ -297,8 +300,16 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 			dims[0] = height;
 			dims[1] = width;
 			chunkDims.resize(2);
-			chunkDims[0] = std::min(hsize_t(20), height);
-			chunkDims[1] = std::min(hsize_t(20), width);
+
+			chunkDims[0] = chunkSize[1]==0 ? height   : chunkSize[1];
+			chunkDims[1] = chunkSize[0]==0 ? width    : chunkSize[0];
+
+			chunkDims[0] = std::max(hsize_t(20), chunkDims[0]);
+			chunkDims[0] = std::min(height,      chunkDims[0]);
+			chunkDims[1] = std::max(hsize_t(20), chunkDims[1]);
+			chunkDims[1] = std::min(width,       chunkDims[1]);
+			// chunkDims[0] = std::min(hsize_t(20), height);
+			// chunkDims[1] = std::min(hsize_t(20), width);
 			return 2;
 		default:
 			dims.resize(3);
@@ -314,10 +325,21 @@ hsize_t Writer::deriveDimensions(const drain::image::Geometry & g, std::vector<h
 			dims[0] = channels;
 			dims[1] = height;
 			dims[2] = width;
+
 			chunkDims.resize(3);
-			chunkDims[0] = std::min(hsize_t(20), channels);
-			chunkDims[1] = std::min(hsize_t(20), height);
-			chunkDims[2] = std::min(hsize_t(20), width);
+
+			chunkDims[0] = channels; // chunkSize[2]==0 ? channels : chunkSize[2];
+			chunkDims[1] = chunkSize[1]==0 ? height   : chunkSize[1];
+			chunkDims[2] = chunkSize[0]==0 ? width    : chunkSize[0];
+
+			//chunkDims[0] = std::min(hsize_t(20), chunkDims[0]);
+			chunkDims[1] = std::max(hsize_t(20), chunkDims[1]);
+			chunkDims[1] = std::min(height,      chunkDims[1]);
+			chunkDims[2] = std::max(hsize_t(20), chunkDims[2]);
+			chunkDims[2] = std::max(width,       chunkDims[2]);
+			// chunkDims[0] = std::min(hsize_t(20), channels);
+			// chunkDims[1] = std::min(hsize_t(20), height);
+			// chunkDims[2] = std::min(hsize_t(20), width);
 			return 3;
 	}
 

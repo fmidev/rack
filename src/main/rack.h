@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(20,9)
+#define RACK_VERSION drain::Version<>(21,0)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -41,6 +41,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 /**
  *  Version history:
  * 
+ *  Version 21.0
+ *  - HDF5 output: write chunk size; set Conventions only if unset
+ *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
  *  - VsCode support for C++11, and revised Makefile

@@ -344,7 +344,7 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
     """ Todo
 
         Tries to find a server conf with given name.
-        If found, checks if desired layers and projection (epsg) exists.
+        If found, optionally checks if desired layers and projection (epsg) exists.
     """
 
     logger.debug(f"First, looking for built-in config for server='{server}', layer='{layers}'")
@@ -355,7 +355,7 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
 
 
     conf = dict(server_conf)
-
+    
     if server:
         if server in conf:
             logger.info(f"Found built-in config for server='{server}'")
@@ -371,7 +371,7 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
 
             v = rack.config.read(filename, formats=['.json', '.cnf'], lenient=True)
             if v:
-                logger.info(f"Found file-based server conf '{filename}' for '{server}'.")
+                logger.info(f"Found server conf file '{filename}' for '{server}'.")
             else:
                 suggest_server_conf(server)
                 sys.exit(1)
@@ -566,10 +566,12 @@ def link_map(cache_path: pathlib.Path, mapLink: str = None):
     link_path.symlink_to(target)
 
 
-def get(serverConf, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+def get(serverConf, EPSG:int, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
     """ Retrieve map, if not already in cache.
 
     Parameters:
+    - servertConf 
+    - EPSG
     - mapCache: cache path syntax, e.g. "./mapcache/{layers}/BBOX={BBOX}_CRS={CRS}_SIZE={WIDTH},{HEIGHT}_STYLES={styles}.png"
     - mapServer: server name, e.g. "mundialis", "terrestris", "fmi", "nasa-neo"
     - mapLayers: list of layers to request, e.g. ["OSM-WMS", "TOPO-WMS"]
@@ -580,6 +582,8 @@ def get(serverConf, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=No
     - pathlib.Path to the cached map file, if successful.
     - None, if retrieval failed.
     """
+
+
 
 
     # Currently, built-in defaults...
@@ -605,8 +609,14 @@ def get(serverConf, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=No
         "HEIGHT": "600",
         "FORMAT": "image/png"
     }
+
+    # Ensure: set of integers.
+    EPSG:list = rack.typical(EPSG, [int])
     
-    if serverConf:
+    if not serverConf:
+        logger.warning("No server conf, using defaults")
+    else:
+        # Upper/Lowercase?
         for i in ["endpoint", "VERSION"]: # "REQUEST", "SERVICE",  
             if i in serverConf:
                 server_params[i] = serverConf[i]
@@ -614,13 +624,33 @@ def get(serverConf, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=No
         for i in ["layers", "styles"]:
             if i in serverConf:
                 v = rack.typical(serverConf[i], [str])
-                logger.warning(f"check {i} {v}")
+                logger.warning(f"serverConf:'{i}' = {v}")
                 if len(v) > 0:
                     get_params[i] = v[0]
-        if 'epsg' in serverConf:
-            EPSG = rack.typical(serverConf['epsg'], [str])[0]
-            get_params["CRS"] = f"EPSG:{EPSG}"
-    
+        if ('epsg' in serverConf):
+            supported_epsgs = rack.typical(serverConf['epsg'], [int])
+            for i in EPSG:
+                epsg = None
+                if i in supported_epsgs:
+                    epsg = i
+                    break
+                if epsg:
+                    logger.note("EPSG:{epsg} supported")
+                    EPSG = [epsg]
+                else:
+                    logger.warning(f"Consider using: {supported_epsgs}")
+                    logger.error(f"None of requested EPSG:{EPSG} supported")
+                    exit(11)
+
+            #shared_epsgs = set(EPSG).intersection(rack.typical(serverConf['epsg'], [int]))
+            #if shared_epsgs:
+            #    logger.warning(f"shared {shared_epsgs}")
+            #EPSG = rack.typical(serverConf['epsg'], [str])[0]
+            #
+
+    #EPSG = EPSG[0]
+    get_params["CRS"] = f"EPSG:{EPSG[0]}"
+    logger.info(f"EPSG(s): {EPSG}")
 
     logger.debug(f"default server_params: {server_params}")
     #logger.info(f"get_params: {get_params}")
@@ -639,20 +669,16 @@ def get(serverConf, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=No
     logger.info(f"Cache path: {cache_path}")
     
     if not cache_path.exists() or mapForce:
-        # logger.info(f"Does not exist, retrieving: {cache_path}")
-        # logger.info(f"Retrieving: {cache_path}")
-        logger.debug(f"Ensure dir: {cache_path.parent}")
+        logger.debug(f"ensuring dir: {cache_path.parent}")
         os.makedirs(cache_path.parent ,exist_ok=True) 
         # TODO: lock and/or tmpfile
-        # todo: urlencode
-        # get_param_str = "&".join([f"{k}={v}" for (k,v) in get_params.items()])
         #url = urllib.parse.urlencode(url) 
         #url = urllib.parse.quote_plus(url)
         #url = "https://ows.terrestris.de/osm/service?" + get_param_str
         get_param_str = urllib.parse.urlencode(get_params)
         url = server_params["endpoint"] + '?' + get_param_str
         # Good:
-        logger.info(f'url: {url}')
+        logger.info(f'retrieving from URL: {url}')
 
         # Assume myURL is already defined and valid
         #output_file = "wms_image.png"

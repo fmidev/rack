@@ -501,6 +501,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	}
 
 	if (angles.size() < dstData.odim.angles.size()){
+		mout.hint("Select subset of sweeps for example with: --select prf=SINGLE");
 		mout.warn("Input data contains repeated angles:",  drain::sprinter(dstData.odim.angles));
 	}
 

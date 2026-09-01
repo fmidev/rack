@@ -1033,8 +1033,10 @@ void CmdRadarRay::exec() const {
 	// drain::image::TreeUtilsSVG\n
 	drain::UtilsXML::ensureStyle(ctx.getSVG(), cls, { // SECTOR
 			{"fill", "none"},
-			{"stroke", "rgb(160,255,160)"},
-			{"stroke-width", 5.0},
+			//{"stroke", "rgb(160,255,160)"},
+			{"stroke", "white"},
+			{"stroke-width", 10.0}, // 5.0
+			{"stroke-linecap", "round"},
 			// {"opacity", 0.65}
 	});
 

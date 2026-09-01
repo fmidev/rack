@@ -46,6 +46,12 @@ def build_parser():
         default="0", # black
         help="Illustrate radar beams with given background color.")
 
+    parser.add_argument(
+        "--height_indicator",
+        metavar="<meters>[,<meters>...]",
+        default=None,
+        help="Add horizontal line(s) at given height(s) (esp. to illustrate CAPPI). Several heights can be given, comma-separated.")
+
     rack.prog.Register.expand_options(
         rack.core.Rack.select, 
         parser, 
@@ -206,6 +212,16 @@ def handle_gnuplot(args, progBuilder: rack.core.Rack): #, **kw_args): #range_m:t
 
     plotScriptBuilder.comment("Plotting a dummy line (to ensure gnuplot output is not empty)")
     plotScriptBuilder.plot('x*0', style=rack.gnuplot.Style.LINES) # linecolor='rgb "gray"', linewidth=1)
+
+    if args.height_indicator:
+        heights = rack.typical(args.height_indicator, [int], ',')
+        plotScriptBuilder.comment("Plotting height indicator line(s)")
+        for h in heights:
+            if not (yrange[0] <= h <= yrange[1]):
+                logger.warning(f"--height_indicator {h} is outside yrange {yrange}, skipping")
+                continue
+            plotScriptBuilder.plot(str(h), style=rack.gnuplot.Literal("lines lc rgb 'white' dashtype 2 linewidth 3"))
+
     plotScriptBuilder.unset("key") # legend ?
     plotScriptBuilder.comment("Ensure final endline") # plot() bug, fix later.. 
     

@@ -324,12 +324,9 @@ void CmdRect::exec() const {
 	})
 	*/
 
-	// Modify SVG header. Notice inverse order (for prepend() )
-	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "image_coord_tracker") = javascript::image_coord_tracker;
-	// drain::UtilsXML::getHeaderObject(ctx.getSVG(), svg::SCRIPT, "coord_handler")       = javascript::coord_handler;
+	// Modify SVG header.
 	ctx.ensureScript("image_coord_tracker", javascript::image_coord_tracker);
 	ctx.ensureScript("coord_handler",       javascript::coord_handler);
-
 	ctx.ensureOnLoad("image_coord_tracker") = "image_coord_tracker();";
 	// RackSVG::getOnLoadScript(ctx)["test"] = "// Test";
 
@@ -610,7 +607,7 @@ void CmdCoords::exec() const {
 	}
 	*/
 
-	// TEST for gData / gRect
+	// TEST for gData
 	//const Image & data = ctx.getCurrentGrayImage();
 	std::string filename = "foo.png";
 	const std::string filenameFinal = ctx.getFormattedStatus(std::string("${outputPrefix}")+filename);

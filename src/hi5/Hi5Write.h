@@ -146,6 +146,13 @@ public:
 	static
 	unsigned short compressionLevel;
 
+	/// chunk dimensions: width, height (channels always as actual number)
+	/**
+	 *
+	 */
+	static
+	drain::UniTuple<size_t, 2> chunkSize;
+
 
 protected:
 
