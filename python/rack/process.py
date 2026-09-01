@@ -34,7 +34,17 @@ def run(prog: rack.prog.CommandSequence,
     except Exception as e:
         logger.error(f"Error while executing command sequence: {e}")
         raise e
-    
+
+    stderr_lines = result.stderr.rstrip().splitlines()
+    if stderr_lines:
+        return stderr_lines[-1]
+
+    stdout_lines = result.stdout.rstrip().splitlines()
+    if stdout_lines:
+        return stdout_lines[-1]
+
+    return ""
+
 def handle_result(result: subprocess.CompletedProcess, 
                   description:str = "Executed subprocess", 
                   logger: logging.Logger = logging.getLogger(__name__),

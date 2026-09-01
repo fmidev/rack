@@ -63,7 +63,6 @@ void Writer::writeFile(const std::string &filename, const Hi5Tree &tree){
 	if (fid < 0)
 		mout.error(": H55create failed, file=" , filename );
 
-
 	/*
 	std::vector<std::pair<const char *, double> > v;
 	v.resize(3);

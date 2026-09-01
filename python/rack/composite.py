@@ -62,20 +62,41 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     """
 
     parser.add_argument(
-        "INFILE",
-        nargs='*',
-        help="Input files")
-
-    parser.add_argument(
-        "--OUTFILE",
-        default="",
-        help="Output file (basename). See --FORMATS")
-    
+        "--SCHEME",
+        default='',
+        metavar="<empty>|TILE|TILED",
+        help=f"Compositing scheme. For TILE, default OUTDIR={default_tiledir}, OUTFILE={default_tiledir}") 
 
     parser.add_argument(
         "--METHOD",
         default="MAXIMUM",
         help="Compositing method. See: rack -h cMethod") 
+
+    parser.add_argument(
+        "INFILE",
+        nargs='*',
+        help="Input files")
+
+    #parser.add_argument("--loop", type=str, help="<file>.json Path to JSON config file")
+    parser.add_argument(
+        "--INDIR",
+        type=str,
+        metavar="<path>|AUTO",
+        default="AUTO",
+        help="Common path of input files.")
+
+    parser.add_argument(
+        "--OUTDIR",
+        type=str,
+        metavar="<path>|AUTO",
+        default=None,
+        help="Common path of output files.")
+        
+    parser.add_argument(
+        "--OUTFILE",
+        default="composite.h5",
+        help="Output file or basename. See --FORMATS")
+    
 
     parser.add_argument(
         "--PPROD",
@@ -125,11 +146,6 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         default="",
         help="Set formats (h5, png, tif, svg) explicitly") 
 
-    parser.add_argument(
-        "--SCHEME",
-        default='',
-        metavar="<empty>|TILE|TILED",
-        help="Compositing scheme. For TILE, default OUTDIR={default_tiledir}, OUTFILE={default_tiledir}") 
 
     parser.add_argument(
         "--EXTRACT",
@@ -138,20 +154,6 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         help="Comma separated list of fields to copy from compositing array") 
 
 
-    #parser.add_argument("--loop", type=str, help="<file>.json Path to JSON config file")
-    parser.add_argument(
-        "--INDIR",
-        type=str,
-        metavar="<path>|AUTO",
-        default="AUTO",
-        help="Common path of input files.")
-
-    parser.add_argument(
-        "--OUTDIR",
-        type=str,
-        metavar="<path>|AUTO",
-        default=None,
-        help="Common path of output files.")
 
 
     # SVG related
@@ -878,7 +880,8 @@ def main():
     if args.exec:
         desc = "Executing command sequence with subprocess.run()"
         logger.info(desc)
-        rack.process.run(prog, description=desc, logger=logger)
+        last_line = rack.process.run(prog, description=desc, logger=logger)
+        logger.info(f"Process executed, last line:\n {last_line}")
         # fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
         # print(prog.to_string(fmt))
         # result = subprocess.run(prog.to_token_list(fmt), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)

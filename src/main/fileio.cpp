@@ -420,7 +420,7 @@ void CmdOutputFile::exec() const {
 
 		drain::Variable & conventions = src.data.attributes["Conventions"];
 		if (!conventions.empty()){
-			mout.revised<LOG_NOTICE>("Conventions: keeping original '", conventions, "'");
+			mout.revised<LOG_INFO>("Conventions: keeping original '", conventions, "'");
 		}
 		else {
 			for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
