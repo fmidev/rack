@@ -176,7 +176,6 @@ void CompositeCreateTile::exec() const {
 	// const Composite & compositeShared = ctx.getComposite(RackContext::SHARED);
 	// mout.attention(DRAIN_LOG(composite));
 	// mout.attention(DRAIN_LOG(compositeShared));
-
 	// RackContext & ctx = getContext<RackContext>();
 	// ctx.composite.setBoundingBox(bboxDeg);
 	// ctx.getStatusMap()["where:BBOX"] = bboxDeg.tuple();
