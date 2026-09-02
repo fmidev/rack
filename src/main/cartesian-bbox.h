@@ -61,15 +61,8 @@ public:
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	}
 
-	inline
-	void exec() const {
-		RackContext & ctx = getContext<RackContext>();
-		ctx.composite.setBoundingBox(bbox);
-		ctx.getStatusMap()["where:BBOX"] = bbox.tuple();
-		// std::cerr << __FILE__ << ' ' << bbox << std::endl;
-		// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	void exec() const;
 
-	}
 
 private:
 

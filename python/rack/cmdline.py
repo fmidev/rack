@@ -150,6 +150,65 @@ class RackFormatter(Formatter):
 
             return result
 
+def add_parameters(parser: argparse.ArgumentParser):
+    """Registers the --exec / --print / --rack_script options shared by
+    RackModule command-line wrappers (rack.composite, rack.vpr, ...).
+
+    Pair with handle_parameters(prog, args) once the module has built its
+    CommandSequence.
+    """
+    parser.add_argument(
+        "-e", "--exec",
+        action='store_true',
+        help="execute parsed command")
+
+    parser.add_argument(
+        "--print", "-p",
+        metavar="<line_separator>",
+        default=None,
+        help="print command line with parameter separator, like ' \\n  '")
+
+    parser.add_argument(
+        "--rack_script",
+        metavar="<filename>",
+        default=None,
+        help="Save rack command to a shell script file (one arg per line with backslash continuation)")
+
+
+def handle_parameters(prog: CommandSequence, args: argparse.Namespace, logger=logger) -> bool:
+    """Common handling for --exec / --print / --rack_script.
+
+    Prints prog and/or writes it to a script file, as requested. If none of
+    the three options were given, the invocation would otherwise do nothing
+    useful, so --exec is implied.
+
+    Actual execution is left to the caller: modules differ there (e.g. some
+    chain a follow-up tool, like gnuplot, after a successful run) - call
+    this first, then branch on the (possibly now-defaulted) args.exec.
+
+    Returns args.exec.
+    """
+    if not args.exec and args.print is None and not getattr(args, 'rack_script', None):
+        logger.debug("None of --exec, --print, --rack_script given; defaulting to --exec")
+        args.exec = True
+
+    if args.print is not None:
+        sep = args.print if args.print else r' \\n  '  # default separator
+        sep = sep.replace(r'\t', '\t').replace(r'\n', '\n')
+        fmt = RackFormatter(params_format="'{params}'", cmd_separator=sep)
+        logger.info("# Command line:")
+        print(prog.to_string(fmt))
+
+    if getattr(args, 'rack_script', None):
+        fmt = RackFormatter(params_format="'{params}'", cmd_separator=" \\\n  ")
+        script_text = prog.to_string(fmt) + '\n'
+        with open(args.rack_script, "w") as f:
+            f.write(script_text)
+        logger.info(f"Rack script written to: {args.rack_script}")
+
+    return args.exec
+
+
 #import rack.composite
 
 def main():

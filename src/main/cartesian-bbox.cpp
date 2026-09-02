@@ -52,6 +52,14 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void CartesianBBox::exec() const {
+	RackContext & ctx = getContext<RackContext>();
+	ctx.composite.setBoundingBox(bbox);
+	ctx.getStatusMap()["where:BBOX"] = bbox.tuple();
+	// std::cerr << __FILE__ << ' ' << bbox << std::endl;
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+}
 
 void CartesianBBoxTest::exec() const {
 

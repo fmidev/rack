@@ -94,7 +94,7 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         
     parser.add_argument(
         "--OUTFILE",
-        default="composite.h5",
+        default="",
         help="Output file or basename. See --FORMATS")
     
 
@@ -236,11 +236,8 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         metavar="<chars>",
         default=" \\\n",
         help="Argument separator for the resulting command string.")
-    
-    parser.add_argument(
-        "-e", "--exec",
-        action='store_true',
-        help="execute parsed command")
+
+    rack.cmdline.add_parameters(parser)
 
     parser.add_argument(
         "-d", "--debug",
@@ -255,18 +252,6 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     parser.add_argument(
         "-l", "--log_level",
         help="verbosity level for python wrapper and Rack cmd")
-
-    parser.add_argument(
-        "--print", "-p",
-        metavar="<line_separator>",
-        default=None,
-        help="print command line with parameter separator, like ' \\n  '")
-
-    parser.add_argument(
-        "--rack_script",
-        metavar="<filename>",
-        default=None,
-        help="Save rack command to a shell script file (one arg per line with backslash continuation)")
 
     parser.add_argument(
         "--test",
@@ -542,8 +527,8 @@ def handle_geoconf(args, Rack: rack.core.Rack):
             #mapForce=args.mapForce
         )
 
-    if args.METHOD:
-        Rack.cMethod(args.METHOD)
+    #if args.METHOD:
+    #    Rack.cMethod(args.METHOD)
 
 
 
@@ -776,6 +761,10 @@ def compose_command(args) -> rack.prog.CommandSequence:
         if args.BBOX and args.PROJ and args.SIZE:
             progBuilder.cInit()
 
+        if args.METHOD:
+            progBuilder.cMethod(args.METHOD)
+
+
         if len(args.INFILE) > -99: # > 1 !
             logger.info("Several inputs, hence defining a script")
             
@@ -811,6 +800,11 @@ def compose_command(args) -> rack.prog.CommandSequence:
                 progBuilder.gRadarLabel(args.svgRadarLabel)
 
         progBuilder.cExtract(args.EXTRACT)
+
+        if not args.OUTFILE:
+            #logger.info("Single input - not using script")
+            args.OUTFILE = 'composite.h5'
+
         handle_outfiles(args, progBuilder)
     
     
@@ -877,36 +871,16 @@ def main():
     #logger.info("main() # args %s", type(args))
     prog = compose_command(args)
 
+    # Shared: apply --exec default, handle --print and --rack_script.
+    rack.cmdline.handle_parameters(prog, args, logger)
+
+    # Specialized: this module executes via rack.process.run() and reports
+    # the last output line. (rack.vpr / rack.pseudorhi chain a gnuplot run instead.)
     if args.exec:
         desc = "Executing command sequence with subprocess.run()"
         logger.info(desc)
         last_line = rack.process.run(prog, description=desc, logger=logger)
         logger.info(f"Process executed, last line:\n {last_line}")
-        # fmt = rack.cmdline.RackFormatter(params_format="'{params}'")
-        # print(prog.to_string(fmt))
-        # result = subprocess.run(prog.to_token_list(fmt), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        # rack.process.handle_result(result, description=desc, logger=logger) # prog.to_string(f
-
-    # Useful in this order: execute first (with perhaps verbous logging)
-    # ... and then print what was done:
-    if args.print == '':
-        args.print = r' \\n  '  # default separator
-
-    if args.print:
-        args.print = args.print.replace(r'\t','\t')
-        args.print = args.print.replace(r'\n','\n')
-        logger.info("# Command line:")
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=args.print)
-        print(prog.to_string(fmt))
-        # print(cmdList.to_string(" \\\n"))
-
-    if getattr(args, 'rack_script', None):
-        fmt = rack.cmdline.RackFormatter(params_format="'{params}'", cmd_separator=" \\\n  ")
-        #fmt = rack.cmdline.RackFormatter(params_format='"{params}"', cmd_separator=" \\\n  ")
-        script_text = prog.to_string(fmt) + '\n'
-        with open(args.rack_script, "w") as f:
-            f.write(script_text)
-        logger.info(f"Rack script written to: {args.rack_script}")
 
 
     

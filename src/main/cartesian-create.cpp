@@ -115,10 +115,14 @@ void CompositeCreateTile::exec() const {
 	if (!composite.geometryIsSet()){
 		mout.error("Composite geometry undefined, cannot create tile");
 	}
+	const drain::Frame2D<double> geometry(composite.getGeometry());
 
 	if (! composite.bboxIsSet()){
 		mout.error("Bounding box undefined, cannot create tile");
 	}
+	// experimental
+	const drain::Rectangle<double> bboxNat(composite.getBoundingBoxNat());
+	// const drain::Rectangle<double> bboxDeg(composite.getBoundingBoxDeg());
 
 	if (! composite.projectionIsSet()){ // or use first input (bbox reset)
 		mout.error("Projection undefined, cannot create tile");
@@ -160,7 +164,22 @@ void CompositeCreateTile::exec() const {
 		mout.error("? Programming error in parallel comp design");
 	}
 
+	// Reset and "cancel" cropping.
 	composite.setCropping(false);
+	composite.setGeometry(geometry);
+	composite.setBoundingBoxNat(bboxNat);
+
+	// mout.revised<LOG_NOTICE>("Resetting bbox back to: ", bboxNat, " (native), tile was: ", composite.getBoundingBoxNat());
+	// mout.revised<LOG_NOTICE>("Resetting bbox back to: ", bboxDeg, ", tile was: ", composite.getBoundingBoxNat());
+	// does not help
+	// composite.setBoundingBox(bboxDeg);
+	// const Composite & compositeShared = ctx.getComposite(RackContext::SHARED);
+	// mout.attention(DRAIN_LOG(composite));
+	// mout.attention(DRAIN_LOG(compositeShared));
+
+	// RackContext & ctx = getContext<RackContext>();
+	// ctx.composite.setBoundingBox(bboxDeg);
+	// ctx.getStatusMap()["where:BBOX"] = bboxDeg.tuple();
 
 }
 
