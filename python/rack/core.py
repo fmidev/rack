@@ -1378,7 +1378,7 @@ class Rack(rack.prog.Register):
 
     def gCoords(self,
         resolution:list=[0,0],
-        units:str='D:M',
+        units:str='DEG:M',
         MASK:str='NONE'):
         """ SVG test product. CSS classes: GRID,GRID
 
@@ -2490,7 +2490,7 @@ class Rack(rack.prog.Register):
         decay:list=[0.75,0.75,0.75,0.75],
         extendHorz:int=0,
         extendVert:int=0,
-        weightThreshold:float=0.05):
+        weightThreshold:float=0.1):
         """ Infinite-impulse response type spreading
 
         Parameters
@@ -4349,7 +4349,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95257e-310,
+        a:float=6.95255e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4367,9 +4367,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95257e-310,
+        a:float=6.95255e-310,
         b:float=1.4822e-323,
-        c:float=6.95257e-310):
+        c:float=6.95255e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
