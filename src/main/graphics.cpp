@@ -994,6 +994,9 @@ GraphicsModule::GraphicsModule(){ // : CommandSection("science"){
 	install<CmdData>().section   = HIDDEN;
 	install<CmdTestData>().section = HIDDEN;
 
+
+	install<CmdTransform>();
+
 	install<CmdAlignTest>();
 	install<CmdDebug>();
 	//install<CmdLogo>().section = HIDDEN;

@@ -93,7 +93,11 @@ public:
 
 	typedef double coord_t;
 
+	/// Default constructor
 	TransformSVG();
+
+	/// Copy constructor
+	TransformSVG(const TransformSVG & tr);
 
 	inline
 	bool empty() const {
@@ -136,6 +140,14 @@ public:
 		inline
 		Translate(const Translate & t) : x(++next()=t.x), y(++next()=t.y){
 		}
+
+		inline
+		Translate & operator=(const Translate & t){
+			x = t.x;
+			y = t.y;
+			return *this;
+		}
+
 
 	};
 

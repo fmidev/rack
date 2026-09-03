@@ -219,6 +219,41 @@ protected:
 	drain::image::AnchorElem anchorVert;
 
 };
+/**
+ *  Examples
+ *  \code
+ *  rack --gAlign TOP,RIGHT
+ *  rack --gAlign TOP:OUTSIDE,INSIDE:RIGHT
+ *  \endcode
+ *
+ *  Warns if both are outside, ie. diagonally aligned to original image (or other graphical object).
+ */
+//class CmdAlign : public drain::SimpleCommand<std::string> {
+class CmdTransform : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdTransform() : drain::SimpleCommand<std::string>(__FUNCTION__, "Apply SVG transformations to image", "topology", ""){
+		//getParameters().link("", x, drain::StringBuilder<':'>());
+		getParameters().separator = ' '; // rare
+		getParameters().link("translate", transform.translate.tuple());
+		getParameters().link("scale", transform.scale.tuple());
+		getParameters().link("rotate", transform.rotate.tuple());
+	}
+
+	CmdTransform(const CmdTransform & cmd) : drain::SimpleCommand<std::string>(cmd) {
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this, drain::ReferenceMap::LINK);
+	};
+
+
+	virtual
+	void exec() const override;
+
+protected:
+
+	drain::image::TransformSVG transform;
+
+};
 
 /*
 class CmdAnchor : public drain::SimpleCommand<std::string> {

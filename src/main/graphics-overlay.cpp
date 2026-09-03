@@ -46,10 +46,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/js/textbox_flipper.h>
 
 #include "graphics.h"
+#include "graphics-base.h"
 #include "graphics-panel.h"
 #include "graphics-radar.h"
 #include "graphics-overlay.h"
-#include "graphics-imagepanel.h"
+// #include "graphics-imagepanel.h"
 
 namespace drain {
 

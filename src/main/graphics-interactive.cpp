@@ -52,7 +52,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "graphics-base.h"
 #include "graphics-panel.h"
-#include "graphics-imagepanel.h"
+//#include "graphics-imagepanel.h"
 #include "graphics-interactive.h"
 
 // #include "js/add_mouse_listeners.h"

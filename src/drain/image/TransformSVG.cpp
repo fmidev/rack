@@ -53,6 +53,15 @@ TransformSVG::TransformSVG(){ //  : translate(typeid(svg::coord_t)) {
 };
 
 
+/// Copy constructor
+TransformSVG::TransformSVG(const TransformSVG & tr){
+	rotate.set(tr.rotate);
+	translate.set(tr.translate);
+	scale.set(tr.scale);
+	matrix.set(tr.matrix);
+}
+
+
 #define DRAIN_SVGTRANS_STREAM(transform) if (!transform.empty()){ostr << #transform << transform << ' ';}
 
 void TransformSVG::toStream(std::ostream & ostr) const {

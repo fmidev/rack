@@ -45,7 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "graphics-base.h"
 #include "graphics-panel.h"
-#include "graphics-imagepanel.h"
+//#include "graphics-imagepanel.h"
 
 
 namespace rack {
@@ -557,6 +557,24 @@ void CmdAlign::exec() const  {
 
 }
 
+void CmdTransform::exec() const {
+
+	RackContext & ctx = getContext<RackContext>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	TreeSVG & imagePanelGroup = ctx.getImagePanelGroup();
+
+	ImagePanel superPanel(imagePanelGroup);
+	TreeSVG & imageElem = superPanel.getImage();
+
+	imageElem->addClass(AlignSVG::COMPOUND);
+
+	imageElem->transform = transform;
+
+
+	NodeSVG::toStream(std::cout, imageElem);
+
+
+}
 
 void CmdAdjustSizes::adjust(ConfSVG::sizeConf & tuple, float decay) const{
 
