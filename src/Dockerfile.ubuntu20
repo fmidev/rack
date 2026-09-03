@@ -31,7 +31,8 @@ RUN apt-get update && \
         libtiff-dev \
         libgeotiff-dev \
         libgomp1 && \
-    ./build.sh && ./install.sh
+	make build && make install
+#    ./build.sh && ./install.sh
 
 # ./build.sh clean && \
 
