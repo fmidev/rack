@@ -655,11 +655,15 @@ void CmdOutputFile::exec() const {
 		*/
 		drain::TreeUtils::traverse(textPruner, svgDoc);
 
-		drain::image::ClipperSVG clipper(svgDoc);
+		drain::image::ClipperSVG clipper;
 		drain::TreeUtils::traverse(clipper, svgDoc);
 
 		drain::image::MaskerSVG masker;
 		drain::TreeUtils::traverse(masker, svgDoc);
+
+		drain::image::TransformerSVG transformer(ctx.svgPanelConf.transform);
+		drain::TreeUtils::traverse(transformer, svgDoc);
+
 
 		drain::Output ofstr(filepath);
 

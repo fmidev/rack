@@ -413,7 +413,8 @@ int ClipperSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path){
 			return 1;
 		}
 		// TODO: try relying on tree == root  (and forget separate root)
-		TreeSVG & clip = getClippingRect(this->root, t->getWidth(), t->getHeight());
+		//TreeSVG & clip = getClippingRect(this->root, t->getWidth(), t->getHeight());
+		TreeSVG & clip = getClippingRect(tree, t->getWidth(), t->getHeight());
 		t->set("clip-path", drain::StringBuilder<>("url(#", clip->getId(), ")").str());
 	}
 
@@ -588,6 +589,31 @@ int  AttributeCheckerXML::visitPrefix(TreeSVG & tree, const TreeSVG::path_t & pa
 
 }
 */
+
+// drain::TreePruner<drain::image::TreeSVG> textPruner;
+int TransformerSVG::visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) {
+
+	TreeSVG &    t = tree(path);
+	NodeSVG & node = t.data;
+	if (node.typeIs(svg::IMAGE)){
+
+		drain::Logger mout(__FILE__, __FUNCTION__);
+
+		if (node.transform.empty()){
+			node.transform = transform;
+			// node.transform.scale = {0.7, 1.2};
+			// node.transform.translate.set(20, 10);
+			// node.transform.rotate.set(45, -10, 0);
+		}
+		else {
+			mout.warn("Transform already set, skipping");
+			NodeSVG::toStream(std::cout, t);
+		}
+	}
+
+	return 0;
+}
+
 
 
 }  // image::

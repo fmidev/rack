@@ -60,6 +60,19 @@ public:
 		return (*this == 0.0);
 	}
 
+
+	template <class T>
+	Transform<N> & operator=(const T & x){
+		set(x);
+	}
+
+	template <class T>
+	Transform<N> & operator=(const std::initializer_list<T> & x){
+		UniTuple<double,N>::assignSequence(x);
+	}
+
+
+
 	virtual inline
 	void toStream(std::ostream & ostr) const override {
 		ostr << '(';

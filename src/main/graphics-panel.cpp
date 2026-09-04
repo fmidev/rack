@@ -570,11 +570,12 @@ void CmdTransform::exec() const {
 
 	// Dangerous alternative: attribute work-around...
 	// imageElem->setAttribute("transform", transform);
-	imageElem->transform = transform;
+	//imageElem->transform = transform;
+	ctx.svgPanelConf.transform = transform;
 	mout.experimental(DRAIN_LOG(transform.translate.tuple()));
 	mout.experimental(DRAIN_LOG(imageElem->transform.translate.tuple()));
 
-	NodeSVG::toStream(std::cout, imageElem);
+	//NodeSVG::toStream(std::cout, imageElem);
 
 
 }

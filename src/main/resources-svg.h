@@ -93,6 +93,7 @@ struct ConfSVG {
 	ConfSVG() : svgIncludes(drain::image::FileSVG::IncludePolicy::ALL), pathPolicyFlagger(drain::image::FileSVG::PathPolicy::ABSOLUTE), pathPolicy("ABSOLUTE") { // absolutePaths(true){
 	}
 
+	drain::image::TransformSVG transform;
 
 };
 

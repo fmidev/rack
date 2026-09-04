@@ -246,10 +246,10 @@ public:
 
 
 	inline
-	ClipperSVG(TreeSVG & root) : root(root) {
+	ClipperSVG(){ //  : root(root) {
 	}
 
-	ClipperSVG(const ClipperSVG & clipper) : root(clipper.root) { // ???
+	ClipperSVG(const ClipperSVG & clipper){ //  : root(clipper.root) { // ???
 	}
 
 	/// Ensures a clipping path o f type RECT of given size.
@@ -267,7 +267,7 @@ public:
 
 	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
 
-	TreeSVG & root;
+	// TreeSVG & root;
 
 };
 
@@ -378,6 +378,52 @@ public:
 
 };
 
+
+/// Applies transformation
+/**
+ *
+ *   Todo: use more general search criteria with
+ *   drain::TreePruner<drain::image::TreeSVG> textPruner;
+ *
+ */
+class TransformerSVG : public drain::TreeVisitor<TreeSVG> {
+public:
+
+	inline // TreeSVG & root
+	TransformerSVG(){
+	}
+
+	inline
+	TransformerSVG(const TransformerSVG & transformer) : transform(transformer.transform){
+	}
+
+	inline // TreeSVG & root
+	TransformerSVG(const TransformSVG & transform) : transform(transform) {
+	}
+
+	inline
+	void set(const TransformSVG & tr){
+		transform = tr;
+	}
+
+
+	inline
+	int visitPrefix(TreeSVG & tree, const TreeSVG::path_t & path) override {
+		if (tree.data.typeIs(svg::SVG, svg::GROUP)){
+			return 0;
+		}
+		else {
+			return 1;
+		}
+	}
+
+	int visitPostfix(TreeSVG & tree, const TreeSVG::path_t & path) override;
+
+protected:
+
+	TransformSVG transform;
+
+};
 
 
 // DRAIN_ENUM_DICT(MetaDataCollectorSVG::MetaDataType);
