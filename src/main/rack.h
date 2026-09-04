@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,0,3)
+#define RACK_VERSION drain::Version<>(21,0,4)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -47,6 +47,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Removed rack::ImagePanel (now in drain)
  *  Release 21.0.2
  *  - SVG image element transform tests
+ *  Release 21.0.4
+ *  - TransformerSVG
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
