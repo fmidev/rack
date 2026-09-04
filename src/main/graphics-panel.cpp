@@ -568,6 +568,8 @@ void CmdTransform::exec() const {
 
 	imageElem->addClass(AlignSVG::COMPOUND);
 
+	// Dangerous alternative: attribute work-around...
+	// imageElem->setAttribute("transform", transform);
 	imageElem->transform = transform;
 	mout.experimental(DRAIN_LOG(transform.translate.tuple()));
 	mout.experimental(DRAIN_LOG(imageElem->transform.translate.tuple()));
