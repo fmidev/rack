@@ -165,13 +165,17 @@ public:
 
 } // image::
 
-} // drain::
-
 inline
-std::ostream & operator<<(std::ostream & ostr, const drain::image::TransformSVG & tr){
+std::ostream & operator<<(std::ostream & ostr, const image::TransformSVG & tr){
 	tr.toStream(ostr);
 	return ostr;
 }
+
+} // drain::
+
+/*
+ *
+ */
 
 #endif
 

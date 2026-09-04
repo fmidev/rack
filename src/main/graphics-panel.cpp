@@ -569,7 +569,8 @@ void CmdTransform::exec() const {
 	imageElem->addClass(AlignSVG::COMPOUND);
 
 	imageElem->transform = transform;
-
+	mout.experimental(DRAIN_LOG(transform.translate.tuple()));
+	mout.experimental(DRAIN_LOG(imageElem->transform.translate.tuple()));
 
 	NodeSVG::toStream(std::cout, imageElem);
 

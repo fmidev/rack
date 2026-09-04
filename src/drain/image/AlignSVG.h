@@ -345,12 +345,13 @@ DRAIN_ENUM_DICT(image::AlignSVG::VertAlign);
 // DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
 
 namespace drain {
-
-DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::Owner);
-DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::AlignClass);
-
+/*
+*/
 
 namespace image {
+
+DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
+DRAIN_ENUM_OSTREAM(AlignSVG::AlignClass);
 
 DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
 DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::HorzAlign);
