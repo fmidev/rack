@@ -92,13 +92,20 @@ struct ImpulseAvgConf : public BeanLike {
 
 	inline
 	ImpulseAvgConf() : BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(0.75){
-		this->parameters.link("decay", decays.tuple()); //.fillArray = true;
+		this->parameters.link("decayHorz", decays.horz.tuple()).fillArray = true;
+		this->parameters.link("decayVert", decays.vert.tuple()).fillArray = true;
+		// option:
+		// this->parameters.link("decay", decays.tuple()); //.fillArray = true;
 	};
 
 	inline
 	ImpulseAvgConf(const ImpulseAvgConf & conf) :
-		BeanLike(__FUNCTION__, "Infinite-impulse response type spreading"), decays(0.75){
-		this->parameters.link("decay", decays.tuple()); //.fillArray = true;
+		BeanLike(conf), decays(0.75){
+		this->parameters.link("decayHorz", decays.horz.tuple()).fillArray = true;
+		this->parameters.link("decayVert", decays.vert.tuple()).fillArray = true;
+		// consider copyStruct
+		// option:
+		// this->parameters.link("decay", decays.tuple()); //.fillArray = true;
 	};
 
 	Decay4<double> decays;
