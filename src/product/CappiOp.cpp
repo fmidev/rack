@@ -65,7 +65,8 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 
 	parameters.link("altitude", this->altitude = altitude, "metres");
 	parameters.link("aboveSeaLevel", this->aboveSeaLevel = aboveSeaLevel);
-	parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
+	//parameters.link("beamWidth", this->beam.width = beamWidth, "deg"); //"virtual beam width");
+	parameters.link("beamWidth", this->beamWidth = beamWidth, "deg"); //"virtual beam width");
 	parameters.link("weightMin", this->weightMin = weightMin, "-0.1|0...1");
 	parameters.link("accumulationMethod", this->accumulationMethod = accumulationMethod, "string");
 	parameters.link("height", this->COMPUTE_HGHT = false, "true|false");
@@ -84,7 +85,7 @@ CappiOp::CappiOp(double altitude, bool aboveSeaLevel, double beamWidth, double w
 
 };
 
-CappiOp::CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(op.altitude), beam(op.beam), weightMin(op.weightMin) {
+CappiOp::CappiOp(const CappiOp &op) : CumulativeProductOp(op), altitude(op.altitude), beamWidth(op.beamWidth), weightMin(op.weightMin) {
 	// parameters.copyStruct(op.getParameters(), op, *this);
 };
 
@@ -196,7 +197,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 	size_t address;
 
 	// std::cerr << "coeff: "<< -log(sqrt(2.0)) << '\n';
-
+	const Beam beam(beamWidth);
 
 	for (size_t i = 0; i < accumulator.accArray.getWidth(); ++i) {
 
@@ -210,6 +211,7 @@ void CappiOp::processData(const Data<PolarSrc> & sweep, RadarAccumulator<Accumul
 		// if ((i&16) == 0)
 		//	beamWeight = beamPower( etaBin - eta );
 		//else
+
 		beamWeight = beam.getBeamPowerRad(etaBin - eta);
 		//beamWeight = beamPowerGauss(etaBin - eta);
 

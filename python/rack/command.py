@@ -1,5 +1,6 @@
 import pathlib
 import logging
+import shlex
 from typing import Any, List
 
 import rack.base
@@ -258,6 +259,28 @@ class Command:
             return f"{v[0]}{self.SECONDARY_SEP}{v[1]}"  #extend for >2
         return v
     """
+
+
+class Literal(Command):
+    """A Command inserted into a CommandSequence verbatim - e.g. a raw,
+    already rack-syntax command line fragment (see rack.cmdline.add_raw_parameters).
+
+    Bypasses name/value formatting entirely: to_string() returns the text
+    unchanged (for shell-text uses, like --print or --rack_cmd_file), while
+    to_tuple() splits it into separate tokens (for subprocess argv use, like
+    CommandSequence.to_token_list()), since a raw fragment such as
+    "--undetectWeight 0.9" must become two argv entries, not one.
+    """
+
+    def __init__(self, text: str):
+        super().__init__(name="")  # reuses the existing "anonymous" Command case
+        self.text = text
+
+    def to_string(self, fmt: Formatter = Formatter()) -> str:
+        return self.text
+
+    def to_tuple(self, fmt: Formatter = Formatter()) -> tuple:
+        return tuple(shlex.split(self.text))
 
 
 class CommandSequence:

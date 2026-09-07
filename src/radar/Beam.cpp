@@ -39,6 +39,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+const double Beam::coeff = 4.0 * log(sqrt(2.0));
+
 /// Given deviation from beam in degrees, return relative (normalized) beam power
 
 double Beam::getBeamPowerDeg(double d) const {
@@ -48,10 +50,13 @@ double Beam::getBeamPowerDeg(double d) const {
 	// x = ln(sqrt2)
 
 	// 2025
+	/*
 	static
 	const double coeff = 4.0 * log(sqrt(2.0)); // 4 = 2*2 for (1/(½width))²
+	*/
 
-	return exp(- (d*d) * coeff/(width*width));
+	//return exp(- (d*d) * coeff/(width*width));
+	return exp(- (d*d) * scaledCoeff);
 }
 
 

@@ -90,10 +90,16 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
         help="Generate GnuPlot image (e.g. 'png')")
 
     parser.add_argument(
-        "--gnuplot_script",   
+        "--gnuplot_cmd_file",
         metavar="<filename>",
         default=None,
-        help="Explicit name for GnuPlot script (e.g. 'plot.gnu')")
+        help="Explicit name for the GnuPlot command file (e.g. 'plot.gnu')")
+
+    parser.add_argument(
+        "--gnuplot_data_file",
+        metavar="<filename>",
+        default=None,
+        help="Explicit name for the (ASCII) data file GnuPlot plots from. Default: derived from --OUTFILE")
 
     parser.add_argument(
         "--title",   
@@ -101,10 +107,10 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
         default=None,
         help="Set title for GnuPlot output.")
 
-    #parser.add_argument(
-    #    "--STYLE",
-    #    default=".SECTOR=stroke:white;stroke-width:3",
-    #    help="Adjust CSS styles for the SVG output")
+    parser.add_argument(
+        "--STYLE",
+        default=".SECTOR=stroke:white;stroke-width:3",
+        help="Adjust CSS styles for the SVG output")
 
     # TODO: pick selected SVG commands and handling.
     parser.add_argument(
@@ -119,6 +125,8 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
         # metavar="[HORZ|VERT]",
         default="",
         help="Position of the plot image wrt. radar image")
+
+    rack.cmdline.add_raw_parameters(parser)
 
 
 def initialize_rack(args, rackCmdReg: rack.core.Rack):
@@ -363,12 +371,12 @@ def gnuplot_new_script() -> tuple:
 
 
 def gnuplot_write_script(args, script_text: str):
-    """Write *script_text* to file and record the filename in args.gnuplot_script."""
-    if not args.gnuplot_script:
-        args.gnuplot_script = f"{args.gnuplot}.gnu"
-    with open(args.gnuplot_script, "w") as f:
+    """Write *script_text* to file and record the filename in args.gnuplot_cmd_file."""
+    if not args.gnuplot_cmd_file:
+        args.gnuplot_cmd_file = f"{args.gnuplot}.gnu"
+    with open(args.gnuplot_cmd_file, "w") as f:
         f.write(script_text)
-    logger.info(f"GnuPlot script written to: {args.gnuplot_script}")
+    logger.info(f"GnuPlot command file written to: {args.gnuplot_cmd_file}")
 
 
 def run_module(module):
@@ -422,7 +430,7 @@ def run_module(module):
 
     prog = module.compose_command(args)
 
-    # Shared: apply --exec default, handle --print and --rack_script.
+    # Shared: apply --exec default, handle --print and --rack_cmd_file.
     rack.cmdline.handle_parameters(prog, args, logger)
 
     # Specialized: this module chains a gnuplot run after a successful exec.
@@ -434,11 +442,11 @@ def run_module(module):
         cmd = prog.to_token_list(fmt)
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         handle_result(result, cmd) # prog.to_string(fmt))
-        
-        if getattr(args, 'gnuplot_script', None):
+
+        if getattr(args, 'gnuplot_cmd_file', None):
             gnuplot_cmd = "gnuplot"
-            cmd = [gnuplot_cmd, args.gnuplot_script]
-            logger.info(f"# Executing GnuPlot script: {gnuplot_cmd} {args.gnuplot_script}")
+            cmd = [gnuplot_cmd, args.gnuplot_cmd_file]
+            logger.info(f"# Executing GnuPlot command file: {gnuplot_cmd} {args.gnuplot_cmd_file}")
             result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             handle_result(result, cmd)
 

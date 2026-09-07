@@ -49,11 +49,13 @@ def build_parser():
     rack.prog.Register.expand_options(rack.core.Rack.select, parser, name_mapper=True)
 
     rack.vertical.complete_arg_parser(parser)
+    # rack.cmdline.add_raw_parameters(parser)
 
-    parser.add_argument(
-        "--STYLE",
-        default=".SECTOR=stroke:white;stroke-width:3",
-        help="Adjust CSS styles for the SVG output")
+
+    #parser.add_argument(
+    #    "--STYLE2",
+    #    default=".SECTOR=stroke:white;stroke-width:3",
+    #    help="Adjust CSS styles for the SVG output")
 
     parser.add_argument(
         "--MASK",
@@ -94,7 +96,7 @@ def write_output_vpr(args, cmdBuilder: rack.core.Rack):
     # cmdBuilder.select(quantity=r'^COUNT$|^DBZH$|HGHT')
     # cmdBuilder.select(quantity=r'^COUNT$|^DBZH$|HGHT')
     # cmdBuilder.outputFile(f"{args.basename}.mat")
-    cmdBuilder.outputFile(args.datafilename)
+    cmdBuilder.outputFile(args.gnuplot_data_file)
 
 def create_gnuplot_script(args, progBuilder: rack.core.Rack):
 
@@ -148,8 +150,7 @@ def create_gnuplot_script(args, progBuilder: rack.core.Rack):
     # y: altitude
     plotBuilder.yrange(height_tuple)
 
-    mat_file = str(rack.vertical.get_full_path(args.OUTDIR, args.datafilename))
-    # args.datafilename
+    mat_file = str(rack.vertical.get_full_path(args.OUTDIR, args.gnuplot_data_file))
     column_index = 1 # HGHT, to be skipped
     plotBuilder.comment(f"Quantities: HGHT and {quantities}")
 
@@ -202,7 +203,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         args (argparse.Namespace): Parsed arguments from `build_parser()`
     """
 
-    global logger
+    #global logger
 
     if isinstance(args, dict):
         args = argparse.Namespace(**args)
@@ -216,21 +217,22 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # Access to add "hidden" options.
     v = vars(args)
 
-    # Hidden option: filename for output data.
-    
     # VPR specific commands:
     # Visualize selection
     progBuilder.gRadarSector(
-        radius  = rack.typical(args.range, [int], r'[,:]'), 
-        azimuth = rack.typical(args.azm,   [int], r'[,:]'), 
+        radius  = rack.typical(args.range, [int], r'[,:]'),
+        azimuth = rack.typical(args.azm,   [int], r'[,:]'),
         MASK=args.MASK)  #
         #MASK="true")
+
+    #if args.raw_script:
+    #    progBuilder.cmdSequence.commands.append(args.raw_script)
+
     progBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args) # works bad!
     progBuilder.add_cmd_with_expanded_args(rack.core.Rack.pVerticalProfile, args, write_back=True)
 
-    v["datafilename"] = f'{args.basename}.mat'
-    #rack.vertical.get_full_path(args.OUTDIR, f'{args.basename}.mat')
-    #f'{args.basename}.mat'
+    if not args.gnuplot_data_file:
+        v["gnuplot_data_file"] = f'{args.basename}.mat'
     write_output_vpr(args, progBuilder)
     create_gnuplot_script(args, progBuilder)
 

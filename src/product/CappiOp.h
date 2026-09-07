@@ -59,7 +59,8 @@ public:
 	double altitude = 1000.0; // meters
 
 	//
-	Beam beam = 1.0; // degrees
+	// Beam
+	double beamWidth = 1.0; // degrees
 	double weightMin = -0.1; // limit for
 
 	bool COMPUTE_HGHT = false;

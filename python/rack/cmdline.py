@@ -151,7 +151,7 @@ class RackFormatter(Formatter):
             return result
 
 def add_parameters(parser: argparse.ArgumentParser):
-    """Registers the --exec / --print / --rack_script options shared by
+    """Registers the --exec / --print / --rack_cmd_file options shared by
     RackModule command-line wrappers (rack.composite, rack.vpr, ...).
 
     Pair with handle_parameters(prog, args) once the module has built its
@@ -169,16 +169,16 @@ def add_parameters(parser: argparse.ArgumentParser):
         help="print command line with parameter separator, like ' \\n  '")
 
     parser.add_argument(
-        "--rack_script",
+        "--rack_cmd_file",
         metavar="<filename>",
         default=None,
-        help="Save rack command to a shell script file (one arg per line with backslash continuation)")
+        help="Save the rack command line to a shell file (one arg per line with backslash continuation)")
 
 
 def handle_parameters(prog: CommandSequence, args: argparse.Namespace, logger=logger) -> bool:
-    """Common handling for --exec / --print / --rack_script.
+    """Common handling for --exec / --print / --rack_cmd_file.
 
-    Prints prog and/or writes it to a script file, as requested. If none of
+    Prints prog and/or writes it to a command file, as requested. If none of
     the three options were given, the invocation would otherwise do nothing
     useful, so --exec is implied.
 
@@ -188,8 +188,8 @@ def handle_parameters(prog: CommandSequence, args: argparse.Namespace, logger=lo
 
     Returns args.exec.
     """
-    if not args.exec and args.print is None and not getattr(args, 'rack_script', None):
-        logger.debug("None of --exec, --print, --rack_script given; defaulting to --exec")
+    if not args.exec and args.print is None and not getattr(args, 'rack_cmd_file', None):
+        logger.debug("None of --exec, --print, --rack_cmd_file given; defaulting to --exec")
         args.exec = True
 
     if args.print is not None:
@@ -199,14 +199,46 @@ def handle_parameters(prog: CommandSequence, args: argparse.Namespace, logger=lo
         logger.info("# Command line:")
         print(prog.to_string(fmt))
 
-    if getattr(args, 'rack_script', None):
+    if getattr(args, 'rack_cmd_file', None):
         fmt = RackFormatter(params_format="'{params}'", cmd_separator=" \\\n  ")
-        script_text = prog.to_string(fmt) + '\n'
-        with open(args.rack_script, "w") as f:
-            f.write(script_text)
-        logger.info(f"Rack script written to: {args.rack_script}")
+        cmd_text = prog.to_string(fmt) + '\n'
+        with open(args.rack_cmd_file, "w") as f:
+            f.write(cmd_text)
+        logger.info(f"Rack command file written to: {args.rack_cmd_file}")
 
     return args.exec
+
+
+def add_raw_parameters(parser: argparse.ArgumentParser):
+    """Registers --raw_start / --raw_script / --raw_end - escape hatches for
+    injecting rack arguments verbatim (unparsed, passed through as-is),
+    for functionality this wrapper does not (yet) cover explicitly.
+
+    The three options name where the given string lands in the composed
+    command line:
+    - raw_start:  preamble, near the beginning (settings, e.g. --cSize ...)
+    - raw_script: inside the nested rack --script '...' argument
+    - raw_end:    trailer, near the end (e.g. output-related commands)
+
+    Applying these to the CommandSequence is left to the caller.
+    """
+    parser.add_argument(
+        "--raw_start",
+        metavar="<rack args>",
+        default=None,
+        help="Inject rack arguments verbatim near the start of the command line")
+
+    parser.add_argument(
+        "--raw_script",
+        metavar="<rack args>",
+        default=None,
+        help="Inject rack arguments verbatim into the nested --script argument")
+
+    parser.add_argument(
+        "--raw_end",
+        metavar="<rack args>",
+        default=None,
+        help="Inject rack arguments verbatim near the end of the command line")
 
 
 #import rack.composite

@@ -871,7 +871,7 @@ def main():
     #logger.info("main() # args %s", type(args))
     prog = compose_command(args)
 
-    # Shared: apply --exec default, handle --print and --rack_script.
+    # Shared: apply --exec default, handle --print and --rack_cmd_file.
     rack.cmdline.handle_parameters(prog, args, logger)
 
     # Specialized: this module executes via rack.process.run() and reports

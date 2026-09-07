@@ -50,8 +50,6 @@ public:
 		setBeamWidthDeg(widthDeg);
 	}
 
-	/// Beam width in degrees.
-	double width;
 
 	inline
 	Beam & operator=(const double & widthDeg){
@@ -62,7 +60,9 @@ public:
 	/// Set beam width in degrees.
 	inline
 	void setBeamWidthDeg(double width){
-		this->width = width;
+		this->width  = width;
+		this->scaledCoeff = Beam::coeff/(width * width);
+		// this->width2 = width*width;
 		// fuzzyBell.set(0,  0.5 * width); // half-width
 		// fuzzyBell2.set(0, 0.5 * width); // half-width
 	}
@@ -102,6 +102,24 @@ public:
 	// A fuzzy beam power model, with +/- 0.1 degree beam "width".
 	// drain::FuzzyBell2<double> fuzzyBell2;
 	//drain::FuzzyBell<double> beamPower:
+
+protected:
+
+	/// Coeff for getBeamPowerDeg()
+	// Returns 0 in the center (d=0.0) and 0.5 when d = +/-0.5*width
+	// e^x = ½ => x = ln(1/2) = - ln(2)
+	// e^(-x²) = ½ => -x = ln(1/sqrt(2)) = -ln(sqrt2) =
+	// x = ln(sqrt2)
+	static
+	const double coeff; // = 4.0 * log(sqrt(2.0)); // 4 = 2*2 for (1/(½width))²
+
+
+	/// Beam width in degrees.
+	double width;
+
+	/// Beam width (degrees) squared.
+	//  double width2;
+	double scaledCoeff;
 
 
 };

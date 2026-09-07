@@ -59,12 +59,14 @@ def build_parser():
     #rack.prog.camel_to_upper_underscore)     
 
     rack.vertical.complete_arg_parser(parser)
+    # rack.cmdline.add_raw_parameters(parser)
 
-    parser.add_argument(
-        "--STYLE",
-        default=".RAY=stroke:white;stroke-width:3;stroke-linecap:round;",
-        help="Adjust CSS styles for the SVG output")
+    #parser.add_argument(
+    #    "--STYLE",
+    #    default=".RAY=stroke:white;stroke-width:3;stroke-linecap:round;",
+    #    help="Adjust CSS styles for the SVG output")
 
+    
     return parser
 
 
@@ -261,9 +263,20 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
     # Vertical product common commands (e.g. radar sector, radar ray)
     rack.vertical.initialize_rack(args, rackCmdReg)
-    
+
+    if args.raw_start:
+        rackCmdReg.cmdSequence.add(rack.command.Literal(args.raw_start))
+
+
     # Pseudo-RHI specific commands:
     handle_vert_product(args, rackCmdReg)
+
+    if args.raw_script:
+        rackCmdReg.cmdSequence.add(rack.command.Literal(args.raw_script))
+        # rackCmdReg.cmdSequence.add(args.raw_script)
+        # rackCmdReg.cmdSequence.commands.append(args.raw_script)
+
+
     rackCmdReg.add_cmd_with_expanded_args(rack.core.Rack.select, args)
     rackCmdReg.add_cmd_with_expanded_args(rack.core.Rack.pPseudoRhi, args, write_back=True)
     handle_outfiles_prhi(args, rackCmdReg)
@@ -273,6 +286,10 @@ def compose_command(args) -> rack.prog.CommandSequence:
     #if 'svg' in args.FORMAT:
     #    rackCmdReg.outputFile(f"{args.basename}.svg")
     #    args.FORMAT.remove('svg')
+    
+    if args.raw_end:
+        rackCmdReg.cmdSequence.add(rack.command.Literal(args.raw_end))
+
 
     if 'tif' in args.FORMAT:
         #cmdBuilder.outputConf("tif:tile=512")
