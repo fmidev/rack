@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,1)
+#define RACK_VERSION drain::Version<>(21,2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -49,7 +49,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - SVG image element transform tests
  *  Release 21.0.4
  *  - TransformerSVG
- *  Version 21.1
+ *  Version 21.1, 21.2
  *  - Quay.io test
  *
  *  Version 20
