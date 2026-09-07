@@ -7,6 +7,7 @@ Utility for constructing strings that can be executed in shell.
 
 """
 import argparse
+from html import parser
 import json
 import sys
 from pathlib import Path
@@ -271,6 +272,8 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         type=str,
         default="",
         help="loop variable (separate with commas)")
+    
+    rack.cmdline.add_raw_parameters(parser)
 
     return parser
 
@@ -352,25 +355,6 @@ def read_default_args(parser):
 
 GEOCONF_PATH_SYNTAX = "mapconf/geo-{key}"
 
-
-def apply_geoconf_OLD(args, geoconf: dict, defaults: dict = None):
-    """Overlay a geoconf dict onto args, without clobbering values already set away
-    from the parser default - i.e. CLI-explicit / caller-supplied values win over geoconf.
-    """
-
-    # This is a bit tricky hack, as geoconf does not know which 
-    # arguments were set explicitly by the user, and which were 
-    # left at their default values.
-
-    if defaults is None:
-        defaults = {a.dest: a.default for a in build_parser()._actions}
-
-    for k, v in geoconf.items():
-        v2 = getattr(args, k, None)
-        if k in defaults and getattr(args, k, defaults[k]) != defaults[k]:
-            #logger.info(f"Keeping already-set '{k}'={getattr(args, k)!r}, not overriding with geoconf value {v!r}")
-            continue
-        setattr(args, k, v)
 
 
 def read_geoconf(args): #, parser):
@@ -717,6 +701,9 @@ def compose_command(args) -> rack.prog.CommandSequence:
     # Init
     handle_geoconf(args, progBuilder)
 
+    if args.raw_start:
+        progBuilder.cmdSequence.add(rack.command.Literal(args.raw_start))
+
     # Handle svg_conf?
     if args.svgStyle:
         progBuilder.gStyle(args.svgStyle)
@@ -729,8 +716,11 @@ def compose_command(args) -> rack.prog.CommandSequence:
 
         scriptBuilder = create_script(args)
 
+        if args.raw_script:
+            progBuilder.cmdSequence.add(rack.command.Literal(args.raw_script))
+
         # todo: svg routine (in script or not)
-        if (args.svgRadarLabel):
+        if (args.svgRadarLabel): # NOT in tile!
             scriptBuilder.gRadarLabel(args.svgRadarLabel)
 
         scriptBuilder.cCreateTile()
@@ -775,6 +765,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
             #handle_select(args, scriptBuilder)
             #handle_prod(args, scriptBuilder)
 
+
             
             scriptBuilder.cAdd()
             # todo: svg routine (in script or not)
@@ -804,6 +795,11 @@ def compose_command(args) -> rack.prog.CommandSequence:
         if not args.OUTFILE:
             #logger.info("Single input - not using script")
             args.OUTFILE = 'composite.h5'
+
+        if args.raw_end:
+            progBuilder.cmdSequence.add(rack.command.Literal(args.raw_end))
+
+
 
         handle_outfiles(args, progBuilder)
     
