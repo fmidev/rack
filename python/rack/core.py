@@ -1790,6 +1790,32 @@ class Rack(rack.prog.Register):
         return cmd
 
 
+    def gTransform(self,
+        topology:str='',
+        translate:list=[0,0],
+        scale:list=[0,0],
+        rotate:list=[0,0,0]):
+        """ Apply SVG transformations to image
+
+        Parameters
+        ----------
+        topology:str
+          
+        translate:list
+          
+        scale:list
+          
+        rotate:list
+          
+
+        """
+
+        cmd = self.make_cmd(locals())
+        # note: separator ' '
+        cmd.set_separators(' ', ',')
+        return cmd
+
+
     def geoTiff(self,
         tile:list=[256,256],
         compression:str=''):
@@ -2487,7 +2513,8 @@ class Rack(rack.prog.Register):
 
 
     def iImpulseAvg(self,
-        decay:list=[0.75,0.75,0.75,0.75],
+        decayHorz:list=[0.75,0.75],
+        decayVert:list=[0.75,0.75],
         extendHorz:int=0,
         extendVert:int=0,
         weightThreshold:float=0.1):
@@ -2495,7 +2522,9 @@ class Rack(rack.prog.Register):
 
         Parameters
         ----------
-        decay:list
+        decayHorz:list
+          
+        decayVert:list
           
         extendHorz:int
           pix
@@ -3669,14 +3698,17 @@ class Rack(rack.prog.Register):
 
 
     def pDopplerAvgExp(self,
-        decay:list=[0.75,0.75,0.75,0.75],
+        decayHorz:list=[0.75,0.75],
+        decayVert:list=[0.75,0.75],
         horzExtension:int=0,
         vertExtension:int=0):
         """ Doppler field smoother with exponential decay weighting
 
         Parameters
         ----------
-        decay:list
+        decayHorz:list
+          
+        decayVert:list
           
         horzExtension:int
           pix
@@ -4349,7 +4381,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95255e-310,
+        a:float=6.95271e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4367,9 +4399,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95255e-310,
+        a:float=6.95271e-310,
         b:float=1.4822e-323,
-        c:float=6.95255e-310):
+        c:float=6.95271e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters

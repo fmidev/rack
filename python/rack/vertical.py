@@ -108,7 +108,7 @@ def complete_arg_parser(parser: argparse.ArgumentParser):
         help="Set title for GnuPlot output.")
 
     parser.add_argument(
-        "--STYLE",
+        "--svgStyle",
         default=".SECTOR=stroke:white;stroke-width:3",
         help="Adjust CSS styles for the SVG output")
 
@@ -339,8 +339,8 @@ def handle_horz_product(args, progBuilder: rack.core.Rack):
 def finalize_svg_output(args, cmdBuilder: rack.core.Rack):
     """Apply CSS style settings to the rack command sequence."""
     cmdBuilder.gStyle(".IMAGE_BORDER=stroke:gray")
-    if getattr(args, 'STYLE', None):
-        for style in args.STYLE.strip().split('|'):
+    if getattr(args, 'svgStyle', None):
+        for style in args.svgStyle.strip().split('|'):
             cmdBuilder.gStyle(style.strip())
 
     if 'svg' in args.FORMAT:

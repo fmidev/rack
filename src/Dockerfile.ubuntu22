@@ -5,7 +5,8 @@
 
 FROM ubuntu:22.04 AS builder
 
-ARG CONF_DIR=.
+# Makefile overrides, sets local directory
+ARG CONF_DIR=docker-conf
 
 # Set proxy and test it
 COPY $CONF_DIR/apt-proxy.conf /etc/apt/apt.conf.d/proxy.conf
