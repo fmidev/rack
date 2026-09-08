@@ -43,7 +43,7 @@ using namespace drain::image;
 namespace rack
 {
 
-double DataCoder::undetectQualityCoeff(0.75);
+double DataCoder::undetectQualityCoeff(0.95);
 
 void DataCoder::init(){
 

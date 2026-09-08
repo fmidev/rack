@@ -118,20 +118,24 @@ struct NodeHi5 {
 
 };
 
+
+
 }
 
 
 /// The most importand and central class for handling HDF5 data in \b Rack .
 typedef drain::OrderedTree<hi5::NodeHi5, false, rack::ODIMPath> Hi5Tree;
 
-template <> inline
-void Hi5Tree::swapData(hi5::NodeHi5 & node){
-	data.swap(node);
-}
+/*
+*/
 
 
 namespace drain {
 
+template <> inline
+void Hi5Tree::swapData(hi5::NodeHi5 & node){
+	data.swap(node);
+}
 
 
 // Experimental implementations, based on static dictionary.
