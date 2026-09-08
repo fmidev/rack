@@ -76,6 +76,11 @@ class SelectXML { //  : public std::string {
 
 public:
 
+	inline
+	SelectXML(const ClassXML & arg) {
+		cls.set(arg);
+	}
+
 	template <class ...TT>
 	inline
 	SelectXML(TT... args) {
