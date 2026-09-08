@@ -322,8 +322,8 @@ public:
 
 	template <typename T>
 	static
-	T & ensureStyle(T & elem, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
-
+	//T & ensureStyle(T & elem, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+	T & ensureStyle(T & elem, const typename T::path_elem_t & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 		//T & style = getHeaderObject(elem, T::node_data_t::xml_tag_t::STYLE);
 		T & style = ensureStyleElem(elem);
 

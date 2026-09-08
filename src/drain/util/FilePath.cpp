@@ -112,9 +112,11 @@ void FilePath::handleBasename(const std::string & basename){
 		}
 		else {
 			// Split tail to basename and extension
-			this->tail.assign(basename,0,i);
+			// this->tail.assign(basename,0,i);
+			this->tail.assign(basename.begin(), basename.begin()+i);
 			if (i<(basename.size()-1)){
-				this->extension.assign(basename,i+1);
+				this->extension.assign(basename.begin()+i+1, basename.end());
+				//this->extension.assign(basename,i+1);
 			}
 			else {
 				mout.warn("filename (basename) ending with a period '.' :", basename);
