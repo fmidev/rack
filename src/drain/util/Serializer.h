@@ -25,6 +25,7 @@
 #include <iostream>
 #include <sstream>
 #include <string.h> // plain C strlen
+#include <stddef.h> // null_ptr_t
 
 #include <map>
 #include <list>

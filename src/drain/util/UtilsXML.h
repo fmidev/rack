@@ -313,17 +313,19 @@ public:
 
 	/**
 	 *   Some compilers need this polymorphism.
-	 */
-	template <typename T>
-	static
-	T & ensureStyle(T & elem, const ClassXML & cls, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
-		return ensureStyle(elem, cls.strPrefixed(), styleDef);
-	}
 
 	template <typename T>
 	static
-	//T & ensureStyle(T & elem, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
-	T & ensureStyle(T & elem, const typename T::path_elem_t & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+	T & ensureStyle(T & elem, const ClassXML & cls, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+		//return ensureStyle(elem, cls.strPrefixed(), styleDef);
+		return ensureStyle(elem, SelectXML<typename T::node_data_t::xml_tag_t>(cls), styleDef);
+	}
+	 */
+
+	template <typename T>
+	static
+	T & ensureStyle(T & elem, const SelectXML<typename T::node_data_t::xml_tag_t> & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
+	//T & ensureStyle(T & elem, const typename T::path_elem_t & selector, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 		//T & style = getHeaderObject(elem, T::node_data_t::xml_tag_t::STYLE);
 		T & style = ensureStyleElem(elem);
 
