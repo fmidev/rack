@@ -311,13 +311,14 @@ public:
 	}
 	*/
 
-	/*
+	/**
+	 *   Some compilers need this polymorphism.
+	 */
 	template <typename T>
 	static
 	T & ensureStyle(T & elem, const ClassXML & cls, const std::initializer_list<std::pair<const char *,const Variable> > & styleDef){
 		return ensureStyle(elem, cls.strPrefixed(), styleDef);
 	}
-	*/
 
 	template <typename T>
 	static
