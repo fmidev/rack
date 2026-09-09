@@ -490,7 +490,7 @@ public:
 
 	/// Single char gets styled same way as strings
 	static
-	std::ostream & toStream(std::ostream & ostr, bool b, const SprinterLayout & layout = defaultLayout) { // short int?
+	std::ostream & toStream(std::ostream & ostr, bool b, const SprinterLayout & = defaultLayout) { // short int?
 		//return basicToStream(ostr, b?"true":"false", layout.stringChars);
 		return ostr << (b ? "true":"false");
 	}
@@ -499,7 +499,7 @@ public:
 	/// Pointer: redirect to actual target object
 	template <class D>
 	static
-	std::ostream & toStream(std::ostream & ostr, D *x, const SprinterLayout & layout = defaultLayout) {
+	std::ostream & toStream(std::ostream & ostr, D *x, const SprinterLayout & = defaultLayout) {
 		if (x == nullptr)
 			return ostr << "null";
 		else if (x == 0)
@@ -511,15 +511,14 @@ public:
 	/// Pointer: redirect to actual target object
 	template <class D>
 	static
-	std::ostream & toStream(std::ostream & ostr, const D *x, const SprinterLayout & layout = defaultLayout) {
+	std::ostream & toStream(std::ostream & ostr, const D *x, const SprinterLayout & = defaultLayout) {
 		return ostr << *x;
 	}
 
 	/// Default, unformatted output for basetypes and types not matching the other templates.
 	template <class D>
 	static
-	std::ostream & toStream(std::ostream & ostr, const D &x, const SprinterLayout & layout = defaultLayout) {
-		// Layout not used
+	std::ostream & toStream(std::ostream & ostr, const D &x, const SprinterLayout & = defaultLayout) {
 		return ostr << x;
 	}
 
