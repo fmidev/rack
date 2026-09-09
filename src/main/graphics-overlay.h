@@ -45,8 +45,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "graphics-radar.h" // ctx
 
 typedef MouseEventXML<drain::image::NodeSVG> MouseSVG;
+
+namespace drain {
+
 DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::ElemClass);
 DRAIN_GETKEY_ENUM(drain::image::TreeSVG, drain::image::MouseXML::EventClass);
+
+}
 
 
 namespace rack {
