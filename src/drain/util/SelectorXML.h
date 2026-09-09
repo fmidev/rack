@@ -76,17 +76,32 @@ class SelectXML { //  : public std::string {
 
 public:
 
-
+	/*
 	inline
 	SelectXML(const ClassXML & arg) {
 		cls.set(arg);
 	}
+	*/
 
 
 	template <class ...TT>
 	inline
 	SelectXML(TT... args) {
 		set(args...);
+	}
+
+
+	template <class T>
+	inline
+	SelectXML<E> & operator=(const T & arg){
+		set(arg);
+		return *this;
+	}
+
+	inline
+	SelectXML<E> & operator=(const char *arg){
+		set(arg);
+		return *this;
 	}
 
 	/**
