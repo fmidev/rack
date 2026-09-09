@@ -217,6 +217,7 @@ private:
 
 protected:
 
+
 	T & next(){
 		if (init==nullptr){
 			//std::cerr << __FILE__ << ':' << __FUNCTION__ << "warning: null ptr" << *this << std::endl;
@@ -228,6 +229,7 @@ protected:
 		}
 		return *(++init);
 	}
+
 
 
 	// Parasite

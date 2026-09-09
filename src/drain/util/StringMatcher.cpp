@@ -39,7 +39,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-const std::string StringMatcher::regExpSpecialChars = "^.?*[]()$"; // Notice: still missing: {:,|} (reserved for pipeline ops?)
+const std::string & StringMatcher::regExpSpecialChars(){
+	static const std::string chars = "^.?*[]()$"; // Notice: still missing: {:,|} (reserved for pipeline ops?)
+	return chars;
+}
 
 
 
@@ -49,7 +52,7 @@ void StringMatcher::set(const std::string & s){
 	if (s.empty()){
 		return;
 	} // "^.?*[]()$"
-	else if (s.find_first_of(regExpSpecialChars) != std::string::npos){
+	else if (s.find_first_of(regExpSpecialChars()) != std::string::npos){
 		isRegExp = true;
 		setExpression(s);
 	}

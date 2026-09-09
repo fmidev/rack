@@ -55,8 +55,13 @@ class StringMatcher : protected drain::RegExp {
 
 public:
 
+	/// Construct-on-first-use: a plain static const std::string here would be
+	/// a cross-translation-unit static-initialization-order hazard (other
+	/// TUs' global objects, e.g. FuzzyDetectorOp's selectors, call set()
+	/// from their own static initializers, whose relative order versus this
+	/// one is unspecified by the standard).
 	static
-	const std::string regExpSpecialChars;
+	const std::string & regExpSpecialChars();
 
 	/// A visible reference to the current string / regExp.
 	const std::string & value;

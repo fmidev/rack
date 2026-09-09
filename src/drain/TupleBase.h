@@ -366,7 +366,7 @@ public:
 protected:
 
 	/// Argument stack endpoint function; final step of variadic argument set(arg, ...) .
-	void setIndexed(size_t i){
+	void setIndexed(size_t){
 		//std::cout << __FUNCTION__ << " complete " << i << '\n';
 		this->updateTuple();
 	}

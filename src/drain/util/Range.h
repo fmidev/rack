@@ -56,19 +56,19 @@ public:
 	T & max;
 
 	/// Default constructor.
-	Range(T min=T(), T max=T()) : min(this->next()),  max(this->next()) {
-		this->set(min, max);
+	Range(T min=T(), T max=T()) :
+		UniTuple<T,2>(min, max), min((*this)[0]), max((*this)[1]) {
 	};
 
 	/// Copy constructor.
-	Range(const Range<T> & r) :  min(this->next()), max(this->next()){
-		this->set(r.tuple());
+	Range(const Range<T> & r) :
+		UniTuple<T,2>(r.tuple()), min((*this)[0]), max((*this)[1]) {
 	};
 
 	/// Copy constructor variants
 	template <class T2>
-	Range(const Range<T2> & r) :  min(this->next()), max(this->next()){
-		this->set(r.tuple());
+	Range(const Range<T2> & r) :
+		UniTuple<T,2>(r.tuple()), min((*this)[0]), max((*this)[1]) {
 	};
 
 	// Reference (parasite)

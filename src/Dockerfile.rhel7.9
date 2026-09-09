@@ -1,0 +1,103 @@
+# Main level Dockerfile for RHEL 7.9
+# Markus Peura  fmi.fi
+
+# Install environment & dependencies for rack
+#
+# There is no public "rhel:7.9" base image (needs a Red Hat subscription).
+# oraclelinux:7 reports itself as VERSION_ID 7.9 and is binary-compatible
+# with RHEL 7.9 (same glibc 2.17 / gcc 4.8.5 ABI); unlike centos:7, whose
+# Vault mirror has had its primary.sqlite.bz2 repodata pruned and can no
+# longer be used with stock yum, Oracle keeps its own yum repos live.
+#
+# The one real library problem this Dockerfile works around: EL7's base
+# and EPEL repos only ship PROJ 4.8 (proj-devel), which predates the
+# proj.h / proj_create() API that rack requires (drain/util/Proj6.*,
+# Projector.*). PROJ >= 6 is therefore built from source in the builder
+# stage. Building PROJ from source in turn needs a SQLite3 >= 3.8.2 (for
+# "WITHOUT ROWID" tables used by proj.db) at *build* time -- EL7's system
+# sqlite is 3.7.17, too old -- so a private, statically-linked (-fPIC)
+# SQLite is built first, used only to link into libproj.so.
+
+FROM oraclelinux:7 AS builder
+
+# Proxy (optional): yum, wget and rpm all honour these env vars directly.
+# (Unlike the Ubuntu Dockerfiles, no CONF_DIR/apt-proxy.conf file is needed.)
+ARG http_proxy
+ARG https_proxy
+ENV http_proxy=${http_proxy}
+ENV https_proxy=${https_proxy}
+
+RUN set | fgrep proxy || echo "No proxy env variables set"
+
+RUN yum install -y oracle-epel-release-el7 && \
+    yum makecache && \
+    yum -y install \
+        gcc-c++ \
+        make \
+        wget \
+        hdf5-devel \
+        libpng-devel \
+        libtiff-devel \
+        libgeotiff-devel && \
+    yum clean all
+
+# Build-time-only SQLite (see header comment) -- not shipped in the final image.
+RUN cd /tmp && \
+    wget -q https://sqlite.org/2020/sqlite-autoconf-3320300.tar.gz && \
+    tar xf sqlite-autoconf-3320300.tar.gz && \
+    cd sqlite-autoconf-3320300 && \
+    CFLAGS="-fPIC -O2" ./configure --prefix=/usr/local --disable-shared && \
+    make -j"$(nproc)" && \
+    make install && \
+    cd / && rm -rf /tmp/sqlite-autoconf-3320300*
+
+# PROJ 6.3.1 (same major version rack is developed/tested against on Ubuntu 20.04).
+RUN cd /tmp && \
+    wget -q https://download.osgeo.org/proj/proj-6.3.1.tar.gz && \
+    tar xf proj-6.3.1.tar.gz && \
+    cd proj-6.3.1 && \
+    SQLITE3_CFLAGS="-I/usr/local/include" \
+    SQLITE3_LIBS="-L/usr/local/lib -lsqlite3 -lpthread -ldl" \
+    ./configure --prefix=/usr/local --disable-static && \
+    make -j"$(nproc)" && \
+    make install && \
+    cd / && rm -rf /tmp/proj-6.3.1* && \
+    echo "/usr/local/lib" > /etc/ld.so.conf.d/usrlocal.conf && \
+    ldconfig
+
+COPY . /rack
+COPY install-rack-docker-rhel7.9.cnf /rack/install-rack.cnf
+
+# Build: after this the binary is in rack/rack and also copied to /usr/local/bin
+WORKDIR /rack
+
+RUN make build && make install
+
+
+FROM oraclelinux:7
+
+ARG http_proxy
+ARG https_proxy
+ENV http_proxy=${http_proxy}
+ENV https_proxy=${https_proxy}
+
+RUN yum install -y oracle-epel-release-el7 && \
+    yum makecache && \
+    yum -y install \
+        libgomp \
+        hdf5 \
+        libpng \
+        libtiff \
+        libgeotiff && \
+    yum clean all
+
+# Self-built PROJ >= 6 runtime (see builder stage comment)
+COPY --from=builder /usr/local/lib/libproj.so* /usr/local/lib/
+COPY --from=builder /usr/local/share/proj /usr/local/share/proj
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/usrlocal.conf && ldconfig
+
+COPY --from=builder /usr/local/bin/rack /usr/local/bin/rack
+
+RUN ls /usr/local/bin/rack*
+
+CMD ["rack","--version"]
