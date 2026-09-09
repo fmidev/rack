@@ -116,7 +116,7 @@ public:
 	Image colorImage;
 
 	std::string paletteKey;
-	int paletteResolution = 0;
+	unsigned short int paletteResolution = 0;
 
 	drain::image::Palette & getPalette();
 

@@ -16,7 +16,12 @@ TARGET  := ./rack
 CONF    := install-rack.cnf
 
 # Optimisation / debug flags — override on the command line, e.g.: make OPTS="-O0 -g3"
-OPTS ?= -O3 -Wall -fmessage-length=0
+OPTS ?= -O3 -fmessage-length=0
+
+# Keep these enabled during development to expose non-standard C++ and
+# declarations defined outside their owning namespace.  Override with, for
+# example, WARNINGS="-Wall" when working with an older or noisier compiler.
+WARNINGS ?= -Wall -Wextra -Wpedantic -Wmissing-declarations -Wmissing-include-dirs
 
 # ---- Read build settings from install-rack.cnf --------------------------------
 #
@@ -53,7 +58,7 @@ else
 endif
 
 # Compile flags: Makefile owns -std= and -fopenmp; CCFLAGS adds -I paths only
-CXXFLAGS := -std=gnu++11 $(OPTS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
+CXXFLAGS := -std=gnu++11 $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
 
 # ---- Source / object lists ----------------------------------------------------
 SRC_DIRS := andre data drain drain/image drain/imageops drain/util drain/prog drain/js \

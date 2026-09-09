@@ -222,7 +222,7 @@ void PseudoRhiOp::computeSingleProduct(const DataSetMap<PolarSrc> & src, DataSet
 	double etaPixel;
 
 	// QUANTITY
-	double x;
+	double x = 0.0;
 
 
 	struct beamInfo {
