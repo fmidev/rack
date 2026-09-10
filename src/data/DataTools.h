@@ -42,6 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "ODIM.h"
 #include "PolarODIM.h" // elangle
 
+// #include "Data.h"
 
 
 namespace rack {
@@ -166,6 +167,19 @@ public:
 	// std::list<std::string>
 	// std::map<std::string,std::string>
 
+	// static
+	// void createSimpleQualityData(const PlainData<DT> & data, drain::image::Image & qualityImage, double dataQuality=1.0, double undetectQuality=0.5, double nodataQuality=0.0);
+
+	/* cyclic
+	template <class DT>
+	static inline
+	void createSimpleQualityData(const PlainData<DT> & data, PlainData<DT> & qualityData, double dataQuality=1.0, double undetectQuality=0.5, double nodataQuality=0.0);//, double dataQuality=1.0, double nodataQuality=0.0); //  const {
+		//qualityData.odim.scaling.scale   = qualityData.data.getScaling().scale;
+		//qualityData.odim.scaling.offset = qualityData.data.getScaling().offset;
+	// }
+	 *
+	 */
+
 protected:
 
 	// static
@@ -209,6 +223,44 @@ protected:
 
 };
 
+/* cyclic include with Data.h
+template <class DT>
+void DataTools::createSimpleQualityData(const PlainData<DT> & data, PlainData<DT> & qualityData, double dataQuality, double undetectQuality, double nodataQuality){
+
+	qualityData.setEncoding(typeid(unsigned char));
+	// createSimpleQualityData(data, qualityData.data, dataQuality, undetectQuality, nodataQuality);
+	qualityData.odim.scaling.set(qualityData.data.getScaling());
+
+	qualityyData.data.setPhysicalRange(0.0, 1.0, true);
+
+	const drain::ValueScaling & scaling = qualityData.data.getScaling();
+
+	const bool DATA     = !std::isnan(dataQuality);
+	const bool UNDETECT = !std::isnan(undetectQuality);
+	const bool NODATA   = !std::isnan(nodataQuality);
+
+	// Default ie. unset values are non_signaling_NAN's, but maybe more elegant to skip calculations:
+	const double dataCode     = DATA     ? scaling.inv(dataQuality)     : 0.0;
+	const double undetectCode = UNDETECT ? scaling.inv(undetectQuality) : 0.0;
+	const double nodataCode   = NODATA   ? scaling.inv(nodataQuality)   : 0.0;
+
+	qualityData.data.setGeometry(data.getWidth(), data.getHeight());
+
+	drain::image::Image::iterator  it = data.data.begin();
+	drain::image::Image::iterator wit = qualityData.data.begin();
+	while (it != data.end()){
+		//if ((*it != odim.nodata) && (*it != odim.undetect))
+		if (UNDETECT && (*it == data.odim.undetect))
+			*wit = undetectCode;
+		else if (NODATA && (*it == data.odim.nodata))
+			*wit = nodataCode;
+		else if (DATA)
+			*wit = dataCode;
+		++it;
+		++wit;
+	}
+}
+*/
 
 template <class M>
 void DataTools::getAttributes(const Hi5Tree &src, const Hi5Tree::path_t & p, M & attributes, bool updateOnly){

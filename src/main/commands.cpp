@@ -676,7 +676,6 @@ public:
 
 
 	template <class OD>
-	//void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const drain::RegExp & slct) const {
 	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
 
 		RackContext & ctx = getContext<RackContext>();
@@ -721,42 +720,177 @@ public:
 				mout.note("Consider --select dataset or --select data: (note colon)." );
 			}
 
-			//mout.warn(quality  );
-
-			/*
-			DataSet<DT> dstDataSet(dstDataSetH5, slct);
-			if (quantitySpecific){
-				for (typename DataSet<DT>::iterator it2 = dstDataSet.begin(); it2!=dstDataSet.end(); ++it2){
-					mout.debug('\t' , it2->first  );
-					Data<DT> & dstData = it2->second;
-					PlainData<DT> & dstQuality = dstData.getQualityData();
-					if (!dstQuality.data.isEmpty())
-						mout.warn("quality data exists already, overwriting" );
-					dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
-					qmap.setQuantityDefaults(dstQuality, "QIND");
-					//dstQuality.data.setScaling(dstQuality.odim.scaling.scale, dstQuality.odim.scaling.offset);
-					dstQuality.data.setScaling(dstQuality.odim.scaling);// needed?
-					//@ dstQuality.updateTree();
-				}
-			}
-			else {
-				Data<DT> & dstData = dstDataSet.getFirstData();
-				PlainData<DT> & dstQuality = dstDataSet.getQualityData();
-				if (!dstQuality.data.isEmpty())
-					mout.warn("quality data exists already, overwriting" );
-				dstData.createSimpleQualityData(dstQuality, 1.0, 0.0, DataCoder::undetectQualityCoeff);
-				qmap.setQuantityDefaults(dstQuality, "QIND");
-				//dstQuality.data.setScaling(dstQuality.odim.scaling.scale, dstQuality.odim.scaling.offset);
-				dstQuality.data.setScaling(dstQuality.odim.scaling); // needed?
-				//@ dstQuality.updateTree();
-			}
-			//@  DataTools::updateInternalAttributes(dstDataSetH5);
-			*/
 
 
 		}
 
 
+	}
+
+};
+
+
+class CmdDistanceWeight : public drain::BasicCommand {
+
+public:
+
+	CmdDistanceWeight() : drain::BasicCommand(__FUNCTION__, "Create or modulate quality as a function of distance (from 1.0 to 0.0)"){
+	};
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		DataSelector selector; // (ODIMPathElem::DATASET);
+		selector.consumeParameters(ctx.select);
+
+		if (!selector.quantityIsSet()){
+			selector.setQuantities("^DBZH");
+			mout.note("selector quantity unset, setting " , selector.getQuantity() );
+		}
+
+		const QuantitySelector & slct = selector.getQuantitySelector();
+
+		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR);
+
+		ODIMPathList paths;
+		selector.getPaths(dst, paths);
+
+		// mout.note(std::isnan(dataQuality) );
+		// mout.note(std::isnan(undetectQuality) );
+		// mout.note(std::isnan(nodataQuality) );
+
+		if (& dst == ctx.currentPolarHi5){
+			//processStructure<PolarODIM>(dst, paths, slct);
+			processStructure(dst, paths, slct);
+		}
+		else if (& dst == &ctx.cartesianHi5){
+			//processStructure<CartesianODIM>(dst, paths, slct);
+			mout.warn("Cartesian data: not supported" );
+		}
+		else {
+			// drain::Logger mout(ctx.log, __FUNCTION__, getName());
+			mout.warn("no data, or data structure other than polar volume or Cartesian" );
+		}
+
+		DataTools::updateInternalAttributes(dst);
+	};
+
+
+	// template <class OD>
+	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
+
+		//typedef PolarODIM OD;
+		typedef PolarDst  DT;
+		//typedef DstType<PolarODIM> DT; // PolarDst or CartesianDst
+
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FUNCTION__, getName());
+
+
+
+		//for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
+		for (const ODIMPath & path: paths){
+
+			if (path.empty()){
+				mout.warn("Empty path, something went wrong." );
+				continue;
+			}
+
+			if (path.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATASET)){
+			}
+
+			mout.special(path);
+			Hi5Tree & dst = dstRoot(path);
+			//QualityDataSupport<DT> quality(dst);
+
+			if (path.back().belongsTo(ODIMPathElem::DATASET)){ //  | ODIMPathElem::DATA
+				// QualityDataSupport<DT> dataGroup(dst);
+				DataSet<DT> dstDataSet(dst, slct);
+				// PlainData<DT> & dstData = dstDataSet.getFirstData();
+				PlainData<DT> & dstQualityData = dstDataSet.getQualityData("QIND");
+				if (dstQualityData.data.isEmpty()){
+					mout.note("Creating quality field under: ", ODIMPathElem::DATASET, ':', path);
+					createQualityField(dstDataSet.getFirstData().data.getGeometry(), dstQualityData);
+					fillQualityField(dstQualityData.data);
+				}
+				else {
+					mout.note("Modifying quality: ", ODIMPathElem::DATASET, ':', path);
+					modifyQualityField(dstQualityData.data);
+				}
+				// mout.special("Current quality: ", dstQualityData);
+			}
+			else if (path.back().is(ODIMPathElem::DATA)){
+				Data<DT> dstData(dst);
+				PlainData<DT> & dstQualityData = dstData.getQualityData("QIND");
+				if (dstQualityData.data.isEmpty()){
+					mout.note("Creating quality field under: ", ODIMPathElem::DATASET, ':', path);
+					createQualityField(dstData.data.getGeometry(), dstQualityData);
+					fillQualityField(dstQualityData.data);
+				}
+				else {
+					mout.note("Modifying quality: ", ODIMPathElem::DATA, ':', path);
+					modifyQualityField(dstQualityData.data);
+				}
+				mout.special("Current quality: ", dstQualityData);
+
+			}
+			else {
+				mout.warn("Path " , path , " typically contains no /quality groups, skipping." );
+				mout.note("Consider --select dataset or --select data: (note colon)." );
+			}
+
+
+		}
+
+
+	}
+
+
+	static
+	void createQualityField(const drain::image::AreaGeometry & geom, PlainData<PolarDst> & qualityData){
+		getQuantityMap().setQuantityDefaults(qualityData, "QIND");
+		qualityData.setGeometry(geom);
+	}
+
+
+	//	void processQualityField(PlainData<PolarDst> & dstQuality) const {
+	void fillQualityField(drain::image::Image & dstQuality) const  {
+
+		drain::Logger mout(__FUNCTION__, getName());
+		// mout.note("Handling", ODIMPathElem::DATASET, ':', dstQuality);
+
+		const size_t width  = dstQuality.getWidth();
+		const size_t height = dstQuality.getHeight();
+		unsigned char c;
+		const double widthCoeff = 1.0/static_cast<double>(width);
+
+		for (unsigned int i=0; i<width; ++i){
+			c = dstQuality.getScaling().inv(static_cast<double>(width-i)*widthCoeff);
+			for (unsigned int j=0; j<height; ++j){
+				dstQuality.put(i,j,c);
+			}
+		}
+	}
+
+	void modifyQualityField(drain::image::Image & dstQuality) const  {
+
+		drain::Logger mout(__FUNCTION__, getName());
+		// mout.note("Handling", ODIMPathElem::DATASET, ':', dstQuality);
+
+		const size_t width  = dstQuality.getWidth();
+		const size_t height = dstQuality.getHeight();
+
+		for (unsigned int i=0; i<width; ++i){
+			double coeff = static_cast<double>(width-i)/static_cast<double>(width);
+			for (unsigned int j=0; j<height; ++j){
+				dstQuality.putScaled(i,j, coeff * dstQuality.getScaled(i,j));
+			}
+		}
 	}
 
 };
@@ -2062,62 +2196,7 @@ public:
 	}
 };
 
-/// Default handler for requests without own handler. Handles options that are recognized as 1) files to be read or 2) ODIM properties to be assigned in current H5 structure.
-/**
- *   ODIM properties can be set with
- *   - \c --/dataset2/data2/what:quantity=DBZH
- *
- */
-/*
-class CmdDefaultHandler : public drain::SimpleCommand<>{
-public:
 
-
-	//CmdDefaultHandler() : drain::BasicCommand(drain::getRegistry().DEFAULT_HANDLER, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};
-	// drain::getRegistry().DEFAULT_HANDLER, 0,
-	CmdDefaultHandler() : drain::SimpleCommand<>(__FUNCTION__, "Delegates plain args to --inputFile and args of type --/path:attr=value to --setODIM."){};
-
-	virtual
-	inline
-	void exec() const {
-
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FUNCTION__, getName());
-
-		mout.debug2("params: " , value );
-
-		/// Syntax for recognising text files.
-		static
-		const drain::RegExp odimSyntax("^--?(/.+)$");
-
-		if (value.empty()){
-			mout.error("Empty parameters" );
-		}
-		else if (odimSyntax.execute(value) == 0) {
-			//mout.warn("Recognised --/ hence running applyODIM" );
-			mout.warn("assign: " , odimSyntax.result[1] );
-			drain::getCommandBank().run("setODIM", odimSyntax.result[1], ctx);
-			///drain::getRegistry().run("setODIM", odimSyntax.result[1]);
-
-		}
-		else if (value.at(0) == '-'){
-				mout.error("Unknown parameter (or invalid filename): " , value );
-		}
-		else {
-			try {
-				mout.debug2("Assuming filename, trying to read." );
-				drain::getCommandBank().run("inputFile", value, ctx);
-				//drain::getRegistry().run("inputFile", params);
-			} catch (std::exception & e) {
-				mout.error("could not handle params='" , value , "'" );
-			}
-		}
-
-	};
-
-};
-*/
 
 
 
@@ -2735,8 +2814,10 @@ MainModule::MainModule(){ //
 	install<CmdStore>();
 
 	install<CmdQuantityConf>();
-	install<CmdCreateDefaultQuality>();
-
+	// install<CmdCreateDefaultQuality>();
+	DRAIN_CMD_INSTALL(Cmd,CreateDefaultQuality)();
+	DRAIN_CMD_INSTALL(Cmd,DistanceWeight)();
+	linkRelatedCommands(CreateDefaultQuality, DistanceWeight);
 }
 
 class CmdInputFilter : public drain::SimpleCommand<std::string> {
