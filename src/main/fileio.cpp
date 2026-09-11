@@ -413,6 +413,7 @@ void CmdOutputFile::exec() const {
 	//if (h5FileExtension.test(value)){
 	// hi5::fileInfo.checkPath(path)
 	if (DATA_HDF5 || NO_EXTENSION){
+
 		if (NO_EXTENSION){
 			mout.discouraged("No file extension! Assuming HDF5...");
 		}
@@ -423,6 +424,8 @@ void CmdOutputFile::exec() const {
 			mout.revised<LOG_INFO>("Conventions: keeping original '", conventions, "'");
 		}
 		else {
+			// Note: "private" dictionary, distinguished with the 2nd template argument referring to the owner.
+			// Contains official ODIM strings only...
 			for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
 				if (ODIM::versionFlagger.isSet(entry.second)){
 					// mout.revised("Conventions empt");
@@ -524,8 +527,9 @@ void CmdOutputFile::exec() const {
 			mout.error("unknown file name extension: ", filepath);
 		}
 
-		// mout.revised<LOG_WARNING>("CLEARING SELECTOR 1");
-		// ctx.select.clear(); // 2025/03
+		// What was the problem?
+		mout.revised<LOG_WARNING>("clearing --select");
+		ctx.select.clear(); // 2025/03
 		// ctx.formatStr.clear();
 
 	}

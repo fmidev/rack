@@ -74,6 +74,8 @@ DEPS := $(OBJS:.o=.d)
 all: $(TARGET)
 
 build: all
+	echo -n "# Build complete on: "
+	cat /etc/system-release || uname -a
 
 $(TARGET): $(OBJS)
 	@echo "# Linking $@"

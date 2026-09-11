@@ -301,7 +301,8 @@ public:
 
 	template <group_t G, class T>
 	static inline
-	void updateH5AttributeGroups(const T &odim, const Hi5Tree & dst) {
+	void updateH5AttributeGroups(const T &, const Hi5Tree &) {
+		// void updateH5AttributeGroups(const T &odim, const Hi5Tree & dst) {
 		//static T odimLimited(G);
 		//odim.copyTo(odimLimited.getKeyList(), dst);
 	}

@@ -287,23 +287,6 @@ public:
 
 		// Dst image (typically, an existing coloured image)
 		drain::image::Image & dstImg = getDstImage(ctx);
-		/*
-		 * OLD
-		 *
-		drain::image::Image & dstImg = ctx.getModifiableImage(); //ImageKit::getModifiableImage(ctx);
-		if (dstImg.isEmpty()){
-			mout.warn("could not get ModifiableImage" );
-			ctx.statusFlags.set(drain::Status::DATA_ERROR);
-			return;
-		}
-		mout.special("dst image/plain: " , dstImg );
-		dstImg.setAlphaChannelCount(1);
-		mout.special("dst image+alpha: " , dstImg );
-		// dstImg.getAlphaChannel().fill(128);
-		//dstImg.setAlphaChannelCount(0);
-		//mout.special("dst image+alpha: " , dstImg );
-		//return;
-		*/
 
 
 		RadarFunctorBase radarFtor;

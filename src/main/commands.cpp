@@ -70,6 +70,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "product/DataConversionOp.h"
 #include "andre/DetectorOp.h"
+#include "radar/Analysis.h"
 
 #include "rack.h"
 #include "resources.h"
@@ -730,11 +731,21 @@ public:
 };
 
 
-class CmdDistanceWeight : public drain::BasicCommand {
+class CmdModifyQuality : public drain::BasicCommand {
+
+	std::string functorName;
+	std::string params;
 
 public:
 
-	CmdDistanceWeight() : drain::BasicCommand(__FUNCTION__, "Create or modulate quality as a function of distance (from 1.0 to 0.0)"){
+	CmdModifyQuality() : drain::BasicCommand(__FUNCTION__, "Create or modulate quality as a function of distance (from 1.0 to 0.0)"){
+		getParameters().link("ftor", functorName, "Functor name");
+		getParameters().link("params", params, "Functor parameters");
+
+	};
+
+	CmdModifyQuality(const CmdModifyQuality & cmd) : drain::BasicCommand(cmd){
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
 	};
 
 	void exec() const {
@@ -743,25 +754,99 @@ public:
 
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-		DataSelector selector; // (ODIMPathElem::DATASET);
-		selector.consumeParameters(ctx.select);
 
-		if (!selector.quantityIsSet()){
-			selector.setQuantities("^DBZH");
-			mout.note("selector quantity unset, setting " , selector.getQuantity() );
-		}
-
-		const QuantitySelector & slct = selector.getQuantitySelector();
+		// for DataSet const QuantitySelector & slct = selector.getQuantitySelector();
 
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT|RackContext::POLAR);
 
+		if (dst.empty()){
+			mout.error("Empty currentPolarHi5");
+			return;
+		}
+
+		if (&dst != ctx.currentPolarHi5){
+			mout.suspicious(dst);
+			mout.error("Something went wrong, could not retrieve currentPolarHi5");
+		}
+
+		const drain::FunctorBank & functorBank = drain::getFunctorBank();
+
+		if (!functorBank.has(functorName)){
+			// mout.warn("ftor", ftor, " parsed to: ", s1, '|', s2);
+			for (const auto & entry: functorBank.getMap()){
+				const drain::UnaryFunctor & f =  entry.second->getSource();
+				mout.advice(entry.first, '\t', f.getName(), ' ', f.getParameters(), '\t', f.getDescription());
+			}
+
+			mout.error("No such functor: ", functorName);
+		}
+
+
+		drain::LocalCloner<drain::UnaryFunctor> localBank(functorBank);
+		//mout.special("list " , drain::sprinter(l) );
+
+		drain::UnaryFunctor & functor = localBank.getCloned(functorName);
+
+		if (functorName.empty()){
+			mout.special<LOG_DEBUG>("Using identity functor");
+			// identity functor
+		}
+		else {
+			functor.setParameters(params, ':', '|');
+			mout.special(functorName, " -> ", DRAIN_LOG(functor), " = ", functor.getName());
+		}
+
+		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+		selector.consumeParameters(ctx.select);
+
+		if (!selector.quantityIsSet()){
+			//selector.setQuantities("QIND");
+			selector.setQuantities("DBZH");
+			mout.note("selector quantity unset, setting " , selector.getQuantity() );
+		}
+		ctx.select.clear(); // oli jo
+
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
+		if (paths.empty()){
+			mout.error("No paths found with: ", selector);
+		}
+		processStructure(functor, dst, paths, selector.getQuantitySelector());
 
-		// mout.note(std::isnan(dataQuality) );
-		// mout.note(std::isnan(undetectQuality) );
-		// mout.note(std::isnan(nodataQuality) );
+		ctx.currentHi5      = &dst;
+		// ctx.currentPolarHi5 = &dst;
 
+		// const PlainData<PolarSrc> src(getAlphaSrc(ctx));
+		// TODO: const Data<PolarSrc>, mixing data with quality
+		// const drain::image::Image & srcAlpha = ctx.getCurrentGrayImage();
+		// ODIM srcODIM(srcAlpha); // NOTE: perhaps no odim data in props?
+
+		/*
+		RadarFunctorBase radarFtor;
+		//radarFtor.LIMIT = true;
+		//fu zzyStep.odimSrc.updateFromMap(src.data.getProperties());
+		radarFtor.odimSrc.updateFromMap(srcAlpha.getProperties());
+
+		const double dstMax = drain::Type::call<drain::typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
+		drain::typeLimiter<double>::value_t limit = dstImg.getConf().getLimiter<double>();  // t is type_info, char or std::string.
+		//fuzzyStep.nodataValue   = limit(dstMax*nodata);
+		//fuzzyStep.undetectValue = limit(dstMax*undetect);
+		radarFtor.nodataValue   = limit(dstMax*nodata);
+		radarFtor.undetectValue = limit(dstMax*undetect);
+		*/
+
+		// First, try functor: "Functor" or "Functor_Args"
+		// std::string s1;
+		// std::string s2;
+		// drain::StringTools::split2(ftor, s1, s2, "_");
+
+
+			//mout.special(ftor, " -> ", DRAIN_LOG(functor));
+
+			// radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), functor, true);
+
+
+		/*
 		if (& dst == ctx.currentPolarHi5){
 			//processStructure<PolarODIM>(dst, paths, slct);
 			processStructure(dst, paths, slct);
@@ -774,13 +859,14 @@ public:
 			// drain::Logger mout(ctx.log, __FUNCTION__, getName());
 			mout.warn("no data, or data structure other than polar volume or Cartesian" );
 		}
+		*/
 
 		DataTools::updateInternalAttributes(dst);
 	};
 
 
 	// template <class OD>
-	void processStructure(Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
+	void processStructure(const drain::UnaryFunctor & functor, Hi5Tree & dstRoot, const ODIMPathList & paths, const QuantitySelector & slct) const {
 
 		//typedef PolarODIM OD;
 		typedef PolarDst  DT;
@@ -801,8 +887,9 @@ public:
 				continue;
 			}
 
-			if (path.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATASET)){
+			/*if (path.back().belongsTo(ODIMPathElem::DATA | ODIMPathElem::DATASET)){
 			}
+			*/
 
 			mout.special(path);
 			Hi5Tree & dst = dstRoot(path);
@@ -816,11 +903,11 @@ public:
 				if (dstQualityData.data.isEmpty()){
 					mout.note("Creating quality field under: ", ODIMPathElem::DATASET, ':', path);
 					createQualityField(dstDataSet.getFirstData().data.getGeometry(), dstQualityData);
-					fillQualityField(dstQualityData.data);
+					fillQualityField(functor, dstQualityData.data);
 				}
 				else {
 					mout.note("Modifying quality: ", ODIMPathElem::DATASET, ':', path);
-					modifyQualityField(dstQualityData.data);
+					modifyQualityField(functor, dstQualityData.data);
 				}
 				// mout.special("Current quality: ", dstQualityData);
 			}
@@ -830,13 +917,13 @@ public:
 				if (dstQualityData.data.isEmpty()){
 					mout.note("Creating quality field under: ", ODIMPathElem::DATASET, ':', path);
 					createQualityField(dstData.data.getGeometry(), dstQualityData);
-					fillQualityField(dstQualityData.data);
+					fillQualityField(functor, dstQualityData.data);
 				}
 				else {
 					mout.note("Modifying quality: ", ODIMPathElem::DATA, ':', path);
-					modifyQualityField(dstQualityData.data);
+					modifyQualityField(functor, dstQualityData.data);
 				}
-				mout.special("Current quality: ", dstQualityData);
+				// mout.special("Current quality: ", dstQualityData);
 
 			}
 			else {
@@ -859,7 +946,7 @@ public:
 
 
 	//	void processQualityField(PlainData<PolarDst> & dstQuality) const {
-	void fillQualityField(drain::image::Image & dstQuality) const  {
+	void fillQualityField(const drain::UnaryFunctor & functor, drain::image::Image & dstQuality) const  {
 
 		drain::Logger mout(__FUNCTION__, getName());
 		// mout.note("Handling", ODIMPathElem::DATASET, ':', dstQuality);
@@ -870,14 +957,14 @@ public:
 		const double widthCoeff = 1.0/static_cast<double>(width);
 
 		for (unsigned int i=0; i<width; ++i){
-			c = dstQuality.getScaling().inv(static_cast<double>(width-i)*widthCoeff);
+			c = dstQuality.getScaling().inv(functor(static_cast<double>(i)*widthCoeff));
 			for (unsigned int j=0; j<height; ++j){
 				dstQuality.put(i,j,c);
 			}
 		}
 	}
 
-	void modifyQualityField(drain::image::Image & dstQuality) const  {
+	void modifyQualityField(const drain::UnaryFunctor & functor, drain::image::Image & dstQuality) const  {
 
 		drain::Logger mout(__FUNCTION__, getName());
 		// mout.note("Handling", ODIMPathElem::DATASET, ':', dstQuality);
@@ -886,9 +973,9 @@ public:
 		const size_t height = dstQuality.getHeight();
 
 		for (unsigned int i=0; i<width; ++i){
-			double coeff = static_cast<double>(width-i)/static_cast<double>(width);
+			double coeff = static_cast<double>(i)/static_cast<double>(width);
 			for (unsigned int j=0; j<height; ++j){
-				dstQuality.putScaled(i,j, coeff * dstQuality.getScaled(i,j));
+				dstQuality.putScaled(i,j, functor(coeff) * dstQuality.getScaled(i,j));
 			}
 		}
 	}
@@ -2816,8 +2903,8 @@ MainModule::MainModule(){ //
 	install<CmdQuantityConf>();
 	// install<CmdCreateDefaultQuality>();
 	DRAIN_CMD_INSTALL(Cmd,CreateDefaultQuality)();
-	DRAIN_CMD_INSTALL(Cmd,DistanceWeight)();
-	linkRelatedCommands(CreateDefaultQuality, DistanceWeight);
+	DRAIN_CMD_INSTALL(Cmd,ModifyQuality)();
+	linkRelatedCommands(CreateDefaultQuality, ModifyQuality);
 }
 
 class CmdInputFilter : public drain::SimpleCommand<std::string> {

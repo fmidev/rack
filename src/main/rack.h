@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,3,2)
+#define RACK_VERSION drain::Version<>(21,4)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -57,6 +57,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Minor changes for RHEL environments
  *  Version 21.3.2
  *  - distanceWeight
+ *  Version 21.4
+ *  - modifyQuality (removed distanceWeight)
+ *  - select cleared after outputFile
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
