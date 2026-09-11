@@ -1296,8 +1296,20 @@ public:
 	~DataSet(){
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
+		if (this->empty()){
+			mout.debug3("no data<n> groups, skipping updateTree3" );
+		}
+		else {
+			if (this->size() > 1){
+				mout.debug("several Data groups, using the first: " , this->begin()->first);
+			}
+			const typename DT::odim_t & odim = this->getFirstData().odim;
+			updateTree3(odim);
+		}
 
+		/*
 		switch (this->size()) {
+
 		case 0:
 			mout.debug3("no data<n> groups" );
 			break;
@@ -1310,20 +1322,19 @@ public:
 
 			const typename DT::odim_t & odim = this->getFirstData().odim;
 
-			/*
 			 // DEBUGGING 2024
-			for (const auto & entry: this->baseODIM){
-				if (odim[entry.first] == entry.second){
-					mout.reject("BaseODIM differs: ", entry.first, ": ", entry.second, " vs ", odim[entry.first]);
-				}
-			}
-			*/
+			// for (const auto & entry: this->baseODIM){
+			// 	if (odim[entry.first] == entry.second){
+			// 		mout.reject("BaseODIM differs: ", entry.first, ": ", entry.second, " vs ", odim[entry.first]);
+			// 	}
+			// }
 
 			// updateTree3(this->getFirstData().odim);
 			// mout.attention("start updateTree3");
 			updateTree3(odim);
 			// mout.attention("end updateTree3");
 		}
+		*/
 
 	}
 
