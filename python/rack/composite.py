@@ -717,7 +717,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         scriptBuilder = create_script(args)
 
         if args.raw_script:
-            progBuilder.cmdSequence.add(rack.command.Literal(args.raw_script))
+            scriptBuilder.cmdSequence.add(rack.command.Literal(args.raw_script))
 
         # todo: svg routine (in script or not)
         if (args.svgRadarLabel): # NOT in tile!

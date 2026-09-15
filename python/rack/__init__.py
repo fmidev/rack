@@ -27,7 +27,10 @@ def typical(obj, dst_type:type=None, separator:str=","):
     # Derive element type if dst_type is a list, tuple, or set with a single element type specified.
     elem_type = None #str #None
     if type(dst_type) != type:
-        if isinstance(dst_type, compound_types):
+        if isinstance(dst_type, set):
+            elem_type = dst_type.pop()
+            dst_type  = type(dst_type)
+        elif isinstance(dst_type, compound_types):
             if len(dst_type) == 1:
                 elem_type = dst_type[0]
                 dst_type  = type(dst_type)
