@@ -204,7 +204,8 @@ Experimental: the above command line can also be generated using Python utility 
 
 \~conf{py}
 {
-  "imports": ["os", "rack.prog","rack.composite"],
+  "imports": ["logging", "rack.prog","rack.composite"],
+  "prepend_code": ["logger = logging.getLogger(__name__)"],
   "tests" : {
   	"rack.sh": {
   	  "returncode": 0
@@ -214,26 +215,29 @@ Experimental: the above command line can also be generated using Python utility 
 \~ 
 
 \code{.py}
+
+
 # Initialize command line generator.
 composer = rack.cmdline.Composer(rack.composite)
 
 # Set parameters
 composer.set(INFILE='volume.h5') 
-composer.set(QUANTITY='DBZH') 
+# composer.set(QUANTITY='DBZH')
+composer.set(select='quantity=DBZH') 
 composer.set(OUTFILE='cartesian-single.h5')
 
 # Extract command sequence
 prog = composer.get_prog()
 
-# Apply formatting 
-fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+# Optional: show generated command line: 
+# fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+# print(prog.to_string(fmt))
 
-# Extract as a single string (suited to os.system call).
-rack_cmd = prog.to_string(fmt)
-os.system(rack_cmd)
+# Execute directly
+rack.process.run(prog, logger=logger)
 \endcode
 
-\~stoj
+\~stop
 \~
 
 Upon initialisation of the compositing array, \c Rack stores the encoding parameters – storage type, scaling and marker values (\c undetect , \c nodata) – given explicitly 
