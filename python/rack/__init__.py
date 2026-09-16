@@ -80,9 +80,14 @@ def typical(obj, dst_type:type=None, separator:str=","):
             else:
                 # Copy elements directly 
                 return dst_type(obj)
-
-        # Finally, try direct type cast  
-        return dst_type(obj)
+        else:
+            # Not a compound type, but dst_type is. Wrap in a list/tuple/set
+            if elem_type:
+                return dst_type([elem_type(obj)])
+            else:
+                return dst_type([obj])
+        # Finally, try direct type cast, of the single element  
+        # return dst_type([obj])
     elif dst_type in (int,float):
         return dst_type(obj)
     else:
