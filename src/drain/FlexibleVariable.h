@@ -75,7 +75,7 @@ template <>
 inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const FlexibleVariable & v, const SprinterLayout & layout){
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
-};
+}
 
 
 DRAIN_TYPENAME(FlexibleVariable);

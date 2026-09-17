@@ -111,8 +111,8 @@ DRAIN_ENUM_DICT(image::FileSVG::PathPolicy);
 
 namespace image {
 
-DRAIN_ENUM_OSTREAM(image::FileSVG::IncludePolicy);
-DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy);
+DRAIN_ENUM_OSTREAM(image::FileSVG::IncludePolicy)
+DRAIN_ENUM_OSTREAM(image::FileSVG::PathPolicy)
 
 
 class NodeSVG;
@@ -539,9 +539,9 @@ template <> // for K - operator() argument
 image::TreeSVG & image::TreeSVG::operator()(const image::svg::tag_t & type);
  */
 
-DRAIN_XML_EASY_TYPE(image::TreeSVG);
+DRAIN_XML_EASY_TYPE(image::TreeSVG)
 
-DRAIN_GETKEY_ENUM(image::TreeSVG, image::svg::tag_t);
+DRAIN_GETKEY_ENUM(image::TreeSVG, image::svg::tag_t)
 
 
 template <> // for T (Tree class)
@@ -569,7 +569,7 @@ DRAIN_XML_DEFAULT_ELEMS(image::TreeSVG);
 /**
  *   Relates to the above list of default elements.
  */
-DRAIN_XML_DEFAULT_INIT(image::TreeSVG);
+DRAIN_XML_DEFAULT_INIT(image::TreeSVG)
 
 // const drain::Enum<image::svg::tag_t>::dict_t & getDict();
 template <>

@@ -165,7 +165,7 @@ public:
 		}
 
 		return tree;
-	};
+	}
 
 	// UNDER CONSTRUCTION!
 	/// When assigning a string, create new element unless the element itself is of type CTEXT.
@@ -222,7 +222,7 @@ public:
 		else {
 			return root[finalKey];
 		}
-	};
+	}
 
 	template <typename N>
 	static
@@ -239,7 +239,7 @@ public:
 		else {
 			return root[finalKey];
 		}
-	};
+	}
 
 	/*
 	template <typename T>

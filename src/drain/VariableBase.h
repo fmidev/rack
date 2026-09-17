@@ -373,7 +373,7 @@ protected:
 		this->reset();
 		this->setType(t);
 		this->assignContainer(l, true);
-	};
+	}
 
 	template <class ...TT>
 	void init(const TT& ...args){

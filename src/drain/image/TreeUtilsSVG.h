@@ -86,7 +86,7 @@ public:
 };
 
 DRAIN_ENUM_DICT(TreeUtilsSVG::Roles);
-DRAIN_ENUM_OSTREAM(TreeUtilsSVG::Roles);
+DRAIN_ENUM_OSTREAM(TreeUtilsSVG::Roles)
 
 
 /**
@@ -451,7 +451,7 @@ public:
 
 
 DRAIN_ENUM_DICT(image::MaskerSVG::MaskPosition);
-DRAIN_ENUM_OSTREAM(image::MaskerSVG::MaskPosition);
+DRAIN_ENUM_OSTREAM(image::MaskerSVG::MaskPosition)
 
 //DRAIN_GETKEY_ENUM(image::TreeSVG, rack::RackSVG::ElemClass);
 

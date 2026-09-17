@@ -101,7 +101,7 @@ struct MethodWeights : public drain::UniTuple<T,5> {
 	template<typename ... TT>
 	MethodWeights(const TT &... args) : interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()){
 		this->set(args...);
-	};
+	}
 
 	MethodWeights(const MethodWeights & p): drain::UniTuple<double,5>(p),
 			interpolation(this->next()), interpolation_dry(this->next()), extrapolation_up(this->next()), extrapolation_down(this->next()), clear(this->next()) {

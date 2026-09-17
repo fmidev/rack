@@ -91,7 +91,7 @@ public:
 	inline
 	ClassXML(const T & arg){
 		set(arg);
-	};
+	}
 
 	inline
 	ClassXML(const ClassXML & e){
@@ -201,7 +201,7 @@ public:
 	inline
 	ClassListXML(const TT &... args){
 		add(args...);
-	};
+	}
 
 	/// Add one or several classes.
 	template <typename ... TT>
@@ -211,7 +211,7 @@ public:
 			insert(arg);
 		}
 		add(args...);
-	};
+	}
 
 	/// Add one or several classes.
 	template <typename ... TT>
@@ -228,7 +228,7 @@ public:
 			insert(arg);
 		}
 		add(args...);
-	};
+	}
 
 	/// Add one or several classes.
 	/**
@@ -242,7 +242,7 @@ public:
 	void add(const T & arg, const TT &... args) {
 		insert(drain::Enum<T>::dict.getKey(arg));
 		add(args...);
-	};
+	}
 
 
 	/* Compiler cannot derive (inner?) template
@@ -283,14 +283,14 @@ public:
 	bool has(const T & arg) const {
 		return (retrieve(arg) != end());
 		//return (find(drain::Enum<E>::dict.getKey(arg)) != end());
-	};
+	}
 
 	template <typename T, typename ...TT>
 	inline
 	bool hasAny(const T & arg, const TT &... args) const {
 		return has(arg) || hasAny(args...);
 		//return (find(drain::Enum<E>::dict.getKey(arg)) != end());
-	};
+	}
 
 
 
@@ -327,7 +327,7 @@ public:
 		if (it != end()){
 			erase(it);
 		}
-	};
+	}
 
 	/// Uses spaces as separators.
 	static

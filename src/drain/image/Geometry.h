@@ -62,7 +62,7 @@ public:
 	imageChannels(this->next()),
 	alphaChannels(this->next()){
 		//updateTuple();
-	};
+	}
 
 	inline
 	virtual ~ChannelGeometry(){};
@@ -228,7 +228,7 @@ public:
 	void setArea(const TupleBase<S,N> & a){
 	//void setArea(const AreaGeometry & a){
 		area.set(a); // 2024/09/??
-	};
+	}
 
 
 	inline

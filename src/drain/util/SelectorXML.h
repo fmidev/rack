@@ -136,7 +136,7 @@ public:
 		// cls = arg;
 		// Logger(__FILE__, __FUNCTION__).experimental<LOG_INFO>("arg '", arg, "' of type:", typeid(T).name(), ", -> CSS class: ", cls);
 		//elem = drain::Enum<E>::dict.getValue(arg, false);
-	};
+	}
 
 	/// Set CSS class
 	/**
@@ -200,7 +200,7 @@ public:
 	void setElement(const T & arg){
 		//elem = drain::Enum<E>::dict.getValue(arg, false);
 		elem = arg;
-	};
+	}
 
 
 
@@ -209,7 +209,7 @@ public:
 	void setClass(const T & arg){
 		// FIX StringConv
 		cls = arg;
-	};
+	}
 
 	/// Set one of the element pseudo classes: focus, hover
 	/**
@@ -221,7 +221,7 @@ public:
 	inline
 	void setPseudoClass(const T & psCls){
 		pseudoClass.set(psCls);
-	};
+	}
 
 
 
@@ -288,7 +288,7 @@ protected:
 
 
 DRAIN_ENUM_DICT(drain::PseudoClassCSS);
-DRAIN_ENUM_OSTREAM(drain::PseudoClassCSS);
+DRAIN_ENUM_OSTREAM(drain::PseudoClassCSS)
 
 
 namespace drain {

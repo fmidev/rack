@@ -172,7 +172,7 @@ public:
 	inline
 	Path(const path_t & arg, const TT &... args){ //  : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
-	};
+	}
 
 	/// Initialize with a path.
 	// All the elements are treated as paths.
@@ -180,7 +180,7 @@ public:
 	inline
 	Path(const std::string & arg, const TT &... args){ // : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
-	};
+	}
 
 	/// Initialize with a path.
 	// All the elements are treated as paths.
@@ -188,7 +188,7 @@ public:
 	inline
 	Path(const char * arg, const TT &... args){ // : separator(SEP, ALEAD, AREPEAT, ATRAIL){
 		append(arg, args...);
-	};
+	}
 
 
 	/// Why the three above instead of this?

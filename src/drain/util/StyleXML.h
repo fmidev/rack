@@ -100,7 +100,7 @@ public:
 		ostr << "/* ";
 		argsToStream(ostr, args...);
 		ostr << " */ ";
-	};
+	}
 
 
 protected:
@@ -111,7 +111,7 @@ protected:
 	void argsToStream(std::ostream & ostr, const T & arg, const TT... args){
 		ostr << arg;
 		argsToStream(ostr, args...);
-	};
+	}
 
 	static inline
 	void argsToStream(std::ostream & ostr){

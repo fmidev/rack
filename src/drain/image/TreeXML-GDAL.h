@@ -135,10 +135,10 @@ DRAIN_XML_DEFAULT_ELEMS(image::TreeGDAL);
 //const NodeXML<image::NodeGDAL::tag_t>::xml_default_elem_map_t NodeXML<image::NodeGDAL::tag_t>::xml_default_elems;
 
 
-DRAIN_XML_DEFAULT_INIT(image::TreeGDAL);
+DRAIN_XML_DEFAULT_INIT(image::TreeGDAL)
 
 
-DRAIN_XML_EASY_TYPE(image::TreeGDAL);
+DRAIN_XML_EASY_TYPE(image::TreeGDAL)
 
 /*
 template <>

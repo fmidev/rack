@@ -300,7 +300,7 @@ DRAIN_TYPENAME(image::DistanceModel::PIXEL_ADJACENCY);
 //drain::TypeName<drain::image::DistanceModel::PIXEL_ADJACENCY
 
 DRAIN_ENUM_DICT(image::DistanceModel::PIXEL_ADJACENCY);
-DRAIN_ENUM_OSTREAM(image::DistanceModel::PIXEL_ADJACENCY);
+DRAIN_ENUM_OSTREAM(image::DistanceModel::PIXEL_ADJACENCY)
 //DRAIN_TYPE_STR(image::DistanceModel);
 
 

@@ -84,7 +84,7 @@ public:
 	width(this->next()),
 	height(this->next()){
 		//updateTuple();
-	};
+	}
 
 	virtual ~Frame2D(){};
 

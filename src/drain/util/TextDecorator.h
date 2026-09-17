@@ -127,7 +127,7 @@ public:
 		//set(arg);
 		reset();
 		add(arg, args...);
-	};
+	}
 
 	/// Sets given keys
 	/*
@@ -175,7 +175,7 @@ public:
 		// std::cout << "Adding:" << arg << ':' << typeid(arg).name() << '\n';
 		add(arg);
 		add(args...);
-	};
+	}
 
 	/// Change the current color setting.
 	inline

@@ -350,12 +350,12 @@ namespace drain {
 
 namespace image {
 
-DRAIN_ENUM_OSTREAM(AlignSVG::Owner);
-DRAIN_ENUM_OSTREAM(AlignSVG::AlignClass);
+DRAIN_ENUM_OSTREAM(AlignSVG::Owner)
+DRAIN_ENUM_OSTREAM(AlignSVG::AlignClass)
 
-DRAIN_ENUM_OSTREAM(drain::image::Alignment<>);
-DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::HorzAlign);
-DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::VertAlign);
+DRAIN_ENUM_OSTREAM(drain::image::Alignment<>)
+DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::HorzAlign)
+DRAIN_ENUM_OSTREAM(drain::image::AlignSVG::VertAlign)
 
 template <>
 inline

@@ -61,7 +61,7 @@ public:
 	WindowConfig(int width=1, int height=0, const FT & functor = FT()) : frame(width,height ? height : width){
 		key = functor.getName();
 		functorParameters.importCastableMap(functor.getParameters());
-	};
+	}
 
 	inline
 	WindowConfig(const WindowConfig & conf) :

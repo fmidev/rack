@@ -176,7 +176,7 @@ public:
 	FlexVariableMap & link(const std::string &key, T & target){
 		(*this)[key].link(target);
 		return *this;
-	};
+	}
 
 	inline
 	void clearVariables(){

@@ -65,13 +65,13 @@ struct DataOrder { //: public drain::BeanLike {
 	void set(Crit crit, const TT &... args) {
 		criterion = crit;
 		set(args...);
-	};
+	}
 
 	template<typename ... TT>
 	void set(Oper oper, const TT &... args) {
 		operation = oper;
 		set(args...);
-	};
+	}
 
 	/// Expects <crit>[:<oper>]
 	inline

@@ -148,7 +148,7 @@ protected:
 	inline
 	void setOrientation(const V & axis){
 		orientation.set(Enum<AlignBase::Axis>::getValue(axis));
-	};
+	}
 
 	/// Set direction: coordinates increasing or decreasing
 	/**
@@ -159,7 +159,7 @@ protected:
 	inline
 	void setDirection(const D & dir){
 		direction.set(Enum<LayoutSVG::Direction>::getValue(dir));
-	};
+	}
 
 	/// Set direction and orientation
 	/**
@@ -170,7 +170,7 @@ protected:
 	void set(const D & d, const V &v){
 		direction.set(Enum<LayoutSVG::Direction>::getValue(d));
 		orientation.set(Enum<AlignBase::Axis>::getValue(v));
-	};
+	}
 
 	/*
 	static inline
@@ -187,17 +187,17 @@ DRAIN_ENUM_DICT(image::LayoutSVG::DirectionHorz);
 DRAIN_ENUM_DICT(image::LayoutSVG::DirectionVert);
 DRAIN_ENUM_DICT(image::LayoutSVG::GroupType);
 
-DRAIN_GETKEY_ENUM(image::TreeSVG, image::LayoutSVG::GroupType);
+DRAIN_GETKEY_ENUM(image::TreeSVG, image::LayoutSVG::GroupType)
 
-DRAIN_ENUM_CLASSXML(image::LayoutSVG::GroupType);
+DRAIN_ENUM_CLASSXML(image::LayoutSVG::GroupType)
 
 
 namespace image {
 
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::Direction);
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionHorz);
-DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionVert);
-DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType);
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::Direction)
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionHorz)
+DRAIN_ENUM_OSTREAM(image::LayoutSVG::DirectionVert)
+DRAIN_ENUM_OSTREAM(LayoutSVG::GroupType)
 
 }
 

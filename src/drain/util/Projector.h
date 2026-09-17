@@ -242,7 +242,7 @@ protected:
 //const drain::Enum<Projector::PROJDEF_variant>::dict_t  drain::Enum<Projector::PROJDEF_variant>::dict;
 DRAIN_ENUM_DICT(Projector::PROJDEF_variant);
 
-DRAIN_ENUM_OSTREAM(Projector::PROJDEF_variant);
+DRAIN_ENUM_OSTREAM(Projector::PROJDEF_variant)
 
 
 } // drain

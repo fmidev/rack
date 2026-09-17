@@ -179,7 +179,7 @@ public:
 				ostr << it->second;
 			}
 		}
-	};
+	}
 
 	template <typename T>
 	static inline
@@ -205,13 +205,13 @@ public:
 	static inline
 	void replace(const std::string & src, const std::map<K,V> & m, std::string & dst){
 		replaceWithMap(src, m, dst);
-	};
+	}
 
 	template <class K, class V>
 	static inline
 	void replace(const std::string & src, const std::initializer_list<std::pair<K,V> > & m, std::string & dst){
 		replaceWithMap(src, m, dst);
-	};
+	}
 
 	/// Interpret commond special chars: tab '\t', newline '\n' and carriage return '\r'.
 	static
@@ -259,7 +259,7 @@ private:
 			// std::cerr << "replacing " << entry.first << " -> " << entry.second << " in " << dst << std::endl;
 			replace(dst, entry.first, entry.second, dst);
 		}
-	};
+	}
 
 
 public:

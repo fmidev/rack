@@ -49,7 +49,7 @@ public:
 	inline
 	TextStyleVT100(const T &... args){
 		//set(args...);
-	};
+	}
 
 	inline virtual
 	~TextStyleVT100(){};
@@ -59,7 +59,7 @@ public:
 		startWrite(ostr);
 		append(ostr, args...);
 		endWrite(ostr);
-	};
+	}
 
 
 	virtual
@@ -74,7 +74,7 @@ public:
 	template <typename ... TT>
 	void append(std::ostream & ostr, const TT &... args) const{
 		_append(ostr, false, args...);
-	};
+	}
 
 
 	typedef std::map<drain::TextStyle::Colour,int> color_codemap_t;
@@ -137,7 +137,7 @@ protected:
 		}
 		ostr << arg;
 		_append(ostr, false, args...);
-	};
+	}
 
 	template <typename ... TT>
 	// static
@@ -145,7 +145,7 @@ protected:
 		_appendControlPrefix(ostr, start);
 		ostr << getIntCode(colour);
 		_append(ostr, true, args...);
-	};
+	}
 
 	template <typename ... TT>
 	// static
@@ -153,7 +153,7 @@ protected:
 		_appendControlPrefix(ostr, start);
 		ostr << getIntCode(line);
 		_append(ostr, true, args...);
-	};
+	}
 
 	template <typename ... TT>
 	// static
@@ -161,7 +161,7 @@ protected:
 		_appendControlPrefix(ostr, start);
 		ostr << getIntCode(style);
 		_append(ostr, true, args...);
-	};
+	}
 
 	inline
 	void _append(std::ostream & ostr, bool init) const{

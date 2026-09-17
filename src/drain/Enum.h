@@ -292,7 +292,7 @@ public:
 	inline
 	MultiEnumWrapper(const T & arg){
 		set(arg);
-	};
+	}
 
 
 	void set(const std::string &arg){

@@ -88,7 +88,7 @@ E Units::extract(const std::string & expr){
 
 
 DRAIN_ENUM_DICT(Unit);
-DRAIN_ENUM_OSTREAM(Unit);
+DRAIN_ENUM_OSTREAM(Unit)
 
 } // ::drain
 

@@ -21,7 +21,8 @@ OPTS ?= -O3 -fmessage-length=0
 # Keep these enabled during development to expose non-standard C++ and
 # declarations defined outside their owning namespace.  Override with, for
 # example, WARNINGS="-Wall" when working with an older or noisier compiler.
-WARNINGS ?= -Wall -Wextra -Wpedantic -Wmissing-declarations -Wmissing-include-dirs
+# WARNINGS ?= -Wall -Wextra -Wpedantic -Wmissing-declarations -Wmissing-include-dirs
+WARNINGS ?= -Wall 
 
 # ---- Read build settings from install-rack.cnf --------------------------------
 #

@@ -154,7 +154,7 @@ public:
 	void write(TT... args) const {
 		this->indent();
 		this->flush(args...);
-	};
+	}
 
 	/** Writes a doc title - a string underlined with a hyphen.
 	 *
@@ -168,7 +168,7 @@ protected:
 	void flush(const T & arg, TT... args) const {
 		this->ostr << arg;
 		this->flush(args...);
-	};
+	}
 
 	inline
 	void flush() const {

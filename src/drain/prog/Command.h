@@ -498,7 +498,7 @@ public:
 			drain::Logger mout(ctx.log,__FILE__, __FUNCTION__);
 			mout.warn("Empty value key in command ", name, " (", description, ")");
 		}
-	};
+	}
 
 
 	SimpleCommand(const SimpleCommand & cmd):  BasicCommand(cmd) {

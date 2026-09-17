@@ -99,14 +99,14 @@ public:
 	inline
 	UniTuple(const std::vector<S> & v) : start(this->arr), init(nullptr){
 		this->assignSequence(v);
-	};
+	}
 
 
 	template<typename S>
 	inline
 	UniTuple(std::initializer_list<S> l) : start(this->arr), init(nullptr){ // start(this->arr),
 		this->set(l);
-	};
+	}
 
 
 
@@ -239,7 +239,7 @@ protected:
 		if ((i+N)> N2){
 			throw std::runtime_error(drain::StringBuilder<>(drain::TypeName<UniTuple<T,N2> >::str(), "(", tuple, "): constructor index[", i,"] overflow with referenced tuple") );
 		}
-	};
+	}
 
 
 

@@ -151,7 +151,7 @@ DRAIN_ENUM_DICT(image::AnchorElem::Anchor);
 
 namespace image {
 
-DRAIN_ENUM_OSTREAM(AnchorElem::Anchor);
+DRAIN_ENUM_OSTREAM(AnchorElem::Anchor)
 
 /// Adapter designed for NodeSVG
 struct AlignAnchorSVG { // : public AlignSVG {
@@ -270,51 +270,51 @@ template <>
 inline
 const AlignAnchorSVG::anchor_t & AlignAnchorSVG::getMyAlignAnchor<AlignBase::Axis::HORZ>() const {
 	return myAnchorHorz;
-};
+}
 
 template <>
 inline
 const AlignAnchorSVG::anchor_t & AlignAnchorSVG::getMyAlignAnchor<AlignBase::Axis::VERT>() const {
 	return myAnchorVert;
-};
+}
 
 /// Store anchor object/symbol for aligning object inside this G (group) or SVG element.
 template <>
 inline
 const AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase::Axis::HORZ>() const {
 	return defaultAnchorHorz;
-};
+}
 
 template <>
 inline
 const AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase::Axis::VERT>() const {
 	return defaultAnchorVert;
-};
+}
 
 template <>
 inline
 AlignAnchorSVG::anchor_t & AlignAnchorSVG::getMyAlignAnchor<AlignBase::Axis::HORZ>() {
 	return myAnchorHorz;
-};
+}
 
 template <>
 inline
 AlignAnchorSVG::anchor_t & AlignAnchorSVG::getMyAlignAnchor<AlignBase::Axis::VERT>() {
 	return myAnchorVert;
-};
+}
 
 /// Store anchor object/symbol for aligning object inside this G (group) or SVG element.
 template <>
 inline
 AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase::Axis::HORZ>() {
 	return defaultAnchorHorz;
-};
+}
 
 template <>
 inline
 AlignAnchorSVG::anchor_t & AlignAnchorSVG::getDefaultAlignAnchor<AlignBase::Axis::VERT>() {
 	return defaultAnchorVert;
-};
+}
 
 
 

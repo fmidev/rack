@@ -60,7 +60,7 @@ public:
 	StringMatcherList(const TT &... args){
 		// reset not needed
 		addKey(args...);
-	};
+	}
 
 
 	/// Copy constructor. Copies the list of quantities.
@@ -113,7 +113,7 @@ public:
 		for (const T2 & entry: l) {
 			adaptKey(entry);
 		}
-	};
+	}
 
 	/// Replace current list with a new one.
 	template <class T2>

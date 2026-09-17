@@ -796,7 +796,7 @@ public:
 		// Cast ensures forwarding to main function
 		//return addChild(static_cast<key_t>(getKey(key)));
 		return addChild(getKey(key));
-	};
+	}
 
 
 

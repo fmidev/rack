@@ -187,13 +187,13 @@ DRAIN_ENUM_DICT(image::MouseXML::ElemClass);
 DRAIN_ENUM_DICT(image::MouseXML::EventClass);
 DRAIN_ENUM_DICT(image::MouseXML::CoordinateProcessing);
 
-DRAIN_ENUM_CLASSXML(image::MouseXML::ElemClass);
+DRAIN_ENUM_CLASSXML(image::MouseXML::ElemClass)
 
 
 namespace image {
 
-DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass);
-DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass);
+DRAIN_ENUM_OSTREAM(image::MouseXML::ElemClass)
+DRAIN_ENUM_OSTREAM(image::MouseXML::EventClass)
 
 
 template <class N>

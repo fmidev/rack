@@ -39,6 +39,9 @@ handler.setFormatter(logging.Formatter("%(levelname)s: %(message)s"))
 logger.addHandler(handler)
 """
 
+# Extensions of \include targets that should be built via `make` (demo/Makefile)
+MAKE_EXTENSIONS = {"hlp"}
+
 @dataclass
 class ReplaceRule:
     src: str
@@ -575,6 +578,10 @@ def main() -> int:
                 # logger.debug(f"{Emoji.RUN.value}  Executing file: {script}")
                 rack.process.run(["sh", str(script)], description=script, logger=logger)
                 cliconf.reset()
+            elif Path(p).suffix.lstrip(".") in MAKE_EXTENSIONS:
+                # Delegate to demo/Makefile, e.g. "cExtract.hlp" -> `make cExtract.hlp`
+                logger.info(f"{Emoji.RUN.value}  make {p}")
+                rack.process.run(["make", p], description=f"make {p}", logger=logger)
 
         elif key in {"section", "subsection"}:
             #logger.info(f"{key.upper()}: {obj}")

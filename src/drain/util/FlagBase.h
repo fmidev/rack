@@ -188,7 +188,7 @@ typename FlagResolver::ivalue_t FlagResolver::addEntry(drain::Dictionary<key_t,T
 	}
 
 	return i;
-};
+}
 
 
 template <typename T>
@@ -381,7 +381,7 @@ protected:
 	 *
 	 */
 	inline
-	FlaggerBase(char separator=','): value(ownValue), separator(','), ownValue((storage_t)0){ // drain::NEUTRAL VALUE!
+	FlaggerBase(char separator=','): value(ownValue), separator(separator), ownValue((storage_t)0){ // drain::NEUTRAL VALUE!
 	}
 
 	/// Value-referencing constructor.
@@ -390,7 +390,7 @@ protected:
 	 *  Reconsider design. Should the value ever be referenced?
 	 */
 	inline
-	FlaggerBase(storage_t & v, char separator=','): value(v), separator(','){
+	FlaggerBase(storage_t & v, char separator=','): value(v), separator(separator){
 	}
 
 	/*  Risky? (Ambiguous)

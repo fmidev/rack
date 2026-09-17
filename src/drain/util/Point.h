@@ -63,7 +63,7 @@ struct Point2D : public drain::UniTuple<T,2> {
 	Point2D(drain::UniTuple<T,N> & tuple, size_t i) :
 		drain::UniTuple<T,2>(tuple, i),  // start in new pos!
 		x(this->next()), y(this->next()){
-	};
+	}
 
 	Point2D & operator=(const Point2D & p){
 		this->set(p.tuple());

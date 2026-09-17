@@ -87,7 +87,7 @@ struct Html {
 DRAIN_TYPENAME(Html);
 DRAIN_TYPENAME(Html::tag_t);
 DRAIN_ENUM_DICT(Html::tag_t);
-DRAIN_ENUM_OSTREAM(Html::tag_t);
+DRAIN_ENUM_OSTREAM(Html::tag_t)
 
 
 
@@ -152,7 +152,7 @@ protected:
 
 DRAIN_TYPENAME(NodeHTML);
 
-DRAIN_XML_EASY_TYPE(TreeHTML);
+DRAIN_XML_EASY_TYPE(TreeHTML)
 
 inline
 std::ostream & operator<<(std::ostream &ostr, const NodeHTML & node){
@@ -181,7 +181,7 @@ void TreeHTML::initChild(TreeHTML & child) const {
 }
 
 
-DRAIN_GETKEY_ENUM(TreeHTML, Html::tag_t);
+DRAIN_GETKEY_ENUM(TreeHTML, Html::tag_t)
 // const TreeHTML::key_t & TreeHTML::getKey(const Html::tag_t & type){
 // return Enum<Html::tag_t>::dict.getKey(type, false);
 

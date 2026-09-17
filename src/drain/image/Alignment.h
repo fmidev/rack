@@ -370,8 +370,8 @@ DRAIN_ENUM_DICT(image::AlignBase::Pos);
 //DRAIN_ENUM_DICT(image::Alignment<>);
 DRAIN_ENUM_DICT(image::MutualAlign::Topol);
 
-DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Axis);
-DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Pos);
+DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Axis)
+DRAIN_ENUM_OSTREAM(drain::image::AlignBase::Pos)
 
 
 template <typename AX, drain::image::AlignBase::Axis A>
@@ -383,7 +383,7 @@ std::ostream & operator<<(std::ostream &ostr, const drain::image::Alignment<AX,A
 
 
 //DRAIN_ENUM_DICT(drain::image::Alignment<>);
-DRAIN_ENUM_OSTREAM(drain::image::MutualAlign::Topol);
+DRAIN_ENUM_OSTREAM(drain::image::MutualAlign::Topol)
 
 template <typename AX, drain::image::AlignBase::Axis A>
 std::ostream & operator<<(std::ostream &ostr, const drain::image::CompleteAlignment<AX,A> & ad){

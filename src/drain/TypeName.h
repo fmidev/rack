@@ -112,8 +112,8 @@ std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
 // #define DRAIN_TYPENAME(tname)   template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
 
 // TEMPORARY FIX (fake)
-#define DRAIN_TYPENAME(tname)       template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;};
-#define DRAIN_TYPENAME_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;};
+#define DRAIN_TYPENAME(tname)       template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;}
+#define DRAIN_TYPENAME_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;}
 
 
 /// Add a specialization for each type of those you want to support.

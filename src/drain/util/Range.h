@@ -69,14 +69,14 @@ public:
 	template <class T2>
 	Range(const Range<T2> & r) :
 		UniTuple<T,2>(r.tuple()), min((*this)[0]), max((*this)[1]) {
-	};
+	}
 
 	// Reference (parasite)
 	template <size_t N>
 	Range(drain::UniTuple<T,N> & tuple, size_t i) :
 		drain::UniTuple<T,2>(tuple, i), // start in new pos!
 		min(this->next()),max(this->next()){
-	};
+	}
 
 
 	/// Default assignment operator

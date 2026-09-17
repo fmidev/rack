@@ -139,7 +139,7 @@ public:
 	inline
 	void setStatus(const std::string & key, const T & value){
 		statusMap[key] = value;
-	};
+	}
 
 
 	/// Report status. Typically, report final status of a thread to its base context.
@@ -281,7 +281,7 @@ public:
 	template <class C>
 	void setContext(){
 		contextPtr = & getCloner<C>().get();
-	};
+	}
 
 	/// Sets internal contextPtr to outside target.
 	inline

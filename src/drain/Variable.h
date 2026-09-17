@@ -73,7 +73,7 @@ template <>
 inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const Variable & v, const SprinterLayout & layout){
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
-};
+}
 
 
 }

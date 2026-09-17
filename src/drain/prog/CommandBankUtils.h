@@ -361,7 +361,7 @@ void CmdFormatFile<C>::exec() const {
 	else
 		mout.error(getName() , ": opening file '" , value , "' failed." );
 
-};
+}
 
 
 /// Special command for handling undefined commands.

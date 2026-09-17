@@ -129,7 +129,7 @@ public:
 		}
 
 
-	};
+	}
 
 
 	/// Default implementation for recursive dump()
@@ -218,7 +218,7 @@ public:
 
 		return empty;
 
-	};
+	}
 
 	/// Debugging utility - dumps the tree, also the contents.
 	template <class TR>
@@ -230,7 +230,7 @@ public:
 			ostr << entry.first << '\t';  // UNIMPLEMENTED: recursion?
 			dumpContents(entry.second, ostr); //, path+"/"+it->first);
 		};
-	};
+	}
 
 	/// Write a Windows INI file
 	// TODO: move to TreeUtils, Sprinter-like?

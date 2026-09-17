@@ -230,7 +230,7 @@ public:
 		else {
 			return typeIs(args...);
 		}
-	};
+	}
 
 
 
@@ -928,7 +928,7 @@ public:
 
 // template <> const drain::Enum<XML::entity_t>::dict_t drain::Enum<XML::entity_t>::dict;
 DRAIN_ENUM_DICT(XML::entity_t);
-DRAIN_ENUM_OSTREAM(XML::entity_t);
+DRAIN_ENUM_OSTREAM(XML::entity_t)
 
 template <class N>
 std::ostream & XML::textToStream(std::ostream & ostr, const UnorderedMultiTree<N> & tree, int indent){

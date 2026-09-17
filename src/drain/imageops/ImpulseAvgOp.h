@@ -58,7 +58,7 @@ public:
 	// Reference
 	template <size_t N>
 	Decay2(drain::UniTuple<T,N> & tuple, size_t i) : drain::UniTuple<T,2>(tuple, i),  forward(this->next()), backward(this->next()){
-	};
+	}
 };
 
 template <class T>

@@ -127,7 +127,7 @@ protected:
 };
 
 DRAIN_ENUM_DICT(Base64::NumType);
-DRAIN_ENUM_OSTREAM(Base64::NumType);
+DRAIN_ENUM_OSTREAM(Base64::NumType)
 
 /*
 template <typename T>  // std::string & code  // std::ostream & ostr

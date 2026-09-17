@@ -110,7 +110,7 @@ struct Notification {
 		//vt100.write(sstr, args..., key);
 		vt100.append(sstr, args...);
 		vt100color = sstr.str();
-	};
+	}
 
 
 	//void set(const std::string & key, int vt100color);
@@ -371,7 +371,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	/// Quits immediately, dumps pending messages.
@@ -382,7 +382,7 @@ public:
 		initMessage<LOG_EMERG>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Quits immediately, dumps pending messages.
 	template<typename ... TT>
@@ -392,7 +392,7 @@ public:
 		initMessage<LOG_ALERT>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Quits immediately, dumps pending messages.
 	template<typename ... TT>
@@ -402,7 +402,7 @@ public:
 		initMessage<LOG_CRIT>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Echoes
 	/*
@@ -420,7 +420,7 @@ public:
 		initMessage<LOG_ERR>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	// LOG_WARNING
@@ -434,7 +434,7 @@ public:
 		initMessage<LOG_WARNING>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Warning on user's convention or action that can potentially cause errors or confusions.
 	template<int L=LOG_WARNING,typename ... TT>
@@ -445,7 +445,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	/// Possible error, but execution can continue. Special type of Logger::warn().
@@ -457,7 +457,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Feature has been removed. Special type of Logger::warn().  \see Logger::deprecating().
 	//  Valid alternative should be displayed.
@@ -469,7 +469,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Possible error, but execution can continue. Special type of Logger::warn().
 	template<int L=LOG_WARNING,typename ... TT>
@@ -479,7 +479,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	// LOG_NOTICE
@@ -493,7 +493,7 @@ public:
 		//initMessage<LOG_NOTICE>();
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// A weak warning about something going possibly wrong
 	template<int L=LOG_NOTICE,typename ... TT>
@@ -503,7 +503,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	///  Feature to be done. Special type of Logger::note(). \see Logger::obsolete().
@@ -514,7 +514,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	///  Feature will be removed. Special type of Logger::note(). \see Logger::obsolete().
 	template<int L=LOG_NOTICE,typename ... TT>
@@ -524,7 +524,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Other useful information
 	template<int L=LOG_NOTICE,typename ... TT>
@@ -534,7 +534,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	template<int L=LOG_NOTICE,typename ... TT>
@@ -544,7 +544,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	template<int L=LOG_NOTICE,typename ... TT>
 	inline
@@ -553,7 +553,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	// LOG_INFO
@@ -566,7 +566,7 @@ public:
 		// initMessage<LOG_INFO>();
 		flush(args...);
 		return *this;
-	};
+	}
 
 	template<int L=LOG_INFO,typename ... TT>
 	inline
@@ -575,7 +575,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Some input has been accepted, for example by a syntax.
 	template<int L=LOG_INFO,typename ... TT>
@@ -586,7 +586,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Report a conditional accept/reject, to be completed next.
 	/**
@@ -600,7 +600,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Some input has been rejected, for example by a syntax.
 	/**
@@ -614,7 +614,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	/// Some processing step has completed with desired result.
@@ -626,7 +626,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	/// Like advice, but weaker.
@@ -637,7 +637,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	template<int L=LOG_INFO,typename ... TT>
@@ -647,7 +647,7 @@ public:
 		initMessage<L>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 
@@ -669,7 +669,7 @@ public:
 		initMessage<LOG_DEBUG>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	/// Debug information.
 	template<typename ... TT>
@@ -679,7 +679,7 @@ public:
 		initMessage<LOG_DEBUG+1>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 	template<typename ... TT>
 	inline
@@ -688,7 +688,7 @@ public:
 		initMessage<LOG_DEBUG+2>(notif);
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	inline
@@ -703,7 +703,7 @@ public:
 	Logger & operator()(const TT &... args){
 		flush(args...);
 		return *this;
-	};
+	}
 
 
 	static bool TIMING; // = false;
@@ -732,7 +732,7 @@ public:
 		if (TIMING && !timing){  // consider error if already timing?
 			initTiming(args...);
 		}
-	};
+	}
 
 	//template<typename ... TT>
 	//void endTiming(const TT &... args){
@@ -841,14 +841,14 @@ protected:
 		//std::cerr << " <ol>" << '\n';
 		std::cerr << " <div>" << '\n';
 		time = monitor.getMilliseconds();
-	};
+	}
 
 
 	template<typename T, typename ... TT>
 	void describeTiming(const T & arg, const TT &... args){
 		std::cerr << arg;
 		describeTiming(args...);
-	};
+	}
 
 	inline
 	void describeTiming(){
@@ -969,7 +969,7 @@ protected:
 		append(arg);
 		flush(rest...);
 		return *this;
-	};
+	}
 
 	template<typename T>
 	inline
@@ -978,7 +978,7 @@ protected:
 		append(arg);
 		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this;
-	};
+	}
 
 	inline
 	Logger & flush(){

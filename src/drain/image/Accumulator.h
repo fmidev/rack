@@ -293,7 +293,7 @@ std::ostream & operator<<(std::ostream &ostr, const Accumulator & accumulator){
 }
 
 DRAIN_ENUM_DICT(Accumulator::FieldType);
-DRAIN_ENUM_OSTREAM(Accumulator::FieldType);
+DRAIN_ENUM_OSTREAM(Accumulator::FieldType)
 
 }  // image::
 

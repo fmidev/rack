@@ -75,7 +75,7 @@ struct Version {
 		std::stringstream sstr;
 		build(sstr, args...);
 		_str = sstr.str();
-	};
+	}
 
 
 protected:
@@ -99,7 +99,7 @@ protected:
 		}
 		sstr << arg;
 		build(sstr, args...);
-	};
+	}
 
 	template <typename ... TT>
 	inline
@@ -107,7 +107,7 @@ protected:
 		// No separator for strings
 		sstr << arg;
 		build(sstr, args...);
-	};
+	}
 
 	template <typename ... TT>
 	inline
@@ -115,7 +115,7 @@ protected:
 		// No separator for strings
 		sstr << arg;
 		build(sstr, args...);
-	};
+	}
 
 	template<typename ... TT>
 	inline
@@ -123,7 +123,7 @@ protected:
 		// No separator for strings
 		sstr << arg;
 		build(sstr, args...);
-	};
+	}
 
 	inline
 	void build(std::stringstream & sstr){

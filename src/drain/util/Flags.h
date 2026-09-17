@@ -231,7 +231,7 @@ public:
 	inline
 	MultiFlagger(const dict_t & dict, const V &... args) : dict(dict) {
 		set(args...);
-	};
+	}
 
 	/**
 	 *  \param v - linked variable

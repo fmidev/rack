@@ -82,7 +82,7 @@ template <>
 inline
 std::ostream & Sprinter::toStream(std::ostream & ostr, const Reference & v, const SprinterLayout & layout){
 	return Sprinter::toStream(ostr, (const drain::Castable &) v, layout);
-};
+}
 
 }  // namespace drain
 
