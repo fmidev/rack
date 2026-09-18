@@ -237,8 +237,6 @@ prog = composer.get_prog()
 rack.process.run(prog, logger=logger)
 \endcode
 
-\~stop
-\~
 
 Upon initialisation of the compositing array, \c Rack stores the encoding parameters – storage type, scaling and marker values (\c undetect , \c nodata) – given explicitly 
 or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so
@@ -262,6 +260,10 @@ Cropping is supported by a new optional parameter: the desired bounding box can 
 or \c OVERLAP (overlapping area). 
 
 \include cExtract.hlp
+
+\~stop
+\~
+
 
 \~exec
 convert composite-fi-cappi-COUNT.png -equalize composite-fi-cappi-COUNT.png
