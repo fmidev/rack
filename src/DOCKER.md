@@ -92,9 +92,15 @@ docker run -t "rack_ubuntu20:7.79" rack --version
 
 ## Uploading to Quay.io 
 
-(Currently, this part is FMI specific and used only by the developers.)
+Currently, this part is FMI specific and used only by the developers.
 ```
 make docker-image-push
+```
+invoking:
+``
+docker tag "rack_$(BASE_IMAGE):$(VERSION)" "quay.io/fmi/rack:$(VERSION)"
+docker login quay.io
+docker push "quay.io/fmi/rack:$(VERSION)"`
 ```
 
 
