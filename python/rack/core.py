@@ -3369,6 +3369,24 @@ class Rack(rack.prog.Register):
         return cmd
 
 
+    def modifyQuality(self,
+        ftor:str='',
+        params:str=''):
+        """ Create or modulate quality as a function of distance (from 1.0 to 0.0)
+
+        Parameters
+        ----------
+        ftor:str
+          Functor name
+        params:str
+          Functor parameters
+
+        """
+
+        cmd = self.make_cmd(locals())
+        return cmd
+
+
     def move(self,
         src:str='',
         dst:str=''):
@@ -4381,7 +4399,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95271e-310,
+        a:float=6.95252e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4399,9 +4417,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95271e-310,
+        a:float=6.95252e-310,
         b:float=1.4822e-323,
-        c:float=6.95271e-310):
+        c:float=6.95252e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
@@ -4775,7 +4793,7 @@ class Rack(rack.prog.Register):
 
 
     def undetectWeight(self,
-        weight:float=0.75):
+        weight:float=0.95):
         """ Set the relative weight of data values assigned 'undetect'.
 
         Parameters

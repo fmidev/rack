@@ -9,7 +9,7 @@ from urllib.parse import urlencode # getCapabilities
 #import urllib.request
 import urllib.error
 import xml.etree.ElementTree as ET
-from pyproj import CRS
+# from pyproj import CRS
 
 import rack.config
 import rack.log
@@ -185,7 +185,43 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 
 
 
+# EPSG codes registered with (north, east)/(lat, lon) axis order rather than
+# (east, north)/(lon, lat). WMS 1.3.0 (CRS=) requires BBOX in the CRS's registered
+# axis order, so these need swapping; WMS < 1.3.0 (SRS=) always used (lon,lat)-like
+# order, regardless of CRS. This is a property of each specific EPSG definition, not
+# just "geographic vs projected": e.g. 3035 is projected but still north/east.
+# Extend this set if other such CRSs are used, e.g. 4269 (NAD83).
+LATLON_AXIS_EPSG = {4326, 4258, 3035}
+
+
 def bbox_needs_swap(version:str, crs:str|int) -> bool:
+    """
+    Return True if WMS 1.3.0 expects BBOX coordinates in Y,X order
+    for the given CRS.
+
+    Assumes the application's internal BBOX order is always:
+        xmin, ymin, xmax, ymax
+    """
+    try:
+        major, minor = str(version).split('.')[:2]
+        version_tuple = (int(major), int(minor))
+    except (ValueError, AttributeError):
+        return False
+
+    if version_tuple < (1, 3):
+        return False
+
+    if isinstance(crs, str):
+        crs = crs.rsplit(':', 1)[-1]
+
+    try:
+        epsg = int(crs)
+    except (TypeError, ValueError):
+        return False
+
+    return epsg in LATLON_AXIS_EPSG
+
+def bbox_needs_swap_CRS_based(version:str, crs:str|int) -> bool:
     """
     Return True if WMS 1.3.0 expects BBOX coordinates in Y,X order
     for the given CRS.
@@ -211,34 +247,6 @@ def bbox_needs_swap(version:str, crs:str|int) -> bool:
         axis1.direction.lower() in ("north", "south")
         and axis2.direction.lower() in ("east", "west")
     )
-
-def bbox_needs_swap_OLD(version, epsg) -> bool:
-    """Whether BBOX=lonLL,latLL,lonUR,latUR needs swapping to latLL,lonLL,latUR,lonUR
-    for this WMS `version` and `epsg`, per the WMS 1.3.0 axis-order rule.
-    """
-    # EPSG codes registered with (lat, lon) axis order rather than (lon, lat)/(x, y).
-    # WMS 1.3.0 (CRS=) requires BBOX in the CRS's registered axis order, so these need
-    # swapping; WMS < 1.3.0 (SRS=) always used (lon,lat)-like order, regardless of CRS.
-    # Extend this set if other geographic (lat,lon) CRSs are used, e.g. 4258, 4269.
-    LATLON_AXIS_EPSG = {4326}
-
-
-    try:
-        epsg = int(epsg)
-    except (TypeError, ValueError):
-        return False
-
-    if epsg not in LATLON_AXIS_EPSG:
-        return False
-
-    try:
-        major, minor = str(version).split('.')[:2]
-        version_tuple = (int(major), int(minor))
-    except (ValueError, AttributeError):
-        return False
-
-    return version_tuple >= (1, 3)
-
 
 def construct_http_get(defaults: dict,
                     layers, 
