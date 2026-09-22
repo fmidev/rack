@@ -16,6 +16,9 @@ General design principles and goals:
 
 ### Tests
 
+Located in:
+- [python/rack/tests](https://github.com/fmidev/rack/tree/main/python/rack/tests)
+
 Examples:
 
 ```
