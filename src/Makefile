@@ -75,8 +75,8 @@ DEPS := $(OBJS:.o=.d)
 all: $(TARGET)
 
 build: all
-	echo -n "# Build complete on: "
-	cat /etc/system-release || uname -a
+	@ echo -n "# Build completed on: "
+	@ cat /etc/system-release || uname -a
 
 $(TARGET): $(OBJS)
 	@echo "# Linking $@"
@@ -128,9 +128,10 @@ help:
 	@echo "  docker-image  build Docker image"
 
 # ---- Version (from source) ----------------------------------------------------
+# Note: here plain numerical, but prefixed with 'v' further below.
 VERSION := $(shell fgrep RACK_VERSION main/rack.h 2>/dev/null | \
                tr '(,)' '|.|' | tr -d \'\" | cut -d'|' -f 2)
-#               tr '(,)' '|.|' | tr -d \'\" | cut -d'|' -f 2)
+
 
 # ---- Docker targets (preserved from original Makefile) -----------------------
 BASE_IMAGE      := ubuntu20
@@ -155,16 +156,16 @@ docker-image: Dockerfile.$(BASE_IMAGE) \
 	ls -d Build/ && rm -rf ./Build/*
 	docker --config $(DOCKER_CONF_DIR) build . \
 	    --build-arg CONF_DIR=$(DOCKER_CONF_DIR) --file $< \
-	    --tag rack_$(BASE_IMAGE):$(VERSION)
+	    --tag rack_$(BASE_IMAGE):v$(VERSION)
 
 docker-image-test:
-	docker image history "rack_$(BASE_IMAGE):$(VERSION)" || $(MAKE) docker-image
-	docker run -t "rack_$(BASE_IMAGE):$(VERSION)" rack --version
+	docker image history "rack_$(BASE_IMAGE):v$(VERSION)" || $(MAKE) docker-image
+	docker run -t "rack_$(BASE_IMAGE):v$(VERSION)" rack --version
 
 docker-image-push: docker-image
-	docker tag "rack_$(BASE_IMAGE):$(VERSION)" "quay.io/fmi/rack:$(VERSION)"
+	docker tag "rack_$(BASE_IMAGE):v$(VERSION)" "quay.io/fmi/rack:v$(VERSION)"
 	docker login quay.io
-	docker push "quay.io/fmi/rack:$(VERSION)"
+	docker push "quay.io/fmi/rack:v$(VERSION)"
 
 docker-clean:
 	echo docker system prune -f

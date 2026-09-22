@@ -1,6 +1,6 @@
 # Python3 utilities for Rack
 
-*Experimental*
+*Experimental – under construction*
 
 Rack comes with a set of Python scripts packed as a module [rack](./rack).
 
@@ -14,6 +14,30 @@ General design principles and goals:
 - [`rack.composer`](rack/composer.py) - utility for compositing data
 - [`rack.statistics`](rack/statistics.py) - utility for extracting metadata from ODIM-HDF5 files, esp. for monitoring incoming data
 
+### Tests
+
+Examples:
+
+```
+# General
+python3 -m unittest discover -s rack/tests
+python3 -m unittest discover -s rack/tests -v
+
+# Module specific
+# Example: `rack.prog` - `test_prog*.py`
+python3 -m unittest rack/tests/test_prog.py
+python3 -m unittest rack/tests/test_prog_rack.py -v
+python3 -m unittest rack/tests/test_prog_gnuplot.py -v
+
+# More examples
+python3 -m unittest -v rack.tests.test_typical
+python3 -m unittest -v rack.tests.test_maps
+
+# Direct path vs $PYTHON_PATH (module)
+python3 -m unittest    rack/tests/test_composer.py 
+python3 -m unittest -v rack.tests.test_composer
+
+```
 
 ### Statistics
 

@@ -288,25 +288,25 @@ class CommandSequence:
 
     CmdClass = Command
 
-    #fmt = Formatter()
-
-    # For arguments. Helps in toggling within-argument quotes
-    QUOTE = "'"
+    # For toggling single/double quotes in quoted arguments
+    # QUOTE = "'"
 
     """Base class for a sequence of commands - 'programs'."""
     def __init__(self, cmdClass=Command, programName:str="", quote="'"):
         self.CmdClass = cmdClass
         self.commands: List[Command] = []
         self.programName = programName
-        self.QUOTE = quote
+        # self.QUOTE = quote
         self.fmt = None
 
+    """
     def get_secondary_quote(self) -> str:
         if self.QUOTE == '"':
             return "'"
         else:
             return '"'
-
+    """
+    
     def add(self, cmd: Command, cmd_args:dict={}):
         t = type(cmd)
         #if t == self.CmdClass: Great!

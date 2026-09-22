@@ -4399,7 +4399,7 @@ class Rack(rack.prog.Register):
 
 
     def precipKDP(self,
-        a:float=6.95252e-310,
+        a:float=6.95283e-310,
         b:float=1.4822e-323):
         """ Precip rate from KDP
 
@@ -4417,9 +4417,9 @@ class Rack(rack.prog.Register):
 
 
     def precipKDPZDR(self,
-        a:float=6.95252e-310,
+        a:float=6.95283e-310,
         b:float=1.4822e-323,
-        c:float=6.95252e-310):
+        c:float=6.95283e-310):
         """ Precipitation rate from KDP and ZDR
 
         Parameters
