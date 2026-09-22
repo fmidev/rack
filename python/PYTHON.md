@@ -16,32 +16,6 @@ General design principles and goals:
 
 ### Tests
 
-Located in:
-- [python/rack/tests](https://github.com/fmidev/rack/tree/main/python/rack/tests)
-
-Examples:
-
-```
-# General
-python3 -m unittest discover -s rack/tests
-python3 -m unittest discover -s rack/tests -v
-
-# Module specific
-# Example: `rack.prog` - `test_prog*.py`
-python3 -m unittest rack/tests/test_prog.py
-python3 -m unittest rack/tests/test_prog_rack.py -v
-python3 -m unittest rack/tests/test_prog_gnuplot.py -v
-
-# More examples
-python3 -m unittest -v rack.tests.test_typical
-python3 -m unittest -v rack.tests.test_maps
-
-# Direct path vs $PYTHON_PATH (module)
-python3 -m unittest    rack/tests/test_composer.py 
-python3 -m unittest -v rack.tests.test_composer
-
-```
-
 ### Statistics
 
 Usage of this program - [`rack.statistics.py`](rack/statistics.py) consists typically of two steps
