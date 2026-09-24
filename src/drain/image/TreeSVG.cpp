@@ -224,7 +224,7 @@ void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 			setHeight(1.5*size);
 		}
 		setMargin(0.25*size);
-		// no break
+		// no break  TODO: CHECK
 	default:
 		setStyle("font-size", size, "px");
 		// elemHeight unused... warn if given?

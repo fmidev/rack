@@ -125,7 +125,7 @@ public:
 	NodeXML(const NodeXML & node){
 		id = drain::StringBuilder<>(node.getTag(), ++nextID);
 		// drain::StringTools::import(++nextID, id);
-		// XML::xmlAssignNode(*this, node); // RISKY!? Should be called by the copy constructors of derived classes.
+		// TODO: CHECK: XML::xmlAssignNode(*this, node); // RISKY!? Should be called by the copy constructors of derived classes.
 	}
 
 	virtual inline

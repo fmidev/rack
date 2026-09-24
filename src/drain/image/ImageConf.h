@@ -58,7 +58,7 @@ public:
 	}
 
 	inline
-	Encoding(const Encoding & encoding){ // : scalingPtr(this) {
+	Encoding(const Encoding & encoding) : drain::ValueScaling(){ // : scalingPtr(this) {
 		setEncoding(encoding);
 		//setType(encoding.caster.getType());
 	}

@@ -1003,6 +1003,9 @@ protected:
 };
 
 
+// TODO: CHECK: unused parameter 'colour' - this specialization writes a fixed placeholder
+// "<color>" instead of encoding the actual colour (same pattern as the TextStyle/TextStyleVT100
+// operator<< stubs, which also emit a fixed placeholder). Looks like unfinished functionality.
 template <>
 inline
 void Logger::append(const TextStyle::Colour & colour){

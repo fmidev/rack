@@ -116,6 +116,10 @@ class CopyOp : public UnaryFunctorOp<CopyFunctor> {
 
 public:
 
+	// TODO: CHECK: unused parameter 'LIMIT' - it is accepted but never applied: the base is
+	// always constructed with hardcoded (true, true), and the commented-out link() below (which
+	// would have wired LIMIT to a parameter) is disabled. A caller-supplied LIMIT value currently
+	// has no effect. Confirm whether this is intentional before touching it (CLI-visible parameter).
 	CopyOp(double scale = 1.0, double bias = 0, bool LIMIT=true) : UnaryFunctorOp<CopyFunctor>(true, true) {
 		this->functor.setScale(scale, bias);
 		//this->parameters.link("LIMIT", this->LIMIT=LIMIT);

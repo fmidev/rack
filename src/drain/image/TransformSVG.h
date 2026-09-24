@@ -112,6 +112,8 @@ public:
 	/// Copy constructor
 	TransformSVG(const TransformSVG & tr);
 
+	TransformSVG & operator=(const TransformSVG &) = default;
+
 	inline
 	bool empty() const {
 		return (rotate.empty() && scale.empty() && translate.empty() && matrix.empty()) ;

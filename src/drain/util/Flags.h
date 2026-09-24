@@ -111,6 +111,10 @@ public:
 	virtual inline
 	~SingleFlagger(){};
 
+	// Explicit (not =deleted) despite the reference member 'dict': copy-constructing binds the
+	// new object's reference to the same (typically static, shared) dictionary as the source,
+	// which is fine; only copy-assignment would be unable to rebind it (and stays deleted).
+	SingleFlagger(const SingleFlagger &) = default;
 
 	/// Return true, if value is exactly \c x .
 	virtual
@@ -242,6 +246,11 @@ public:
 
 	virtual inline
 	~MultiFlagger(){};
+
+	// Explicit (not =deleted) despite the reference member 'dict': copy-constructing binds the
+	// new object's reference to the same (typically static, shared) dictionary as the source,
+	// which is fine; only copy-assignment would be unable to rebind it (and stays deleted).
+	MultiFlagger(const MultiFlagger &) = default;
 
 
 	virtual inline

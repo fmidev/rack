@@ -93,6 +93,7 @@ public:
 
 	inline
 	ValueScaling(const drain::ValueScaling & scaling) :
+		UniTuple<double,2>(),
 		scale(this->next()), offset(this->next()) //, physRange(this->tuple(), 2)
 	{
 		this->assignSequence(scaling);

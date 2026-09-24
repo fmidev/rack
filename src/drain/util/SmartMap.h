@@ -93,6 +93,11 @@ public:
 	// Copy constructor. Does not copy items.
 	/**
 	 */
+	// TODO: CHECK: -Wdeprecated-copy fires because this copy constructor is user-declared but
+	// operator= is not; the implicit copy-assignment operator does a full memberwise/base copy
+	// (i.e. it DOES copy items, via std::map's own operator=), which is inconsistent with this
+	// constructor's documented "does not copy items" behavior. Confirm whether that asymmetry
+	// between construction and assignment is intentional.
 	inline
 	SmartMap(const SmartMap & smap) : separator(smap.separator), arraySeparator(smap.arraySeparator){};
 

@@ -63,8 +63,13 @@ public:
 	Channel(){
 	};
 
+	// TODO: CHECK: only type/scaling/geometry/coordinate-policy are copied via setters (per the
+	// comment above, a general conf copy was rejected as "TOO GENERAL, discards scalingPtr");
+	// the pixel buffer itself is not copied. Confirm this is the intended (metadata-only) copy
+	// semantics. Also causes -Wdeprecated-copy (user-declared copy ctor, no operator=); given the
+	// above, a blind `=default` operator= is not obviously equivalent, so needs the same look.
 	inline
-	Channel(const Channel & channel){
+	Channel(const Channel & channel) : ImageFrame(){
 		//conf.setConf() TOO GENERAL, discards scalingPtr
 		setStorageType(channel.getType());
 		conf.setScaling(channel.getScaling());  // NOTE: pointer-selected
@@ -152,8 +157,11 @@ public:
 	inline
 	MultiChannel(){};
 
+	// TODO: CHECK: only scaling is copied via setter (unlike Channel's copy constructor above,
+	// geometry and coordinate policy are not copied, nor is the pixel buffer). Confirm intentional.
+	// Also causes -Wdeprecated-copy (user-declared copy ctor, no operator=); see Channel above.
 	inline
-	MultiChannel(const MultiChannel & img){
+	MultiChannel(const MultiChannel & img) : ImageFrame(){
 		this->conf.setScaling(img.getScaling());
 	};
 

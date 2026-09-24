@@ -100,6 +100,8 @@ public:
 	BBoxSVG(const BBoxSVG & bbox) : drain::Box<svg::coord_t>(bbox)  {
 	}
 
+	BBoxSVG & operator=(const BBoxSVG &) = default;
+
 
 	// New
 

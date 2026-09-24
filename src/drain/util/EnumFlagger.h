@@ -130,6 +130,8 @@ public:
 	};
     */
 
+	EnumFlagger(const EnumFlagger &) = default;
+
 	/**
 	 *  Consider handler through this->set(Flagger) ? Needs protected/private _set() (or assign()).
 	 */

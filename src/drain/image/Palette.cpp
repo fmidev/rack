@@ -764,7 +764,7 @@ void Palette::importJSON(const drain::JSONtree & entries){ //, int depth){
 			case 4:
 				entry.alpha = l.back();
 				l.pop_back();
-				// no break
+				// no break  TODO: CHECK
 			case 3:
 				// entry.color.assignSequence(l);
 				entry.color.setSize(0);
@@ -1114,6 +1114,11 @@ void Palette::exportFMT(std::ostream & ostr, const std::string & format) const {
 
 
 
+// TODO: CHECK: unused parameter 'up' - further down, the line
+// "y = up ? height - (index+1) * lineheight : index * lineheight;" is commented out and
+// replaced with an unconditional top-down "y = headerHeight + index*lineheight;", so the
+// legend's orientation no longer actually depends on 'up'. Confirm whether that was a
+// deliberate simplification or unfinished work.
 void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 
 	const int headerHeight = 30;
@@ -1208,7 +1213,7 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 					//style << "fill-opacity:" << color[3]/255.0 << ';';
 					style << "fill-opacity:" << color.get<double>(3)/255.0 << ';';
 				}
-				// no break
+				// no break  TODO: CHECK
 			case 3:
 				// style << "fill:rgb(" << color[0] << ',' << color[1] << ',' << color[2] << ");";
 				style << "fill:rgb(" << color.get<double>(0) << ',' << color.get<double>(1) << ',' << color.get<double>(2) << ");";

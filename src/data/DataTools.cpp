@@ -320,6 +320,12 @@ void DataTools::updateInternalAttributes(Hi5Tree & src,  const drain::FlexVariab
 }
 
 
+// TODO: CHECK: unused parameter 'projected' - it is never read in the body below. The inner
+// call polarODIM.getMaxRange(true) passes a literal true, but that parameter is
+// PolarODIM::getMaxRange(bool warn=false) - a different, unrelated flag (whether to log a
+// warning on failure), not a range-projection mode. So 'projected' currently has no effect
+// on the result. This is a radar-geometry question (out of scope for a readability pass);
+// confirm whether ground/slant-range projection needs to be wired in here.
 int DataTools::getMaxRange(const Hi5Tree & src, bool projected){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);

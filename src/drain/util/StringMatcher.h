@@ -77,7 +77,7 @@ public:
 	}
 
 	inline
-	StringMatcher(const StringMatcher & matcher) : value(regExpString), isRegExp(false){
+	StringMatcher(const StringMatcher & matcher) : RegExp(), value(regExpString), isRegExp(false){
 		set(matcher.value);
 	}
 

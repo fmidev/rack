@@ -194,6 +194,11 @@ public:
 	}
 	*/
 
+	// TODO: CHECK: -Wdeprecated-copy fires because this copy constructor is user-declared but
+	// operator=(const ODIMPathElem&) is not (only the templated operator=(const T&) below exists);
+	// the implicit copy-assignment operator does a plain memberwise copy (always copying
+	// currentStr), which differs from this constructor's conditional copy (only when group==OTHER).
+	// Confirm whether copy-construction and copy-assignment are meant to behave the same way.
 	inline
 	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index){ // , indexMax(e.indexMax) {
 		if (e.group == OTHER)

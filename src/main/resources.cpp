@@ -47,6 +47,16 @@ RackContext::RackContext() : drain::SmartContext(__FUNCTION__) {
 	svgTrack->set("height", 48);
 }
 
+// TODO: CHECK: RackContext derives from 6 bases (ProductConf, drain::SmartContext,
+// GraphicsContext, ImageContext, AndreContext, Hdf5Context - see main/resources.h), but only 3
+// are explicitly copied here; ProductConf, GraphicsContext and AndreContext are silently
+// default-constructed instead, each discarding whatever CLI-configured state (e.g. AndreContext's
+// andreSelect/defaultQuality) the source ctx held. Unlike the other -Wextra base-class findings
+// in this codebase, there is no reflection-based copyStruct()/updateFromMap() call here to
+// restore that state afterward. This constructor is exercised for real: drain::Cloner<B,S>
+// (drain/util/Cloner.h) does `new S(src)` to clone a context per thread, so this looks like it
+// could silently drop configured settings when RackContext is cloned. Confirm whether this is
+// intentional before changing it - it would affect CLI/runtime behavior in operational pipelines.
 RackContext::RackContext(const RackContext & ctx): drain::SmartContext(ctx), ImageContext(ctx), Hdf5Context(ctx){
 	drain::Logger mout( __FILE__, __FUNCTION__);
 

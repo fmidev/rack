@@ -120,6 +120,7 @@ public:
 
 	inline
 	CoordinatePolicy(const CoordinatePolicy & policy) : //v(4, LIMIT), xUnderFlowPolicy(v[0]), yUnderFlowPolicy(v[1]), xOverFlowPolicy(v[2]), yOverFlowPolicy(v[3]) {
+		UniTuple<EdgePolicy::index_t,4>(),
 		xUnderFlowPolicy(next()), yUnderFlowPolicy(next()), xOverFlowPolicy(next()), yOverFlowPolicy(next()) {
 		assignSequence(policy);
 	};

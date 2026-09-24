@@ -112,8 +112,15 @@ public:
 		init(initialize);
 	};
 
+	// TODO: CHECK: -Wdeprecated-copy fires because this copy constructor is user-declared but
+	// operator= is not. Unlike EncodingODIM's own operator= (which only copies a narrow set of
+	// scalar encoding fields via copyEncoding()), this copy constructor calls initFromMap(odim),
+	// copying the full set of registered ODIM attributes (date, time, source, product, etc.).
+	// The implicit operator= (inherited from EncodingODIM's narrower one, plus memberwise NI)
+	// would NOT replicate that - so adding a naive `=default`/inherited operator= here would be
+	// semantically incomplete, not just a warning-silencing no-op. Needs a real decision.
 	inline
-	ODIM(const ODIM & odim) : NI(odim.NI){
+	ODIM(const ODIM & odim) : EncodingODIM(ODIMPathElem::ALL_LEVELS), NI(odim.NI){
 		initFromMap(odim);
 	};
 

@@ -79,6 +79,11 @@ protected:
 */
 
 
+// TODO: CHECK: unused parameters 'i'/'j' - the commented-out lines below show they were
+// originally meant to be linked (via a since-abandoned this->i0/this->j0 storage), but the
+// "location" parameter below links to this->startPoint instead without ever initializing it
+// from i/j. Both constructor defaults are 0 and callers configure the start point via the
+// "location" CLI parameter afterward, so this is currently dormant, but confirm intentional.
 FloodFillOp::FloodFillOp(int i, int j, double min, double max, double value) : ImageOp(__FUNCTION__,
 		"Fills an area starting at (i,j) having intensity in [min,max], with a value.") {
 	parameters.link("location",  this->startPoint.tuple(),  "i:j");

@@ -142,6 +142,8 @@ struct Alignment {
 	Alignment(const Alignment & ac) : axis(ac.axis), pos(ac.pos){
 	}
 
+	Alignment & operator=(const Alignment &) = default;
+
 
 	inline
 	Alignment(AlignBase::Axis axis, AlignBase::Pos pos = AlignBase::Pos::UNDEFINED_POS): axis(axis), pos(pos){

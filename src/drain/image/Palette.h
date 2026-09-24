@@ -90,7 +90,7 @@ public:
 
 	/// Shorthand invoking fgetEntryByCode for retrieving the code
 	inline
-	const key_type getValueByCode(const std::string & code, bool lenient=true) const {
+	key_type getValueByCode(const std::string & code, bool lenient=true) const {
 		const value_type & entry = getEntryByCode(code, lenient);
 		return entry.first;
 	}

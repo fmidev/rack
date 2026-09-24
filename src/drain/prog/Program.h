@@ -56,8 +56,14 @@ public:
 	inline
 	Program(){};
 
+	// TODO: CHECK: bases CommandSequence and Contextual are explicitly default-constructed
+	// (empty) here, same as before, and the body copies nothing else from prog either - the
+	// "ctx?" in the debug message suggests this was already known to be incomplete. Copying a
+	// Program currently produces an empty one with no commands and no context. No live callers
+	// currently copy-construct a Program (only commented-out code references it), so this is
+	// dormant, but confirm whether it needs a real implementation.
 	inline
-	Program(const Program &prog){
+	Program(const Program &prog) : CommandSequence<std::pair<std::string,Command *> >(), Contextual(){
 		std::cerr << "Program copy ctor: ctx?\n";
 	};
 

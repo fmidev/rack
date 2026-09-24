@@ -53,6 +53,8 @@ public:
 		init(initialize);
 	};
 
+	// TODO: CHECK: same -Wdeprecated-copy concern as ODIM's own copy constructor (see ODIM.h):
+	// this copy constructor does a full initFromMap(odim), but the implicit operator= would not.
 	inline
 	CartesianODIM(const CartesianODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);

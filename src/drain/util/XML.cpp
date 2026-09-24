@@ -225,7 +225,7 @@ void XML::setText(const std::string & s) {
 		break;
 	case XML::UNDEFINED:
 		type = CTEXT;
-		// no break
+		// no break  TODO: CHECK
 	case XML::CTEXT:
 	case XML::COMMENT:
 	default:

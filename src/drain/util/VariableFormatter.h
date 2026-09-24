@@ -185,7 +185,7 @@ public:
 			switch (v.size()) {
 			case 3:
 				count = v[2];
-				// no break
+				// no break  TODO: CHECK
 			case 2:
 				pos = v[1];
 				if (pos >= s.size()){

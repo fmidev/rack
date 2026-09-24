@@ -50,7 +50,7 @@ SourceODIM::SourceODIM(const std::string & source) : source(source) {
 };
 
 
-SourceODIM::SourceODIM(const SourceODIM & s){
+SourceODIM::SourceODIM(const SourceODIM & s) : drain::FlexVariableMap(){
 
 	init();
 	// importCastableMap(s);

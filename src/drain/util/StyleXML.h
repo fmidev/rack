@@ -67,7 +67,7 @@ public:
 	};
 
 	inline
-	StyleXML(const StyleXML & stl){
+	StyleXML(const StyleXML & stl) : std::map<std::string,Variable>(){
 		MapTools::setValues(*this, stl);
 	};
 

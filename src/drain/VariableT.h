@@ -106,6 +106,11 @@ public:
 
 	/// C++ bug? : Copy constructor will not catch
 	// VariableT(const VariableT<T> & v);
+	// TODO: CHECK: -Wdeprecated-copy fires because operator=(const VariableT<T>&) below is
+	// user-declared but no copy constructor is; the implicit one is used instead (and is relied
+	// on, per the note above: an explicit copy constructor was tried and rejected because it
+	// intercepted calls meant for the variadic template constructor's init(args...) path).
+	// Confirm the implicit copy constructor's plain member/base copy is what copies actually need.
 
 
 

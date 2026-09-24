@@ -76,6 +76,10 @@ public:
 		init();
 	};
 
+	// TODO: CHECK: -Wdeprecated-copy fires because this copy constructor is user-declared but
+	// operator= is not. The constructor itself only calls adjustBuffer()+init() (its own comment
+	// "copy properties? (no)" already flags that properties aren't copied), so it's unclear what
+	// a correct operator= should even do here; needs a real look, not a blind `=default`.
 	inline
 	ImageFrame(const ImageFrame & src) : ImageLike(src), propertiesPtr(&properties) { // , scalingPtr(&conf.getScaling()) {
 		adjustBuffer();

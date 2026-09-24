@@ -157,9 +157,9 @@ public:
 			break;
 		case XML::UNDEFINED:
 			tree->setType(XML::STYLE_SELECT);
-			// no break
+			// no break  TODO: CHECK
 		case XML::STYLE_SELECT:
-			// no break
+			// no break  TODO: CHECK
 		default:
 			tree->set(l);
 			break;

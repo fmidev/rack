@@ -62,7 +62,7 @@ public:
 		setPtr(NULL, typeid(void));
 	}
 
-	CastableIterator(const CastableIterator &it){
+	CastableIterator(const CastableIterator &it) : Castable(){
 		setPtr(it.caster.ptr, it.getType());
 	}
 

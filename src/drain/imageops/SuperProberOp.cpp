@@ -245,6 +245,11 @@ void SuperProberOp::traverseChannel(const Channel & src, Channel & dst) const {
 
 }
 
+// TODO: CHECK: unused parameter 'dst' - this method builds a local 'mask' image, runs a
+// SuperProber over it, and never writes any result to dst (or anywhere else the caller could
+// retrieve). traverseChannel2() is not called anywhere in the codebase (unlike the standard
+// traverseChannel() override), so this looks like dormant/experimental code. Confirm whether
+// it needs finishing or can be removed.
 void SuperProberOp::traverseChannel2(const Channel & src, Channel & dst) const {
 
 	ImageT<unsigned char> mask;

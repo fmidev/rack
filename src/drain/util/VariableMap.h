@@ -97,6 +97,12 @@ public:
 		(*this)[entry.first] = entry.second;
 	};
 
+	// TODO: CHECK: -Wdeprecated-copy fires because the copy constructor above is user-declared
+	// but operator=(const VariableMap&) is not (it was tried and disabled below); the implicit
+	// copy-assignment operator does a plain memberwise/base copy (via std::map's operator=,
+	// copying items), whereas SmartMap's own copy constructor deliberately "does not copy items"
+	// (see SmartMap.h) and this class's copy constructor instead calls importMap(v) explicitly.
+	// Confirm whether copy-assignment should match the copy constructor's behavior.
 	/*
 	inline
 	VariableMap & operator=(const VariableMap & v){

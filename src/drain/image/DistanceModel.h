@@ -55,7 +55,7 @@ public:
 	};
 
 	/// Copy constructor.
-	Bidirectional(const Bidirectional & r) : forward(this->at(0)),  backward(this->at(1)) {
+	Bidirectional(const Bidirectional & r) : drain::UniTuple<T,2>(), forward(this->at(0)),  backward(this->at(1)) {
 		this->set(r.forward, r.backward);
 	};
 

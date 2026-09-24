@@ -180,7 +180,7 @@ public:
 	ProductCommand(){
 	};
 
-	ProductCommand(const ProductCommand & cmd){
+	ProductCommand(const ProductCommand & cmd) : drain::BeanCommand<OP>(){
 		this->bean.getParameters().copyStruct(cmd.bean.getParameters(), cmd, *this);
 	};
 
@@ -316,6 +316,10 @@ protected:
  */
 
 /// Wraps OP of class ProductOp to a Command of class ProductCommand<OP>
+// TODO: CHECK: unused parameter 'alias' - same issue as DetectorInstaller/RemoverInstaller's
+// install() in main/andre.cpp: this shadows drain::CommandInstaller::install(char alias=0),
+// which forwards alias to cmdBank.add<CMD>(name, alias), but here it's dropped
+// (cmdBank.add<...>(name) is called without it). Confirm intentional.
 template <class OP>
 drain::Command & ProductModule::install(char alias){  // = 0 TODO: EMBED "install2"
 	static const OP op;

@@ -168,7 +168,7 @@ public:
 	AnDReCommand(){
 	};
 
-	AnDReCommand(const AnDReCommand & cmd){
+	AnDReCommand(const AnDReCommand & cmd) : drain::BeanCommand<OP>(){
 		this->bean.getParameters().copyStruct(cmd.bean.getParameters(), cmd, *this);
 	};
 
@@ -305,6 +305,11 @@ public:
 	DetectorInstaller(drain::CommandBank & bank = drain::getCommandBank()) : AnDReInstaller(bank){
 	};
 
+	// TODO: CHECK: unused parameter 'alias' - this override shadows
+	// drain::CommandInstaller::install(char alias=0), which does forward alias to
+	// cmdBank.add<CMD>(name, alias); here it's silently dropped (cmdBank.add<...>(name) is
+	// called without it), so an alias given to this install() would have no effect. No current
+	// caller passes a non-default alias, so this is currently dormant, but confirm intentional.
 	template <class OP>
 	//DetectorCommand<OP> & install(char alias = 0){
 	drain::Command & install(char alias = 0){
@@ -330,6 +335,8 @@ public:
 	/**
 	 *   AnDReCommand<OP>
 	 */
+	// TODO: CHECK: same unused 'alias' issue as DetectorInstaller::install() above - shadows the
+	// base's alias-forwarding install() but drops alias here. Confirm intentional.
 	template <class OP>  // AnDReCommand<OP>
 	drain::Command & install(char alias = 0){
 		std::string name = OP().getName();

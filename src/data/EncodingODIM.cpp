@@ -50,7 +50,7 @@ const drain::FlagResolver::dict_t EncodingODIM::settingDict = {
 		{"RANGE", RANGE}
 };
 
-EncodingODIM::EncodingODIM(const EncodingODIM & odim) : scaling(ownScaling), scalingConst(ownScaling), explicitSettings(odim.explicitSettings){
+EncodingODIM::EncodingODIM(const EncodingODIM & odim) : ReferenceMap(), scaling(ownScaling), scalingConst(ownScaling), explicitSettings(odim.explicitSettings){
 	init(ODIMPathElem::ALL_LEVELS); //2023/04/24
 	//copyStruct(odim, odim, *this); // 2023/04/24
 	//keyList = odim.keyList; // Otherways order comes back to default (std::map key order)

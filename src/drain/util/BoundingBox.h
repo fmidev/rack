@@ -55,6 +55,8 @@ public:
 	BBox(const BBox & bbox) : Rectangle<double>(bbox){
 	}
 
+	BBox & operator=(const BBox &) = default;
+
 	inline
 	BBox(const Rectangle<double> & bbox) : Rectangle<double>(bbox){
 	}

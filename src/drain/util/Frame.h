@@ -62,7 +62,7 @@ public:
 		this->set(width, height?height:width);
 	};
 
-	Frame2D(const Frame2D<T> & geometry)  : width(this->next()), height(this->next()) {
+	Frame2D(const Frame2D<T> & geometry)  : drain::UniTuple<T,2>(), width(this->next()), height(this->next()) {
 		this->set(geometry.width, geometry.height);
 	}
 
@@ -237,6 +237,8 @@ public:
 	inline
 	Box(const Box & box) : drain::Point2D<coord_t>(box), drain::Frame2D<coord_t>(box)  {
 	}
+
+	Box & operator=(const Box &) = default;
 
 
 	inline

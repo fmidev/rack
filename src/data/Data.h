@@ -679,8 +679,11 @@ public:
 
 	// TreeWrapper<typename DT::datatype_t>(src.tree), odim(src.tree.data.image) {
 
+	// TODO: CHECK: the std::map<std::string,DT> base (the quantity map itself) is explicitly
+	// default-constructed (empty) here, same as before; adapt() below populates it instead, but
+	// per the ALERT comment this already has a known discrepancy from a plain copy. Confirm intentional.
 	DataGroup(const datagroup_t & src) :
-		TreeWrapper<typename DT::datatype_t>(src.tree) { // , baseODIM(ODIMPathElem::DATASET){
+		TreeWrapper<typename DT::datatype_t>(src.tree), map_t() { // , baseODIM(ODIMPathElem::DATASET){
 		adapt(src, *this);  // ALERT: includes all the quantities, even thoug src contained only some of them
 	}
 

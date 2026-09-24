@@ -62,7 +62,12 @@ public:
 	CommandBank() :  scriptTriggerFlag(0) {
 	};
 
-	CommandBank(const CommandBank & bank) :  scriptTriggerFlag(bank.scriptTriggerFlag){
+	// TODO: CHECK: base BankSuper<Command> (which holds the registered commands themselves, and
+	// has its own working copy constructor) is explicitly default-constructed (empty) here, same
+	// as before, per the pre-existing "Copy sections?" doubt below - a copied CommandBank would
+	// have no registered commands/sections. CommandBank is used as a singleton via
+	// getCommandBank() everywhere in this codebase, so this is currently dormant, but confirm.
+	CommandBank(const CommandBank & bank) : BankSuper<Command>(), scriptTriggerFlag(bank.scriptTriggerFlag){
 		// Copy sections?
 	};
 

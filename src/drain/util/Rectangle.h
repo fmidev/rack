@@ -74,7 +74,7 @@ struct Rectangle : public drain::UniTuple<T,4> {
 	}
 
 	/// Copy constructor
-	Rectangle(const Rectangle & r) : lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
+	Rectangle(const Rectangle & r) : drain::UniTuple<T,4>(), lowerLeft(this->tuple(), 0), upperRight(this->tuple(), 2){
 		this->assignSequence(r);
 	};
 

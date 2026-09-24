@@ -95,6 +95,8 @@ struct AnchorElem : public std::string {
 	AnchorElem(const AnchorElem & a) : std::string(a){
 	};
 
+	AnchorElem & operator=(const AnchorElem &) = default;
+
 	inline
 	const std::string & str() const {
 		return *this;

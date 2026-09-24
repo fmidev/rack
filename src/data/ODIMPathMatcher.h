@@ -64,7 +64,7 @@ public:
 
 	inline
 	ODIMPathElemMatcher(const ODIMPathElemMatcher &e) :
-		// ODIMPathElem(e),
+		ODIMPathElem(),
 		// index(e.index),
 		// indexMax(e.indexMax),
 		flags(ODIMPathElem::getDictionary(), this->group, '|') {

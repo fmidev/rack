@@ -131,6 +131,8 @@ public:
 		undetectValue(quantity.undetectValue) {
 	}
 
+	Quantity & operator=(const Quantity &) = default;
+
 	/*
 	inline
 	Quantity & operator=(const Quantity & quantity){

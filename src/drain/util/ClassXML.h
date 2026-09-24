@@ -94,7 +94,7 @@ public:
 	}
 
 	inline
-	ClassXML(const ClassXML & e){
+	ClassXML(const ClassXML & e) : std::string(){
 		set(e.str());
 	};
 

@@ -44,7 +44,12 @@ Histogram::Histogram(size_t size){
 	//initialize(size); // call moved to computation phase
 }
 
-Histogram::Histogram(const Histogram & histogram){
+// TODO: CHECK: base std::vector<unsigned long> (the actual bin counts) is explicitly
+// default-constructed (empty) here, same as before; setSize() only resizes/zero-fills it
+// (see setSize() below), so this copy constructor does NOT copy the source histogram's bin
+// contents, only its size and scaling. No caller currently copy-constructs a Histogram (all
+// usages pass by reference), so this is currently dormant, but confirm whether it's intentional.
+Histogram::Histogram(const Histogram & histogram) : std::vector<unsigned long>(){
 	setSize(histogram.getSize());
 	scaling.set(histogram.scaling);
 	weight = 0.5;

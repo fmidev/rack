@@ -130,7 +130,7 @@ public:
 	}
 
 	inline
-	VerticalProfileODIM(const VerticalProfileODIM & odim){
+	VerticalProfileODIM(const VerticalProfileODIM & odim) : VerticalCrossSectionODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 	}
 
@@ -175,7 +175,7 @@ public:
 		init(initialize);
 	};
 
-	RhiODIM(const RhiODIM & odim){
+	RhiODIM(const RhiODIM & odim) : VerticalCrossSectionODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 	};
 

@@ -65,6 +65,11 @@ public:
 	inline
 	ImageLike() {};
 
+	// TODO: CHECK: -Wdeprecated-copy fires because this copy constructor is user-declared but
+	// operator= is not; note the constructor's own debug message already flags
+	// "setConf/Geom has no effect" as a known/suspected problem, so this whole copy-semantics
+	// area (both constructor and any operator=) looks unfinished rather than just missing a
+	// warning-silencing declaration. Needs a real look, not a blind `=default`.
 	inline
 	ImageLike(const ImageLike &image){
 		std::cerr << __FILE__ << __FUNCTION__ << " setConf/Geom has no effect\n";
@@ -135,13 +140,13 @@ public:
 
 
 	inline
-	const size_t getImageChannelCount() const {
+	size_t getImageChannelCount() const {
 		return conf.getImageChannelCount();
 	};
 
 
 	inline
-	const size_t getAlphaChannelCount() const {
+	size_t getAlphaChannelCount() const {
 		return conf.getAlphaChannelCount();
 	};
 

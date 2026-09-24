@@ -697,9 +697,10 @@ public:
 	 *
 	 *  Future option: also key (of type const key_t &) is considered
 	 */
-	inline
-	void initChild(tree_t & child) const {
+	inline // consider static ?
+	void initChild(tree_t &) const { //  child
 	}
+
 
 	static
 	void generateKey(const tree_t & tree, typename P::elem_t & key);

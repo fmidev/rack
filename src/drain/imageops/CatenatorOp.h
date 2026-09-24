@@ -55,7 +55,7 @@ public:
 		//setParameters(p);
 	};
 
-	CatenatorOp(const CatenatorOp & op){
+	CatenatorOp(const CatenatorOp & op) : ImageOp(){
 		this->parameters.copyStruct(op.parameters, op, *this);
 	};
 

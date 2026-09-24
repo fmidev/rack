@@ -78,7 +78,7 @@ public:
 
 	FunctorOp() : LIMIT(false){};
 
-	FunctorOp(const FunctorOp & op) : ImageOp(op), LIMIT(op.LIMIT){
+	FunctorOp(const FunctorOp & op) : FunctorWrapper<F>(), ImageOp(op), LIMIT(op.LIMIT){
 		this->getParameters().copyStruct(op.getParameters(), op, *this);  // will add LIMIT (only)
 	};
 

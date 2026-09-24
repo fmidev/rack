@@ -60,7 +60,7 @@ public:
 	RadarWindowGeom() : widthM(this->next()), heightD(this->next()) {
 	}
 
-	RadarWindowGeom(const RadarWindowGeom & geom) : widthM(next()), heightD(next()) {
+	RadarWindowGeom(const RadarWindowGeom & geom) : drain::UniTuple<double,2>(), widthM(next()), heightD(next()) {
 		assignSequence(geom.tuple());
 	}
 

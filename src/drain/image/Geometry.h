@@ -52,7 +52,7 @@ public:
 		this->set(images, alphas);
 	};
 
-	ChannelGeometry(const ChannelGeometry & g) : imageChannels(next()), alphaChannels(next()){ //, channels(0) {
+	ChannelGeometry(const ChannelGeometry & g) : drain::UniTuple<size_t,2>(), imageChannels(next()), alphaChannels(next()){ //, channels(0) {
 		this->set(g.tuple());
 	};
 
@@ -159,7 +159,7 @@ public:
     	//updateTuple();
     }
 	
-    Geometry(const Geometry &g) : area(tuple(),0), channels(tuple(),2) {
+    Geometry(const Geometry &g) : drain::UniTuple<size_t,4>(), area(tuple(),0), channels(tuple(),2) {
     	assignSequence(g.tuple());
     	//updateTuple();
     }
@@ -272,7 +272,7 @@ public:
 	};
 
 	inline
-	const size_t getImageChannelCount() const {
+	size_t getImageChannelCount() const {
 		return channels.getImageChannelCount();
 	};
 
@@ -282,7 +282,7 @@ public:
 	};
 
 	inline
-	const size_t getAlphaChannelCount() const {
+	size_t getAlphaChannelCount() const {
 		return channels.getAlphaChannelCount();
 	};
 

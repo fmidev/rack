@@ -58,8 +58,12 @@ public:
 	inline
 	Command(): section(0){}; //
 
+	// TODO: CHECK: base Contextual is explicitly default-constructed (contextPtr=nullptr) here,
+	// same as before, rather than copying cmd's contextPtr. Commands are cloned per thread/context
+	// (see AGENTS.md), so a fresh (unset) context that gets reassigned afterward may well be the
+	// intended behavior here, but confirm.
 	inline
-	Command(const Command & cmd) : section(cmd.section), lastParameters(cmd.lastParameters){
+	Command(const Command & cmd) : Contextual(), section(cmd.section), lastParameters(cmd.lastParameters){
 		// setParameters(cmd.getParameters()); they do not exist yet!
 	}
 

@@ -54,7 +54,7 @@ struct Point2D : public drain::UniTuple<T,2> {
 		this->set(x, y);
 	};
 
-	Point2D(const Point2D & p) : x(this->next()), y(this->next()){
+	Point2D(const Point2D & p) : drain::UniTuple<T,2>(), x(this->next()), y(this->next()){
 		this->set(p.tuple());
 	};
 

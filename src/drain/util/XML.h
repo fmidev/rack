@@ -172,8 +172,12 @@ public:
 	inline
 	XML(){};
 
+	// TODO: CHECK: base std::map<std::string,FlexibleVariable> (the attribute map) is explicitly
+	// default-constructed (empty) here, same as before, and the empty body means copying an XML
+	// object silently drops all its attributes. See also the "RISKY!?" note in NodeXML's copy
+	// constructor in TreeXML.h, which relies on this. Confirm intentional.
 	inline
-	XML(const XML &){
+	XML(const XML &) : std::map<std::string,FlexibleVariable>(){
 	};
 
 	virtual inline

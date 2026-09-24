@@ -54,7 +54,7 @@ struct Measurement : public drain::UniTuple<double,2> {
 		this->set(reflectivity, height);
 	};
 
-	Measurement(const Measurement & p): reflectivity(this->next()), height(this->next()){
+	Measurement(const Measurement & p): drain::UniTuple<double,2>(), reflectivity(this->next()), height(this->next()){
 		this->set(p);
 	};
 };
