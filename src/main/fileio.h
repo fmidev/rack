@@ -62,7 +62,12 @@ const drain::FileInfo listFileInfo;
 
 /// Syntax for recognising text files.
 extern
-const drain::RegExp textFileExtension;
+const drain::FileInfo textFileInfo;
+//const drain::RegExp textFileExtension;
+
+extern
+const drain::FileInfo jsonFileInfo;
+
 
 /// Syntax for recognising numeric array files (in plain text format anyway).
 extern

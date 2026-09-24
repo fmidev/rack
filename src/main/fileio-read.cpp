@@ -107,27 +107,58 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 			readFileH5(fullFilename);
 		}
 		else if (listFileInfo.checkExtension(path.extension)){
-		//else if (listFileExtension.test(fileName)){
 			if (!ctx.inputPrefix.empty()){
 				mout.note("Reading list file '", fileName, "', omitting prefix: ", ctx.inputPrefix);
 			}
-			//readListFile(fileName);
 			readListFile(path);
-			// It is better to "save" inputPrefix for inputFiles
-			// readListFile(fullFilename);
 		}
 		else if (drain::image::FileTIFF::fileInfo.checkExtension(path.extension)){
 			mout.advice("Writing TIFF files is supported");
 			mout.error("Reading TIFF files unsupported");
 		}
-		else if (drain::image::FilePng::fileInfo.checkExtension(path.extension)){ //(IMAGE_PNG || IMAGE_PNM){
+		else if (drain::image::FilePng::fileInfo.checkExtension(path.extension)){
 			readImageFile(fullFilename);
 		}
-		else if (drain::image::FilePnm::fileInfo.checkExtension(path.extension)){ //(IMAGE_PNG || IMAGE_PNM){
+		else if (drain::image::FilePnm::fileInfo.checkExtension(path.extension)){
 			readImageFile(fullFilename);
 		}
-		else if (textFileExtension.test(fileName)){
+		else if (textFileInfo.checkExtension(path.extension)){
 			readTextFile(fullFilename);
+		}
+		else if (jsonFileInfo.checkExtension(path.extension)) {
+
+			drain::JSONtree cmdTree;
+			drain::Input input(path);
+			drain::JSON::readTree(cmdTree, input);
+			mout.experimental<LOG_INFO>("parsed JSON structure:\n", sprinter(cmdTree));
+
+			//for (const auto & node: cmdTree){
+			for (const drain::JSONtree::pair_t & node: cmdTree){
+				mout.note(node.first, ": ", node.second.data);
+				if (node.second.empty()){
+					mout.note("- EMPTY");
+				}
+				else {
+					//ctx.addedCommands.add(node.first, node.);
+				}
+
+			}
+
+			mout.unimplemented<LOG_ERR>("direct JSON cmd read");
+		 	/*
+			static
+			const std::string execFile("execFile");
+
+			mout.experimental("Executing commands from a JSON file: ", path);
+			try {
+				ctx.addedCommands.add(execFile, path);
+			}
+			catch (const std::exception & e) {
+				const drain::CommandBank & cmdBank = drain::getCommandBank();
+				const drain::Command & cmd = cmdBank.get(execFile);
+				mout.error("Internal command key error: ", cmdBank.execFileCmd, " != ", cmd.getName());
+			}
+			*/
 		}
 		else {
 			mout.error("Unrecognized/unsupported file type, filename: '", fileName, "'");

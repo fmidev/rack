@@ -90,13 +90,15 @@ namespace rack {
 //  Edited 2017/07 such that also files without extension are considered h5 files. BALTRAD bug
 
 /// Syntax for command files, typically used reading HDF5 input lists.
-const drain::RegExp listFileExtension(".*\\.(lst|vol)$",  REG_EXTENDED); //  | REG_ICASE);
+//const drain::RegExp listFileExtension(".*\\.(lst|vol)$",  REG_EXTENDED); //  | REG_ICASE);
 const drain::FileInfo listFileInfo("lst|vol");
 
+const drain::FileInfo textFileInfo("txt");
+const drain::FileInfo jsonFileInfo("json");
 
 
 /// Syntax for recognising text files.
-const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
+// const drain::RegExp textFileExtension(".*\\.(txt)$",  REG_EXTENDED | REG_ICASE);
 
 /// Syntax for recognising numeric array files (in plain text format anyway).
 const drain::RegExp arrayFileExtension(".*\\.(mat)$",  REG_EXTENDED | REG_ICASE);
@@ -825,7 +827,7 @@ void CmdOutputFile::exec() const {
 
 		if (ctx.formatStr.empty()){
 
-			if (textFileExtension.test(filepath) || STD_OUTPUT){ // (value == "-")){
+			if (textFileInfo.checkExtension(path.extension) || STD_OUTPUT){ // (value == "-")){
 				mout.info("Dumping HDF5 structure");
 			}
 			else {

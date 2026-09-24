@@ -159,6 +159,7 @@ public:
 			tree->setType(XML::STYLE_SELECT);
 			// no break
 		case XML::STYLE_SELECT:
+			// no break
 		default:
 			tree->set(l);
 			break;
