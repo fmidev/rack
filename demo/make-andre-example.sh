@@ -58,7 +58,7 @@ CMD="rack $VOLUME \\\\\n  $MULTIPLE\\\\\n"
 
 #STYLE="--gStyle .IMAGE_BORDER='stroke:darkslateblue;stroke-width:1px'"
 STYLE="--gStyle .IMAGE_BORDER='stroke:gray;stroke-width:1px'"
-cmd_base="rack $VOLUME  --gLayout HORZ,UP,RIGHT $STYLE --outputPrefix $PWD/ --gGroupId 'Orig' --gGroupTitle 'DBZH' -Q DBZH -o polar-$NICK.png -Q DBZH -c --paletteDefault  -o cart-$NICK.png "
+cmd_base="rack $VOLUME  --gLayout VERT,DOWN $STYLE --outputPrefix $PWD/ --gGroupId 'Orig' --gGroupTitle 'DBZH' -Q DBZH -o polar-$NICK.png -Q DBZH -c --paletteDefault  -o cart-$NICK.png "
 
 while [ ${#*} != 0 ]; do
 

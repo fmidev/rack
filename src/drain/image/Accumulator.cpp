@@ -185,12 +185,9 @@ void Accumulator::setMethod(const std::string & name, const std::string & params
 		}
 	}
 	catch (const std::exception & e) {
-		//mout.attention(bank.getKeys());
 		mout.note("Use: ", drain::sprinter(bank.getKeys(), "|"));
 		mout.error("unknown method: ", name);
 	}
-
-	//return *methodPtr;
 
 
 }

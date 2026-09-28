@@ -764,7 +764,7 @@ void Palette::importJSON(const drain::JSONtree & entries){ //, int depth){
 			case 4:
 				entry.alpha = l.back();
 				l.pop_back();
-				// no break  TODO: CHECK
+				// no break
 			case 3:
 				// entry.color.assignSequence(l);
 				entry.color.setSize(0);
@@ -1208,23 +1208,17 @@ void Palette::exportSVGLegend(TreeSVG & svg, bool up) const {
 			//switch (color.size()){
 			switch (color.getElementCount()){
 			case 4:
-				//if (color[3] != 255.0) {
 				if (color.get<double>(3) != 255.0) {
-					//style << "fill-opacity:" << color[3]/255.0 << ';';
 					style << "fill-opacity:" << color.get<double>(3)/255.0 << ';';
 				}
-				// no break  TODO: CHECK
+				// no break
 			case 3:
-				// style << "fill:rgb(" << color[0] << ',' << color[1] << ',' << color[2] << ");";
 				style << "fill:rgb(" << color.get<double>(0) << ',' << color.get<double>(1) << ',' << color.get<double>(2) << ");";
 				break;
 			case 1:
-				// style << "fill:rgb(" << color[0] << ',' << color[0] << ',' << color[0] << ");";
-				// style << "fill:rgb(" << color.get<double>(0) << ");";
 				style << "fill:rgb(" << color.get<double>(0) << ',' << color.get<double>(1) << ',' << color.get<double>(2) << ");";
 				break;
 			}
-			//rect->set("style", style.str());
 			rect->setStyle(style.str());
 
 			if (!special){

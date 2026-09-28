@@ -92,6 +92,16 @@ public:
 
 	typedef std::pair<const char *,const drain::VariableT<T> > init_pair_t;
 
+	/// Default constructor
+	inline
+	VariableT(){};
+
+	/// Copy constructor
+	inline
+	VariableT(const VariableT<T> & v) : T(v) {
+		this->init(v);
+	};
+
 	/// Single constructor template, forwarded to init(args...) defined in base classes.
 	/**
 	 *   This is the basic design pattern for all the VariableLikes
@@ -103,6 +113,7 @@ public:
 		// std::cerr << __FILE__ << ':' << __LINE__ << ':' << __FUNCTION__ << " " << value <<  std::endl;
 		this->init(args...); // invokes  T::init(...)
 	}
+
 
 	/// C++ bug? : Copy constructor will not catch
 	// VariableT(const VariableT<T> & v);

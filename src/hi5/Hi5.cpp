@@ -391,7 +391,11 @@ void Hi5Base::writeText(const Hi5Tree &src, const std::list<typename Hi5Tree::pa
 	// for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
 	// const std::string & key = *it;
 	for (const Hi5Tree::path_t & path: paths){
-		src(path).data.writeText(ostr, path);
+		const NodeHi5 & node = src(path).data;
+		if (!node.exclude){
+			node.writeText(ostr, path);
+		}
+		//src(path).data.writeText(ostr, path);
 	}
 }
 

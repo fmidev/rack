@@ -36,6 +36,35 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void DataModifier::markTree(Hi5Tree &src, bool EXCLUDE, ODIMPathElem::group_t groupFilter){
+
+	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+	for (auto & entry: src) {
+
+		//if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+		if (entry.first.belongsTo(groupFilter)){
+			entry.second.data.exclude = EXCLUDE;
+			// Recursion
+			markTree(entry.second, EXCLUDE, groupFilter);
+		}
+	}
+
+}
+
+void DataModifier::markPath(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude){
+	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+	Hi5Tree *ptr = &src; // Rare!
+	for (const Hi5Tree::path_t::elem_t & elem: path){
+		ptr->data.exclude = exclude;
+		ptr = & (*ptr)[elem];
+	}
+	ptr->data.exclude = exclude;
+
+}
+
+
+
 void DataModifier::remove(Hi5Tree &dst, const DataSelector & selector){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -79,7 +108,7 @@ void DataModifier::markIncluded(Hi5Tree &dst, const DataSelector & selector){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// Initially, mark all paths excluded.
-	DataTools::markExcluded(dst, true);
+	markTree(dst, true, ODIMPathElem::DATA_GROUPS);
 
 	mout.debug2("selector for saved (included) paths: ", selector);
 
@@ -92,11 +121,14 @@ void DataModifier::markIncluded(Hi5Tree &dst, const DataSelector & selector){
 		markPathIncluded(dst, path);
 
 		for (auto & entry: dst(path)){
+			entry.second.data.exclude = false;
+			/*
 			if (entry.first.is(ODIMPathElem::ARRAY)){
 				mout.debug2("also save: ", path, '|', entry.first);
 				// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
 				entry.second.data.exclude = false;
 			}
+			*/
 		}
 
 		//
@@ -115,6 +147,8 @@ int DataModifier::handleEmptyGroups(Hi5Tree & dst, bool REMOVE, const ODIMPath &
 
 	// Collect paths of empty groups.
 	ODIMPathList paths;
+
+	// Debugging: check if empty groups remain.
 	int count = 0;
 
 	for (auto & entry: dst(path).getChildren()){

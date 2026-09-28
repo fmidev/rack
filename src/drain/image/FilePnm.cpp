@@ -472,7 +472,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 	switch (channels) {
 	case 4:
 		mout.warn() << "four-channel image; writing channels 0,1,2 only" << mout.endl;
-		// no break  TODO: CHECK
+		// no break
 	case 3:
 		storage_type = PPM_RAW;
 		if (colorTypeChar != 'p'){
@@ -481,7 +481,7 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		break;
 	case 2:
 		mout.warn("two-channel image, writing channel 0" );
-		// no break  TODO: CHECK
+		// no break
 	case 1:
 		storage_type = PGM_RAW;
 		if (colorTypeChar != 'g'){
@@ -489,12 +489,10 @@ void FilePnm::write(const ImageFrame & image, const std::string & path){
 		}
 		break;
 	case 0:
-		mout.warn("zero-channel image" );
-		//fclose(fp);
+		mout.warn("zero-channel image");
 		return;
 	default:
-		mout.error("unsupported channel count: " , channels );
-		// throw std::runtime_error(s.toStr());
+		mout.error("unsupported channel count: " , channels);
 	}
 
 	drain::Output output(path);

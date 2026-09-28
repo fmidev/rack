@@ -67,9 +67,6 @@ public:
 		PPM_RAW=6
 	};
 
-	/// Syntax for recognising pnm files.
-	//static
-	//const drain::RegExp fileNameRegExp;
 	static
 	const FileInfo fileInfo;
 

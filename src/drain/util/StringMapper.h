@@ -217,9 +217,9 @@ public:
 
 	/// Expands the variables in the last
 	/**
-	 *  \par ostr - output stream
-	 *  \par m    - map containing variable values
-	 *  \par replace - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
+	 *  \param ostr - output stream
+	 *  \param m    - map containing variable values
+	 *  \param replace:char/int - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
 	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = REMOVE_MISSING_VARIABLE,
@@ -249,11 +249,12 @@ public:
 
 	/// Expands the variables in the last parsed std::string to a std::string.
 	/**
-	 *  \par m     - map containing variable values
-	 *  \par clear - if true, expand undefined variables as empty std::strings, else leave variable entry
+	 *  \param m - map containing variable values
+	 *  \param replaceChar
+	 *  \param clear - if true, expand undefined variables as empty std::strings, else leave variable entry
 	 */
 	template <class T>
-	std::string toStr(const std::map<std::string,T> &m, int replaceChar = -1, const VariableFormatter<T> & formatter = VariableFormatter<T>()) const {
+	std::string toStr(const std::map<std::string,T> & m, int replaceChar = REMOVE_MISSING_VARIABLE, const VariableFormatter<T> & formatter = VariableFormatter<T>()) const {
 		std::stringstream s;
 		toStream(s, m, replaceChar, formatter);
 		return s.str();

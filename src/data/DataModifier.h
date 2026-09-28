@@ -53,18 +53,35 @@ class DataModifier {
 
 public:
 
+
+	/// Remove selected parts of the structure.
 	static
 	void remove(Hi5Tree & dst, const DataSelector & dataSelector);
+
+	/// Quick removal of empty groups
+	/**
+	 *   In this context, a group is considered empty if ...
+	 */
+	static inline
+	int removeEmptyGroups(Hi5Tree & dst){
+		return handleEmptyGroups(dst, true);
+	}
 
 	/// Complement of remove(): keep the selected, remove else.
 	static
 	void keep(Hi5Tree & dst, const DataSelector & selector);
 
 
-
+	/// Mark everything excluded.
 	static inline
-	int removeEmptyGroups(Hi5Tree & dst){
-		return handleEmptyGroups(dst, true);
+	void markExcluded(Hi5Tree &src, ODIMPathElem::group_t filter = ODIMPathElem::ALL_GROUPS){
+		markTree(src, true, filter);
+	}
+
+	/// Mark everything included.
+	static inline
+	void markIncluded(Hi5Tree &src, ODIMPathElem::group_t filter = ODIMPathElem::ALL_GROUPS){
+		markTree(src, false, filter);
 	}
 
 	/// Mark everything but selected "excluded".
@@ -74,16 +91,31 @@ public:
 	/// Mark everything along the path included
 	static inline
 	void markPathIncluded(Hi5Tree & dst, const ODIMPath & path){
-		DataTools::markExcluded(dst, path, false);
+		markPath(dst, path, false);
 	}
-
 
 
 
 protected:
 
+
+
 	static
 	int handleEmptyGroups(Hi5Tree & dst, bool REMOVE, const ODIMPath & path = ODIMPath());
+
+	/// Mark exclusion/inclusion in the whole tree
+	/**
+	 *   This function traverses all the children and their children, recursively.
+	 *   Needed here, ATTRIBUTE_GROUPS not in Hi5Base.
+	 *
+	 *   Typical usage: the tree is deleted with #Hi5Base::deleteExcluded()
+	 */
+	static
+	void markTree(Hi5Tree &src, bool exclude, ODIMPathElem::group_t filter = ODIMPathElem::ALL_GROUPS);
+
+	/// Mark exclusion/inclusion along a path.
+	static
+	void markPath(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude);
 
 
 

@@ -215,6 +215,20 @@ void NodeSVG::setAttribute(const std::string & key, const char *value){
 */
 
 void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
+
+	if (typeIs(svg::TEXT)){
+		if (elemHeight > 0){
+			setHeight(elemHeight);
+		}
+		else if (getHeight() == 0.0){
+			setHeight(1.5*size);
+		}
+		setMargin(0.25*size);
+	}
+
+	setStyle("font-size", size, "px");
+
+	/*
 	switch (getNativeType()) {
 	case svg::TEXT:
 		if (elemHeight > 0){
@@ -224,12 +238,13 @@ void NodeSVG::setFontSize(svg::coord_t size, svg::coord_t elemHeight){
 			setHeight(1.5*size);
 		}
 		setMargin(0.25*size);
-		// no break  TODO: CHECK
+		// no break
 	default:
 		setStyle("font-size", size, "px");
 		// elemHeight unused... warn if given?
 		break;
 	}
+	*/
 }
 
 void NodeSVG::swapDataSVG(NodeSVG & node){

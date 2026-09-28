@@ -103,7 +103,7 @@ public:
 	 *   \see updateAttributes(Hi5Tree & src, const drain::FlexVariableMap & attributes)
 	 */
 	static inline
-	void updateInternalAttributes(const Hi5Tree & src){ // const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
+	void updateInternalAttributes(const Hi5Tree &){ // const drain::FlexVariableMap & attributes = drain::FlexVariableMap()){
 		// drain::Logger mout("DataTools", __FUNCTION__);
 		// mout.warn("somebody called me");
 	};
@@ -126,18 +126,13 @@ public:
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
 
-	/// Mark/unmark whole tree to be deleted with #Hi5Base::deleteExcluded()
-	/**
-	 *   This function traverses all the children and their children, recursively.
-	 *   Needed here, ATTRIBUTE_GROUPS not in Hi5Base.
-	 *
-	 */
-	static
-	void markExcluded(Hi5Tree &src, bool exclude=true);
+
 
 	///  (Un)mark groups along a path for deletion by #Hi5Base::deleteExcluded()
+	/*
 	static
 	void markExcluded(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude=true);
+	*/
 
 	/// Tree attribute formatter
 	/**
@@ -195,11 +190,12 @@ protected:
 	/// Does nothing
 	/**
 	 *  \return - false (always, as nothing will be removed)
-	 */
+
 	static
 	bool removeIfExcluded(const Hi5Tree & src){
 		return false;
 	};
+	*/
 
 
 	/// Copies values of \c what , \c where and \c how attributes to internal attributes down to \c data[n] groups.

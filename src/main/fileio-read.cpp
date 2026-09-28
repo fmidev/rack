@@ -46,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "andre/QualityCombinerOp.h"
 #include "hi5/Hi5.h"
 #include "hi5/Hi5Read.h"
+#include "data/DataModifier.h"
 #include "data/ODIM.h"
 #include "data/ODIMPathTools.h"
 
@@ -130,7 +131,10 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 			drain::JSONtree cmdTree;
 			drain::Input input(path);
 			drain::JSON::readTree(cmdTree, input);
-			mout.experimental<LOG_INFO>("parsed JSON structure:\n", sprinter(cmdTree));
+			mout.experimental<LOG_INFO>("read JSON structure:\n", sprinter(cmdTree));
+
+			// const drain::CommandBank & cmdBank = drain::getCommandBank();
+
 
 			//for (const auto & node: cmdTree){
 			for (const drain::JSONtree::pair_t & node: cmdTree){
@@ -242,7 +246,7 @@ void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffM
 		DataTools::updateInternalAttributes(srcTmp); // to support DataSelector with what:quantity and what:elangle
 
 		// Initially, mark all deleted...
-		DataTools::markExcluded(srcTmp, true);
+		// NEW, no needed: DataModifier::markExcluded(srcTmp);
 		// drain::TreeUtils::dump(srcTmp, std::cout, CmdOutputTree::dataToStream); // true);
 
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);  // NO QUALITY?
@@ -253,20 +257,27 @@ void CmdInputFile::readFileH5(const std::string & fullFilename, int maxTimeDiffM
 			mout.hint<LOG_NOTICE>("input selector: pathMatcher empty, consider path=data at least?");
 		}
 
+		DataModifier::markIncluded(srcTmp, selector); // keep also WHAT, WHERE, HOW
+
+		/*
 		ODIMPathList paths;
 		//selector.selectPaths(srcTmp, paths);
 		selector.getPaths(srcTmp, paths);
 
+
+
 		for (const ODIMPath & path: paths){
 			if (srcTmp.hasPath(path)){ // otherwise path query would create one...
 				mout.accept("including: ", path); // marking for save...
-				DataTools::markExcluded(srcTmp, path, false);
+				//DataTools::markExcluded(srcTmp, path, false);
+				DataModifier::markPathIncluded(srcTmp, path);
 				//srcTmp(path).data.exclude = false;
 			}
 			else {
 				mout.warn("bug: path does not exist: ", path);
 			}
 		}			//mout.debug("marked for save: " , *it );
+		*/
 
 		// mout.special("marking 'excluded' completed: ", fullFilename);
 		hi5::Reader::readFile(fullFilename, srcTmp, hi5::Reader::EXCLUSIVE | hi5::Reader::ATTRIBUTES | hi5::Reader::DATASETS);

@@ -356,21 +356,9 @@ int DataTools::getMaxRange(const Hi5Tree & src, bool projected){
 
 
 
-void DataTools::markExcluded(Hi5Tree &src, bool exclude){
-
-	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-	for (auto & entry: src) {
-		//if (it->first.isIndexed()){
-		if (!entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
-			entry.second.data.exclude = exclude;
-			markExcluded(entry.second, exclude);
-		}
-	}
-
-}
 
 // Marks all descendants of src for deletion
+/*
 void DataTools::markExcluded(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude){
 	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
@@ -382,6 +370,7 @@ void DataTools::markExcluded(Hi5Tree &src, const Hi5Tree::path_t & path, bool ex
 	ptr->data.exclude = exclude;
 
 }
+*/
 
 
 void DataTools::updateCoordinatePolicy(Hi5Tree & src, const drain::image::CoordinatePolicy & policy){

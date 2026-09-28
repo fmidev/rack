@@ -225,13 +225,13 @@ void XML::setText(const std::string & s) {
 		break;
 	case XML::UNDEFINED:
 		type = CTEXT;
-		// no break  TODO: CHECK
+		ctext.assign(s);
+		break;
 	case XML::CTEXT:
 	case XML::COMMENT:
 	default:
 		// TODO: check types, somehow...
 		ctext.assign(s);
-		//drain::StringTools::import(s, ctext); // ? obsolete code, orig with templates
 	}
 
 }

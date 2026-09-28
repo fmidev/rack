@@ -131,7 +131,7 @@ void QualityCombinerOp::updateOverallDetection(const drain::image::ImageFrame & 
 	mout.note("dstC", dstClass.data, " ", dstClass.odim);
 	*/
 
-	mout.success(srcProb);
+	mout.note(srcProb);
 	//mout.success("srcProb ", srcProb.getScaling());
 
 	if (srcProb.getScaling().scale == 0){

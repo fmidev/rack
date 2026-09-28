@@ -61,8 +61,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "data/Data.h"
 //#include "data/DataOutput.h"
+#include "data/DataModifier.h"
 #include "data/DataSelector.h"
-#include "data/DataTools.h"
+//#include "data/DataTools.h"
 #include "data/ODIMPath.h"
 #include "data/PolarODIM.h"
 #include "data/SourceODIM.h"
@@ -341,15 +342,6 @@ void CmdOutputFile::exec() const {
 	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	drain::Logger mout(ctx.log, __FILE__, getName());
 
-	// mout.attention(ctx.getName());
-	// mout.warn("ctx.select=", ctx.select);
-	/*
-	if (value.empty()){
-		mout.error("File name missing. (Use '-' for stdout.)" );
-		return;
-	}
-	*/
-
 	if (ctx.statusFlags.isSet(drain::Status::INPUT_ERROR)){
 		mout.warn("input failed, skipping");
 		return;
@@ -361,7 +353,6 @@ void CmdOutputFile::exec() const {
 	}
 
 	if (ctx.statusFlags.isSet(drain::Status::METADATA_ERROR)){
-		//mout.revised("meta data check");
 		mout.warn(__FILE__, ':', drain::Status::METADATA_ERROR);
 		//return;
 	}
@@ -376,23 +367,11 @@ void CmdOutputFile::exec() const {
 	if (!STD_OUTPUT){
 		drain::StringMapper mapper(RackContext::variableMapper);
 		mapper.parse(ctx.outputPrefix + value);
-		// VariableFormatterODIM<drain::Variable> odimHandler;
-		filepath = mapper.toStr(statusMap, -1, RackContext::variableFormatter); // odimHandler);
-		/*
-		if (!ctx.outputPrefix.empty()){
-			mapper.parse(ctx.outputPrefix);
-			prefixFinal = mapper.toStr(statusMap);
-		}
-		mapper.parse(value);
-		relativePathFinal = mapper.toStr(statusMap);
-		*/
+		filepath = mapper.toStr(statusMap, drain::StringMapper::REMOVE_MISSING_VARIABLE, RackContext::variableFormatter); // odimHandler);
 		mout.note("writing: '" , filepath , "'" );
 	}
 	// mout.note("filename: " , filename );
 
-	// TODO: generalize select
-	// TODO: generalize image pick (current or str) for png/tif
-	//drain::FilePath path(value);
 	drain::FilePath path(filepath);
 	const bool DATA_HDF5 = hi5::fileInfo.checkPath(path);
 	const bool IMAGE_PNG = drain::image::FilePng::fileInfo.checkPath(path);
@@ -406,14 +385,14 @@ void CmdOutputFile::exec() const {
 
 	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT); // mostly shared (unneeded in image output, but fast anyway)
 
-	// drain::image::TreeSVG & svgGroup = ctx.getMainGroup();//  RackSVG::getMainGroup(ctx); // , path.tail  //  Note: repeatedly called for svg and png files?
-	// drain::image::TreeSVG & svgGroup = RackSVG::getMainGroup(ctx); // , path.tail  //  Note: repeatedly called for svg and png files?
+	if (!ctx.select.empty()){
+		DataSelector selector(ctx.select);
+		mout.experimental("Output selector: ", selector);
+		DataModifier::markIncluded(src, selector);
+		// TODO: consider grouping these "selected outputs" on top, then continuing with specific ones.
+	}
 
-	// track.data.set("id", STD_OUTPUT ? "stdout" : path.tail);
-	// std::list<std::string> keys = {"what:lon", "here"};
 
-	//if (h5FileExtension.test(value)){
-	// hi5::fileInfo.checkPath(path)
 	if (DATA_HDF5 || NO_EXTENSION){
 
 		if (NO_EXTENSION){
@@ -445,8 +424,21 @@ void CmdOutputFile::exec() const {
 			mout.revised<LOG_INFO>("setting: ", DRAIN_LOG(conventions));
 		}
 
+		hi5::Writer::writeFile(filepath, src);
+		/*
+		if (ctx.select.empty()){
+			hi5::Writer::writeFile(filepath, src);
+		}
+		else {
+			DataSelector selector(ctx.select);
+			mout.experimental("Partial HDF5 write, selector: ", selector);
+			DataModifier::markIncluded(src, selector);
+			hi5::Writer::writeFile(filepath, src);
+			DataModifier::markIncluded(src);
+			ctx.select.clear();
+		}
+		*/
 
-		hi5::Writer::writeFile(filepath, src); //*ctx.currentHi5);
 		/*
 		drain::image::TreeSVG & h5 = baseGroup["h5"](svg::TEXT);
 		h5->set("object", src.data.attributes["object"]);
@@ -462,28 +454,16 @@ void CmdOutputFile::exec() const {
 
 
 		// Optional on-the-fly conversions: handle ctx.select and ctx.targetEncoding, if defined.
-		const Image & srcImage = ctx.updateCurrentImage();
+		const Image & srcImage = ctx.updateCurrentImage(); // NOTE: re-uses ctx.select.
 
 		//mout.pending<LOG_WARNING>(__FUNCTION__, " quantity2: ", ctx.getStatusMap().get("what:quantity","??"));
 
 		if (IMAGE_PNG && !ctx.svgPanelConf.svgIncludes.isSet(drain::image::FileSVG::IncludePolicy::SKIP)){
-			// RackSVG::addImage(ctx, srcImage, filepath);
+
 			TreeSVG & imagePanelGroup = ctx.getImagePanelGroup(filepath); //adapterGroup[ctx.currentImagePanel];
-			// ImagePanel superPanel(imagePanelGroup, filepath, srcImage.getGeometry().getAreaGeometry());
-			//ctx.consumeAlignRequest(imagePanelGroup);
-
 			ImagePanel superPanel(imagePanelGroup, srcImage, filepath);
-
 			RackSVG::addMetaData(srcImage, superPanel);
-			// superPanel.getImage(srcImage, filepath);
-			/*
-			TreeSVG & adapterGroup = RackSVG::getCurrentAdapterGroup(ctx);
-			TreeSVG::generateKey(adapterGroup, ctx.currentImagePanel);
-			mout.attention(DRAIN_LOG(ctx.currentImagePanel));
-			ImagePanel imagePanel(adapterGroup[ctx.currentImagePanel]);
-			imagePanel.getImage(filepath, srcImage.getGeometry().getAreaGeometry());
-			drain::image::NodeSVG::toStream(std::cout, adapterGroup);
-			*/
+
 		}
 		else {
 			ctx.svgPanelConf.svgIncludes.unset(drain::image::FileSVG::IncludePolicy::SKIP);
@@ -530,8 +510,8 @@ void CmdOutputFile::exec() const {
 		}
 
 		// What was the problem?
-		mout.revised<LOG_WARNING>("clearing --select");
-		ctx.select.clear(); // 2025/03
+		// mout.revised<LOG_WARNING>("clearing --select");
+		// ctx.select.clear(); // 2025/03
 		// ctx.formatStr.clear();
 
 	}
@@ -573,15 +553,6 @@ void CmdOutputFile::exec() const {
 		}
 
 
-		// mout.experimental("writing SVG file: ", path);
-		// drain::image::OverlayMoverSVG overlayMover;
-		// drain::TreeUtils::traverse(overlayMover, svgDoc);
-
-		/*
-		drain::image::FloaterSVG floater;
-		drain::TreeUtils::traverse(floater, svgDoc);
-		*/
-
 		if (!ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::ABSOLUTE)){
 			// mout.attention("svg: RELATIVE paths, stripping: ", path.dir);
 			const std::string prefix = ctx.svgPanelConf.pathPolicyFlagger.isSet(FileSVG::PathPolicy::PREFIXED) ? "./" : "";
@@ -593,18 +564,6 @@ void CmdOutputFile::exec() const {
 			// mout.attention("svg: ABSOLUTE paths");
 		}
 
-		/*
-		if (svgDoc->get("data-version") == 2){
-			mout.attention("skipping alignment");
-
-			const BBoxSVG & bb = RackSVG::getMainGroup(ctx)->getBoundingBox();
-			svgDoc->setGeometry(bb.getFrame()); // width, height
-			// Finalize view box
-			svgDoc->setViewBox(bb);
-		}
-		else {
-		*/
-			//
 		MetaDataCollectorSVG metadataPruner;
 		drain::TreeUtils::traverse(metadataPruner, svgDoc);
 
@@ -617,7 +576,6 @@ void CmdOutputFile::exec() const {
 		drain::image::FloaterSVG floater;
 		drain::TreeUtils::traverse(floater, svgDoc);
 
-
 		TreeLayoutSVG::addStackLayout(svgDoc, ctx.mainOrientation, ctx.mainDirectionHorz, ctx.mainDirectionVert);
 		TreeLayoutSVG::superAlign(svgDoc);
 
@@ -626,9 +584,7 @@ void CmdOutputFile::exec() const {
 		svgDoc->setViewBox(bb);
 
 		{
-			// using namespace drain::image;
-			// typedef svg::tag_t tag_t;
-			// TreeSVG & subGroup = svgDoc[RackSVG::BORDER];
+			// Sub scope needed
 			NodeSVG::Elem<svg::tag_t::RECT> frame(svgDoc[RackSVG::BORDER]);
 			frame.width  = bb.width;
 			frame.height = bb.height;
@@ -641,8 +597,6 @@ void CmdOutputFile::exec() const {
 			});
 
 		}
-
-
 
 		drain::TreePruner<drain::image::TreeSVG> textPruner;
 		textPruner.setEmptinessCriterion(svg::UNDEFINED, 0);
@@ -695,7 +649,7 @@ void CmdOutputFile::exec() const {
 
 		if (!ctx.select.empty()){
 			// Initially, mark all paths excluded.
-			DataTools::markExcluded(src, true);
+			DataModifier::markExcluded(src);
 
 			DataSelector selector;
 			selector.setParameters(ctx.select);
@@ -705,7 +659,7 @@ void CmdOutputFile::exec() const {
 			selector.getPaths(src, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 			for (const ODIMPath & path: savedPaths){
-				DataTools::markExcluded(src, path, false);
+				DataModifier::markPathIncluded(src, path);
 				// ARRAY's: compare with CmdKeep
 			}
 		}
@@ -740,7 +694,7 @@ void CmdOutputFile::exec() const {
 			mout.debug("resetting selector");
 			ctx.select.clear();
 			mout.debug("marking data structure fully included");
-			DataTools::markExcluded(src, false);
+			DataModifier::markIncluded(src);
 		}
 
 	}
@@ -821,9 +775,8 @@ void CmdOutputFile::exec() const {
 
 		drain::Output output(filepath);
 
-		// NEW2
 		ODIMPathList paths;
-		DataSelector selector; //("dataset1/data1/");
+		// RAISED DataSelector selector; //("dataset1/data1/");
 
 		if (ctx.formatStr.empty()){
 
@@ -835,33 +788,38 @@ void CmdOutputFile::exec() const {
 				return;
 			}
 
-			// ODIMPathList paths;
+			// New 2026: .exclude applies
+			hi5::Hi5Base::writeText(src, output.getStream());
 
+			// ODIMPathList paths;
+			/*
 			if (!ctx.select.empty()){
 				// DataSelector selector;
-				selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
-				mout.revised("always using selector in --format'ted output, current selector=", selector);
+				// selector.consumeParameters(ctx.select); // special<LOG_DEBUG>
+				mout.revised("always using selector in --format'ted output, current selector=", dataselector);
 				// mout.debug(selector);
 				selector.getPaths(src, paths);
-				if (paths.empty()){
-					mout.warn("No requested data");
-					return;
-				}
 			}
 			else {
 				drain::TreeUtils::getPaths(ctx.getHi5(RackContext::CURRENT), paths);
 			}
 
+			if (!paths.empty()){
+				hi5::Hi5Base::writeText(src, paths, output.getStream());
+			}
+			else {
+				mout.warn("No data to output");
+			}
+			*/
 
-			hi5::Hi5Base::writeText(src, paths, output);
 		}
 		else {
 			mout.debug("formatting text output: >", ctx.formatStr, '<');
 			drain::StringMapper statusMapper(RackContext::variableMapper);
 			statusMapper.parse(ctx.formatStr, true);
 
-			// ODIMPathList paths;
-			// DataSelector selector;
+			ODIMPathList paths;
+			DataSelector selector;
 
 			if (ctx.select.empty()){
 				selector.setPathMatcher(ODIMPathElem::DATA); //   "data1");
@@ -923,13 +881,20 @@ void CmdOutputFile::exec() const {
 
 				// mout.special<LOG_DEBUG+1>('\t', path, ": attr: ", vmap);
 				// statusFormatter.toStream(output, src(path).data.image.properties);
-				statusMapper.toStream(output, vmap, 0, RackContext::flexVariableFormatter); // odimHandler);
+				statusMapper.toStream(output, vmap, drain::StringMapper::REMOVE_MISSING_VARIABLE, RackContext::flexVariableFormatter); // odimHandler);
 			}
 		}
 
 	}
 
-	// mout.revised<LOG_WARNING>("CLEARING SELECTOR");
+
+	if (!ctx.select.empty()){
+		mout.revised<LOG_WARNING>("Clearing output selector (", ctx.select, ")");
+		// mout.experimental("Output selector: ", selector);
+		DataModifier::markIncluded(src);
+		ctx.select.clear();
+	}
+
 	// ctx.select.clear(); // 2025/03
 
 };

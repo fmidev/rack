@@ -43,8 +43,6 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/Log.h>
 #include <drain/RegExp.h>
 #include <drain/Sprinter.h>
-
-
 #include <drain/util/JSON.h>
 #include <drain/util/Input.h>
 #include <drain/util/Output.h>
@@ -52,20 +50,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/util/PythonSerializer.h>
 #include <drain/util/TreeUtils.h>
 #include <drain/util/PythonUtils.h>
-
 #include <drain/image/Image.h>
 #include <drain/image/TreeSVG.h>
-
 #include <drain/prog/CommandBankUtils.h>
 #include <drain/prog/CommandInstaller.h>
-//#include <drain/prog/Loop.h>
-
-
 
 #include "data/DataCoder.h"
 #include "data/ODIM.h"
 #include "data/ODIMValidator.h"
-// #include "data/VariableFormatterODIM.h"
+#include "data/DataModifier.h"
 #include "hi5/Hi5.h"
 
 #include "product/DataConversionOp.h"
@@ -1007,7 +1000,7 @@ class CmdDelete : public CmdBaseSelective {
 
 public:
 
-	CmdDelete() :  CmdBaseSelective(__FUNCTION__, "Deletes selected parts of h5 structure."){
+	CmdDelete() :  CmdBaseSelective(__FUNCTION__, "Deletes selected parts of h5 structure. Special param values: all, empty"){
 	};
 
 	void exec() const override {
@@ -1021,7 +1014,9 @@ public:
 
 		const std::string & value = getLastParameters();
 		if (value == "empty"){
-			handleEmptyGroups(ctx, dst, true); // true=delete
+			//DataModifier::handleEmptyGroups(dst, true);
+			DataModifier::removeEmptyGroups(dst);
+			// handleEmptyGroups(ctx, dst, true); // true=delete
 			return;
 		}
 		else if (value == "all"){
@@ -1030,17 +1025,20 @@ public:
 			return;
 		}
 
-		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
-		selector.setParameters(value);
-
-		mout.info("selector: ", selector );
-
 
 		// Step 0
-		mout.debug("delete pre-existing no-save structures ");
-		hi5::Hi5Base::deleteExcluded(dst);
+		// mout.debug("delete pre-existing no-save structures ");
+		// hi5::Hi5Base::deleteExcluded(dst);
 
-		// Selecting paths
+
+		// Select paths
+		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
+		selector.setParameters(value);
+		mout.info("selector: ", selector );
+
+		DataModifier::remove(dst, selector);
+
+		/*
 		ODIMPathList paths;
 		selector.getPaths(dst, paths);
 
@@ -1051,12 +1049,12 @@ public:
 		}
 
 		handleEmptyGroups(ctx, dst);
-
+		*/
 	};
 
 protected:
 
-	///
+	/*
 	static
 	int handleEmptyGroups(RackContext & ctx, Hi5Tree & dst, bool remove=false, const ODIMPath & path = ODIMPath()){
 
@@ -1105,7 +1103,7 @@ protected:
 		return count;
 
 	}
-
+	*/
 };
 
 
@@ -1143,6 +1141,16 @@ public:
 
 		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);  // *ctx.currentHi5;
 
+
+		DataSelector selector;
+		const std::string & value = getLastParameters();
+		selector.setParameters(value);
+
+		DataModifier::keep(dst, selector);
+
+		/*
+		mout.debug2("selector for saved paths: ", selector);
+
 		// Step 0
 		mout.debug("delete existing no-save structures ");
 		hi5::Hi5Base::deleteExcluded(dst);
@@ -1151,13 +1159,6 @@ public:
 		DataTools::markExcluded(dst, true);
 		//hi5::Hi5Base::markExcluded(dst);
 
-		DataSelector selector;
-		const std::string & value = getLastParameters();
-		selector.setParameters(value);
-
-		//hi5::Hi5Base::writeText(dst, std::cerr);
-
-		mout.debug2("selector for saved paths: ", selector);
 
 		ODIMPathList savedPaths;
 		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
@@ -1166,13 +1167,6 @@ public:
 
 			mout.debug2("set save through path: ", path);
 			DataTools::markExcluded(dst, path, false);
-			/*
-			ODIMPath p;
-			for (const ODIMPathElem & elem: path){
-				p << elem;
-				dst(p).data.exclude = false;
-			}
-			*/
 			//mout.debug("marked for save: " , *it );
 			// Accept also tail (attribute groups)
 			//if (it->back().isIndexed()){ // belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ or: DATASET
@@ -1192,8 +1186,9 @@ public:
 		// debug: hi5::Hi5Base::writeText(dst, std::cerr);
 
 		hi5::Hi5Base::deleteExcluded(dst);
-
+		*/
 	};
+
 
 };
 
