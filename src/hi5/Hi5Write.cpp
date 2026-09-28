@@ -249,6 +249,7 @@ void Writer::treeToH5File(const Hi5Tree &tree, hid_t fid, const Hi5Tree::path_t 
 
 			// Writing compounds requires classes using basic types and std::string.
 			std::map<int, std::string> entries;
+			//std::map<char[32], char[64]> entries;
 			leg.toMap(entries, ',', ':');
 
 			Hi5Tree::path_t p(path);

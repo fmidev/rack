@@ -127,7 +127,6 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 
 	H5G_stat_t info;
 
-	//for (auto & entry : tree) {
 	for (auto & entry : tree) { // no use iterate only subtrees?
 
 		const Hi5Tree::path_t::elem_t & elem = entry.first;
@@ -158,6 +157,9 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 		handleStatus<LOG_ERR>(mout, status, "H5Gget_objinfo failed, path=", p, __LINE__);
 
 		hid_t g = 0; // = H5Gopen(file_id,p.c_str()); // check if group
+
+		// mout.warn("elem: ", elem);
+
 		switch (info.type) {
 		case H5G_GROUP:
 			g = H5Gopen2(file_id, pStr.c_str(), H5P_DEFAULT);
@@ -177,20 +179,19 @@ Reader::h5FileToTree(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree, 
 			status = H5Gclose(g);
 			handleStatus<LOG_WARNING>(mout, status, "H5Gclose failed, path=", p, __LINE__);
 
-			// Recursion continues:
-			//h5FileToTree(file_id, p, subtree, mode);
-
 			break;
 
 		case H5G_DATASET:
 			if (mode & DATASETS) {
-				if ( elem.is(rack::ODIMPathElem::LEGEND)) {
-					mout.unimplemented("skipping legend (group) in path=" , p
-									);
-				} else {
+
+				if (elem.is(rack::ODIMPathElem::LEGEND)) {
+					// mout.warn("elem: ", elem);
+					// mout.unimplemented("skipping legend (group) in path=", p);
+					h5FileToLegend(file_id, p, tree); // consider subtree
+				}
+				else {
 					//mout.startTiming("h5DatasetToImage");
-					h5DatasetToImage(file_id, p,
-							((hi5::NodeHi5&) subtree).image);
+					h5DatasetToImage(file_id, p, ((hi5::NodeHi5&) subtree).image);
 				}
 			}
 			break;
@@ -555,8 +556,38 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 }
 
+
+void Reader::h5FileToLegend(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree){
+
+	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
+
+	herr_t status = 0;
+
+	mout.experimental("opening ", path);
+
+	std::string pathStr(path);
+
+	const hid_t dataset = H5Dopen2(file_id, pathStr.c_str(), H5P_DEFAULT); // H5P_DATASET_ACCESS????
+	if (dataset < 0){
+		mout.error("opening failed for dataset=" , path );
+		return;
+	}
+
+	if (H5Tget_class(H5Dget_type(dataset)) == H5T_COMPOUND){
+
+		mout.unimplemented<LOG_WARNING>("skipping compound data at: ", path);
+
+		const hid_t filespace = H5Dget_space(dataset);
+
+		// const hid_t datatype  = H5Tget_native_type(H5Dget_type(dataset), H5T_DIR_DEFAULT);
+		hsize_t rank = H5Sget_simple_extent_ndims(filespace);
+		mout.attention<LOG_WARNING>("rank=", rank);
+
+		status = H5Dclose(dataset);
+		handleStatus<LOG_WARNING>(mout, status, "H5Dclose failed", mout, __LINE__);
+		return;
+	}
+
+}
+
 } // ::H5
-
-
-// Rack
- // REP

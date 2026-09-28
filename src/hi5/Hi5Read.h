@@ -124,6 +124,9 @@ public:
 	static
 	void h5DatasetToImage(hid_t id, const Hi5Tree::path_t &path, drain::image::Image &image);
 
+	static void
+	h5FileToLegend(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree &tree);
+
 protected:
 
 	static
