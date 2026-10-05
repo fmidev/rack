@@ -72,6 +72,17 @@ DEPS := $(OBJS:.o=.d)
 # ---- Primary build targets ----------------------------------------------------
 .PHONY: all build configure install install-python test-python clean compdb cppcheck help
 
+help:
+	@echo "Usage: make [target]"
+	@ X="`cat Makefile | grep -i '^[a-z][a-z\.\-]\+:' | cut -d' ' -f1 | tr -d ':'`"; echo make \[ $$X ... \]
+#	@echo "  all / build   build rack executable (default)"
+#	@echo "  configure     detect libraries, write install-rack.cnf"
+#	@echo "  clean         remove Build/ directory and rack executable"
+#	@echo "  install       install to prefix in install-rack.cnf"
+#	@echo "  compdb        generate compile_commands.json (needs bear)"
+#	@echo "  cppcheck      static analysis"
+#	@echo "  docker-image  build Docker image"
+
 all: $(TARGET)
 
 build: all
@@ -117,15 +128,6 @@ cppcheck:
 	cppcheck --language=c++ --error-exitcode=1 --quiet \
 	    */*.{h,cpp} drain/*/*.{h,cpp}
 
-help:
-	@echo "Usage: make [target]"
-	@echo "  all / build   build rack executable (default)"
-	@echo "  configure     detect libraries, write install-rack.cnf"
-	@echo "  clean         remove Build/ directory and rack executable"
-	@echo "  install       install to prefix in install-rack.cnf"
-	@echo "  compdb        generate compile_commands.json (needs bear)"
-	@echo "  cppcheck      static analysis"
-	@echo "  docker-image  build Docker image"
 
 # ---- Version (from source) ----------------------------------------------------
 # Note: here plain numerical, but prefixed with 'v' further below.
