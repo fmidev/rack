@@ -6,7 +6,9 @@
 FROM ubuntu:22.04 AS builder
 
 # Makefile overrides, sets local directory
-ARG CONF_DIR=docker-conf
+# Default to the no-proxy config so external CI (e.g. Quay.io) works without build args.
+# FMI internal builds: pass --build-arg CONF_DIR=docker-conf to use the internal apt proxy.
+ARG CONF_DIR=docker-conf-external
 
 # Set proxy and test it
 COPY $CONF_DIR/apt-proxy.conf /etc/apt/apt.conf.d/proxy.conf
