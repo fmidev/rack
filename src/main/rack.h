@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,6,5)
+#define RACK_VERSION drain::Version<>(21,6,6)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -75,7 +75,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  --delete param 'attribute' added
  *  Release 21.6.3--
  *  - Removed debug output
- *  - Fixed quay.io build problem
+ *  - Debugging quay.io build problem
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
