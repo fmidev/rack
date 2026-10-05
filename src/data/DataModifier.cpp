@@ -105,10 +105,10 @@ void DataModifier::keep(Hi5Tree &dst, const DataSelector & selector){
 	// There shouldn't be many; consider warning if something was really deleted.
 	hi5::Hi5Base::deleteExcluded(dst);
 
-	mout.attention(DRAIN_LOG(selector));
+	// mout.attention(DRAIN_LOG(selector));
 	markIncluded(dst, selector);
 
-	// DataTools::superDump(dst);
+	// DataTools::superDump(dst); // debug
 
 	hi5::Hi5Base::deleteExcluded(dst);
 	// std::cerr << "once more!\n";
