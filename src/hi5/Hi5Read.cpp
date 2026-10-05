@@ -405,7 +405,7 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
 		// const hid_t datatype  = H5Tget_native_type(H5Dget_type(dataset), H5T_DIR_DEFAULT);
 		hsize_t rank = H5Sget_simple_extent_ndims(filespace);
-		mout.attention("rank=", rank);
+		mout.debug("rank=", rank);
 
 		status = H5Dclose(dataset);
 		handleStatus<LOG_WARNING>(mout, status, "H5Dclose failed", mout, __LINE__);
@@ -439,8 +439,10 @@ void Reader::h5DatasetToImage(hid_t id, const Hi5Tree::path_t & path, drain::ima
 
     // Define the memory space to read dataset.
 	const hid_t memspace = H5Screate_simple(rank,dims,NULL);
-	if (memspace < 0)
-		mout.error("opening memspace failed at: " , path );
+	if (memspace < 0){
+		handleStatus<LOG_ERR>(mout, status, "opening memspace failed at path=", path, __LINE__);
+		// mout.error("opening memspace failed at: " , path );
+	}
 		//throw std::runtime_error(_func + " opening memspace failed at " + path);
 
 
@@ -575,13 +577,13 @@ void Reader::h5FileToLegend(hid_t file_id, const Hi5Tree::path_t &path, Hi5Tree 
 
 	if (H5Tget_class(H5Dget_type(dataset)) == H5T_COMPOUND){
 
-		mout.unimplemented<LOG_WARNING>("skipping compound data at: ", path);
+		mout.unimplemented<LOG_NOTICE>("skipping compound data at: ", path);
 
 		const hid_t filespace = H5Dget_space(dataset);
 
 		// const hid_t datatype  = H5Tget_native_type(H5Dget_type(dataset), H5T_DIR_DEFAULT);
 		hsize_t rank = H5Sget_simple_extent_ndims(filespace);
-		mout.attention<LOG_WARNING>("rank=", rank);
+		mout.special<LOG_INFO>("rank=", rank);
 
 		status = H5Dclose(dataset);
 		handleStatus<LOG_WARNING>(mout, status, "H5Dclose failed", mout, __LINE__);

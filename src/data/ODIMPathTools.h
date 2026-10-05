@@ -35,7 +35,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <map>
 
 //#include <drain/util/ReferenceMap.h>
-//#include <drain/util/RegExp.h>
+// #include <drain/RegExp.h>
 //#include <drain/util/Sprinter.h>
 
 //#include <drain/util/Variable.h>
@@ -55,6 +55,16 @@ namespace rack {
 class ODIMPathTools {
 
 public:
+
+	//mout.debug("try to track if argument is a path, an attribute, or a combination of both" );
+
+	///  Parse argument to a path and an attribute, or both.
+	/**
+	 *
+	 */
+	static
+	void completePathParser(const std::string & s, ODIMPath & path, std::string & attributeKey, std::string & attributeValue);
+
 
 	/// Searches the children of child.getType(), or g if given, and stores the one with largest index.
 	static

@@ -62,10 +62,9 @@ public:
 	/**
 	 *   In this context, a group is considered empty if ...
 	 */
-	static inline
-	int removeEmptyGroups(Hi5Tree & dst){
-		return handleEmptyGroups(dst, true);
-	}
+	static
+	int removeEmptyGroups(Hi5Tree & dst, const ODIMPath & path = ODIMPath());
+	// { return handleEmptyGroups(dst, true); }
 
 	/// Complement of remove(): keep the selected, remove else.
 	static
@@ -100,8 +99,8 @@ protected:
 
 
 
-	static
-	int handleEmptyGroups(Hi5Tree & dst, bool REMOVE, const ODIMPath & path = ODIMPath());
+	// static
+	// int handleEmptyGroups(Hi5Tree & dst, const ODIMPath & path = ODIMPath());  // bool REMOVE,
 
 	/// Mark exclusion/inclusion in the whole tree
 	/**

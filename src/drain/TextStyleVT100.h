@@ -40,6 +40,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace drain
 {
 
+/*
+ * To turn off the any text attribute on a VT100 or ANSI-compatible terminal, you must use the
+ * Reset All Attributes command.
+ * The VT100 does not have a specific command to turn off only a single attribute without affecting others.
+ *
+ * NOTE: this does not work like TextStyle. Consider alternative design, say embedding TextStyle as a member.
+ */
 
 class TextStyleVT100 : public TextStyle {
 
@@ -63,7 +70,7 @@ public:
 
 
 	virtual
-	void startWrite(std::ostream & ostr) const {
+	void startWrite(std::ostream & ) const { // ostr
 	}
 
 	virtual
@@ -126,13 +133,13 @@ public:
 protected:
 
 	/**
-	 *  Default implemenation for normal input elements.
+	 *  Default implementation for normal input elements.
 	 *  For control elements, see following specializations.
 	 */
 	template <typename T, typename ... TT>
 	// static
-	void _append(std::ostream & ostr, bool init, const T & arg, const TT &... args) const{
-		if (init){
+	void _append(std::ostream & ostr, bool INIT, const T & arg, const TT &... args) const{
+		if (INIT){
 			_appendControlSuffix(ostr);
 		}
 		ostr << arg;
@@ -141,26 +148,30 @@ protected:
 
 	template <typename ... TT>
 	// static
-	void _append(std::ostream & ostr, bool start, const Colour & colour, const TT &... args) const{
-		_appendControlPrefix(ostr, start);
+	void _append(std::ostream & ostr, bool START, const Colour & colour, const TT &... args) const{
+		_appendControlPrefix(ostr, START);
 		ostr << getIntCode(colour);
 		_append(ostr, true, args...);
 	}
 
 	template <typename ... TT>
 	// static
-	void _append(std::ostream & ostr, bool start, const Line & line, const TT &... args) const{
-		_appendControlPrefix(ostr, start);
+	void _append(std::ostream & ostr, bool START, const Line & line, const TT &... args) const{
+		_appendControlPrefix(ostr, START);
 		ostr << getIntCode(line);
 		_append(ostr, true, args...);
 	}
 
 	template <typename ... TT>
-	// static
-	void _append(std::ostream & ostr, bool start, const Style & style, const TT &... args) const{
-		_appendControlPrefix(ostr, start);
+	void _append(std::ostream & ostr, bool START, const Style & style, const TT &... args) const {
+		_appendControlPrefix(ostr, START);
 		ostr << getIntCode(style);
 		_append(ostr, true, args...);
+	}
+
+	template <typename ... TT>
+	void _append(std::ostream & ostr, bool START, const Control & ctrl) const {
+		_appendControlSuffix(ostr);
 	}
 
 	inline
@@ -171,8 +182,8 @@ protected:
 	};
 
 	virtual
-	void _appendControlPrefix(std::ostream & ostr, bool start) const {
-		if (!start){
+	void _appendControlPrefix(std::ostream & ostr, bool START) const {
+		if (!START){
 			ostr << "\033["; // start VT100 def
 		}
 		else {

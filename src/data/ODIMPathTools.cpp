@@ -41,6 +41,16 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+void completePathParser(const std::string & s, ODIMPath & path, std::string & attributeKey, std::string & attributeValue){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	const drain::RegExp re("^(.*(dataset|data|quality)[0-9]+|data|what|where|how)())?([[:alpha:]][a-zA-Z0-9_:]*(=.*)?)$");
+
+}
+
+
+
 bool ODIMPathTools::getLastChild(const Hi5Tree & tree, ODIMPathElem & child, bool create){ //, (ODIMPathElem::group_t g
 
 	drain::Logger mout(__FILE__, __FUNCTION__);

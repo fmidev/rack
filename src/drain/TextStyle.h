@@ -56,6 +56,8 @@ public:
 
 	enum Line {NO_LINE=0, UNDERLINE=1, DOUBLE_UNDERLINE=2, OVERLINE=4};
 
+	enum Control {RESET=0};
+
 
 	// Could be: EnumFlagger<SingleFlagger> ? -> see TextDecorator
 	Colour colour;
@@ -68,11 +70,25 @@ public:
 
 	template <typename ... T>
 	inline
+	void set(Control ctrl, const T &... args) {
+		if (ctrl == Control::RESET){
+			reset();
+			add(args...);
+		}
+		else {
+			// Or warn about unhandled control character?
+			add(ctrl, args...);
+		}
+	}
+
+	template <typename ... T>
+	inline
 	void set(const T &... args) {
 		reset();
 		//this->value = 0;
 		add(args...);
 	}
+
 
 	template <typename T, typename ... TT>
 	inline

@@ -47,13 +47,11 @@ void ODIMPathElemMatcher::set(const std::string &s){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 	// mout.special<LOG_NOTICE>("setting: ", s, " --> ", std::string(s.begin(), it));
-
 	reset();
 
 	std::vector<std::string> args;
 	drain::StringTools::split(s, args, '|'); // For now. (Future extension: '/' ?)
 
-	// bool other = false;
 	for (std::string & arg: args){
 		// other |= !
 		add(arg);
@@ -61,8 +59,7 @@ void ODIMPathElemMatcher::set(const std::string &s){
 
 	// mout.special<LOG_NOTICE>("set: ", s, " --> ", *this);
 
-
-	return; // !other;
+	return;
 }
 
 
@@ -115,9 +112,11 @@ void ODIMPathElem::extractIndex(const std::string &s, ODIMPathElemMatcher::idx_r
 
 	idx.set(0, INDEX_MAX);
 
-	char c = drain::TextReader::scanSegmentToValue(sstr, ":", idx.min);
+	//const char c = drain::TextReader::scanSegmentToValue(sstr, ":-", idx.min);
+	// if ((c == ':') || (c == '-')){
+	const char c = drain::TextReader::scanSegmentToValue(sstr, ":", idx.min);
 	if (c == ':'){
-		sstr.get(); // swallow ':'
+		sstr.get(); // swallow ':' or '-'
 		sstr >> idx.max; // can this fail? For example with "1:"
 		//mout.warn("extracted maxIndex ", this->indexMax, " c=", c);
 	}

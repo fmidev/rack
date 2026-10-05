@@ -262,13 +262,13 @@ public:
 
 protected:
 
-	std::ostream *ostrPtr;
+	std::ostream *ostrPtr = & std::cerr;
 
 	std::ofstream ofstr;
 
-	level_t verbosityLevel;
+	level_t verbosityLevel = LOG_NOTICE;
 
-	long millisecondsStart;
+	long millisecondsStart = 0;
 
 	//drain::Dictionary<int, Notification> dict;
 
@@ -798,7 +798,7 @@ public:
 
 	/// Handling flush operator
 	inline
-	Logger &operator<<(oper op){
+	Logger &operator<<(oper ){ // oper op
 		monitor.flush(level, *notif_ptr, prefix, message);
 		return *this; // <- drop this?
 	}
@@ -916,7 +916,7 @@ protected:
 
 
 	inline
-	void appendPrefix(std::stringstream & sstr){
+	void appendPrefix(std::stringstream &){ //  sstr
 	}
 
 	template<typename T, typename ... TT>

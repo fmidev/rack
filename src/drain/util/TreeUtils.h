@@ -151,9 +151,8 @@ public:
 	 */
 	template <class TR, bool SKIP_EMPTY=false>
 	static
-	//void dump(const TR & tree, std::ostream &ostr = std::cout, bool nodes=false, const std::string &  indent="") { // int depth = 0) const {
 	bool dump(const TR & tree, std::ostream &ostr = std::cout,
-			bool (* callBack)(const typename TR::node_data_t &, std::ostream &) = TreeUtils::dataDumper, const std::string &  indent="") { // int depth = 0) const {
+			bool (* callBack)(const typename TR::node_data_t &, std::ostream &) = TreeUtils::dataDumper, const std::string & indent="") { // int depth = 0) const {
 
 		// https://www.w3.org/TR/xml-entity-names/025.html
 		/*
@@ -167,24 +166,19 @@ public:
 
 		bool empty = true;
 
-		//if (nodes){
-		if (callBack != nullptr){ // nodes){
-			// std::stringstream sstr;
-			// if ((!tree.hasChildren()) || !tree.isExclusive()){
+		if (callBack != nullptr){
 			if (! (tree.isExclusive() && tree.hasChildren())){
-			// if (tree.empty()){
-				// if (empty || !tree.isExclusive()){
+				// if (tree.empty()){
 				empty = (*callBack)(tree.data, ostr);
-				//if (sstr.LENGTH)
-				// ostr << sstr.str(); // See Logger for direct copy? Risk: pending
-				// ostr << tree.data;
 			}
 		}
 		ostr << '\n';
 
-		// for (const auto & entry: *this){
-		// for (const auto & entry: tree.begin()){
 		for (typename TR::container_t::const_iterator it = tree.begin(); it != tree.end(); it++){
+
+			if (it->second.empty()){
+				continue;
+			}
 
 			std::ostream & ostrChild = ostr; // for now...
 
@@ -199,8 +193,7 @@ public:
 			}
 			ostrChild << it->first; // << '\n'; //' ' << depth << '\n';
 
-			if (callBack != nullptr){ // nodes){
-				//ostr << ':';
+			if (callBack != nullptr){
 				ostrChild << ' ';
 			}
 
@@ -210,10 +203,6 @@ public:
 			if (!empty2)
 				empty = false;
 
-			//if (!(empty2 && SKIP_EMPTY))
-			// if ((empty2 && SKIP_EMPTY)) ostr << "{\n";
-			// ostr << sstr.str();
-			//if ((empty2 && SKIP_EMPTY)) ostr << "}\n";
 		};
 
 		return empty;

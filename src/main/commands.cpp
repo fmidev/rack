@@ -122,7 +122,8 @@ protected:
 	CmdBaseSelective(const CmdBaseSelective & cmd) : drain::BasicCommand(cmd){
 		getParameters().append(mySelector.getParameters());
 		//getParameters().updateFromCastableMap(cmd.getParameters());
-		setParameters(cmd.getParameters());
+		//setParameters(cmd.getParameters()); // ERROR if un initialized refs (yet unlinked)
+		// setParameters(mySelector.getParameters());
 	};
 
 
@@ -1000,14 +1001,35 @@ class CmdDelete : public CmdBaseSelective {
 
 public:
 
+	std::string attributeKey;
+
+	inline
 	CmdDelete() :  CmdBaseSelective(__FUNCTION__, "Deletes selected parts of h5 structure. Special param values: all, empty"){
+		// drain::Logger mout(__FILE__, __LINE__, getName());
+		getParameters().link("attribute", attributeKey, "key");
+		// mout.experimental("NEW: ", getParameters().toStr());
+
 	};
+
+	inline
+	CmdDelete(const CmdDelete & cmd) :  CmdBaseSelective(cmd){
+		drain::Logger mout(__FILE__, __LINE__, getName());
+		// mout.experimental("YES");
+		getParameters().link("attribute", attributeKey, "key");
+		// getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+		mout.experimental("NOW: ", getParameters().toStr());
+		// getParameters().link("attribute", attributeKey);
+	};
+
+
 
 	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FILE__, __LINE__, getName());
+
+		mout.warn("start");
 
 		// Hi5Tree & dst = *ctx.currentHi5; // well, consider
 		Hi5Tree & dst =  ctx.getHi5(RackContext::CURRENT, RackContext::PRIVATE);
@@ -1033,77 +1055,35 @@ public:
 
 		// Select paths
 		DataSelector selector(ODIMPathElem::DATASET, ODIMPathElem::DATA);
-		selector.setParameters(value);
-		mout.info("selector: ", selector );
+		selector.setParameters(mySelector.getParameters());
+		// selector.getPathMatcher().str()
+		mout.note(DRAIN_LOG(selector));
 
-		DataModifier::remove(dst, selector);
+		if (attributeKey.empty()){
+			mout.info("removing paths with: ", DRAIN_LOG(selector));
+			DataModifier::remove(dst, selector);
+		}
+		else {
+			mout.attention(DRAIN_LOG(selector));
+			ODIMPathList paths;
+			selector.getPaths(dst, paths);
+			for (const ODIMPath & path: paths){
+				mout.note(DRAIN_LOG(path));
+				//mout.debug("deleting: ", path);
+				Hi5Tree & d = dst(path);
+				if (d->attributes.hasKey(attributeKey)){
+					mout.experimental("deleting: ", path, ":", attributeKey);
+					d->attributes.erase(attributeKey);
+				}
 
-		/*
-		ODIMPathList paths;
-		selector.getPaths(dst, paths);
-
-		mout.info("Deleting ", paths.size(), " substructures");
-		for (const ODIMPath & path: paths){
-			mout.debug("deleting: ", path);
-			dst.erase(path);
+			}
+			// mout.error("unimplemented: ", DRAIN_LOG(selector));
 		}
 
-		handleEmptyGroups(ctx, dst);
-		*/
 	};
 
 protected:
 
-	/*
-	static
-	int handleEmptyGroups(RackContext & ctx, Hi5Tree & dst, bool remove=false, const ODIMPath & path = ODIMPath()){
-
-		drain::Logger mout(ctx.log, __FILE__, __LINE__, __FUNCTION__);
-
-		// mout.special("considering ", path);
-
-		ODIMPathList paths;
-
-		int count = 0;
-
-		for (auto & entry: dst(path).getChildren()){
-			if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS)){
-				++count;
-				const ODIMPath p(path, entry.first);
-				int c = handleEmptyGroups(ctx, dst, remove, p);
-				if (c==0){
-					paths.push_back(p);
-				}
-			}
-			else if (entry.first.is(ODIMPathElem::ARRAY)){
-				if (entry.second.data.empty()){
-					++count;
-				}
-			}
-		}
-
-		if (count == 0){
-			if (!remove){
-				mout.info("Empty groups remaining at ", path);
-				mout.hint<LOG_INFO>("Add path argument or remove empty groups with additional '--delete empty'");
-			}
-		}
-
-		if (remove){
-
-			// Note: dst(path).clearChildren() could corrupt iteration at upper stack level.
-
-			for (const ODIMPath & p: paths){
-				mout.debug("Removing empty group: ", p);
-				dst.erase(p);
-				// mout.attention("Removing empty group: DONE");
-			}
-		}
-
-		return count;
-
-	}
-	*/
 };
 
 
@@ -1139,8 +1119,7 @@ public:
 
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);  // *ctx.currentHi5;
-
+		Hi5Tree & dst = ctx.getHi5(RackContext::CURRENT);
 
 		DataSelector selector;
 		const std::string & value = getLastParameters();
@@ -1148,45 +1127,6 @@ public:
 
 		DataModifier::keep(dst, selector);
 
-		/*
-		mout.debug2("selector for saved paths: ", selector);
-
-		// Step 0
-		mout.debug("delete existing no-save structures ");
-		hi5::Hi5Base::deleteExcluded(dst);
-
-		// Initially, mark all paths excluded.
-		DataTools::markExcluded(dst, true);
-		//hi5::Hi5Base::markExcluded(dst);
-
-
-		ODIMPathList savedPaths;
-		selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
-
-		for (const ODIMPath & path: savedPaths){
-
-			mout.debug2("set save through path: ", path);
-			DataTools::markExcluded(dst, path, false);
-			//mout.debug("marked for save: " , *it );
-			// Accept also tail (attribute groups)
-			//if (it->back().isIndexed()){ // belongsTo(ODIMPathElem::DATA | ODIMPathElem::QUALITY)){ or: DATASET
-			// Hi5Tree & d = dst(path);
-
-			for (auto & entry: dst(path)){
-				if (entry.first.is(ODIMPathElem::ARRAY)){
-					mout.debug2("also save: ", path, '|', entry.first);
-					// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
-					entry.second.data.exclude = false;
-				}
-			}
-
-			//
-		}
-
-		// debug: hi5::Hi5Base::writeText(dst, std::cerr);
-
-		hi5::Hi5Base::deleteExcluded(dst);
-		*/
 	};
 
 

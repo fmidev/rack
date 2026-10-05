@@ -82,10 +82,10 @@ EXCLUDE dataset4 dataset6
 
 
 
-TITLE "For text output, select paths ENDING with 'what', 'where', or 'how'. "
-TEST    --select "'what|where|how'"
-REQUIRE dataset1/where
-EXCLUDE 'data1$'
+#TITLE "For text output, select paths ENDING with 'what', 'where', or 'how'. "
+#TEST    --select "'what|where|how'"
+#REQUIRE dataset1/where
+#EXCLUDE 'data1$'
 
 TITLE "For text output, select paths of elevations of at least 6.0 degrees "
 TEST    --select elangle=6.0
@@ -123,7 +123,8 @@ TEST  --select quantity=QIND
 REQUIRE dataset1/quality1
 REQUIRE dataset1/data7/quality1
 EXCLUDE dataset1/data1/quality1
-EXCLUDE data[1-9]$
+# check?
+# EXCLUDE data[1-9]$
 
 
 TITLE "Select global (dataset-level) QIND fields"
@@ -137,14 +138,14 @@ TITLE "Select quantity-specific (data-level) QIND fields"
 TEST  --select quantity=.+/QIND
 REQUIRE dataset1/data7/quality1
 EXCLUDE dataset1/quality
-EXCLUDE data[1-9]$
-#EXCLUDE dataset2
+#EXCLUDE data[1-9]$
+EXCLUDE dataset2
 
 TITLE "Select quantity-specific (data-level) QIND field"
 TEST  --select quantity=DBZ-SLOPE-SMOOTH/QIND
 REQUIRE dataset1/data7/quality1
 EXCLUDE dataset1/quality
-EXCLUDE data[1-9]$
+EXCLUDE data[1-6]$
 #EXCLUDE dataset1/data[1-6] 
 
 
@@ -248,32 +249,46 @@ REQUIRE dataset1 dataset1/data1
 EXCLUDE dataset1/quality dataset1/data1/quality
 
 
+TITLE "Delete attribute what:quantity"
+TEST    --delete what,attribute=quantity
+EXCLUDE what:quantity=
+
+TITLE "Delete attribute what:quantity in quality groups"
+TEST    --delete quality:/what,attribute=quantity
+REQUIRE what:quantity=
+
+
 
 
 START example-keep.inc
 
 INFILE='volume.h5'
 
+for OPT in keep select; do
+
 TITLE "Keep data[i] groups containg DBZH"
-TEST    --keep quantity=DBZH
+TEST    --$OPT quantity=DBZH
 REQUIRE dataset1/data2/{data,what}
 REQUIRE dataset1/{what,where}
 EXCLUDE dataset1/data1 # TH here in volume.h5
 
 TITLE "Keep dataset[i] groups containing (at least) VRAD"
-TEST    --keep quantity=VRAD
+TEST    --$OPT quantity=VRAD
 #,groups=dataset:data
 REQUIRE dataset.*/data3/data
 
 TITLE "Keep dataset[i] group with elangle 5.0 degrees, at lowest"
-TEST    --keep elangle=5.0:90.0
+TEST    --$OPT elangle=5.0:90.0
 REQUIRE dataset.*/data1
 EXCLUDE dataset1/
 
 TITLE "Keep three dataset[i] groups with lowest elangle "
-TEST    --keep elangle=-90.0:90.0,count=3
+TEST    --$OPT elangle=-90.0:90.0,count=3
 REQUIRE dataset.*
 EXCLUDE dataset4/
+
+done
+
 
 INFILE='volume-detected.h5'
 

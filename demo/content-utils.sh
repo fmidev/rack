@@ -76,16 +76,18 @@ function TEST(){
     echo "# $cmd -o $OUTFILE " >> test-content.log
     
     # Save also txt file, pruning nosave-marked '~' objects. Note: source string causes binary mode?
-    eval "$cmd -o -" > $TXTFILE.raw
+    echo "# $cmd -o - > $TXTFILE.raw" >> test-content.log
+    eval "$cmd -o -" > $TXTFILE.raw 
+    
     if [ -s $TXTFILE.raw ]; then
-	fgrep '~' -v $TXTFILE.raw > $TXTFILE
+	fgrep '~' --text -v $TXTFILE.raw > $TXTFILE
 	if [ $? != 0 ]; then
 	    echo "Command failed..."
 	    exit  1
 	fi
     else
 	# Move empty file...
-	mv $TXTFILE.raw $TXTFILE
+	mv -v $TXTFILE.raw $TXTFILE
     fi
     
 }
@@ -94,10 +96,15 @@ function REQUIRE(){
     for i in $*; do
 	#rack --verbose 4 $OUTFILE -o - | grep ^$i > /dev/null
  	#cmd="grep '^$i' $TXTFILE"
- 	cmd="grep '$i' $TXTFILE"
+ 	cmd="grep --text '$i' $TXTFILE"
 	echo $cmd
 	eval $cmd > /dev/null
 	if [ $? != 0 ]; then
+	    #echo $cmd
+	    echo "-------"
+	    tail -5  "$SCRIPT"
+	    echo "-------"
+	    echo "# TXTFILE=$TXTFILE"
 	    echo "Required but missing: " $i
 	    exit  1
 	else
@@ -110,10 +117,15 @@ function EXCLUDE(){
     for i in $*; do
 	#rack --verbose 4 $OUTFILE -o - | grep ^$i > /dev/null
 	#cmd="grep ^$i $TXTFILE"
-	cmd="grep '$i' $TXTFILE"
+	cmd="grep '$i' --text $TXTFILE"
 	echo $cmd
 	eval $cmd > /dev/null
 	if [ $? == 0 ]; then
+	    echo $cmd
+	    echo "-------"
+	    tail -5  "$SCRIPT"
+	    echo "-------"
+	    echo "# TXTFILE=$TXTFILE"
 	    echo "Excluded but still present: " $i
 	    exit  1
 	else

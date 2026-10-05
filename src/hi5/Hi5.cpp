@@ -134,7 +134,7 @@ drain::Log & getLogH5(){
 
 void NodeHi5::swap(NodeHi5 & node){
 
-	const bool tmpExclude = exclude;
+	const bool tmpExclude = this->exclude;
 	attributes.swap(node.attributes);
 	image.swap(node.image);
 	exclude = node.exclude;
@@ -143,7 +143,8 @@ void NodeHi5::swap(NodeHi5 & node){
 };
 
 
-void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {
+//void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const {
+void NodeHi5::writeText(std::ostream &ostr, const std::string & prefix) const {
 
 	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
 
@@ -153,8 +154,9 @@ void NodeHi5::writeText(std::ostream &ostr, const rack::ODIMPath & prefix) const
 	//  if (attributes.empty() && dataSet.isEmpty()){
 	//  if (!prefix.empty())
 	ostr << prefix;
-	if (exclude)
+	if (exclude){
 		ostr << '~';
+	}
 	ostr << '\n';
 
 
@@ -385,17 +387,39 @@ void Hi5Base::linkPalette(const Hi5Tree & palette, Hi5Tree & dst){
 	attributes["palette_link"] = (long unsigned int) & palette; //(long unsigned int);
 }
 
+bool Hi5Base::isExcluded(const Hi5Tree &src, const typename Hi5Tree::path_t & path){
+
+	const Hi5Tree *ptr = &src;
+	if (ptr->data.exclude){
+		return true;
+	}
+
+	for (const Hi5Tree::path_t::elem_t & elem: path){
+		ptr = & (*ptr)[elem];
+		if (ptr->data.exclude){
+			return true;
+		}
+	}
+
+	return false;
+}
+
 // const Hi5Tree &src,
 void Hi5Base::writeText(const Hi5Tree &src, const std::list<typename Hi5Tree::path_t> & paths, std::ostream & ostr) {
 
-	// for (std::list<Hi5Tree::path_t>::const_iterator it = paths.begin(); it != paths.end(); ++it) {
-	// const std::string & key = *it;
+	drain::Logger mout(getLogH5(), __FILE__, __FUNCTION__);
+
 	for (const Hi5Tree::path_t & path: paths){
-		const NodeHi5 & node = src(path).data;
-		if (!node.exclude){
-			node.writeText(ostr, path);
+		if (isExcluded(src, path)){
+			// mout.attention("excluding: ", path);
 		}
-		//src(path).data.writeText(ostr, path);
+		else {
+			src(path).data.writeText(ostr, path);
+		}
+		/*
+		const NodeHi5 & node = src(path).data;
+		if (!node.exclude){...
+		*/
 	}
 }
 
@@ -555,10 +579,8 @@ void Hi5Base::deleteExcluded(Hi5Tree &src){
 	}
 
 	for (const rack::ODIMPathElem & elem: elems){
-		//Hi5Tree::path_t p;
-		//p << elem;
 		mout.reject<LOG_DEBUG>("delete group: ", elem);
-		//src.erase(p);
+		//src.erase(p); // TODO implement
 		src.getChildren().erase(elem);
 	}
 

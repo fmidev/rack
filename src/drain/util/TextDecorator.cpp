@@ -56,14 +56,14 @@ const drain::Enum<TextStyle::Style>::dict_t drain::Enum<TextStyle::Style>::dict 
 template <>
 const drain::Enum<TextStyle::Colour>::dict_t drain::Enum<TextStyle::Colour>::dict = {
 		{"BLACK", TextStyle::BLACK},
-		{"GRAY", TextStyle::GRAY},
+		{"GRAY",  TextStyle::GRAY},
 		{"WHITE", TextStyle::WHITE},
 		{"RED",   TextStyle::RED},
 		{"GREEN", TextStyle::GREEN},
-		{"YELLOW", TextStyle::YELLOW},
+		{"YELLOW",TextStyle::YELLOW},
 		{"BLUE",  TextStyle::BLUE},
 		{"CYAN",  TextStyle::CYAN},
-		{"PURPLE", TextStyle::PURPLE}
+		{"PURPLE",TextStyle::PURPLE}
 		//		{"", TextStyle::}
 };
 

@@ -47,6 +47,21 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace rack {
 
+
+class TreeFileInfo : public drain::FileInfo {
+
+public:
+
+	inline
+	TreeFileInfo() : drain::FileInfo("tre"){
+	}
+
+
+	bool attributeColors = true;
+	bool skipExcluded = true;
+
+};
+
 /// Tool for selecting datasets based on paths, quantities and min/max elevations.
 /**
  *
@@ -56,6 +71,8 @@ class DataTools { //: public drain::BeanLike {
 
 public:
 
+	static
+	TreeFileInfo & getTreeFileInfo();
 
 	/// Traverses upward in hierachy to find the value of the given PolarODIM where, what, or how attribute.
 	/**
@@ -125,7 +142,8 @@ public:
 
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
-
+	static
+	void superDump(const Hi5Tree & src, std::ostream & ostr = std::cerr);
 
 
 	///  (Un)mark groups along a path for deletion by #Hi5Base::deleteExcluded()

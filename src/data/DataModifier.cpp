@@ -28,6 +28,7 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+#include "drain/util/Output.h"
 
 #include "DataTools.h"
 #include "DataSelector.h"
@@ -51,15 +52,24 @@ void DataModifier::markTree(Hi5Tree &src, bool EXCLUDE, ODIMPathElem::group_t gr
 
 }
 
-void DataModifier::markPath(Hi5Tree &src, const Hi5Tree::path_t & path, bool exclude){
+void DataModifier::markPath(Hi5Tree &src, const Hi5Tree::path_t & path, bool EXCLUDE){
 	//drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
+	// Traverse path...
 	Hi5Tree *ptr = &src; // Rare!
 	for (const Hi5Tree::path_t::elem_t & elem: path){
-		ptr->data.exclude = exclude;
+		ptr->data.exclude = EXCLUDE;
+		if (!EXCLUDE){
+			// ...  and also mark attached WHAT, WHERE, HOW groups included.
+			for (auto & entry: *ptr){
+				if (entry.first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS)){
+					entry.second.data.exclude = false;
+				}
+			}
+		}
 		ptr = & (*ptr)[elem];
 	}
-	ptr->data.exclude = exclude;
+	ptr->data.exclude = EXCLUDE;
 
 }
 
@@ -70,19 +80,19 @@ void DataModifier::remove(Hi5Tree &dst, const DataSelector & selector){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// Step 0
-	mout.debug("delete pre-existing no-save structures ");
+	mout.debug2("delete existing structures marked 'exclude'");
 	hi5::Hi5Base::deleteExcluded(dst);
 
 	ODIMPathList paths;
 	selector.getPaths(dst, paths);
 
-	mout.info("Deleting ", paths.size(), " substructures");
+	mout.debug("deleting ", paths.size(), " substructures");
 	for (const ODIMPath & path: paths){
 		mout.debug("deleting: ", path);
 		dst.erase(path);
 	}
 
-	handleEmptyGroups(dst, false);
+	// handleEmptyGroups(dst, false);
 
 }
 
@@ -91,14 +101,18 @@ void DataModifier::keep(Hi5Tree &dst, const DataSelector & selector){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug("delete existing no-save structures ");
-	// There shouldn't be many...
-	// Consider returning a value, and warning if something was deleted.
+	mout.debug2("delete existing structures marked 'exclude'");
+	// There shouldn't be many; consider warning if something was really deleted.
 	hi5::Hi5Base::deleteExcluded(dst);
 
+	mout.attention(DRAIN_LOG(selector));
 	markIncluded(dst, selector);
 
+	// DataTools::superDump(dst);
+
 	hi5::Hi5Base::deleteExcluded(dst);
+	// std::cerr << "once more!\n";
+	// DataTools::superDump(dst);
 
 
 }
@@ -107,41 +121,35 @@ void DataModifier::markIncluded(Hi5Tree &dst, const DataSelector & selector){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	// Initially, mark all paths excluded.
-	markTree(dst, true, ODIMPathElem::DATA_GROUPS);
+	// Initially, mark all groups excluded, except WHAT, WHERE and HOW groups.
 
-	mout.debug2("selector for saved (included) paths: ", selector);
+	markTree(dst, true, ODIMPathElem::DATA_GROUPS| ODIMPathElem::ARRAY);
+	// markTree(dst, true, ODIMPathElem::DATA_GROUPS);
+	// markTree(dst, true, ODIMPathElem::ALL_GROUPS);
 
+	// DEBUG: DataTools::superDump(dst);
+	// mout.special("include: ", DRAIN_LOG(selector));
 	ODIMPathList savedPaths;
 	selector.getPaths(dst, savedPaths); //, ODIMPathElem::DATASET | ODIMPathElem::DATA | ODIMPathElem::QUALITY);
 
 	for (const ODIMPath & path: savedPaths){
 
-		mout.debug2("set save through path: ", path);
+		// mout.accept<LOG_NOTICE>("include path and subtree of: ", path);
+		// Mark included, along the path only
 		markPathIncluded(dst, path);
+		// Mark included full subtrees.
+		markTree(dst(path), false, ODIMPathElem::ALL_GROUPS);
 
-		for (auto & entry: dst(path)){
-			entry.second.data.exclude = false;
-			/*
-			if (entry.first.is(ODIMPathElem::ARRAY)){
-				mout.debug2("also save: ", path, '|', entry.first);
-				// if (dit->first.belongsTo(ODIMPathElem::ATTRIBUTE_GROUPS))
-				entry.second.data.exclude = false;
-			}
-			*/
-		}
-
-		//
 	}
 
-	// debug: hi5::Hi5Base::writeText(dst, std::cerr);
 
 
 }
 
 
+int DataModifier::removeEmptyGroups(Hi5Tree & dst, const ODIMPath & path){ // bool REMOVE,
+//int DataModifier::handleEmptyGroups(Hi5Tree & dst, const ODIMPath & path){ // bool REMOVE,
 
-int DataModifier::handleEmptyGroups(Hi5Tree & dst, bool REMOVE, const ODIMPath & path){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
@@ -155,7 +163,7 @@ int DataModifier::handleEmptyGroups(Hi5Tree & dst, bool REMOVE, const ODIMPath &
 		if (entry.first.belongsTo(ODIMPathElem::DATA_GROUPS)){
 			++count;
 			const ODIMPath p(path, entry.first);
-			int c = handleEmptyGroups(dst, REMOVE, p);
+			int c = removeEmptyGroups(dst, p); //handleEmptyGroups(dst, REMOVE, p);
 			if (c==0){
 				paths.push_back(p);
 			}
@@ -165,24 +173,28 @@ int DataModifier::handleEmptyGroups(Hi5Tree & dst, bool REMOVE, const ODIMPath &
 				++count;
 			}
 		}
+		else {
+			++count;
+		}
 	}
 
+	/*
 	if (count == 0){
 		if (!REMOVE){
 			mout.info("Empty groups remaining at ", path);
 			mout.hint<LOG_INFO>("Add path argument or remove empty groups with additional '--delete empty'");
 		}
-	}
+	}*/
 
-	if (REMOVE){
+	// if (REMOVE){
 
 		// dst(path).clearChildren() could corrupt iteration at upper stack level.
-		for (const ODIMPath & p: paths){
-			mout.debug("Removing empty group: ", p);
-			dst.erase(p);
-			// mout.attention("Removing empty group: DONE");
-		}
+	for (const ODIMPath & p: paths){
+		mout.debug("Removing empty group: ", p);
+		dst.erase(p);
+		// mout.attention("Removing empty group: DONE");
 	}
+	//}
 
 	return count;
 

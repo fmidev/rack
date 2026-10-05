@@ -95,7 +95,12 @@ struct NodeHi5 {
 	};
 
 	//void writeText(std::ostream & ostr = std::cout, const std::string & prefix = "") const;
-	void writeText(std::ostream & ostr = std::cout, const rack::ODIMPath & prefix = rack::ODIMPath()) const;
+	void writeText(std::ostream & ostr, const std::string & prefix) const;
+
+	inline
+	void writeText(std::ostream & ostr = std::cout, const rack::ODIMPath & prefix = rack::ODIMPath()) const {
+		writeText(ostr, prefix.str());
+	}
 
 
 	void swap(NodeHi5 & n);
@@ -138,52 +143,21 @@ void Hi5Tree::swapData(hi5::NodeHi5 & node){
 }
 
 
-// Experimental implementations, based on static dictionary.
+template <> inline
+bool Hi5Tree::empty() const {
+	return ((data.empty() && !hasChildren()) || data.exclude);
+}
+
 
 // Basic idea: a static map is maintained. TODO: check its contents upon rack exit.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const rack::ODIMPathElem & Hi5Tree::getKey(const std::string  & key);
 
+// Experimental implementation based on static dictionary.
 template <> // for T (Tree class)
 template <> // for K (path elem arg)
 const rack::ODIMPathElem & Hi5Tree::getKey(const rack::ODIMPathElem::group_t  & key);
-
-
-/*
-template <>
-template <typename K> // for K (path elem arg)
-const Hi5Tree::key_t & Hi5Tree::getKey(const K & key){
-	static const rack::ODIMPathElem elem(key); // dangerous
-	return elem;
-}
-*/
-
-/*
-template <>
-template <> // for K (path elem arg)
-inline
-const Hi5Tree::key_t & Hi5Tree::getKey(const rack::ODIMPathElem::group_t & key){
-	static const rack::ODIMPathElem elem(key); // dangerous
-	return elem;
-}
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-inline
-const Hi5Tree & Hi5Tree::operator[](const std::string & s) const {
-	return (*this)[rack::ODIMPathElem(s)];
-	//return (*this)[Enum<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
-}
-
-template <> // for T (Tree class)
-template <> // for K (path elem arg)
-inline
-Hi5Tree & Hi5Tree::operator[](const std::string & s) {
-	return (*this)[rack::ODIMPathElem(s)];
-	//return (*this)[Enum<rack::RackSVG::TitleClass>::dict.getKey(x, false)];
-}
-*/
 
 }
 
@@ -242,6 +216,10 @@ public:
 	void linkPalette(const Hi5Tree & palette, Hi5Tree & dst);
 
 
+	/// Check is the path contains at least one \c exclude marker, meaning that data at the path should be bypassed.
+	static
+	bool isExcluded(const Hi5Tree &src, const typename Hi5Tree::path_t & path);
+
 	/// Dumps the H5 structure, attributes and data properties.
 	static
 	void writeText(const Hi5Tree &src, const std::list<typename Hi5Tree::path_t> & paths, std::ostream & ostr = std::cout);
@@ -250,7 +228,7 @@ public:
 	static
 	void writeText(const Hi5Tree &src, std::ostream & ostr = std::cout){
 		std::list<typename Hi5Tree::path_t> paths;
-		drain::TreeUtils::getPaths(src, paths);
+		drain::TreeUtils::getPaths(src, paths); // Note: also accepts 'excluded' nodes (TreeUtils cannot check it)
 		writeText(src, paths, ostr);
 	};
 

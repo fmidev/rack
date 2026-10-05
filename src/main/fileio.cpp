@@ -139,6 +139,9 @@ public:
 		gtiffConf.link("compliancy", FileGeoTIFF::compliancy = "EPSG:STRICT", drain::sprinter(FileGeoTIFF::compliancyFlagger.getDict(), "|", "<>").str());
 #endif
 
+		treeFileConf.link("colors", DataTools::getTreeFileInfo().attributeColors, "use vt100Colors");
+		treeFileConf.link("skipExcluded", DataTools::getTreeFileInfo().skipExcluded, "show only --select'ed");
+
 	};
 
 	CmdOutputConf(const CmdOutputConf & cmd) : drain::SimpleCommand<std::string>(cmd) { // drain::BasicCommand(cmd) {
@@ -146,7 +149,8 @@ public:
 		hdf5Conf.copyStruct(cmd.hdf5Conf,   cmd, *this, drain::ReferenceMap::LINK);
 		pngConf.copyStruct(cmd.pngConf,     cmd, *this, drain::ReferenceMap::LINK);
 		gtiffConf.copyStruct(cmd.gtiffConf, cmd, *this, drain::ReferenceMap::LINK);
-		svgConf.copyStruct(cmd.svgConf,     cmd, *this, drain::ReferenceMap::LINK); //,
+		svgConf.copyStruct(cmd.svgConf,     cmd, *this, drain::ReferenceMap::LINK);
+		treeFileConf.copyStruct(cmd.svgConf,cmd, *this, drain::ReferenceMap::LINK);
 	}
 
 
@@ -200,7 +204,7 @@ public:
 			FileGeoTIFF::compliancyFlagger.set(s);
 		}
 #endif
-		else if ((format == "tre")||(format == "dot")){
+		else if (DataTools::getTreeFileInfo().checkExtension(format) || (format == "dot")){
 			static drain::SprinterLayout layout("[|]", ",", "=", "");
 			drain::VariableMap & vmap = DataTools::getAttributeStyles();
 			if (!params.empty()){
@@ -260,6 +264,9 @@ public:
 	std::string svgConfOrientation;
 	std::string svgConfDirection;
 	std::string svgConfLegend;
+
+	mutable
+	drain::ReferenceMap treeFileConf;
 
 
 };
@@ -389,6 +396,7 @@ void CmdOutputFile::exec() const {
 		DataSelector selector(ctx.select);
 		mout.experimental("Output selector: ", selector);
 		DataModifier::markIncluded(src, selector);
+		// DataTools::superDump(src);
 		// TODO: consider grouping these "selected outputs" on top, then continuing with specific ones.
 	}
 
@@ -722,15 +730,16 @@ void CmdOutputFile::exec() const {
 		writeDotGraph(src, filepath, ODIMPathElem::ALL_GROUPS);
 
 	}
-	else if (path.extension == "tre"){
-		drain::Output output(path.str());
-		//drain::TreeUtils::dumpContents(src, output);
-		drain::TreeUtils::dump(src, output);
-	}
-	else if (path.extension == "TRE"){
+	else if (DataTools::getTreeFileInfo().checkExtension(path.extension)){
 		mout.advice("Use dedicated --outputTree to apply formatting");
 		drain::Output output(path.str());
 		drain::TreeUtils::dump<Hi5Tree,true>(src, output, DataTools::treeToStream);
+	}
+	else if (path.extension == "tre"){
+		mout.suspicious("program error: extension 'tre' left unhandled by treeFileInfo");
+		drain::Output output(path.str());
+		//drain::TreeUtils::dumpContents(src, output);
+		drain::TreeUtils::dump(src, output);
 	}
 	else if (path.extension == "inf"){
 		// mout.advice("Use dedicated --outputTree to apply formatting");
@@ -784,12 +793,20 @@ void CmdOutputFile::exec() const {
 				mout.info("Dumping HDF5 structure");
 			}
 			else {
-				mout.error("Text formatting --format unset, and unknown file format: ", value );
+				mout.error("Text formatting --format not set, and unknown file extension: ", value );
 				return;
 			}
 
-			// New 2026: .exclude applies
+			// OLD 2026
 			hi5::Hi5Base::writeText(src, output.getStream());
+
+			/*
+			ODIMPathList paths;
+			DataSelector selector(ctx.select);
+			selector.getPaths(src, paths);
+			// New 2026/09 .exclude applies
+			hi5::Hi5Base::writeText(src, paths, output.getStream());
+			*/
 
 			// ODIMPathList paths;
 			/*
@@ -921,8 +938,22 @@ void CmdOutputTree::exec() const {
 		mout.note("writing tree: '", filename, "'");
 	}
 
+	Hi5Tree & src = ctx.getHi5(RackContext::CURRENT);
+
+	if (!ctx.select.empty()){
+		DataSelector selector(ctx.select);
+		mout.experimental("Output selector: ", selector);
+		DataModifier::markIncluded(src, selector);
+		// TODO: consider grouping these "selected outputs" on top, then continuing with specific ones.
+	}
+
 	drain::Output output(filename);
-	drain::TreeUtils::dump(ctx.getHi5(RackContext::CURRENT), output, DataTools::treeToStream);
+	drain::TreeUtils::dump(src, output, DataTools::treeToStream);
+
+	if (!ctx.select.empty()){
+		ctx.select.clear();
+		DataModifier::markIncluded(src);
+	}
 
 }
 

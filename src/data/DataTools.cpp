@@ -65,6 +65,14 @@ std::list<std::string> & DataTools::getMainAttributes(){
 	return mainAttributes;
 }
 */
+TreeFileInfo & DataTools::getTreeFileInfo(){
+
+	static TreeFileInfo info;
+	return info;
+
+}
+
+
 
 
 void DataTools::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){
@@ -122,6 +130,54 @@ drain::VariableMap & DataTools::getAttributeStyles(){
 };
 
 
+void DataTools::superDump(const Hi5Tree & src, std::ostream & ostr){
+
+	std::list<Hi5Tree::path_t> paths;
+	drain::TreeUtils::getPaths(src, paths);
+
+	drain::TextStyleVT100 vt100;
+
+	std::stringstream sstr;
+
+	for (const Hi5Tree::path_t & path: paths){
+		sstr.str("");
+		bool EXCLUDE = false;
+		const Hi5Tree *ptr = &src;
+		vt100.append(sstr, drain::TextStyle::Colour::WHITE);
+		//vt100.startWrite(sstr);
+		for (const Hi5Tree::path_elem_t & elem: path){
+			ptr = & (*ptr)[elem];
+			if (ptr->data.exclude && ! EXCLUDE){
+				EXCLUDE = true;
+				// vt100.startWrite(ostr); //
+				vt100.append(sstr, drain::TextStyle::Colour::RED, drain::TextStyle::DIM); //, drain::TextStyle::Style::DIM);
+			}
+			vt100.append(sstr, Hi5Tree::path_t::separator.character, elem);//  drain::TextStyle::Style::DIM);
+			// sstr << Hi5Tree::path_t::separator.character << elem;
+		}
+		//if (EXCLUDE){
+		//	vt100.endWrite(ostr);
+		//}
+		// ostr << '\n';
+		// std::cerr << sstr.str();
+		//src(path)
+		ptr->data.writeText(ostr, sstr.str());
+		vt100.endWrite(ostr);
+		/*
+			const hi5::NodeHi5 & node = src(path).data;
+			if (!node.exclude){
+				node.writeText(ostr, path);
+			}
+			else {
+				mout.attention("excluding: ", path);
+			}
+		 */
+		//src(path).data.writeText(ostr, path);
+	}
+
+}
+
+
 bool DataTools::treeToStream(const Hi5Tree::node_data_t & data, std::ostream &ostr){
 
 	// Shared TextDecorator!
@@ -129,11 +185,18 @@ bool DataTools::treeToStream(const Hi5Tree::node_data_t & data, std::ostream &os
 
 	// drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
-	//mout.unimplemented("Future option... ");
+	// mout.unimplemented("Future option... ");
 
 	bool empty = true;
 
 	drain::VariableMap & attrs = DataTools::getAttributeStyles();
+
+	static
+	const drain::Variable dimmed("GRAY:DIM");
+
+	static
+	const drain::Variable overlinedDimmed("GRAY:DIM:OVERLINE");
+
 
 	drain::TextDecorator noDeco;
 	drain::TextDecoratorVt100 vt100Deco;
@@ -142,18 +205,24 @@ bool DataTools::treeToStream(const Hi5Tree::node_data_t & data, std::ostream &os
 	decorator.setSeparator(":");
 
 	if (data.exclude){
-		ostr << "~";
-		return false;
+		// ostr << "~";
+		// return false;
+		if (getTreeFileInfo().skipExcluded){
+			return false;
+		}
 	}
 
 	const drain::image::ImageFrame & img = data.image;
 	if (!img.isEmpty()){
 		// if (data.attributes.hasKey("image")){
+		decorator.begin(ostr, data.exclude ? overlinedDimmed : drain::Variable(""));
 		ostr << img.getWidth() << ',' << img.getHeight() << ' ';
 		ostr << drain::Type::call<drain::compactName>(img.getType());
 		ostr << '[' << (8*drain::Type::call<drain::sizeGetter>(img.getType())) << ']';
 		//<< drain::Type::call<drain::complexName>(img.getType());
+		decorator.begin(ostr, dimmed);
 		ostr << ' ' << img.getCoordinatePolicy() << ' ';
+		decorator.end(ostr);
 		empty = false;
 		//}
 	}
@@ -166,11 +235,11 @@ bool DataTools::treeToStream(const Hi5Tree::node_data_t & data, std::ostream &os
 				ostr << sep << ' ';
 			else
 				sep = ',';
-			//decorator.set(entry.second);
-			decorator.begin(ostr, entry.second);
+
+			decorator.begin(ostr, data.exclude ? dimmed : entry.second);
 			ostr << entry.first << '=' << data.attributes[entry.first];
 			decorator.end(ostr);
-			//decorator.reset();
+
 			empty = false;
 		}
 	}
