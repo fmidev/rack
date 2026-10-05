@@ -156,9 +156,9 @@ docker-image: Dockerfile.$(BASE_IMAGE) \
               $(DOCKER_CONF_DIR)/config.json $(DOCKER_CONF_DIR)/apt-proxy.conf
 	@ echo "Cleaning local ./Build"
 	ls -d Build/ && rm -rf ./Build/*
-	docker --config $(DOCKER_CONF_DIR) build . \
+	docker image history "rack_$(BASE_IMAGE):v$(VERSION)" || docker --config $(DOCKER_CONF_DIR) build . \
 	    --build-arg CONF_DIR=$(DOCKER_CONF_DIR) --file $< \
-	    --tag rack_$(BASE_IMAGE):v$(VERSION)
+	    --tag "rack_$(BASE_IMAGE):v$(VERSION)"
 
 docker-image-test:
 	docker image history "rack_$(BASE_IMAGE):v$(VERSION)" || $(MAKE) docker-image
