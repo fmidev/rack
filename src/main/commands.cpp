@@ -151,16 +151,19 @@ protected:
     - \c quantity argument accepts a list of strings separated by semicolon ':'
     - each item in a \c quantity argument list can be a literal string like \c DBZH or a regular experession like <code>^DBZ[HV]?$</code>
 
-    See example sets below!
+    See examples further below.
 
 	This option is useful in selecting data for:
 
-	- partial reading a large input file (see \ref fileiopage ).
+	- partial reading or writing a large file (see \ref fileiopage ), or saving selected images (PNG, GeoTIFF, PPM; see \ref imagespage ).
 	- selecting data for anomaly detection and removal (see \ref andrepage ).
-	- a meteorological product (see \ref productspage ).
-	- compositing (see \ref compositespage ).
-	- saving images (PNG, GeoTIFF, PPM; see \ref imagespage ).
-	- other data dumps, useful in debugging, for example
+	- computing a meteorological product (see \ref productspage ).
+	- compositing (see \ref compositespage )
+
+	In addition, these explicit data modification options use the same syntax
+
+	- \c --keep - prune internal data structure such that only the selected part remains (\c what , \c where and \c how groups are preserved automatically).
+    - \c --delete - remove parts of  internal data structure – single attributes or large subtrees.
 
 	The following command lines illustrate usage of \c --select in product generation and image output.
 
@@ -171,9 +174,9 @@ protected:
 
 	\include example-select-test.inc
 
-	\see CmdDelete
-	\see CmdKeep
-	\see CmdSetODIM
+	\see #rack::CmdDelete
+	\see #rack::CmdKeep
+	\see #rack::CmdSetODIM
 	\see #rack::CmdSelect (code)
 	\see #rack::DataSelector (code)
 
@@ -2751,6 +2754,8 @@ public:
 
 MainModule::MainModule(){ //
 
+	const drain::bank_section_t HIDDEN = drain::Static::get<drain::HiddenSection>().index;
+
 	// NEW
 	drain::CommandBank & cmdBank = drain::getCommandBank();
 
@@ -2770,6 +2775,9 @@ MainModule::MainModule(){ //
 	//DRAIN_CMD_INSTALL(drain::Cmd,ExecFile)(cmdBank);
 
 	DRAIN_CMD_INSTALL(drain::Cmd, ForEach)();
+	DRAIN_CMD_INSTALL(drain::Cmd, ScriptFile)();
+	ScriptFile.section = HIDDEN;
+
 	//DRAIN_CMD_INSTALL(drain::Cmd, ForEach)();
 
 	DRAIN_CMD_INSTALL(drain::Cmd,ExecScript)('X');

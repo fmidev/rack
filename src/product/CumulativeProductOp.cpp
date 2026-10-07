@@ -101,7 +101,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 
 	const QuantitySelector & qs = dataSelector.getQuantitySelector();
 
-	mout.experimental("Related quantities: ", drain::sprinter(qs.getList()));
+	mout.debug("Related quantities: ", drain::sprinter(qs.getList()));
 
 	const Data<PolarSrc> & srcData = firstSweep.getData(dataSelector.getQuantitySelector()); // firstSweep.getFirstData();
 	const std::string & srcQuantity = srcData.odim.quantity;
@@ -113,6 +113,7 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	*/
 	if (dataSelector.getQuantity() != srcQuantity){
 		mout.info("selected input [", srcQuantity, "]");
+		// TODO: could warn, if not in related quantities?
 	}
 
 	// Consider EchoTop, with DBZH input and HGHT output; but CAPPI should adapt to input quantity

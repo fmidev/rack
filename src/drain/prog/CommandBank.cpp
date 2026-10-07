@@ -863,7 +863,7 @@ void CommandBank::traverseLoops(Context & ctx, ClonerBase<Context> & contextClon
 			traverseLoops(ctx, contextCloner, itNext, itEnd);
 		}
 
-		mout.debug(it->key,'=',item);
+		mout.special(it->key,'=',item);
 		//ctx.getStatusMap()[it->key] = item;
 		statusMap[it->key] = item;
 

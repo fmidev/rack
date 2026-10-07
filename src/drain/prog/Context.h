@@ -58,11 +58,13 @@ public:
 
 
 	Script routine;
-	// Experimental
-
 
 	// Experimental
 	Script addedCommands;
+
+	// Experimental
+	// Program addedProgram;
+
 
 	// Experimental
 	Loop::loopStack loops;

@@ -145,6 +145,22 @@ void CmdForEach::exec() const  {
 
 }
 
+void CmdScriptFile::exec() const {
+
+	Context & ctx = getContext<Context>();
+	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
+
+	const CommandBank & bank = getCommandBank();
+	// bank.scriptify();
+	// ctx.routine;
+	Program prog(getContext<Context>());
+	bank.readFile(value, prog); // under construction
+
+	mout.unimplemented(prog);
+
+
+}
+
 /* No need for separate ForEach, because for "i=${var}" can be expanded.
 void CmdForEach::exec() const  {
 

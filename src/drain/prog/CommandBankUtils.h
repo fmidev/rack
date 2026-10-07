@@ -212,6 +212,41 @@ protected:
 
 };
 
+/// Define a script.
+/**
+ *   Lightweight. Keeps commands until commandBank reads and stores them.
+ *
+ */
+class CmdScriptFile : public SimpleCommand<std::string> {
+
+public:
+
+	inline
+	CmdScriptFile() : // CommandBank & cmdBank
+		SimpleCommand<std::string>(__FUNCTION__, "Define script.", "filename"){
+		//bank(cmdBank){
+		//cmdBank.scriptCmd = getName(); // mark me special
+	};
+
+	inline
+	CmdScriptFile(const CmdScriptFile & cmd) : SimpleCommand<std::string>(cmd){
+	}
+
+// protected:
+
+	//inline
+	void exec() const override;
+	/*
+	{
+		SmartContext & ctx = getContext<SmartContext>();
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+		mout.debug("Storing script with '" , getName() , "' ." );
+	};
+	*/
+
+
+};
+
 
 /// Executes the defined script
 /**

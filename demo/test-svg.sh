@@ -45,14 +45,18 @@ function WRITE_SECTION(){
     # LABEL=${LABEL,,}
     #echo '\section' $* >> $DOCFILE
     #echo "$* ($LABEL)" >> $DOCFILE
-    echo "$*" >> $DOCFILE
+    shift
+    echo '<b>' $* '</b>' >> $DOCFILE
+    #echo "$*" >> $DOCFILE
     echo $NEWLINE >> $DOCFILE
 }
 
 function WRITE_SUBSECTION(){
     echo $NEWLINE >> $DOCFILE
-    #echo '\section' $* >> $DOCFILE
-    echo $* >> $DOCFILE
+    #echo '\subsection' $* >> $DOCFILE
+    shift
+    echo '<b>' $* '</b>' >> $DOCFILE
+    #echo $* >> $DOCFILE
     echo $NEWLINE >> $DOCFILE
 }
 
@@ -144,7 +148,7 @@ function RUN_TEST(){
 	CAPTION=${CAPTION:-"SVG panel example: $DESC"}
 	
 	WRITE_DOC <<EOF
-\code
+\code{.sh}
 $rack_cmd
 \endcode
 

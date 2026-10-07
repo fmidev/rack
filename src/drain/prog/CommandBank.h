@@ -45,6 +45,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
+/// Class to be used as one base class
+/*
+class ExtendedContext {
+
+public:
+
+	Program addedProgram;
+
+};
+*/
+
 typedef int bank_section_t;
 
 /// Container and execution tools for commands derived from Command.
@@ -72,16 +83,18 @@ public:
 	};
 
 
-	/// Words that are moved from class name prior to composing a command name.
+	/// Words that should be removed from class name when automatically composing a command name.
 	static
 	std::set<std::string> & trimWords();
 
 	/// Given a command class name like MyFileReadCommand, derives a respective command line option ("myFileRead")
 	static
 	void deriveCmdName(std::string & name, char prefix=0);
-	//const std::set<std::string> & trim = trimWords());
 
-
+	/// Add a command
+	/**
+	 *   An instance (entry) is needed for bean ref command, for example.
+	 */
 	template <class D, char PREFIX=0>
 	D & addExternal(const D & entry, char alias = 0){
 		std::string key(entry.getName());
@@ -91,6 +104,10 @@ public:
 	}
 
 	// Template arg PREFIX is tricky, sometimes need for dynamic
+	/// Add a command
+	/**
+	 *   An instance (entry) is needed for bean ref command, for example.
+	 */
 	template <class D>
 	D & addExternal(char PREFIX, const D & entry, char alias=0){
 		std::string key(entry.getName());
@@ -98,6 +115,10 @@ public:
 		return BankSuper<Command>::addExternal(entry, key, alias);
 	}
 
+	/// Add a command
+	/**
+	 *   An instance (entry) is needed for bean ref command, for example.
+	 */
 	template <class D, char PREFIX=0>
 	inline
 	D & addExternal(const D & entry, const std::string & key, char alias = 0){
@@ -105,7 +126,18 @@ public:
 		return BankSuper<Command>::addExternal(entry, key, alias);
 	}
 
-
+	// NEW 2026
+	/// Add a command
+	/**
+	 *   An instance (entry) is needed for bean ref command, for example.
+	template <class D>
+	D & addExternal(char PREFIX, char alias=0){
+		static const D entry;
+		std::string key = entry.getName();
+		deriveCmdName(key, PREFIX);
+		return BankSuper<Command>::addExternal(entry, key, alias);
+	}
+	 */
 
 	/// Include commands from file, inserting them before iterator.
 	//  void includeFile(const std::string & filename, Program & prog, Program::iterator it) const;

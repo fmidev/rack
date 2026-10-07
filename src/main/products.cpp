@@ -204,7 +204,7 @@ public:
 		mout.debug("Initial data selector: ", this->bean.dataSelector);
 
 		if (this->bean.dataSelector.consumeParameters(ctx.select)){
-			mout.special("User defined select: ", this->bean.getDataSelector() );
+			mout.special(this->bean.getName(), ": user defined ", this->bean.getDataSelector());
 		}
 
 		if (!ctx.targetEncoding.empty()){
@@ -407,6 +407,9 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 
 	static CmdSweep sweepCmd;
 	cmdBank.addExternal(PREFIX, sweepCmd).section = SECTION;
+	// cmdBank.addExternal<CmdSweep>(PREFIX).section = SECTION;
+	// drain::Command  & cmd = cmdBank.add<CmdSweep>("pSweep");
+	// cmd.section = getSection().index;
 
 	/*
 	static CmdInputObject inputSelectCmd;

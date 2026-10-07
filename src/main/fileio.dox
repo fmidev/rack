@@ -6,8 +6,11 @@
 \b Rack supports reading sweep and volume files in HDF5
 format using OPERA information model (ODIM). 
 In addition, supports reading and writing data as images and text files.
+
+
+Please take a look also at \subpage svgpage .
+
 \~remark
-The respective BUFR format is under consideration.
 \~
 
 \section fileio_h5 Reading and writing HDF5 files

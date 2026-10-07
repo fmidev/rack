@@ -143,6 +143,7 @@ void CmdInputFile::readFile(const std::string & fileName) const {
 					mout.note("- EMPTY");
 				}
 				else {
+					// ctx.addedCommands;
 					//ctx.addedCommands.add(node.first, node.);
 				}
 

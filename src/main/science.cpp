@@ -67,12 +67,21 @@ struct ScienceSection : public drain::CommandSection {
 
 ScienceModule::ScienceModule(){ // : CommandSection("science"){
 
-	//ScienceCmdWrapper<>::setSectionTitle("science");
-	drain::FlagResolver::ivalue_t section = drain::Static::get<ScienceSection>().index;
+	// ScienceCmdWrapper<>::setSectionTitle("science");
+	const drain::FlagResolver::ivalue_t section = drain::Static::get<ScienceSection>().index;
 
 	//const ScienceModule & mod = drain::Static::get<ScienceModule>();
 
 	drain::CommandBank & cmdBank = drain::getCommandBank();
+
+	/*
+	cmdBank.addExternal<drain::BeanRefCommand<PrecipZrain> >(getPrefix()).section = section;
+	cmdBank.addExternal<drain::BeanRefCommand<PrecipZsnow> >(getPrefix()).section = section;
+	cmdBank.addExternal<drain::BeanRefCommand<PrecipKDP> >(getPrefix()).section = section;
+	cmdBank.addExternal<drain::BeanRefCommand<PrecipZZDR> >(getPrefix()).section = section;
+	cmdBank.addExternal<drain::BeanRefCommand<PrecipKDPZDR> >(getPrefix()).section = section;
+	cmdBank.addExternal<drain::BeanRefCommand<FreezingLevel> >(getPrefix()).section = section;
+	*/
 
 	drain::BeanRefCommand<PrecipZrain> precipZrain(RainRateOp::precipZrain);
 	cmdBank.addExternal(precipZrain).section = section;
