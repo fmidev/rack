@@ -29,7 +29,7 @@ WARNINGS ?= -Wall
 # configure.sh writes only -I / -L / -l paths into CCFLAGS / LDFLAGS.
 # configure-venv.sh writes individual path variables (HDF5_INCLUDE, HDF5_LIB, …);
 # the shell expressions below assemble equivalent flags from those as a fallback.
-# -std= and -fopenmp are NOT stored in the config file — the Makefile owns them.
+# CXXSTD can be overridden in the config file; -fopenmp is NOT stored there.
 
 ifneq ($(wildcard $(CONF)),)
   CCFLAGS := $(shell bash -c '\
@@ -49,6 +49,7 @@ ifneq ($(wildcard $(CONF)),)
         -L$${GEOTIFF_LIB:-/usr/lib/x86_64-linux-gnu} -lgeotiff}"; \
     echo "$$LDFLAGS"')
   USE_GEOTIFF := $(shell bash -c '. ./$(CONF); echo "$${USE_GEOTIFF:-YES}"')
+  CXXSTD      := $(shell bash -c '. ./$(CONF); echo "$${CXXSTD:--std=gnu++11}"')
 else
   $(warning WARNING: $(CONF) not found — using system-path defaults. Run: make configure)
   CCFLAGS     := -I/usr/include/hdf5/serial -I/usr/include/geotiff -I/usr/include \
@@ -56,11 +57,10 @@ else
   LDFLAGS     := -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 \
                  -L/usr/lib/x86_64-linux-gnu -lproj -lpng -ltiff -lgeotiff
   USE_GEOTIFF := YES
+  CXXSTD      := -std=gnu++11
 endif
 
-CXXSTD := -std=gnu++11
-
-# Compile flags: Makefile owns -std= and -fopenmp; CCFLAGS adds -I paths only
+# Compile flags: CXXSTD defaults here but can come from $(CONF); -fopenmp is always added
 # CXXFLAGS := -std=gnu++11 $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
 CXXFLAGS := $(CXXSTD) $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
 
