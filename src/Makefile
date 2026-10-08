@@ -58,7 +58,7 @@ else
   USE_GEOTIFF := YES
 endif
 
-CXXSTD= := -std=gnu++11
+CXXSTD := -std=gnu++11
 
 # Compile flags: Makefile owns -std= and -fopenmp; CCFLAGS adds -I paths only
 # CXXFLAGS := -std=gnu++11 $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
