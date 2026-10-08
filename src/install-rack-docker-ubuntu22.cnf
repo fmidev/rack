@@ -2,6 +2,7 @@
 
 # Markus Peura fmi
 
+# C++ standard
 CXXSTD='-std=gnu++14'
 
 # Include paths
