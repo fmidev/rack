@@ -58,8 +58,11 @@ else
   USE_GEOTIFF := YES
 endif
 
+CXXSTD= := -std=gnu++11
+
 # Compile flags: Makefile owns -std= and -fopenmp; CCFLAGS adds -I paths only
-CXXFLAGS := -std=gnu++11 $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
+# CXXFLAGS := -std=gnu++11 $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
+CXXFLAGS := $(CXXSTD) $(OPTS) $(WARNINGS) -fopenmp $(CCFLAGS) -I. -DUSE_GEOTIFF_$(USE_GEOTIFF)
 
 # ---- Source / object lists ----------------------------------------------------
 SRC_DIRS := andre data drain drain/image drain/imageops drain/util drain/prog drain/js \
@@ -75,6 +78,8 @@ DEPS := $(OBJS:.o=.d)
 help:
 	@echo "Usage: make [target]"
 	@ X="`cat Makefile | grep -i '^[a-z][a-z\.\-]\+:' | cut -d' ' -f1 | tr -d ':'`"; echo make \[ $$X ... \]
+	@echo "Some targets have optional arguments:"
+	@echo "  docker-image  build BASE_IMAGE=ubuntu22"
 #	@echo "  all / build   build rack executable (default)"
 #	@echo "  configure     detect libraries, write install-rack.cnf"
 #	@echo "  clean         remove Build/ directory and rack executable"

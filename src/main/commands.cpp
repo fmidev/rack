@@ -194,6 +194,8 @@ public:
 		setParameters(cmd.getParameters());
 	};
 
+	virtual inline
+	~CmdSelect(){};
 
 	virtual
 	void exec() const override {
@@ -269,7 +271,8 @@ public:
 		// setParameters(cmd.getParameters());
 	};
 
-
+	virtual inline
+	~CmdPolarSelect(){};
 
 
 	virtual
@@ -385,7 +388,7 @@ public:
 	};
 
 	inline
-	void exec() const {
+	void exec() const override {
 
 		RackContext & ctx = getContext<RackContext>();
 
@@ -393,7 +396,8 @@ public:
 
 		// NEW
 		std::string checkedValue(value);
-		mySelector.reset();
+		DataSelector mySelector; // TODO: join with SelectiveBase?
+		// mySelector.reset();
 
 		try {
 			// Setting test selector here will alert early
@@ -401,6 +405,7 @@ public:
 		} catch (const std::exception & e) {
 			mout.obsolete(checkedValue,  " - pattern matching has been replaced by RegExp matching: * -> .*, ? -> .? etc.");
 			mout.warn("msg: ", e.what());
+			static const std::map<std::string,std::string> transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
 			drain::StringTools::replace(checkedValue, transTable, checkedValue);
 			//mout.warn("syntax error in selection string: ", value);
 			try {
@@ -430,16 +435,16 @@ public:
 
 protected:
 
-	static const std::map<std::string,std::string> transTable; // = {{",", "|"}};
+	//static const std::map<std::string,std::string> transTable; // = {{",", "|"}};
 
 	//mutable
 	//DataSelector testSelector;
 
-	mutable
-	DataSelector mySelector; // TODO: join with SelectiveBase?
+	// mutable
+	//DataSelector mySelector; // TODO: join with SelectiveBase?
 };
 
-const std::map<std::string,std::string> CmdSelectQuantity::transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
+// const std::map<std::string,std::string> CmdSelectQuantity::transTable = {{",", "|"}, {"*",".*"}, {"?","."}};
 
 class CmdSelectObject : public drain::SimpleCommand<> {
 

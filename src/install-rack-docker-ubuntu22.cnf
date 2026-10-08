@@ -2,8 +2,10 @@
 
 # Markus Peura fmi
 
+CXXSTD='-std=gnu++14'
+
 # Include paths
-CCFLAGS='-std=gnu++14 -I/usr/include/geotiff -I/usr/include/hdf5/serial'
+CCFLAGS='-I/usr/include/geotiff -I/usr/include/hdf5/serial'
 
 # Library paths
 LDFLAGS='-std=gnu++14 -lproj -lpng -ltiff -lgeotiff -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 '

@@ -37,7 +37,6 @@ RUN apt-get update && \
         libgomp1 && \
 	make build && make install
 
-# ./build.sh clean && \
 
 
 #RUN ls /usr/local/bin/rack*

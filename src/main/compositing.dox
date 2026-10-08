@@ -215,8 +215,6 @@ Experimental: the above command line can also be generated using Python utility 
 \~ 
 
 \code{.py}
-
-
 # Initialize command line generator.
 composer = rack.cmdline.Composer(rack.composite)
 
