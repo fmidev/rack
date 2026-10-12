@@ -32,7 +32,7 @@ the radar range overlaps with the composite domain, and non-zero otherwise.
 Another way is to call \c --formatOut for each input volume, using \c --format that contains \c ${BBOX} and other desired status variables.
 For example:
 \code
- rack  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' --cBBox 20,60,30,70 \
+ rack  --cProj 'EPSG:4326' --cBBox 20,60,30,70 \
    --format '${BBOX} ${CMT} ${what:source} ${inputFile} \n' \
    --verbose 0  --script '--cBBoxTest 1 --formatOut -' \
    data/pvol_*

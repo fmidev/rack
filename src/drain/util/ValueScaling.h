@@ -63,10 +63,10 @@ namespace drain
 class ValueScaling : public UniTuple<double,2> {  // UniTuple<double,4>{
 public:
 
-	/// Multiplicative coefficient \i a in: y = ax + b
+	/// Multiplicative coefficient \e a in: y = ax + b
 	double & scale;
 
-	/// Additive coefficient \i b in: y = ax + b
+	/// Additive coefficient \e b in: y = ax + b
 	double & offset;
 
 	/// Minimum and maximum physical value of the imaged quantity (not limited to corresponding to minCodeValue?).

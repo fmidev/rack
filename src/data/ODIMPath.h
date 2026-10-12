@@ -78,6 +78,7 @@ std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem & p);
 
 
 
+/// DOC: Add class description.
 class ODIMPathElem  {
 
 public:
@@ -184,6 +185,7 @@ public:
 
 
 	// Change 2024/01: default index 0->1
+	/// Default constructor.
 	inline
 	ODIMPathElem(group_t group = ROOT, index_t index = 1) : group(group), index(index){
 	}
@@ -199,17 +201,20 @@ public:
 	// the implicit copy-assignment operator does a plain memberwise copy (always copying
 	// currentStr), which differs from this constructor's conditional copy (only when group==OTHER).
 	// Confirm whether copy-construction and copy-assignment are meant to behave the same way.
+	/// Copy constructor.
 	inline
 	ODIMPathElem(const ODIMPathElem &e) : group(e.group), index(e.index){ // , indexMax(e.indexMax) {
 		if (e.group == OTHER)
 			currentStr = e.currentStr;
 	}
 
+	/// Constructor from string.
 	inline
 	ODIMPathElem(const std::string &s) : group(ROOT), index(0){ //, indexMax(0){
 		set(s);
 	}
 
+	/// Constructor from C string.
 	inline
 	ODIMPathElem(const char *s): group(ROOT), index(0){ //, indexMax(0) {
 		set(s);
@@ -468,6 +473,7 @@ typedef std::vector<ODIMPathElem> ODIMPathElemSeq;
  */
 typedef std::map<std::string,ODIMPathElem> ODIMPathElemMap;
 
+/// DOC: Add class description.
 struct ODIMPathLess {
 
 	// Main function
@@ -480,6 +486,7 @@ struct ODIMPathLess {
 };  // end class
 
 
+/// DOC: Add class description.
 class ODIMPathElem2 : public ODIMPathElem {
 
 public:
@@ -508,6 +515,7 @@ std::ostream & operator<<(std::ostream & ostr, const ODIMPathElem2 & elem) {
 }
 
 
+/// DOC: Add class description.
 struct ODIMPathLessTime {
 	inline
 	bool operator()(const ODIMPathElem2 & e1, const ODIMPathElem2 & e2) const {
@@ -515,6 +523,7 @@ struct ODIMPathLessTime {
 	}
 };
 
+/// DOC: Add class description.
 struct ODIMPathLessElangle {
 	inline
 	bool operator()(const ODIMPathElem2 & e1, const ODIMPathElem2 & e2) const {

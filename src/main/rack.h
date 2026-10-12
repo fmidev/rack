@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,6,6)
+#define RACK_VERSION drain::Version<>(21,6,4)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -76,6 +76,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 21.6.3--
  *  - Removed debug output
  *  - Debugging quay.io build problem
+ *  - Small adjustments in internal documentation
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
@@ -189,7 +190,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 19.2.0
  *  - Python3 (.py) edits only
  *  Version 19.2.1
- *  - --sample: added automatic variable ${<quantity>_raw} to see values "under" undetect / nodata.
+ *  - --sample: added automatic variable ${\<quantity\>_raw} to see values "under" undetect / nodata.
  *  Version 19.3
  *  --gData coordinate rounding fixed
  *  --histogram for signed short (still faulty)
@@ -331,7 +332,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Version 12.4
  *  - Fix: PaletteOp get(), predefined cached palette
  *  Version 12.5
- *  - Input list read with <file>.lst
+ *  - Input list read with \<file\>.lst
  *  Release 12.5.1
  *  - Fix: cExtract WEIGHT image pointers
  *  Release 12.5.2-3
@@ -424,7 +425,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *
  *   Version 10.1
  *   - Graphics/SVG-alignment: streamlined fixed/flipping HORZ/VERT anchor
- *   - Graphics: --gLayout HORZ,INCR , --gPanelTest <TITLE> (hidden)
+ *   - Graphics: --gLayout HORZ,INCR , --gPanelTest \<TITLE\> (hidden)
  *
  *   Version 10.0.1
  *   - Graphics: --gLinkImage, ( --gRadarSectors )
@@ -492,7 +493,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   - Fixed date & time formatting for GDAL variables, eg.  --format '{"nominal-time", "${what:date|%Y/%m/%d} ${what:time|%H:%M} UTC"}'
  *
  *   Version 8.7.5
- *   - Added support for GDAL variables, issued like --/what:GDAL:<key>=<value> or --format '{"key", 12.345,"key2", "value"}'
+ *   - Added support for GDAL variables, issued like --/what:GDAL:\<key\>=\<value\> or --format '{"key", 12.345,"key2", "value"}'
  *
  *   Version 8.7.4
  *   - Fix: Added support of (double) hyphen matching in scripts (--palette "" and --format "\"something\"")
@@ -526,7 +527,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   Version 8.4.1
  *   - Drain core classes directly at /drain
  *   - Refactored Variable, Reference and FlexibleVariable
- *   - #ifndef NDEBUG applied (from <cassert> )
+ *   - #ifndef NDEBUG applied (from \<cassert\> )
  *
  *   Version 8.4
  *   - Revised Variable, Reference and FlexibleVariable
@@ -574,7 +575,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   -- Fixed SegmentProber POLAR bug
  *
  *   Version 8.12
- *   -- SVG output panel: --outputConf svg[:<params>] --outputFile <basename>.svg
+ *   -- SVG output panel: --outputConf svg[:\<params\>] --outputFile \<basename\>.svg
  *
  *   Version 8.11
  *   -- Fixed SVG GROUP bug
@@ -840,7 +841,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   - GeoFrame refactored (Metric => Native)
  *
  *   Version 5.44
- *   - GeoTIFF: Compression added, with new --outputTiffConf  <tilewidth>,<tileheight>,<compression>
+ *   - GeoTIFF: Compression added, with new --outputTiffConf  \<tilewidth\>,\<tileheight\>,\<compression\>
  *   - Recognition of metric bbox in --cBBox
  *
  *   Version 5.43

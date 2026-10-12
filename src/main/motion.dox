@@ -371,7 +371,7 @@ in this case horizontal wind components \c AMVU and \c AMVV .
 }
 \enddot
 
-For example, assuming that --c <files> are a set of motion files to be composites: 
+For example, assuming that --c \c files are a set of motion files to be composites: 
 \code
 Q=AMVU; rack --cMethod MAXW --script "-Q $Q --cAdd" <files> --cExtract dw -o motion-$Q.h5
 Q=AMVV; rack --cMethod MAXW --script "-Q $Q --cAdd" <files> --cExtract dw -o motion-$Q.h5

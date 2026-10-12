@@ -145,7 +145,6 @@ public:
 	 *
 	 *  \param src - input data structure
 	 *  \param weight -
-	 *  \param autoProj - use AEQD centered at the radar location.
 	 */
 	void addCartesian(const PlainData<CartesianSrc> & src, const PlainData<CartesianSrc> & srcQuality, double weight = 1.0, int i=0, int j=0);
 
@@ -172,7 +171,7 @@ public:
 	/// EXPERIMENTAL: save elangles TODO: consider rename metadataMap (for hairy details)
 	//  drain::VariableMap metadataMap;
 
-	/// Set input selector. See @DataSelector .
+	/// Set input selector. See DataSelector.
 	/**
 	 *  - if unset, use quantity
 	 *  - warn if changes detected

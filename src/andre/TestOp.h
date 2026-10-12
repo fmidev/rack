@@ -41,13 +41,13 @@ namespace rack {
 /**
  *
  */
+/// DOC: Add class description.
 class TestOp: public DetectorOp {
 
 public:
 
 	///	Create rectangular fake anomaly (value) and 'detect' it with desired probability (prob)
 	/**
-	 *  \param reflHalfWidth - \c CCOR values below this will be considered this anomalies
 	 *
 	 *
 	 */

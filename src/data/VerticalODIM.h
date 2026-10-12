@@ -79,11 +79,13 @@ public:
 	/// Nyquist velocity
 	double NI;
 
+	/// Default constructor.
 	inline
 	VerticalCrossSectionODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : ODIM(initialize) {
 		init(initialize);
 	};
 
+	/// Constructor from ODIM.
 	VerticalCrossSectionODIM(const ODIM & odim){
 		initFromMap(odim);
 	};
@@ -124,21 +126,25 @@ public:
 	long int azSlots = 0;  // non-stardard
 
 
+	/// Default constructor.
 	inline
 	VerticalProfileODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : VerticalCrossSectionODIM(initialize) {
 		init(initialize);
 	}
 
+	/// Copy constructor.
 	inline
 	VerticalProfileODIM(const VerticalProfileODIM & odim) : VerticalCrossSectionODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 	}
 
+	/// Constructor.
 	template <class T>
 	VerticalProfileODIM(const std::map<std::string,T> & m){
 		initFromMap(m);
 	}
 
+	/// Constructor.
 	VerticalProfileODIM(const drain::image::Image & img, const std::string & quantity=""){
 		initFromImage(img, quantity);
 	}
@@ -170,20 +176,24 @@ public:
 	//double minRange; // nonstandard
 	//double range;
 
+	/// Default constructor.
 	inline
 	RhiODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : VerticalCrossSectionODIM(initialize) {
 		init(initialize);
 	};
 
+	/// Copy constructor.
 	RhiODIM(const RhiODIM & odim) : VerticalCrossSectionODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 	};
 
+	/// Constructor.
 	template <class T>
 	RhiODIM(const std::map<std::string,T> & m){
 		initFromMap(m);
 	}
 
+	/// Constructor.
 	RhiODIM(const drain::image::Image & img, const std::string & quantity=""){
 		initFromImage(img, quantity);
 	};

@@ -338,14 +338,7 @@ public:
 	TreeSVG & createMask(TreeSVG & root, TreeSVG & group, int width=0, int height=0, const NodeSVG & node = NodeSVG(svg::UNDEFINED),
 			MaskerSVG::MaskPosition pos=MaskerSVG::MaskPosition::BOTTOM);
 
-	/// Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object.
-	/**
-	 *  The mask parameter with be assigned value "url(" + maskId + ")".
-	 *
-	 *  \param mask - SVG object of type MASK.
-	 *  \param obj  - SVG element, typically of type RECT, to be masked.
-	 *
-	 */
+	/// Finally, associate the object with a mask by assigning MASK elements ID to the mask attribute of object. Disabled; see addCoverRect() below.
 	// static
 	//void linkMask(const TreeSVG & mask, TreeSVG & obj);
 

@@ -137,7 +137,8 @@ public:
 
 	TreeGDAL gdalMetadata;
 	/**
-	 *  \param nodata - yes, string...
+	 *  \param scale  - scale factor
+	 *  \param offset - offset value
 	 */
 	void setGdalScale(double scale=1.0, double offset=0.0);
 

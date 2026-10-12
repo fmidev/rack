@@ -8,7 +8,7 @@
 
 When executing \b Rack, all the PNG images that have been written with \c --outputFile / \c -o  are included automatically in an \e internal SVG \e structure.
 
-The structure is always created in the background but written out only if explicitly asked to, with  \c --outputFile \c <file>.svg  command.
+The structure is always created in the background but written out only if explicitly asked to, with  \c --outputFile \c file.svg  command.
 Typically, that command is executed last.
 
 The internal SVG structure is lightweight, so maintaining it in the background is neither time nor memory consuming. 

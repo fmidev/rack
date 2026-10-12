@@ -44,7 +44,7 @@ namespace image
 /// A fill operation for one color.
 /**  Uses FillProber, hence basically SegmentProber<> in semi-recursive image traversal.
 
-\exec~
+\~exec
 	make shapes-wrap.png # exec
 \~
 

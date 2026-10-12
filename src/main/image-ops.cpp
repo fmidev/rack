@@ -121,10 +121,6 @@ public:
 	RackImageOpCmd() : drain::BeanCommand<OP>(){
 	};
 
-	/// Constructor that adapts an operator and its name.
-	/**
-	 *  \param op - image operator to be used througjh reference
-	 */
 	// ImageOpRacklet(drain::image::ImageOp & imageOp) : drain::BeanCommand<OP>(imageOp), key(imageOp.getName()) {};
 
 

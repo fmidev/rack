@@ -58,8 +58,7 @@ class DopplerDevOp : public DopplerWindowOp<DopplerDevWindow> {
 public:
 
 	/**
-	 *   \param width  - radial extent of window, in metres
-	 *   \param height - azimuthal extent of window, in degrees
+	 *
 	 */
 	DopplerDevOp(int widthM = 1500, double heightD = 3.0) :
 		DopplerWindowOp<DopplerDevWindow>(__FUNCTION__, "Computes std.dev.[m/s] of Doppler field", widthM, heightD) {

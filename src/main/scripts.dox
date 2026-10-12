@@ -15,7 +15,7 @@ A script is command sequence that is then executed automatically for \e each \e 
 rack --script '<cnd> <cmd2> ...'  <file> <file2> <file3> ...
 \endcode  
 
-So,  \c --inputFile <file> command – or simply \c <file> – implicitly triggers the script. 
+So,  \c --inputFile file command – or simply \c file – implicitly triggers the script. 
 
 One can also invoke the script explicitly with \c --execScript command. 
 Defining a script also turns on \e variable \e expansion -- see also examples in \ref templates . 

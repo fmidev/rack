@@ -254,7 +254,7 @@ rack volume.h5 -Q DBZH --cAdd --encoding C --cExtract DATA --encoding d --cExtra
 
 For now, the old syntax is also supported: a string composed of single letters (\c d ), weight, (\c w ), deviation (std.dev., \c s ) and count of radars (\c c ). 
 
-Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly \c <LLx>,<LLy>,<URx>,<URy> or \c DATA (automatic bounding box) 
+Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly \c LLx,LLy,URx,URy or \c DATA (automatic bounding box) 
 or \c OVERLAP (overlapping area). 
 
 \include cExtract.hlp

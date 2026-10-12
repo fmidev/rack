@@ -103,7 +103,7 @@ public:
 	/// Appends directory and sets filename (basename and extension).
 	void append(const FilePath & path);
 
-	/// Extracts at least filename. If the string contains leading dir elements, \i append them to \c this->dir .
+	/// Extracts at least filename. If the string contains leading dir elements, \e append them to \c this->dir .
 	/**
 	 *
 	 */

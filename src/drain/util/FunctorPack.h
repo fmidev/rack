@@ -404,7 +404,7 @@ public:
    <CODE>M{}</CODE> is a <CODE>W x W</CODE> WindowAverage operator, and
    <CODE>c</CODE> is a coefficient.
 
- \exec~
+ \~exec
   make image-rot.png #exec
  \~
  \code

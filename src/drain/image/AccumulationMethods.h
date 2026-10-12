@@ -121,7 +121,7 @@ public:
 	/**
 	 * 	\param accArray - data source
 	 * 	\param coder    - logic for scaling and encoding the result
-	 *  \pararm dst - target array in which the data are stored.
+	 *  \param dst - target array in which the data are stored.
 	 */
 	virtual
 	void extractWeight(const AccumulationArray & accArray, const AccumulationConverter & coder, Image & dst, const drain::Rectangle<int> & crop = {0,0,0,0}) const;

@@ -245,7 +245,7 @@ public:
 	// consider ValueReader, TextReader instead (skipping attrType)
 	/**
 	 *
-	 *   \param s - string containing path and/or attribute
+	 *   \param line - string containing path and/or attribute
 	 *
 	 *   Given a path like /dataset1/data3
 	 *   \code

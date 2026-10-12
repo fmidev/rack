@@ -213,7 +213,7 @@ public:
 		replaceWithMap(src, m, dst);
 	}
 
-	/// Interpret commond special chars: tab '\t', newline '\n' and carriage return '\r'.
+	/// Interpret common special chars: tab '\\t', newline '\\n' and carriage return '\\r'.
 	static
 	std::string & convertEscaped(std::string &s);
 
@@ -374,8 +374,8 @@ public:
 
 	/// Extract common leading part, truncating the input strings
 	/**
-	 *   \param src1 - input string
-	 *   \param src2 - input string
+	 *   \param s1 - input string
+	 *   \param s2 - input string
 	 *   \param prefix - common leading part of src1 and src2
 	 *   \return - index of the first deviating character, ie. length of the common part.
 	 */
@@ -430,7 +430,7 @@ public:
 	/**
 	 *  This version is slow for string targets (T).
 	 *
-	 *  \param str - input string
+	 *  \param s - input string
 	 *  \param dst - destination
 	 *
 	 *  \return - reference to the result of the conversion.
@@ -443,7 +443,7 @@ public:
 	/**
 	 *  This version is slow for string targets (T).
 	 *
-	 *  \param str - input string
+	 *  \param s - input string
 	 *  \return - converted value.
 	 */
 	template <class T>
@@ -462,7 +462,7 @@ public:
 
 	/// Convert only if needed. If T is std::string, returns s directly.
 	/**
-	 *  \param str - input string
+	 *  \param s - input string
 	 *  \param tmp - "hidden" temporary value; returned reference should be read instead of this.
 	 *  \tparam - string or any class that does not clear the object upon identity assigment (obj=obj).
 	 *  \return - reference to the result of the conversion.

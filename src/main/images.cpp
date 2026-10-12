@@ -1201,7 +1201,7 @@ public:
 		// ctx.qualityGroups.flags.reset(); // TODO reset() .clear();
 		ctx.qualityGroups = 0;
 
-		/// Clumsy assignment of /dataset<n> and /data<n> groups.
+		/// Clumsy assignment of /dataset\c n and /data\c n groups.
 		std::list<std::string> l;
 		drain::StringTools::split(groups, l, ",:"); // future: maybe , needed for second arg (quantity=QIND)
 

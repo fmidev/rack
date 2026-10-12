@@ -44,13 +44,12 @@ namespace drain
 namespace image
 {
 
+// FIX: use \f$...\f$ instead of \$ for LaTeX math blocks; \log and \sqrt are LaTeX, not Doxygen commands.
 /**
  *  In this model, the diagonal decay is computed as
- *  \$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x)) } ;
- *  \$
+ *  \f$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x } \f$
  *  because
- *  \$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x)) } ;
- *  \$
+ *  \f$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x } \f$
  */
 class DistanceModelExponential : public DistanceModel {
 

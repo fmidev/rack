@@ -51,8 +51,6 @@ public:
 	/**
 	 *  \param threshold - \c RhoHV values below this will be considered as anomalies
 	 *  \param medianWindow  - optional: median filtering window (degrees) in metres and height (degrees)
-	 *  \param medianPos    - optional: median position: 0.5 = normal median ( >0.5: conservative for precip)
-	 *  //(morphology: 0.5 > opening; 0.5 < closing)
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
@@ -107,11 +105,6 @@ public:
 	///	Default constructor.
 	/**
 	 *  \param threshold - \c RhoHV values below this will be considered this anomalies
-	 *  \param thresholdWidth - steepness coefficient for the threshold
-	 *  \param windowWidth  - optional: median filtering window width in metres
-	 *  \param windowHeight - optional: median filtering height width in degrees
-	 *  \param medianPos    - optional: median position: 0.5 = normal median ( >0.5: conservative for precip)
-	 *  //(morphology: 0.5 > opening; 0.5 < closing)
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
@@ -169,6 +162,7 @@ protected:
 
 
 
+/// DOC: Add class description.
 class ChaffOp: public FuzzyDetectorOp {
 
 public:
@@ -178,7 +172,6 @@ public:
 	/**
 	 *
 	 *  \param dbzPeak
-	 *  \param vradDevMin
 	 *  \param rhoHVmax
 	 *  \param zdrAbsMin
 	 *  \param windowWidth
@@ -190,6 +183,7 @@ public:
 		init(dbzPeak, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
 
+	/// Copy constructor.
 	ChaffOp(const ChaffOp & op) : FuzzyDetectorOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}

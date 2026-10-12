@@ -69,7 +69,7 @@ public:
 
 	/// Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string.
 	/**
-	 *   \param key – A string containing keys ("note,error") or values ("4,8,32") or a mixture of them.
+	 *   \param keys – A string containing keys ("note,error") or values ("4,8,32") or a mixture of them.
 	 *   \param separator – if given, splits string to several keys
 	 *   \return – A numeric value
 	 */
@@ -327,7 +327,7 @@ void FlagResolver::valuesToList(ivalue_t value, const drain::Dictionary<key_t,T>
 
 // #define FlaggerDict FlagResolver::dict_t
 
-/** A Flag mapper designed for global use, also supporting ENUM types. @See
+/** A Flag mapper designed for global use, also supporting ENUM types. @see
  *  Perhaps replacing GlobalFlagger later.
  *
  *  Example:

@@ -51,9 +51,9 @@ VALUES=${VALUES:-$(( RANDOM & 127 )),$(( RANDOM & 127 + 128 ))}
 if [ "$OUTFILE" == '' ]; then
     echo "Create radar volume files containing artificial data"
     echo "Usage:"
-    echo "  VALUES=... ENCODING=... OUTPUT_FILE=...  $0 "
+    echo "  VALUES=... ENCODING=... OUTFILE=...  $0 "
     echo "Examples:"
-    echo "  OUTPUT_FILE=out.h5 $0 "
+    echo "  OUTFILE=out.h5 $0 "
     echo "  VALUES=$VALUES  ENCODING=$ENCODING $0 "
     exit 0
 fi

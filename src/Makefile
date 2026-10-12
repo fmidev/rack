@@ -78,8 +78,9 @@ DEPS := $(OBJS:.o=.d)
 help:
 	@echo "Usage: make [target]"
 	@ X="`cat Makefile | grep -i '^[a-z][a-z\.\-]\+:' | cut -d' ' -f1 | tr -d ':'`"; echo make \[ $$X ... \]
+	@echo 
 	@echo "Some targets have optional arguments:"
-	@echo "  docker-image  build BASE_IMAGE=ubuntu22"
+	@echo "  make docker-image  build BASE_IMAGE=ubuntu22"
 #	@echo "  all / build   build rack executable (default)"
 #	@echo "  configure     detect libraries, write install-rack.cnf"
 #	@echo "  clean         remove Build/ directory and rack executable"

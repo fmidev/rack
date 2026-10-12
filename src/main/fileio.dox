@@ -163,7 +163,7 @@ The comments can be overriden with \c --format command. This experimental featur
 - PGM/PPM files: all the comments are replaced by that string.
 - GeoTIFF files: if the argument starts with a curly brace \c '{' , it is read in as JSON , and (first-level) key-value pairs are stored as GDAL attributes.
 
-In addition, for GeoTIFF files, attributes set with \c --/how:GDAL:<key>=<value> will be also added as GDAL variables.
+In addition, for GeoTIFF files, attributes set with \c --/how:GDAL:key=value will be also added as GDAL variables.
 
 \b Rack can also save all the data sets in separate files with a single command, producing \c
 sweep000.png , \c sweep001.png and so on. This is achieved with \c --outputRawImages , abbreviated  -O .
@@ -288,7 +288,7 @@ dot volume-tree.dot -Tpdf -o volume-tree.pdf
 \endcode
 
 
-The desired path can be selected with \c --select path=<group>[/<group>] or simply \c --select <group>[/<group>] 
+The desired path can be selected with \c --select path=group[/group] or simply \c --select group[/group] 
 because path is the first argument key.  
 The most relevant groups are \c dataset: , and  \c data: , and \c quality: . 
 The colon \c : is compulsory for separating \c data<index>  groups from lower level \c data group in ODIM.

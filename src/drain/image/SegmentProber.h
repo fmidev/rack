@@ -280,8 +280,8 @@ protected:
 	 *  - updating the status of this prober, for example by updating statistics like segment size
 	 *  - marking the pixel visited in dst image
 	 *
-	 *  \param i0 - current i coordinate (always valid)
-	 *  \param j0 - current j coordinate (always valid)
+	 *  \param i - current i coordinate (always valid)
+	 *  \param j - current j coordinate (always valid)
 	 *
 	 */
 	virtual inline

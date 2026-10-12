@@ -17,3 +17,10 @@ test_prog_%.py:
 
 test-svg:
 	cd ../demo && ./test-svg.sh
+
+data-dirs: data-123 data-abc
+	@echo Ready
+
+data-%:
+	@ mkdir -v --parents $@
+	cd $@ && echo foo

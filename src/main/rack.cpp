@@ -122,14 +122,14 @@ int process(int argc, const char **argv) {
 	drain::CommandBank & cmdBank = drain::getCommandBank();
 	cmdBank.setTitle("Rack - a radar data processing program");
 
-	/** If a plain argument <arg> is given, forward it to this command.
-	 *  Equivalent to \c --inputFile \c <arg> .
+	/** If a plain argument \c arg is given, forward it to this command.
+	 *  Equivalent to \c --inputFile \c arg .
 	 */
 	cmdBank.setDefaultCmdKey("inputFile");
 
 	/**
 	 *  If command is not found, it is redirected to this command.
-	 *  \c --setODIM \c <arg>  which checks if it starts with a leading slash
+	 *  \c --setODIM \c arg  which checks if it starts with a leading slash
 	 */
 	cmdBank.setNotFoundHandlerCmdKey("setODIM");
 

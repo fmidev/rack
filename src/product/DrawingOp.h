@@ -40,7 +40,7 @@ namespace rack {
 
 /// Select and visualise a direction, range, sector or arc.
 /**
- * - direction,<azm>,<range>[,<range2>]
+ * - direction,\c azm,\c range[,\c range2]
  * - range,{range}[,{range2}]
  * - sector,{azm1},{azm2},{range}[,{range2}]
  * - arc,{azm1},{azm2},{range}

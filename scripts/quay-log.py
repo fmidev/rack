@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Parse a Quay.io build log JSON and print a readable summary.
 
+Strips ANSI colour codes, groups output by build phase and Dockerfile step, and flags error lines with !.
+
 Usage:
     python3 scripts/quay-log.py <log.json> [--errors-only]
 

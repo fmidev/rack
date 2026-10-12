@@ -177,11 +177,11 @@ public:
 	/// Sets target quantity and encoding, if unset. If input odim
 	/**
 	 *   \param productODIM - metadata to be modified
-	 *   \param srcODIM - metadata applied; typically that of an product operator or input data.
-	 *   \param applyDefaults - use default values in encoding (esp. gain), if still unset at the end of this function call.
+	 *   \param defaultODIM - metadata applied; not necessarily from source data (see .cpp).
+	 *   \param useDefaults - use default values in encoding (esp. gain), if still unset at the end of this function call.
 	 */
 	static
-	void applyODIM(ODIM & productODIM, const ODIM & srcODIM, bool applyDefaults = false);
+	void applyODIM(ODIM & productODIM, const ODIM & defaultODIM, bool useDefaults = false);
 
 
 	static

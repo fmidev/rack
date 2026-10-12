@@ -96,7 +96,7 @@ public:
 	 *  DataSet<DstType<M> >
 	 *  and calls computeSingleProduct().
 	 *
-	 *  \return /dataset<n> group of the HDF5 tree.
+	 *  \return /dataset\c n group of the HDF5 tree.
 	 */
 	virtual
 	Hi5Tree & processVolume(const Hi5Tree &srcRoot, Hi5Tree &dstRoot) const final;

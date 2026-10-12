@@ -85,9 +85,9 @@ public:
 	/// Returns the size of the segment.
 	/**
 	 * Size
-	 * \[
+	 * \f[
 	 *  s =
-	 * \]
+	 * \f]
 	 */
 	inline
 	double getSize() const {
@@ -97,9 +97,9 @@ public:
 	/// Returns the horizontal coordinate of centre of mass.
 	/**
 	 * Size
-	 * \[
+	 * \f[
 	 *  m_x = \frac{1}{N}\sum_{i=1}^N x_i
-	 * \]
+	 * \f]
 	 */
 	inline
 	double getMeanX() const {
@@ -107,12 +107,12 @@ public:
 		return cx;
 	};
 
-	/// Returns the horizontal coordinate of centre of mass.
+	/// Returns the vertical coordinate of centre of mass.
 	/**
 	 * Size
-	 * \[
+	 * \f[
 	 *  m_x = \frac{1}{N}\sum_{i=1}^N x_i
-	 * \]
+	 * \f]
 	 */
 	inline
 	double getMeanY() const {
@@ -120,12 +120,12 @@ public:
 		return cy; ;
 	};
 
-	/// Returns the horizontal variance \$\sigma_x\$ scaled with total variance \$\sigma_x + \sigma_y\$. Takes values in [0,1].
+	/// Returns the horizontal variance \f$\sigma_x\f$ scaled with total variance \f$\sigma_x + \sigma_y\f$. Takes values in [0,1].
 	/**
 	 * Size
-	 * \[
+	 * \f[
 	 *  m_x = \frac{\sqrt{}}{N}
-	 * \]
+	 * \f]
 	 */
 	inline
 	double getHorizontality()  const {

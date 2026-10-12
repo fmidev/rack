@@ -53,7 +53,6 @@ class RemoverOp: public AndreOp {
 public:
 
 	/** Default constructor.
-	 *  \param minDBZ - Probability minDBZ, over which data is replaced by "nodata".
 	 */
 	inline
 	RemoverOp(double threshold = 0.5): AndreOp("Remover", "Simple anomaly removal operator."){
@@ -71,8 +70,6 @@ public:
 	/// Process as sweep (data in one elevation angle)
 	/**
 	 *  \param srcDataSet - input data of one elevation; possibly several quantities (measurement parameters).
-	 *  \param dstProb    - probability field ie. the result of the detection algorithm
-	 *  \param aux        - auxialiary DatasetDst for keeping a copy of normalized data.
 	 */
 	virtual
 	void processDataSet(const DataSet<PolarSrc> & srcDataSet, DataSet<PolarDst> & dstDataSet)  const;

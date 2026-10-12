@@ -83,8 +83,6 @@ public:
 	/**
 	 *  \param freezingLevel - height of undetectValue temperature threshold above sea level.
 	 *  \param freezingLevelThickness - width of undetectValue temperature region
-	 *  \param type - storage type ('d' = double, 'C'=unsigned char, 'S'=unsigned short)
-	 *  \param gain - scaling; 0.01 and 0.0001 may be good for 'C' and 'S', respectively.
 	 *
 	 * - Marshall & Palmer equation for rain (liquid precipitation):
 	 *  \f[

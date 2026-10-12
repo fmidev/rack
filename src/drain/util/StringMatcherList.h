@@ -178,7 +178,6 @@ protected:
 	/// Define the list of accepted quantities as a string.
 	/**
 	 *  \param args - comma-separated list of quantities: literals or regexps.
-	 *  \param separators - can be also ",:" and contain ':' if that is not used in the regexps.
 	 */
 	void insertKeys(const std::string & args); // , const std::string & separators = ","
 

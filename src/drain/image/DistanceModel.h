@@ -157,7 +157,7 @@ public:
 	 *   \param vert - vertical distance, "height"; if negative, set equal to horizontal
 	 *
 	 *   Special values:
-	 *   - NaN: use default value (\c horz for \c vert and \c horzRight; \c vert for \vertUp )
+	 *   - NaN: use default value (\c horz for \c vert and \c horzRight; \c vert for \c vertUp )
 	 *   - negative value: no decay; continue to infinity with constant value
 	 *   - zero: sharp decay, value is zero in neighboring pixels
 	 *
@@ -190,7 +190,7 @@ public:
 	 *
 	 *   \param horz     - horizontal distance decrement/decay
 	 *   \param vert     - vertical   distance decrement/decay; if NaN, set equal to \c horz
-	 *   \param horzLeft - horizontal distance decrement/decay; if NaN, set equal to \c horz
+	 *   \param horzRight - horizontal distance decrement/decay; if NaN, set equal to \c horz
 	 *   \param vertUp   - vertical   distance decrement/decay; if NaN, set equal to \c vert
 	 *
 	 *   Special values:

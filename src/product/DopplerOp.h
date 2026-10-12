@@ -107,7 +107,7 @@ public:
 
 	/// Constructor
 	/**
-	 *  \param widthM - width of the window, in metres.
+	 *
 	 */
 	DopplerDiffOp(double dMaz = 100.0) : DopplerOp(__FUNCTION__, "Azimuthal difference of VRAD") { //, widthM, heightD) {
 		//parameters.link("width", this->widthM = widthM, "metres");

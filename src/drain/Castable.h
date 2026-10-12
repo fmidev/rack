@@ -237,7 +237,7 @@ public:
 	// Has been protected, even private. Why? Essentially setting a value.
 	void clear();
 
-	/** Unset the type (set it to \c void ) and clear @elementCount .
+	/** Unset the type (set it to \c void ) and clear \c elementCount .
 	 *
 	 */
 	inline

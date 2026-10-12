@@ -52,8 +52,12 @@ class SmartMapTools : public MapTools {
 
 public:
 
-	/// If the key is found, the value is returned as a reference.
-	/**
+	// TODO: CHECK: this whole get(m,key) overload is currently disabled - the missing closing
+	// "*/" right after \tparam F below means the /** opener never closes until after the
+	// function body, so Doxygen (and the compiler) see it all as one comment: this overload does
+	// not currently compile/exist. Confirm whether it should be reinstated (missing its closing
+	// "*/" after \tparam F) or is deliberately superseded by the get(m,key,value) overload below.
+	/* If the key is found, the value is returned as a reference.
 	 *  \param m - map in which keys are searched
 	 *
 	 *  \tparam M - map type

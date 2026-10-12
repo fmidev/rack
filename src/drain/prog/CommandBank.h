@@ -127,8 +127,7 @@ public:
 	}
 
 	// NEW 2026
-	/// Add a command
-	/**
+	/* Add a command
 	 *   An instance (entry) is needed for bean ref command, for example.
 	template <class D>
 	D & addExternal(char PREFIX, char alias=0){
@@ -265,7 +264,7 @@ public:
 	/// Command that is used, if a plain argument is given.
 	/**
 	 *   Technically,
-	 *   plain \c <argument> is replaced by \c defaultCmd \c <argument>
+	 *   a plain \c argument is replaced by \c defaultCmd \c argument
 	 */
 	std::string defaultCmdKey;
 

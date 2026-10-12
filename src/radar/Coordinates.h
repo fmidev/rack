@@ -149,7 +149,7 @@ public:
       //    }; 
   //const double &lat,const double &lon);
 
-    /// \param alpha is azimuth in radians, \param range in metres.
+    /// \param range in metres.
     void setBinPosition(const double &alpha, const float &range);
    
     // \param alpha is azimuth in radians, \param range in metres.

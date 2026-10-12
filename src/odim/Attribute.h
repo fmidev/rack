@@ -70,7 +70,7 @@ public:
 		group.set(GroupId::HOW);
 	}
 
-	/// Initialise with an argument of type  \c <group>:<key>, for example \c what:source .
+	/// Initialise with an argument of type \c group:key, for example \c what:source .
 	/**
 	 *  Split by ':'
 	 */

@@ -136,7 +136,7 @@ typedef Frame2D<size_t> AreaGeometry;
  * 
  * 
  *  For example, a three-channel image having width 640 and height 400 would have dimension vector 
- *  [640,400,3]. The coordinates will be: x \in {0,1,...,639}, y \in {0,1,...,399} and z \in {0,1,2}.
+ *  [640,400,3]. The coordinates will be: \f$x \in \{0,...,639\}\f$, \f$y \in \{0,...,399\}\f$ and \f$z \in \{0,1,2\}\f$.
  *  The size of the vector of unlimited, allowing hypermatrices of any size. 
  * 
  */

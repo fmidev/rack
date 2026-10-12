@@ -111,9 +111,10 @@ public:
 	 *  \tparam V - type of the second element, typically the value associated with the key (the first element)
 	 *
 	 *  \param v - vector containing pairs, perhaps obtaining by adding
-	 *  \param f - HDF5 file id
+	 *  \param fid - HDF5 file id
 	 *  \param path   - location of the target dataset
-	 *  \param label1 - label of the first value
+	 *  \param labelFirst  - label of the first value
+	 *  \param labelSecond - label of the second value
 	 */
 	template <class K, class V>
 	static

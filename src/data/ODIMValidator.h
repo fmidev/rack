@@ -46,6 +46,7 @@ namespace rack {
 // .*/quality[1-9][0-9]*/what/nodata;Attribute;real;FALSE;
 
 
+/// DOC: Add class description.
 class ODIMNodeValidator {
 
 public:
@@ -82,6 +83,7 @@ std::ostream & operator<<(std::ostream & ostr, const ODIMNodeValidator & v){
 	return v.toOStr(ostr);
 }
 
+/// DOC: Add class description.
 class ODIMValidator : public std::list<ODIMNodeValidator> {
 public:
 

@@ -117,16 +117,13 @@ public:
 	const std::string DATA_ID; // "data-latest"
 
 	/**
-	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
+	 * TODO: CHECK: previously documented parameter 'shared' - if false, create private object ("layer") for each radar; else use common - no longer in the signature; reconsider or remove.
 	 */
 	static
 	void updateRadarSVG(RackContext & ctx, RadarSVG & radarSVG);
 
 
 
-	/**
-	 *  \param shared - if false, create private object ("layer") for each radar; else use common.
-	 */
 	// static
 	// drain::image::TreeSVG & getOverlayGroup(RackContext & ctx, RadarSVG & radarSVG);
 

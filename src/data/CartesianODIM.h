@@ -48,6 +48,7 @@ class CartesianODIM : public ODIM {
 
 public:
 
+	/// Default constructor.
 	inline
 	CartesianODIM(group_t initialize =ODIMPathElem::ALL_LEVELS) : ODIM(initialize) {
 		init(initialize);
@@ -55,11 +56,13 @@ public:
 
 	// TODO: CHECK: same -Wdeprecated-copy concern as ODIM's own copy constructor (see ODIM.h):
 	// this copy constructor does a full initFromMap(odim), but the implicit operator= would not.
+	/// Copy constructor.
 	inline
 	CartesianODIM(const CartesianODIM & odim) : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromMap(odim);
 	};
 
+	/// Constructor.
 	template <class T>
 	CartesianODIM(const std::map<std::string,T> & m) : ODIM(ODIMPathElem::ALL_LEVELS){
 		initFromMap(m);
@@ -74,6 +77,7 @@ public:
 	*/
 
 
+	/// Constructor initializing ODIM from image metadata.
 	inline
 	CartesianODIM(const drain::image::Image & img, const std::string & quantity="") : ODIM(ODIMPathElem::ALL_LEVELS) {
 		initFromImage(img, quantity);

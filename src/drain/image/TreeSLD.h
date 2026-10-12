@@ -158,7 +158,7 @@ public:
 	virtual
 	void setAttribute(const std::string & key, const char *value) override;
 
-	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+	/// Tell if this element should always have an explicit closing tag even when empty, like `<STYLE></STYLE>`
 	virtual
 	bool isSingular() const override final;
 
@@ -210,8 +210,7 @@ void image::TreeSLD::initChild(image::TreeSLD & child) const {
 
 template <> // referring to Tree<NodeSLD>
 inline
-image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const Variable> > l){
-//image::TreeSLD & image::TreeSLD::operator=(std::initializer_list<std::pair<const char *,const char *> > l){
+image::TreeSLD & image::TreeSLD::operator=(const std::initializer_list<std::pair<const char *,const Variable> > l){
 	UtilsXML::assign(*this, l);
 	return *this;
 }

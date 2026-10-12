@@ -13,7 +13,7 @@ radar data like azimuthal scans, polar products and Cartesian images .
 
 In \c Rack, an HDF5 file is primarily stored using drain::Tree<T> structure, a tree where each node essentially consists of a data array
 and a map of attributes. The data array is implemented with drain::Image, an image class based on std::vector<T>. The images can
-use any storage type from \c unsigned char to \d double . The attributes are stored as a drain::VariableMap , which is essentially
+use any storage type from \c unsigned char to \c double . The attributes are stored as a drain::VariableMap , which is essentially
 an stl::map<T> of references to scalar variables, arrays, and strings (std::string). Practically, in each node either the 
 data array or attributes are applied (ie. non-empty). Specifically, \c /datasetN , \c /dataN , \c /what , \c /where , and \c /how 
 Groups contain only attributes but the data is empty whereas in \c /data Group the data array is non-zero but the attribute map is empty.   

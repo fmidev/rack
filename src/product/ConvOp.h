@@ -57,7 +57,6 @@ public:
 	/**
 	 *  \param echoTopDBZ - threshold for Cb
 	 *  \param cellDiameter - minimum convection cell area
-	 *  \param minHeight - minimum height of cells of \c echoTopDBZ
 	 *  \param smoothRad - radial smoothing width for intermediate results
 	 *  \param smoothAzm - azimuthal smoothing width for intermediate results
 	 *

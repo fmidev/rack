@@ -96,10 +96,7 @@ class PrecipOp: public DetectorOp {
 public:
 
 	/**
-	 * \param prob - maximum expected reflectance of biometeors
-	 * \param maxAltitude - maximum expected altitude of biometeors
-	 * \param reflDev - fuzzy width of  \c reflMax
-	 * \param devAltitude - fuzzy width of \c maxAltitude
+	 *
 	 */
 	PrecipOp(double probMax=0.50, double dbz=20.0, double dbzSpan=+10.0) :
 		DetectorOp(__FUNCTION__, "Detects precipitation...", "precip"){ //ECHO_CLASS_PRECIP){

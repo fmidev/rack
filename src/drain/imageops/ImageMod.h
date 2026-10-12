@@ -130,8 +130,8 @@ public:
 protected:
 
 	/**
-	 * \param  weight_supported - not supported (0), flexibly supported (1) or required (2)
-	 *  \param in_place - 0 = separate dst required, 1 = separate dst encouraged, 2 = dst is allowed to be src
+	 * TODO: CHECK: previously documented parameter 'weight_supported' - not supported (0), flexibly supported (1) or required (2) - no longer in the signature; reconsider or remove.
+	 * TODO: CHECK: previously documented parameter 'in_place' - 0 = separate dst required, 1 = separate dst encouraged, 2 = dst is allowed to be src - no longer in the signature; reconsider or remove.
 	 */
 	inline
 	ImageMod(const std::string &name = __FUNCTION__, const std::string &description="")  :

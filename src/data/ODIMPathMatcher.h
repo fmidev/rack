@@ -50,6 +50,7 @@ class ODIMPathElemMatcher : public ODIMPathElem {
 
 public:
 
+	/// Default constructor.
 	inline
 	ODIMPathElemMatcher(ODIMPathElem::group_t groups = ROOT, index_t index = 0, index_t indexMax = INDEX_MAX) :
 		// ODIMPathElem(group, index),
@@ -62,6 +63,7 @@ public:
 	};
 
 
+	/// Copy constructor.
 	inline
 	ODIMPathElemMatcher(const ODIMPathElemMatcher &e) :
 		ODIMPathElem(),
@@ -73,6 +75,7 @@ public:
 		this->indexMax = e.indexMax;
 	}
 
+	/// Constructor from ODIMPathElem.
 	inline
 	ODIMPathElemMatcher(const ODIMPathElem &e) :
 		// ODIMPathElem(e),
@@ -84,6 +87,7 @@ public:
 		this->indexMax = INDEX_MAX; // ??
 	}
 
+	/// Constructor from string.
 	inline
 	ODIMPathElemMatcher(const std::string &s) :
 		//  index(0),
@@ -150,7 +154,7 @@ public:
 
 protected:
 
-	/// Extracts index range of type <index>[:<indexMax>]
+	/// Extracts index range of type \c index[:\c indexMax]
 	virtual
 	void extractIndex(const std::string &s);
 

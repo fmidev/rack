@@ -62,6 +62,7 @@ public:
 	// same as before, rather than copying cmd's contextPtr. Commands are cloned per thread/context
 	// (see AGENTS.md), so a fresh (unset) context that gets reassigned afterward may well be the
 	// intended behavior here, but confirm.
+	/// Copy constructor.
 	inline
 	Command(const Command & cmd) : Contextual(), section(cmd.section), lastParameters(cmd.lastParameters){
 		// setParameters(cmd.getParameters()); they do not exist yet!
@@ -85,13 +86,14 @@ public:
 	const ReferenceMap & getParameters() const = 0;
 
 	static
-	const SprinterLayout cmdArgLayout; // = {",", "?", "=", ""};
+	const SprinterLayout cmdArgLayout; ///< Layout flag for command argument handling.
 
 
 	virtual
 	void setParameters(const std::string & args) final;
 
 	// TODO: make this a loop calling set(key,val) - but then no
+	/// Sets parameters from argument.
 	template <class T>
 	void setParameters(const T & args){
 		// TODO: set parameter X=Y ?
@@ -128,6 +130,7 @@ public:
 
 	// Could also need/replace   void setParameters(const std::map<std::string,T> & p)
 
+	/// Returns true if this command has parameters.
 	inline
 	bool hasParameters() const {
 
@@ -182,14 +185,16 @@ public:
 	 *  Typically, zero section is for "hidden" commands not appearing in help dumps.
 	 */
 	typedef int cmd_section_type;
-	cmd_section_type section = 1;
+	cmd_section_type section = 1; ///< Section bitmask; zero means hidden from help.
 
+	/// Marks this command as belonging to section i.
 	inline
 	Command & addSection(int i){ // drain::FlaggerBase<>::ivalue_t
 		section |= i;
 		return *this;
 	}
 
+	/// Returns the parameters from the last execution.
 	inline
 	const std::string & getLastParameters() const {
 		return lastParameters;
@@ -199,6 +204,7 @@ public:
 	//virtual
 	// void help(std::ostream & ostr = std::cout, bool DETAILED=false) const final;
 
+	/// Writes related command names to stream.
 	virtual
 	void getRelatedCommands(std::ostream & ostr = std::cout) const;
 
@@ -233,18 +239,20 @@ public:
 	virtual
 	void parametersToStream(std::ostream & ostr, const std::string & indent= "  ") const;
 
+	/// Writes parameter keys to stream.
 	virtual inline
 	void parameterKeysToStream(std::ostream & ostr) const {
 		parameterKeysToStream(ostr, getParameters().getKeyList(), getParameters().separator);
 	};
 
+	/// Writes parameter keys to stream.
 	void parameterKeysToStream(std::ostream & ostr, const std::list<std::string> & list, char sep=',') const;
 
 
 protected:
 
 	mutable
-	std::set<std::string> relatedCommands;
+	std::set<std::string> relatedCommands; ///< Set of related command keys shown in help.
 
 	// Terminal
 	/*
@@ -259,7 +267,7 @@ protected:
 	ReferenceMap & getParameters() = 0;
 
 	// Clumsy but useful
-	std::string lastParameters;
+	std::string lastParameters; ///< String record of the last argument(s) passed.
 
 };
 
@@ -337,30 +345,33 @@ public:
 	BeanCommand(){
 	};
 
+	/// Constructor.
 	BeanCommand(const std::string & name, const std::string & description) : bean(name, description){
 	};
 
-
+	/// Copy constructor.
 	BeanCommand(const BeanCommand & cmd) :  Command(cmd), bean(cmd.bean) {
 		// WARNING: this may have undesired beaviour:
 		// If B2 is (Bean &), also new instance of beanCmd.bean -> cmd.bean
 	};
 
+	/// Constructor wrapping an existing bean.
 	BeanCommand(B & b) : bean(b) {
 	};
 
-	typedef B bean_t;
+	typedef B bean_t; ///< The bean type.
 
 // Consider private:
-	B2 bean;
+	B2 bean; ///< The wrapped bean instance.
 
 
+	/// Returns the wrapped bean.
 	virtual inline
 	const bean_t & getBean() const  { // final
 		return bean;
 	};
 
-	// Main
+	/// Returns the wrapped bean.
 	virtual inline
 	bean_t & getBean() { // final
 		return bean;
@@ -368,16 +379,19 @@ public:
 
 
 
+	/// Returns the command name.
 	inline
 	const std::string & getName() const final {
 		return getBean().getName();
 	};
 
+	/// Returns the command description.
 	inline
 	const std::string & getDescription() const final {
 		return getBean().getDescription();
 	};
 
+	/// Returns the command parameters.
 	virtual	inline
 	const drain::ReferenceMap & getParameters() const  { // final
 		return getBean().getParameters();
@@ -448,8 +462,10 @@ class BasicCommand : public BeanCommand<BeanLike> {  // Todo consider BeanLike
 
 public:
 
+	/// Constructor.
 	BasicCommand(const std::string & name, const std::string & description);
 
+	/// Copy constructor.
 	inline
 	//BasicCommand(const BasicCommand & cmd): Command(cmd), name(cmd.name), description(cmd.description) {
 	BasicCommand(const BasicCommand & cmd): BeanCommand<BeanLike>(cmd) {
@@ -474,6 +490,7 @@ public:
 
 	T value;
 
+	/// Constructor.
 	SimpleCommand(const std::string & name, const std::string & description,
 			const std::string & key="value", const T & initValue = T(), const std::string & unit = "") : BasicCommand(name, description) {
 
@@ -505,6 +522,7 @@ public:
 	}
 
 
+	/// Copy constructor.
 	SimpleCommand(const SimpleCommand & cmd):  BasicCommand(cmd) {
 		getParameters().separator = '\0';
 		getParameters().copyStruct(cmd.getParameters(), cmd, *this);

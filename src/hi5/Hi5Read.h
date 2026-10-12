@@ -77,7 +77,7 @@ public:
 
 	/// Conversion from native HDF5 structure to Rack's hi5 tree structure.
 	/**
-	 *  \param fid  - input in native HDF5 structure
+	 *  \param file_id - input in native HDF5 structure
 	 *  \param path - subpath of input (typically the root, "/")
 	 *  \param tree - output in hi5 structure
 	 *  \param mode - switch for excluding attributes or datasets.

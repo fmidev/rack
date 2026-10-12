@@ -53,7 +53,6 @@ class ShipOp: public DetectorOp {
 public:
 
 	/**
-	 * \param minDBZ - minimum reflectance of ship
 	 * \param reflDev - dbz difference in the neighbourhood window
 	 * \param windowWidth  - width of the neighbourhood window; in metres
 	 * \param windowHeight - height of the neighbourhood window; in degrees

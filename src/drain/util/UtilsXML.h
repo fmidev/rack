@@ -83,6 +83,9 @@ public:
 		}
 	}
 
+	/**
+	 *  This is typically invoked by Tree ::initChild(Tree & child)
+	 */
 	template <typename T>
 	static
 	bool initChildWithDefaultType(const T & tree, T & child){

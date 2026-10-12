@@ -51,7 +51,6 @@ public:
 	/**
 	 *
 	 *  \param speedDevThreshold - Minimum of bin-to-bin Doppler speed (VRAD) deviation (m/s)
-	 *  \param windowWidth - window width [m]
 	 *  \param windowHeightD - window height [deg]
 	 *
 	 *  \include aDopplerNoise.hlp
@@ -73,6 +72,7 @@ public:
 		this->conf.invertPolar = true;
 	};
 
+	/// Copy constructor.
 	inline
 	DopplerNoiseOp(const DopplerNoiseOp &op):  DetectorOp(op), conf(op.conf){
 		parameters.copyStruct(op.getParameters(), op, *this);

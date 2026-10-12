@@ -48,6 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+/// DOC: Add class description.
 struct DataOrder { //: public drain::BeanLike {
 
 	enum Crit {DATA, ELANGLE, TIME}; // ALTITUDE
@@ -73,7 +74,7 @@ struct DataOrder { //: public drain::BeanLike {
 		set(args...);
 	}
 
-	/// Expects <crit>[:<oper>]
+	/// Expects \c crit[:\c oper]
 	inline
 	void set(const std::string s) {
 		std::string s1, s2;
@@ -111,6 +112,7 @@ public:
 	enum Prf {SINGLE=1, DOUBLE=2, ANY=3};
 
 	// TODO: string => ODIMPath
+	/// Constructor.
 	DataSelector(const std::string & path, const std::string & quantity,
 			unsigned int count = 1000, drain::Range<double> elangle = {-90.0, 90.0},
 			DataSelector::Prf prf=Prf::ANY //int dualPRF = 0,
@@ -118,11 +120,13 @@ public:
 	);
 	// double elangleMin = -90.0, double elangleMax = 90.0);
 
+	/// Default constructor. Optionally takes a parameter string.
 	DataSelector(const std::string & parameters = "");
 
 	/// Inits pathmatcher
 	// DataSelector(ODIMPathElem::group_t e, ODIMPathElem::group_t e2=ODIMPathElem::ROOT, ODIMPathElem::group_t e3=ODIMPathElem::ROOT);
 
+	/// Constructor initializing path matcher from path element(s).
 	template<typename ... T>
 	DataSelector(const ODIMPathElem & elem, const T &... args): BeanLike(__FUNCTION__){ //, orderFlags(orderDict,':') {
 		init();
@@ -132,6 +136,7 @@ public:
 	}
 
 	// Either this or previous is unneeded?
+	/// Constructor initializing path matcher from group type(s).
 	template<typename ... T>
 	DataSelector(ODIMPathElem::group_t e, const T &... args): BeanLike(__FUNCTION__){ // , orderFlags(orderDict,':') {
 		init();
@@ -141,6 +146,7 @@ public:
 	}
 
 
+	/// Copy constructor.
 	DataSelector(const DataSelector & selector);
 
 	virtual ~DataSelector();
@@ -149,11 +155,10 @@ public:
 	/// Sets parameters in predefined order or sets specified parameters. (Python style calling alternatives.)
 	//  *   - \c index - integer value, only changing the \c index member. ???
 	/**
-	 *  \param parameters - the parameters to be changed, using some of the syntaxes:
+	 *   Using some of the syntaxes:
 	 *   - \c path,quantity,index,count>,elangleMin,elangleMax (complete or partial list of parameter values, in this order)
 	 *   - \c parameter1=value1,parameter2=value2,parameter3=value3   (specific assignments as a list)
 	 *   The regular expressions should not contain comma (,).
-	 *   \param specific - if true, the specific assignments are supported
 	 */
 
 
@@ -295,21 +300,15 @@ public:
 
 
 
-	/// Retrieves paths using current selection criteria and an additional group selector.
+	/// Retrieves paths using current selection criteria.
 	/**
 	 *   Selects paths down to \c dataset and \c data group level. Uses metadata of \c what , \c where and \c how but
-	 *   does not include them in the result (container).
+	 *   does not include them in the result (pathContainer).
 	 *
 	 *   Each retrieved path starts with \b root \b element (ODIMPathElem::ROOT), corresponding to empty string ("").
 	 *
-	 *   \tparam T - container class supporting addPathT(), e.g. std::set, std::list or std::vector.
 	 *   \param src - the data structure searched for paths
-	 *   \param container - container for found paths
-	 *   \param groupFilter - selector composed of id's (ODIMPathElem::DATASET etc ) of groups added in the container,
-	 *   typically adjusted by calling functions (not by the end user).
-	 *
-	 *   The full tree structure will be searched for; \c groupFilter does not affect the traversal.
-	 *   When retrieving quality groups, \c groupFilter should contain ODIMPathElem::QUALITY.
+	 *   \param pathContainer - container for found paths
 	 *
 	 *   \see deriveParameters().
 	 */
@@ -452,6 +451,7 @@ std::ostream & operator<<(std::ostream & ostr, const DataSelector &selector);
 
 
 // Experimental
+/// DOC: Add class description.
 class DatasetSelector : public DataSelector {
 
 public:

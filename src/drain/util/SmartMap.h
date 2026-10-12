@@ -204,7 +204,7 @@ public:
 
 
 	inline
-	const map_t & getMap() const {  /// ? but <T> ?
+	const map_t & getMap() const {  // ? but templated on \c T ?
 		return *this;
 	};
 
@@ -216,9 +216,6 @@ public:
 	}
 
 	/// Assigns a value to given key; if the entry does not exist, tries to create it with directly with operator[].
-	/**
-	 *   \param updateOnly - if true, only existing elements are updated, otherwise skipped; if false, tries to add elements.
-	 */
 	/*
 	template <class V,bool STRICT=false> // TODO: true...
 	//void importEntry(const std::string & key, const T2 & value, bool updateOnly = true){
@@ -266,8 +263,6 @@ public:
 	/// Assign values from a map, possibly extending the map.
 	/**
 	 *  \param m - source of keys and values
-	 *  \param updateOnly - bypass unexisting keys silently, otherwise throw exception.
-	 *  \param criticality - define sensibility if new keys cannot be added (LOG_NOTE, LOG_ERROR)
 	 *
 	 *  If a key is not known, and the map is of fixed type like ReferenceMap,  throws exception.
 	 */
@@ -414,7 +409,7 @@ public:
 	 *   -# specified mode, allowing specific assignments "key=value,key2=value2,key3=value3"
 	 *
 	 *   Mixed types like \c "value,key4=value2,value3" accepted but not encouraged. In the mixed mode, the unspecified keys become
-	 *   assigned in \i their order of appearance. Hence, in the above example \c value3 will be assigned to \c key2 , not \c key3.
+	 *   assigned in \e their order of appearance. Hence, in the above example \c value3 will be assigned to \c key2 , not \c key3.
 	 *
 	 *
 	 *   \param criticality - if true, skip non-existing entries silently

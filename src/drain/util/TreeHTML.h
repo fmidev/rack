@@ -123,7 +123,7 @@ public:
 	virtual
 	bool isSingular() const override final;
 
-	/// Tell if this element should always have separate opening and closing tags even when empty, like <STYLE></STYLE>
+	/// Tell if this element should always have separate opening and closing tags even when empty, like `<STYLE></STYLE>`
 	virtual
 	bool isExplicit() const override final;
 

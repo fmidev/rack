@@ -181,7 +181,7 @@ public:
 	/**
 	 *   The Stringlet list is internal.
 	 *   \param s - string containing variables like in "Hello, ${NAME}!"
-	 *   \param convertEscaped - convert backslash+letter segments to actual chars (\t, \n } first
+	 *   \param convertEscaped - convert backslash+letter segments to actual chars (\\t, \\n) first
 	 */
 	StringMapper & parse(const std::string &s, bool convertEscaped = false);
 
@@ -218,8 +218,8 @@ public:
 	/// Expands the variables in the last
 	/**
 	 *  \param ostr - output stream
-	 *  \param m    - map containing variable values
-	 *  \param replace:char/int - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
+	 *  \param variables - map containing variable values
+	 *  \param replace - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
 	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = REMOVE_MISSING_VARIABLE,
@@ -251,7 +251,6 @@ public:
 	/**
 	 *  \param m - map containing variable values
 	 *  \param replaceChar
-	 *  \param clear - if true, expand undefined variables as empty std::strings, else leave variable entry
 	 */
 	template <class T>
 	std::string toStr(const std::map<std::string,T> & m, int replaceChar = REMOVE_MISSING_VARIABLE, const VariableFormatter<T> & formatter = VariableFormatter<T>()) const {

@@ -79,8 +79,8 @@ class WeightedAverageRule;
 	-# count - number of samples added (unsigned int);
 	-# dataSquared - sum of squared quantities added;
 
-  Injection. The main loop iterates radar (image) data points of type <Ti>, 
-  mapping each point to a single point in the target array of type <T>;
+  Injection. The main loop iterates radar (image) data points of type \c Ti,
+  mapping each point to a single point in the target array of type \c T;
   hence the name injector.
 
   Cumulation. The compositing starts by initiating the target image,

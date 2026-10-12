@@ -82,6 +82,7 @@ public:
 
 	// inline
 	// DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA), UNIVERSAL(op.UNIVERSAL) {}
+	/// Copy constructor.
 	inline
 //	DetectorOp(const DetectorOp & op) : AndreOp(op), classCode(op.classCode), UNIVERSAL(op.UNIVERSAL), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA) {};
 	DetectorOp(const DetectorOp & op) : AndreOp(op), classEntry(op.classEntry), UNIVERSAL(op.UNIVERSAL), REQUIRE_STANDARD_DATA(op.REQUIRE_STANDARD_DATA) {};
@@ -141,12 +142,7 @@ public:
 	virtual
 	void runDetection(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux)  const;
 
-	/// Process as sweep (data in one elevation angle)
-	/**
-	 *  \param srcDataSet - input data of one elevation; possibly several quantities (measurement parameters).
-	 *  \param dstProb    - probability field ie. the result of the detection algorithm
-	 *  \param aux        - auxialiary DatasetDst for keeping a copy of normalized data.
-	 */
+	/// Process as sweep (data in one elevation angle). Disabled; see runDetection() above for the equivalent, documented version.
 	//virtual
 	//void processDataSet(const DataSet<PolarSrc> & srcDataSet, PlainData<PolarDst> & dstProb, DataSet<PolarDst> & aux)  const;
 

@@ -52,8 +52,6 @@ public:
 
 	/** Default constructor
 	 *   \param thicknessMax - azimuthal width [degrees]
-	 *   \param samplingDistance - position [km] of fuzzy peak weighting the sampling
-	 *   \param samplingDistanceWidth - halfwidth of the weighting curve
 	 */
 	EmitterOp(double lengthMin=5.0, double thicknessMax=5.0, double sensitivity=0.5) :
 		DetectorOp(__FUNCTION__, "Detects electromagnetic interference segments by means of window medians.", "emitter.line")

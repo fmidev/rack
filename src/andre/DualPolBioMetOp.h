@@ -58,14 +58,17 @@ namespace rack {
 using namespace drain::image;
 
 
+/// DOC: Add class description.
 class DualPolBioMetOp: public FuzzyDetectorOp {
 
 public:
 
+	/// Constructor.
 	inline
 	DualPolBioMetOp(const std::string & name, const std::string & description, const std::string & classCode) : FuzzyDetectorOp(name, description, classCode){
 	}
 
+	/// Copy constructor.
 	inline
 	DualPolBioMetOp(const DualPolBioMetOp & op) : FuzzyDetectorOp(op){
 	}
@@ -123,7 +126,7 @@ public:
 
 };
 
-///
+/// DOC: Add class description.
 /**
  *
  */
@@ -150,6 +153,7 @@ public:
 
 	};
 
+	/// Copy constructor.
 	inline
 	BirdOp(const BirdOp & op) : DualPolBioMetOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
@@ -221,6 +225,7 @@ public:
 };
 
 
+/// DOC: Add class description.
 class InsectOp: public DualPolBioMetOp {
 
 public:
@@ -229,8 +234,6 @@ public:
 
 	/**
 	 *
-	 *  \param dbzPeak
-	 *  \param vradDevMin
 	 *  \param rhoHVmax
 	 *  \param zdrAbsMin
 	 *  \param windowWidth
@@ -243,6 +246,7 @@ public:
 		init(dbzMax, vradDevMax, rhoHVmax, zdrAbsMin, windowWidth, windowHeight);
 	};
 
+	/// Copy constructor.
 	InsectOp(const InsectOp & op) : DualPolBioMetOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
 	}

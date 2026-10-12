@@ -110,7 +110,7 @@ public:
 
 	/// The ODIM quantity of this product
 	/**
-	 *  \param defaultQuantity - input quantity or a quantity overriding default output quantity of this product
+	 *  \param inputQuantity - input quantity or a quantity overriding default output quantity of this product
 	 */
 	virtual inline
 	const std::string & getOutputQuantity(const std::string & inputQuantity = "") const {
@@ -160,7 +160,7 @@ protected:
 	 *   Derives geometry for the resulting dst from three sources of parameters:
 	 *   the implicit operator parameters this->odim and the two function parameters
 	 *   \param srcODIM - metadata of the incoming data
-	 *   \param dstODIM - metadata of the result (sometimes partially set).
+	 *   \param dstData - the result (its metadata is sometimes partially set already).
 	 *
 	 *   Default implementation as an empty function, because some operators like VerticalProfileOp will not use?
 	 */
@@ -245,8 +245,7 @@ protected:
  *  For example, quantity parameter may be PROB (0...1), and the actual named parameter PROB_BIRD,
  *  but the scaling will be adopted.
  *
- *  \param quantity - if given, applied as a "template", standard quantity to be copied; also odim.type, if empty, is set.
- *  \param type - if given, odim.type is always changed
+ *  See the declaration above for \c quantity and \c args.
  */
 template <class MS, class MD>
 void RadarProductOp<MS,MD>::setEncodingNEW(PlainData<dst_t> & dstData,	const std::string & quantity, const std::string & args) const {

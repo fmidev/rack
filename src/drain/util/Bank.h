@@ -49,7 +49,7 @@ namespace drain
 // Container storing entries of different classes derived from T.
 /**
  *  A single entry for each class D derived from T can be stored.
- *  The that \i base entry, any number of entries can be cloned.
+ *  Given a \e base entry, any number of entries can be cloned.
  *  The cloned entries are of type D, yet accessible only through
  *  a reference of base class T .
  *

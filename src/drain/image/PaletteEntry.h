@@ -275,7 +275,6 @@ public:
 	/**
 	 *  \param ostr - output stream
 	 *  \param separator  - char after palette index
-	 *  \param separator2 - char after each color intensity value
 	 *
 	 */
 	//	std::ostream & toOStream(std::ostream &ostr, char separator='\t', char separator2=0) const;

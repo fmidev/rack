@@ -309,7 +309,7 @@ public:
 	/**
 	 *   Maps std::type_info to the corresponding template, calling a desired modifier function.
 	 *
-	 *   \tparam F - struct that implements static void callback<type>(T & target), where \c <type> is basetype or std::string.
+	 *   \tparam F - struct that implements static void callback(T & target) for the resolved \c type (basetype or std::string).
 	 *   \tparam T - target object class
 	 *
 	 *  Example struct F:
@@ -506,7 +506,7 @@ public:
 
 		/**
 		 *  \tparam T - base type
-		 *  \param  t - destination Type object
+		 *  \param  target - destination Type object
 		 */
 		template <class T>
 		static inline

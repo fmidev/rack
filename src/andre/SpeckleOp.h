@@ -49,6 +49,7 @@ namespace rack {
 /**
  *
  */
+/// DOC: Add class description.
 class SpeckleOp: public DetectorOp {
 
 public:
@@ -57,7 +58,6 @@ public:
 	/**
 	 *  \param threshold - threshold reflectivity
 	 *  \param area - fuzzy threshold, at which the likelihood is 50%
-	 *  \param polar - use bin geometry; else scale to Cartesian bin area
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */
@@ -74,6 +74,7 @@ public:
 		parameters.link("invertPolar", this->invertPolar = invertPolar, "bins");
 	};
 
+	/// Copy constructor.
 	inline
 	SpeckleOp(const SpeckleOp & op) : DetectorOp(op), threshold(-20.0), area(16), invertPolar(false) {
 		parameters.copyStruct(op.getParameters(), op, *this);

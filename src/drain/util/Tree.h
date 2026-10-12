@@ -90,8 +90,8 @@ namespace drain {
  *
  *  Addressing:
  *
- *  tree(<path>) return a descendant
- *  tree[<path_element>] returns childs only (complains separators, for some time)
+ *  tree(path) return a descendant
+ *  tree[path_element] returns childs only (complains separators, for some time)
  *
  *  Child nodes can be addressed with operator[] with std::string valued keys:
  *  \code
@@ -452,7 +452,7 @@ public:
 
 	/// Returns a descendant. Creates one if not existing already.
 	/**
-	 *  \param path - the path from the current node to the child node.
+	 *  \param arg - the path from the current node to the child node.
 	 *
 	 *  This function, not using native path_t type, can be redefined in template classes.
 	 *  For example, an important attribute can be set using this method.

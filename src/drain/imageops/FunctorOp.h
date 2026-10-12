@@ -66,7 +66,7 @@ struct FunctorWrapper {
 
 /// Class for using simple function objects (like std::functor) for sequential pixel iteration.
 /**!
- *   \template F - unary (single-parameter) functor
+ *   \tparam F Unary (single-parameter) functor.
  *
  *   \see GammaOp
  */
@@ -109,8 +109,8 @@ protected:
 	}
 
 	/**
-	 *  \param adaptParameters - add all the parameters of the functors to this op's parameters
-	 *  \param adaptLimit      - add LIMIT option to visible parameters
+	 *  \param adaptParams - add all the parameters of the functors to this op's parameters
+	 *  \param adoptLimit  - add LIMIT option to visible parameters
 	 */
 	FunctorOp(bool adaptParams = false, bool adoptLimit = false) :
 		FunctorWrapper<F>(),
@@ -126,9 +126,9 @@ protected:
 
 /// Class for using simple function objects (like std::functor) for sequential pixel iteration.
 /**!
- *   \template F - unary (single-parameter) functor
- *   \template NORM - normalize to 0...1 (unsigned) and -1...1 (signed)
- *   \template SIGN - select signed, else unsigned
+ *   \tparam F Unary (single-parameter) functor.
+ *   \tparam NORM If true, normalize to 0...1 (unsigned) and -1...1 (signed).
+ *   \tparam SIGN If true, select signed type, else unsigned.
  */
 template <class F,bool NORM=false,bool SIGN=false>
 class UnaryFunctorOp : public FunctorOp<F>
@@ -136,8 +136,8 @@ class UnaryFunctorOp : public FunctorOp<F>
 public:
 
 	/**
-	 *  \param adaptParameters - add all the parameters of the functors to this op's parameters
-	 *  \param adaptLimit      - add LIMIT option to visible parameters
+	 *  \param adaptParams - add all the parameters of the functors to this op's parameters
+	 *  \param adoptLimit  - add LIMIT option to visible parameters
 	 */
 	//UnaryFunctorOp(bool adaptParams = false, bool adoptLimit = false) : FunctorOp<F>(adaptParams, adoptLimit) {
 	UnaryFunctorOp(bool adaptParams = true, bool adoptLimit = true) : FunctorOp<F>(adaptParams, adoptLimit) {
@@ -317,7 +317,7 @@ void UnaryFunctorOp<T,NORM,SIGN>::traverseChannel(const Channel &src, Channel & 
 
 /// Class for using two-parameter function objects (like std::functor) for sequential and spatial pixel iteration.
 /**!
- *   \template F - binary (two parameter) functor
+ *   \tparam F Binary (two-parameter) functor.
  */
 template <class F>
 class BinaryFunctorOp : public FunctorOp<F> //public FunctorWrapper<F>, public ChannelOp

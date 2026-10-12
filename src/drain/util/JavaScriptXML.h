@@ -136,9 +136,6 @@ public:
 		return jsFunctionScope; // [XML::SCOPE_CURLY];
 	}
 
-	/**
-	 *  \param path
-	 */
 	template <typename N>
 	static
 	DRAIN_XML_TREE(N) & ensureJavaScriptUrl(DRAIN_XML_TREE(N) & root, const std::string & url){

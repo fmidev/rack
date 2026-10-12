@@ -173,8 +173,8 @@ public:
 
 	/// Constructor
 	/**
-	 *   \param leftPos - start of the step
-	 *   \param rightPos   - end of the step
+	 *   \param startPos - start of the step
+	 *   \param endPos   - end of the step
 	 *   \param scale
 	 *
 	 */

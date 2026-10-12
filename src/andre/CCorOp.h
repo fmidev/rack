@@ -40,17 +40,13 @@ namespace rack {
 /**
  *
  */
+/// DOC: Add class description.
 class CCorOp: public DetectorOp {
 
 public:
 
 	///	Computes sizes of segments having intensity over minDBZ.
 	/**
-	 *  \param reflHalfWidth - \c CCOR values below this will be considered this anomalies
-	 *  \param thresholdWidth - steepness coefficient for the reflHalfWidth
-	 *  \param windowWidth  - optional: median filtering window width in metres
-	 *  \param windowHeight - optional: median filtering height width in metres
-	 *  \param medianPos    - optional: median position: 0.5 = normal median (morphology: 0.5 > opening; 0.5 < closing)
 	 *
 	 *  This operator is \e universal , it is computed on DBZ but it applies also to str radar parameters measured (VRAD etc)
 	 */

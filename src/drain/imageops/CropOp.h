@@ -58,7 +58,7 @@ Cropping area can be larger than the original image, and the offsets can be nega
 \endcode
 
 The coordinates outside the image are applied using coordinate handler, which defines the handling separately for each direction.
-By default, the \i coodinate \i policy is \c LIMIT , which identifies the external pixels with the the edge pixels.
+By default, the \e coordinate \e policy is \c LIMIT , which identifies the external pixels with the edge pixels.
 
 
  */	

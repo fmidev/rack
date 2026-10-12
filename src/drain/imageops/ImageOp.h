@@ -155,8 +155,8 @@ public:
 protected:
 
     /**
-     *  \param  weight_supported - not supported (0), flexibly supported (1) or required (2)
-     *  \param  tmp_required - temporary image needed, if src and dst are same or overlapping.
+     * TODO: CHECK: previously documented parameter 'weight_supported' - not supported (0), flexibly supported (1) or required (2) - no longer in the signature; reconsider or remove.
+     * TODO: CHECK: previously documented parameter 'tmp_required' - temporary image needed, if src and dst are same or overlapping - no longer in the signature; reconsider or remove.
      */
     inline  //  = std::string(__FUNCTION__).substr(0, ::strlen(__FUNCTION__)-2
     ImageOp(const std::string &name = __FUNCTION__, const std::string &description="")  : ImageMod(name, description){

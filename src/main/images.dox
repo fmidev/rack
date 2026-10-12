@@ -48,8 +48,8 @@ rack volume.h5 --select quantity=DBZH -c --palette palette/palette-DBZH.txt -o c
 
 Notes on the argument of \c --palette command:
 
-- Given quantity (like \C DBZH ) as argument, Rack primarily searches for built-in palette associated with the quanity, and then \c palette/palette-<QUANTITY>.txt
-- Plain filenames of format \c palette-<QUANTITY>.txt start a file load from current dir, and if that fails, a retry from  \c palette/palette-<QUANTITY>.txt
+- Given quantity (like \c DBZH ) as argument, Rack primarily searches for built-in palette associated with the quanity, and then \c palette/palette-QUANTITY.txt
+- Plain filenames of format \c palette-QUANTITY.txt start a file load from current dir, and if that fails, a retry from  \c palette/palette-QUANTITY.txt
 - File path arguments containing a directory part start a palette file load from the full path.
 - Given argument \c 'default', \b Rack automatically replaces the argument with current \c ${what:quantity} retrieved from metadata, and starts a search as defined above.
 

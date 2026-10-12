@@ -60,15 +60,24 @@ class BeanLike {
 public:
 
 	// typedef FlexVariableMap map_t;
+	/// Reference map type used to store this bean's parameters (name -> linked variable).
 	typedef ReferenceMap map_t;
 
+	/// Copy constructor. Re-links \c parameters to the member variables of this (new) instance.
+	/**
+	 *  \param b - bean to copy the name, description and parameter values from.
+	 */
 	// 2024 public:
 	BeanLike(const BeanLike & b) : name(b.name), description(b.description){
 		// copy(b);
 		parameters.copyStruct(b.getParameters(), b, *this, ReferenceMap::RESERVE);
 	}
 
-
+	/// Constructor.
+	/**
+	 *  \param name - name of this bean, typically also the name of the class.
+	 *  \param description - brief, human-readable description of this bean.
+	 */
 	BeanLike(const std::string & name, const std::string & description="") : name(name), description(description) {
 	}
 
@@ -86,7 +95,7 @@ public:
 		return description;
 	};
 
-	///
+	/// Tells if any parameters have been linked (registered) for this bean.
 	inline
 	bool hasParameters() const {
 		return !parameters.empty();
@@ -102,13 +111,19 @@ public:
 		}
 	}
 
+	/// Returns the parameter map (const access).
 	inline
 	const map_t & getParameters() const { return parameters; };
 
+	/// Returns the parameter map.
 	inline
 	map_t & getParameters() { return parameters; };
 
-
+	/// Sets several parameters at once from a sequence of key-value pairs.
+	/**
+	 *  \tparam F - a container of key-value pairs, like std::map<std::string,std::string> or an initializer list of such pairs.
+	 *  \param args - the key-value pairs to assign, forwarded to the individual parameters.
+	 */
 	template <class F>
 	inline
 	void setParametersFromEntries(const F & args){
@@ -252,6 +267,10 @@ public:
 
 
 
+	/// Assigns the parameter values of another bean (by key) to this one's own parameters.
+	/**
+	 *  \param b - bean to copy the parameter values from.
+	 */
 	inline
 	BeanLike & operator=(const BeanLike & b){ //
 		parameters.importMap(b.getParameters()); // 2021
@@ -260,6 +279,11 @@ public:
 	}
 
 
+	/// Prints the name, description and current parameter values.
+	/**
+	 *  \param ostr - output stream.
+	 *  \param compact - if true, print parameters on a single line; if false, use a more verbose layout.
+	 */
 	virtual
 	std::ostream & toStream(std::ostream & ostr, bool compact = true) const;
 
@@ -278,10 +302,13 @@ protected:
 
 
 
+	/// Name of this bean, typically also the name of the (derived) class.
 	const std::string name;  // todo separate (Beanlet)
 
+	/// Brief, human-readable description of this bean.
 	const std::string description; // todo separate (Beanlet)
 
+	/// Parameters (name -> linked variable), typically linked to member variables of the derived class.
 	//ReferenceMap parameters;  // todo separate (Beanlet)
 	map_t parameters;  // todo separate (Beanlet)?
 

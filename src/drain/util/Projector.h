@@ -225,11 +225,7 @@ protected:
 	// static
 	// int extractEPSGold(const ProjDef & projDefDict);
 
-	/// For setting projection.
-	/**
-	 * \param projStr - string in Proj format
-	 * \param CRS     - set or unset
-	 */
+	// For setting projection.
 	// PJ * getProjection(const std::string & projStr, CRS_mode crs=ACCEPT_CRS) const;
 
     static

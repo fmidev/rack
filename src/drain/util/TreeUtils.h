@@ -56,7 +56,6 @@ public:
 	/// Retrieve all the paths.
 	/**
 	 *  \tparam S - container (STL Sequence)
-	 *  \param path - starting point
 	 */
 	template <class TR, class S>
 	static

@@ -262,7 +262,7 @@ PROD=pVerticalProfile ./make-image-product.sh #exec
 \include verticalProfile-params.inc
 
 The default selector for this operator defines \c quantity=^DBZH$ but more quantities can included with \c --select .
-The resulting product consists of one-dimensional arrays for height (\c HGHT ) and each input quantity stored in data groups, \c /dataset1/data<N> .
+The resulting product consists of one-dimensional arrays for height (\c HGHT ) and each input quantity stored in data groups, \c /dataset1/data\c N .
 In addition to the native output format (HDF5), the resulting product can exported as an image (png) or text (mat format). The latter works only
 if \c azSlots=1 , for example: 
 \code

@@ -46,7 +46,7 @@ namespace rack {
  *
  *    The scaling is a heuristic. The loaded map should contain quantity \c CLUTTER which in each bin represents the probability
  *    of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed
- *    from accumulated dBZ values as described in \ref cluttermaps .
+ *    from accumulated dBZ values as described in \ref cluttermaps . // FIX: 'cluttermaps' Doxygen section not found; update \ref target or add the section.
  *
  *    - alpha \f$ \alpha = \angle(b,c)\f$ : "sky angle",
  *

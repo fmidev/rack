@@ -217,9 +217,6 @@ class ReferenceMap : public SmartMap<Reference> {//public std::map<std::string,R
 public:
 
 	/// Default constructor
-	/**
-	 *  \strictness - if true, allow attempts of assigning to non-existing entries; otherways throw exception on attempt.
-	 */
 	// ReferenceMap(bool ordered, char separator) : SmartMap<Reference>(ordered, separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 	ReferenceMap(char separator=',') : SmartMap<Reference>(separator){}; //, STRICTLY_CLOSED, keys(orderedKeyList), units(unitMap)
 

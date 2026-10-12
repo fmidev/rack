@@ -86,7 +86,6 @@ public:
 	bool relativeScale = false;  //
 
 	/**
-	 *  \param odimSrc - metadata of the source data
 	 *  \param widthM - width of the window, in metres.
 	 *  \param heightD - azimuthal width of the window, in degrees.
 	 */
@@ -112,7 +111,6 @@ public:
 	/**
 	 *  \tparam FT - UnaryFunctor
 	 *
-	 *  \param odimSrc - metadata of the source data
 	 *  \param ftor - scaling of the result
 	 *  \param widthM - width of the window, in metres.
 	 *  \param heightD - azimuthal width of the window, in degrees.

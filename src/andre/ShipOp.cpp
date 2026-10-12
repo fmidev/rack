@@ -50,7 +50,6 @@ namespace rack {
 /**
  *
  *   \param srcData - the raw measurement data (DBZH only), with ODIM metadata, in polar coords
- *   \param dstData - the resulting probability field, with ODIM metadata, in polar coords
  *
  *   This function is called for each desired elevation, typically just the lowest 1-2.
  */

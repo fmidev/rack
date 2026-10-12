@@ -90,8 +90,7 @@ public:
 protected:
 
 	/**
-	 *   \param width  - radial extent of window, in metres
-	 *   \param height - azimuthal extent of window, in degrees
+	 *
 	 */
 	DopplerWindowOp(const std::string & name, const std::string & description, int widthM, double heightD) :
 			DopplerOp(name, description), conf() { //, threshold(0.5), compensatePolar(true), relativeScale(relativeScale) {
@@ -366,8 +365,7 @@ class DopplerEccentricityOp : public DopplerWindowOp<DopplerEccentricityWindow> 
 public:
 
 	/**
-	 *   \param width  - radial extent of window, in metres
-	 *   \param height - azimuthal extent of window, in degrees
+	 *
 	 */
 	DopplerEccentricityOp(int widthM = 1500, double heightD = 3.0) :
 		DopplerWindowOp<DopplerEccentricityWindow>(__FUNCTION__, "Magnitude of mean unit circle mapped Doppler speeds", widthM, heightD) {

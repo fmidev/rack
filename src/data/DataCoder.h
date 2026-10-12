@@ -201,7 +201,7 @@ protected:
 	double minCodeValue;
 
 
-	/// A physical value greater than undetectValue. In \i encoding, lower values will be marked \c undetect . See init().
+	/// A physical value greater than undetectValue. In \e encoding, lower values will be marked \c undetect . See init().
 	/**
 	 *  Remember to call init() if dataODIM has been changed.
 	 */

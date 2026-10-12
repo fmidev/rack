@@ -53,7 +53,6 @@ class HydroClassBasedOp: public DetectorOp {
 public:
 
 	/**
-	 * \param minDBZ - minimum reflectance
 	 *
 	 */
 	HydroClassBasedOp(double nonMet = 0.5, unsigned int NOMET = 1) :

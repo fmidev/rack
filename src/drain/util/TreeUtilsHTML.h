@@ -115,7 +115,7 @@ public:
 
 	/// Creates a new table row (TD) using first row as a template.
 	/**
-	 *   \param T - HTML object, string or TAG type.
+	 *   \tparam T - HTML object, string or TAG type.
 	 */
 	template <class T>
 	static

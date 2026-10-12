@@ -322,8 +322,6 @@ public:
 
 	/// Start logging,
 	/**
-	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
-	 *  \param name - specifier of the source, file name for example (to be basenamed).
 	 */
 	template <typename ... TT>
 	Logger(const char *filename, const TT & ...args);
@@ -331,8 +329,6 @@ public:
 
 	/// Start logging,
 	/**
-	 *  \param funcName - name of the finction, often assigned as standard C macro __FUNCTION__ .
-	 *  \param name - specifier of the source, file name for example (to be basenamed).
 	 */
 	template <typename ... TT>
 	Logger(Log &log, const char *filename, const TT & ...args); //const char *className = NULL);
@@ -864,9 +860,8 @@ protected:
 	/// Sets a label that starts every line in the log.
 	/**
 	 * \param filename – as returned by built-in macro __FILE__
-	 * \param func_name – as returned by built-in macro __FUNCTION__
 	 *
-	 * TODO: \param func_params – optional function and template parameters, formulated by the user.
+	 * // TODO: CHECK: previously documented parameter 'func_params' - optional function and template parameters, formulated by the user. - no longer in the signature; reconsider or remove.
 	 *
 	 */
 	template<typename ... TT>

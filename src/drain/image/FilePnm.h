@@ -109,7 +109,7 @@ public:
 	 *  Floating point images will be scaled as 16 bit integral (unsigned short int).
 	 *
 	 *  \param image - image
-	 *  \param pathPrefix -
+	 *  \param path - output file path
 	 *
 	 */
 	static

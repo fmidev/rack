@@ -562,13 +562,9 @@ std::ostream & operator<<(std::ostream &ostr, const NodeXML<N> & node){
 	return node.nodeToStream(ostr);
 }
 
-/// XML output function shared for all XML documents, ie versions defined in subclasses.
-/**
- *  TODO: preamble/prologToStream()
- *
- *   \param defaultTag - important for
- *
- */
+// XML output function shared for all XML documents, ie versions defined in subclasses.
+// TODO: preamble/prologToStream()
+// TODO: CHECK: previously documented parameter 'defaultTag' - important for - no longer attached to any function; reconsider or remove.
 
 /**
  *  \tparam  int - type of the values in the dictionary

@@ -181,10 +181,10 @@ public:
 
 	// END ImageCore...
 
-	/// Sets the intensity in location \c i to \c x. See \address
+	/// Sets the intensity in location \c i to \c x.
 	/**
 	 *  \param i - location (index)
-	 *  \param i - intensity
+	 *  \param x - intensity
 	 */
 	template <class T>
 	inline

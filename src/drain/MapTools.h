@@ -304,12 +304,12 @@ public:
 		setValues<M,false>(dst, values, equals);
 	}
 
-	/// Assign values from list, accepting keyword arguments \c <key>=<value>,<key2>=<value2> and positional arguments \c <value>,<value2>... .
+	/// Assign values from list, accepting keyword arguments like \c key=value,key2=value2 and positional arguments like \c value,value2... .
 	/**
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
 	 *
-	 *  \params keys - ordered key list of writable entries of destination map
+	 *  \param keys - ordered key list of writable entries of destination map
 	 */
 	// Potential for allowed-keys-only policy (hidden/read-only entries)
 	template <class M, bool STRICT=true>
@@ -400,7 +400,7 @@ public:
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
 	 *
-	 *  \params keys - ordered key list of writable entries of destination map
+	 *  \param keys - ordered key list of writable entries of destination map
 	 */
 	template <class M>
 	static inline
@@ -417,8 +417,6 @@ public:
 	/**
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
-	 *
-	 *  \params keys - ordered key list of writable entries of destination map
 	 */
 	template <class M, bool STRICT=true>
 	static
@@ -431,8 +429,6 @@ public:
 	/**
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
-	 *
-	 *  \params keys - ordered key list of writable entries of destination map
 	 */
 	template <class M>
 	static inline
@@ -440,12 +436,12 @@ public:
 		setValues<false>(dst, values, split, equals);
 	}
 
-	/// Assign values from string, accepting keyword arguments \c <key>=<value>,<key2>=<value2> and positional arguments \c <value>,<value2>... .
+	/// Assign values from string, accepting keyword arguments like \c key=value,key2=value2 and positional arguments like \c value,value2... .
 	/**
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
 	 *
-	 *  \params keys - ordered key list of writable entries of destination map
+	 *  \param keys - ordered key list of writable entries of destination map
 	 *
 	 */
 	template <class M, bool STRICT=true>
@@ -462,7 +458,7 @@ public:
 	 *  \tparam V - value type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
 	 *
-	 *  \params keys - ordered key list of writable entries of destination map
+	 *  \param keys - ordered key list of writable entries of destination map
 	 */
 	template <class M>
 	static inline
@@ -470,13 +466,13 @@ public:
 		setValues<false>(dst, keys, values, split, equals);
 	}
 
-	/// Assign values from string, accepting keyword arguments \c <key>=<value>,<key2>=<value2> and positional arguments \c <value>,<value2>... .
+	/// Assign values from string, accepting keyword arguments like \c key=value,key2=value2 and positional arguments like \c value,value2... .
 	/**
 	 *  \tparam M - map type
 	 *  \tparam V - value type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
 	 *
-	 *  \params keys - ordered key list of the already existing entries
+	 *  \param keys - ordered key list of the already existing entries
 	 *
 	 */
 	template <class M, class V, bool STRICT=true>
@@ -497,8 +493,6 @@ public:
 	/**
 	 *  \tparam M - map type
 	 *  \tparam V - value type
-	 *
-	 *  \params keys - ordered key list of writable entries of destination map
 	 */
 	template <class M, class V>
 	static

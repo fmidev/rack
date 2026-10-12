@@ -335,11 +335,11 @@ public:
 	}
 
 
-	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+	/// Tell if this element should always have an explicit closing tag even when empty, like `<STYLE></STYLE>`
 	virtual
 	bool isSingular() const;
 
-	/// Tell if this element should always have an explicit closing tag even when empty, like <STYLE></STYLE>
+	/// Tell if this element should always have an explicit closing tag even when empty, like `<STYLE></STYLE>`
 	virtual
 	bool isExplicit() const;
 
@@ -367,8 +367,6 @@ public:
 
 	/// Make this node a comment. Contained tree will not be deleted. In current version, attributes WILL be rendered.
 	/**
-	 *   \param text - replaces current CTEXT.
-	 *
 	 */
 	template <class ...T>
 	inline
@@ -391,7 +389,7 @@ public:
 
 	/// Assign the text content of this node. If the node type is undefined, set it to CTEXT.
 	/**
-	 *   \param text - assigned to text content.
+	 *   \param s - assigned to text content.
 	 *
 	 *   TODO: strict/exclusive, i.e. non-element behavior
 	 */
@@ -429,8 +427,6 @@ public:
 	 *   - Cascaded Style Sheets (CSS)
 	 *   - C code
 	 *   - JavaScript code
-	 *
-	 *   \param text - replaces current CTEXT, sc
 	 *
 	 */
 	template <class ...T>

@@ -23,7 +23,7 @@ Pseudo CAPPI and Echo Top products are generated converted to Cartesian coordina
 rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 <defunct> ]
 \endcode
 
-Within braces, <tt>[--inputFile] <file></tt> command will trigger the defined script in a separate, parallel thread.
+Within braces, <tt>[--inputFile] file</tt> command will trigger the defined script in a separate, parallel thread.
 
 More schematically, consider a command line invocation of \b Rack 
 \code
@@ -149,7 +149,7 @@ rack   --cMethod WAVG,2,3,-32  --cProj '+proj=longlat +ellps=WGS84 +datum=WGS84 
 \subsubsection parallel_compositing_tile Tiled scheme
 
 (Under construction.) In operational environment, one typically has system-level parallel processes in receiving radar data,
-hence there is less use in designing \i parallel tiled compositing in Rack level.
+hence there is less use in designing \e parallel tiled compositing in Rack level.
 See the single-thread \ref tiledcompositing instead.
 
 

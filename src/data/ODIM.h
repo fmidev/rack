@@ -107,6 +107,7 @@ public:
 
 
 
+	/// Default constructor.
 	inline
 	ODIM(group_t initialize = ODIMPathElem::ALL_LEVELS) : EncodingODIM(initialize){
 		init(initialize);
@@ -119,16 +120,19 @@ public:
 	// The implicit operator= (inherited from EncodingODIM's narrower one, plus memberwise NI)
 	// would NOT replicate that - so adding a naive `=default`/inherited operator= here would be
 	// semantically incomplete, not just a warning-silencing no-op. Needs a real decision.
+	/// Copy constructor.
 	inline
 	ODIM(const ODIM & odim) : EncodingODIM(ODIMPathElem::ALL_LEVELS), NI(odim.NI){
 		initFromMap(odim);
 	};
 
+	/// Constructor initializing ODIM from image metadata.
 	inline
 	ODIM(const drain::image::Image & image, const std::string & quantity="") : EncodingODIM(image) {
 		initFromImage(image, quantity);
 	};
 
+	/// Constructor initializing ODIM from image metadata.
 	inline
 	ODIM(drain::image::Image & image, const std::string & quantity="") : EncodingODIM(image) {
 		initFromImage(image, quantity);
@@ -278,7 +282,7 @@ public:
 	/**
 	 *  This oddity is needed because some manufactures do not distinguish between undetect and nodata (esp. with VRAD).
 	 *
-	 *  \param quantity - set only if quantity starts with this string. So "VRAD" covers "VRADH" and "VRADV", for example.
+	 *  \param quantityPrefix - set only if quantity starts with this string. So "VRAD" covers "VRADH" and "VRADV", for example.
 	 */
 	bool distinguishNodata(const std::string & quantityPrefix = "");
 

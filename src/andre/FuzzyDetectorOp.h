@@ -50,6 +50,7 @@ namespace rack {
  *  \see drain::Cloner
  *  \see drain::FunctorBank
  */
+/// DOC: Add class description.
 class LocalFunctorBank {
 
 public:
@@ -79,6 +80,7 @@ class FuzzyDetectorOp: public DetectorOp {
 
 protected:
 
+	/// Constructor.
 	inline
 	FuzzyDetectorOp(const std::string & name, const std::string & description, const std::string & classCode) :
 		DetectorOp(name, description, classCode)  {
@@ -88,6 +90,7 @@ protected:
 	};
 
 
+	/// Copy constructor.
 	inline
 	FuzzyDetectorOp(const FuzzyDetectorOp & op) : DetectorOp(op) {
 		this->parameters.copyStruct(op.getParameters(), op, *this);
@@ -162,11 +165,8 @@ protected:
 
 	/// Convenience function for "accumulating" detection results.
 	/**
-	 *   \param tmp - image for latest result, in a sequence of operations
 	 *   \param dstData - actual result
 	 *   \param dstProductAux -
-	 *   Image & tmp,
-	 *   const std::string & feature,
 	 */
 	void applyOperator(const ImageOp & op, const PlainData<PolarSrc> & src, PlainData<PolarDst> & dstData, DataSet<PolarDst> & dstProductAux) const;
 

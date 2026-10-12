@@ -40,6 +40,7 @@ namespace rack {
 /**
  *
  */
+/// DOC: Add class description.
 class ZDRvarOp: public DetectorOp {
 
 public:

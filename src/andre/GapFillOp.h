@@ -64,6 +64,7 @@ protected:
 
 	// "Removes detected anomalies by overriding low-quality pixels with neighboring high-quality pixels."
 
+	/// Constructor.
 	GapFillOpBase(const std::string &name, const std::string &description) :
 		RemoverOp(name, description){
 		dataSelector.setQuantities("^DBZH$");
@@ -89,8 +90,6 @@ class GapFillOp : public GapFillOpBase {
 public:
 
 	/** Default constructor.
-	 * \param windowWidth  - width of the neighbourhood window; in metres
-	 * \param windowHeight - height of the neighbourhood window; in degrees
 	 */
 	GapFillOp(int width = 1500, float height = 5.0) :
 		GapFillOpBase(__FUNCTION__,"Removes low-quality data with gap fill based on distance transformation.") {
@@ -120,6 +119,7 @@ class GapFillRecOp : public GapFillOpBase {
 
 public:
 
+	/// Constructor.
 	//"width=1500m,height=5deg,loops=3,decay=0.9"
 	GapFillRecOp(int width=1500, float height=5.0, int loops=3) : //, float decay=0.9) :
 		GapFillOpBase(__FUNCTION__, "Recursive, 'splinic' gap filler.") {

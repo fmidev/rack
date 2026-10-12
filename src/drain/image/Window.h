@@ -530,7 +530,7 @@ protected:
     bool SCALE = true; // NEW
 
 	/**
-	 * This function \i must
+	 * This function \e must
 	 * -# set image limits (limits of the total scanning area)
 	 * -# set (initial) loop limits (limits of the window scanning area. Typically window origin is in the center.
 	 * -# set starting location (typically 0,0)

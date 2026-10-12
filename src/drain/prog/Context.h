@@ -315,6 +315,7 @@ public:
 		}
 	}
 
+	/// Returns the object cloner.
 	template <class T> // ,class BC>
 	static
 	Cloner<Context,T> & getCloner(){
@@ -325,7 +326,7 @@ public:
 protected:
 
 	// Note: common base class. The actual object may be a derived class.
-	Context *contextPtr;
+	Context *contextPtr; ///< Pointer to the current context; nullptr if not set.
 
 };
 

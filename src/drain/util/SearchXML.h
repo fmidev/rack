@@ -66,7 +66,7 @@ public:
 	 *   By definition, id attributes should be unique.
 	 *
 	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
+	 *   \param tag  - id attribute to be searched for
 	 *   \param result - path of the element with required ID, if found.
 	 *   \param path - start path for the search.
 	 *   \return - \c true, if an element was found.
@@ -84,7 +84,7 @@ public:
 	 *   if user wants to handle more than one elements found.
 	 *
 	 *   \param tree - source element,
-	 *   \param id   - id attribute to be searched for
+	 *   \param tag  - id attribute to be searched for
 	 *   \param result - path of pointing to
 	 *   \param path - start path for the search.
 	 *   \return - \c true, if an element was found.

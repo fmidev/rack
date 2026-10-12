@@ -328,7 +328,7 @@ const std::type_info & TypeUtils::guessArrayType(const C & l){
 	if (s.find(& typeid(int)) != s.end())
 		return typeid(int);
 
-	/// Contains only \c true and \false values
+	/// Contains only \c true and \c false values
 	if (s.find(& typeid(bool)) != s.end())
 		return typeid(bool);
 

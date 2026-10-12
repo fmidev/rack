@@ -42,6 +42,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 //class SourceODIM : public drain::ReferenceMap {
+/// DOC: Add class description.
 class SourceODIM : public drain::FlexVariableMap {
 
 public:
@@ -65,6 +66,7 @@ public:
 	 */
 	SourceODIM(const std::string & source = "");
 
+	/// Copy constructor.
 	SourceODIM(const SourceODIM & s);
 
 

@@ -85,9 +85,9 @@ public:
 	/**
 	 *   - empty: overwrite
 	 *   - data: write to a new \c data group in \c dataset group with the largest index.
-	 *   - data{n}: write to \c data group with index \i n in \c dataset group with the largest index.
+	 *   - data{n}: write to \c data group with index \e n in \c dataset group with the largest index.
 	 *   - dataset: write to a new \c dataset
-	 *   - dataset{n}: write to \c data1 group in \c dataset group with index \i n .
+	 *   - dataset{n}: write to \c data1 group in \c dataset group with index \e n .
 	 */
 	ODIMPathElem appendResults;
 

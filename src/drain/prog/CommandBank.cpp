@@ -176,7 +176,7 @@ void CommandBank::append(const Script & script, Context & ctx, Program & prog) c
 }
 
 
-/// Converts linux command line to pairs of strings:  (<cmd>, [params])
+/// Converts linux command line to pairs of strings: (\c cmd, [params])
 /**
  *  Starts from argument 1 instead of 0.
  */

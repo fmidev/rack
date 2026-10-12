@@ -150,10 +150,8 @@ public:
 
 
 	/**
-	 *  \param
 	 *  \param startPos - starting position (i,j)
 	 *  \param startDir -
-	 *  \param Contour - resulting edge coordinates
 	 *
 	 *  Note: \c dir is NOT Entry direction (from outside towards inside).
 	 */

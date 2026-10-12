@@ -324,12 +324,19 @@ public:
 
 	/// Single command to draw arc
 	/**
-	 *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
+	 *  \param elem - SVG path element to which the arc is appended
+	 *  \param radiusM - radius, in metres
+	 *  \param azimuthStartR - start azimuth, in radians
+	 *  \param azimuthEndR   - end azimuth, in radians
 	 */
 	void cubicBezierTo(drain::svgPATH & elem, double radiusM, double azimuthStartR, double azimuthEndR) const ;
 
 	/**
-	 *  \param drain::Point2D<int> & imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR)
+	 *  \param elem - SVG path element to which the arc is appended
+	 *  \param imgPoint - starting point, should be "already" compatible with (radiusM, azimuthStartR)
+	 *  \param radiusM - radius, in metres
+	 *  \param azimuthStartR - start azimuth, in radians
+	 *  \param azimuthEndR   - end azimuth, in radians
 	 */
 	void cubicBezierTo(drain::svgPATH & elem, drain::Point2D<int> & imgPoint, double radiusM, double azimuthStartR, double azimuthEndR) const;
 

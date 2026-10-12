@@ -64,8 +64,8 @@ public:
 
 	/// Accepts or rejects the extension extracted from file path.
 	/**
-	 *  Extracts the extesions in [<directory>/]<filename>.<ext>.
-	 *  \param ext - filename extension (without leading period)
+	 *  Extracts the extension from a \c filePath of the form [directory/]filename.ext
+	 *  \param filePath - path from which the filename extension is extracted
 	 *  \return - true, if the extension
 	 */
 	inline

@@ -401,6 +401,11 @@ protected:
 	}
 
 
+	/// Doppler-specific pixel visit (overrides SegmentProber::visit).
+	/**
+	 *  \param i - current i coordinate
+	 *  \param j - current j coordinate
+	 */
 	virtual inline
 	void visit(int i, int j){
 

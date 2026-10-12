@@ -58,7 +58,7 @@ namespace image
 struct SamplePicker {
 
 	/**
-	 *  \param ref - flexible container in which the values in each location will be written.
+	 *  \param variableMap - flexible container in which the values in each location will be written.
 	 */
 	inline
 	//SamplePicker(ReferenceMap & variableMap) : variableMap(variableMap) {

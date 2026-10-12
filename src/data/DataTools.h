@@ -48,6 +48,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
+/// DOC: Add class description.
 class TreeFileInfo : public drain::FileInfo {
 
 public:
@@ -78,8 +79,6 @@ public:
 	/**
 	 *  \param src   - structure to be searched
 	 *  \param path  - starting path, to be continued upwards
-	 *  \param group - "what", "where", or "how"
-	 *  \param attributeName - name of the attribute
 	 */
 	// static
 	// const drain::Variable & getAttribute(const Hi5Tree &src, const std::string & path, const std::string & group, const std::string & attributeName);
@@ -106,7 +105,7 @@ public:
 	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
 	 *  the lowest groups containing data arrays, that is \c data groups, are not updated.
 	 *
-	 *  Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().
+	 *  Note that also the \e coordinate \e policy is updated, because the corresponding variable is linked by ImageFrame::init().
 	 *
 	 *  Typically, this is called on the root.
 	 *
@@ -221,7 +220,7 @@ protected:
 	 *  Traverses the data tree, updates the data (image) attributes along the path down to \c data[n] level;
 	 *  the lowest groups containing data arrays, that is \c data groups, are not updated.
 	 *
-	 *  Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().
+	 *  Note that also the \e coordinate \e policy is updated, because the corresponding variable is linked by ImageFrame::init().
 	 *
 	 *  Typically, this is called on the root.
 	 *

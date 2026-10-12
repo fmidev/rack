@@ -66,7 +66,7 @@ class GaussianAverageOp : public WindowOp<Window<GaussianWindowConf> > //WindowO
 public:
 
 	/**
-	 *  \param halfWidth - iDistance relative to width and height, where gaussian kernel obtains value 0.5.
+	 *  \param halfwidth - iDistance relative to width and height, where gaussian kernel obtains value 0.5.
 	 */
 	GaussianAverageOp(int width=1, int height=0, double halfwidth=0.5);
 

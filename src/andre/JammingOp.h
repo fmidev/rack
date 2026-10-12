@@ -69,11 +69,7 @@ public:
 	 *
 	 *   \param smoothnessThreshold - maximum standard deviation in a 5x3 sliding window
 	 *   \param distanceMin - minimum sampling distance [km] for curve fitting
-	 *   \param weightLower - if not 1.0, refit the curve, weighting samples lower the initial curve with this.
 	 *   \param debugRow -
-	 *
-	 *   \param sampleContent - minimum percentage of valid (detected) bins along the beam
-	 *   \param maxCurvature - b2 in fitting dbz = b0 + b1*x + b2*x*x;
 	 *
 	 *   5.0,0.25,2.0,0.001,40
 	 */

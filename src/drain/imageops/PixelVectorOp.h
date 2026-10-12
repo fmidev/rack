@@ -318,7 +318,7 @@ void BinaryPixelVectorOp<F>::traverseChannels(const ImageTray<const Channel> & s
 
 /// Computes the distance between intensity vectors.
 /**
- *    dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + ... + src(i,j,k)*src2(i,j,k) }.
+ *    \f$ dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + \ldots + src(i,j,k)*src2(i,j,k) } \f$
 
 \~exec
   make image-rot.png
@@ -347,7 +347,7 @@ public:
 ///  Computes dot product of intensities of two images.
 /**!
 
-  dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + ... + src(i,j,k)*src2(i,j,k) }.
+  \f$ dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + \ldots + src(i,j,k)*src2(i,j,k) } \f$
 
 
 \~exec
@@ -375,7 +375,7 @@ public:
 /// Computes pixel magnitude, that is, euclidean norm of the intensity vector.
 /**
 
- dst(i,j) = \sqrt{ src(i,j,0)^2 + ... + src(i,j,k)^2 }.
+ \f$ dst(i,j) = \sqrt{ src(i,j,0)^2 + \ldots + src(i,j,k)^2 } \f$
 
  \code
  drainage image.png --iMagnitude FuzzyStep/0:200   -o magnitude-step.png

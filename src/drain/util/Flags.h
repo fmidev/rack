@@ -238,7 +238,7 @@ public:
 	}
 
 	/**
-	 *  \param v - linked variable
+	 *  \param target - linked variable
 	 */
 	inline
 	MultiFlagger(const dict_t & dict, storage_t & target, char sep=',') : flagger_t(target, sep), dict(dict){

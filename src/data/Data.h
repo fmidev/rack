@@ -802,8 +802,6 @@ public:
 	/// Creates (or overrides) data array for \c quantity and scales it
 	/**
 	 *	\param quantity -
-	 *	\param templateQuantity - predefined quantity the scaling of which is used in initialisation
-	 *	\param encodingParams (optional) - parameters overriding those of template quantity
 	 */
 	data_t & create(const std::string & quantity) { // , const std::string & templateQuantity, const std::string & encodingParams) {
 		data_t & d = getData(quantity);
@@ -923,7 +921,7 @@ protected:
 	/**
 	 *  \param t   - target data tree
 	 *	\param dst - odim wrapper for the data tree
-	 * 	\param quantityRegExp - optional quantity filter, if only a subset is desired.
+	 * 	\param slct - optional quantity filter, if only a subset is desired.
 	 */
 	static
 	typename DT::tree_t & init(typename DT::tree_t & t, datagroup_t & dst, const QuantitySelector & slct = QuantitySelector()){

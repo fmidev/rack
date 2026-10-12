@@ -145,7 +145,7 @@ public:
 	/**
 	 *  Formatting options are defined by the first character
 	 *
-	 *  Colon ':' selects substring like in bash, with syntax :<n>[:<startpos>].
+	 *  Colon ':' selects substring like in bash, with syntax :\c n[:\c startpos].
 	 *  Examples:
 	 *  - ':3' selects 3 first letters
 	 *  - ':4:2' selects 4 letters, starting from 2nd character
