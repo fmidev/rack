@@ -1963,7 +1963,7 @@ class CmdEcho : public drain::SimpleCommand<std::string> {
 
 public:
 
-	CmdEcho() : drain::SimpleCommand<std::string>(__FUNCTION__, "For testing. Dumps a formatted string to stdout.", "format","","std::string") {
+	CmdEcho() : drain::SimpleCommand<std::string>(__FUNCTION__, "For testing. Dumps a formatted string to stdout.", "format","", drain::TypeName<std::string>()) {
 	};
 
 	void exec() const {
@@ -2472,12 +2472,28 @@ public:
 
 
 
-class CmdAppend : public drain::SimpleCommand<std::string> {  //public drain::BasicCommand {
+//class CmdAppend : public drain::SimpleCommand<std::string> {  //public drain::BasicCommand {
+class CmdAppend : public drain::BasicCommand {
 
 public:
 
-	CmdAppend() : drain::SimpleCommand<std::string>(__FUNCTION__, "Append inputs/products (empty=overwrite).", "path", "", "<empty>|dataset[n]|data[n]"){
+	// CmdAppend() : drain::SimpleCommand<std::string>(__FUNCTION__, "Append inputs/products (empty=overwrite).", "path", "", "<empty>|dataset[n]|data[n]"){
+	// }
+
+	/// Constructor
+	CmdAppend() : drain::BasicCommand(__FUNCTION__, "Append inputs/products (empty=overwrite)."){
+		getParameters().link("data",    value);
+		getParameters().link("quality", qualityElem);
 	}
+
+	/// Copy constructor
+	CmdAppend(const CmdAppend & cmd) : drain::BasicCommand(__FUNCTION__, "Append inputs/products (empty=overwrite)."){
+		getParameters().copyStruct(cmd.getParameters(), cmd, *this);
+	}
+
+	// for data
+	std::string value = "";
+	std::string qualityElem = "data";
 
 	virtual
 	void exec() const {
@@ -2494,6 +2510,19 @@ public:
 			ctx.appendResults.set(ODIMPathElem::DATA);
 		else {
 			ctx.appendResults.set(value); // possibly "data4" or "dataset7"
+			//mout.warn("check path validity: ", value , "'" );
+		}
+
+		if (qualityElem.empty()){
+			ctx.appendResultQuality.set(ODIMPathElem::ROOT); // = overwrite, do not append
+		}
+		else if (qualityElem == "dataset")
+			ctx.appendResultQuality.set(ODIMPathElem::DATASET);
+		else if (qualityElem == "data") // This is needed to distinguish between /data123 and /data
+			ctx.appendResultQuality.set(ODIMPathElem::DATA);
+		else {
+			ctx.appendResultQuality.set(qualityElem); // possibly "data4" or "dataset7"
+			mout.error("named quality group not yet supported: ", qualityElem , "'" );
 			//mout.warn("check path validity: ", value , "'" );
 		}
 

@@ -90,6 +90,14 @@ public:
 	 *   - dataset{n}: write to \c data1 group in \c dataset group with index \e n .
 	 */
 	ODIMPathElem appendResults;
+	// ODIMPathElem appendResultQuality = ODIMPathElem::NONE;
+
+	// Define under which data (main quantity) element quality group is set.
+	/**
+	 *  ODIMPathElem::ROOT - discouraged (yet has been a ODC convention)
+	 */
+	ODIMPathElem appendResultQuality = ODIMPathElem::DATA;
+
 
 	/// Determines if also intermediate results (1) are saved. See --store
 	enum OutputDataVerbosity {DEFAULT=0, INTERMEDIATE=1, DEBUG=2, QUALITY=4};

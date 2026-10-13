@@ -45,6 +45,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <drain/image/MouseXML.h>
 #include <drain/image/MouseEventXML.h>
 #include <drain/image/TextSVG.h>
+#include <drain/js/coords.h>
 #include <drain/js/coord_handler.h>
 #include <drain/js/data_value_tracker.h>
 
@@ -325,6 +326,7 @@ void CmdRect::exec() const {
 	*/
 
 	// Modify SVG header.
+	ctx.ensureScript("coords",       javascript::coords);
 	ctx.ensureScript("image_coord_tracker", javascript::image_coord_tracker);
 	ctx.ensureScript("coord_handler",       javascript::coord_handler);
 	ctx.ensureOnLoad("image_coord_tracker") = "image_coord_tracker();";

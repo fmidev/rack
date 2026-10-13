@@ -32,27 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "StringMapper.h"
 
-/*
-DRAIN_ENUM_DICT(drain::StringMapper::handleMissing) = {
-		DRAIN_ENUM_ENTRY(drain::StringMapper::handleMissing, REMOVE_MISSING_VARIABLE),
-		DRAIN_ENUM_ENTRY(drain::StringMapper::handleMissing, KEEP_MISSING_VARIABLE),
-};
-*/
 
 namespace drain {
 
-// StringMapper::handleMissing StringMapper::handleMissing::REMOVE_MISSING_VARIABLE = 0;
-// StringMapper::handleMissing StringMapper::handleMissing::KEEP_MISSING_VARIABLE = 1;
-
-
-/*
-const int StringMapper::KEEP_MISSING_VARIABLE = -1;
-const int StringMapper::REMOVE_MISSING_VARIABLE = 0;
-template <>
-const drain::Enum<int,StringMapper>::dict_t drain::Enum<int,StringMapper>::dict = {
-		{"KEEP_MISSING_VARIABLE", StringMapper::KEEP_MISSING_VARIABLE},
-};
-*/
 
 DRAIN_ENUM_DICT(StringMapper::handleMissing) = {
 		DRAIN_ENUM_ENTRY(StringMapper, REMOVE_MISSING_VARIABLE),
@@ -60,16 +42,11 @@ DRAIN_ENUM_DICT(StringMapper::handleMissing) = {
 };
 
 
-
-
-// DRAIN_ENUM_OSTREAM();
-
-
 StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug("regExp= " , regExp );
+	mout.debug2(DRAIN_LOG(regExp));
 
 	clear();  // clear list
 
@@ -84,11 +61,9 @@ StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
 	if (convertEscaped){
 		std::string s2(s);
-		// mout.warn("converting: ", s2);
-		//parse(StringMapper::convertEscaped(s2), regExp);
 		parse(StringTools::convertEscaped(s2), regExp);
 		// mout.warn("converted:  ", s2);
-		//return parse(StringMapper::convertEscaped(s2), regExp);
+		// return parse(StringMapper::convertEscaped(s2), regExp);
 		return *this;
 	}
 	else {

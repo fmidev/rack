@@ -1139,42 +1139,56 @@ void CmdInputFile::readListFile(const drain::FilePath & path) const  {
 		prefix = ctx.inputPrefix;
 	}
 
-	drain::Input input(path); // fullFilename);
-	std::string line;
-	while (std::getline((std::ifstream &)input, line)){
+	try {
 
-		if (!line.empty()){
-			// mout.debug2(line );
-			if (line.at(0) != '#'){
+		drain::Input input(path); // fullFilename);
+		std::string line;
+		while (std::getline((std::ifstream &)input, line)){
 
-				// Note: comments also after commands could be stripped, but...
-				// ... simple search of char '#' is faulty as command arguments can also contain it.
-				std::string inputFileName = drain::StringTools::trim(line);
-				if (inputFileName == this->value){
-					// Todo: use full paths in comparing...
-					mout.error("Recursion detected while reading ", path); // fullFilename);
-				}
-				else {
-					if (HANDLE_SEPARATELY){
-						// mout.experimental("extending command sequence with: ", inputFileName);
-						ctx.addedCommands.add("inputFile", prefix + inputFileName);
+			if (!line.empty()){
+				// mout.debug2(line );
+				if (line.at(0) != '#'){
+
+					// Note: comments also after commands could be stripped, but...
+					// ... simple search of char '#' is faulty as command arguments can also contain it.
+					std::string inputFileName = drain::StringTools::trim(line);
+					if (inputFileName == this->value){
+						// Todo: use full paths in comparing...
+						mout.error("Recursion detected while reading ", path); // fullFilename);
 					}
 					else {
-						// Now expect volume, read sweep(s) directly and append. No script exec after each.
-						//readFile(prefix + inputFileName);
-						readFileH5(prefix + inputFileName, 15); // max time difference, still?
+						if (HANDLE_SEPARATELY){
+							// mout.experimental("extending command sequence with: ", inputFileName);
+							ctx.addedCommands.add("inputFile", prefix + inputFileName);
+						}
+						else {
+							// Now expect volume, read sweep(s) directly and append. No script exec after each.
+							//readFile(prefix + inputFileName);
+							readFileH5(prefix + inputFileName, 15); // max time difference, still?
+						}
+						//
 					}
-					//
+					//FIRST = false;
 				}
-				//FIRST = false;
 			}
 		}
+
+	}
+	catch (const std::exception & e) {
+		mout.warn(DRAIN_LOG(e.what()));
+		if (path.dir.size() < 2){
+			mout.advice<LOG_NOTICE>("full path=", path, " - did you forget to use explicit full path?");
+			mout.hint<LOG_INFO>("In reading list files, inputPrefix is not applied.");
+		}
+		mout.error("opening list file failed, full path=", path);
 	}
 
 	if (!HANDLE_SEPARATELY){
 		DataTools::updateInternalAttributes(ctx.polarInputHi5);
 		ctx.getUpdatedStatusMap();
 	}
+
+
 	/*
 	if (!lastFile.empty()){
 		mout.experimental("now reading first file: ", lastFile);

@@ -36,15 +36,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "Accumulator.h"
 
 DRAIN_ENUM_DICT(drain::image::Accumulator::FieldType) = {
-// const drain::image::Accumulator::dict_t drain::image::Accumulator::dict = {
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, DATA),
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, WEIGHT),
+		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, WEIGHT_GLOBAL),
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, COUNT),
 		DRAIN_ENUM_ENTRY(drain::image::Accumulator::FieldType, DEVIATION),
-		//		{"DATA", rack::Composite::FieldType::DATA},
-		//		{"WEIGHT", rack::Composite::FieldType::WEIGHT},
-		//		{"COUNT", rack::Composite::FieldType::COUNT},
-		//		{"DEVIATION", rack::Composite::FieldType::DEVIATION},
 };
 
 
@@ -68,7 +64,7 @@ Accumulator::FieldType Accumulator::getField(char field){
 	//for (const auto & entry: Accumulator::dict){
 	for (const auto & entry: Enum<FieldType>::dict){
 		i = static_cast<short int>(entry.second);
-		if ((entry.second&127) == i){
+		if ((entry.second & 127) == i){
 			return entry.second;
 		}
 	}
@@ -88,15 +84,18 @@ void Accumulator::createFieldList(const std::string & fieldChars, FieldList & fi
 
 		switch (c) {
 		case '/':
-			mout.advice("Use capital letters DATA_SPECIFIC_QUALITY, eg. 'C' instead of '/c'");
-			mout.error("Old style marker '/' for DATA_SPECIFIC_QUALITY");
-			//DATA_SPECIFIC_QUALITY = true;
+			mout.advice("Use capital letters QUANTITY_SPECIFIC_QUALITY, eg. 'C' instead of '/c'");
+			mout.error("Old style marker '/' for QUANTITY_SPECIFIC_QUALITY");
+			//QUANTITY_SPECIFIC_QUALITY = true;
 			continue;
 			break; // unneeded?
 		case 'd': //
 			fieldList.push_back(DATA);
 			break;
 		case 'w': // ???
+			mout.advice("use WEIGHT instead of 'w', if you don't mean WEIGHT_GLOBAL");
+			// no break
+		case 'W': // ???
 			fieldList.push_back(WEIGHT);
 			break;
 		case 'c': // ???
@@ -121,24 +120,24 @@ void Accumulator::getFields(const std::string & fieldStr, FieldList & fieldList)
 
 	std::list<std::string> fieldKeys;
 	drain::StringTools::split(fieldStr, fieldKeys, ','); // ':');
-		for (const std::string & key: fieldKeys){
-			int value = Enum<FieldType>::dict.getValue(key);
-			if (value > 0){
-				fieldList.push_back((FieldType)value);
+	for (const std::string & key: fieldKeys){
+		int value = Enum<FieldType>::dict.getValue(key);
+		if (value > 0){
+			fieldList.push_back((FieldType)value);
+		}
+		else {
+			// OLD_SYNTAX = true;
+			if (fieldList.empty()){
+				mout.deprecating("Old fashioned field list (string): ");
+				createFieldList(fieldStr, fieldList);
 			}
 			else {
-				// OLD_SYNTAX = true;
-				if (fieldList.empty()){
-					mout.deprecating("Old fashioned field list (string): ");
-					createFieldList(fieldStr, fieldList);
-				}
-				else {
-					mout.advice("Use either 'DATA,WEIGHT,...' or 'dw...'");
-					mout.error("Mixed-type field list ", fieldStr);
-				}
-				break;
+				mout.advice("Use either 'DATA,WEIGHT,...' or 'dw...'");
+				mout.error("Mixed-type field list ", fieldStr);
 			}
-		};
+			break;
+		}
+	};
 }
 
 
@@ -344,7 +343,7 @@ void Accumulator::extractField(FieldType field, const AccumulationConverter & co
 		methodPtr->extractValue(accArray, coder, dst, finalCropArea);
 		break;
 	case FieldType::WEIGHT:
-	case FieldType::WEIGHT_DS:
+	case FieldType::WEIGHT_GLOBAL:
 	// case 'w':
 	// case 'W':
 		if (!coder.isQualityEncodingSet()){
@@ -353,7 +352,7 @@ void Accumulator::extractField(FieldType field, const AccumulationConverter & co
 		methodPtr->extractWeight(accArray, coder, dst, finalCropArea);
 		break;
 	case FieldType::COUNT:
-	case FieldType::COUNT_DS:
+	case FieldType::COUNT_GLOBAL:
 	// case 'c':
 	// case 'C':
 		if (!coder.isQualityEncodingSet()){
@@ -362,9 +361,9 @@ void Accumulator::extractField(FieldType field, const AccumulationConverter & co
 		methodPtr->extractCount(accArray, coder, dst, finalCropArea);
 		break;
 	case FieldType::DEVIATION:
-	case FieldType::DEVIATION_DS:
-	//case 's':
-	//case 'S':
+	// case FieldType::DEVIATION_QS:
+	// case 's':
+	// case 'S':
 		if (!coder.isQualityEncodingSet()){
 			mout.error("Quality encoding unset");
 		}

@@ -78,13 +78,17 @@ void CartesianCreate::exec() const {
 	//mout.accept<LOG_NOTICE>("EPSG_A: ", composite.odim.epsg);
 	if (qualityMatcher.test(composite.odim.quantity)){
 		mout.note("Quality [", composite.odim.quantity, "] as input: extracting data only");
-		//extract(composite, "d");
 		extract(composite, {drain::image::Accumulator::DATA});
 	}
 	else {
-		extract(composite, {drain::image::Accumulator::DATA, drain::image::Accumulator::WEIGHT});
-		//
-		//extract(composite, "dw");
+		// mout.attention(DRAIN_LOG(ctx.appendResultQuality));
+		if (ctx.appendResultQuality.belongsTo(ODIMPathElem::DATASET)){
+			mout.experimental<LOG_NOTICE>("extracting quality [QIND] under DATASET group");
+			extract(composite, {drain::image::Accumulator::DATA, drain::image::Accumulator::WEIGHT_GLOBAL});
+		}
+		else {
+			extract(composite, {drain::image::Accumulator::DATA, drain::image::Accumulator::WEIGHT});
+		}
 	}
 
 	// mout.accept<LOG_NOTICE>("EPSG: ", composite.odim.epsg);

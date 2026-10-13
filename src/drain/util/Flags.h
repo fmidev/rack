@@ -203,7 +203,7 @@ std::ostream & operator<<(std::ostream & ostr, const SingleFlagger<E> & flagger)
 	return ostr;
 }
 
-DRAIN_TYPENAME_T0(SingleFlagger,E);
+DRAIN_TYPENAME_T(SingleFlagger,E);
 
 ///
 /**
@@ -374,7 +374,7 @@ std::ostream & operator<<(std::ostream & ostr, const drain::MultiFlagger<E,T> & 
 	return FlagResolver::keysToStream(flagger.getDict(), flagger.getValue(), ostr);
 }
 
-DRAIN_TYPENAME_T0(MultiFlagger,E);
+DRAIN_TYPENAME_T(MultiFlagger,E);
 
 
 

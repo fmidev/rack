@@ -82,15 +82,16 @@ public:
 	 *
 	 */
 	enum FieldType {
-		DATA_SPECIFIC = 32,       // Ascii bit for lower-case chars, see below
-		QUALITY   = 256,		  // Marker for non-data
 		DATA      = 'd',          // Main data, of named quantity
-		WEIGHT    = 'w'|QUALITY,  // Quality
-		COUNT     = 'c'|QUALITY,  // Number of samples
-		DEVIATION = 's'|QUALITY,  // Separation: std.dev or difference
-		WEIGHT_DS = 'W'|QUALITY,  // Quality
-		COUNT_DS  = 'C'|QUALITY,  // Number of samples
-		DEVIATION_DS = 'S'|QUALITY  // Separation
+		QUALITY   = 256,		  // Marker for non-data (why not 128?)
+		QUANTITY_SPECIFIC = 32,   // Bit marking upper-case chars, see below
+		// Quality fields can be GLOBAL or QUANTITY_SPECIFIC
+		WEIGHT_GLOBAL = 'W'|QUALITY,  // Quality
+		COUNT_GLOBAL  = 'C'|QUALITY,  // Number of samples
+		WEIGHT        = 'w'|QUALITY,  // Quality
+		COUNT         = 'c'|QUALITY,  // Number of samples
+		DEVIATION     = 's'|QUALITY   // Separation: std.dev or difference
+		// DEVIATION = 's'|QUALITY,   // Separation: std.dev or difference
 	};
 
 	typedef drain::Enum<FieldType>::dict_t dict_t;
@@ -117,7 +118,7 @@ public:
 	/// Future option to mark scaled/normalized etc
 	inline static
 	bool isSpecific(FieldType field){
-		return (field & DATA_SPECIFIC) != 0;
+		return ((int)field & (int)QUANTITY_SPECIFIC) != 0;
 	}
 
 	static

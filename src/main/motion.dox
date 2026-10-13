@@ -5,15 +5,19 @@
 
 \section motion Motion
 
-In radar meteorologically, motion can be divided to two phenomenon: atmospheric motion, which is motion of air and falling hydrometeors, 
-and motion of precipitation area, which can be further divided into motion of convective and stratiform areas, for example.
-\b Rack is capable of detecting both of them.
+In radar meteorologically, motion can be divided to two phenomenon:
+atmospheric motion, which is motion of air and falling hydrometeors,
+and motion of precipitation area, which can be further divided into
+motion of convective and stratiform areas, for example.  \b Rack is
+capable of detecting both of them.
 
 \subsection doppler  Basic Doppler products
 
-Weather radars capable of measuring Doppler speed produce hydrometeor velocities projected on the beam -- 
-hence one-dimensional. The obtained speeds are further aliased by the maximum unambiguous 
-velocity, \f$ V_{Nyq} \f$. In the following, two derived products by are presented.  
+Weather radars capable of measuring Doppler speed produce hydrometeor
+velocities projected on the beam -- hence one-dimensional. The
+obtained speeds are further aliased by the maximum unambiguous
+velocity, \f$ V_{Nyq} \f$. In the following, two derived products by
+are presented.
 
 \subsection dopplerAvg  Doppler wind smoothing
 
@@ -94,14 +98,14 @@ The output (truncated in the middle) is as follows:
 Typically, user wants to obtain a Cartesian array, obtained with \c --cCreate, abbreviated \c -c .
 That operation has to be performed separately for \e u and \e v components, and using \c --append command to prevent overwriting:
 \code
-rack volume-widespread.h5 --pDopplerInversion 2500,90 --append data -Q AMVU -c -Q AMVV -c  -o amv-cart.h5
+rack volume-widespread.h5 --pDopplerInversion 2500,90 --append data,dataset -Q AMVU -c -Q AMVV -c  -o amv-cart.h5
 \endcode
 The resulting motion fields will be in the last available dataset group, here \c dataset1 . 
 This behaviour can be changed with \c --append \c dataset which puts \c AMVU and \c AMVV in separate groups.
 
 Similarly, cartesian sampling is done basically by changing extension \c .h5 to \c .dat 
 \code
-rack volume-widespread.h5 --pDopplerInversion 2500,90 --append data -Q AMVU -c -Q AMVV -c --sample 30,30,skipVoid=1  --format '${i} ${j2} ${AMVU} ${AMVV} ${QIND}' -o amv-cart.dat
+rack volume-widespread.h5 --pDopplerInversion 2500,90 --append data,dataset -Q AMVU -c -Q AMVV -c --sample 30,30,skipVoid=1  --format '${i} ${j2} ${AMVU} ${AMVV} ${QIND}' -o amv-cart.dat
 \endcode
 producing:
 \include amv-cart.cut

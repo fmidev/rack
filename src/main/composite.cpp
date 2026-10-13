@@ -895,6 +895,13 @@ void Compositor::extract(Composite & composite, const drain::image::Accumulator:
 		// mout.reject<LOG_NOTICE>("pre-extract EPSG:", composite.projGeo2Native.getDst().getEPSG());
 		// mout.reject<LOG_NOTICE>("pre-extract proj:", composite.projGeo2Native.getDst().getProjDef());
 
+		/*
+		for (const auto & field: channels){
+			mout.attention(DRAIN_LOG(field), ' ', (int)field, " quantity-specific: ", drain::image::Accumulator::isSpecific(field));
+		}
+		*/
+
+
 		composite.extract(dstProduct, channels, encoding, cropImage);
 		encoding.clear();
 

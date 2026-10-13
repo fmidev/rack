@@ -51,9 +51,13 @@ VT100_ORANGE='\033[1;30m'
 VT100_END='\033[0m'
 
 SCRIPT=$0
+
+# Also backslash tracker uses
+ERROR_LOG=`date +'%Y-%m-%d-error.log'`
+
 function end_test(){
     local line=$1
-    local ERROR_LOG=`date +'%Y-%m-%d-error.log'`
+    #local ERROR_LOG=`date +'%Y-%m-%d-error.log'`
     echo "#$0 $((line - 1))" >> $ERROR_LOG
     echo "$cmd" >> $ERROR_LOG
     echo >> $ERROR_LOG
@@ -156,6 +160,12 @@ while (( $line <= iEnd )); do
     #cmd="`cat -n $TEST_CMD_FILE | grep \"^[ \t]\+$line[ \t]\+\" | cut -c8-`"
     cmd="`cat $TEST_CMD_FILE | grep $filter | cut -c8-`"
 
+    # Strip whitespace
+    cmd=( $cmd )
+    cmd="${cmd[*]}"
+
+ 
+    
     line=$(( line + 1 ))
     echo
 
@@ -189,10 +199,23 @@ while (( $line <= iEnd )); do
     
     #echo "Test[$i]: '$cmd'"
     LOGFILE=test-$line.log
-    if [ -f $LOGFILE ]; then 
-	echo "Logfile exits, continue $LOGFILE "
+    if [ -f $LOGFILE ]; then
+	# ???
+	echo "Logfile exits, continue. $LOGFILE "
 	continue
     fi
+
+    if [ ${cmd: -1} == '\' ]; then
+	#echo -e $VT100_YELLOW $cmd $VT100_END
+	echo -e $VT100_GREEN  $cmd $VT100_END
+	echo "Skipping extended command line – ends with backslash '\\':"
+	echo "# line $line: extended command line: $cmd" >> $ERROR_LOG
+	echo >> $ERROR_LOG
+	#exit 1
+	continue
+    fi
+
+
 
     # Detect output
     # Repeat all the cmds with h5 output to png output

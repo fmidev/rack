@@ -394,7 +394,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 	 *  or
 	 *  /dataset1/data1/quality1/
 	 */
-	//bool DATA_SPECIFIC_QUALITY = false;
+	//bool QUANTITY_SPECIFIC_QUALITY = false;
 	//mout.experimental<LOG_NOTICE>("EncodingODIM THIS = ", this->odim);
 
 	ODIM odimData;
@@ -478,11 +478,11 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 		else {
 
 			switch (field){
-			case field_t::WEIGHT_DS:
+			case field_t::WEIGHT_GLOBAL:
 			case field_t::WEIGHT:
 				odimQuality.quantity = "QIND";
 				break;
-			case field_t::COUNT_DS:
+			case field_t::COUNT_GLOBAL:
 			case field_t::COUNT:
 				odimQuality.quantity = "COUNT";
 				break;
@@ -525,9 +525,13 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 			}
 			// else auto-scale?
 
+			const bool QUANTITY_SPECIFIC_QUALITY = Accumulator::isSpecific(field);
+
+			mout.attention(DRAIN_LOG(field), DRAIN_LOG(QUANTITY_SPECIFIC_QUALITY));
+			//mout.attention(DRAIN_LOG(QUANTITY_SPECIFIC_QUALITY));
 
 			typedef QualityDataSupport<DstType<OD> > q_support_t;
-			q_support_t & qualityOwner = Accumulator::isSpecific(field) ? (q_support_t &) dstProduct.getData(odimData.quantity) : (q_support_t &) dstProduct;
+			q_support_t & qualityOwner = QUANTITY_SPECIFIC_QUALITY ? (q_support_t &) dstProduct.getData(odimData.quantity) : (q_support_t &) dstProduct;
 			pdata_dst_t & dstQuality = qualityOwner.getQualityData(odimQuality.quantity);
 
 
@@ -587,7 +591,7 @@ void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD>
 	// or
 	//  /dataset1/data1/quality1/
 	//
-	bool DATA_SPECIFIC_QUALITY = false;
+	bool QUANTITY_SPECIFIC_QUALITY = false;
 
 	// Consider redesign, with a map of objects {quantity, type,}
 	for (size_t i = 0; i < fields.length(); ++i) {
@@ -601,7 +605,7 @@ void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD>
 		char field = fields.at(i);
 		switch (field) {
 			case '/':
-				DATA_SPECIFIC_QUALITY = true;
+				QUANTITY_SPECIFIC_QUALITY = true;
 				continue;
 				break; // unneeded?
 			case 'm': // ???
@@ -719,7 +723,7 @@ void RadarAccumulator<AC,OD>::extractOLD(const OD & odimOut, DataSet<DstType<OD>
 			mout.debug("QUALITY/" , field , " [", odimQuality.quantity, ']');
 			//pdata_dst_t & dstData = dstProduct.getData(odimFinal.quantity);
 			typedef QualityDataSupport<DstType<OD> > q_data_t;
-			q_data_t & qualityOwner = (DATA_SPECIFIC_QUALITY) ? (q_data_t &) dstProduct.getData(odimData.quantity) : (q_data_t &) dstProduct;
+			q_data_t & qualityOwner = (QUANTITY_SPECIFIC_QUALITY) ? (q_data_t &) dstProduct.getData(odimData.quantity) : (q_data_t &) dstProduct;
 			pdata_dst_t & dstData = qualityOwner.getQualityData(odimQuality.quantity);
 			dstData.odim.updateFromMap(odimQuality);
 			mout.debug3("dstData: " , dstData );

@@ -176,7 +176,7 @@ struct Stub : public drain::UniTuple<T,2>{
 
 };
 
-DRAIN_TYPENAME_T0(Stub, T);
+DRAIN_TYPENAME_T(Stub, T);
 
 /*
 template <class T>

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,6,7)
+#define RACK_VERSION drain::Version<>(21,7,"beta")
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -77,6 +77,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Removed debug output
  *  - Debugging quay.io build problem
  *  - Small adjustments in internal documentation
+ *  Release 21.7
+ *  - Accumulator fields: w - WEIGHT, W - WEIGHT_GLOBAL
+ *  --append data,qualityGroup=dataset - choose group for quality, in cCreate
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
