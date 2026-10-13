@@ -155,10 +155,15 @@ public:
 		if (f != 0){
 			// return dst;
 			// Hi5Tree & dst = getHi5Full(f);
-			return getHi5Full(f);
+			// return getHi5Full(f);
+			Hi5Tree & dst = getHi5Full(f);
+			if (!dst.empty()){
+				return dst;
+			}
 		}
-		else
+		//else {
 			return getHi5(filters...);
+		//}
 	}
 
 

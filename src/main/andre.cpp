@@ -311,7 +311,6 @@ public:
 	// called without it), so an alias given to this install() would have no effect. No current
 	// caller passes a non-default alias, so this is currently dormant, but confirm intentional.
 	template <class OP>
-	//DetectorCommand<OP> & install(char alias = 0){
 	drain::Command & install(char alias = 0){
 		std::string name = OP().getName();
 		drain::CommandBank::deriveCmdName(name, getPrefix());
@@ -319,8 +318,7 @@ public:
 		drain::Command  & cmd = cmdBank.add<DetectorCommand<OP> >(name);
 		cmd.section = getSection().index;
 		return cmd;
-
-	};
+	}
 
 };
 
@@ -345,7 +343,7 @@ public:
 		drain::Command & cmd = cmdBank.add<AnDReCommand<OP> >(name);
 		cmd.section = getSection().index;
 		return cmd;
-	};
+	}
 
 };
 
@@ -354,7 +352,6 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 
 	drain::CommandBank::trimWords().insert("Op");
 	drain::CommandBank::trimWords().insert("AnDRe");
-
 	//drain::CommandBank & bank = drain::getCommandBank();
 
 	// Shared/general AnDRe commands
@@ -401,11 +398,7 @@ AnDReModule::AnDReModule(drain::CommandBank & cmdBank) : module_t(cmdBank) { // 
 	removerInstaller.install<DamperOp>(); //           damper;
 	removerInstaller.install<RemoverOp>(); //         remover;
 
-
-
 }
-
 
 } // namespace rack
 
-// Rack

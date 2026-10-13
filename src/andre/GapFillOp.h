@@ -60,6 +60,12 @@ public:
 	int  loops = 0;
 	double expansionCoeff = 1.0;
 
+	virtual
+	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
+		throw std::runtime_error(name +"::"+__FUNCTION__+ " not implemented");
+	};
+
+
 protected:
 
 	// "Removes detected anomalies by overriding low-quality pixels with neighboring high-quality pixels."
@@ -70,11 +76,6 @@ protected:
 		dataSelector.setQuantities("^DBZH$");
 	};
 
-
-	virtual
-	void processData(const Data<PolarSrc> & srcData, Data<PolarDst> & dstData) const {
-		throw std::runtime_error(name +"::"+__FUNCTION__+ " not implemented");
-	};
 
 
 

@@ -242,6 +242,8 @@ public:
 		// const Hi5Tree & src = ctx.getCurrentInputHi5();
 		// RackContext::CURRENT not ok, it can be another polar product
 		// const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
+		mout.attention(DRAIN_LOG(ctx.inputFlags));
+
 		const Hi5Tree & src = ctx.getHi5(
 				ctx.inputFlags,
 				RackContext::PRIVATE|RackContext::POLAR|RackContext::INPUT,
@@ -266,11 +268,13 @@ public:
 
 		if (src.empty()){
 			mout.warn("Empty, but proceeding...");
+			ctx.statusFlags.set(drain::Status::INPUT_ERROR);
 		}
 
 
 		if (&src == &ctx.polarProductHi5){
 			mout.warn("src = ctx.polarProductHi5");
+			// ctx.statusFlags.set(drain::Status::COMMAND_ERROR); // ?
 		}
 
 		Hi5Tree & dst = this->bean.processVolume(src, ctx.polarProductHi5);
