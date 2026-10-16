@@ -158,6 +158,7 @@ protected:
 
 
 
+/// DOC: Add class description.
 class OverwriteMethod : public AccumulationMethod {
 
 public:
@@ -175,6 +176,7 @@ public:
 
 };
 
+/// DOC: Add class description.
 class MaximumMethod : public AccumulationMethod {
 
 public:
@@ -188,6 +190,7 @@ public:
 
 };
 
+/// DOC: Add class description.
 class MinimumMethod : public AccumulationMethod {
 
 public:
@@ -202,6 +205,7 @@ public:
 };
 
 
+/// DOC: Add class description.
 class MinMaxMethod : public AccumulationMethod {
 
 public:
@@ -221,6 +225,7 @@ public:
 };
 
 
+/// DOC: Add class description.
 class AverageMethod : public AccumulationMethod {
 
 public:
@@ -248,6 +253,7 @@ public:
 
 
 
+/// DOC: Add class description.
 class WeightedAverageMethod : public AccumulationMethod {
 
 
@@ -312,6 +318,7 @@ protected:
 };
 
 
+/// DOC: Add class description.
 class MaximumWeightMethod : public AccumulationMethod {
 
 public:

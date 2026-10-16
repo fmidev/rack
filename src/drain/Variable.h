@@ -45,11 +45,11 @@ namespace drain {
 
 drain::Variable has memory of its own, and cannot be linked to external variables like drain::Reference and drain::FlexibleVariable .
 
-\section ctors-var Variable constructors
+\section ctors-var-variable Variable constructors
 
 \htmlinclude  VariableT-ctors-Variable.html
 
-\section assignments-var Variable assignments
+\section assignments-var-variable Variable assignments
 
 \htmlinclude  VariableT-assign-Variable.html
 

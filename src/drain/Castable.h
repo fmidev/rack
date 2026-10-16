@@ -326,6 +326,12 @@ public:
 			throw std::runtime_error("Castable & assign(const T *p): unsupported");
 	}
 
+	/// Assigning nullptr resets the castable (unsets type and clears content).
+	inline
+	void assign(std::nullptr_t){
+		reset();
+	}
+
 	/// Copies an arbitrary base type or std::string value.
 	/**
 	 *
@@ -350,7 +356,7 @@ public:
 			}
 		}
 		else {
-			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": arg:" << x << '\n';
+			std::cerr << __FILE__ << ':' << __FUNCTION__ << ": arg type:" << typeid(T).name() << '\n';
 			throw std::runtime_error(std::string(__FUNCTION__) + ": type is unset");
 		}
 
@@ -975,6 +981,9 @@ protected:
 
 	/// Copies the link and element count.
 	void relink(Castable & c);
+
+	/// Copies the link and element count from a const source.
+	void relink(const Castable & c);
 
 
 	/*

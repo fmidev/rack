@@ -158,6 +158,7 @@ public:
 DRAIN_TYPENAME_T(Frame2D, T);
 
 
+/// DOC: Add class description.
 template <class T>
 struct Stub : public drain::UniTuple<T,2>{
 

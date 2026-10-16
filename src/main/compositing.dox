@@ -510,6 +510,7 @@ convert composite-grid.png -resize 600 composite-grid-small.png
 
 
 */
-
+// The extra */ below closes the comment level inadvertently opened by /* in the shell glob "tiles/*.*" above.
+*/
 
 

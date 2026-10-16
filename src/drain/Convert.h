@@ -113,6 +113,7 @@ struct Converter<bool> {
 
 
 
+/// DOC: Add class description.
 class Convert {
 
 public:

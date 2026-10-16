@@ -224,6 +224,10 @@ std::ostream & Caster::toOStreamFloats(std::ostream & ostr, const void *p){
 */
 
 
+void Caster::put(void *p, std::nullptr_t) const {
+	put(p, 0);
+}
+
 }  // drain::
 
 

@@ -62,7 +62,7 @@ typedef VariableT<ReferenceT<Castable> >                                   Refer
 
 \section variables-comparison-assignments Comparison of assignments
 
-\subsection Variable Variable
+\subsection Variable-variableT Variable
 
 \htmlinclude  VariableT-assign-Variable.html
 

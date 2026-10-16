@@ -73,7 +73,7 @@ public:
 
 	/** Given code (class index or similar marker), returns the (threshold) value, ie. index of the palette entry.
 	 *
-	 *  Argument \code is matched against palette entries with tests in the following order:
+	 *  Argument \c code is matched against palette entries with tests in the following order:
 	 *
 	 *  # exact string match (if \c lenient=true , testing stops here )
 	 *  # \c palette.code starts   with \c code
@@ -102,7 +102,7 @@ public:
 
 	/// Loads a palette from text file
 	/**
-	 *   \param flexible - if true, try also directory appended with ./palette, basename palette-<string> and extensions txt,json
+	 *   \param flexible - if true, try also directory appended with ./palette, basename palette-&lt;string&gt; and extensions txt,json
 	 */
 	void load(const std::string & filename, bool flexible = false);
 

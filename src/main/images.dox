@@ -205,7 +205,7 @@ Alternatively, a new quantity may be explicitly set with \c quantity parameter o
 To override source data, give an empty quantity attribute with  \c --encoding \c quantity= which equals 
  \c --encoding \c 'quantity=${what:quantity}' .
 
-The image processing commands have form \c --i<Command> . The \ref imageOps is attached at the
+The image processing commands have form \c --i&lt;Command&gt; . The \ref imageOps is attached at the
 end of this page.  Some selected examples are shown below. 
 
 \b Thresholding data can be done as follows: 

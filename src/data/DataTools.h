@@ -87,10 +87,10 @@ public:
 	/**
 	 *   Does not change attributes of src.
 	 *   \see updateAttributes()
-	template <class M>
-	static
-	void getAttributesOLD(const Hi5Tree &src, const std::string & path, M & attributes, bool updateOnly = false);
-	*/
+	 */
+	// template <class M>
+	// static
+	// void getAttributesOLD(const Hi5Tree &src, const std::string & path, M & attributes, bool updateOnly = false);
 
 	// consider: path is not a reference, it will be copied.
 	template <class M>

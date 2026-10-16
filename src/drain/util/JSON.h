@@ -89,9 +89,9 @@ public:
 	/// Read value (JSON syntax). Read stream until a value has been extracted, with type recognition
 	/**
 	 *   Allowed syntax:
-	 *   - string: "<value>"
-	 *   - scalar:  <value>
-	 *   - array:  [<value>,<value>,<value>,<...>]
+	 *   - string: "&lt;value&gt;"
+	 *   - scalar:  &lt;value&gt;
+	 *   - array:  [&lt;value&gt;,&lt;value&gt;,&lt;value&gt;,&lt;...&gt;]
 	 */
 	static
 	void readValue(const std::string & s, Castable & v, bool keepType = false);

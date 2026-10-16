@@ -258,6 +258,7 @@ void Serializer::toStream(std::ostream & ostr, const T & x, objType hint) const 
 	}
 }
 
+/// DOC: Add class description.
 struct SimpleFormatter {
 
 	char prefix    = 0;
@@ -291,6 +292,7 @@ struct SimpleFormatter {
 
 };
 
+/// DOC: Add class description.
 class SimpleSerializer : public Serializer {
 public:
 

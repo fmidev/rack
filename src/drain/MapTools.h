@@ -229,7 +229,7 @@ public:
 	}
 
 
-	/// Assign values from list, accepting strict "<key>=<value>" format, no positional arguments.
+	/// Assign values from list, accepting strict \c "key=value" format, no positional arguments.
 	/**
 	 *  If the list contains a single empty value, the destination is cleared.
 	 *
@@ -292,7 +292,7 @@ public:
 
 
 
-	/// Assign values from list, accepting strict "<key>=<value>" format, no positional arguments.
+	/// Assign values from list, accepting strict \c "key=value" format, no positional arguments.
 	/**
 	 *  \tparam M - map type
 	 *  \tparam S - source type
@@ -304,7 +304,7 @@ public:
 		setValues<M,false>(dst, values, equals);
 	}
 
-	/// Assign values from list, accepting keyword arguments like \c key=value,key2=value2 and positional arguments like \c value,value2... .
+	/// Assign values from list, accepting keyword arguments like \c "key=value" and positional arguments like \c value... .
 	/**
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
@@ -409,7 +409,7 @@ public:
 	}
 
 
-	/// Assign values from string, assuming strict "<key>=<value>" format, no positional arguments.
+	/// Assign values from string, assuming strict \c "key=value" format, no positional arguments.
 	/**
 	 *  \tparam S - source type
 	 *  \tparam T - destination type
@@ -436,7 +436,7 @@ public:
 		setValues<false>(dst, values, split, equals);
 	}
 
-	/// Assign values from string, accepting keyword arguments like \c key=value,key2=value2 and positional arguments like \c value,value2... .
+	/// Assign values from string, accepting keyword arguments like \c "key=value" and positional arguments like \c value... .
 	/**
 	 *  \tparam M - map type
 	 *  \tparam STRICT - assign always; create a new entry if key does not exist
@@ -466,7 +466,7 @@ public:
 		setValues<false>(dst, keys, values, split, equals);
 	}
 
-	/// Assign values from string, accepting keyword arguments like \c key=value,key2=value2 and positional arguments like \c value,value2... .
+	/// Assign values from string, accepting keyword arguments like \c "key=value" and positional arguments like \c value... .
 	/**
 	 *  \tparam M - map type
 	 *  \tparam V - value type

@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,7)
+#define RACK_VERSION drain::Version<>(21,7,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -77,10 +77,12 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Removed debug output
  *  - Debugging quay.io build problem
  *  - Small adjustments in internal documentation
- *  Release 21.7
+ *  Version 21.7
  *  - Accumulator fields: w - WEIGHT, W - WEIGHT_GLOBAL
  *  --append data,qualityGroup=dataset - choose group for quality, in cCreate
  *  - Fix: getHi5() does not return empty (parallel computing)
+ *  Release 21.7.1
+ *  - Fix: C++14 nullptr_t issues
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
@@ -605,7 +607,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   Version 7.8
  *   -- Revised DataSelector: #selectPaths()
  *   -- New functionality: selective read --inputSelect
- *   -- Log: adjustable sublevels: accept<LOG_DEBUG>(...) , fail<LOG_INFO>(...)
+ *   -- Log: adjustable sublevels: accept&lt;LOG_DEBUG&gt;(...) , fail&lt;LOG_INFO&gt;(...)
  *   -- Revised definitions: Variable, ReferenceVariable, FlexibleVariable
  *   -- Image processing: keys instead of numeric indices
  *   -- Check rscale, nbins, nrays in compositing
@@ -841,7 +843,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *
  *   Version 5.45
  *   - Output format confs generalized: --outputConf (replaced --outputTiffConf)
- *   - Plain numeric EPSG codes recognized in --cProj <value> , some (4236, 3067) also predefined for portability
+ *   - Plain numeric EPSG codes recognized in --cProj &lt;value&gt; , some (4236, 3067) also predefined for portability
  *   - GeoFrame refactored (Metric => Native)
  *
  *   Version 5.44

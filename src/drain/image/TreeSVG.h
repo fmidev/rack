@@ -60,6 +60,7 @@ typedef drain::UnorderedMultiTree<NodeSVG,false, NodeXML<>::path_t> TreeSVG;
 //typedef NodeXML<NodeSVG>::xml_tree_t TreeSVG;
 */
 
+/// DOC: Add class description.
 class FileSVG {
 
 public:
@@ -421,6 +422,7 @@ void NodeSVG::setAlign(const P & pos, const A & axis,  const V &value){
 
 
 // Utility (move to utils?)
+/// DOC: Add class description.
 class NodePrinter {
 
 public:

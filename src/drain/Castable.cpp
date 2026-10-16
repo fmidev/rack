@@ -77,6 +77,17 @@ void Castable::relink(Castable & c){
 	elementCount = c.getElementCount();
 }
 
+void Castable::relink(const Castable & c){
+
+	const std::type_info &t = c.getType();
+
+	if (t == typeid(void))
+		throw std::runtime_error(std::string("Castable::") + __FUNCTION__ + "(const Castable &c): c has void type");
+
+	setPtr(const_cast<char*>(c.getPtr()), t);
+	elementCount = c.getElementCount();
+}
+
 
 void Castable::clear(){
 	if (caster.typeIsSet()){

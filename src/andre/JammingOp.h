@@ -132,7 +132,8 @@ public:
 
 	/// Model for radar amplification of an external emitter.
 	/**
-	 *  \param distance - distance in metres
+	 *  \param dBZ0     - reference reflectivity at the emitter source
+	 *  \param distance - distance from the emitter in meters
 	 *
 	 */
 	static inline

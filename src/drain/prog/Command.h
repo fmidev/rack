@@ -116,7 +116,7 @@ public:
 	/// Set a value to a single parameter.
 	/**
 	 *
-	 *  This method also assigns "<key>=<value>" to lastParameters
+	 *  This method also assigns \c "key=value" to lastParameters
 	 */
 	template <class T>
 	void setParameter(const std::string & key, const T & value){

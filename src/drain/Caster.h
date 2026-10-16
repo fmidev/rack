@@ -43,6 +43,15 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 //#include "TypeUtils.h" // for typesetter
 #include "Type.h"
 
+// Backport nullptr_t streaming for C++14 (operator<< for nullptr_t added in C++17).
+#if __cplusplus < 201703L
+#ifndef DRAIN_NULLPTR_STREAM_COMPAT
+#define DRAIN_NULLPTR_STREAM_COMPAT
+inline std::ostream & operator<<(std::ostream & os, std::nullptr_t) {
+	return os << static_cast<const void *>(nullptr);
+}
+#endif
+#endif
 
 
 // // using namespace std;
@@ -136,7 +145,7 @@ public:
 		return getType() == t;
 	}
 
-	/// calls void setType<void>().
+	/// calls void setType&lt;void&gt;().
 	void unsetType(); //  inline not possible here due to template<> (?)
 
 
@@ -155,7 +164,7 @@ public:
 	/// Default conversion (for unconventional types). Uses std::stringstream for conversion.
 	//  => See the base type implementations below.
 	template <class T>
-	void put(void *p, const T & x) const { 
+	void put(void *p, const T & x) const {
 		if (typeIsSet()){
 			std::stringstream sstr;
 			sstr << x;
@@ -166,6 +175,9 @@ public:
 			throw std::runtime_error(std::string("Caster::put(void *, const T & ), type unset"));
 		}
 	}
+
+	/// nullptr_t overload: treated as 0 (avoids ambiguous operator<< in C++14).
+	void put(void *p, std::nullptr_t) const;
 
 	/// Write to internal pointer using put(this->ptr, x).
 	template <class T>
@@ -328,6 +340,12 @@ protected:
 		std::stringstream sstr;
 		sstr << x;
 		*(std::string*)p = sstr.str();
+	}
+
+	/// nullptr_t overload: treated as 0 (avoids ambiguous operator<< in C++14).
+	static inline
+	void putToStringT(void *p, std::nullptr_t) {
+		putToStringT(p, 0);
 	}
 
 

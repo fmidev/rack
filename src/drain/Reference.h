@@ -74,8 +74,14 @@ See the documentation of drain::VariableT template specialized by drain::Variabl
 */
 typedef VariableT<ReferenceT<Castable> >  Reference;
 
-//template <>
-//const std::string TypeName<Reference>::name;
+/// Copy-init specialization for Reference: relink to the same target as src.
+template <>
+template <class S>
+inline
+void ReferenceT<Castable>::init(const S & src){
+	this->relink(static_cast<const Castable &>(src));
+}
+
 DRAIN_TYPENAME(Reference);
 
 template <>

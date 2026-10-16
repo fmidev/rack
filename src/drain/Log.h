@@ -47,6 +47,17 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <syslog.h>
 #include <map>
 
+// Backport nullptr_t streaming for C++14 (operator<< for nullptr_t added in C++17).
+// Global-namespace placement ensures it is found by unqualified lookup in templates.
+#if __cplusplus < 201703L
+#ifndef DRAIN_NULLPTR_STREAM_COMPAT
+#define DRAIN_NULLPTR_STREAM_COMPAT
+inline std::ostream & operator<<(std::ostream & os, std::nullptr_t) {
+	return os << static_cast<const void *>(nullptr);
+}
+#endif
+#endif
+
 #include "StringBuilder.h"
 // #include "TextStyle.h"
 #include "TextStyleVT100.h"
@@ -92,6 +103,7 @@ namespace drain {
 
 // using namespace std;
 
+/// DOC: Add class description.
 struct Notification {
 
 	/*
@@ -285,6 +297,7 @@ Log & getImgLog();
 }  // namespace image
 
 
+/// DOC: Add class description.
 class DrainException : public std::runtime_error {
 
 public:
@@ -780,6 +793,14 @@ public:
 		//cerr << "source input:" << x << '\n';
 		if (level <= monitor.getVerbosity())
 			message << x;
+		return *this;
+	}
+
+	/// nullptr_t overload: avoids ambiguous operator<< in C++14.
+	inline
+	Logger &operator<<(std::nullptr_t) {
+		if (level <= monitor.getVerbosity())
+			message << static_cast<const void *>(nullptr);
 		return *this;
 	}
 

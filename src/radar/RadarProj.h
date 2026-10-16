@@ -197,7 +197,7 @@ public:
      \image latex radar-coordinates-fig.pdf
      \image html  radar-coordinates-fig.png
 
-    \section Variablenames Variable names
+    \section Variablenames-radarproj Variable names
 
       - \f$\phi\f$, phi:  longitude of radar site (in radians)
       - \f$\theta\f$, theta: latitude of radar site (in radians)

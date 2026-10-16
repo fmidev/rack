@@ -464,7 +464,7 @@ public:
 /**
  *  Main title:
  *  - "NONE" – do not display
- *  - "<string>" – (implicit) apply main title issued with \c --gTitle
+ *  - "&lt;string&gt;" – (implicit) apply main title issued with \c --gTitle
  *  - "AUTO" – apply automatic formatting
  *
  *  Group title:

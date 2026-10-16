@@ -80,11 +80,13 @@ LIGHT=${VALUES[1]}
 DATA=${DATA:-"$DARK,$LIGHT,$LIGHT,$DARK"}
 #DATA=${DATA:-"$DARK,$UNDETECT,$NODATA,$LIGHT"}
 
-# Step 3: add ODIM variables, convert to HDF5
-#rack ${OUTDIR}/${IMGFILE} \
-
 BASENAME=${OUTFILE%.*}
 METADATA=${BASENAME}.txt
+
+
+echo "# Step 1: Create text file defining HDF5 volume structure"
+echo "#   file: $METADATA"
+
 cat > $OUTDIR/$METADATA <<EOF
 what:object="$OBJECT" 
 what:date="$DATE"
@@ -148,7 +150,8 @@ fi
 
 
 if [ ! -s "${OUTDIR}/${TILEFILE}" ]; then
-    echo "# Step 0: Creating 'data' pattern (checkerboard), TILESIZE=$TILESIZE, file: ${OUTDIR}/${TILEFILE}"
+    echo "# Step 2: Creating 'data array' from a checkerboard pattern: TILESIZE=$TILESIZE, file: ${OUTDIR}/${TILEFILE}"
+    echo "#   file: $TILEFILE"
     echo "P2 2 2 255  ${DATA//,/ }" | convert pgm:- -filter Point -resize ${TILESIZE}\! ${OUTDIR}/${TILEFILE}
     
     if [ ! -s "${OUTDIR}/${TILEFILE}" ]; then
@@ -176,9 +179,12 @@ if [ $? != 0 ] || [ ! -s ${OUTDIR}/${IMGFILE} ]; then
 fi
 
 
+# Remove?
 # rm -v $OUTDIR/${IMGFILE} 
 # rm -v $OUTDIR/${TILEFILE}
 
+echo "# Step 3: Creating HDF5 structure from metadata text and data array"
+echo "#   file: $OUTFILE"
 cmd="rack $OUTDIR/$METADATA ${OUTDIR}/${IMGFILE} --encoding '$ENCODING' --completeODIM ${cart} ${palette} -o ${OUTDIR}/${OUTFILE}"
 #cmd="rack  --/what:object=$OBJECT --/what:date=$DATE --/what:time=$TIME --encoding '$ENCODING' ${OUTDIR}/${IMGFILE} --completeODIM ${cart} ${palette} -o ${OUTDIR}/${OUTFILE}"
 echo $cmd

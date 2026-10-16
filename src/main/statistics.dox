@@ -4,7 +4,7 @@
 
 \tableofcontents
 
-\section statistics Statistics
+\section stat_overview Statistics
 
 \b Experimental
 
@@ -16,7 +16,7 @@ The current functionality of  \c rack.statistics
 especially for monitoring incoming data.
 
 
-\subsection statistics_usage Usage
+\subsection stat_usage Usage
 
 Usage of \c rack.statistics typically consists of two steps:
 
@@ -27,12 +27,12 @@ In the collection stage, the script invokes \c rack repeatedly as a subprocess.
 
 Similarly, in the illustration stage, \c gnuplot is invoked.
 
-\subsection examples Examples
+\subsection stat_examples Examples
 
 In the following examples, it is assumed that environment variable
 \c PYTHONPATH contains the directory under which the modules are located.
 
-\paragraph convenience Convenience
+\paragraph stat_convenience Convenience
 
 Instead of defining syntaxes on the command line with:
 
@@ -136,7 +136,7 @@ python3 -m rack.statistics --config stat1.json \
   statistics/fi???/00min/20240423-*.txt
 \endcode
 
-\subsection python_api Python API Example
+\subsection stat_python_api Python API Example
 
 \code{py}
 import rack.statistics
@@ -163,7 +163,7 @@ Produces:
 ...
 \endcode
 
-\subsection explanation Explanation
+\subsection stat_explanation Explanation
 
 | A | B | C | D |
 |---|---|---|---|

@@ -39,6 +39,7 @@ namespace drain
 {
 
 
+/// DOC: Add class description.
 class DotLayout : public drain::SprinterLayout {
 
 public:
@@ -56,6 +57,7 @@ typedef std::map<std::string,std::string> amap_t;  //map_t m2 = {{"koe", 123.45}
 typedef drain::Sprintlet<amap_t, DotLayout> AttrSprintlet;
 
 
+/// DOC: Add class description.
 class DotEntity {
 
 public:
@@ -77,6 +79,7 @@ public:
 
 
 
+/// DOC: Add class description.
 class DotNode : public DotEntity {
 
 public:
@@ -142,6 +145,7 @@ protected:
 
 };
 
+/// DOC: Add class description.
 class DotBullit : public DotNode {
 
 public:
@@ -157,6 +161,7 @@ public:
 
 };
 
+/// DOC: Add class description.
 class DotRankNode : public DotNode {
 
 public:
@@ -171,6 +176,7 @@ public:
 
 std::ostream & operator<<(std::ostream & ostr, const DotNode & node);
 
+/// DOC: Add class description.
 class DotHeader : public DotEntity {
 
 public:
@@ -202,6 +208,7 @@ protected:
 std::ostream & operator<<(std::ostream & ostr, const DotHeader & header);
 
 
+/// DOC: Add class description.
 class DotComment {
 
 public:
@@ -225,6 +232,7 @@ protected:
 std::ostream & operator<<(std::ostream & ostr, const DotComment & comment);
 
 
+/// DOC: Add class description.
 class DotLink : public DotEntity {
 
 public:
@@ -241,6 +249,7 @@ public:
 
 std::ostream & operator<<(std::ostream & ostr, const DotLink & link);
 
+/// DOC: Add class description.
 class DotRank {
 
 public:
