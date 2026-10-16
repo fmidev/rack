@@ -27,12 +27,16 @@ get-data-all: get-data-synth get-data-fmi get-data-europe
 	@ echo 'Ok'
 
 # Retrieve open data of the Finnish Meteorological Institute
-get-data-fmi:
-#	scripts/rack-get-data-fmi.sh all
+get-data-fmi: cache
+# TODO: link retrieved to fmi short cut dir?
+#	mkdir --parents $(DATA_DIR)
+# TODO:	scripts/rack-get-data-fmi.sh all
 	scripts/rack-get-data-fmi.sh 
 
 # Retrieve open data of the EUMETNET OPERA community
-get-data-europe:
+get-data-europe: cache
+# TODO: link retrieved to fmi short cut dir?
+#	mkdir --parents $(DATA_DIR)
 	scripts/rack-get-data-europe.sh all
 
 # Create synthetic test data (geometric and cloud-like)
@@ -43,12 +47,12 @@ get-data-synth: get-data-synth-geom get-data-synth-precip
 get-data-synth-geom: get-data-synth-geom-basic get-data-synth-geom-doppler
 
 # Create rasters containing geometric patterns (checkerboard etc.)
-get-data-synth-geom-basic:
+get-data-synth-geom-basic: cache
 	mkdir --parents $(DATA_DIR)
 	OUTDIR=$(DATA_DIR) OUTFILE=volume.h5 scripts/rack-create-test-volume.sh
 
 # Create fractal clouds
-get-data-synth-precip:
+get-data-synth-precip: cache
 	mkdir --parents $(DATA_DIR)
 	./get-data-synth-precip.sh
 
