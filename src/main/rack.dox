@@ -38,7 +38,7 @@ The program can be downloaded from https://github.com/fmidev/rack .
 
 As input, \b Rack accepts azimuthal scans - volumes or separate sweeps - 
 in HDF5 files using OPERA Information Model (ODIM, http://www.eumetnet.eu/opera).
-\~comment
+\~remark
 The polar coordinate system is applied: the radar at left, 
 rows presenting beams clockwise, the topmost row towards North.
 \~
@@ -103,18 +103,10 @@ In addition, metadata, resampled grid data and vertical profiles can be output a
      
 }
 \enddot
-  
-  
 
+\section commands Usage
 
- 
- 
- 
- 
- 
- \section commands Usage
-
- \subsection command_line_format Command line arguments
+\subsection command_line_format Command line arguments
 
 A typical invocation of \b Rack looks like:
 \code
@@ -165,10 +157,18 @@ A product can be further converted to Cartesian coordinate system, explained nex
 \subsection cartesian_brief  Converting to Cartesian images 
  
 Data in polar coordinates can be mapped to a Cartesian product with \c --cCreate (abbreviated \c -c). 
-The simplest possible command is
-\code
-rack volume.h5 --cCreate -o cartesian.h5
+One of the simplest possible command lines is
+\~conf{.sh}
+workdir=tests/env-basic
+prepend_args='-o vol1.txt'
+append_args='-o cart1.png'
+\~
+\code{.sh}
+rack volume.h5 --cCreate \
+  -o cartesian.h5
 \endcode
+\~stop
+\~
 which converts the first dataset (sweep) in volume.h5 to a Cartesian product.
 The default projection is azimuthal equidistant, centered at the radar. The projection can be changed
 with \c --cProj which uses \b Proj.4 syntax (http://trac.osgeo.org/proj/). 

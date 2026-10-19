@@ -11,6 +11,7 @@ def run(prog: rack.prog.CommandSequence,
         description: str = "Running subprocess",
         logger: logging.Logger = logging.getLogger(__name__),
         shell = False,
+        cwd = None
         ):
     # logger.info(prog.to_string(fmt))
     #logger.debug(f"Command:\n{prog.to_string(fmt)}")
@@ -21,11 +22,15 @@ def run(prog: rack.prog.CommandSequence,
         fmt = rack.cmdline.RackFormatter(params_format="{params}")
         prog = prog.to_token_list(fmt)
 
+    if cwd:
+        logger.info(f"Running command in directory: {cwd}")
+
     result = subprocess.run(prog, 
                             stdout=subprocess.PIPE, 
                             stderr=subprocess.PIPE, 
                             text=True,
                             shell=shell,
+                            cwd=cwd
                             )
     
     try:

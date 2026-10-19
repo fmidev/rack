@@ -387,19 +387,66 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
     content = block
     if isinstance(block, Block):
         content = block.content
-    
+
+    # check if shlex makes sense here
+    #if cliconf.prepend_args and isinstance(cliconf.prepend_args, str):
+    #    cliconf.prepend_args = shlex.split(cliconf.prepend_args)           
+
+    # check if shlex makes sense here
+    #if cliconf.append_args and isinstance(cliconf.append_args, str):
+    #    cliconf.append_args = shlex.split(cliconf.append_args)           
+
+    pending_code = None
     for line in content:
         code = line.split("#", 1)
         code = code[0].strip()
         if code:
+            if pending_code is not None:
+                code = f"{pending_code} {code}"
+            if code.endswith("\\"):
+                pending_code = code[:-1].rstrip()
+                continue
+
+            # Do this only once, after the 1st arg
+            if cliconf.prepend_args:
+                #code = code.split(" ", 1)
+                code = shlex.split(code)
+                # code.pop(0)  # Remove the command itself, e.g. "rack"
+                #script = [code.pop(0), cliconf.prepend_args]
+                #code = " ".join([code[0], cliconf.prepend_args, code[1:]])
+                #cmd = [code.pop(0), 
+                code = " ".join([code[0], cliconf.prepend_args, *code[1:]])
+                # script.extend(code)
+                # print(f"DEBUG: script={script}, code={code}, prepend_args={cliconf.prepend_args}")
+                # script =  [" ".join(script)]
+                cliconf.prepend_args = "" #[]  # Clear after use
+            
             script.append(code)
+            
+            pending_code = None
+
+    if pending_code is not None:
+        script.append(pending_code + "\\")
+
+    if cliconf.append_args:
+        #script = ["echo "] 
+        # append end of the last item, if it exists, otherwise append as a new item
+        if script:
+            script[-1] += ' ' + cliconf.append_args
+            # script[-1] += " " + " ".join(cliconf.append_args)
+        else:
+            script.append(cliconf.append_args)
+            # script.append(" ".join(cliconf.append_args))
+        # script[:-1] += cliconf.append_args
+        # script[:-1] += cliconf.append_args
+        # script.extend(cliconf.append_args)
     
     # script.extend(block.content)
     logger.info(f"{Emoji.RUN.value} Executing shell script: {script}")
 
     for line in script:
         logger.info(f"{Emoji.RUN.value} Executing line: {line}")
-        rack.process.run(line, logger=logger, shell=True)
+        rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir)
 
     # Join...
     #cmd = " ".join(script)
@@ -593,8 +640,13 @@ def main() -> int:
             dst = mainConf
             if block.arg == '.sh':
                 dst = cliconf
-            elif block.arg == 'py':
+            elif block.arg == '.py':
                 dst = pyconf
+            elif block.arg == 'py':
+                logger.warning(f"Deprecated conf type: {block.arg} at line {block.start_line}, use '.py' instead")
+                dst = pyconf
+            else:
+                raise ValueError(f"Unknown conf type: {block.arg} at line {block.start_line}")
             #logger.info(obj)
             logger.info(f"Parsing conf[{block.arg}] on line {block.start_line}")
             conf = rack.config.parse(block.content, dst, rack.config.PARSE_ERROR)
