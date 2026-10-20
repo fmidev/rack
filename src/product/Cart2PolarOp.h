@@ -77,6 +77,8 @@ public:
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const final;
 
+	virtual
+	void setGeometry(const CartesianODIM & srcODIM, PlainData<dst_t > & dstData) const final;
 
 protected:
 

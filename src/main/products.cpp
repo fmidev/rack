@@ -30,13 +30,13 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
 
 #include <drain/prog/CommandInstaller.h>
-#include <product/EchoTopOp.h>
-#include <product/EchoTopOpOld.h>
-#include "data/Quantity.h"
 
+#include "data/Quantity.h"
 
 #include "product/BeamAltitudeOp.h"
 #include "product/CappiOp.h"
+#include "product/EchoTopOp.h"
+#include "product/EchoTopOpOld.h"
 #include "product/MaxEchoOp.h"
 
 #include "product/PolarSlidingWindowOp.h"
@@ -62,6 +62,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 #include "product/PseudoRhiOp.h"
 #include "product/VerticalProfileOp.h"
+
+#include "product/Cart2PolarOp.h"
 
 
 #include "radar/Precipitation.h"
@@ -425,6 +427,8 @@ ProductModule::ProductModule(drain::CommandBank & cmdBank) : module_t(cmdBank){
 	static CmdOutputQuantity outputQuantityCmd;
 	cmdBank.addExternal(PREFIX, outputQuantityCmd).section = SECTION;
 	*/
+
+	//install<Cart2PolarOp>();
 }
 
 

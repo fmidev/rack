@@ -28,18 +28,12 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
+
 #include <stdexcept>
 
-//#include <drain/VariableAssign.h>
-//#include <drain/util/Fuzzy.h>
-//#include <drain/image/AccumulationMethods.h>
-//#include "RackOp.h"
-
-//#include "data/Conversion.h"
-
-//#include "radar/Extractor.h"
 #include "Cart2PolarOp.h"
 
+#include "radar/RadarProj.h"
 
 
 namespace rack {
@@ -54,8 +48,9 @@ Cart2PolarOp::Cart2PolarOp(const std::string & name, const std::string & descrip
 	getParameters().link("nrays",  odim.area.height = 360, "Number of azimuthal rays");
 	getParameters().link("nbins",  odim.area.width = 500, "Number of bins on a ray");
 	getParameters().link("rscale", odim.rscale = 500, "Range, in metres");
-	getParameters().link("pos", radarSite);
-	getParameters().link("range", rangeM);
+	getParameters().link("lon", radarSite.x = std::numeric_limits<double>::quiet_NaN()); // ::min());
+	getParameters().link("lat", radarSite.y = std::numeric_limits<double>::quiet_NaN());
+	getParameters().link("range", rangeM); // alternative?
 	/*
 	allowedEncoding.link("type", odim.type = "C");
 	allowedEncoding.link("gain", odim.scaling.scale);
@@ -91,8 +86,40 @@ Cart2PolarOp::Cart2PolarOp(const Cart2PolarOp & op) :  RadarProductOp<const Cart
 
 void Cart2PolarOp::processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	mout.unimplemented(__FUNCTION__);
+	// mout.unimplemented(__FUNCTION__);
+
+	RadarProj proj;
+	proj.setSiteLocationDeg(odim.lon, odim.lat);
+	dstData.odim.copyEncoding(srcData.odim);
+	//dstData.data.setScaling();
+
+	/// Map pixel values from the Cartesian array to the polar array.
+	for (size_t j=0; j<dstData.data.getHeight(); j++){
+		for (size_t i=0; i<dstData.data.getWidth(); i++){
+			// Raw values can be used, as the same encoding is used.
+			// TODO: complete
+			// dstData.data.put(i,j, ...);
+		}
+	}
+
+
+
 };
+
+void Cart2PolarOp::setGeometry(const CartesianODIM & srcODIM, PlainData<dst_t > & dstData) const {
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+	mout.experimental("Setting bin count (nbins) to half-width of Cartesian input");
+
+	// TODO: detect if lon,lat unset, then this (centering) is "more ok".
+
+	// Note: width can be large.
+	dstData.setGeometry(srcODIM.getGeometry().getWidth(), 360);
+
+	// Note: this could be odd...
+	// dstData.setGeometry(srcODIM.getGeometry());
+
+}
 
 
 
