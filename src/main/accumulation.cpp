@@ -479,7 +479,8 @@ public:
 		mout.info("acc.odim Encoding " , EncodingODIM(acc.odim) );
 
 		Hi5Tree & dst = ctx.polarProductHi5;
-		dst.clear();
+		dst.clear(); // Is needed, what if not? As this, prevents extracting many quantities
+		// TODO: use append
 
 		Hi5Tree & dstDataSetGroup = dst["dataset1"];
 		DataSet<PolarDst> dstProduct(dstDataSetGroup);
@@ -489,7 +490,13 @@ public:
 
 		//acc.odim.ACCnum += acc.count;
 		//acc.count = 0; // NOTE CHECK - if data re-added?
-		acc.extractOLD(acc.odim, dstProduct, value);
+		acc.extract(dstProduct, value, ctx.targetEncoding);
+		ctx.targetEncoding.clear();
+
+		// acc.extract(dstProduct, "DATA",  "S");
+		// acc.extract(dstProduct, "WEIGHT", "c");
+		// acc.extract(dstProduct, "COUNT", "c");
+		// acc.extractOLD(acc.odim, dstProduct, value);
 
 		if (acc.counter == 0){
 			mout.error("accumulation array received no input");

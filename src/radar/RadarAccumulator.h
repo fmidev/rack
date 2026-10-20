@@ -488,6 +488,7 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 				break;
 			case field_t::DEVIATION:
 				odimQuality.quantity = this->odim.quantity + "DEV";
+				odimQuality.type = "f";
 				break;
 			default:
 				mout.error("Unsupported field marker: ", field, "='", fieldChar, "'");
@@ -497,6 +498,8 @@ typename RadarAccumulator<AC,OD>::pdata_dst_t & RadarAccumulator<AC,OD>::extract
 			mout.debug("extracting QUALITY/" , field, " [", odimQuality.quantity, ']');
 
 			if (qm.hasQuantity(odimQuality.quantity)){
+				// NOT tested, consider DEV mout.revised("Storage type for quality: using qualityConf default");
+				// qm.setQuantityDefaults(odimQuality, odimQuality.quantity);
 				qm.setQuantityDefaults(odimQuality, odimQuality.quantity, odimQuality.type);
 				mout.accept<LOG_DEBUG>("found quantityConf[", odimQuality.quantity, "], type=", odimQuality.type);
 				mout.special<LOG_DEBUG>("Quality: ", EncodingODIM(odimQuality));

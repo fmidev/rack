@@ -72,7 +72,7 @@ NICK=${NICK:+"$NICK-"}
 #OUTFILE=${OUTFILE:-$OPERATOR-$QUANTITY-${NICK:+"$NICK-"}panel.png}
 OUTFILE=${OUTFILE:-${NICK}${OPERATOR}-${QUANTITY}-panel.png}
 
-
+# Products have also a quality field, so write that as well.
 quality=${PROD:+"-Q QIND -o '$ID-QIND.png'"}
 
 select=${SELECT:+"--select $SELECT"} 

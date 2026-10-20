@@ -167,21 +167,25 @@ append_args='-o cart1.png'
 rack volume.h5 --cCreate \
   -o cartesian.h5
 \endcode
-\~stop
-\~
 which converts the first dataset (sweep) in volume.h5 to a Cartesian product.
 The default projection is azimuthal equidistant, centered at the radar. The projection can be changed
 with \c --cProj which uses \b Proj.4 syntax (http://trac.osgeo.org/proj/). 
 The default size (bins x bins) can be changed with \c --cSize .
 
-\code
+\code{.sh}
 rack volume.h5 --cSize 400,400 --cProj '+proj=stere +lon_0=25.0 +lat_0=60.000' --cCreate -o cartesian-stere.h5
 \endcode
 
-\~exec
-  QUANTITY=DBZH INPUT=volume-anom-sea.h5 ./make-image-product.sh  #exec
-  convert -type TrueColor ppi-DBZH.png foo.tif  
-  convert +append -frame 1 foo.tif ppi-DBZH-panel.png -resize 800x400 cartesians.png 
+\~conf{.sh}
+shell=True
+workdir=demo/
+\~
+\~exec{.sh}
+  QUANTITY=DBZH INPUT=volume-anom-sea.h5 OUTFILE=cartesians.png  ./make-image-product.sh  #exec
+  # con vert -type TrueColor ppi-DBZH.png foo.tif  
+  # con vert +append -frame 1 foo.tif ppi-DBZH-panel.png -resize 800x400 cartesians.png 
+\~
+\~stop
 \~
 
 

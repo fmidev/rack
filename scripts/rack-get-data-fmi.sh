@@ -37,15 +37,21 @@ TEST_VOLUMES=(
 
 # --- download_volume ---
 # Download one volume file and rename it to the FMI local convention.
-# Args: VOLUME (filename as it appears in the bucket, e.g. 202610140015_fivih_PVOL.h5)
+# Args: VOLUME (filename as it appears in the directory 202610140015_radar.polar.fivih.h5)
+# Former logic: VOLUME (filename as it appears in the bucket, e.g. 202610140015_fivih_PVOL.h5)
 download_volume() {
-    local VOLUME=$1
+    local VOLUME=${1##*/}  # strip any leading path — filename only
 
     # Split filename on _ and . delimiters into an array.
     # E.g. '202610140015_fivih_PVOL.h5' -> (202610140015 fivih PVOL h5)
-    local METADATA=( ${VOLUME//[_.]/ } )
+    # local METADATA=( ${VOLUME//[_.]/ } )
+    # local TIMESTAMP=${METADATA[0]}   # 12-digit YYYYMMDDHHmm
+    # local SITE=${METADATA[1]}        # e.g. fivih
+    local METADATA=( ${VOLUME//_/ } )
     local TIMESTAMP=${METADATA[0]}   # 12-digit YYYYMMDDHHmm
-    local SITE=${METADATA[1]}        # e.g. fivih
+    local PRODUCT=${METADATA[1]%.*}  # Strip Extension, resulting radar.polar.fivih
+    # echo PRODUCT=${PRODUCT}  
+    local SITE=${PRODUCT##*.}  # Strip Extension, resulting radar.polar.fivih
     # METADATA[2] is object type (PVOL etc.), unused here
 
     # Extract date components from timestamp
@@ -53,29 +59,38 @@ download_volume() {
     local MONTH=${TIMESTAMP:4:2}
     local DAY=${TIMESTAMP:6:2}
 
-    local DIR=${OUTDIR:-"cache/${YEAR}/${MONTH}/${DAY}"}
+    local DATASET_NAME=${0} # Strip Extension
+    DATASET_NAME=${DATASET_NAME%.*}  # Strip Extension
+    #DATASET_NAME=${DATASET_NAME##*/} # Strip Extension
+    DATASET_NAME=${DATASET_NAME##*rack-get-} # Strip leading part, leave "data-XXXX"
+    local DIR=${OUTDIR:-"cache/${DATASET_NAME}/${YEAR}-${MONTH}-${DAY}/${SITE}"}
     mkdir -v --parents "${DIR}"
 
     # FMI local naming convention: TIMESTAMP_radar.polar.SITE.h5
-    local DST="${DIR}/${TIMESTAMP}_radar.polar.${SITE}.h5"
+    #local DST="${DIR}/${TIMESTAMP}_radar.polar.${SITE}.h5"
+    local DST="${DIR}/${VOLUME}"
 
     # S3 object key: YYYY/MM/DD/site/filename
-    local S3_KEY="${YEAR}/${MONTH}/${DAY}/${SITE}/${VOLUME}"
+    # local S3_KEY="${YEAR}/${MONTH}/${DAY}/${SITE}/${VOLUME}"
+    local S3_KEY="${YEAR}/${MONTH}/${DAY}/${SITE}/${TIMESTAMP}_${SITE}_PVOL.h5"
 
-    echo "# ${S3_URI}/${S3_KEY}  ->  ${DST}"
+    # echo "# ${S3_URI}/${S3_KEY}  ->  ${DST}"
 
+    local cmd
     if command -v aws &>/dev/null; then
-        # aws handles checksums, retries, and multipart transparently
-        aws s3 cp "${S3_URI}/${S3_KEY}" "${DST}" --no-sign-request
+        cmd=( aws s3 cp "${S3_URI}/${S3_KEY}" "${DST}" --no-sign-request )
     elif command -v wget &>/dev/null; then
-        wget --no-verbose --continue --output-document="${DST}" "${S3_BASE}/${S3_KEY}"
+        cmd=( wget --no-verbose --continue --output-document="${DST}" "${S3_BASE}/${S3_KEY}" )
     elif command -v curl &>/dev/null; then
-        curl --silent --show-error --location --continue-at - \
-             --output "${DST}" "${S3_BASE}/${S3_KEY}"
+        cmd=( curl --silent --show-error --location --continue-at - \
+                   --output "${DST}" "${S3_BASE}/${S3_KEY}" )
     else
         echo "ERROR: none of aws, wget, curl found — cannot download" >&2
         return 1
     fi
+
+    echo "# ${cmd[*]}"
+    "${cmd[@]}"
 }
 
 # --- list_site ---
@@ -118,6 +133,9 @@ case "$CMD" in
         ;;
     *)
         # Treat the argument as an explicit volume filename
-        download_volume "$CMD"
+	# download_volume "$CMD"
+	for i in $*; do
+            download_volume "$i"
+	done
         ;;
 esac
