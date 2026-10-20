@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,7,1)
+#define RACK_VERSION drain::Version<>(21,8)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -83,6 +83,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Fix: getHi5() does not return empty (parallel computing)
  *  Release 21.7.1
  *  - Fix: C++14 nullptr_t issues
+ *  Release 21.8
+ *  - Polar accumulation: --pExtract supports field names ("DATA,WEIGHT,COUNT"), not only "dwsc".
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel
