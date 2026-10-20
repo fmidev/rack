@@ -1,3 +1,0 @@
-scripts/rack-get-data-fmi.sh 2026{08..10}{05,10,15,20,25}1200_radar.polar.fikau.h5
-ln -s ../../cache/data-fmi
-ln -sv data-fmi/2026-??-??/?????/*1200_*.h5 .
