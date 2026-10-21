@@ -3,7 +3,7 @@
 # Markus Peura  fmi.fi
 
 # C++ standard
-CXXSTD='-std=gnu++11'
+CXXSTD='-std=gnu++17'
 
 # Include paths: Alpine installs headers directly to /usr/include, no subdirs needed
 CCFLAGS='-I/usr/include'

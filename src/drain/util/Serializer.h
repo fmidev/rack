@@ -188,7 +188,7 @@ public:
 	}
 
 	inline
-	void toStream(std::ostream & ostr, const nullptr_t & t) const {
+	void toStream(std::ostream & ostr, const std::nullptr_t & t) const {
 		this->nullToStream(ostr);
 	}
 

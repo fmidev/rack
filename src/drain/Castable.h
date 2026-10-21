@@ -616,7 +616,7 @@ public:
 	 *   elementCount = 0 : ?
 	 */
 	inline
-	bool operator==(const nullptr_t ptr) const {
+	bool operator==(const std::nullptr_t ptr) const {
 		return getType() == typeid(void);
 	}
 

@@ -3,7 +3,7 @@
 
 FROM alpine:3.20 AS builder
 
-RUN apk add --no-cache g++ make proj-dev hdf5-dev libpng-dev tiff-dev libgeotiff-dev
+RUN apk add --no-cache bash g++ make proj-dev hdf5-dev libpng-dev tiff-dev libgeotiff-dev
 
 COPY . /rack
 COPY install-rack-docker-alpine.cnf /rack/install-rack.cnf
