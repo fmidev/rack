@@ -582,9 +582,14 @@ public:
 		// mout.special<LOG_DEBUG>("vradTest: ", vradTest, " vs ", imgOdim.quantity);
 		// const QuantityMap & qm = getQuantityMap();
 
+		// mout.attention(DRAIN_LOG(imgOdim.quantity));
+		// mout.attention(DRAIN_LOG(getQuantityMap().VRAD.keySelector));
+
+		// getQuantityMap().VRAD.isApplicable()
 		if (getQuantityMap().VRAD.keySelector.test(imgOdim.quantity)){
-		//if (vradTest.test(imgOdim.quantity)){
-			//if (imgOdim.quantity.substr(0,4) == "VRAD"){
+			mout.attention("VRAD (Doppler speed) quantity detected");
+			// if (vradTest.test(imgOdim.quantity)){
+			// if (imgOdim.quantity.substr(0,4) == "VRAD"){
 			// rescale relative to NI (percentage -100% ... +100%)
 			const double NI = imgOdim.getNyquist(); //props["how:NI"];
 			if (NI != 0.0){

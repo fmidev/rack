@@ -146,18 +146,21 @@ QuantityMap::iterator QuantityMap::retrieve(const std::string & key) {
 
 	// Attempt 1: find exact match
 	iterator it = find(key);
+	if (it != end()){
+		return it;
+	}
 
 	// Attempt 2: find a compatible variant
-	if (it == end()){
-		for (it=begin(); it!=end(); ++it){
-			if (it->second.keySelector.test(key, false)){
-				// std::cerr << "NEW: found " << key << " <-> " << it->first << " [" << it->second << "]";
-				// return entry.second;
-				break;
-			}
+	// if (it == end()){
+	for (it=begin(); it!=end(); ++it){
+		if (it->second.keySelector.test(key, false)){
+			// std::cerr << "NEW: found " << key << " <-> " << it->first << " [" << it->second << "]";
+			// return entry.second;
+			break;
 		}
-		// Give up, leaving it==end()
 	}
+	// Give up, leaving it==end()
+	// }
 
 	return it;
 
@@ -324,6 +327,7 @@ QuantityMap & getQuantityMap() {
 					{
 							{"VRADH", "radial_velocity_of_scatterers_away_from_instrument_h", "Radial velocity of scatterers away from instrument H"},
 							{"VRADV", "radial_velocity_of_scatterers_away_from_instrument_v", "Radial velocity of scatterers away from instrument V"},
+							{"VRAD.*","radial_velocity_of_scatterers_away_from_instrument_",  "Radial velocity of scatterers away from instrument"},
 							{"WRADH", "radar_doppler_spectrum_width_h", "Doppler spectrum width H"},
 							{"WRADV", "radar_doppler_spectrum_width_v", "Doppler spectrum width V"},
 					},
@@ -543,7 +547,7 @@ QuantityMap & getQuantityMap() {
 	};
 
 
-	QuantitySelector stest = {{"DBZ", "Yes"}, {"DBZH", "Horizontal"}, {"DBZV", "Vertical"}};
+	//QuantitySelector stest = {{"DBZ", "Yes"}, {"DBZH", "Horizontal"}, {"DBZV", "Vertical"}};
 
 	// test.keySelector = {{"DBZ", "Yes"}, {"DBZH", "Horizontal"}, {"DBZV", "Vertical"}};
 	// mout.warn(test);
