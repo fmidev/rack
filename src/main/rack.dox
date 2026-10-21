@@ -180,6 +180,9 @@ rack volume.h5 --cSize 400,400 --cProj '+proj=stere +lon_0=25.0 +lat_0=60.000' -
 shell=True
 workdir=demo/
 \~
+
+
+
 \~exec{.sh}
   QUANTITY=DBZH INPUT=volume-anom-sea.h5 OUTFILE=cartesians.png  ./make-image-product.sh  #exec
   # con vert -type TrueColor ppi-DBZH.png foo.tif  
