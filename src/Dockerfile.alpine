@@ -1,31 +1,20 @@
-# Main level Dockerfile
+# Multi-stage Dockerfile for Alpine Linux
 # Markus Peura  fmi.fi
 
-# Install environment & dependencies for rack
+FROM alpine:3.20 AS builder
 
-FROM alpine:3.14
-RUN apk update && apk add g++ make proj-dev hdf5-dev libpng-dev tiff-dev libgeotiff-dev libgomp
-
-# Prepare for rack build
+RUN apk add --no-cache g++ make proj-dev hdf5-dev libpng-dev tiff-dev libgeotiff-dev
 
 COPY . /rack
-# COPY Makefile Makefile-doxygen make.tgz build.sh /rack/
-# COPY drain andre main product radar  Release  /rack
-# RUN git clone https://github.com/fmidev/rack.git
-
-
-# Override default
 COPY install-rack-docker-alpine.cnf /rack/install-rack.cnf
 
-# Build: after this the binary is in rack/Release/rack and also copied to /usr/local/bin
-# (Clean is needed to remove *.o ubuntu objects, they may have been)
-# RUN cd /rack && ./build.sh clean && ./build.sh
-#RUN cd /rack && ./build.sh
-RUN cd /rack && make build && make install
+WORKDIR /rack
+RUN make build && make install
 
-# Remove some build dependencies
-RUN apk del g++ make
-# proj-dev hdf5-dev tiff-dev libgeotiff libpng-dev
+FROM alpine:3.20
 
+RUN apk add --no-cache libgomp hdf5 proj libpng tiff libgeotiff
+
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 CMD ["rack","--version"]

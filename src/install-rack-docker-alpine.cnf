@@ -1,20 +1,18 @@
 # Conf for Docker image 'rack', using Alpine Linux
 
-# mpeura
- 
-# Include paths
-# CCFLAGS='-std=gnu++11 -fopenmp -fPIE  -I/usr/include/geotiff -I/usr/include/hdf5/serial'
-# Alpine Linux needs -fPIE (-fopenmp?)
-CCFLAGS='-std=gnu++11 -fopenmp'
+# Markus Peura  fmi.fi
 
+# C++ standard
+CXXSTD='-std=gnu++11'
+
+# Include paths: Alpine installs headers directly to /usr/include, no subdirs needed
+CCFLAGS='-I/usr/include'
 
 # Library paths
-# LDFLAGS='-std=gnu++11 -fopenmp -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5 -lproj -lpng -ltiff -lgeotiff'
-# Alpine Linux needs -fPIE (-fopenmp?)
-LDFLAGS='-std=gnu++11 -fopenmp -lhdf5 -lproj -lpng -ltiff -lgeotiff'
+LDFLAGS='-lhdf5 -lproj -lpng -ltiff -lgeotiff'
 
 # Directory prefix for binary executable: ${prefix}/bin/
-prefix='/usr'
- 
+prefix='/usr/local'
+
 # GeoTiff support (optional)
 USE_GEOTIFF=YES
