@@ -1,6 +1,7 @@
 rack
 ====
 
+
 A command-line program for processing weather radar data:
 
 * Anomaly detection and removal
@@ -12,5 +13,7 @@ A command-line program for processing weather radar data:
 * Online [documentation](https://fmidev.github.io/rack/)
 * Quick [installation](./src/INSTALL.md) guide
 * Notes for [building Docker image](./src/DOCKER.md)
+  * Quay.io status: [![Docker Repository on Quay](https://quay.io/repository/fmi/rack/status "Docker Repository on Quay")](https://quay.io/repository/fmi/rack)
+
 
 ![Rack cover](docs/cover/rack-cover.png)
