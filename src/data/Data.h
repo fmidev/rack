@@ -363,6 +363,9 @@ public:
 	}
 
 	/// Saves type and sets the type of the actual data array as well.
+	/**
+	 *  Sets \c nodata and \c undetect to type specific defaults.
+	 */
 	template <class T>
 	inline
 	void setEncoding(const T & type, const std::string & values = ""){
@@ -373,21 +376,31 @@ public:
 		// TODO: data.setScaling(odim.scaling); ??
 	}
 
-	/// New, experimental.
-	inline
+	/// Adjust data array and ODIM metadata to given encoding. Recommended form.
+	/**
+	 *  Sets type, scaling, \c nodata and \c undetect .
+	 */
+	// inline
 	void copyEncoding(const EncodingODIM & odim){
-		this->odim.importMap(odim);
+		this->odim.undetect = odim.undetect;
+		this->odim.nodata   = odim.nodata;
+		// PROBLEM, if Cart vs Polar: this->odim.importMap(odim);
 		data.setType(this->odim.type);
 		data.setScaling(this->odim.scaling); // needed?
 	}
 
 
+	/// Adjust data array and ODIM metadata to given encoding. Recommended form.
+	/**
+	 *  Sets type, scaling, \c nodata and \c undetect .
+	 */
 	template <class DT2>
 	inline
 	void copyEncoding(const PlainData<DT2> & srcData){
-		this->odim.importMap(srcData.odim);
-		data.setType(this->odim.type);
-		data.setScaling(this->odim.scaling); // needed?
+		copyEncoding((const EncodingODIM &)srcData.odim);
+		// PROBLEM, if Cart vs Polar: this->odim.importMap(srcData.odim);
+		// data.setType(this->odim.type);
+		// data.setScaling(this->odim.scaling); // needed?
 	}
 
 	inline

@@ -63,7 +63,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "product/PseudoRhiOp.h"
 #include "product/VerticalProfileOp.h"
 
-#include "product/Cart2PolarOp.h"
+//#include "product/Cart2PolarOp.h"
 
 
 #include "radar/Precipitation.h"
@@ -340,56 +340,6 @@ drain::Command & ProductModule::install(char alias){  // = 0 TODO: EMBED "instal
 }
 
 
-class CmdCart2Polar : public drain::BeanCommand<Cart2PolarOp> {
-
-public:
-
-	inline
-	CmdCart2Polar(){
-	};
-
-	inline
-	CmdCart2Polar(const CmdCart2Polar & cmd) : drain::BeanCommand<Cart2PolarOp>(){
-		this->bean.getParameters().copyStruct(cmd.bean.getParameters(), cmd, *this);
-	};
-
-
-	void exec() const override {
-
-		RackContext & ctx  = this->template getContext<RackContext>(); // OMP
-
-		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
-		// mout.timestamp("BEGIN_PRODUCT");
-
-		mout.info("Computing: ", this->bean.getName(), ' ', drain::sprinter(this->getParameters().getMap(), drain::Sprinter::cmdLineLayout)); // XXX
-
-		// op.filter(getResources().inputHi5, getResources().polarHi5);
-		// const Hi5Tree & src = ctx.getCurrentInputHi5();
-		// RackContext::CURRENT not ok, it can be another polar product
-		// const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
-		mout.attention(DRAIN_LOG(ctx.inputFlags));
-
-		const Hi5Tree & src = ctx.getHi5(
-				//ctx.inputFlags,
-				RackContext::PRIVATE|RackContext::CARTESIAN,
-				RackContext::SHARED |RackContext::CARTESIAN
-		);
-
-		Hi5Tree & dst = ctx.getHi5(
-				RackContext::PRIVATE|RackContext::POLAR|RackContext::INPUT,
-				RackContext::SHARED |RackContext::POLAR|RackContext::INPUT
-		);
-
-		ctx.inputFlags.reset();
-
-		Cart2PolarOp op;
-
-		op.processH5(src, dst);
-
-	}
-
-
-};
 
 //CmdSweep sweepCmd;
 

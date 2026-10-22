@@ -146,6 +146,7 @@ void Hi5Tree::swapData(hi5::NodeHi5 & node){
 template <> inline
 bool Hi5Tree::empty() const {
 	return ((data.empty() && !hasChildren()) || data.exclude);
+	//return (!hasChildren()) || data.exclude;
 }
 
 

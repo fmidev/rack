@@ -171,10 +171,11 @@ docker-image-test:
 	docker run -t "rack_$(BASE_IMAGE):v$(VERSION)" rack --version
 
 docker-image-list:
-	docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}" rack_* 2>/dev/null | sort -h | head -20
+	@ docker images --format "{{.Size}}\t{{.Repository}}:{{.Tag}}" rack_* 2>/dev/null | sort -h | head -20
 
 
 docker-image-push: docker-image
+	@ echo "# Sending the default version v$(VERSION)"
 	docker tag "rack_$(BASE_IMAGE):v$(VERSION)" "quay.io/fmi/rack:v$(VERSION)"
 	docker login quay.io
 	docker push "quay.io/fmi/rack:v$(VERSION)"

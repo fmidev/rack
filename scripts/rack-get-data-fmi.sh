@@ -35,6 +35,16 @@ TEST_VOLUMES=(
     '202610140015_fivan_PVOL.h5'
 )
 
+
+#DATA_DIR=${0} # Strip Extension
+DATA_DIR=${DATA_DIR:-${0%.*}}  # Strip Extension
+echo "# DATA_DIR=${DATA_DIR}"
+#DATA_DIR=${DATA_DIR%.*}  # Strip Extension
+#DATASET_NAME=${DATASET_NAME##*/} # Strip Extension
+DATA_DIR=${DATA_DIR##*rack-get-} # Strip leading part, leave "data-XXXX"
+echo "# DATA_DIR=${DATA_DIR}"
+
+
 # --- download_volume ---
 # Download one volume file and rename it to the FMI local convention.
 # Args: VOLUME (filename as it appears in the directory 202610140015_radar.polar.fivih.h5)
@@ -59,11 +69,7 @@ download_volume() {
     local MONTH=${TIMESTAMP:4:2}
     local DAY=${TIMESTAMP:6:2}
 
-    local DATASET_NAME=${0} # Strip Extension
-    DATASET_NAME=${DATASET_NAME%.*}  # Strip Extension
-    #DATASET_NAME=${DATASET_NAME##*/} # Strip Extension
-    DATASET_NAME=${DATASET_NAME##*rack-get-} # Strip leading part, leave "data-XXXX"
-    local DIR=${OUTDIR:-"cache/${DATASET_NAME}/${YEAR}-${MONTH}-${DAY}/${SITE}"}
+    local DIR=${OUTDIR:-"${DATA_DIR}/${YEAR}-${MONTH}-${DAY}/${SITE}"}
     mkdir -v --parents "${DIR}"
 
     # FMI local naming convention: TIMESTAMP_radar.polar.SITE.h5

@@ -344,7 +344,7 @@ void RadarProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	mout.debug("start");
-	mout.warn(*this);
+	mout.note(getName(), ':', *this);
 	mout.debug2("DataSelector: ", this->dataSelector);
 
 	// Step 1: collect sweeps (/datasetN/)
@@ -357,13 +357,16 @@ void RadarProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 	int index = 0;
 
 
-	mout.unimplemented("No index generator defined!");
+	// mout.unimplemented<LOG_DEBUG>("No index generator defined!");
+
+
 	// NEW
 	this->dataSelector.getPaths(src, dataPaths); //, ODIMPathElem::DATASET);
 	mout.debug3("populate the dataset map, paths=" , dataPaths.size() );
 	//for (ODIMPathList::const_iterator it = dataPaths.begin(); it != dataPaths.end(); ++it){
 	for (const ODIMPath & path: dataPaths){
-		mout.debug3("add: " , index , '\t' , path  );
+		//mout.debug3("add: " , index , '\t' , path  );
+		mout.experimental("adding: " , index , '\t' , path);
 		//sweeps.insert(typename DataSetMap<src_t>::value_type("indexxx", DataSet<src_t>(src(path), drain::RegExp(this->dataSelector.getQuantity()) )));  // Something like: sweeps[elangle] = src[parent] .
 		sweeps.insert(typename DataSetMap<src_t>::value_type("indexxx", DataSet<src_t>(src(path), this->dataSelector.getQuantitySelector() )));  // Something like: sweeps[elangle] = src[parent] .
 	}
@@ -397,8 +400,9 @@ void RadarProductOp<MS,MD>::processH5(const Hi5Tree &src, Hi5Tree &dst) const {
 
 
 	// Copy metadata from the input volume (note that dst may have been cleared above)
-	for (const auto key: {ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW}){
+	for (const auto & key: {ODIMPathElem::WHAT, ODIMPathElem::WHERE, ODIMPathElem::HOW}){
 		// .data.attributes
+		mout.note("Copying: ", key);
 		mout.unimplemented("consider and test .data.attributes instead");
 		dst[key] = src[key];
 	}

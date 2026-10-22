@@ -70,9 +70,8 @@ public:
 	static
 	const CoordinatePolicy polarCoordPolicy;
 
-	drain::Point2D<double> radarSite;
 
-	int rangeM = 250000; // metres
+	// int rangeM = 250000; // metres
 
 	virtual
 	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const final;

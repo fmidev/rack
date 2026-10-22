@@ -46,6 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include "cartesian-motion.h"
 #include "cartesian-plot.h"
 
+#include "product/Cart2PolarOp.h"
 
 namespace rack {
 
@@ -297,6 +298,93 @@ class CompositeDecayTime : public drain::SimpleCommand<int> {
 
 
 
+class CmdCart2Polar : public drain::BeanCommand<Cart2PolarOp> {
+
+public:
+
+	inline
+	CmdCart2Polar(){
+	};
+
+	inline
+	CmdCart2Polar(const CmdCart2Polar & cmd) : drain::BeanCommand<Cart2PolarOp>(cmd) {
+		this->bean.getParameters().copyStruct(cmd.bean.getParameters(), cmd.bean, this->bean);
+	};
+
+
+	void exec() const override {
+
+		RackContext & ctx  = this->template getContext<RackContext>(); // OMP
+
+		drain::Logger mout(ctx.log, __FUNCTION__, this->bean.getName());
+		// mout.timestamp("BEGIN_PRODUCT");
+
+		mout.info("Computing: ", this->bean.getName(), ' ', drain::sprinter(this->getParameters().getMap(), drain::Sprinter::cmdLineLayout)); // XXX
+
+		// op.filter(getResources().inputHi5, getResources().polarHi5);
+		// const Hi5Tree & src = ctx.getCurrentInputHi5();
+		// RackContext::CURRENT not ok, it can be another polar product
+		// const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
+		mout.attention(DRAIN_LOG(ctx.inputFlags));
+
+		const Hi5Tree & src = ctx.getHi5(
+				//ctx.inputFlags,
+				RackContext::PRIVATE|RackContext::CARTESIAN,
+				RackContext::SHARED |RackContext::CARTESIAN
+		);
+
+		Hi5Tree & dst = ctx.getHi5(
+				RackContext::PRIVATE|RackContext::POLAR|RackContext::INPUT,
+				RackContext::SHARED |RackContext::POLAR|RackContext::INPUT
+		);
+
+		ctx.inputFlags.reset();
+
+		// ODIMPathList paths;
+		ODIMPath path;
+		this->bean.dataSelector.getPath(src, path);
+		path.simplify();
+
+		if (path.empty()){
+			mout.error("No path found with: ", DRAIN_LOG(this->bean.dataSelector));
+		}
+
+		if (!path.back().is(ODIMPathElem::DATA)){
+			mout.warn(DRAIN_LOG(this->bean.dataSelector));
+			mout.error("Retrieved path=", path, " ends not as a ", ODIMPathElem::DATA);
+			//mout.error("Retrieved path is not '/dataset...' ", DRAIN_LOG(path));
+		}
+
+		// this->bean.processH5(src, dst);
+		// const DataSet<CartesianSrc> srcDataSet(src(path));
+		// const Data<CartesianSrc> & srcData = srcDataSet.getFirstData();
+		// mout.experimental(srcDataSet);
+
+		const Data<CartesianSrc> srcData(src(path));
+		mout.experimental(srcData);
+
+		// todo: ctx.append?
+		ODIMPathElem elem(ODIMPathElem::DATASET);
+		ODIMPathTools::getNextChild(dst, elem);
+
+		DataSet<PolarDst> dstDataSet(dst[elem]);
+		Data<PolarDst> & dstData = dstDataSet.getData(srcData.odim.quantity);
+
+
+		dstData.initialize(srcData.odim.type, bean.odim.getGeometry());
+
+		this->bean.processData(srcData, dstData);
+
+
+		mout.experimental(dstDataSet);
+		ctx.currentPolarHi5 = &dst;
+		ctx.currentHi5      = &dst;
+
+
+	}
+
+
+};
 
 
 
@@ -369,6 +457,7 @@ CartesianModule::CartesianModule(drain::CommandBank & bank) : module_t(bank) {
 	install<CartesianSun>("cCreateSun");
 	install<CartesianOpticalFlow>("cOpticalFlow"); // class name: FastOpticalFlow2Op
 
+	cmdBank.add<CmdCart2Polar>("cPolar").section = drain::Static::get<CartesianSection>(); //  || drain::Static::get<PolarSection>();
 
 }
 

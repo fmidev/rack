@@ -48,9 +48,11 @@ Cart2PolarOp::Cart2PolarOp(const std::string & name, const std::string & descrip
 	getParameters().link("nrays",  odim.area.height = 360, "Number of azimuthal rays");
 	getParameters().link("nbins",  odim.area.width = 500, "Number of bins on a ray");
 	getParameters().link("rscale", odim.rscale = 500, "Range, in metres");
-	getParameters().link("lon", radarSite.x = std::numeric_limits<double>::quiet_NaN()); // ::min());
-	getParameters().link("lat", radarSite.y = std::numeric_limits<double>::quiet_NaN());
-	getParameters().link("range", rangeM); // alternative?
+	// getParameters().link("lon", radarSite.x = std::numeric_limits<double>::quiet_NaN()); // ::min());
+	// getParameters().link("lat", radarSite.y = std::numeric_limits<double>::quiet_NaN());
+	getParameters().link("lon", odim.lon = std::numeric_limits<double>::quiet_NaN()); // ::min());
+	getParameters().link("lat", odim.lat = std::numeric_limits<double>::quiet_NaN());
+	// getParameters().link("range", rangeM); // alternative?
 	/*
 	allowedEncoding.link("type", odim.type = "C");
 	allowedEncoding.link("gain", odim.scaling.scale);
@@ -67,6 +69,7 @@ Cart2PolarOp::Cart2PolarOp(const std::string & name, const std::string & descrip
 	// this->odim.product = "PPROD"; // NEW
 	this->odim.object  = "PVOL"; // consider!
 
+	this->odim.quantity = "DBZV";
 	//dataSelector.orderFlags.set(DataSelector::ELANGLE, DataSelector::MIN);
 	// dataSelector.setOrder(DataOrder::DATA, DataOrder::MIN);
 	// dataSelector.setPrf(DataSelector::Prf::SINGLE);
@@ -81,28 +84,126 @@ Cart2PolarOp::Cart2PolarOp(const std::string & name, const std::string & descrip
 
 Cart2PolarOp::Cart2PolarOp(const Cart2PolarOp & op) :  RadarProductOp<const CartesianODIM, PolarODIM>(op){
 	// dataSelector.setParameters(op.dataSelector.getParameters()); // should not be needed
-	allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
+	//allowedEncoding.copyStruct(op.allowedEncoding, op.odim, odim);
+	getParameters().copyStruct(op.getParameters(), op, *this);
+	// setParameters(op.getParameters());
 }
 
 void Cart2PolarOp::processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const {
 	drain::Logger mout(__FILE__, __FUNCTION__);
-	// mout.unimplemented(__FUNCTION__);
 
-	RadarProj proj;
-	proj.setSiteLocationDeg(odim.lon, odim.lat);
-	dstData.odim.copyEncoding(srcData.odim);
-	//dstData.data.setScaling();
 
-	/// Map pixel values from the Cartesian array to the polar array.
-	for (size_t j=0; j<dstData.data.getHeight(); j++){
-		for (size_t i=0; i<dstData.data.getWidth(); i++){
-			// Raw values can be used, as the same encoding is used.
-			// TODO: complete
-			// dstData.data.put(i,j, ...);
-		}
+	if (std::isnan(odim.lon) || std::isnan(odim.lat)) {
+		mout.warn(DRAIN_LOG(odim));
+		mout.error("Radar site lon/lat not set; provide lon=...,lat=... parameters");
+		return;
+	}
+
+	if (srcData.odim.projdef.empty()) {
+		mout.error("Source Cartesian data has no projdef");
+		return;
+	}
+
+	// dstData.odim.copyEncoding(srcData.odim);
+	dstData.initialize(srcData.odim.type, odim.getGeometry());
+	dstData.copyEncoding(srcData.odim);
+	dstData.odim.rscale = odim.rscale;
+	dstData.odim.rstart = odim.rstart;
+
+	if (srcData.odim.type != odim.type) {
+		mout.warn(DRAIN_LOG(srcData.odim.type));
+		mout.warn(DRAIN_LOG(odim.type));
+		mout.warn("Using storage type '", srcData.odim.type, "' of source (discarding odim type '", odim.type, "'");
 	}
 
 
+	// Propagate site location to output ODIM
+	/*
+	dstData.odim.lon = radarSite.x;
+	dstData.odim.lat = radarSite.y;
+	*/
+
+	// Projection: radar-centred AEQD (src) → native Cartesian CRS of composite (dst)
+	RadarProj proj;
+	proj.setSiteLocationDeg(odim.lon, odim.lat);
+
+	drain::image::GeoFrame cartesianFrame;
+	cartesianFrame.setGeometry(srcData.odim.area);
+	cartesianFrame.setBoundingBoxD(srcData.odim.getBoundingBoxDeg());
+
+	// proj.setDirectMapping(false);
+	if (srcData.odim.epsg > 0){
+		proj.setProjectionDst(srcData.odim.epsg);
+		cartesianFrame.setProjectionEPSG(srcData.odim.epsg);
+	}
+	else {
+		proj.setProjectionDst(srcData.odim.projdef);
+		cartesianFrame.setProjection(srcData.odim.projdef);
+	}
+
+
+	// Determine native metric lower-left corner of the Cartesian source image
+	// by forwarding the geographic LL corner through the Cartesian projection.
+	/*
+	drain::Proj6 lonlatToCart;
+	lonlatToCart.setProjectionSrc("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
+	//lonlatToCart.setProjectionSrc(4326);
+	lonlatToCart.setProjectionDst(srcData.odim.projdef);
+	double xLL = srcData.odim.bboxD.lowerLeft.x;  // LL_lon [deg]
+	double yLL = srcData.odim.bboxD.lowerLeft.y;  // LL_lat [deg]
+	lonlatToCart.projectFwd(xLL, yLL);             // → native metric [m]
+	*/
+
+	const size_t srcWidth  = srcData.data.getWidth();
+	const size_t srcHeight = srcData.data.getHeight();
+	// const double xscale    = srcData.odim.xscale;
+	// const double yscale    = srcData.odim.yscale;
+	// Native y of the image's top edge; image rows go top-to-bottom, metric y bottom-to-top.
+	// const double yUR = yLL + static_cast<double>(srcHeight) * yscale;
+
+	const size_t nbins = dstData.data.getWidth();   // radial (i)
+	const size_t nrays = dstData.data.getHeight();  // azimuthal (j)
+
+	mout.note("Resampling ", srcWidth, "x", srcHeight, " Cartesian → ", nbins, "x", nrays, " polar");
+	// mout.note("Native Cartesian LL: (", xLL, ", ", yLL, ")  xscale=", xscale, "  yscale=", yscale);
+
+	mout.note(cartesianFrame);
+
+	drain::Point2D<double> pGeo;
+	drain::Point2D<int>    pImg;
+
+	for (size_t j = 0; j < nrays; ++j) {
+		const double azimuth = dstData.odim.getAzimuth(j);  // [rad], 0=North, CW
+		const double s = std::sin(azimuth);
+		const double c = std::cos(azimuth);
+
+		for (size_t i = 0; i < nbins; ++i) {
+
+			const double range = dstData.odim.getBinDistance(i);  // [m]
+
+			// Radar-centred AEQD: East=x, North=y (radar convention: sin/cos swapped from math)
+			pGeo.x = range * s;
+			pGeo.y = range * c;
+
+			// Cartesian radar-centered AEQD -> Cartesian (composite) coordinates.
+			proj.projectFwd(pGeo);
+			cartesianFrame.m2pix(pGeo, pImg);
+			/*
+			if (((i&31)==0) && ((j&31)==0)){
+				mout.note(i, '\t', j, '\t', range, '\t', pGeo, "\t -> ", pImg);
+			}
+			*/
+
+			if (pImg.x < 0 || pImg.x >= static_cast<int>(srcWidth) ||
+					pImg.y < 0 || pImg.y >= static_cast<int>(srcHeight)) {
+				dstData.data.put(i, j, dstData.odim.nodata);
+			}
+			else {
+				// Same encoding in source and destination: raw values can be copied directly.
+				dstData.data.put(i, j, srcData.data.get<double>(pImg));
+			}
+		}
+	}
 
 };
 
