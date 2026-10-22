@@ -74,7 +74,7 @@ public:
 	// int rangeM = 250000; // metres
 
 	virtual
-	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const final;
+	void processData(const Data<src_t > & srcData, Data<dst_t > & dstData) const override final;
 
 	virtual
 	void setGeometry(const CartesianODIM & srcODIM, PlainData<dst_t > & dstData) const final;

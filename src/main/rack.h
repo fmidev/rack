@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,8,1)
+#define RACK_VERSION drain::Version<>(21,8,2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -87,6 +87,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - Polar accumulation: --pExtract supports field names ("DATA,WEIGHT,COUNT"), not only "dwsc".
  *  Release 21.8.1
  *  - Fix: relative Doppler speed scale back to plain "VRAD".
+ *  Release 21.8.2
+ *  - Fix: outputTree, empty nodes back
+ *  - Cart2PolarOp, --cPolar rscale=500,lon=21.64,lat=60.12
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel

@@ -63,7 +63,7 @@ ENV=*
 # Retrieve open data of the Finnish Meteorological Institute
 get-data-fmi: cache
 # TODO: link retrieved to fmi short cut dir?
-#	mkdir --parents $(DATA_DIR)
+	@ mkdir --parents $(DATA_DIR)
 # TODO:	scripts/rack-get-data-fmi.sh all
 	DATA_DIR=${DATA_DIR} scripts/rack-get-data-fmi.sh env/${ENV}/data/20*radar.polar.fi???.h5
 
@@ -81,11 +81,11 @@ get-data-synth-geom: get-data-synth-geom-basic get-data-synth-geom-doppler
 
 # Create rasters containing geometric patterns (checkerboard etc.)
 get-data-synth-geom-basic: cache
-#mkdir --parents $(DATA_DIR)
-	OUTDIR=$(DATA_DIR) OUTFILE=volume.h5 scripts/rack-create-test-volume.sh
+	@ mkdir --parents $(DATA_DIR)
+	@ OUTDIR=$(DATA_DIR) OUTFILE=volume.h5 scripts/rack-create-test-volume.sh
 
 # Create fractal clouds
 get-data-synth-precip: cache
-	mkdir --parents $(DATA_DIR)
-	./get-data-synth-precip.sh
+	@ mkdir --parents $(DATA_DIR)
+	@ DIMENSION=2.2 POWER=1 OUTDIR=$(DATA_DIR) OUTFILE="synth-precip.h5" scripts/rack-create-synth-clouds.sh
 
