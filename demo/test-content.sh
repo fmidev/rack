@@ -64,6 +64,8 @@ TITLE "Index range: select dataset3, including its subgroups. "
 TEST    --select /dataset3
 REQUIRE dataset3/where dataset3/what dataset3/data1
 EXCLUDE dataset2 dataset4
+# NEW:
+REQUIRE what:object="MIKA"
 
 TITLE "Index range: select DATASET groups with index 2...5, including subgroups. "
 TEST    --select /dataset2:5

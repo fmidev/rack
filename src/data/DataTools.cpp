@@ -87,9 +87,10 @@ void DataTools::adjustWhatObject(Hi5Tree & src){
 		if (object.empty()){
 			mout.suspicious(src[ODIMPathElem::WHAT]);
 			mout.warn("Undefined /what:object");
+			// TODO:set PVOL?
 		}
 		std::string obj = object.toStr();
-		if ((obj == "PVOL") && (obj == "SCAN")){
+		if ((obj == "PVOL") || (obj == "SCAN")){
 			unsigned short sweeps = 0;
 			for (const auto & entry: src){
 				if (entry.first.is(ODIMPathElem::DATASET) && !entry.second.data.exclude){
@@ -106,7 +107,7 @@ void DataTools::adjustWhatObject(Hi5Tree & src){
 			}
 		}
 		else {
-			mout.debug(DRAIN_LOG(object), " - skipping");
+			mout.debug(DRAIN_LOG(object), " (not SCAN or PVOL), skipping");
 		}
 
 	}
