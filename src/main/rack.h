@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,8,2)
+#define RACK_VERSION drain::Version<>(21,9)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -90,6 +90,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 21.8.2
  *  - Fix: outputTree, empty nodes back
  *  - Cart2PolarOp, --cPolar rscale=500,lon=21.64,lat=60.12
+ *  Version 21.9
+ *  - PVOL/SCAN automagic: single sweeps extracted from a volume will have object=SCAN
+ *
  *
  *  Version 20
  *  - Revised SVG output, including gPanel and gRadarLabel

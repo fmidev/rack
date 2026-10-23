@@ -185,7 +185,7 @@ fi
 
 echo "# Step 3: Creating HDF5 structure from metadata text and data array"
 echo "#   file: $OUTFILE"
-cmd="rack $OUTDIR/$METADATA ${OUTDIR}/${IMGFILE} --encoding '$ENCODING' --completeODIM ${cart} ${palette} -o ${OUTDIR}/${OUTFILE}"
+cmd="rack --inputPrefix $OUTDIR/ $METADATA ${IMGFILE} --encoding '$ENCODING' --completeODIM ${cart} ${palette} -o ${OUTDIR}/${OUTFILE}"
 #cmd="rack  --/what:object=$OBJECT --/what:date=$DATE --/what:time=$TIME --encoding '$ENCODING' ${OUTDIR}/${IMGFILE} --completeODIM ${cart} ${palette} -o ${OUTDIR}/${OUTFILE}"
 echo $cmd
 

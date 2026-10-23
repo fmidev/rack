@@ -43,7 +43,7 @@ Instead of defining syntaxes on the command line with:
 it is often convenient to place them in a shared configuration file,
 for example \c nordic-stat1.json :
 
-\code{json}
+\code{.json}
 {
   "outdir_syntax": "statistics/{SITE}/{TIME|%M}min",
   "outfile_syntax": "{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt",
@@ -57,7 +57,7 @@ single radar (for example \c fikor ).
 
 Then one can issue:
 
-\code{cli}
+\code{.sh}
 # LABEL=dksam
 
 python3.12 -m rack.statistics \
@@ -72,7 +72,7 @@ python3.12 -m rack.statistics \
 # display out/${LABEL}.png
 \endcode
 
-\code{cli}
+\code{.sh}
 # Daywise file for a sweep (identified by dataset):
 
 python3 -m rack.statistics \
@@ -97,7 +97,7 @@ It is useful to define the data-row syntax as an environment variable
 (for example \c line_syntax ) because both collection and illustration
 stages rely on the same ordering of data variables.
 
-\code{cli}
+\code{.sh}
 LINE='{TIME_START|%Y-%m-%dT%H:%M} {TIME_START_REL|%s} {ELANGLE} {TIME_END_REL|%s} # {QUANTITY}'
 
 python3 -m rack.statistics \
@@ -118,7 +118,7 @@ gnuplot fin.png
 
 \subsection python_stats2 Another API Example
 
-\code{json}
+\code{.json}
 {
     "outdir_syntax":  "statistics/{SITE}/{TIME|%M}min",
     "outfile_syntax": "{TIME|%Y%m%d-%H%M}_{POL}_{PRF}.txt",
@@ -127,7 +127,7 @@ gnuplot fin.png
 }
 \endcode
 
-\code{bash}
+\code{.sh}
 python3 -m rack.statistics --config stat1.json \
   data-fmi/202404231200_radar.polar.fi{kan,kes,kor,kuo}.h5
 
@@ -138,7 +138,7 @@ python3 -m rack.statistics --config stat1.json \
 
 \subsection stat_python_api Python API Example
 
-\code{py}
+\code{.py}
 import rack.statistics
 
 parser = rack.statistics.build_parser()
@@ -147,7 +147,7 @@ args = parser.parse_args()
 rack.statistics.run(args)
 \endcode
 
-\code{cli}
+\code{.sh}
 # PYTHONPATH=$PYTHONPATH:/scripts
 
 python3 ./test.py volume.h5

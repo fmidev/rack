@@ -383,11 +383,11 @@ class Registry(rack.prog.Register):
                 logger.warning(f"unset 'style' with options={opts}")
 
             if "title" in opts:
-                if opts["title"] == None:
-                    opts.pop("title")
-                    self.opts["notitle"] = Literal("") 
+                title_val = opts.pop("title")
+                if title_val is None:
+                    self.opts["notitle"] = Literal("")
                 else:
-                    logger.warning("Title not handled yet...")
+                    self.opts["title"] = title_val  # GnuPlotFormatter quotes strings
 
             self.opts.update(opts)
 
@@ -486,6 +486,7 @@ class Style(Enum):
     RGBIMAGE = "rgbimage"
     LINESPOINTS = "linespoints"
     POINTS = "points"
+    VECTORS = "vectors"
     NOTITLE = "notitle"
 
 

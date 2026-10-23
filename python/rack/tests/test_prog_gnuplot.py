@@ -292,8 +292,42 @@ class TestGnuPlot(unittest.TestCase):
         """
         Ensure that 'plot' command does not allow both expr and filename.
         """
-        self.assertRaises(KeyError, self.reg.plot, expr="random(x)", filename="my_file.dat")  
+        self.assertRaises(KeyError, self.reg.plot, expr="random(x)", filename="my_file.dat")
 
+    def test_plot_vectors_using_and_title(self):
+        """Wind-arrow plot: using expression, with vectors, and a titled legend entry.
+
+        This is the gnuplot equivalent of the rack.create_wind_data arrow visualisation.
+        Verifies that the three parts compose in the correct order:
+          plot "<file>" using <expr> with vectors title "<label>"
+        """
+        sc = 1000.0
+        using = f'($1-{sc}*$3/2.0):($2-{sc}*$4/2.0):({sc}*$3):({sc}*$4)'
+        entry = self.reg.plot_entry(
+            filename='wind.TXT',
+            using=using,
+            style=gp.Style.VECTORS,
+            title='Wind')
+        expected = f'plot "wind.TXT" using {using} with vectors title "Wind"'
+        self.check_plot_command(expected, entry)
+
+    def test_plot_vectors_notitle(self):
+        """Wind-arrow plot with notitle suppresses the legend entry."""
+        sc = 500.0
+        using = f'($1-{sc}*$3/2.0):($2-{sc}*$4/2.0):({sc}*$3):({sc}*$4)'
+        entry = self.reg.plot_entry(
+            filename='wind.TXT',
+            using=using,
+            style=gp.Style.VECTORS,
+            title=None)
+        expected = f'plot "wind.TXT" using {using} with vectors notitle '
+        self.check_plot_command(expected, entry)
+
+    def test_plot_title_string(self):
+        """plot_entry title is quoted correctly for any style."""
+        entry = self.reg.plot_entry(filename='data.txt', style=gp.Style.LINES, title='My series')
+        expected = 'plot "data.txt" with lines title "My series"'
+        self.check_plot_command(expected, entry)
 
 
 if __name__ == "__main__":

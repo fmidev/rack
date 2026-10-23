@@ -76,7 +76,8 @@ get-data-synth: get-data-synth-geom get-data-synth-precip
 	echo 'Ok'
 
 # Create rasters containing geometric patterns (checkerboard etc.)
-get-data-synth-geom: get-data-synth-geom-basic get-data-synth-geom-doppler
+get-data-synth-geom: get-data-synth-geom-basic
+#get-data-synth-geom-doppler
 	echo 'Ok'
 
 # Create rasters containing geometric patterns (checkerboard etc.)
@@ -84,8 +85,22 @@ get-data-synth-geom-basic: cache
 	@ mkdir --parents $(DATA_DIR)
 	@ OUTDIR=$(DATA_DIR) OUTFILE=volume.h5 scripts/rack-create-test-volume.sh
 
-# Create fractal clouds
-get-data-synth-precip: cache
-	@ mkdir --parents $(DATA_DIR)
-	@ DIMENSION=2.2 POWER=1 OUTDIR=$(DATA_DIR) OUTFILE="synth-precip.h5" scripts/rack-create-synth-clouds.sh
+# Synthetic precipitation output files (defined once; reused as dependencies below)
+SYNTH_PRECIP_DIR  = cache/data-synth-precip
+SYNTH_PRECIP_CART = $(SYNTH_PRECIP_DIR)/synth-precip.h5
+SYNTH_PRECIP_POL  = $(SYNTH_PRECIP_DIR)/synth-precip-polar.h5
 
+# Create fractal clouds (Cartesian image) — real file target; make skips if up to date
+$(SYNTH_PRECIP_CART): cache
+	mkdir --parents $(SYNTH_PRECIP_DIR)
+	DIMENSION=2.2 POWER=1 OUTDIR=$(SYNTH_PRECIP_DIR) OUTFILE=$(notdir $@) scripts/rack-create-synth-clouds.sh
+
+# Phony shortcut
+get-data-synth-precip: $(SYNTH_PRECIP_CART)
+
+# Create fractal clouds (Polar coordinates) — $< is the Cartesian file above; $@ is the output
+$(SYNTH_PRECIP_POL): $(SYNTH_PRECIP_CART)
+	rack $< --cPolar rscale=540,lon=21.64,lat=60.12 -o $@
+
+# Phony shortcut
+get-data-synth-precip-polar: $(SYNTH_PRECIP_POL)

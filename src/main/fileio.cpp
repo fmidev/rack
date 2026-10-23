@@ -398,6 +398,7 @@ void CmdOutputFile::exec() const {
 		DataModifier::markIncluded(src, selector);
 		// DataTools::superDump(src);
 		// TODO: consider grouping these "selected outputs" on top, then continuing with specific ones.
+		DataTools::adjustWhatObject(src); // 2026/10/23 SMHI PVOL/SCAN issue
 	}
 
 
@@ -413,7 +414,7 @@ void CmdOutputFile::exec() const {
 			mout.revised<LOG_INFO>("Conventions: keeping original '", conventions, "'");
 		}
 		else {
-			// Note: "private" dictionary, distinguished with the 2nd template argument referring to the owner.
+			// Note: "private" dictionary (2nd template argument = owner)
 			// Contains official ODIM strings only...
 			for (const auto & entry: drain::Enum<rack::ODIM::Version,CmdOutputFile>::dict){
 				if (ODIM::versionFlagger.isSet(entry.second)){
@@ -432,26 +433,10 @@ void CmdOutputFile::exec() const {
 			mout.revised<LOG_INFO>("setting: ", DRAIN_LOG(conventions));
 		}
 
+		// DataTools::adjustWhatObject(src); // 2026/10/23 SMHI PVOL/SCAN issue
 		hi5::Writer::writeFile(filepath, src);
-		/*
-		if (ctx.select.empty()){
-			hi5::Writer::writeFile(filepath, src);
-		}
-		else {
-			DataSelector selector(ctx.select);
-			mout.experimental("Partial HDF5 write, selector: ", selector);
-			DataModifier::markIncluded(src, selector);
-			hi5::Writer::writeFile(filepath, src);
-			DataModifier::markIncluded(src);
-			ctx.select.clear();
-		}
-		*/
+		// DataTools::adjustWhatObject(src); // 2026/10/23 SMHI PVOL/SCAN issue
 
-		/*
-		drain::image::TreeSVG & h5 = baseGroup["h5"](svg::TEXT);
-		h5->set("object", src.data.attributes["object"]);
-		h5->set("base", path.tail);
-		*/
 	}
 	else if (IMAGE_PNG || IMAGE_PNM || IMAGE_TIF) {
 
@@ -910,6 +895,9 @@ void CmdOutputFile::exec() const {
 		// mout.experimental("Output selector: ", selector);
 		DataModifier::markIncluded(src);
 		ctx.select.clear();
+
+		DataTools::adjustWhatObject(src); // 2026/10/23 SMHI PVOL/SCAN issue
+
 	}
 
 	// ctx.select.clear(); // 2025/03

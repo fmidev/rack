@@ -72,7 +72,47 @@ TreeFileInfo & DataTools::getTreeFileInfo(){
 
 }
 
+/// If polar data contains single or several elevations, mark SCAN or PVOL, respectively.
 
+void DataTools::adjustWhatObject(Hi5Tree & src){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	if (!src.hasChild(ODIMPathElem::WHAT)){
+		mout.suspicious("Empty data structure");
+		return;
+	}
+	else {
+		drain::Variable & object = src[ODIMPathElem::WHAT].data.attributes["object"];
+		if (object.empty()){
+			mout.suspicious(src[ODIMPathElem::WHAT]);
+			mout.warn("Undefined /what:object");
+		}
+		std::string obj = object.toStr();
+		if ((obj == "PVOL") && (obj == "SCAN")){
+			unsigned short sweeps = 0;
+			for (const auto & entry: src){
+				if (entry.first.is(ODIMPathElem::DATASET) && !entry.second.data.exclude){
+					++sweeps;
+					if (sweeps > 1){
+						break;
+					}
+				}
+			}
+			obj = (sweeps==1) ? "SCAN" : "PVOL";
+			if (object.toStr() != obj){
+				mout.experimental("Adjusting: ",object, " -> ", obj);
+				object = obj;
+			}
+		}
+		else {
+			mout.debug(DRAIN_LOG(object), " - skipping");
+		}
+
+	}
+
+
+}
 
 
 void DataTools::getQuantityMap(const Hi5Tree & srcDataset, ODIMPathElemMap & m){

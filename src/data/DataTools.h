@@ -141,8 +141,16 @@ public:
 
 	typedef std::map<std::string, ODIMPathElem> quantity_map;
 
+	/// Tree output designed above all for debugging.
+	/*
+	 *
+	 */
 	static
 	void superDump(const Hi5Tree & src, std::ostream & ostr = std::cerr);
+
+	/// If polar data contains single or several elevations, mark SCAN or PVOL, respectively.
+	static
+	void adjustWhatObject(Hi5Tree & src);
 
 
 	///  (Un)mark groups along a path for deletion by #Hi5Base::deleteExcluded()

@@ -30,6 +30,7 @@ from PIL import Image
 
 import rack.cmdline
 import rack.core
+import rack.gnuplot as gp
 import rack.log
 import rack.prog
 from rack.command import Literal
@@ -101,14 +102,21 @@ def generate_wind_data(args) -> dict:
             fh.write(f'{col[0]:.0f}\t{col[1]:.0f}\t{col[2]:.1f}\t{col[3]:.1f}\n')
 
     sc = args.ARROWSCALE
+    using_expr = f'($1-{sc}*$3/2.0):($2-{sc}*$4/2.0):({sc}*$3):({sc}*$4)'
+    gnuScript = rack.prog.CommandSequence()
+    gnuScript.fmt = gp.GnuPlotFormatter(param_separator=',\n  ')
+    gnuScript.fmt.CMD_SEPARATOR = '\n'
+    gnuReg = gp.Registry(gnuScript)
+    gnuReg.terminal(gp.Terminal.PNG, size=(640, 640))
+    gnuReg.output(str(plot_png))
+    gnuReg.title('Wind field')
+    gnuReg.plot(gp.Registry.plot_entry(
+        filename=str(vec_txt),
+        using=using_expr,
+        style=gp.Style.VECTORS,
+        title='Wind'))
     with open(gnu_file, 'w') as fh:
-        fh.write('set terminal png size 640,640\n')
-        fh.write(f'set output "{plot_png}"\n')
-        fh.write('set title "Wind field"\n')
-        fh.write(
-            f'plot "{vec_txt}" '
-            f'using ($1-{sc}*$3/2.0):($2-{sc}*$4/2.0):({sc}*$3):({sc}*$4)'
-            f' with vectors title "Wind"\n')
+        fh.write(gnuScript.to_string() + '\n')
 
     # ── Polar (azimuth × range) VRAD data ────────────────────────────────────
     r   = rscale * np.arange(bins, dtype=float)                         # (bins,)
