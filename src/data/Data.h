@@ -382,11 +382,15 @@ public:
 	 */
 	// inline
 	void copyEncoding(const EncodingODIM & odim){
-		this->odim.undetect = odim.undetect;
+		this->odim.copyEncoding(odim);
+		/*
+		this->odim.scaling.set(odim.scaling);
 		this->odim.nodata   = odim.nodata;
-		// PROBLEM, if Cart vs Polar: this->odim.importMap(odim);
+		this->odim.undetect = odim.undetect;
+		*/
 		data.setType(this->odim.type);
 		data.setScaling(this->odim.scaling); // needed?
+		// PROBLEM, if Cart vs Polar: this->odim.importMap(odim);
 	}
 
 

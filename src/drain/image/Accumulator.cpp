@@ -128,7 +128,7 @@ void Accumulator::getFields(const std::string & fieldStr, FieldList & fieldList)
 		else {
 			// OLD_SYNTAX = true;
 			if (fieldList.empty()){
-				mout.deprecating("Old fashioned field list (string): ");
+				mout.deprecating("Old-fashioned field list (string): ", fieldStr);
 				createFieldList(fieldStr, fieldList);
 			}
 			else {
@@ -347,7 +347,7 @@ void Accumulator::extractField(FieldType field, const AccumulationConverter & co
 	// case 'w':
 	// case 'W':
 		if (!coder.isQualityEncodingSet()){
-			mout.error("Quality encoding unset");
+			mout.error("Quality encoding unset for: ", field);
 		}
 		methodPtr->extractWeight(accArray, coder, dst, finalCropArea);
 		break;
@@ -356,7 +356,7 @@ void Accumulator::extractField(FieldType field, const AccumulationConverter & co
 	// case 'c':
 	// case 'C':
 		if (!coder.isQualityEncodingSet()){
-			mout.error("Quality encoding unset");
+			mout.error("Quality encoding unset for: ", field);
 		}
 		methodPtr->extractCount(accArray, coder, dst, finalCropArea);
 		break;
@@ -365,7 +365,7 @@ void Accumulator::extractField(FieldType field, const AccumulationConverter & co
 	// case 's':
 	// case 'S':
 		if (!coder.isQualityEncodingSet()){
-			mout.error("Quality encoding unset");
+			mout.error("Quality encoding unset for: ", field);
 		}
 		methodPtr->extractDev(accArray, coder, dst, finalCropArea);
 		break;

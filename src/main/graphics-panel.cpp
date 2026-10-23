@@ -764,7 +764,7 @@ public:
 /**
  *  Main title:
  *  - "NONE" – do not display
- *  - "&lt;string&gt;" – (implicit) apply main title issued with \c --gTitle
+ *  - "(string)" – (implicit) apply main title issued with \c --gTitle
  *  - "AUTO" – apply automatic formatting
  *
  *  Group title:

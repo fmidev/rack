@@ -93,9 +93,9 @@ const StyleXML XML::curlyStyleXML = {
 // template <> const drain::Enum<XML::entity_t>::dict_t drain::Enum<XML::entity_t>::dict
 DRAIN_ENUM_DICT(XML::entity_t)  = {
 		{"&#38;",  XML::AMPERSAND},  // &amp;
-		{"&#60;",  XML::LESS_THAN},  // &lt;
-		{"&#61;",  XML::EQUAL_TO},  // &lt;
-		{"&#62;",  XML::GREATER_THAN},  // &gt;
+		{"&#60;",  XML::LESS_THAN},  // (
+		{"&#61;",  XML::EQUAL_TO},  // (
+		{"&#62;",  XML::GREATER_THAN},  // )
 		{"&#160;", XML::NONBREAKABLE_SPACE}, // &nbsp;
 		{"&#34;",  XML::QUOTE}, // &quot;
 		{"&#123;", XML::CURLY_LEFT},
@@ -155,8 +155,8 @@ const std::map<char,std::string> & XML::getCTextConversionMap(){
 /*
 const std::map<char,std::string> XML::encodingMap = {
 		{'&', "&amp;"},
-		{'<', "&lt;"},
-		{'>', "&gt;"},
+		{'<', "("},
+		{'>', ")"},
 		{'"', "&quot;"},
 		{' ', "&nbsp;"},
 };

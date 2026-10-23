@@ -18,7 +18,7 @@ Here, a routine to be run for each input is defined as a script, just as explain
 Then, the triggering commands – input file arguments – are put in braces. In the following example, for each input 
 Pseudo CAPPI and Echo Top products are generated converted to Cartesian coordinates and stored in a file.
 \code
-rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 &lt;defunct&gt; ]
+rack --script '--pCappi 500 -c -o cappi-${NOD}.h5 --pEchoTop 20 -c -o echoTop-${NOD}.h5' [ data/pvol_fi*.h5 ]
 \endcode
 
 Within braces, <tt>[--inputFile] file</tt> command will trigger the defined script in a separate, parallel thread.
@@ -104,7 +104,7 @@ putting them inside braces and separating independent command sequences to threa
 slash \c '/' .
 
 \code
-rack &lt;cmd&gt;  [ &lt;cmd&gt; &lt;cmd&gt; ... / &lt;cmd&gt; &lt;cmd&gt; ... / &lt;cmd&gt; &lt;cmd&gt; ... ] &lt;cmd&gt;
+rack (cmd)  [ (cmd) (cmd) ... / (cmd) (cmd) ... / (cmd) (cmd) ... ] (cmd)
 \endcode
 
 Example:

@@ -61,7 +61,7 @@ using namespace drain::image;
 /// Base class for radar data processors.
 
 /// Base class for radar data processors.
-/** Input and output as HDF5 data, which has been converted to internal structure, drain::Tree&lt;NodeH5&gt;.
+/** Input and output as HDF5 data, which has been converted to internal structure, drain::Tree(NodeH5).
  *
  *  Basically, there are two kinds of polar processing
  *  - Cumulative: the volume is traversed, each sweep contributing to a single accumulation array, out of which the product layer(s) is extracted.

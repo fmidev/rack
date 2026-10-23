@@ -181,7 +181,7 @@ Metadata can be set
  
 Metadata can be set before or after image inputs. Example:
 \code
-rack volume.txt sweep1.png --/dataset1/data1/where:rscale=500  &lt;commands&gt;
+rack volume.txt sweep1.png --/dataset1/data1/where:rscale=500  (commands...)
 \endcode
 
 Some important ODIM attributes can be added automatically with \c --completeODIM command, which sets \c nbins , \c nrays , \c xsize , and \c ysize
@@ -291,7 +291,7 @@ dot volume-tree.dot -Tpdf -o volume-tree.pdf
 The desired path can be selected with \c --select path=group[/group] or simply \c --select group[/group] 
 because path is the first argument key.  
 The most relevant groups are \c dataset: , and  \c data: , and \c quality: . 
-The colon \c : is compulsory for separating \c data&lt;index&gt;  groups from lower level \c data group in ODIM.
+The colon \c : is compulsory for separating \c data(index)  groups from lower level \c data group in ODIM.
 In the current version, groups \c what , \c what and \c how are handled somewhat automagically. (See \ref selecting .) 
 
 \image latex volume-tree.png "Data structure illustrations creating by means of \c dot file output." width=0.2\textwidth

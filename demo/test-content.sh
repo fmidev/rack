@@ -65,7 +65,7 @@ TEST    --select /dataset3
 REQUIRE dataset3/where dataset3/what dataset3/data1
 EXCLUDE dataset2 dataset4
 # NEW:
-REQUIRE what:object="MIKA"
+REQUIRE what:object='"SCAN"'
 
 TITLE "Index range: select DATASET groups with index 2...5, including subgroups. "
 TEST    --select /dataset2:5

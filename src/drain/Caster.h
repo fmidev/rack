@@ -145,7 +145,7 @@ public:
 		return getType() == t;
 	}
 
-	/// calls void setType&lt;void&gt;().
+	/// calls void setType(void)().
 	void unsetType(); //  inline not possible here due to template<> (?)
 
 

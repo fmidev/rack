@@ -55,17 +55,13 @@ public:
 	typename W::conf_t conf;
 
 	WindowOp(const std::string & name = __FUNCTION__, const std::string & description="") :
-		ImageOp(name, description) { //, fullName(name+'('+drain::TypeName<W>::str()+')') {  // tODO: fix XML tag &gt; handling
+		ImageOp(name, description) { //, fullName(name+'('+drain::TypeName<W>::str()+')') {  // TODO: fix XML tag  handling
 		this->parameters.link("width",  conf.frame.tuple()).fillArray = true;
-		// this->parameters.link("width",  conf.frame.width);
-		// this->parameters.link("height", conf.frame.height);
 	};
 
 	WindowOp(const std::string & name, const std::string & description, unsigned int width, unsigned int height) :
 		ImageOp(name, description) { // , fullName(name+'('+drain::TypeName<W>::str()+')') {
 		this->parameters.link("width",  conf.frame.tuple()).fillArray = true;
-		// this->parameters.link("width",  conf.frame.width);
-		// this->parameters.link("height", conf.frame.height);
 		setSize(width, height);
 	};
 

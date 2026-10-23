@@ -244,7 +244,10 @@ public:
 		// const Hi5Tree & src = ctx.getCurrentInputHi5();
 		// RackContext::CURRENT not ok, it can be another polar product
 		// const Hi5Tree & src = ctx.getHi5(RackContext::POLAR | RackContext::INPUT); // what about ANDRE processing?
-		mout.attention(DRAIN_LOG(ctx.inputFlags));
+
+		if (ctx.inputFlags){
+			mout.experimental(DRAIN_LOG(ctx.inputFlags));
+		}
 
 		const Hi5Tree & src = ctx.getHi5(
 				ctx.inputFlags,

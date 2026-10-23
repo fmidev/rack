@@ -212,7 +212,7 @@ public:
 	/**
 	 *  Maps std::type_info to the corresponding template, calling a desired modifier function.
 	 *
-	 *  \tparam F - struct with static method T callback&lt;type&gt;(), where \c type is a basetype or std::string.
+	 *  \tparam F - struct with static method T callback(type)(), where \c type is a basetype or std::string.
 	 *  \tparam T - return type
 	 */
 	template <class F, class T>
@@ -385,7 +385,7 @@ public:
 	 *
 	 *   Maps std::type_info to the corresponding template, calling a desired modifier function.
 	 *
-	 *   \tparam F  - struct that implements static callback&lt;type&gt;(T & target), where \c type is basetype or std::string.
+	 *   \tparam F  - struct that implements static callback(type)(T & target), where \c type is basetype or std::string.
 	 *   \tparam T  - target object class
 	 *   \tparam T2 - selector type (Type or typecode as char or string)
 	 *

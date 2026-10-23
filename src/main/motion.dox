@@ -379,7 +379,7 @@ For example, assuming that --c \c files are a set of motion files to be composit
 \code
 Q=AMVU; rack --cMethod MAXW --script "-Q $Q --cAdd" files.h5; --cExtract dw -o motion-$Q.h5
 Q=AMVV; rack --cMethod MAXW --script "-Q $Q --cAdd" files.h5; --cExtract dw -o motion-$Q.h5
-rack --append data motion-AMV?.h5 -o &lt;motion-composite&gt;
+rack --append data motion-AMV?.h5 -o (motion-composite...)
 \endcode
 Note that the input files can be the same in the above lines, if they contain both the quantities.  
 

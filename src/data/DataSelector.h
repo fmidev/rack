@@ -421,7 +421,7 @@ protected:
 	 *
 	 *  \param src - HDF5 data structure
 	 *  \param pathContainer - container for paths to be found
-	 *  \param path - search path, dataset&lt;n&gt; by default
+	 *  \param path - search path, dataset(n) by default
 	 */
 	// template <class T>
 	// bool getSubPathsFOO(const Hi5Tree & src, T & pathContainer, const ODIMPath & path) const;

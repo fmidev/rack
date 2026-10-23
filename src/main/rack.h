@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,9,0)
+#define RACK_VERSION drain::Version<>(21,9,1)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -90,8 +90,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 21.8.2
  *  - Fix: outputTree, empty nodes back
  *  - Cart2PolarOp, --cPolar rscale=500,lon=21.64,lat=60.12
- *  Version 21.9.0
+ *  Version 21.9
  *  - PVOL/SCAN automagic: single sweeps extracted from a volume will have object=SCAN
+ *  Version 21.9.1
+ *  - Fix: Data::copyEncoding(EncodingODIM), affected CumulativePolarOp
  *
  *
  *  Version 20
@@ -617,7 +619,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *   Version 7.8
  *   -- Revised DataSelector: #selectPaths()
  *   -- New functionality: selective read --inputSelect
- *   -- Log: adjustable sublevels: accept&lt;LOG_DEBUG&gt;(...) , fail&lt;LOG_INFO&gt;(...)
+ *   -- Log: adjustable sublevels: accept(LOG_DEBUG)(...) , fail(LOG_INFO)(...)
  *   -- Revised definitions: Variable, ReferenceVariable, FlexibleVariable
  *   -- Image processing: keys instead of numeric indices
  *   -- Check rscale, nbins, nrays in compositing
@@ -853,7 +855,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *
  *   Version 5.45
  *   - Output format confs generalized: --outputConf (replaced --outputTiffConf)
- *   - Plain numeric EPSG codes recognized in --cProj &lt;value&gt; , some (4236, 3067) also predefined for portability
+ *   - Plain numeric EPSG codes recognized in --cProj (value) , some (4236, 3067) also predefined for portability
  *   - GeoFrame refactored (Metric => Native)
  *
  *   Version 5.44

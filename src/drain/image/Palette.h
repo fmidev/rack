@@ -102,7 +102,7 @@ public:
 
 	/// Loads a palette from text file
 	/**
-	 *   \param flexible - if true, try also directory appended with ./palette, basename palette-&lt;string&gt; and extensions txt,json
+	 *   \param flexible - if true, try also directory appended with ./palette, basename palette-(string) and extensions txt,json
 	 */
 	void load(const std::string & filename, bool flexible = false);
 

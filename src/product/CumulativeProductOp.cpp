@@ -243,8 +243,9 @@ void CumulativeProductOp::computeSingleProduct(const DataSetMap<PolarSrc> & srcS
 	dstQualityData.copyEncoding(getQuantityMap().QIND.get('C'));
 	dstQualityData.setGeometry(dstData.odim.area);
 
+	//mout.warn(DRAIN_LOG(getQuantityMap().QIND.get('C')));
 
-	DataCoder dataCoder(dstData.odim, dstQualityData.odim); // (
+	DataCoder dataCoder(dstData.odim, dstQualityData.odim); //
 	// mout.warn(DRAIN_LOG(dataCoder));
 	const drain::Rectangle<int> area; // (0, 0, img.getWidth(), img.getHeight());
 	accumulator.extractField(Accumulator::FieldType::DATA,   dataCoder, dstData.data,        area);

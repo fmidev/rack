@@ -65,7 +65,7 @@ rack --select /dataset1,quantity=DBZH --undetectWeight 0 --script '--pAdd' acc-p
 By default, quantities \c DBZH and \c RATE are used for accumulation. This can be changed with \c --select .
 For example, accumulation of total reflectivity (\c TH ) is obtained with:   
 \code 
-rack --encoding S --select 'quantity=^TH$' --script '--pAdd' &lt;files&gt;  --pExtract 'dw' -o accumulated.h5
+rack --encoding S --select 'quantity=^TH$' --script '--pAdd' <files>  --pExtract 'dw' -o accumulated.h5
 \endcode 
  
 
