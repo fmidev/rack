@@ -21,6 +21,15 @@ logger = rack.log.logger.getChild(pathlib.Path(__file__).stem)
 # http://map.fmi.fi/geoserver/wms?service=WMS&version=1.3.0&request=GetMap&format=image/png&layers=world-map-combo-en&srs=EPSG:3067&bbox=-15000,6508000,625000,6892000&width=1280&height=768    
 # https://ows.terrestris.de/osm/service?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=OSM-WMS&STYLES=&CRS=EPSG:3857&BBOX=2610000,7500000,2620000,7510000&WIDTH=800&HEIGHT=600&FORMAT=image/png
 server_conf = {
+        "internal-mundialis": {
+            "endpoint": "https://ows.mundialis.de/osm/service",
+            "layers": [
+                "OSM-WMS", # (standard map)
+                "TOPO-WMS", # (terrain colored)
+                "TOPO-OSM-WMS" # (overlay combo)
+            ],
+            "epsg": [3035, 4326] # (EPSG:3067 is default, but also support 4326)
+        },
         "internal-fmi": {
             "endpoint": "http://map.fmi.fi/geoserver/wms",
             "version": "1.3.0",
@@ -31,15 +40,6 @@ server_conf = {
             "endpoint": "https://ows.terrestris.de/osm/service",
             "version": "1.3.0",
             "layers": ["OSM-WMS"], # default, but shoud be more?
-        },
-        "internal-mundialis": {
-            "endpoint": "https://ows.mundialis.de/osm/service",
-            "layers": [
-                "OSM-WMS", # (standard map)
-                "TOPO-WMS", # (terrain colored)
-                "TOPO-OSM-WMS" # (overlay combo)
-            ],
-            "epsg": [3035, 4326] # (EPSG:3067 is default, but also support 4326)
         },
         "internal-nasa-neo": {
             "endpoint": "https://neo.sci.gsfc.nasa.gov/wms", 
@@ -334,18 +334,21 @@ def suggest_server_conf(server: str): # -> dict:
     """
     #SERVER_CONF_PATH_SYNTAX
     #filepath = pathlib.Path(f'mapconf/server-{server}.json')
-    filepath = pathlib.Path(SERVER_CONF_PATH_SYNTAX.format(key=server))
+    filepath = pathlib.Path(SERVER_CONF_PATH_SYNTAX.format(key=server)+'.json')
     template_name, template = next(iter(server_conf.items()))
     conf = dict(template)
 
     logger.warning(
         f"No server conf found for '{server}' (in code or file). "
-        f"Creating a template at {filepath}, copied from '{template_name}' - please edit it."
+        f"Creating a template at {filepath}' - please edit it." # , copied from '{template_name}
+    )
+    logger.info(
+        f"Copying from: '{template_name}"
     )
 
     os.makedirs(filepath.parent, exist_ok=True)
     rack.config.write(str(filepath), conf)
-    #return conf
+    
 
 
 def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
@@ -574,7 +577,7 @@ def link_map(cache_path: pathlib.Path, mapLink: str = None):
     link_path.symlink_to(target)
 
 
-def get(serverConf, EPSG:int, mapCache:str, mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
+def get(serverConf, EPSG:int, mapCache:str = MAP_CACHE_PATH_SYNTAX, mapLayers=None, mapForce=False, mapLink:str=None, **kw_args) -> pathlib.Path:
     """ Retrieve map, if not already in cache.
 
     Parameters:
@@ -680,13 +683,15 @@ def get(serverConf, EPSG:int, mapCache:str, mapLayers=None, mapForce=False, mapL
         logger.debug(f"ensuring dir: {cache_path.parent}")
         os.makedirs(cache_path.parent ,exist_ok=True) 
         # TODO: lock and/or tmpfile
-        #url = urllib.parse.urlencode(url) 
-        #url = urllib.parse.quote_plus(url)
-        #url = "https://ows.terrestris.de/osm/service?" + get_param_str
+        endpoint = server_params["endpoint"] #url = "https://ows.terrestris.de/osm/service
+
+        get_param_str = "&".join([f"{k}={v}" for k,v in get_params.items()])
+        url = f'{endpoint}?{get_param_str}'
+        logger.info(f'retrieving: {url}')
+
         get_param_str = urllib.parse.urlencode(get_params)
-        url = server_params["endpoint"] + '?' + get_param_str
-        # Good:
-        logger.info(f'retrieving from URL: {url}')
+        url = f'{endpoint}?{get_param_str}'
+        logger.info(f'retrieving: {url}')
 
         # Assume myURL is already defined and valid
         #output_file = "wms_image.png"
@@ -805,6 +810,9 @@ def main():
     server_conf = get_server_conf(args.mapServer)
     logger.info(f"Server: {server_conf}")
     #get(serverConf=server_conf, **vars(args))
+    args_dict = vars(args)
+    if 'PROJ' in args_dict:
+        args_dict['EPSG'] = args_dict['PROJ']
     get(serverConf=server_conf, **vars(args))
 
 

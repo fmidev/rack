@@ -24,12 +24,15 @@ rack --format 'Version ${version}\n' -o rack-version.inc
 \tableofcontents
 
 \section intro Introduction
- 
+
 \b Rack is a command-line program for processing weather radar data.
 It uses raw measurement data as input and generates \ref productspage  as well as \ref compositespage . 
 \b Rack also provides methods for \ref andrepage . 
 Quality information is supported throughout the processing chain. 
  \b Rack also supports \ref imagespage , like applying colors and transparency. 
+
+\remark {Rack code, tests and documentation are currently being reorganized. Parts of this documentation are not up to date.}
+
 
 \b Rack is based on code developed at the Finnish Meteorological
 Institute since 2001. Part of the development work has been supported by the
