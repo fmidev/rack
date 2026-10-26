@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -80,7 +87,7 @@ $(function() {
 <li>makeCompatible()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1DistanceTransformFillOp.html#ad14e823c502a6075af769deb66189b0e">DistanceTransformFillOp&lt; T &gt;</a>, <a class="el" href="classdrain_1_1image_1_1ImageOp.html#a53c4c8aae9c2c3348faffc345510af13">ImageOp</a></li>
 <li>makeCompatible2()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1ImageOp.html#ae40b0d98f287533984aa4db465ce3bbd">ImageOp</a></li>
 <li>map&#160;:&#160;<a class="el" href="classdrain_1_1Som.html#ac38a26e2355ddc27f9701cdcf4719f26">Som&lt; T &gt;</a></li>
-<li>map_t&#160;:&#160;<a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">Bank&lt; T, K &gt;</a>, <a class="el" href="classrack_1_1Quantity.html#a9e5ed65919ead486fd3003153c0de64c">Quantity</a>, <a class="el" href="classrack_1_1RadarDataPicker.html#ab89674900a5be75e3fb828e826bb9daf">RadarDataPicker&lt; OD &gt;</a></li>
+<li>map_t&#160;:&#160;<a class="el" href="classdrain_1_1Bank.html#a083b3118c64246c86cdf47a290bc1eae">Bank&lt; T, K &gt;</a>, <a class="el" href="classdrain_1_1BeanLike.html#a16617a6d0be2844212ed123ff6f7ce9d">BeanLike</a>, <a class="el" href="classrack_1_1Quantity.html#a9e5ed65919ead486fd3003153c0de64c">Quantity</a>, <a class="el" href="classrack_1_1RadarDataPicker.html#ab89674900a5be75e3fb828e826bb9daf">RadarDataPicker&lt; OD &gt;</a></li>
 <li>mapDopplerSpeed()&#160;:&#160;<a class="el" href="classrack_1_1PolarODIM.html#a83e2cc1d87ecae7039db447a6aedc277">PolarODIM</a></li>
 <li>mapPairToStream()&#160;:&#160;<a class="el" href="classdrain_1_1Sprinter.html#a0f762e88bf4b149cf4dba0d340b57d7e">Sprinter</a></li>
 <li>mapToH5Compound()&#160;:&#160;<a class="el" href="classhi5_1_1Writer.html#aeb54daa09bf824de6cd94d3a39b441cb">Writer</a></li>
@@ -89,7 +96,11 @@ $(function() {
 <li>markBlockedIn()&#160;:&#160;<a class="el" href="structdrain_1_1image_1_1ProberControl.html#a7355bf02bc138edd7096d1890b1604b2">ProberControl</a></li>
 <li>markBlockedOut()&#160;:&#160;<a class="el" href="structdrain_1_1image_1_1ProberControl.html#a5e5cda75fee80b721d99b5662d6ebfb4">ProberControl</a></li>
 <li>markerValue&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html#ab4dd9abdd7e87125453f9084b0a374d3">SegmentProberConf&lt; S, D &gt;</a></li>
-<li>markExcluded()&#160;:&#160;<a class="el" href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">DataTools</a></li>
+<li>markExcluded()&#160;:&#160;<a class="el" href="classrack_1_1DataModifier.html#ae1ae3f7ac625538ba3bbd830ef1bb6d7">DataModifier</a></li>
+<li>markIncluded()&#160;:&#160;<a class="el" href="classrack_1_1DataModifier.html#abe059ea4edcb37121e61ce913cd5cad0">DataModifier</a></li>
+<li>markPath()&#160;:&#160;<a class="el" href="classrack_1_1DataModifier.html#a8e54f2e079285c8bca9c10b3cbc7fa4c">DataModifier</a></li>
+<li>markPathIncluded()&#160;:&#160;<a class="el" href="classrack_1_1DataModifier.html#a4c256ab9acc98e982118c31f56467cba">DataModifier</a></li>
+<li>markTree()&#160;:&#160;<a class="el" href="classrack_1_1DataModifier.html#a8da17a186d321ac484da67de5e34b50b">DataModifier</a></li>
 <li>match()&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">ODIMPathMatcher</a></li>
 <li>matchElem()&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathMatcher.html#a93c74cf43d36d26dd55ee9e08eedf7cd">ODIMPathMatcher</a></li>
 <li>matchHead()&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathMatcher.html#a2ec248b46babdb59a0da0464647bfdcc">ODIMPathMatcher</a></li>
@@ -102,7 +113,7 @@ $(function() {
 <li>MIDDLE&#160;:&#160;<a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a24f28201e7330c98a6aa7a4446753f5e">AlignSVG</a></li>
 <li>min()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1Intensity.html#a235662070fc104476515edb1e90443b8">Intensity</a></li>
 <li>minCodeValue&#160;:&#160;<a class="el" href="classrack_1_1DataCoder.html#a9da3724b77ffc47fba165f948d065ff1">DataCoder</a></li>
-<li>minimizeIntType()&#160;:&#160;<a class="el" href="structdrain_1_1TypeUtils.html#abcaf08150c0af5b7bd5911f045ff64fd">TypeUtils</a></li>
+<li>minimizeIntType()&#160;:&#160;<a class="el" href="structdrain_1_1TypeUtils.html#aa1e40fb5218d9d4d401be3a91c8b033f">TypeUtils</a></li>
 <li>mixingFunction&#160;:&#160;<a class="el" href="classdrain_1_1Som.html#a37e3b9e9293598201f47051de017bd48">Som&lt; T &gt;</a></li>
 <li>Mode&#160;:&#160;<a class="el" href="classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911">Reader</a></li>
 <li>modelledEmitter()&#160;:&#160;<a class="el" href="classrack_1_1JammingOp.html#a0338120e19eb5765464f64a65ca98801">JammingOp</a></li>

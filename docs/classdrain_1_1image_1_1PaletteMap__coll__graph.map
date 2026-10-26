@@ -1,0 +1,9 @@
+<map id="PaletteMap" name="PaletteMap">
+<area shape="rect" id="Node000001" title=" " alt="" coords="65,197,160,223"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,95,177,135"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,147,113,196,107,198,96,149"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1Dictionary.html" title=" " alt="" coords="202,95,375,135"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="242,143,136,200,133,195,240,139"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="203,5,374,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="291,59,291,95,286,95,286,59"/>
+</map>

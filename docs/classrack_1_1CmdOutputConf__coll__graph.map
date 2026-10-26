@@ -1,13 +1,13 @@
 <map id="CmdOutputConf" name="CmdOutputConf">
-<area shape="rect" id="Node000001" title=" " alt="" coords="2575,300,2701,325"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="2356,241,2525,281"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2531,282,2590,297,2588,303,2530,287"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="2183,240,2307,265"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="2321,253,2356,255,2356,260,2320,258"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1863,237,2073,263"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="2087,248,2183,249,2182,255,2087,254"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="2593,300,2720,325"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="2375,234,2544,274"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2541,275,2614,297,2612,302,2539,280"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="2201,228,2325,253"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="2339,243,2375,246,2374,251,2339,248"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1863,223,2073,248"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="2087,235,2201,237,2201,242,2087,240"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ..." alt="" coords="1688,216,1777,241"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1792,231,1863,238,1862,243,1791,237"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1791,228,1862,230,1862,235,1791,233"/>
 <area shape="rect" id="Node000006" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="1436,171,1529,196"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1544,189,1665,210,1689,215,1687,220,1663,215,1543,194"/>
 <area shape="rect" id="Node000007" href="$classdrain_1_1Context.html" title=" " alt="" coords="1156,120,1229,145"/>
@@ -47,9 +47,9 @@
 <area shape="rect" id="Node000024" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="225,239,369,264"/>
 <area shape="poly" id="edge23_Node000023_Node000024" title=" " alt="" coords="382,249,495,249,495,254,382,254"/>
 <area shape="rect" id="Node000025" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1692,265,1773,291"/>
-<area shape="poly" id="edge24_Node000004_Node000025" title=" " alt="" coords="1786,269,1862,260,1863,265,1787,274"/>
+<area shape="poly" id="edge24_Node000004_Node000025" title=" " alt="" coords="1786,266,1897,245,1898,251,1787,271"/>
 <area shape="rect" id="Node000026" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="1425,297,1541,323"/>
-<area shape="poly" id="edge28_Node000001_Node000026" title=" " alt="" coords="1555,315,1639,323,1731,326,2442,326,2510,323,2574,318,2575,323,2511,329,2442,331,1731,331,1639,328,1554,321"/>
+<area shape="poly" id="edge28_Node000001_Node000026" title=" " alt="" coords="1555,315,1639,323,1731,326,2461,326,2529,323,2593,318,2593,323,2529,329,2461,331,1731,331,1639,328,1554,321"/>
 <area shape="poly" id="edge25_Node000025_Node000026" title=" " alt="" coords="1554,298,1691,280,1692,286,1555,304"/>
 <area shape="rect" id="Node000027" href="$classdrain_1_1SmartMap.html" title=" " alt="" coords="1100,297,1285,323"/>
 <area shape="poly" id="edge26_Node000026_Node000027" title=" " alt="" coords="1299,307,1424,307,1424,313,1299,313"/>

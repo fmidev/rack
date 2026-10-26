@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -92,11 +99,11 @@ Does a radar overlap with a given geographical scope?</h1>
 <div class="line">     --cBBoxTest 1</div>
 <div class="line"> </div>
 </div><!-- fragment --><p>The result can be checked from the return code, which is zero if the radar range overlaps with the composite domain, and non-zero otherwise.</p>
-<p>Another way is to call <code>--formatOut</code> for each input volume, using <code>--format</code> that contains <code>${BBOX}</code> and other desired status variables. For example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a>  --cProj <span class="stringliteral">&#39;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&#39;</span> --cBBox 20,60,30,70 \</div>
+<p>Another way is to call <code>--formatOut</code> for each input volume, using <code>--format</code> that contains <code>${BBOX}</code> and other desired status variables. For example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a>  --cProj <span class="stringliteral">&#39;EPSG:4326&#39;</span> --cBBox 20,60,30,70 \</div>
 <div class="line">  --format <span class="stringliteral">&#39;${BBOX} ${CMT} ${what:source} ${inputFile} \n&#39;</span> \</div>
 <div class="line">  --verbose 0  --script <span class="stringliteral">&#39;--cBBoxTest 1 --formatOut -&#39;</span> \</div>
 <div class="line">  data/pvol_*</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p>Instead of giving <code>nbins</code> and <code>rscale</code> , the range can be given using the non-standard <code>--where:range</code> directly (in metres, for example 250000).</p>
 <p>This command could be called by a script which iterates through sample files, and the results are catenated in a file like </p><div class="fragment"><div class="line"><span class="preprocessor"># FMI radars</span></div>
 <div class="line">fianj=27.1111,60.9036</div>

@@ -1,13 +1,13 @@
 <map id="DotEntity" name="DotEntity">
-<area shape="rect" id="Node000001" title=" " alt="" coords="117,5,199,31"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1DotHeader.html" title=" " alt="" coords="5,79,97,104"/>
+<area shape="rect" id="Node000001" title="DOC: Add class description." alt="" coords="117,5,199,31"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotHeader.html" title="DOC: Add class description." alt="" coords="5,79,97,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,40,70,81,67,76,128,36"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1DotLink.html" title=" " alt="" coords="122,79,194,104"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1DotLink.html" title="DOC: Add class description." alt="" coords="122,79,194,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,44,161,79,155,79,155,44"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1DotNode.html" title=" " alt="" coords="219,79,297,104"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1DotNode.html" title="DOC: Add class description." alt="" coords="219,79,297,104"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="187,36,243,76,240,81,184,41"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1DotBullit.html" title=" " alt="" coords="159,152,237,177"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1DotBullit.html" title="DOC: Add class description." alt="" coords="159,152,237,177"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="241,116,210,154,206,150,237,113"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1DotRankNode.html" title=" " alt="" coords="262,152,374,177"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1DotRankNode.html" title="DOC: Add class description." alt="" coords="262,152,374,177"/>
 <area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="279,113,310,150,306,154,275,116"/>
 </map>

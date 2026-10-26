@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -87,11 +94,13 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>currentStr</b> (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">mutable</span><span class="mlabel">protected</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>elem</b> (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator const std::string &amp;</b>() const (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator=</b>(const T &amp;arg) (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator=</b>(const char *arg) (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>pseudoClass</b> (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>SelectXML</b>(TT... args) (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html#a254cab7cc539d2365bb995259d5f7d8c">set</a>(const T &amp;arg, TT... args)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>set</b>(const T &amp;arg) (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html#a5c65c9e8327b51928d9235ad3c4fbfa3">set</a>(const E &amp;arg)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html#a5c65c9e8327b51928d9235ad3c4fbfa3">set</a>(const E &amp;arg)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>set</b>(const T &amp;arg) (defined in <a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html#add207d518eb4a6d80c35ca61571cdc36">set</a>(const std::string &amp;arg)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html#a2f493d1c4f414c9a038333e182b7530f">set</a>(const char *arg)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html#af5fdd9b58a6afdd4750ea11e0ab63505">set</a>(const ClassXML &amp;arg)</td><td class="entry"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>

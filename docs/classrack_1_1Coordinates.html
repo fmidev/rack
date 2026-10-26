@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,75 +98,75 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a84d7cd1ef0c55fae16c62518fc907152" id="r_a84d7cd1ef0c55fae16c62518fc907152"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a84d7cd1ef0c55fae16c62518fc907152">setOrigin</a> (const double &amp;theta, const double &amp;phi)</td></tr>
+<tr class="memitem:a84d7cd1ef0c55fae16c62518fc907152" id="r_a84d7cd1ef0c55fae16c62518fc907152"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a84d7cd1ef0c55fae16c62518fc907152">setOrigin</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">theta</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">phi</a>)</td></tr>
 <tr class="memdesc:a84d7cd1ef0c55fae16c62518fc907152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radar site latitude and longitude in radians.  <br /></td></tr>
 <tr class="separator:a84d7cd1ef0c55fae16c62518fc907152"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4257848c6dc1c8c052f9c85170a3b27" id="r_ae4257848c6dc1c8c052f9c85170a3b27"><td class="memItemLeft" align="right" valign="top"><a id="ae4257848c6dc1c8c052f9c85170a3b27" name="ae4257848c6dc1c8c052f9c85170a3b27"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setOriginDeg</b> (const double &amp;lat, const double &amp;lon)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setOriginDeg</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;lat, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;lon)</td></tr>
 <tr class="memdesc:ae4257848c6dc1c8c052f9c85170a3b27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set target projection. // void setProjection(const std::string &amp;s);. <br /></td></tr>
 <tr class="separator:ae4257848c6dc1c8c052f9c85170a3b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a426e5a3d0eac5a2295f72c634dcee04e" id="r_a426e5a3d0eac5a2295f72c634dcee04e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a426e5a3d0eac5a2295f72c634dcee04e">setBinPosition</a> (const double &amp;alpha, const float &amp;range)</td></tr>
+<tr class="memitem:a426e5a3d0eac5a2295f72c634dcee04e" id="r_a426e5a3d0eac5a2295f72c634dcee04e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a426e5a3d0eac5a2295f72c634dcee04e">setBinPosition</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;alpha, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">float</a> &amp;range)</td></tr>
 <tr class="separator:a426e5a3d0eac5a2295f72c634dcee04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20a8408f211bf7c765bf9e5ea5b8ca4e" id="r_a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a20a8408f211bf7c765bf9e5ea5b8ca4e">info</a> (std::ostream &amp;ostr=std::cout)</td></tr>
+<tr class="memitem:a20a8408f211bf7c765bf9e5ea5b8ca4e" id="r_a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html#a20a8408f211bf7c765bf9e5ea5b8ca4e">info</a> (std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines the bounding box (in degrees) of the circular radar measurement area.  <br /></td></tr>
 <tr class="separator:a20a8408f211bf7c765bf9e5ea5b8ca4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae848757cd06cd26c24661a5de218427e" id="r_ae848757cd06cd26c24661a5de218427e"><td class="memItemLeft" align="right" valign="top"><a id="ae848757cd06cd26c24661a5de218427e" name="ae848757cd06cd26c24661a5de218427e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>binLatitudeDeg</b> ()</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>binLatitudeDeg</b> ()</td></tr>
 <tr class="memdesc:ae848757cd06cd26c24661a5de218427e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin latitude in degrees after calling bin_position(). <br /></td></tr>
 <tr class="separator:ae848757cd06cd26c24661a5de218427e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac43d0b972fde15ed19bd9399260b62d" id="r_aac43d0b972fde15ed19bd9399260b62d"><td class="memItemLeft" align="right" valign="top"><a id="aac43d0b972fde15ed19bd9399260b62d" name="aac43d0b972fde15ed19bd9399260b62d"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>binLongitudeDeg</b> ()</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>binLongitudeDeg</b> ()</td></tr>
 <tr class="memdesc:aac43d0b972fde15ed19bd9399260b62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin longitude in degrees after calling bin_position(). <br /></td></tr>
 <tr class="separator:aac43d0b972fde15ed19bd9399260b62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:af9ad0bcf00e6a2cd284c0cc55e2e1c47" id="r_af9ad0bcf00e6a2cd284c0cc55e2e1c47"><td class="memItemLeft" align="right" valign="top"><a id="af9ad0bcf00e6a2cd284c0cc55e2e1c47" name="af9ad0bcf00e6a2cd284c0cc55e2e1c47"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>p01</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>p01</b></td></tr>
 <tr class="memdesc:af9ad0bcf00e6a2cd284c0cc55e2e1c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Radar position vector (from Earth center to surface. <br /></td></tr>
 <tr class="separator:af9ad0bcf00e6a2cd284c0cc55e2e1c47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a33a77a4156b551c97e71f8c63f30b5" id="r_a7a33a77a4156b551c97e71f8c63f30b5"><td class="memItemLeft" align="right" valign="top"><a id="a7a33a77a4156b551c97e71f8c63f30b5" name="a7a33a77a4156b551c97e71f8c63f30b5"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>p02</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>p02</b></td></tr>
 <tr class="separator:a7a33a77a4156b551c97e71f8c63f30b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40fea036d8a4593f0b767752f61b2515" id="r_a40fea036d8a4593f0b767752f61b2515"><td class="memItemLeft" align="right" valign="top"><a id="a40fea036d8a4593f0b767752f61b2515" name="a40fea036d8a4593f0b767752f61b2515"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>p03</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>p03</b></td></tr>
 <tr class="separator:a40fea036d8a4593f0b767752f61b2515"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe3ec2bbc515ef1c2c03dccf567831f4" id="r_afe3ec2bbc515ef1c2c03dccf567831f4"><td class="memItemLeft" align="right" valign="top"><a id="afe3ec2bbc515ef1c2c03dccf567831f4" name="afe3ec2bbc515ef1c2c03dccf567831f4"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>p1</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>p1</b></td></tr>
 <tr class="memdesc:afe3ec2bbc515ef1c2c03dccf567831f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Earth centered coordinates [p_1 p_2 p_3] of the current bin position. <br /></td></tr>
 <tr class="separator:afe3ec2bbc515ef1c2c03dccf567831f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb3d783e05c27da8ea3c53c9d2e17af1" id="r_afb3d783e05c27da8ea3c53c9d2e17af1"><td class="memItemLeft" align="right" valign="top"><a id="afb3d783e05c27da8ea3c53c9d2e17af1" name="afb3d783e05c27da8ea3c53c9d2e17af1"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>p2</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>p2</b></td></tr>
 <tr class="separator:afb3d783e05c27da8ea3c53c9d2e17af1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b6291b8db3486489857e91d65f0db16" id="r_a4b6291b8db3486489857e91d65f0db16"><td class="memItemLeft" align="right" valign="top"><a id="a4b6291b8db3486489857e91d65f0db16" name="a4b6291b8db3486489857e91d65f0db16"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>p3</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>p3</b></td></tr>
 <tr class="separator:a4b6291b8db3486489857e91d65f0db16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac75bd32f45e4f665590f1b1d3384393f" id="r_ac75bd32f45e4f665590f1b1d3384393f"><td class="memItemLeft" align="right" valign="top"><a id="ac75bd32f45e4f665590f1b1d3384393f" name="ac75bd32f45e4f665590f1b1d3384393f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>e11</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>e11</b></td></tr>
 <tr class="memdesc:ac75bd32f45e4f665590f1b1d3384393f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elelements of the East pointing site unit vector [e11 e12 e13]. <br /></td></tr>
 <tr class="separator:ac75bd32f45e4f665590f1b1d3384393f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb3a8466fe0cf9e60c0c1b7503f4ac72" id="r_adb3a8466fe0cf9e60c0c1b7503f4ac72"><td class="memItemLeft" align="right" valign="top"><a id="adb3a8466fe0cf9e60c0c1b7503f4ac72" name="adb3a8466fe0cf9e60c0c1b7503f4ac72"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>e12</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>e12</b></td></tr>
 <tr class="separator:adb3a8466fe0cf9e60c0c1b7503f4ac72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a808136f4ea89b279c56c86399731772d" id="r_a808136f4ea89b279c56c86399731772d"><td class="memItemLeft" align="right" valign="top"><a id="a808136f4ea89b279c56c86399731772d" name="a808136f4ea89b279c56c86399731772d"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>e13</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>e13</b></td></tr>
 <tr class="separator:a808136f4ea89b279c56c86399731772d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2740e237d6bdc3cfd5acad24d4832c91" id="r_a2740e237d6bdc3cfd5acad24d4832c91"><td class="memItemLeft" align="right" valign="top"><a id="a2740e237d6bdc3cfd5acad24d4832c91" name="a2740e237d6bdc3cfd5acad24d4832c91"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>e21</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>e21</b></td></tr>
 <tr class="memdesc:a2740e237d6bdc3cfd5acad24d4832c91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Elelements of the North pointing site unit vector [e21 e22 e23]. <br /></td></tr>
 <tr class="separator:a2740e237d6bdc3cfd5acad24d4832c91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac508470c8435cda48b046aaf44e3f1e" id="r_aac508470c8435cda48b046aaf44e3f1e"><td class="memItemLeft" align="right" valign="top"><a id="aac508470c8435cda48b046aaf44e3f1e" name="aac508470c8435cda48b046aaf44e3f1e"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>e22</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>e22</b></td></tr>
 <tr class="separator:aac508470c8435cda48b046aaf44e3f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a078c9eb571d95fc72bcc3655e0b8de34" id="r_a078c9eb571d95fc72bcc3655e0b8de34"><td class="memItemLeft" align="right" valign="top"><a id="a078c9eb571d95fc72bcc3655e0b8de34" name="a078c9eb571d95fc72bcc3655e0b8de34"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>e23</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>e23</b></td></tr>
 <tr class="separator:a078c9eb571d95fc72bcc3655e0b8de34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb5dcd1fcdc9149052899ea88471a21f" id="r_afb5dcd1fcdc9149052899ea88471a21f"><td class="memItemLeft" align="right" valign="top"><a id="afb5dcd1fcdc9149052899ea88471a21f" name="afb5dcd1fcdc9149052899ea88471a21f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>thetaBin</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>thetaBin</b></td></tr>
 <tr class="memdesc:afb5dcd1fcdc9149052899ea88471a21f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin latitude in radians after calling bin_position(). <br /></td></tr>
 <tr class="separator:afb5dcd1fcdc9149052899ea88471a21f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f200d941b7ddb17e68893ea9426e3e2" id="r_a5f200d941b7ddb17e68893ea9426e3e2"><td class="memItemLeft" align="right" valign="top"><a id="a5f200d941b7ddb17e68893ea9426e3e2" name="a5f200d941b7ddb17e68893ea9426e3e2"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>phiBin</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>phiBin</b></td></tr>
 <tr class="memdesc:a5f200d941b7ddb17e68893ea9426e3e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin longitude in radians after calling bin_position(). <br /></td></tr>
 <tr class="separator:a5f200d941b7ddb17e68893ea9426e3e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -171,11 +178,11 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>phiBin</b></td></tr
 <h1><a class="anchor" id="Variablenames"></a>
 Variable names</h1>
 <ul>
-<li><picture><source srcset="form_112_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\phi$" src="form_112.png" width="8" height="13"/></picture>, phi: longitude of radar site (in radians)</li>
-<li><picture><source srcset="form_113_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\theta$" src="form_113.png" width="6" height="10"/></picture>, theta: latitude of radar site (in radians)</li>
-<li><picture><source srcset="form_114_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\alpha$" src="form_114.png" width="8" height="6"/></picture>, alpha: azimuth angle of the radar beam, <picture><source srcset="form_115_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$+\pi/2$" src="form_115.png" width="30" height="14"/></picture>=North</li>
-<li><picture><source srcset="form_27_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$r$" src="form_27.png" width="8" height="6"/></picture>: distance to the surface point</li>
-<li><picture><source srcset="form_116_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\boldmath{e}_{i}=(e_{i1}e_{i1}e_{i1})$" src="form_116.png" width="80" height="14"/></picture>: unit vectors at the site</li>
+<li>\(\phi\), phi: longitude of radar site (in radians)</li>
+<li>\(\theta\), theta: latitude of radar site (in radians)</li>
+<li>\(\alpha\), alpha: azimuth angle of the radar beam, \(+\pi/2\)=North</li>
+<li>\(r\): distance to the surface point</li>
+<li>\(\boldmath{e}_{i}=(e_{i1}e_{i1}e_{i1})\): unit vectors at the site</li>
 </ul>
 <p>Note. This is a model for ideal sphere, defined as </p><div class="fragment"><div class="line"><span class="stringliteral">&quot;+proj=longlat +R=6371000 +no_defs&quot;</span>;</div>
 </div><!-- fragment --><p> where R is the radius of the Earth. Use getDatumString() to get the actual std::string.</p>
@@ -188,7 +195,7 @@ Variable names</h1>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void info </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> info </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>ostr</em> = <code>std::cout</code></td><td>)</td>
@@ -211,15 +218,15 @@ Variable names</h1>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void setBinPosition </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> setBinPosition </td>
           <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td>
           <td class="paramname"><em>azimuth</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const float &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">float</a> &amp;&#160;</td>
           <td class="paramname"><em>range</em>&#160;</td>
         </tr>
         <tr>
@@ -231,7 +238,6 @@ Variable names</h1>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">alpha</td><td>is azimuth in radians,</td></tr>
     <tr><td class="paramname">range</td><td>in metres.</td></tr>
   </table>
   </dd>
@@ -248,15 +254,15 @@ Variable names</h1>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void setOrigin </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> setOrigin </td>
           <td>(</td>
-          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td>
           <td class="paramname"><em>theta</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td>
           <td class="paramname"><em>phi</em>&#160;</td>
         </tr>
         <tr>

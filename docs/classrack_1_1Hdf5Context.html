@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -113,13 +120,13 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="separator:ad419f6d4f77d047fc24ffd228dc9831e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c3ef6ada68cda3959562db6d212714e" id="r_a1c3ef6ada68cda3959562db6d212714e"><td class="memItemLeft" align="right" valign="top"><a id="a1c3ef6ada68cda3959562db6d212714e" name="a1c3ef6ada68cda3959562db6d212714e"></a>
-typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a>&lt; Hi5Role &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Hi5RoleFlagger</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a>&lt; Hi5Role &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Hi5RoleFlagger</b></td></tr>
 <tr class="separator:a1c3ef6ada68cda3959562db6d212714e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c387106f10e4637f5aeb376cf5ac649" id="r_a3c387106f10e4637f5aeb376cf5ac649"><td class="memItemLeft" align="right" valign="top"><a id="a3c387106f10e4637f5aeb376cf5ac649" name="a3c387106f10e4637f5aeb376cf5ac649"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Hdf5Context</b> (const <a class="el" href="classrack_1_1Hdf5Context.html">Hdf5Context</a> &amp;ctx)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Hdf5Context</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Hdf5Context.html">Hdf5Context</a> &amp;<a class="el" href="classrack_1_1DataSet.html">ctx</a>)</td></tr>
 <tr class="separator:a3c387106f10e4637f5aeb376cf5ac649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5701c1118470c3f3018e94fb4e3976cb" id="r_a5701c1118470c3f3018e94fb4e3976cb"><td class="memItemLeft" align="right" valign="top">Hi5Tree &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a5701c1118470c3f3018e94fb4e3976cb">getMyHi5</a> (Hi5RoleFlagger::ivalue_t filter=(CARTESIAN|POLAR|INPUT|CURRENT))</td></tr>
 <tr class="memdesc:a5701c1118470c3f3018e94fb4e3976cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the last HDF5 structure in Cartesian coordinates: input or Cartesian product.  <br /></td></tr>
@@ -158,14 +165,14 @@ Hi5Tree *&#160;</td><td class="memItemRight" valign="bottom"><b>currentHi5</b></
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a706d918f138667e3888ecad8981429d4" id="r_a706d918f138667e3888ecad8981429d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a706d918f138667e3888ecad8981429d4">updateHdf5Status</a> (<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;statusMap) const</td></tr>
+<tr class="memitem:a706d918f138667e3888ecad8981429d4" id="r_a706d918f138667e3888ecad8981429d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Hdf5Context.html#a706d918f138667e3888ecad8981429d4">updateHdf5Status</a> (<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;statusMap) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a706d918f138667e3888ecad8981429d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives the most relevant polar input data and returns it.  <br /></td></tr>
 <tr class="separator:a706d918f138667e3888ecad8981429d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
 Static Protected Attributes</h2></td></tr>
 <tr class="memitem:a41eca7cc4968ed34e9f918865eaa6bfd" id="r_a41eca7cc4968ed34e9f918865eaa6bfd"><td class="memItemLeft" align="right" valign="top"><a id="a41eca7cc4968ed34e9f918865eaa6bfd" name="a41eca7cc4968ed34e9f918865eaa6bfd"></a>
-static Hi5Tree&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> Hi5Tree&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b></td></tr>
 <tr class="separator:a41eca7cc4968ed34e9f918865eaa6bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -187,11 +194,11 @@ static Hi5Tree&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b></
 
 <p>Derives the most relevant polar data (input or product) and returns it. </p>
 <p>Returns in order of priority: </p>
-<h1><a class="anchor" id="autotoc_md63"></a>
+<h1><a class="anchor" id="autotoc_md69"></a>
 local, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 shared, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 local (empty)</h1>
 
 </div>
@@ -230,7 +237,7 @@ local (empty)</h1>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void updateHdf5Status </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> updateHdf5Status </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td>
           <td class="paramname"><em>statusMap</em></td><td>)</td>
@@ -246,11 +253,11 @@ local (empty)</h1>
 
 <p>Derives the most relevant polar input data and returns it. </p>
 <p>Returns in order of priority: </p>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 local, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md67"></a>
+<h1><a class="anchor" id="autotoc_md73"></a>
 shared, if non-empty</h1>
-<h1><a class="anchor" id="autotoc_md68"></a>
+<h1><a class="anchor" id="autotoc_md74"></a>
 local (empty)</h1>
 <p>Split what:source to separate fields</p>
 

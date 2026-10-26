@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -121,7 +128,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>requestType</
 <tr class="separator:ab2f61610341264302dd61ea0de15f0f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81413776ee82c3cd6b5410c1f20bd98d" id="r_a81413776ee82c3cd6b5410c1f20bd98d"><td class="memItemLeft" align="right" valign="top"><a id="a81413776ee82c3cd6b5410c1f20bd98d" name="a81413776ee82c3cd6b5410c1f20bd98d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>unsetType</b> ()</td></tr>
-<tr class="memdesc:a81413776ee82c3cd6b5410c1f20bd98d"><td class="mdescLeft">&#160;</td><td class="mdescRight">calls void <a class="el" href="classdrain_1_1Caster.html#acce02d783950fc3429ac52ca1bc74e02" title="Sets pointers to the type-dependent conversion functions.">setType&lt;void&gt;()</a>. <br /></td></tr>
+<tr class="memdesc:a81413776ee82c3cd6b5410c1f20bd98d"><td class="mdescLeft">&#160;</td><td class="mdescRight">calls void <a class="el" href="classdrain_1_1Caster.html#acce02d783950fc3429ac52ca1bc74e02" title="Sets pointers to the type-dependent conversion functions.">setType(void)</a>(). <br /></td></tr>
 <tr class="separator:a81413776ee82c3cd6b5410c1f20bd98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8892c5f3a9e44769e633f22efcf8f145" id="r_a8892c5f3a9e44769e633f22efcf8f145"><td class="memItemLeft" align="right" valign="top"><a id="a8892c5f3a9e44769e633f22efcf8f145" name="a8892c5f3a9e44769e633f22efcf8f145"></a>
 const std::type_info &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const</td></tr>
@@ -139,6 +146,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae4c740bf5762b729c440cbe83414db8b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>put</b> (void *p, const T &amp;x) const</td></tr>
 <tr class="memdesc:ae4c740bf5762b729c440cbe83414db8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default conversion (for unconventional types). Uses std::stringstream for conversion. <br /></td></tr>
 <tr class="separator:ae4c740bf5762b729c440cbe83414db8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa3558a932170a72c6187f02ca04a2e4" id="r_aaa3558a932170a72c6187f02ca04a2e4"><td class="memItemLeft" align="right" valign="top"><a id="aaa3558a932170a72c6187f02ca04a2e4" name="aaa3558a932170a72c6187f02ca04a2e4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>put</b> (void *p, std::nullptr_t) const</td></tr>
+<tr class="memdesc:aaa3558a932170a72c6187f02ca04a2e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">nullptr_t overload: treated as 0 (avoids ambiguous operator&lt;&lt; in C++14). <br /></td></tr>
+<tr class="separator:aaa3558a932170a72c6187f02ca04a2e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33d88ef9fe82a310057920326ae9a9b8" id="r_a33d88ef9fe82a310057920326ae9a9b8"><td class="memTemplParams" colspan="2"><a id="a33d88ef9fe82a310057920326ae9a9b8" name="a33d88ef9fe82a310057920326ae9a9b8"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a33d88ef9fe82a310057920326ae9a9b8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>put</b> (const T &amp;x) const</td></tr>
@@ -162,11 +173,11 @@ template&lt;class T &gt; </td></tr>
 <tr class="separator:afe5b3274209fa0f482c22a244de2773d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd7ee314f924ed7ef44a382b33bb7803" id="r_acd7ee314f924ed7ef44a382b33bb7803"><td class="memItemLeft" align="right" valign="top"><a id="acd7ee314f924ed7ef44a382b33bb7803" name="acd7ee314f924ed7ef44a382b33bb7803"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>translate</b> (const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *ptrC, void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>) const</td></tr>
-<tr class="memdesc:acd7ee314f924ed7ef44a382b33bb7803"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html">Convert</a> from str pointer and <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
+<tr class="memdesc:acd7ee314f924ed7ef44a382b33bb7803"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> from str pointer and <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
 <tr class="separator:acd7ee314f924ed7ef44a382b33bb7803"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab70a522d108ed12a2ee71c3a775c5dc6" id="r_ab70a522d108ed12a2ee71c3a775c5dc6"><td class="memItemLeft" align="right" valign="top"><a id="ab70a522d108ed12a2ee71c3a775c5dc6" name="ab70a522d108ed12a2ee71c3a775c5dc6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>translate</b> (const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c) const</td></tr>
-<tr class="memdesc:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html">Convert</a> from str <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
+<tr class="memdesc:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> from str <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
 <tr class="separator:ab70a522d108ed12a2ee71c3a775c5dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae102da352cc41c14fd21ad0a5c41cff9" id="r_ae102da352cc41c14fd21ad0a5c41cff9"><td class="memItemLeft" align="right" valign="top"><a id="ae102da352cc41c14fd21ad0a5c41cff9" name="ae102da352cc41c14fd21ad0a5c41cff9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>compare</b> (const void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *cPtr) const</td></tr>
@@ -299,7 +310,7 @@ Static Protected Member Functions</h2></td></tr>
 <tr class="memitem:afc4edb90dcfc034ccb1ddb398c08e048" id="r_afc4edb90dcfc034ccb1ddb398c08e048"><td class="memTemplParams" colspan="2"><a id="afc4edb90dcfc034ccb1ddb398c08e048" name="afc4edb90dcfc034ccb1ddb398c08e048"></a>
 template&lt;class T , class F &gt; </td></tr>
 <tr class="memitem:afc4edb90dcfc034ccb1ddb398c08e048"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>putT</b> (void *p, const T &amp;x)</td></tr>
-<tr class="memdesc:afc4edb90dcfc034ccb1ddb398c08e048"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html">Convert</a> input of base type to internally applied base type. <br /></td></tr>
+<tr class="memdesc:afc4edb90dcfc034ccb1ddb398c08e048"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> input of base type to internally applied base type. <br /></td></tr>
 <tr class="separator:afc4edb90dcfc034ccb1ddb398c08e048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e615977348f5fcd1fd2aa42af4d577d" id="r_a8e615977348f5fcd1fd2aa42af4d577d"><td class="memTemplParams" colspan="2"><a id="a8e615977348f5fcd1fd2aa42af4d577d" name="a8e615977348f5fcd1fd2aa42af4d577d"></a>
 template&lt;class T &gt; </td></tr>
@@ -310,6 +321,10 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:ae4fb057e35c853342f109ac248fe3199"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Caster.html#ae4fb057e35c853342f109ac248fe3199">putToStringT</a> (void *p, const T &amp;x)</td></tr>
 <tr class="memdesc:ae4fb057e35c853342f109ac248fe3199"><td class="mdescLeft">&#160;</td><td class="mdescRight">A handler for converting input to a std::string.  <br /></td></tr>
 <tr class="separator:ae4fb057e35c853342f109ac248fe3199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01b3fdc085baa6a08ba57c04aaa57cbf" id="r_a01b3fdc085baa6a08ba57c04aaa57cbf"><td class="memItemLeft" align="right" valign="top"><a id="a01b3fdc085baa6a08ba57c04aaa57cbf" name="a01b3fdc085baa6a08ba57c04aaa57cbf"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>putToStringT</b> (void *p, std::nullptr_t)</td></tr>
+<tr class="memdesc:a01b3fdc085baa6a08ba57c04aaa57cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">nullptr_t overload: treated as 0 (avoids ambiguous operator&lt;&lt; in C++14). <br /></td></tr>
+<tr class="separator:a01b3fdc085baa6a08ba57c04aaa57cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a057fa08d1d778286d1be986646f00848" id="r_a057fa08d1d778286d1be986646f00848"><td class="memTemplParams" colspan="2"><a id="a057fa08d1d778286d1be986646f00848" name="a057fa08d1d778286d1be986646f00848"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a057fa08d1d778286d1be986646f00848"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>putToCasterT</b> (void *p, const T &amp;x)</td></tr>
@@ -465,7 +480,7 @@ bool(*&#160;</td><td class="memItemRight" valign="bottom"><b>getBool</b> )(const
 <tr class="separator:aa30661246c45b8cd82f565759c9116fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac462e0d66c557adc63479f0c67960041" id="r_ac462e0d66c557adc63479f0c67960041"><td class="memItemLeft" align="right" valign="top"><a id="ac462e0d66c557adc63479f0c67960041" name="ac462e0d66c557adc63479f0c67960041"></a>
 void(*&#160;</td><td class="memItemRight" valign="bottom"><b>translatePtr</b> )(const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *ptrC, void *<a class="el" href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">ptr</a>)</td></tr>
-<tr class="memdesc:ac462e0d66c557adc63479f0c67960041"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html">Convert</a> from str pointer and <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
+<tr class="memdesc:ac462e0d66c557adc63479f0c67960041"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> from str pointer and <a class="el" href="classdrain_1_1Caster.html">Caster</a>. <br /></td></tr>
 <tr class="separator:ac462e0d66c557adc63479f0c67960041"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b8f4d03b61bb73d217eb95de9f5e8b1" id="r_a9b8f4d03b61bb73d217eb95de9f5e8b1"><td class="memItemLeft" align="right" valign="top"><a id="a9b8f4d03b61bb73d217eb95de9f5e8b1" name="a9b8f4d03b61bb73d217eb95de9f5e8b1"></a>
 bool(*&#160;</td><td class="memItemRight" valign="bottom"><b>comparePtr</b> )(const void *, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, const void *) = nullptr</td></tr>

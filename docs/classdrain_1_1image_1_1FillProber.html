@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -417,8 +424,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>move</b> (int &amp;i,
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i0</td><td>- current i coordinate (always valid) </td></tr>
-    <tr><td class="paramname">j0</td><td>- current j coordinate (always valid) </td></tr>
+    <tr><td class="paramname">i</td><td>- current i coordinate (always valid) </td></tr>
+    <tr><td class="paramname">j</td><td>- current j coordinate (always valid) </td></tr>
   </table>
   </dd>
 </dl>

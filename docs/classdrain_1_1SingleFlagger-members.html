@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -97,10 +104,11 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>SingleFlagger</b>(const dict_t &amp;dict) (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>SingleFlagger</b>(const dict_t &amp;dict, const storage_t &amp;v) (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>SingleFlagger</b>(const dict_t &amp;dict, storage_t &amp;v, char sep=',') (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>storage_t</b> typedef (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html#ac59483074deab5000554581d7968339d">str</a>() const override</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>value_t</b> typedef (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~SingleFlagger</b>() (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>SingleFlagger</b>(const SingleFlagger &amp;)=default (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>storage_t</b> typedef (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html#ac59483074deab5000554581d7968339d">str</a>() const override</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>value_t</b> typedef (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>~SingleFlagger</b>() (defined in <a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SingleFlagger.html">SingleFlagger&lt; E &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

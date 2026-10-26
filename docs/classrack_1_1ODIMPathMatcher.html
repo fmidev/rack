@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -125,45 +132,45 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9c84418569baf8b11fb677b7d0aa51e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic constructor. <br /></td></tr>
 <tr class="separator:a9c84418569baf8b11fb677b7d0aa51e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e6aad70e974852e27c666f0ca8132cd" id="r_a9e6aad70e974852e27c666f0ca8132cd"><td class="memItemLeft" align="right" valign="top"><a id="a9e6aad70e974852e27c666f0ca8132cd" name="a9e6aad70e974852e27c666f0ca8132cd"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathMatcher</b> (const <a class="el" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> &amp;matcher)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathMatcher</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> &amp;<a class="el" href="classrack_1_1DataSet.html">matcher</a>)</td></tr>
 <tr class="memdesc:a9e6aad70e974852e27c666f0ca8132cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a9e6aad70e974852e27c666f0ca8132cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9f64e8e7ad9ae40ec87fa7ad9f535c3" id="r_ae9f64e8e7ad9ae40ec87fa7ad9f535c3"><td class="memTemplParams" colspan="2"><a id="ae9f64e8e7ad9ae40ec87fa7ad9f535c3" name="ae9f64e8e7ad9ae40ec87fa7ad9f535c3"></a>
-template&lt;typename ... T&gt; </td></tr>
-<tr class="memitem:ae9f64e8e7ad9ae40ec87fa7ad9f535c3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ODIMPathMatcher</b> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;elem, const T &amp;... rest)</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> ... T&gt; </td></tr>
+<tr class="memitem:ae9f64e8e7ad9ae40ec87fa7ad9f535c3"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ODIMPathMatcher</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;elem, <a class="el" href="classrack_1_1DataSet.html">const</a> T &amp;... <a class="el" href="classrack_1_1DataSet.html">rest</a>)</td></tr>
 <tr class="separator:ae9f64e8e7ad9ae40ec87fa7ad9f535c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f8e7a436262f6574107b659a36a996a" id="r_a0f8e7a436262f6574107b659a36a996a"><td class="memItemLeft" align="right" valign="top"><a id="a0f8e7a436262f6574107b659a36a996a" name="a0f8e7a436262f6574107b659a36a996a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathMatcher</b> (const std::string &amp;path)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathMatcher</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;path)</td></tr>
 <tr class="memdesc:a0f8e7a436262f6574107b659a36a996a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Almost copy constructor. <br /></td></tr>
 <tr class="separator:a0f8e7a436262f6574107b659a36a996a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f5e948bdf87c616678d20fcb9c7cee0" id="r_a8f5e948bdf87c616678d20fcb9c7cee0"><td class="memItemLeft" align="right" valign="top"><a id="a8f5e948bdf87c616678d20fcb9c7cee0" name="a8f5e948bdf87c616678d20fcb9c7cee0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathMatcher</b> (const char *path)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathMatcher</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">char</a> *path)</td></tr>
 <tr class="memdesc:a8f5e948bdf87c616678d20fcb9c7cee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Almost copy constructor. <br /></td></tr>
 <tr class="separator:a8f5e948bdf87c616678d20fcb9c7cee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c78207104d24b2b8d6d0d30cc5444f3" id="r_a6c78207104d24b2b8d6d0d30cc5444f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#a6c78207104d24b2b8d6d0d30cc5444f3">ensureLimitingSlash</a> ()</td></tr>
+<tr class="memitem:a6c78207104d24b2b8d6d0d30cc5444f3" id="r_a6c78207104d24b2b8d6d0d30cc5444f3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#a6c78207104d24b2b8d6d0d30cc5444f3">ensureLimitingSlash</a> ()</td></tr>
 <tr class="memdesc:a6c78207104d24b2b8d6d0d30cc5444f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves "where|where".  <br /></td></tr>
 <tr class="separator:a6c78207104d24b2b8d6d0d30cc5444f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a023f1517a499509055441ff871d563df" id="r_a023f1517a499509055441ff871d563df"><td class="memItemLeft" align="right" valign="top"><a id="a023f1517a499509055441ff871d563df" name="a023f1517a499509055441ff871d563df"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLiteral</b> () const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>isLiteral</b> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a023f1517a499509055441ff871d563df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if corresponds to a single path, implying that all the index ranges are singletons. <br /></td></tr>
 <tr class="separator:a023f1517a499509055441ff871d563df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa015c6cbbebb3ce748e43d001ef5fdb6" id="r_aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">extractPath</a> (<a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path) const</td></tr>
+<tr class="memitem:aa015c6cbbebb3ce748e43d001ef5fdb6" id="r_aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">extractPath</a> (<a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.  <br /></td></tr>
 <tr class="separator:aa015c6cbbebb3ce748e43d001ef5fdb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af401e10cb74c00e9b29975682c36e630" id="r_af401e10cb74c00e9b29975682c36e630"><td class="memItemLeft" align="right" valign="top"><a id="af401e10cb74c00e9b29975682c36e630" name="af401e10cb74c00e9b29975682c36e630"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>match</b> (const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>match</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:af401e10cb74c00e9b29975682c36e630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Match the leading part of <code>path</code> , if <code>matcher</code> starts with root. Else, match the trailing part. <br /></td></tr>
 <tr class="separator:af401e10cb74c00e9b29975682c36e630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ec248b46babdb59a0da0464647bfdcc" id="r_a2ec248b46babdb59a0da0464647bfdcc"><td class="memItemLeft" align="right" valign="top"><a id="a2ec248b46babdb59a0da0464647bfdcc" name="a2ec248b46babdb59a0da0464647bfdcc"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>matchHead</b> (const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>matchHead</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a2ec248b46babdb59a0da0464647bfdcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Match leading part of <code>path</code>. <br /></td></tr>
 <tr class="separator:a2ec248b46babdb59a0da0464647bfdcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89a204f184a652cee07e924718f54b2c" id="r_a89a204f184a652cee07e924718f54b2c"><td class="memItemLeft" align="right" valign="top"><a id="a89a204f184a652cee07e924718f54b2c" name="a89a204f184a652cee07e924718f54b2c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>matchTail</b> (const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>matchTail</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;path) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a89a204f184a652cee07e924718f54b2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Match trailing part of <code>path</code>. <br /></td></tr>
 <tr class="separator:a89a204f184a652cee07e924718f54b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93c74cf43d36d26dd55ee9e08eedf7cd" id="r_a93c74cf43d36d26dd55ee9e08eedf7cd"><td class="memItemLeft" align="right" valign="top"><a id="a93c74cf43d36d26dd55ee9e08eedf7cd" name="a93c74cf43d36d26dd55ee9e08eedf7cd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>matchElem</b> (const <a class="el" href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a> &amp;elem, bool defaultValue=true) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>matchElem</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a> &amp;elem, <a class="el" href="classrack_1_1DataSet.html">bool</a> <a class="el" href="classrack_1_1DataSet.html">defaultValue</a>=<a class="el" href="classrack_1_1DataSet.html">true</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a93c74cf43d36d26dd55ee9e08eedf7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Match single element. If matcher path does not contain it, return defaultValue. <br /></td></tr>
 <tr class="separator:a93c74cf43d36d26dd55ee9e08eedf7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Path"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Path')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Path.html">Path&lt; ODIMPathElemMatcher &gt;</a></td></tr>
@@ -330,7 +337,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> ()</td></t
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool ensureLimitingSlash </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> ensureLimitingSlash </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -350,7 +357,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>append</b> ()</td></t
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void extractPath </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> extractPath </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em></td><td>)</td>

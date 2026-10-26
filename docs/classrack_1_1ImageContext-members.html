@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -85,7 +92,7 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>colorImage</b> (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ImageContext.html#abf45a4c7158a8be3ae14d2c5396346c0">currentGrayImage</a></td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ImageContext.html#a2c2cd3e0852716d18e2b7a8cce5dae29">currentImage</a></td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ImageContext.html#a3171c757824d08b7e82f5a726454df98">getImageInfo</a>(const Image *ptr, drain::Variable &amp;entry)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ImageContext.html#a43c1e8d9bed58dceffc90f671811a111">getImageInfo</a>(const drain::image::Image *ptr, drain::Variable &amp;entry)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getImageStatus</b>(drain::FlexVariableMap &amp;statusMap) const (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getPalette</b>() (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ImageContext.html#ae1eac2cd95e3b62f171304f3c03fff66">getPalette</a>(const std::string &amp;key)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
@@ -98,9 +105,9 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>paletteKey</b> (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>paletteResolution</b> (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ImageContext.html#a69e49d94611fea0ba5535345568662d0">qualityGroups</a></td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>refinePalette</b>(Palette &amp;palette) (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>setCurrentImageColor</b>(const Image &amp;src) (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setCurrentImages</b>(const Image &amp;src) (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>refinePalette</b>(drain::image::Palette &amp;palette) (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>setCurrentImageColor</b>(const drain::image::Image &amp;src) (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setCurrentImages</b>(const drain::image::Image &amp;src) (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>unsetCurrentImages</b>() (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>updateImageStatus</b>(drain::VariableMap &amp;statusMap) const (defined in <a class="el" href="classrack_1_1ImageContext.html">ImageContext</a>)</td><td class="entry"><a class="el" href="classrack_1_1ImageContext.html">ImageContext</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->

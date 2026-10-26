@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -82,18 +89,19 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a></td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>dataSelector</b> (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>DEBUG</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>DEFAULT</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>INTERMEDIATE</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a7b203200a73c5a95dc5f6da7adfc2220">OutputDataVerbosity</a> enum name</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>outputDataVerbosity</b> (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>OutputFlagger</b> typedef (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a70c56da05f530c93211fc87a8923c5c7">ProductConf</a>()</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#abaac419e9f8e53a768cbe0eb82b73654">ProductConf</a>(const ProductConf &amp;conf)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>QUALITY</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a></td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a4918b94f1a499764705efb9d40300c80">appendResultQuality</a></td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a></td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>dataSelector</b> (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>DEBUG</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>DEFAULT</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>INTERMEDIATE</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a7b203200a73c5a95dc5f6da7adfc2220">OutputDataVerbosity</a> enum name</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>outputDataVerbosity</b> (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>OutputFlagger</b> typedef (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a70c56da05f530c93211fc87a8923c5c7">ProductConf</a>()</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#abaac419e9f8e53a768cbe0eb82b73654">ProductConf</a>(const ProductConf &amp;conf)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>QUALITY</b> enum value (defined in <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a>)</td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ProductConf.html#a0470ed466227d970c549f7c1da5a0df1">targetEncoding</a></td><td class="entry"><a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

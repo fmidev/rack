@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -151,10 +158,10 @@ Collaboration diagram for RadarDataFunctor&lt; F &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa3fe81d7e2ea90dfe0147741c372a9dc" id="r_aa3fe81d7e2ea90dfe0147741c372a9dc"><td class="memItemLeft" align="right" valign="top"><a id="aa3fe81d7e2ea90dfe0147741c372a9dc" name="aa3fe81d7e2ea90dfe0147741c372a9dc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarDataFunctor</b> (double nodataValue=0.0, double undetectValue=0.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarDataFunctor</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> nodataValue=0.0, <a class="el" href="classrack_1_1DataSet.html">double</a> undetectValue=0.0)</td></tr>
 <tr class="separator:aa3fe81d7e2ea90dfe0147741c372a9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56f76c893ac684718b47c15b52fe45d2" id="r_a56f76c893ac684718b47c15b52fe45d2"><td class="memItemLeft" align="right" valign="top"><a id="a56f76c893ac684718b47c15b52fe45d2" name="a56f76c893ac684718b47c15b52fe45d2"></a>
-virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (double src) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> src) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a56f76c893ac684718b47c15b52fe45d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -163,14 +170,14 @@ Public Attributes</h2></td></tr>
 <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimSrc</b></td></tr>
 <tr class="separator:a27112a579c7a7abbd5fcc1d963228717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cdecf03303ee1fbc2c768f7fdcf4c09" id="r_a4cdecf03303ee1fbc2c768f7fdcf4c09"><td class="memItemLeft" align="right" valign="top"><a id="a4cdecf03303ee1fbc2c768f7fdcf4c09" name="a4cdecf03303ee1fbc2c768f7fdcf4c09"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>nodataValue</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>nodataValue</b></td></tr>
 <tr class="separator:a4cdecf03303ee1fbc2c768f7fdcf4c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8337ce8504bfd5d505a74c80077cfb22" id="r_a8337ce8504bfd5d505a74c80077cfb22"><td class="memItemLeft" align="right" valign="top"><a id="a8337ce8504bfd5d505a74c80077cfb22" name="a8337ce8504bfd5d505a74c80077cfb22"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>undetectValue</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>undetectValue</b></td></tr>
 <tr class="separator:a8337ce8504bfd5d505a74c80077cfb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class F&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> F&gt;<br />
 class rack::RadarDataFunctor&lt; F &gt;</div><p>Checks <code>nodata</code> and <code>undetect</code> before calling the functor. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">

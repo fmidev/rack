@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -148,9 +155,9 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T = std::string&gt;<br />
 class drain::VariableFormatter&lt; T &gt;</div><p>Formats variables to output stream. </p>
 <p>This base class supports following formatting:</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 printf() style formatting, like "%08.2d"</h1>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 bash substring style formatting, like ":2:3" (take 3 letters, starting from position 2)</h1>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -206,7 +213,7 @@ template&lt;class T  = std::string&gt; </div>
 
 <p>Given a value, print it formatted to stream. </p>
 <p>Formatting options are defined by the first character</p>
-<p>Colon ':' selects substring like in bash, with syntax :&lt;n&gt;[:&lt;startpos&gt;]. Examples:</p><ul>
+<p>Colon ':' selects substring like in bash, with syntax :<code>n</code>[:<code>startpos</code>]. Examples:</p><ul>
 <li>':3' selects 3 first letters</li>
 <li>':4:2' selects 4 letters, starting from 2nd character</li>
 </ul>

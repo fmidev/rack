@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -116,10 +123,10 @@ Collaboration diagram for Measurement:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a33ba7a96d374362991f892cb3a050c85" id="r_a33ba7a96d374362991f892cb3a050c85"><td class="memItemLeft" align="right" valign="top"><a id="a33ba7a96d374362991f892cb3a050c85" name="a33ba7a96d374362991f892cb3a050c85"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Measurement</b> (double reflectivity=NAN, double height=0.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Measurement</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> reflectivity=<a class="el" href="classrack_1_1DataSet.html">NAN</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> height=0.0)</td></tr>
 <tr class="separator:a33ba7a96d374362991f892cb3a050c85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ba313eab55c308b7ab715c1426a5bc0" id="r_a5ba313eab55c308b7ab715c1426a5bc0"><td class="memItemLeft" align="right" valign="top"><a id="a5ba313eab55c308b7ab715c1426a5bc0" name="a5ba313eab55c308b7ab715c1426a5bc0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Measurement</b> (const <a class="el" href="structrack_1_1Measurement.html">Measurement</a> &amp;p)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Measurement</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1Measurement.html">Measurement</a> &amp;p)</td></tr>
 <tr class="separator:a5ba313eab55c308b7ab715c1426a5bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, 2 &gt;</a></td></tr>
 <tr class="memitem:aa2610ac91edd38e997748aa698a44016 inherit pub_methods_classdrain_1_1UniTuple" id="r_aa2610ac91edd38e997748aa698a44016"><td class="memItemLeft" align="right" valign="top">
@@ -242,10 +249,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>updateTuple</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab961604331a413d1e174165e34bf3a1e" id="r_ab961604331a413d1e174165e34bf3a1e"><td class="memItemLeft" align="right" valign="top"><a id="ab961604331a413d1e174165e34bf3a1e" name="ab961604331a413d1e174165e34bf3a1e"></a>
-double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>reflectivity</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>reflectivity</b></td></tr>
 <tr class="separator:ab961604331a413d1e174165e34bf3a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aded4d4a729644abe0cc032fd967eba04" id="r_aded4d4a729644abe0cc032fd967eba04"><td class="memItemLeft" align="right" valign="top"><a id="aded4d4a729644abe0cc032fd967eba04" name="aded4d4a729644abe0cc032fd967eba04"></a>
-double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>height</b></td></tr>
 <tr class="separator:aded4d4a729644abe0cc032fd967eba04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
@@ -296,10 +303,10 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>storag
 double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>next</b> ()</td></tr>
 <tr class="separator:ae572ed60e4de48af0b9513fc69c47ef2 inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1TupleBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1TupleBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1TupleBase.html">TupleBase&lt; S, N &gt;</a></td></tr>
-<tr class="memitem:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase" id="r_a38fbd2b937dbb0b01ac0855fc0c9108f"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndexed</b> (size_t i)</td></tr>
-<tr class="memdesc:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
-<tr class="separator:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase" id="r_ad354b470fb3e4aacba4a50526d209c00"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndexed</b> (size_t)</td></tr>
+<tr class="memdesc:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
+<tr class="separator:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1TupleBase" id="r_aaa35cb0c639dd402144074fc9c454584"><td class="memTemplParams" colspan="2">
 template&lt;typename T2 , typename ... TT&gt; </td></tr>
 <tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1TupleBase"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setIndexed</b> (size_t i, T2 arg, const TT &amp;... rest)</td></tr>

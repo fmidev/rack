@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -216,7 +223,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#endif </span><span class="comment">/*DataAccumulator_H_*/</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">// Drain</span></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1AccumulationConverter_html"><div class="ttname"><a href="structdrain_1_1image_1_1AccumulationConverter.html">drain::image::AccumulationConverter</a></div><div class="ttdoc">Converts raw data to values appropriate for accumulation.</div><div class="ttdef"><b>Definition</b> AccumulationConverter.h:50</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1AccumulationConverter_html_a07720d1d2778147eb491d4fcb2eb4c0c"><div class="ttname"><a href="structdrain_1_1image_1_1AccumulationConverter.html#a07720d1d2778147eb491d4fcb2eb4c0c">drain::image::AccumulationConverter::getNoReadingMarker</a></div><div class="ttdeci">virtual double getNoReadingMarker() const =0</div><div class="ttdoc">Returns a marker value which indicates that although data has been measured, it is not within require...</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1AccumulationConverter_html_a1cea292e52cce877bb2178bf32e5d4e0"><div class="ttname"><a href="structdrain_1_1image_1_1AccumulationConverter.html#a1cea292e52cce877bb2178bf32e5d4e0">drain::image::AccumulationConverter::decode</a></div><div class="ttdeci">virtual bool decode(double &amp;value, double &amp;weight) const</div><div class="ttdef"><b>Definition</b> AccumulationConverter.h:72</div></div>

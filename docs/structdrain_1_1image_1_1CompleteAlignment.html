@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -88,7 +95,7 @@ $(function() {
 <p>"Alternative" <em>partial</em> alignment configuration for single object. Partial means that either <code>OBJECT</code> itself or <code>ANCHOR</code> object is set.  
  <a href="structdrain_1_1image_1_1CompleteAlignment.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="AlignSVG_8h_source.html">AlignSVG.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="Alignment_8h_source.html">Alignment.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for CompleteAlignment&lt; AX, A &gt;:</div>
 <div class="dyncontent">
@@ -125,9 +132,14 @@ const MutualAlign::Topol &amp;&#160;</td><td class="memItemRight" valign="bottom
 <tr class="separator:a381a02e076e4ab06448b0e57186d2b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b0e029102ad38f4b814c6523aedb53d" id="r_a7b0e029102ad38f4b814c6523aedb53d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html#a7b0e029102ad38f4b814c6523aedb53d">reset</a> ()</td></tr>
 <tr class="separator:a7b0e029102ad38f4b814c6523aedb53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a443d0eb86f74f37dc5c2ab536325062c" id="r_a443d0eb86f74f37dc5c2ab536325062c"><td class="memTemplParams" colspan="2">template&lt;class ... TT&gt; </td></tr>
+<tr class="memitem:a443d0eb86f74f37dc5c2ab536325062c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html#a443d0eb86f74f37dc5c2ab536325062c">set</a> (const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; AX, A &gt; &amp;align, const TT... args)</td></tr>
+<tr class="memdesc:a443d0eb86f74f37dc5c2ab536325062c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variant for same-AX-type, HORZ or VERT.  <br /></td></tr>
+<tr class="separator:a443d0eb86f74f37dc5c2ab536325062c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28c32c17d95f8d9579e56bd44383c19d" id="r_a28c32c17d95f8d9579e56bd44383c19d"><td class="memTemplParams" colspan="2"><a id="a28c32c17d95f8d9579e56bd44383c19d" name="a28c32c17d95f8d9579e56bd44383c19d"></a>
 template&lt;typename AX2 , AlignBase::Axis A2, class ... TT&gt; </td></tr>
 <tr class="memitem:a28c32c17d95f8d9579e56bd44383c19d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; AX2, A2 &gt; &amp;align, const TT... args)</td></tr>
+<tr class="memdesc:a28c32c17d95f8d9579e56bd44383c19d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variant for non-const axis AX2. <br /></td></tr>
 <tr class="separator:a28c32c17d95f8d9579e56bd44383c19d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5072fd01b8cd3fd51143aace3bc08a24" id="r_a5072fd01b8cd3fd51143aace3bc08a24"><td class="memTemplParams" colspan="2"><a id="a5072fd01b8cd3fd51143aace3bc08a24" name="a5072fd01b8cd3fd51143aace3bc08a24"></a>
 template&lt;class ... TT&gt; </td></tr>
@@ -158,6 +170,9 @@ template&lt;class ... TT&gt; </td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Alignment</b> (const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a> &amp;ac)</td></tr>
 <tr class="memdesc:a0cf6a25618030823ec039c52b7aacf33 inherit pub_methods_structdrain_1_1image_1_1Alignment"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a0cf6a25618030823ec039c52b7aacf33 inherit pub_methods_structdrain_1_1image_1_1Alignment"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5724ffd6e0954a8f4edc85a83a1dd736 inherit pub_methods_structdrain_1_1image_1_1Alignment" id="r_a5724ffd6e0954a8f4edc85a83a1dd736"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a> &amp;)=default</td></tr>
+<tr class="separator:a5724ffd6e0954a8f4edc85a83a1dd736 inherit pub_methods_structdrain_1_1image_1_1Alignment"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9367e17a9cc147d0402375d87396594a inherit pub_methods_structdrain_1_1image_1_1Alignment" id="r_a9367e17a9cc147d0402375d87396594a"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>Alignment</b> (AlignBase::Axis axis, <a class="el" href="structdrain_1_1image_1_1AlignBase.html#a94c3a04b97f81dd5db990b01eb6521a0">AlignBase::Pos</a> pos=AlignBase::Pos::UNDEFINED_POS)</td></tr>
 <tr class="separator:a9367e17a9cc147d0402375d87396594a inherit pub_methods_structdrain_1_1image_1_1Alignment"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,12 +217,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set</b> ()</td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename AX = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS&gt;<br />
 struct drain::image::CompleteAlignment&lt; AX, A &gt;</div><p>"Alternative" <em>partial</em> alignment configuration for single object. Partial means that either <code>OBJECT</code> itself or <code>ANCHOR</code> object is set. </p>
-<p>Extends <a class="el" href="structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos.">Alignment</a> with topology, <code>Topol</code> (<code>INSIDE</code> or <code>OUTSIDE</code> ).</p>
-<p>Essentially, a triplet of types &lt;Topol,Axis,Coordinate&gt;, out of which Axis may be const.</p>
+<p>Extends <a class="el" href="structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos.">Alignment</a> with topology, <code>Topol</code> (<code>INSIDE</code> or <code>OUTSIDE</code> ). Note: still for one axis only.</p>
+<p>Essentially, <a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html" title="&quot;Alternative&quot; partial alignment configuration for single object. Partial means that either OBJECT its...">CompleteAlignment</a> is a triplet of types &lt;Topol,Axis,Coordinate&gt;, out of which Axis may be const.</p>
 <p>Designed to handle command line arguments, adjusting AlignSVG::HorzAlign and AlignSVG::VertAlign</p>
 <dl class="section see"><dt>See also</dt><dd>AlignSVG::HorzAlign </dd>
 <dd>
-AlignSVG::VertAlign </dd></dl>
+AlignSVG::VertAlign </dd>
+<dd>
+CompleteHorzAlign </dd>
+<dd>
+CompleteVertAlign </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a7b0e029102ad38f4b814c6523aedb53d" name="a7b0e029102ad38f4b814c6523aedb53d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b0e029102ad38f4b814c6523aedb53d">&#9670;&#160;</a></span>reset()</h2>
@@ -238,8 +257,51 @@ template&lt;typename AX  = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis:
 
 </div>
 </div>
+<a id="a443d0eb86f74f37dc5c2ab536325062c" name="a443d0eb86f74f37dc5c2ab536325062c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a443d0eb86f74f37dc5c2ab536325062c">&#9670;&#160;</a></span>set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename AX  = AlignBase::Axis, AlignBase::Axis A = AlignBase::Axis::UNDEFINED_AXIS&gt; </div>
+<div class="memtemplate">
+template&lt;class ... TT&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void set </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; AX, A &gt; &amp;&#160;</td>
+          <td class="paramname"><em>align</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const TT...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Variant for same-AX-type, HORZ or VERT. </p>
+<p>Does not try to change axis... </p>
+
+</div>
+</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/drain/image/<a class="el" href="AlignSVG_8h_source.html">AlignSVG.h</a></li>
+<li>src/drain/image/<a class="el" href="Alignment_8h_source.html">Alignment.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -175,8 +182,9 @@ typedef map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4e964e562f7a529f762d82983593ac75" id="r_a4e964e562f7a529f762d82983593ac75"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap.html#a4e964e562f7a529f762d82983593ac75">ReferenceMap</a> (char <a class="el" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>=',')</td></tr>
-<tr class="memdesc:a4e964e562f7a529f762d82983593ac75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="memitem:a4e964e562f7a529f762d82983593ac75" id="r_a4e964e562f7a529f762d82983593ac75"><td class="memItemLeft" align="right" valign="top"><a id="a4e964e562f7a529f762d82983593ac75" name="a4e964e562f7a529f762d82983593ac75"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ReferenceMap</b> (char <a class="el" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>=',')</td></tr>
+<tr class="memdesc:a4e964e562f7a529f762d82983593ac75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a4e964e562f7a529f762d82983593ac75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca75f7ad535c37092ae7980e2dc714eb" id="r_aca75f7ad535c37092ae7980e2dc714eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap.html#aca75f7ad535c37092ae7980e2dc714eb">ReferenceMap</a> (const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;rmap)</td></tr>
 <tr class="memdesc:aca75f7ad535c37092ae7980e2dc714eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor copies only the separators; does not copy the items.  <br /></td></tr>
@@ -259,7 +267,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const
 virtual const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeyList</b> () const</td></tr>
 <tr class="memdesc:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived versions may produce an ordered set of keys. <br /></td></tr>
 <tr class="separator:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab5b95d8eb31d3bab4e6a06e0bf19d794">getMap</a> () const</td></tr>
+<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">
+const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap" id="r_aa2d8c7c53beee48e997af82bfed2add4"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportMap</b> (std::map&lt; std::string, T2 &gt; &amp;m) const</td></tr>
@@ -372,37 +381,8 @@ char&#160;</td><td class="memItemRight" valign="bottom"><b>arraySeparator</b></t
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4e964e562f7a529f762d82983593ac75" name="a4e964e562f7a529f762d82983593ac75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e964e562f7a529f762d82983593ac75">&#9670;&#160;</a></span>ReferenceMap() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> </td>
-          <td>(</td>
-          <td class="paramtype">char&#160;</td>
-          <td class="paramname"><em>separator</em> = <code>','</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-<p>\strictness - if true, allow attempts of assigning to non-existing entries; otherways throw exception on attempt. </p>
-
-</div>
-</div>
 <a id="aca75f7ad535c37092ae7980e2dc714eb" name="aca75f7ad535c37092ae7980e2dc714eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca75f7ad535c37092ae7980e2dc714eb">&#9670;&#160;</a></span>ReferenceMap() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aca75f7ad535c37092ae7980e2dc714eb">&#9670;&#160;</a></span>ReferenceMap()</h2>
 
 <div class="memitem">
 <div class="memproto">

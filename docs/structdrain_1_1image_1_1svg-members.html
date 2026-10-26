@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,14 +98,14 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>DESC</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>GROUP</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>IMAGE</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>JAVASCRIPT_SCOPE</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>LINE</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>LINEAR_GRADIENT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>MASK</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>METADATA</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>PATH</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>POLYGON</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>RECT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>LINE</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>LINEAR_GRADIENT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>MASK</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>METADATA</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>PATH</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>POLYGON</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>RECT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>SCOPE_CURLY</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>SCRIPT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>STYLE</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>STYLE_SELECT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td><td class="entry"></td></tr>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mode_0',['Mode',['../classhi5_1_1Reader.html#a46c8a310cf4c094f8c80e1cb8dc1f911',1,'hi5::Reader']]]
+  ['grouptype_0',['GroupType',['../classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918',1,'drain::image::LayoutSVG']]]
 ];

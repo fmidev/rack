@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -84,7 +91,7 @@ $(function() {
 <div class="textblock"><h1><a class="anchor" id="details"></a>
 Internal data structure</h1>
 <p>Internally, radar data is stored in a tree-like hierarchical structure very analogous to that of Hierarchical Data Format (hdf5) itself. Rack also takes advantage of the OPERA Data Model (ODIM, <a href="http://eumetnet.eu/wp-content/uploads/2017/01/OPERA_hdf_description_2014.pdf">http://eumetnet.eu/wp-content/uploads/2017/01/OPERA_hdf_description_2014.pdf</a>), an encoding and naming policy applicable in HDF5 for different types of radar data like azimuthal scans, polar products and Cartesian images .</p>
-<p>In <code>Rack</code>, an HDF5 file is primarily stored using drain::Tree&lt;T&gt; structure, a tree where each node essentially consists of a data array and a map of attributes. The data array is implemented with drain::Image, an image class based on std::vector&lt;T&gt;. The images can use any storage type from <code>unsigned</code> char to \d double . The attributes are stored as a <a class="el" href="classdrain_1_1VariableMap.html" title="A map of Variables.">drain::VariableMap</a> , which is essentially an stl::map&lt;T&gt; of references to scalar variables, arrays, and strings (std::string). Practically, in each node either the data array or attributes are applied (ie. non-empty). Specifically, <code>/datasetN</code> , <code>/dataN</code> , <code>/what</code> , <code>/where</code> , and <code>/how</code> Groups contain only attributes but the data is empty whereas in <code>/data</code> Group the data array is non-zero but the attribute map is empty. <br  />
+<p>In <code>Rack</code>, an HDF5 file is primarily stored using drain::Tree&lt;T&gt; structure, a tree where each node essentially consists of a data array and a map of attributes. The data array is implemented with drain::Image, an image class based on std::vector&lt;T&gt;. The images can use any storage type from <code>unsigned</code> char to <code>double</code> . The attributes are stored as a <a class="el" href="classdrain_1_1VariableMap.html" title="A map of Variables.">drain::VariableMap</a> , which is essentially an stl::map&lt;T&gt; of references to scalar variables, arrays, and strings (std::string). Practically, in each node either the data array or attributes are applied (ie. non-empty). Specifically, <code>/datasetN</code> , <code>/dataN</code> , <code>/what</code> , <code>/where</code> , and <code>/how</code> Groups contain only attributes but the data is empty whereas in <code>/data</code> Group the data array is non-zero but the attribute map is empty. <br  />
 </p>
 <h1><a class="anchor" id="imageprocessing"></a>
 Processing two-dimensional data</h1>
@@ -97,16 +104,16 @@ Processing two-dimensional data</h1>
 Fuzzy functions</h1>
 <p>Instead of strict thresholding, the detectors apply frequently fuzzy functions ie. functions that map quantity ranges to continuous truth values between 0.0 (no) and 1.0 (yes). Then, conditions like "the dBZ is over 20" and "width of the speck is about 1500m" can be combined by multiplying associated fuzzy functions; the result is a combined truth value. <br  />
  The typical fuzzy functions applied in <b>AnDRe</b> are fuzzy peak (drain::FuzzyPeak)  </p><p class="formulaDsp">
-<picture><source srcset="form_152_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+\[
         f_{\mathrm{p}}(x) = \frac{a^2}{a^2 + x^2}
- \]" src="form_152.png" width="88" height="30"/></picture>
+ \]
 </p>
-<p> where <picture><source srcset="form_52_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a$" src="form_52.png" width="6" height="6"/></picture> is the width, and fuzzy threshold (<a class="el" href="classdrain_1_1FuzzyStep.html" title="A simple linear transition from 0 to 1 .">drain::FuzzyStep</a>)  </p><p class="formulaDsp">
-<picture><source srcset="form_153_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+<p> where \(a\) is the width, and fuzzy threshold (<a class="el" href="classdrain_1_1FuzzyStep.html" title="A simple linear transition from 0 to 1 .">drain::FuzzyStep</a>)  </p><p class="formulaDsp">
+\[
          f_{\mathrm{th}}(x) = \frac{1}{2} + \frac{x}{2(a + |x|)}.
- \]" src="form_153.png" width="131" height="30"/></picture>
+ \]
 </p>
-<p> where <picture><source srcset="form_52_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$a$" src="form_52.png" width="6" height="6"/></picture> is the steepness.</p>
+<p> where \(a\) is the steepness.</p>
 <div class="image">
 <img src="fuzzies.png" alt=""/>
 <div class="caption">

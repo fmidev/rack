@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -206,7 +213,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="comment">//set(arg);</span></div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        reset();</div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <a class="code hl_function" href="classdrain_1_1TextDecorator.html#a3ff973f8496e972d10974d945f79a435">add</a>(arg, args...);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    };</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="comment">/*</span></div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">    template&lt;typename ... TT&gt;</span></div>
@@ -254,7 +261,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="comment">// std::cout &lt;&lt; &quot;Adding:&quot; &lt;&lt; arg &lt;&lt; &#39;:&#39; &lt;&lt; typeid(arg).name() &lt;&lt; &#39;\n&#39;;</span></div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        <a class="code hl_function" href="classdrain_1_1TextDecorator.html#a3ff973f8496e972d10974d945f79a435">add</a>(arg);</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <a class="code hl_function" href="classdrain_1_1TextDecorator.html#a3ff973f8496e972d10974d945f79a435">add</a>(args...);</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    };</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    }</div>
 </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keyword">inline</span></div>
@@ -315,7 +322,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> TextDecorator &amp; decorator){</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>std::ostream &amp; <a class="code hl_function" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> TextDecorator &amp; decorator){</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="comment">//decorator.debug(ostr);</span></div>
 <div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    ostr &lt;&lt; decorator.style &lt;&lt; <span class="charliteral">&#39;=&#39;</span> &lt;&lt; decorator.style.getValue();</div>
 <div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    ostr &lt;&lt; <span class="charliteral">&#39;:&#39;</span>;</div>
@@ -379,7 +386,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1EnumFlagger_html"><div class="ttname"><a href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a></div><div class="ttdoc">Flagger accepting values of enum type E.</div><div class="ttdef"><b>Definition</b> EnumFlagger.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_aa1a684d5c634c58aac2f3513fdfe6d70"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#aa1a684d5c634c58aac2f3513fdfe6d70">drain::FlagResolver::valuesToList</a></div><div class="ttdeci">static void valuesToList(ivalue_t value, const drain::Dictionary&lt; key_t, T &gt; &amp;dict, std::list&lt; V &gt; &amp;container)</div><div class="ttdoc">Given a bit vector (integer value), extracts separate flag values to a list.</div><div class="ttdef"><b>Definition</b> FlagBase.h:311</div></div>
-<div class="ttc" id="aclassdrain_1_1MultiFlagger_html_a42c654db8ffc7ec310e959bc7d4e8a62"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html#a42c654db8ffc7ec310e959bc7d4e8a62">drain::MultiFlagger::add</a></div><div class="ttdeci">void add(const V &amp;arg, const VV &amp;... args)</div><div class="ttdoc">Add bit values.</div><div class="ttdef"><b>Definition</b> Flags.h:293</div></div>
+<div class="ttc" id="aclassdrain_1_1MultiFlagger_html_a42c654db8ffc7ec310e959bc7d4e8a62"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html#a42c654db8ffc7ec310e959bc7d4e8a62">drain::MultiFlagger::add</a></div><div class="ttdeci">void add(const V &amp;arg, const VV &amp;... args)</div><div class="ttdoc">Add bit values.</div><div class="ttdef"><b>Definition</b> Flags.h:302</div></div>
 <div class="ttc" id="aclassdrain_1_1TextDecoratorVt100_html"><div class="ttname"><a href="classdrain_1_1TextDecoratorVt100.html">drain::TextDecoratorVt100</a></div><div class="ttdef"><b>Definition</b> TextDecorator.h:246</div></div>
 <div class="ttc" id="aclassdrain_1_1TextDecoratorVt100_html_a28ef12a0f3c626c89734065a87c21840"><div class="ttname"><a href="classdrain_1_1TextDecoratorVt100.html#a28ef12a0f3c626c89734065a87c21840">drain::TextDecoratorVt100::_begin</a></div><div class="ttdeci">virtual std::ostream &amp; _begin(std::ostream &amp;ostr) const</div><div class="ttdoc">Export style to VT100 numeric codes.</div><div class="ttdef"><b>Definition</b> TextDecorator.cpp:161</div></div>
 <div class="ttc" id="aclassdrain_1_1TextDecoratorVt100_html_a518b8a66e5cfe510355da74b095f405a"><div class="ttname"><a href="classdrain_1_1TextDecoratorVt100.html#a518b8a66e5cfe510355da74b095f405a">drain::TextDecoratorVt100::appendCodes</a></div><div class="ttdeci">static void appendCodes(const EnumFlagger&lt; F &gt; &amp;styleFlags, std::list&lt; int &gt; &amp;codes)</div><div class="ttdoc">Internal utility: convert given abstract style to numeric VT100 codes.</div><div class="ttdef"><b>Definition</b> TextDecorator.h:277</div></div>
@@ -393,9 +400,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1TextDecorator_html_acb55ba94f2d2b522deb97a5d311d506f"><div class="ttname"><a href="classdrain_1_1TextDecorator.html#acb55ba94f2d2b522deb97a5d311d506f">drain::TextDecorator::add</a></div><div class="ttdeci">void add(const char *keys, const TT &amp;... args)</div><div class="ttdoc">Second case of strings...</div><div class="ttdef"><b>Definition</b> TextDecorator.h:157</div></div>
 <div class="ttc" id="aclassdrain_1_1TextDecorator_html_adf0a636668f2a3b52415ca9671597d1f"><div class="ttname"><a href="classdrain_1_1TextDecorator.html#adf0a636668f2a3b52415ca9671597d1f">drain::TextDecorator::add</a></div><div class="ttdeci">void add(TextStyle::Colour c)</div><div class="ttdoc">Change the current color setting.</div><div class="ttdef"><b>Definition</b> TextDecorator.h:182</div></div>
 <div class="ttc" id="aclassdrain_1_1TextDecorator_html_ae6c1bec72468ed65743c0719a2d7f579"><div class="ttname"><a href="classdrain_1_1TextDecorator.html#ae6c1bec72468ed65743c0719a2d7f579">drain::TextDecorator::add</a></div><div class="ttdeci">void add(TextStyle::Style s)</div><div class="ttdoc">Change the current current style setting.</div><div class="ttdef"><b>Definition</b> TextDecorator.h:194</div></div>
-<div class="ttc" id="aclassdrain_1_1TextStyleVT100_html_ab3428db5d75f2a928fd002793b8eaadc"><div class="ttname"><a href="classdrain_1_1TextStyleVT100.html#ab3428db5d75f2a928fd002793b8eaadc">drain::TextStyleVT100::getIntCode</a></div><div class="ttdeci">static int getIntCode(const E &amp;enumCode)</div><div class="ttdoc">Given an enum value, returns the corresponding numeric VT100 code.</div><div class="ttdef"><b>Definition</b> TextStyleVT100.h:101</div></div>
+<div class="ttc" id="aclassdrain_1_1TextStyleVT100_html_ab3428db5d75f2a928fd002793b8eaadc"><div class="ttname"><a href="classdrain_1_1TextStyleVT100.html#ab3428db5d75f2a928fd002793b8eaadc">drain::TextStyleVT100::getIntCode</a></div><div class="ttdeci">static int getIntCode(const E &amp;enumCode)</div><div class="ttdoc">Given an enum value, returns the corresponding numeric VT100 code.</div><div class="ttdef"><b>Definition</b> TextStyleVT100.h:108</div></div>
 <div class="ttc" id="aclassdrain_1_1TextStyle_html"><div class="ttname"><a href="classdrain_1_1TextStyle.html">drain::TextStyle</a></div><div class="ttdoc">Utility for scanning text segments.</div><div class="ttdef"><b>Definition</b> TextStyle.h:49</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
+<div class="ttc" id="anamespacerack_html_a4a516e363f8dc7522725822a84e6e5a2"><div class="ttname"><a href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition</b> Data.h:631</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

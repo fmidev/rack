@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -127,7 +134,7 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr, const char *x) const (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr, const std::string &amp;x) const (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr, bool x) const (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr, const nullptr_t &amp;t) const (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr, const std::nullptr_t &amp;t) const (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>TUPLE</b> (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>VALUE</b> (defined in <a class="el" href="structdrain_1_1Serializer.html">Serializer</a>)</td><td class="entry"><a class="el" href="structdrain_1_1Serializer.html">Serializer</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>writePrefix</b>(std::ostream &amp;ostr, objType type) const override (defined in <a class="el" href="classdrain_1_1SimpleSerializer.html">SimpleSerializer</a>)</td><td class="entry"><a class="el" href="classdrain_1_1SimpleSerializer.html">SimpleSerializer</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>

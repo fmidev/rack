@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -117,6 +124,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1AverageMethod.html">AverageMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1AverageMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,7 +162,9 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Policies for coordinate underflows and overflows.  <a href="classdrain_1_1image_1_1CoordinatePolicy.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1CoordSpan.html">CoordSpan</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SVG classes marking requests of relative horizontal and vertical alignment.  <a href="structdrain_1_1image_1_1CoordSpan.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CoordSpanBase.html">CoordSpanBase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">SVG classes marking requests of relative horizontal and vertical alignment.  <a href="classdrain_1_1image_1_1CoordSpanBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1CopyFunctor.html">CopyFunctor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,11 +234,15 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For reading and writing images in PNM format.  <a href="classdrain_1_1image_1_1FilePnm.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileSVG.html">FileSVG</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1FileSVG.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FileTIFF.html">FileTIFF</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">For writing images in basic TIFF format. Reading not supported currently.  <a href="classdrain_1_1image_1_1FileTIFF.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FillProber.html">FillProber</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FloaterSVG.html">FloaterSVG</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Raises FLOATING elements on the top.  <a href="classdrain_1_1image_1_1FloaterSVG.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FloodFillOp.html">FloodFillOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A fill operation for one color.  <a href="classdrain_1_1image_1_1FloodFillOp.html#details">More...</a><br /></td></tr>
@@ -298,6 +312,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageCoordPolicy.html">ImageCoordPolicy</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageData.html">ImageData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageEncoding.html">ImageEncoding</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the type of a target image.  <a href="classdrain_1_1image_1_1ImageEncoding.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -326,6 +342,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageOpCloner.html">ImageOpCloner</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageOpInstaller.html">ImageOpInstaller</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImagePanel.html">ImagePanel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creator of SVG image elements located in a SVG group with fixed structure.  <a href="classdrain_1_1image_1_1ImagePanel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImagePlot.html">ImagePlot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plots a single value in an image. The value will be scaled; notice that alpha channel is scaled by default.  <a href="classdrain_1_1image_1_1ImagePlot.html#details">More...</a><br /></td></tr>
@@ -385,14 +404,18 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tools for creating masks for graphic objects based on their contours.  <a href="classdrain_1_1image_1_1MaskerSVG.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MaximumMethod.html">MaximumMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1MaximumMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MaximumWeightMethod.html">MaximumWeightMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1MaximumWeightMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MetaDataCollectorSVG.html">MetaDataCollectorSVG</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MinimumMethod.html">MinimumMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1MinimumMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MinMaxMethod.html">MinMaxMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1MinMaxMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ModifiableImage.html">ModifiableImage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1image_1_1Image.html" title="Class for multi-channel digital images. Supports dynamic typing with base types (char,...">Image</a> with modifiable geometry.  <a href="classdrain_1_1image_1_1ModifiableImage.html#details">More...</a><br /></td></tr>
@@ -400,6 +423,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MotionExtrapolatorOp.html">MotionExtrapolatorOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MotionIllustratorOp.html">MotionIllustratorOp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MouseEventXML.html">MouseEventXML</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MouseXML.html">MouseXML</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1MultiChannel.html">MultiChannel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multi-channel <a class="el" href="classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry.">ImageFrame</a>.  <a href="classdrain_1_1image_1_1MultiChannel.html#details">More...</a><br /></td></tr>
@@ -415,6 +442,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1NodeGDAL.html">NodeGDAL</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1NodePrinter.html">NodePrinter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1NodePrinter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1NodeSLD.html">NodeSLD</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -429,12 +457,20 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1OpticalFlowCore2.html">OpticalFlowCore2</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1OverlayMoverSVG.html">OverlayMoverSVG</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Within a group, moves elements of class OVERLAY to the subgroup.  <a href="classdrain_1_1image_1_1OverlayMoverSVG.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1OverwriteMethod.html">OverwriteMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1OverwriteMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PalEntry.html">PalEntry</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Container for color, transparency (alpha) and textual id and description. Does not contain intensity thresholds (intervals).  <a href="classdrain_1_1image_1_1PaletteEntry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteMap.html">PaletteMap</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteOp.html">PaletteOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Colorizes an image of 1 channel to an image of N channels by using a palette image as a lookup table.  <a href="classdrain_1_1image_1_1PaletteOp.html#details">More...</a><br /></td></tr>
@@ -568,7 +604,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1svg.html">svg</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1TextBox.html">TextBox</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Transform.html">Transform</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1TransformerSVG.html">TransformerSVG</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies transformation.  <a href="classdrain_1_1image_1_1TransformerSVG.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -590,9 +631,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1UnaryFunctorOpCloner.html">UnaryFunctorOpCloner</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ValueHandler.html">ValueHandler</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1VerticalCatenatorOp.html">VerticalCatenatorOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1WeightedAverageMethod.html">WeightedAverageMethod</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classdrain_1_1image_1_1WeightedAverageMethod.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1WeightedWindowCore.html">WeightedWindowCore</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -616,6 +660,12 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a3b9db3dd5bdd6b03512eaa2fa62bd75c" id="r_a3b9db3dd5bdd6b03512eaa2fa62bd75c"><td class="memItemLeft" align="right" valign="top"><a id="a3b9db3dd5bdd6b03512eaa2fa62bd75c" name="a3b9db3dd5bdd6b03512eaa2fa62bd75c"></a>
 typedef <a class="el" href="classdrain_1_1Bank.html">drain::Bank</a>&lt; <a class="el" href="classdrain_1_1image_1_1AccumulationMethod.html">AccumulationMethod</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AccMethodBank</b></td></tr>
 <tr class="separator:a3b9db3dd5bdd6b03512eaa2fa62bd75c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9465638246cbadfd1236a2aceb6475b4" id="r_a9465638246cbadfd1236a2aceb6475b4"><td class="memItemLeft" align="right" valign="top"><a id="a9465638246cbadfd1236a2aceb6475b4" name="a9465638246cbadfd1236a2aceb6475b4"></a>
+typedef <a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html">CompleteAlignment</a>&lt; const AlignBase::Axis, AlignBase::Axis::HORZ &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CompleteHorzAlign</b></td></tr>
+<tr class="separator:a9465638246cbadfd1236a2aceb6475b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcc62295b29e521ad239221c805737b" id="r_afbcc62295b29e521ad239221c805737b"><td class="memItemLeft" align="right" valign="top"><a id="afbcc62295b29e521ad239221c805737b" name="afbcc62295b29e521ad239221c805737b"></a>
+typedef <a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html">CompleteAlignment</a>&lt; const AlignBase::Axis, AlignBase::Axis::VERT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CompleteVertAlign</b></td></tr>
+<tr class="separator:afbcc62295b29e521ad239221c805737b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a530d4f1788b65e1121d351ad1d05a7d5" id="r_a530d4f1788b65e1121d351ad1d05a7d5"><td class="memItemLeft" align="right" valign="top"><a id="a530d4f1788b65e1121d351ad1d05a7d5" name="a530d4f1788b65e1121d351ad1d05a7d5"></a>
 typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>coord_overflow_t</b></td></tr>
 <tr class="memdesc:a530d4f1788b65e1121d351ad1d05a7d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">typedef drain::GlobalFlags&lt;CoordinatePolicy&gt; coord_overflow_flagger_t; <br /></td></tr>
@@ -635,9 +685,9 @@ typedef <a class="el" href="classdrain_1_1Frame2D.html">Frame2D</a>&lt; size_t &
 <tr class="memitem:abc92cae8648c1c8f12bcd9e6716e90a0" id="r_abc92cae8648c1c8f12bcd9e6716e90a0"><td class="memItemLeft" align="right" valign="top"><a id="abc92cae8648c1c8f12bcd9e6716e90a0" name="abc92cae8648c1c8f12bcd9e6716e90a0"></a>
 typedef UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1image_1_1NodeSLD.html">NodeSLD</a>, false, <a class="el" href="classdrain_1_1NodeXML.html">drain::NodeXML</a>&lt;&gt;::path_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSLD</b></td></tr>
 <tr class="separator:abc92cae8648c1c8f12bcd9e6716e90a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b1e853197d0e3bbd527ce0447856e7a" id="r_a9b1e853197d0e3bbd527ce0447856e7a"><td class="memItemLeft" align="right" valign="top"><a id="a9b1e853197d0e3bbd527ce0447856e7a" name="a9b1e853197d0e3bbd527ce0447856e7a"></a>
-typedef drain::UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>, false, <a class="el" href="classdrain_1_1NodeXML.html">NodeXML</a>&lt;&gt;::path_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeSVG</b></td></tr>
-<tr class="separator:a9b1e853197d0e3bbd527ce0447856e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42d8702cd940ec5cf8a96f6ca71c23a5" id="r_a42d8702cd940ec5cf8a96f6ca71c23a5"><td class="memItemLeft" align="right" valign="top"><a id="a42d8702cd940ec5cf8a96f6ca71c23a5" name="a42d8702cd940ec5cf8a96f6ca71c23a5"></a>
+typedef <a class="el" href="classdrain_1_1SelectXML.html">SelectXML</a>&lt; svg::tag_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SelectSVG</b></td></tr>
+<tr class="separator:a42d8702cd940ec5cf8a96f6ca71c23a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a530bc2fad897164695ee3df578ad8fa6" id="r_a530bc2fad897164695ee3df578ad8fa6"><td class="memItemLeft" align="right" valign="top"><a id="a530bc2fad897164695ee3df578ad8fa6" name="a530bc2fad897164695ee3df578ad8fa6"></a>
 typedef drain::UnorderedMultiTree&lt; <a class="el" href="classdrain_1_1image_1_1NodeGDAL.html">image::NodeGDAL</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>TreeGDAL</b></td></tr>
 <tr class="separator:a530bc2fad897164695ee3df578ad8fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -659,9 +709,6 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:a8f4d39175a91874c09ef785399e96244" id="r_a8f4d39175a91874c09ef785399e96244"><td class="memItemLeft" align="right" valign="top"><a id="a8f4d39175a91874c09ef785399e96244" name="a8f4d39175a91874c09ef785399e96244"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (<a class="el" href="classdrain_1_1image_1_1Accumulator.html#aa01498a3ceb2fa74dc9536c16caef1da">Accumulator::FieldType</a>)</td></tr>
 <tr class="separator:a8f4d39175a91874c09ef785399e96244"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3464595fda5e09e7df8e7f06326aa691" id="r_a3464595fda5e09e7df8e7f06326aa691"><td class="memItemLeft" align="right" valign="top"><a id="a3464595fda5e09e7df8e7f06326aa691" name="a3464595fda5e09e7df8e7f06326aa691"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (<a class="el" href="classdrain_1_1image_1_1Accumulator.html#aa01498a3ceb2fa74dc9536c16caef1da">Accumulator::FieldType</a>)</td></tr>
-<tr class="separator:a3464595fda5e09e7df8e7f06326aa691"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae6e041f1dee3e9c807e621eca6e63b4" id="r_aae6e041f1dee3e9c807e621eca6e63b4"><td class="memItemLeft" align="right" valign="top"><a id="aae6e041f1dee3e9c807e621eca6e63b4" name="aae6e041f1dee3e9c807e621eca6e63b4"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1AccumulatorGeo.html">AccumulatorGeo</a> &amp;accumulator)</td></tr>
 <tr class="separator:aae6e041f1dee3e9c807e621eca6e63b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -704,50 +751,19 @@ template&lt;&gt; </td></tr>
 <tr class="memitem:a0bdf74519f5a666c60e82f5c083dbd69" id="r_a0bdf74519f5a666c60e82f5c083dbd69"><td class="memItemLeft" align="right" valign="top"><a id="a0bdf74519f5a666c60e82f5c083dbd69" name="a0bdf74519f5a666c60e82f5c083dbd69"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (AlignBase::Axis)</td></tr>
 <tr class="separator:a0bdf74519f5a666c60e82f5c083dbd69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2773fb283e283976f8a28ba1d744f455" id="r_a2773fb283e283976f8a28ba1d744f455"><td class="memItemLeft" align="right" valign="top"><a id="a2773fb283e283976f8a28ba1d744f455" name="a2773fb283e283976f8a28ba1d744f455"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (AlignSVG::Owner)</td></tr>
-<tr class="separator:a2773fb283e283976f8a28ba1d744f455"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab426466e1624794af414525cdba3e765" id="r_ab426466e1624794af414525cdba3e765"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedrain_1_1image.html#ab426466e1624794af414525cdba3e765">DRAIN_ENUM_DICT</a> (<a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::HorzAlign</a>)</td></tr>
-<tr class="memdesc:ab426466e1624794af414525cdba3e765"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> of horizontal (LEFT,CENTER,RIGHT) flags.  <br /></td></tr>
-<tr class="separator:ab426466e1624794af414525cdba3e765"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4572a58eddb27d3eea8d73105773c66" id="r_ac4572a58eddb27d3eea8d73105773c66"><td class="memItemLeft" align="right" valign="top"><a id="ac4572a58eddb27d3eea8d73105773c66" name="ac4572a58eddb27d3eea8d73105773c66"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::HorzAlign</a>)</td></tr>
-<tr class="separator:ac4572a58eddb27d3eea8d73105773c66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cf8d6960e2765890d7e35631ed47364" id="r_a9cf8d6960e2765890d7e35631ed47364"><td class="memItemLeft" align="right" valign="top"><a id="a9cf8d6960e2765890d7e35631ed47364" name="a9cf8d6960e2765890d7e35631ed47364"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (<a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt;&gt;)</td></tr>
-<tr class="separator:a9cf8d6960e2765890d7e35631ed47364"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1a7cb4eaa59d187b31f87bb2d548fdf" id="r_af1a7cb4eaa59d187b31f87bb2d548fdf"><td class="memItemLeft" align="right" valign="top"><a id="af1a7cb4eaa59d187b31f87bb2d548fdf" name="af1a7cb4eaa59d187b31f87bb2d548fdf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (AlignBase::Axis)</td></tr>
-<tr class="separator:af1a7cb4eaa59d187b31f87bb2d548fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a065c8394b0d6fa956928909378e9adc3" id="r_a065c8394b0d6fa956928909378e9adc3"><td class="memItemLeft" align="right" valign="top"><a id="a065c8394b0d6fa956928909378e9adc3" name="a065c8394b0d6fa956928909378e9adc3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (<a class="el" href="structdrain_1_1image_1_1AlignBase.html#a94c3a04b97f81dd5db990b01eb6521a0">AlignBase::Pos</a>)</td></tr>
-<tr class="separator:a065c8394b0d6fa956928909378e9adc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad048f7f5c4771f9129ca4c1d4aa9fa15" id="r_ad048f7f5c4771f9129ca4c1d4aa9fa15"><td class="memTemplParams" colspan="2"><a id="ad048f7f5c4771f9129ca4c1d4aa9fa15" name="ad048f7f5c4771f9129ca4c1d4aa9fa15"></a>
-template&lt;typename AX , AlignBase::Axis V&gt; </td></tr>
-<tr class="memitem:ad048f7f5c4771f9129ca4c1d4aa9fa15"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; AX, V &gt; &amp;align)</td></tr>
-<tr class="separator:ad048f7f5c4771f9129ca4c1d4aa9fa15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9c4c05554b0bb96d0e97c5ce67d89aa" id="r_aa9c4c05554b0bb96d0e97c5ce67d89aa"><td class="memItemLeft" align="right" valign="top"><a id="aa9c4c05554b0bb96d0e97c5ce67d89aa" name="aa9c4c05554b0bb96d0e97c5ce67d89aa"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1image_1_1AlignSVG.html">AlignSVG</a> &amp;align)</td></tr>
-<tr class="separator:aa9c4c05554b0bb96d0e97c5ce67d89aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa202e2585cedfeaf2415be6600238142" id="r_aa202e2585cedfeaf2415be6600238142"><td class="memItemLeft" align="right" valign="top"><a id="aa202e2585cedfeaf2415be6600238142" name="aa202e2585cedfeaf2415be6600238142"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (AlignSVG::Owner)</td></tr>
-<tr class="separator:aa202e2585cedfeaf2415be6600238142"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a846cc9679908f9f2459eb03c512d7510" id="r_a846cc9679908f9f2459eb03c512d7510"><td class="memItemLeft" align="right" valign="top"><a id="a846cc9679908f9f2459eb03c512d7510" name="a846cc9679908f9f2459eb03c512d7510"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (MutualAlign::Topol)</td></tr>
-<tr class="separator:a846cc9679908f9f2459eb03c512d7510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46d109d69bc98f9850599f29797109f7" id="r_a46d109d69bc98f9850599f29797109f7"><td class="memItemLeft" align="right" valign="top"><a id="a46d109d69bc98f9850599f29797109f7" name="a46d109d69bc98f9850599f29797109f7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (MutualAlign::Topol)</td></tr>
-<tr class="separator:a46d109d69bc98f9850599f29797109f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a3e9dd87c747bfe8f8a0bbfc69c578b" id="r_a5a3e9dd87c747bfe8f8a0bbfc69c578b"><td class="memTemplParams" colspan="2"><a id="a5a3e9dd87c747bfe8f8a0bbfc69c578b" name="a5a3e9dd87c747bfe8f8a0bbfc69c578b"></a>
-template&lt;typename AX , AlignBase::Axis A&gt; </td></tr>
-<tr class="memitem:a5a3e9dd87c747bfe8f8a0bbfc69c578b"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html">CompleteAlignment</a>&lt; AX, A &gt; &amp;ad)</td></tr>
-<tr class="separator:a5a3e9dd87c747bfe8f8a0bbfc69c578b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af58648fd74d10db0a4d304d5c8042c7d" id="r_af58648fd74d10db0a4d304d5c8042c7d"><td class="memItemLeft" align="right" valign="top"><a id="af58648fd74d10db0a4d304d5c8042c7d" name="af58648fd74d10db0a4d304d5c8042c7d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (image::MutualAlign::Topol)</td></tr>
+<tr class="separator:af58648fd74d10db0a4d304d5c8042c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6ac95733f11453104668ab5b776eafd" id="r_ab6ac95733f11453104668ab5b776eafd"><td class="memItemLeft" align="right" valign="top"><a id="ab6ac95733f11453104668ab5b776eafd" name="ab6ac95733f11453104668ab5b776eafd"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1CoordinateHandler2D.html">CoordinateHandler2D</a> &amp;handler)</td></tr>
 <tr class="separator:ab6ac95733f11453104668ab5b776eafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e4dca24ebe45bb2ebdb48b37359b199" id="r_a8e4dca24ebe45bb2ebdb48b37359b199"><td class="memItemLeft" align="right" valign="top"><a id="a8e4dca24ebe45bb2ebdb48b37359b199" name="a8e4dca24ebe45bb2ebdb48b37359b199"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a> &amp;policy)</td></tr>
 <tr class="separator:a8e4dca24ebe45bb2ebdb48b37359b199"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f27bff1481f8190e802b986a403217e" id="r_a6f27bff1481f8190e802b986a403217e"><td class="memTemplParams" colspan="2"><a id="a6f27bff1481f8190e802b986a403217e" name="a6f27bff1481f8190e802b986a403217e"></a>
+template&lt;AlignBase::Axis AX&gt; </td></tr>
+<tr class="memitem:a6f27bff1481f8190e802b986a403217e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1image_1_1CoordSpan.html">CoordSpan</a>&lt; AX &gt; &amp;span)</td></tr>
+<tr class="separator:a6f27bff1481f8190e802b986a403217e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a798416f2493a91ea710221b33bd8ade7" id="r_a798416f2493a91ea710221b33bd8ade7"><td class="memItemLeft" align="right" valign="top"><a id="a798416f2493a91ea710221b33bd8ade7" name="a798416f2493a91ea710221b33bd8ade7"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1image_1_1Position.html">Position</a> &amp;p)</td></tr>
 <tr class="separator:a798416f2493a91ea710221b33bd8ade7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -760,12 +776,6 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:aaa7eceec0787dce46d312eb1855af7e8" id="r_aaa7eceec0787dce46d312eb1855af7e8"><td class="memItemLeft" align="right" valign="top"><a id="aaa7eceec0787dce46d312eb1855af7e8" name="aaa7eceec0787dce46d312eb1855af7e8"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const DistanceNeighbourhood &amp;chain)</td></tr>
 <tr class="separator:aaa7eceec0787dce46d312eb1855af7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11d105c0a680b2a5e7a9331916efeba6" id="r_a11d105c0a680b2a5e7a9331916efeba6"><td class="memItemLeft" align="right" valign="top"><a id="a11d105c0a680b2a5e7a9331916efeba6" name="a11d105c0a680b2a5e7a9331916efeba6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1DistanceModelExponential.html">DistanceModelExponential</a>)</td></tr>
-<tr class="separator:a11d105c0a680b2a5e7a9331916efeba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae31229ae43eb6078d2a502efacd442de" id="r_ae31229ae43eb6078d2a502efacd442de"><td class="memItemLeft" align="right" valign="top"><a id="ae31229ae43eb6078d2a502efacd442de" name="ae31229ae43eb6078d2a502efacd442de"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1DistanceModelLinear.html">DistanceModelLinear</a>)</td></tr>
-<tr class="separator:ae31229ae43eb6078d2a502efacd442de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05b03e7bd458a12bb6fc327ce3a109ab" id="r_a05b03e7bd458a12bb6fc327ce3a109ab"><td class="memTemplParams" colspan="2"><a id="a05b03e7bd458a12bb6fc327ce3a109ab" name="a05b03e7bd458a12bb6fc327ce3a109ab"></a>
 template&lt;class S , class D &gt; </td></tr>
 <tr class="memitem:a05b03e7bd458a12bb6fc327ce3a109ab"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1EdgeTracker.html">EdgeTracker</a>&lt; S, D &gt; &amp;prober)</td></tr>
@@ -793,6 +803,12 @@ template&lt;class T &gt; </td></tr>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a94731969193ba92c4e7f436c7fa27554"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1ImageTray.html">ImageTray</a>&lt; T &gt; &amp;tray)</td></tr>
 <tr class="separator:a94731969193ba92c4e7f436c7fa27554"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58b1dec2ce8c99290fdd20e99e55a6de" id="r_a58b1dec2ce8c99290fdd20e99e55a6de"><td class="memTemplParams" colspan="2">template&lt;class N &gt; </td></tr>
+<tr class="memitem:a58b1dec2ce8c99290fdd20e99e55a6de"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedrain_1_1image.html#a58b1dec2ce8c99290fdd20e99e55a6de">DRAIN_XML_TREE</a> (N) &amp;<a class="el" href="classdrain_1_1image_1_1MouseXML.html">MouseXML</a></td></tr>
+<tr class="separator:a58b1dec2ce8c99290fdd20e99e55a6de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6ca737c5f2f89b9014f2439fc3f4b2" id="r_a3b6ca737c5f2f89b9014f2439fc3f4b2"><td class="memItemLeft" align="right" valign="top"><a id="a3b6ca737c5f2f89b9014f2439fc3f4b2" name="a3b6ca737c5f2f89b9014f2439fc3f4b2"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> &amp;p)</td></tr>
+<tr class="separator:a3b6ca737c5f2f89b9014f2439fc3f4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacb58b0af7da70ddf2e29ae5eda82b76" id="r_aacb58b0af7da70ddf2e29ae5eda82b76"><td class="memItemLeft" align="right" valign="top"><a id="aacb58b0af7da70ddf2e29ae5eda82b76" name="aacb58b0af7da70ddf2e29ae5eda82b76"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &amp;entry)</td></tr>
 <tr class="separator:aacb58b0af7da70ddf2e29ae5eda82b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -807,43 +823,12 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 template&lt;class T , class D &gt; </td></tr>
 <tr class="memitem:a6410d32ff2eb0c9c3b6348d1d4538125"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1SegmentStatisticsProber.html">SegmentStatisticsProber</a>&lt; T, D &gt; &amp;prober)</td></tr>
 <tr class="separator:a6410d32ff2eb0c9c3b6348d1d4538125"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f27bff1481f8190e802b986a403217e" id="r_a6f27bff1481f8190e802b986a403217e"><td class="memTemplParams" colspan="2"><a id="a6f27bff1481f8190e802b986a403217e" name="a6f27bff1481f8190e802b986a403217e"></a>
-template&lt;AlignBase::Axis AX&gt; </td></tr>
-<tr class="memitem:a6f27bff1481f8190e802b986a403217e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structdrain_1_1image_1_1CoordSpan.html">CoordSpan</a>&lt; AX &gt; &amp;span)</td></tr>
-<tr class="separator:a6f27bff1481f8190e802b986a403217e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae060fb87294def002ce5c92117d33e19" id="r_ae060fb87294def002ce5c92117d33e19"><td class="memTemplParams" colspan="2"><a id="ae060fb87294def002ce5c92117d33e19" name="ae060fb87294def002ce5c92117d33e19"></a>
-template&lt;AlignBase::Axis AX&gt; </td></tr>
-<tr class="memitem:ae060fb87294def002ce5c92117d33e19"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>expandBBox</b> (<a class="el" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp;bbox, <a class="el" href="structdrain_1_1image_1_1CoordSpan.html">CoordSpan</a>&lt; AX &gt; &amp;anchorSpan)</td></tr>
-<tr class="separator:ae060fb87294def002ce5c92117d33e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8491852eaed12a380a37a6660e31f026" id="r_a8491852eaed12a380a37a6660e31f026"><td class="memItemLeft" align="right" valign="top"><a id="a8491852eaed12a380a37a6660e31f026" name="a8491852eaed12a380a37a6660e31f026"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a8491852eaed12a380a37a6660e31f026"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>expandBBox</b> (<a class="el" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp;bbox, <a class="el" href="structdrain_1_1image_1_1CoordSpan.html">CoordSpan</a>&lt; AlignBase::Axis::HORZ &gt; &amp;anchorSpan)</td></tr>
-<tr class="separator:a8491852eaed12a380a37a6660e31f026"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59a07f2bb0a0fb658af8016dd8f923bc" id="r_a59a07f2bb0a0fb658af8016dd8f923bc"><td class="memItemLeft" align="right" valign="top"><a id="a59a07f2bb0a0fb658af8016dd8f923bc" name="a59a07f2bb0a0fb658af8016dd8f923bc"></a>
-template&lt;&gt; </td></tr>
-<tr class="memitem:a59a07f2bb0a0fb658af8016dd8f923bc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>expandBBox</b> (<a class="el" href="classdrain_1_1image_1_1BBoxSVG.html">BBoxSVG</a> &amp;bbox, <a class="el" href="structdrain_1_1image_1_1CoordSpan.html">CoordSpan</a>&lt; AlignBase::Axis::VERT &gt; &amp;anchorSpan)</td></tr>
-<tr class="separator:a59a07f2bb0a0fb658af8016dd8f923bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b408f5e6197a1331407376c9ab0b35b" id="r_a7b408f5e6197a1331407376c9ab0b35b"><td class="memTemplParams" colspan="2">template&lt;AlignBase::Axis AX&gt; </td></tr>
-<tr class="memitem:a7b408f5e6197a1331407376c9ab0b35b"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedrain_1_1image.html#a7b408f5e6197a1331407376c9ab0b35b">getAnchorElem</a> (TreeSVG &amp;group, <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp;node)</td></tr>
-<tr class="separator:a7b408f5e6197a1331407376c9ab0b35b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b05b3190cff7bb51ef3e440427a092" id="r_a63b05b3190cff7bb51ef3e440427a092"><td class="memItemLeft" align="right" valign="top"><a id="a63b05b3190cff7bb51ef3e440427a092" name="a63b05b3190cff7bb51ef3e440427a092"></a>
+typedef&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_XML_TREE</b> (<a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a>) TreeSVG</td></tr>
+<tr class="separator:a63b05b3190cff7bb51ef3e440427a092"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cd5afab4cd8e4e153dbbec67e0ad21a" id="r_a8cd5afab4cd8e4e153dbbec67e0ad21a"><td class="memItemLeft" align="right" valign="top"><a id="a8cd5afab4cd8e4e153dbbec67e0ad21a" name="a8cd5afab4cd8e4e153dbbec67e0ad21a"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (TreeUtilsSVG::Roles)</td></tr>
 <tr class="separator:a8cd5afab4cd8e4e153dbbec67e0ad21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65efe1486f886dafc8b752ea7f7bd22e" id="r_a65efe1486f886dafc8b752ea7f7bd22e"><td class="memItemLeft" align="right" valign="top"><a id="a65efe1486f886dafc8b752ea7f7bd22e" name="a65efe1486f886dafc8b752ea7f7bd22e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (TreeUtilsSVG::Roles)</td></tr>
-<tr class="separator:a65efe1486f886dafc8b752ea7f7bd22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b92e7a887fa17392bb991f9563e308d" id="r_a6b92e7a887fa17392bb991f9563e308d"><td class="memItemLeft" align="right" valign="top"><a id="a6b92e7a887fa17392bb991f9563e308d" name="a6b92e7a887fa17392bb991f9563e308d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a>)</td></tr>
-<tr class="separator:a6b92e7a887fa17392bb991f9563e308d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78fc6b30b055da66967711d9a36f4318" id="r_a78fc6b30b055da66967711d9a36f4318"><td class="memItemLeft" align="right" valign="top"><a id="a78fc6b30b055da66967711d9a36f4318" name="a78fc6b30b055da66967711d9a36f4318"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1WindowCoreBase.html">WindowCoreBase</a>)</td></tr>
-<tr class="separator:a78fc6b30b055da66967711d9a36f4318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf95086506ed0138cde7fcf09e8a7a4a" id="r_abf95086506ed0138cde7fcf09e8a7a4a"><td class="memItemLeft" align="right" valign="top"><a id="abf95086506ed0138cde7fcf09e8a7a4a" name="abf95086506ed0138cde7fcf09e8a7a4a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1WindowCore.html">WindowCore</a>)</td></tr>
-<tr class="separator:abf95086506ed0138cde7fcf09e8a7a4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e71a72415b5434d3da348d0a00de26b" id="r_a7e71a72415b5434d3da348d0a00de26b"><td class="memItemLeft" align="right" valign="top"><a id="a7e71a72415b5434d3da348d0a00de26b" name="a7e71a72415b5434d3da348d0a00de26b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TYPENAME_DEF</b> (<a class="el" href="classdrain_1_1image_1_1WeightedWindowCore.html">WeightedWindowCore</a>)</td></tr>
-<tr class="separator:a7e71a72415b5434d3da348d0a00de26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace3fa35fac05f380711eceb28ce7f5fb" id="r_ace3fa35fac05f380711eceb28ce7f5fb"><td class="memItemLeft" align="right" valign="top"><a id="ace3fa35fac05f380711eceb28ce7f5fb" name="ace3fa35fac05f380711eceb28ce7f5fb"></a>
 std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1WindowConfig.html">WindowConfig</a> &amp;conf)</td></tr>
 <tr class="separator:ace3fa35fac05f380711eceb28ce7f5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -880,7 +865,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QDTexpand</b> (const 
 <p>Namespace for images and image processing tools. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a207247d40efc159c29d82871e80c0375" name="a207247d40efc159c29d82871e80c0375"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a207247d40efc159c29d82871e80c0375">&#9670;&#160;</a></span>DRAIN_ENUM_DICT() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a207247d40efc159c29d82871e80c0375">&#9670;&#160;</a></span>DRAIN_ENUM_DICT()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -898,66 +883,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>QDTexpand</b> (const 
 
 </div>
 </div>
-<a id="ab426466e1624794af414525cdba3e765" name="ab426466e1624794af414525cdba3e765"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab426466e1624794af414525cdba3e765">&#9670;&#160;</a></span>DRAIN_ENUM_DICT() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">DRAIN_ENUM_DICT </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structdrain_1_1image_1_1Alignment.html">AlignSVG::HorzAlign</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">        DRAIN_ENUM_ENTRY(<a class="code hl_struct" href="structdrain_1_1image_1_1AlignSVG.html">drain::image::AlignSVG</a>, TOP),</div>
-<div class="line">        DRAIN_ENUM_ENTRY(<a class="code hl_struct" href="structdrain_1_1image_1_1AlignSVG.html">drain::image::AlignSVG</a>, MIDDLE),</div>
-<div class="line">        DRAIN_ENUM_ENTRY(<a class="code hl_struct" href="structdrain_1_1image_1_1AlignSVG.html">drain::image::AlignSVG</a>, BOTTOM),</div>
-<div class="line">        DRAIN_ENUM_ENTRY(<a class="code hl_struct" href="structdrain_1_1image_1_1AlignSVG.html">drain::image::AlignSVG</a>, VERT_FILL),</div>
-<div class="line">        DRAIN_ENUM_ENTRY(<a class="code hl_struct" href="structdrain_1_1image_1_1AlignSVG.html">drain::image::AlignSVG</a>, UNDEFINED_VERT),</div>
-<div class="line">}</div>
-<div class="ttc" id="astructdrain_1_1image_1_1AlignSVG_html"><div class="ttname"><a href="structdrain_1_1image_1_1AlignSVG.html">drain::image::AlignSVG</a></div><div class="ttdoc">User-friendly programming interface for alignment considering two elements.</div><div class="ttdef"><b>Definition</b> AlignSVG.h:369</div></div>
-</div><!-- fragment -->
-<p><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> of horizontal (LEFT,CENTER,RIGHT) flags. </p>
-
-</div>
-</div>
-<a id="a7b408f5e6197a1331407376c9ab0b35b" name="a7b408f5e6197a1331407376c9ab0b35b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b408f5e6197a1331407376c9ab0b35b">&#9670;&#160;</a></span>getAnchorElem()</h2>
+<a id="a58b1dec2ce8c99290fdd20e99e55a6de" name="a58b1dec2ce8c99290fdd20e99e55a6de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58b1dec2ce8c99290fdd20e99e55a6de">&#9670;&#160;</a></span>DRAIN_XML_TREE()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;AlignBase::Axis AX&gt; </div>
+template&lt;class N &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a> &amp; getAnchorElem </td>
+          <td class="memname">DRAIN_XML_TREE </td>
           <td>(</td>
-          <td class="paramtype">TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>group</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1image_1_1NodeSVG.html">NodeSVG</a> &amp;&#160;</td>
-          <td class="paramname"><em>node</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="paramtype">N&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> &amp;</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p>Semantics:</p>
-<p>if myAnchor is set, use it. if myAnchor is unset, use group anchor; it servers as a default anchor if also groupAnchor is unset -&gt; use previous object as anchor.</p>
-<p>GroupAnchor (default anchor): DEFAULT(=UNSET): use previous object NONE: use nothing, don't align PREVIOUS: use previous (unneeded, this is the default for group) COLLECTIVE: use compound bounding bbox</p>
-<p>MyAnchor (specific anchor, always overrides) DEFAULT(=UNSET) -&gt; use GroupAnchor NONE: don't align me! (raise error if Align set?) PREVIOUS: use previous object COLLECTIVE: use compound bounding box</p>
-<p>SPECIAL: both DEFAULT: use PREVIOUS </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">N</td><td>- Node type for the tree, DRAIN_XML_TREE(N) </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

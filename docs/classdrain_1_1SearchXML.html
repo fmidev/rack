@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -310,7 +317,7 @@ template&lt;class T &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tree</td><td>- source element, </td></tr>
-    <tr><td class="paramname">id</td><td>- id attribute to be searched for </td></tr>
+    <tr><td class="paramname">tag</td><td>- id attribute to be searched for </td></tr>
     <tr><td class="paramname">result</td><td>- path of pointing to </td></tr>
     <tr><td class="paramname">path</td><td>- start path for the search. </td></tr>
   </table>
@@ -373,7 +380,7 @@ template&lt;class V &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tree</td><td>- source element, </td></tr>
-    <tr><td class="paramname">id</td><td>- id attribute to be searched for </td></tr>
+    <tr><td class="paramname">tag</td><td>- id attribute to be searched for </td></tr>
     <tr><td class="paramname">result</td><td>- path of the element with required ID, if found. </td></tr>
     <tr><td class="paramname">path</td><td>- start path for the search. </td></tr>
   </table>

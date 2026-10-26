@@ -6,13 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>rack: ImpulseBucket&lt; C &gt; Class Template Reference</title>
+<title>rack: ImpulseBucket&lt; C, H &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -79,30 +86,33 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1ImpulseBucket-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ImpulseBucket&lt; C &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">ImpulseBucket&lt; C, H &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="ImpulseResponseOp_8h_source.html">ImpulseResponseOp.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for ImpulseBucket&lt; C &gt;:</div>
+Inheritance diagram for ImpulseBucket&lt; C, H &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdrain_1_1image_1_1ImpulseBucket__inherit__graph.png" border="0" usemap="#aImpulseBucket_3_01C_01_4_inherit__map" alt="Inheritance graph"/></div>
-<map name="aImpulseBucket_3_01C_01_4_inherit__map" id="aImpulseBucket_3_01C_01_4_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,79,163,104"/>
-<area shape="rect" title=" " alt="" coords="65,5,103,31"/>
-<area shape="poly" title=" " alt="" coords="87,44,87,79,81,79,81,44"/>
+<div class="center"><img src="classdrain_1_1image_1_1ImpulseBucket__inherit__graph.png" border="0" usemap="#aImpulseBucket_3_01C_00_01H_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="aImpulseBucket_3_01C_00_01H_01_4_inherit__map" id="aImpulseBucket_3_01C_00_01H_01_4_inherit__map">
+<area shape="rect" title=" " alt="" coords="5,79,180,104"/>
+<area shape="rect" title=" " alt="" coords="73,5,112,31"/>
+<area shape="poly" title=" " alt="" coords="95,44,95,79,90,79,90,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for ImpulseBucket&lt; C &gt;:</div>
+Collaboration diagram for ImpulseBucket&lt; C, H &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classdrain_1_1image_1_1ImpulseBucket__coll__graph.png" border="0" usemap="#aImpulseBucket_3_01C_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="aImpulseBucket_3_01C_01_4_coll__map" id="aImpulseBucket_3_01C_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="5,79,163,104"/>
-<area shape="rect" title=" " alt="" coords="65,5,103,31"/>
-<area shape="poly" title=" " alt="" coords="87,44,87,79,81,79,81,44"/>
+<div class="center"><img src="classdrain_1_1image_1_1ImpulseBucket__coll__graph.png" border="0" usemap="#aImpulseBucket_3_01C_00_01H_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="aImpulseBucket_3_01C_00_01H_01_4_coll__map" id="aImpulseBucket_3_01C_00_01H_01_4_coll__map">
+<area shape="rect" title=" " alt="" coords="5,93,180,119"/>
+<area shape="rect" title=" " alt="" coords="24,5,63,31"/>
+<area shape="poly" title=" " alt="" coords="59,41,88,91,83,94,54,44"/>
+<area shape="rect" href="classdrain_1_1image_1_1ValueHandler.html" title=" " alt="" coords="87,5,197,31"/>
+<area shape="poly" title=" " alt="" coords="131,44,102,94,97,91,126,41"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -111,6 +121,12 @@ Public Types</h2></td></tr>
 <tr class="memitem:a1c7e24a23288145c5e55cf0b82525524" id="r_a1c7e24a23288145c5e55cf0b82525524"><td class="memItemLeft" align="right" valign="top"><a id="a1c7e24a23288145c5e55cf0b82525524" name="a1c7e24a23288145c5e55cf0b82525524"></a>
 typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td></tr>
 <tr class="separator:a1c7e24a23288145c5e55cf0b82525524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04301146339ee553728f01dfa42c4f45" id="r_a04301146339ee553728f01dfa42c4f45"><td class="memItemLeft" align="right" valign="top"><a id="a04301146339ee553728f01dfa42c4f45" name="a04301146339ee553728f01dfa42c4f45"></a>
+typedef <a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html">ImpulseBucket</a>&lt; C &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>bucket_t</b></td></tr>
+<tr class="separator:a04301146339ee553728f01dfa42c4f45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d776f7d04eb0b6dfbcaed4d1eaf3ba1" id="r_a4d776f7d04eb0b6dfbcaed4d1eaf3ba1"><td class="memItemLeft" align="right" valign="top"><a id="a4d776f7d04eb0b6dfbcaed4d1eaf3ba1" name="a4d776f7d04eb0b6dfbcaed4d1eaf3ba1"></a>
+typedef H&#160;</td><td class="memItemRight" valign="bottom"><b>value_handler_t</b></td></tr>
+<tr class="separator:a4d776f7d04eb0b6dfbcaed4d1eaf3ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -138,10 +154,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7633c7fbfc17769dbf2b7fb703ab8278" id="r_a7633c7fbfc17769dbf2b7fb703ab8278"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImpulseBucket.html#a7633c7fbfc17769dbf2b7fb703ab8278">getWeight</a> (int i)=0</td></tr>
 <tr class="memdesc:a7633c7fbfc17769dbf2b7fb703ab8278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return weight at position i.  <br /></td></tr>
 <tr class="separator:a7633c7fbfc17769dbf2b7fb703ab8278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a42dc4237bedc1f9fa677a6efdec8b" id="r_a34a42dc4237bedc1f9fa677a6efdec8b"><td class="memItemLeft" align="right" valign="top"><a id="a34a42dc4237bedc1f9fa677a6efdec8b" name="a34a42dc4237bedc1f9fa677a6efdec8b"></a>
+<a class="el" href="classdrain_1_1image_1_1ValueHandler.html">ValueHandler</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getValueHandler</b> ()</td></tr>
+<tr class="separator:a34a42dc4237bedc1f9fa677a6efdec8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a8955f89eef2b109ff685db8b7edbab3c" id="r_a8955f89eef2b109ff685db8b7edbab3c"><td class="memItemLeft" align="right" valign="top"><a id="a8955f89eef2b109ff685db8b7edbab3c" name="a8955f89eef2b109ff685db8b7edbab3c"></a>
+value_handler_t&#160;</td><td class="memItemRight" valign="bottom"><b>valueHandler</b></td></tr>
+<tr class="separator:a8955f89eef2b109ff685db8b7edbab3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class C&gt;<br />
-class drain::image::ImpulseBucket&lt; C &gt;</div><dl class="tparams"><dt>Template Parameters</dt><dd>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class C, class H = ValueHandler&gt;<br />
+class drain::image::ImpulseBucket&lt; C, H &gt;</div><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">C</td><td>- conf type, implementing <a class="el" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type.">drain::BeanLike</a> concept (getName, getDescription, getParameters) </td></tr>
   </table>
@@ -154,7 +179,7 @@ class drain::image::ImpulseBucket&lt; C &gt;</div><dl class="tparams"><dt>Templa
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -202,7 +227,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -250,7 +275,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -298,7 +323,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -346,7 +371,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -378,7 +403,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -411,7 +436,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -453,7 +478,7 @@ template&lt;class C &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C &gt; </div>
+template&lt;class C , class H  = ValueHandler&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">

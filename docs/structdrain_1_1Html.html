@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -103,7 +110,7 @@ Public Types</h2></td></tr>
 , <br />
 &#160;&#160;<b>STYLE</b> =NodeXML&lt;&gt;::STYLE
 , <b>STYLE_SELECT</b> =NodeXML&lt;&gt;::STYLE_SELECT
-, <b>JAVASCRIPT_SCOPE</b> =XML::JAVASCRIPT_SCOPE
+, <b>SCOPE_CURLY</b> =XML::SCOPE_CURLY
 , <b>HTML</b> =10
 , <br />
 &#160;&#160;<b>HEAD</b>

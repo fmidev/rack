@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -82,10 +89,11 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a>(const Hi5Tree &amp;tree, std::map&lt; std::string, ODIMPathElem &gt; &amp;children, ODIMPathElem::group_t groups)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#abb14ab4fcd8b07a046b0cd15075f433e">getLastChild</a>(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, bool create=false)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">getNewChild</a>(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a>(const Hi5Tree &amp;tree, ODIMPathElem &amp;child)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#a7228a4db26d0009050110a864674f2c6">completePathParser</a>(const std::string &amp;s, ODIMPath &amp;path, std::string &amp;attributeKey, std::string &amp;attributeValue)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a>(const Hi5Tree &amp;tree, std::map&lt; std::string, ODIMPathElem &gt; &amp;children, ODIMPathElem::group_t groups)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#abb14ab4fcd8b07a046b0cd15075f433e">getLastChild</a>(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, bool create=false)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">getNewChild</a>(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a>(const Hi5Tree &amp;tree, ODIMPathElem &amp;child)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathTools.html">ODIMPathTools</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

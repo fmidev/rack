@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -130,10 +137,10 @@ AnDRe commands</h2>
 <div class="line">  --aRemover &#39;0.5,nodata,false&#39; \</div>
 <div class="line">-o volume-corrected.h5    </div>
 </div><!-- fragment --><p>By default, AnDRe commands apply to the full volume input. Each operator will look for quantities (typically DBZH) it needs as input. To decrease computation time, the processing can be limited using <code>--select</code> command, for example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume-anomalous.h5 --select <span class="stringliteral">&#39;dataset1:5/data1:3&#39;</span> &lt;andre-cmds&gt; ...</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p> For details, see <a class="el" href="index.html#selecting">Selecting data</a> .</p>
 <p>The design of <b>AnDRe</b> detectors is based on <b>Ropo</b> , the operational anomaly detection C program applied in FMI since 2001. <br  />
- Each detector has been fully rewritten as a respective C++ class (<a class="el" href="classrack_1_1BiometOp.html" title="Detects birds and insects.">rack::BiometOp</a>, <a class="el" href="classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones.">rack::EmitterOp</a>, <a class="el" href="classrack_1_1ShipOp.html" title="Detects ships.">rack::ShipOp</a>, <a class="el" href="classrack_1_1SpeckleOp.html">rack::SpeckleOp</a>) which internally applies functions of the <b>Drain</b> library, for example segment size analysis, moving window filters and statistics. In development, emphasis has been on code re-usability, speed and stability; see implementation details further below.</p>
+ Each detector has been fully rewritten as a respective C++ class (<a class="el" href="classrack_1_1BiometOp.html" title="Detects birds and insects.">rack::BiometOp</a>, <a class="el" href="classrack_1_1EmitterOp.html" title="A quick emitter detection based on subtracting horizontal window medians by vertical ones.">rack::EmitterOp</a>, <a class="el" href="classrack_1_1ShipOp.html" title="Detects ships.">rack::ShipOp</a>, <a class="el" href="classrack_1_1SpeckleOp.html" title="DOC: Add class description.">rack::SpeckleOp</a>) which internally applies functions of the <b>Drain</b> library, for example segment size analysis, moving window filters and statistics. In development, emphasis has been on code re-usability, speed and stability; see implementation details further below.</p>
 <p><b>Rack</b> provides several detectors that compute detection fields ie. probablity images, explained next. The removal procedures are explained after that.</p>
 <h1><a class="anchor" id="detectors"></a>
 Detection</h1>
@@ -187,9 +194,9 @@ Detection results of <code>--aInsect</code> .</div></div>
  <h2><a class="anchor" id="aClutter"></a>
 Detecting ground clutter</h2>
 <p>Based on pre-computed clutter map, scales the clutter probability for desired sweeps.  </p>
-<p>The scaling is a heuristic. The loaded map should contain quantity <code>CLUTTER</code> which in each bin represents the probability of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed from accumulated dBZ values as described in cluttermaps .</p>
+<p>The scaling is a heuristic. The loaded map should contain quantity <code>CLUTTER</code> which in each bin represents the probability of contamination. Notice that the quantity does not describe the intensity of contamination, yet might be computed from accumulated dBZ values as described in cluttermaps . // FIX: 'cluttermaps' Doxygen section not found; update <a class="el" href="index.html#target">Defining target data properties</a> or add the section.</p>
 <ul>
-<li>alpha <picture><source srcset="form_3_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ \alpha = \angle(b,c)$" src="form_3.png" width="58" height="14"/></picture> : "sky angle",  </li>
+<li>alpha \( \alpha = \angle(b,c)\) : "sky angle",  </li>
 </ul>
 <div class="fragment"><div class="line">rack volume.h5 --aClutter &#39;0.5,1,CLUTTER,cluttermaps/cluttermap-${NOD}-${quantity}.h5&#39; -o aClutter.h5</div>
 <div class="line">  % decay=0.5 [per 1000m]</div>
@@ -338,9 +345,9 @@ Other quality fields</h1>
 <h2><a class="anchor" id="aAttenuation"></a>
 Attenuation in rain</h2>
 <p>Radar signal attenuates in heavy rain. The amount of attenuation in liquid rain can be approximated from dBZ data using formula proposed by Ulrich Blahak:  </p><p class="formulaDsp">
-<picture><source srcset="form_151_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+\[
      k(Z) = 1.12\cdot10^{-4} Z_e^{0.62}
-\]" src="form_151.png" width="126" height="16"/></picture>
+\]
 </p>
 <div class="fragment"><div class="line">rack volume.h5 --aAttenuation &#39;3,1.12e-07,0.62,0,0&#39; -o aAttenuation.h5</div>
 <div class="line">  % reflHalfWidth=3 [dBZ limit of 50% quality]</div>

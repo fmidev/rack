@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -142,6 +149,8 @@ Public Member Functions</h2></td></tr>
 template&lt;typename ... T&gt; </td></tr>
 <tr class="memitem:a5acfd3b94fbbf9f4d0acf3f5073535ee"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>EnumFlagger</b> (const T &amp;... arg)</td></tr>
 <tr class="separator:a5acfd3b94fbbf9f4d0acf3f5073535ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f510aaeb22e8653cd562ff721bf3376" id="r_a6f510aaeb22e8653cd562ff721bf3376"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#a6f510aaeb22e8653cd562ff721bf3376">EnumFlagger</a> (const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a> &amp;)=default</td></tr>
+<tr class="separator:a6f510aaeb22e8653cd562ff721bf3376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6a9346a53511cfbe7ff171222366a7a" id="r_ab6a9346a53511cfbe7ff171222366a7a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1EnumFlagger.html#ab6a9346a53511cfbe7ff171222366a7a">operator=</a> (const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;flagger)</td></tr>
 <tr class="separator:ab6a9346a53511cfbe7ff171222366a7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52a08058aac4453119020b3ac757804f" id="r_a52a08058aac4453119020b3ac757804f"><td class="memTemplParams" colspan="2"><a id="a52a08058aac4453119020b3ac757804f" name="a52a08058aac4453119020b3ac757804f"></a>
@@ -166,7 +175,38 @@ class drain::EnumFlagger&lt; F &gt;</div><p>Flagger accepting values of enum typ
 </dl>
 <p><a class="el" href="structdrain_1_1Enum.html" title="A container for a static dictionary of enumeration values.">Enum</a> dictionary should be defined as follows:</p>
 <p>template &lt;&gt; const drain::Enum&lt;...&gt;::dict_t drain::Enum&lt;...&gt;::dict = {{"A", A}, {"B", B}, {"C", C}}; </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6f510aaeb22e8653cd562ff721bf3376" name="a6f510aaeb22e8653cd562ff721bf3376"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f510aaeb22e8653cd562ff721bf3376">&#9670;&#160;</a></span>EnumFlagger()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger</a>&lt; F &gt; &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Dictionary throws except if key now found.
+</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)Enum&lt;value_t&gt;::dict.getValue(key); }; </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="af9e814eec199193985df42fa55416257" name="af9e814eec199193985df42fa55416257"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9e814eec199193985df42fa55416257">&#9670;&#160;</a></span>getValueNEW()</h2>
 
@@ -226,8 +266,7 @@ template&lt;class F &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<pre class="fragment">Dictionary throws except if key now found.
-</pre><p> static value_t getKeys(const value_t &amp; value){ return (value_t)Enum&lt;value_t&gt;::dict.getValue(key); }; Consider handler through this-&gt;set(Flagger) ? Needs protected/private _set() (or assign()). </p>
+<p>Consider handler through this-&gt;set(Flagger) ? Needs protected/private _set() (or assign()). </p>
 
 </div>
 </div>

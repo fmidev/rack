@@ -1,6 +1,6 @@
 <map id="DotHeader" name="DotHeader">
-<area shape="rect" id="Node000001" title=" " alt="" coords="63,331,155,356"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="67,243,150,268"/>
+<area shape="rect" id="Node000001" title="DOC: Add class description." alt="" coords="63,331,155,356"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title="DOC: Add class description." alt="" coords="67,243,150,268"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,282,109,292,110,330,105,331,103,292,104,282"/>
 <area shape="poly" id="edge5_Node000001_Node000002" title=" " alt="" coords="111,282,111,330,106,330,106,282"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,155,160,180"/>

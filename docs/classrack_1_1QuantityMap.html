@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -127,7 +134,7 @@ Collaboration diagram for QuantityMap:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ae4bc5ef99b6565ca67926c13a24960c1" id="r_ae4bc5ef99b6565ca67926c13a24960c1"><td class="memItemLeft" align="right" valign="top"><a id="ae4bc5ef99b6565ca67926c13a24960c1" name="ae4bc5ef99b6565ca67926c13a24960c1"></a>
-typedef std::map&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> std::map&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
 <tr class="separator:ae4bc5ef99b6565ca67926c13a24960c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -137,77 +144,77 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9c35957764b47c3f5f2a59653b3d778e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a9c35957764b47c3f5f2a59653b3d778e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4545b597725cb289604f19cca80b56b1" id="r_a4545b597725cb289604f19cca80b56b1"><td class="memItemLeft" align="right" valign="top"><a id="a4545b597725cb289604f19cca80b56b1" name="a4545b597725cb289604f19cca80b56b1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>QuantityMap</b> (const <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;m)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>QuantityMap</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;m)</td></tr>
 <tr class="memdesc:a4545b597725cb289604f19cca80b56b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a4545b597725cb289604f19cca80b56b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a760c6733ddcafb3472621f2784d49106" id="r_a760c6733ddcafb3472621f2784d49106"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a760c6733ddcafb3472621f2784d49106">QuantityMap</a> (const std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;inits)</td></tr>
+<tr class="memitem:a760c6733ddcafb3472621f2784d49106" id="r_a760c6733ddcafb3472621f2784d49106"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a760c6733ddcafb3472621f2784d49106">QuantityMap</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">inits</a>)</td></tr>
 <tr class="memdesc:a760c6733ddcafb3472621f2784d49106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for ... ?  <br /></td></tr>
 <tr class="separator:a760c6733ddcafb3472621f2784d49106"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df7754e51d2d7032338e5173ede6331" id="r_a1df7754e51d2d7032338e5173ede6331"><td class="memItemLeft" align="right" valign="top"><a id="a1df7754e51d2d7032338e5173ede6331" name="a1df7754e51d2d7032338e5173ede6331"></a>
-<a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;inits)</td></tr>
+<a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">inits</a>)</td></tr>
 <tr class="separator:a1df7754e51d2d7032338e5173ede6331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b9f9e3b97d55a55717a521bced7f834" id="r_a1b9f9e3b97d55a55717a521bced7f834"><td class="memItemLeft" align="right" valign="top"><a id="a1b9f9e3b97d55a55717a521bced7f834" name="a1b9f9e3b97d55a55717a521bced7f834"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;inits)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">inits</a>)</td></tr>
 <tr class="separator:a1b9f9e3b97d55a55717a521bced7f834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2caa6fea9e9725a1d3dde96af1e1ff9" id="r_ad2caa6fea9e9725a1d3dde96af1e1ff9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#ad2caa6fea9e9725a1d3dde96af1e1ff9">hasKey</a> (const std::string &amp;key) const</td></tr>
+<tr class="memitem:ad2caa6fea9e9725a1d3dde96af1e1ff9" id="r_ad2caa6fea9e9725a1d3dde96af1e1ff9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#ad2caa6fea9e9725a1d3dde96af1e1ff9">hasKey</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ad2caa6fea9e9725a1d3dde96af1e1ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an exact match, without checking variants, is found.  <br /></td></tr>
 <tr class="separator:ad2caa6fea9e9725a1d3dde96af1e1ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac405de45d2466b385473e2deba216176" id="r_ac405de45d2466b385473e2deba216176"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#ac405de45d2466b385473e2deba216176">hasQuantity</a> (const std::string &amp;key) const</td></tr>
+<tr class="memitem:ac405de45d2466b385473e2deba216176" id="r_ac405de45d2466b385473e2deba216176"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#ac405de45d2466b385473e2deba216176">hasQuantity</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ac405de45d2466b385473e2deba216176"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an exact match or a variant, is found.  <br /></td></tr>
 <tr class="separator:ac405de45d2466b385473e2deba216176"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc356b7a10227a51f26e6f1084589de9" id="r_afc356b7a10227a51f26e6f1084589de9"><td class="memItemLeft" align="right" valign="top">iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#afc356b7a10227a51f26e6f1084589de9">retrieve</a> (const std::string &amp;key)</td></tr>
+<tr class="memitem:afc356b7a10227a51f26e6f1084589de9" id="r_afc356b7a10227a51f26e6f1084589de9"><td class="memItemLeft" align="right" valign="top">iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#afc356b7a10227a51f26e6f1084589de9">retrieve</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key)</td></tr>
 <tr class="memdesc:afc356b7a10227a51f26e6f1084589de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find a quantity, first by exact match, or then among variants.  <br /></td></tr>
 <tr class="separator:afc356b7a10227a51f26e6f1084589de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57aeab7a2254f8b4b3a920043407a715" id="r_a57aeab7a2254f8b4b3a920043407a715"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a57aeab7a2254f8b4b3a920043407a715">retrieve</a> (const std::string &amp;key) const</td></tr>
+<tr class="memitem:a57aeab7a2254f8b4b3a920043407a715" id="r_a57aeab7a2254f8b4b3a920043407a715"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a57aeab7a2254f8b4b3a920043407a715">retrieve</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a57aeab7a2254f8b4b3a920043407a715"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to find a quantity, first by exact match, or then among variants.  <br /></td></tr>
 <tr class="separator:a57aeab7a2254f8b4b3a920043407a715"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9be35efd797b7cc829b6a9845872457" id="r_ad9be35efd797b7cc829b6a9845872457"><td class="memItemLeft" align="right" valign="top"><a id="ad9be35efd797b7cc829b6a9845872457" name="ad9be35efd797b7cc829b6a9845872457"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:ad9be35efd797b7cc829b6a9845872457"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85f5b7e0dc161f78969e35605854eb96" id="r_a85f5b7e0dc161f78969e35605854eb96"><td class="memItemLeft" align="right" valign="top"><a id="a85f5b7e0dc161f78969e35605854eb96" name="a85f5b7e0dc161f78969e35605854eb96"></a>
-<a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key)</td></tr>
+<a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key)</td></tr>
 <tr class="separator:a85f5b7e0dc161f78969e35605854eb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a456f0f3d0ac47230aaab42974b2ba584" id="r_a456f0f3d0ac47230aaab42974b2ba584"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a456f0f3d0ac47230aaab42974b2ba584">setQuantityDefaults</a> (<a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;dst, const std::string &amp;quantity, const std::string &amp;values=&quot;&quot;) const</td></tr>
+<tr class="memitem:a456f0f3d0ac47230aaab42974b2ba584" id="r_a456f0f3d0ac47230aaab42974b2ba584"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a456f0f3d0ac47230aaab42974b2ba584">setQuantityDefaults</a> (<a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;dst, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;values=&quot;&quot;) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a456f0f3d0ac47230aaab42974b2ba584"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets default values of given quantity without assigning the quantity. Optionally overrides with user values.  <br /></td></tr>
 <tr class="separator:a456f0f3d0ac47230aaab42974b2ba584"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00ecfe4e32746c9306322719bd9d6eeb" id="r_a00ecfe4e32746c9306322719bd9d6eeb"><td class="memItemLeft" align="right" valign="top"><a id="a00ecfe4e32746c9306322719bd9d6eeb" name="a00ecfe4e32746c9306322719bd9d6eeb"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>setQuantityDefaults</b> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;dst) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setQuantityDefaults</b> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;dst) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a00ecfe4e32746c9306322719bd9d6eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d1df154cf59dbe2248e464d793bed83" id="r_a2d1df154cf59dbe2248e464d793bed83"><td class="memTemplParams" colspan="2">template&lt;class D &gt; </td></tr>
-<tr class="memitem:a2d1df154cf59dbe2248e464d793bed83"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a2d1df154cf59dbe2248e464d793bed83">setQuantityDefaults</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; D &gt; &amp;dstData, const std::string &amp;quantity=&quot;&quot;, const std::string &amp;values=&quot;&quot;) const</td></tr>
+<tr class="memitem:a2d1df154cf59dbe2248e464d793bed83" id="r_a2d1df154cf59dbe2248e464d793bed83"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">D</a> &gt; </td></tr>
+<tr class="memitem:a2d1df154cf59dbe2248e464d793bed83"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1QuantityMap.html#a2d1df154cf59dbe2248e464d793bed83">setQuantityDefaults</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1DataSet.html">D</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity=&quot;&quot;, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;values=&quot;&quot;) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a2d1df154cf59dbe2248e464d793bed83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a557347eb2ac93ba9ae64975e5e895118" id="r_a557347eb2ac93ba9ae64975e5e895118"><td class="memTemplParams" colspan="2"><a id="a557347eb2ac93ba9ae64975e5e895118" name="a557347eb2ac93ba9ae64975e5e895118"></a>
-template&lt;class M &gt; </td></tr>
-<tr class="memitem:a557347eb2ac93ba9ae64975e5e895118"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>isNormalized</b> (const M odim) const</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> M &gt; </td></tr>
+<tr class="memitem:a557347eb2ac93ba9ae64975e5e895118"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>isNormalized</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> M odim) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a557347eb2ac93ba9ae64975e5e895118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if data. <br /></td></tr>
 <tr class="separator:a557347eb2ac93ba9ae64975e5e895118"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3b601f11b6fa853b5a79424eae4dd26" id="r_ad3b601f11b6fa853b5a79424eae4dd26"><td class="memItemLeft" align="right" valign="top"><a id="ad3b601f11b6fa853b5a79424eae4dd26" name="ad3b601f11b6fa853b5a79424eae4dd26"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr) const</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ad3b601f11b6fa853b5a79424eae4dd26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output. <br /></td></tr>
 <tr class="separator:ad3b601f11b6fa853b5a79424eae4dd26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a76ee354f6de320a0aa21edf1207fcc9b" id="r_a76ee354f6de320a0aa21edf1207fcc9b"><td class="memItemLeft" align="right" valign="top"><a id="a76ee354f6de320a0aa21edf1207fcc9b" name="a76ee354f6de320a0aa21edf1207fcc9b"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>DBZ</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>DBZ</b></td></tr>
 <tr class="separator:a76ee354f6de320a0aa21edf1207fcc9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a302844eddce6efffdfee4f14a20a2afc" id="r_a302844eddce6efffdfee4f14a20a2afc"><td class="memItemLeft" align="right" valign="top"><a id="a302844eddce6efffdfee4f14a20a2afc" name="a302844eddce6efffdfee4f14a20a2afc"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>VRAD</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>VRAD</b></td></tr>
 <tr class="separator:a302844eddce6efffdfee4f14a20a2afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab57fd57b7a330c7da65c7c95c6eec599" id="r_ab57fd57b7a330c7da65c7c95c6eec599"><td class="memItemLeft" align="right" valign="top"><a id="ab57fd57b7a330c7da65c7c95c6eec599" name="ab57fd57b7a330c7da65c7c95c6eec599"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ZDR</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>ZDR</b></td></tr>
 <tr class="separator:ab57fd57b7a330c7da65c7c95c6eec599"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c98bb7fc9ff6267fa89a8ac318cf349" id="r_a9c98bb7fc9ff6267fa89a8ac318cf349"><td class="memItemLeft" align="right" valign="top"><a id="a9c98bb7fc9ff6267fa89a8ac318cf349" name="a9c98bb7fc9ff6267fa89a8ac318cf349"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>RHOHV</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>RHOHV</b></td></tr>
 <tr class="separator:a9c98bb7fc9ff6267fa89a8ac318cf349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af940a9fcf5f1fcaa30f5670aa17a6e8c" id="r_af940a9fcf5f1fcaa30f5670aa17a6e8c"><td class="memItemLeft" align="right" valign="top"><a id="af940a9fcf5f1fcaa30f5670aa17a6e8c" name="af940a9fcf5f1fcaa30f5670aa17a6e8c"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>KDP</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>KDP</b></td></tr>
 <tr class="separator:af940a9fcf5f1fcaa30f5670aa17a6e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af526a6a454de3290f0bb1036d151c8ae" id="r_af526a6a454de3290f0bb1036d151c8ae"><td class="memItemLeft" align="right" valign="top"><a id="af526a6a454de3290f0bb1036d151c8ae" name="af526a6a454de3290f0bb1036d151c8ae"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>QIND</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>QIND</b></td></tr>
 <tr class="separator:af526a6a454de3290f0bb1036d151c8ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0ec4dd557bca44eb4084659028d017e" id="r_ae0ec4dd557bca44eb4084659028d017e"><td class="memItemLeft" align="right" valign="top"><a id="ae0ec4dd557bca44eb4084659028d017e" name="ae0ec4dd557bca44eb4084659028d017e"></a>
-const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>PROB</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>PROB</b></td></tr>
 <tr class="separator:ae0ec4dd557bca44eb4084659028d017e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -226,7 +233,7 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
         <tr>
           <td class="memname"><a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> </td>
           <td>(</td>
-          <td class="paramtype">const std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>inits</em></td><td>)</td>
           <td></td>
         </tr>
@@ -249,9 +256,9 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool hasKey </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> hasKey </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -278,9 +285,9 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool hasQuantity </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> hasQuantity </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -306,7 +313,7 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
         <tr>
           <td class="memname">QuantityMap::iterator retrieve </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
@@ -328,7 +335,7 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
         <tr>
           <td class="memname">QuantityMap::const_iterator retrieve </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>key</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -348,7 +355,7 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool setQuantityDefaults </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> setQuantityDefaults </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classrack_1_1EncodingODIM.html">EncodingODIM</a> &amp;&#160;</td>
           <td class="paramname"><em>dst</em>, </td>
@@ -356,13 +363,13 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>quantity</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>values</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
@@ -393,27 +400,27 @@ const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;&#160;</
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class D &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">D</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool setQuantityDefaults </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> setQuantityDefaults </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; D &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1DataSet.html">D</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>dstData</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>quantity</em> = <code>&quot;&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>values</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>

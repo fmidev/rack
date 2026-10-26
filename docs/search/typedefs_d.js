@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['path_5ft_0',['path_t',['../classdrain_1_1XML.html#aef500e3141ceb145306424f2567890c0',1,'drain::XML::path_t'],['../classdrain_1_1SearchXML.html#aef500e3141ceb145306424f2567890c0',1,'drain::SearchXML::path_t']]],
-  ['pathpolicyflagger_1',['PathPolicyFlagger',['../structrack_1_1ConfSVG.html#a8b7184b172d13fffacf689e4258e0a1d',1,'rack::ConfSVG']]],
-  ['pdata_5fsrc_5ft_2',['pdata_src_t',['../classrack_1_1RadarAccumulator.html#a77109e5753bd242b9e9c986df74405db',1,'rack::RadarAccumulator']]],
-  ['polardst_3',['PolarDst',['../namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0',1,'rack']]],
-  ['polarsrc_4',['PolarSrc',['../namespacerack.html#a24649d611c860b4bc50a8f3444240cc6',1,'rack']]]
+  ['reference_0',['Reference',['../namespacedrain.html#a4a95f6e30962f62bc7c61c06baa3b203',1,'drain']]],
+  ['result_5ft_1',['result_t',['../classdrain_1_1RegExp.html#a459bb486b64485776c829812efb8cbda',1,'drain::RegExp']]],
+  ['rhidst_2',['RhiDst',['../namespacerack.html#af36110f9442c61364896b0fe28c6b6bf',1,'rack']]]
 ];

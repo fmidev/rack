@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -83,12 +90,17 @@ $(function() {
   <div class="headertitle"><div class="title">SourceODIM Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>DOC: Add class description.  
+ <a href="classrack_1_1SourceODIM.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SourceODIM_8h_source.html">SourceODIM.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SourceODIM:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1SourceODIM__inherit__graph.png" border="0" usemap="#aSourceODIM_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSourceODIM_inherit__map" id="aSourceODIM_inherit__map">
-<area shape="rect" title=" " alt="" coords="66,240,169,265"/>
+<area shape="rect" title="DOC: Add class description." alt="" coords="66,240,169,265"/>
 <area shape="rect" href="classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="52,167,183,192"/>
 <area shape="poly" title=" " alt="" coords="120,206,120,240,115,240,115,206"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="5,93,229,119"/>
@@ -102,7 +114,7 @@ Collaboration diagram for SourceODIM:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1SourceODIM__coll__graph.png" border="0" usemap="#aSourceODIM_coll__map" alt="Collaboration graph"/></div>
 <map name="aSourceODIM_coll__map" id="aSourceODIM_coll__map">
-<area shape="rect" title=" " alt="" coords="66,240,169,265"/>
+<area shape="rect" title="DOC: Add class description." alt="" coords="66,240,169,265"/>
 <area shape="rect" href="classdrain_1_1FlexVariableMap.html" title="A map of FlexVariable:s." alt="" coords="52,167,183,192"/>
 <area shape="poly" title=" " alt="" coords="120,206,120,240,115,240,115,206"/>
 <area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="5,93,229,119"/>
@@ -114,17 +126,18 @@ Collaboration diagram for SourceODIM:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9326fba266c4ee3597c52659602f0ca5" id="r_a9326fba266c4ee3597c52659602f0ca5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html#a9326fba266c4ee3597c52659602f0ca5">SourceODIM</a> (const std::string &amp;source=&quot;&quot;)</td></tr>
+<tr class="memitem:a9326fba266c4ee3597c52659602f0ca5" id="r_a9326fba266c4ee3597c52659602f0ca5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html#a9326fba266c4ee3597c52659602f0ca5">SourceODIM</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;source=&quot;&quot;)</td></tr>
 <tr class="memdesc:a9326fba266c4ee3597c52659602f0ca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets NOD, WMO, RAD, CTY and ORG.  <br /></td></tr>
 <tr class="separator:a9326fba266c4ee3597c52659602f0ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87fa4154f35557da450f5fbddd6448a0" id="r_a87fa4154f35557da450f5fbddd6448a0"><td class="memItemLeft" align="right" valign="top"><a id="a87fa4154f35557da450f5fbddd6448a0" name="a87fa4154f35557da450f5fbddd6448a0"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SourceODIM</b> (const <a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a> &amp;s)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SourceODIM</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a> &amp;s)</td></tr>
+<tr class="memdesc:a87fa4154f35557da450f5fbddd6448a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:a87fa4154f35557da450f5fbddd6448a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade38e4ce935570f868ab7d372c2110ac" id="r_ade38e4ce935570f868ab7d372c2110ac"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html#ade38e4ce935570f868ab7d372c2110ac">getSourceCode</a> () const</td></tr>
+<tr class="memitem:ade38e4ce935570f868ab7d372c2110ac" id="r_ade38e4ce935570f868ab7d372c2110ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html#ade38e4ce935570f868ab7d372c2110ac">getSourceCode</a> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ade38e4ce935570f868ab7d372c2110ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derives a most standard name. Returns the first-non empty value of NOD, RAD, WMO, WIGOS, PLC, ORG, CTY, CMT.  <br /></td></tr>
 <tr class="separator:ade38e4ce935570f868ab7d372c2110ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1d2000b7ff63a9e8a973f3e8de75366" id="r_ab1d2000b7ff63a9e8a973f3e8de75366"><td class="memTemplParams" colspan="2">template&lt;class ... TT&gt; </td></tr>
-<tr class="memitem:ab1d2000b7ff63a9e8a973f3e8de75366"><td class="memTemplItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html#ab1d2000b7ff63a9e8a973f3e8de75366">getPreferredSourceCode</a> (const std::string &amp;arg, const TT &amp;...args) const</td></tr>
+<tr class="memitem:ab1d2000b7ff63a9e8a973f3e8de75366" id="r_ab1d2000b7ff63a9e8a973f3e8de75366"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> ... TT&gt; </td></tr>
+<tr class="memitem:ab1d2000b7ff63a9e8a973f3e8de75366"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html#ab1d2000b7ff63a9e8a973f3e8de75366">getPreferredSourceCode</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classrack_1_1DataSet.html">arg</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">TT</a> &amp;...args) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ab1d2000b7ff63a9e8a973f3e8de75366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return radar identifier; a single code retrieved in the order of preference.  <br /></td></tr>
 <tr class="separator:ab1d2000b7ff63a9e8a973f3e8de75366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1FlexVariableMap"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1FlexVariableMap')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1FlexVariableMap.html">FlexVariableMap</a></td></tr>
@@ -180,7 +193,8 @@ virtual const <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946ab
 virtual const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeyList</b> () const</td></tr>
 <tr class="memdesc:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived versions may produce an ordered set of keys. <br /></td></tr>
 <tr class="separator:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab5b95d8eb31d3bab4e6a06e0bf19d794">getMap</a> () const</td></tr>
+<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">
+const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap" id="r_aa2d8c7c53beee48e997af82bfed2add4"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportMap</b> (std::map&lt; std::string, T2 &gt; &amp;m) const</td></tr>
@@ -316,7 +330,9 @@ typedef map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"
 <tr class="memdesc:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns values from std::string of type "value,value2,...valueN".  <br /></td></tr>
 <tr class="separator:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>DOC: Add class description. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9326fba266c4ee3597c52659602f0ca5" name="a9326fba266c4ee3597c52659602f0ca5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9326fba266c4ee3597c52659602f0ca5">&#9670;&#160;</a></span>SourceODIM()</h2>
 
@@ -326,7 +342,7 @@ typedef map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"
         <tr>
           <td class="memname"><a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a> </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>source</em> = <code>&quot;&quot;</code></td><td>)</td>
           <td></td>
         </tr>
@@ -351,21 +367,21 @@ typedef map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class ... TT&gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> ... TT&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::string &amp; getPreferredSourceCode </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp; getPreferredSourceCode </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>arg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const TT &amp;...&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">TT</a> &amp;...&#160;</td>
           <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
@@ -383,7 +399,7 @@ template&lt;class ... TT&gt; </div>
 
 <p>Return radar identifier; a single code retrieved in the order of preference. </p>
 <p>Example: </p><div class="fragment"><div class="line"><a class="code hl_function" href="classrack_1_1SourceODIM.html#ab1d2000b7ff63a9e8a973f3e8de75366">getPreferredSourceCode</a>(NOD, RAD, WMO, WIGOS, ORG, CTY, PLC);</div>
-<div class="ttc" id="aclassrack_1_1SourceODIM_html_ab1d2000b7ff63a9e8a973f3e8de75366"><div class="ttname"><a href="classrack_1_1SourceODIM.html#ab1d2000b7ff63a9e8a973f3e8de75366">rack::SourceODIM::getPreferredSourceCode</a></div><div class="ttdeci">const std::string &amp; getPreferredSourceCode(const std::string &amp;arg, const TT &amp;...args) const</div><div class="ttdoc">Return radar identifier; a single code retrieved in the order of preference.</div><div class="ttdef"><b>Definition</b> SourceODIM.h:85</div></div>
+<div class="ttc" id="aclassrack_1_1SourceODIM_html_ab1d2000b7ff63a9e8a973f3e8de75366"><div class="ttname"><a href="classrack_1_1SourceODIM.html#ab1d2000b7ff63a9e8a973f3e8de75366">rack::SourceODIM::getPreferredSourceCode</a></div><div class="ttdeci">const std::string &amp; getPreferredSourceCode(const std::string &amp;arg, const TT &amp;...args) const</div><div class="ttdoc">Return radar identifier; a single code retrieved in the order of preference.</div><div class="ttdef"><b>Definition</b> SourceODIM.h:87</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -394,7 +410,7 @@ template&lt;class ... TT&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const std::string &amp; getSourceCode </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp; getSourceCode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>

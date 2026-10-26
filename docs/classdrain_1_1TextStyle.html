@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -135,9 +142,16 @@ Public Types</h2></td></tr>
 , <b>OVERLINE</b> =4
  }</td></tr>
 <tr class="separator:ac99175932926af9407c76909e7f31d17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da83e35f29c11f7f3c637234f2149f9" id="r_a0da83e35f29c11f7f3c637234f2149f9"><td class="memItemLeft" align="right" valign="top"><a id="a0da83e35f29c11f7f3c637234f2149f9" name="a0da83e35f29c11f7f3c637234f2149f9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Control</b> { <b>RESET</b> =0
+ }</td></tr>
+<tr class="separator:a0da83e35f29c11f7f3c637234f2149f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a39c4bc39647980e10a326419a70efc39" id="r_a39c4bc39647980e10a326419a70efc39"><td class="memTemplParams" colspan="2"><a id="a39c4bc39647980e10a326419a70efc39" name="a39c4bc39647980e10a326419a70efc39"></a>
+template&lt;typename ... T&gt; </td></tr>
+<tr class="memitem:a39c4bc39647980e10a326419a70efc39"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (Control ctrl, const T &amp;... args)</td></tr>
+<tr class="separator:a39c4bc39647980e10a326419a70efc39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732cafb73bda6315ebb8ee85dc0e1c46" id="r_a732cafb73bda6315ebb8ee85dc0e1c46"><td class="memTemplParams" colspan="2"><a id="a732cafb73bda6315ebb8ee85dc0e1c46" name="a732cafb73bda6315ebb8ee85dc0e1c46"></a>
 template&lt;typename ... T&gt; </td></tr>
 <tr class="memitem:a732cafb73bda6315ebb8ee85dc0e1c46"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const T &amp;... args)</td></tr>

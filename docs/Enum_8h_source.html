@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -336,7 +343,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="foldopen" id="foldopen00293" data-start="{" data-end="}">
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno"><a class="line" href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">  293</a></span>    <a class="code hl_function" href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">MultiEnumWrapper</a>(<span class="keyword">const</span> T &amp; arg){</div>
 <div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        set(arg);</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    };</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    }</div>
 </div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
@@ -406,7 +413,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1EnumWrapper_html_a3225696584521b3b718afe90a553183a"><div class="ttname"><a href="classdrain_1_1EnumWrapper.html#a3225696584521b3b718afe90a553183a">drain::EnumWrapper::EnumWrapper</a></div><div class="ttdeci">EnumWrapper(const E &amp;x)</div><div class="ttdoc">All the other constructors, including default constructor.</div><div class="ttdef"><b>Definition</b> Enum.h:249</div></div>
 <div class="ttc" id="aclassdrain_1_1MultiEnumWrapper_html"><div class="ttname"><a href="classdrain_1_1MultiEnumWrapper.html">drain::MultiEnumWrapper</a></div><div class="ttdef"><b>Definition</b> Enum.h:273</div></div>
 <div class="ttc" id="aclassdrain_1_1MultiEnumWrapper_html_af1cc96ce310d0402665e51d227180995"><div class="ttname"><a href="classdrain_1_1MultiEnumWrapper.html#af1cc96ce310d0402665e51d227180995">drain::MultiEnumWrapper::MultiEnumWrapper</a></div><div class="ttdeci">MultiEnumWrapper(const T &amp;arg)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> Enum.h:293</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1Enum_html"><div class="ttname"><a href="structdrain_1_1Enum.html">drain::Enum</a></div><div class="ttdoc">A container for a static dictionary of enumeration values.</div><div class="ttdef"><b>Definition</b> Enum.h:51</div></div>
 <div class="ttc" id="astructdrain_1_1Enum_html_a0210f5aa9ff74a54391d4b5dc9d3c67f"><div class="ttname"><a href="structdrain_1_1Enum.html#a0210f5aa9ff74a54391d4b5dc9d3c67f">drain::Enum::getValue</a></div><div class="ttdeci">static E getValue(const char *key, bool lenient=true)</div><div class="ttdoc">Convenience for object.set(...) like commands.</div><div class="ttdef"><b>Definition</b> Enum.h:116</div></div>
 <div class="ttc" id="astructdrain_1_1Enum_html_a2cc940a5d6d552e29cbc72f88e1ad32d"><div class="ttname"><a href="structdrain_1_1Enum.html#a2cc940a5d6d552e29cbc72f88e1ad32d">drain::Enum::str</a></div><div class="ttdeci">static const std::string &amp; str(const E &amp;value)</div><div class="ttdoc">Convenience.</div><div class="ttdef"><b>Definition</b> Enum.h:68</div></div>

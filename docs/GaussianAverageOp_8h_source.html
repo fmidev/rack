@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -138,7 +145,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keyword">inline</span></div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <a class="code hl_class" href="classdrain_1_1image_1_1GaussianAverageOp.html">GaussianAverageOp</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1image_1_1GaussianAverageOp.html">GaussianAverageOp</a> &amp; op) : <a class="code hl_class" href="classdrain_1_1image_1_1WindowOp.html">WindowOp&lt;Window&lt;GaussianWindowConf&gt;</a> &gt;(op) {</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>      <span class="comment">//this-&gt;parameters.copyStruct(op.getParameters(), op, *this);</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        this-&gt;parameters.<a class="code hl_function" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(op.getParameters(), op.conf, conf);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        this-&gt;<a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.<a class="code hl_function" href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">copyStruct</a>(op.<a class="code hl_function" href="classdrain_1_1BeanLike.html#ab8fd348efbbe21b864af04985a1d6740">getParameters</a>(), op.conf, conf);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    };</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
@@ -158,7 +165,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">virtual</span> <span class="keyword">inline</span></div>
 <div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1GaussianAverageOp.html#a136e94d3f302d884d53feba32465ec2a">   95</a></span>    <span class="keyword">const</span> std::string &amp; <a class="code hl_function" href="classdrain_1_1image_1_1GaussianAverageOp.html#a136e94d3f302d884d53feba32465ec2a">getName</a>()<span class="keyword"> const override </span>{</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> name;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classdrain_1_1BeanLike.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    };</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
@@ -174,7 +181,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">// Drain</span></div>
-<div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition</b> ReferenceMap.h:415</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a14a3c777481986f2ca3267992d4f233c"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">drain::BeanLike::parameters</a></div><div class="ttdeci">map_t parameters</div><div class="ttdoc">Parameters (name -&gt; linked variable), typically linked to member variables of the derived class.</div><div class="ttdef"><b>Definition</b> BeanLike.h:313</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_ab8fd348efbbe21b864af04985a1d6740"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ab8fd348efbbe21b864af04985a1d6740">drain::BeanLike::getParameters</a></div><div class="ttdeci">const map_t &amp; getParameters() const</div><div class="ttdoc">Returns the parameter map (const access).</div><div class="ttdef"><b>Definition</b> BeanLike.h:116</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_ac673bc430bdc3fdaa09f7becf98ef267"><div class="ttname"><a href="classdrain_1_1BeanLike.html#ac673bc430bdc3fdaa09f7becf98ef267">drain::BeanLike::name</a></div><div class="ttdeci">const std::string name</div><div class="ttdoc">Name of this bean, typically also the name of the (derived) class.</div><div class="ttdef"><b>Definition</b> BeanLike.h:306</div></div>
+<div class="ttc" id="aclassdrain_1_1ReferenceMap_html_a6b6d151e75be1f5e0a44740ac0995e21"><div class="ttname"><a href="classdrain_1_1ReferenceMap.html#a6b6d151e75be1f5e0a44740ac0995e21">drain::ReferenceMap::copyStruct</a></div><div class="ttdeci">void copyStruct(const ReferenceMap &amp;m, const T &amp;src, T &amp;dst, extLinkPolicy policy=RESERVE)</div><div class="ttdoc">Experimental. Copies references and values of a structure to another.</div><div class="ttdef"><b>Definition</b> ReferenceMap.h:412</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Channel_html"><div class="ttname"><a href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition</b> ImageChannel.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1GaussianAverageOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1GaussianAverageOp.html">drain::image::GaussianAverageOp</a></div><div class="ttdoc">Sliding window averaging operator with optional weighting support.</div><div class="ttdef"><b>Definition</b> GaussianAverageOp.h:65</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1GaussianAverageOp_html_a136e94d3f302d884d53feba32465ec2a"><div class="ttname"><a href="classdrain_1_1image_1_1GaussianAverageOp.html#a136e94d3f302d884d53feba32465ec2a">drain::image::GaussianAverageOp::getName</a></div><div class="ttdeci">virtual const std::string &amp; getName() const override</div><div class="ttdoc">Return the name of an instance.</div><div class="ttdef"><b>Definition</b> GaussianAverageOp.h:95</div></div>
@@ -184,7 +194,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageOp_html_adaf068330071caa0154a0a667319857e"><div class="ttname"><a href="classdrain_1_1image_1_1ImageOp.html#adaf068330071caa0154a0a667319857e">drain::image::ImageOp::traverseChannelsSeparately</a></div><div class="ttdeci">void traverseChannelsSeparately(const ImageTray&lt; const Channel &gt; &amp;src, ImageTray&lt; Channel &gt; &amp;dst) const</div><div class="ttdoc">Process each (src,dst) channel pair independently. Raise error if their counts differ.</div><div class="ttdef"><b>Definition</b> ImageOp.cpp:340</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageTray_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageTray.html">drain::image::ImageTray</a></div><div class="ttdoc">Container applicable for Channels and Images, with alpha support.</div><div class="ttdef"><b>Definition</b> ImageTray.h:266</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1WindowOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1WindowOp.html">drain::image::WindowOp</a></div><div class="ttdef"><b>Definition</b> WindowOp.h:50</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

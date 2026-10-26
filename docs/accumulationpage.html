@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -76,18 +83,19 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#acc_polar">Accumulation products</a></li>
+<ul><li class="level1"><a href="#acc_polar">Accumulation products</a><ul><li class="level2"><a href="#acc_polar_input">Accumulating polar data</a></li>
 <li class="level2"><a href="#create_cluttermap">Application: creating clutter maps</a></li>
 <li class="level2"><a href="#acc_cart">Accumulating Cartesian data</a></li>
 </ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><h1><a class="anchor" id="acc_polar"></a>
 Accumulation products</h1>
 <p><b>Rack</b> can be used to accumulate polar and Cartesian data - raw data or products. Cumulative rainfall or clutter maps are examples of accumulation products than can be generated.</p>
 <p>Internally, the accumulation process uses the same modules as in compositing: an accumulation array is first updated, and finally an accumulation product is extracted.</p>
-<h2><a class="anchor" id="acc_polar"></a>
-Accumulation products</h2>
+<h2><a class="anchor" id="acc_polar_input"></a>
+Accumulating polar data</h2>
 <p>Basically, data in polar coordinates (ie. sweeps or polar products) can be accumulated to an array by issuing input files proceeded with <code>--pAdd</code> command, one by one. More conveniently the command is set with <code>--script</code> and the inputs are given as a list. Finally, the accumulated data is extracted with <code>--pExtract</code> . For example: <br  />
 </p>
 <div class="fragment"><div class="line"><span class="preprocessor"># &#39;Undetect&#39; values replaced with physical low value</span></div>
@@ -95,7 +103,7 @@ Accumulation products</h2>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># &#39;Undetect&#39; values discarded</span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --select /dataset1,quantity=DBZH --undetectWeight 0 --script <span class="stringliteral">&#39;--pAdd&#39;</span> data-acc/2017*.h5 --encoding C --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated1.h5</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p>In these examples, input selector <code>--select</code> <code>/dataset1</code>,quantity=DBZH is used for faster file read.</p>
 <div class="image">
 <img src="acc-input.png" alt=""/>
@@ -114,7 +122,7 @@ Result of accumulation: with (left) or without (right) <code>undetect</code> rep
 <div class="line"><span class="preprocessor"># Warm start: read previous accumulation as a background</span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --select /dataset1,quantity=DBZH --undetectWeight 0 --script <span class="stringliteral">&#39;--pAdd&#39;</span> acc-part.h5 data-acc/201706*.h5     --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated.h5</div>
 </div><!-- fragment --><p>By default, quantities <code>DBZH</code> and <code>RATE</code> are used for accumulation. This can be changed with <code>--select</code> . For example, accumulation of total reflectivity (<code>TH</code> ) is obtained with: <br  />
- </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --encoding S --select <span class="stringliteral">&#39;quantity=^TH$&#39;</span> --script <span class="stringliteral">&#39;--pAdd&#39;</span> &lt;files&gt;  --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated.h5 </div>
+ </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --encoding S --select <span class="stringliteral">&#39;quantity=^TH$&#39;</span> --script <span class="stringliteral">&#39;--pAdd&#39;</span> &lt;files&gt;  --pExtract <span class="stringliteral">&#39;dw&#39;</span> -o accumulated.h5</div>
 </div><!-- fragment --><h2><a class="anchor" id="create_cluttermap"></a>
 Application: creating clutter maps</h2>
 <p>As can be seen from above images, accumulating data without quality control produces anomalies in results, especially wind turbines and other clutter that has not been removed even by Doppler filtering. Utility script <code>make-cluttermap.sh</code> accumulates data and creates a clutter map applicable with anomaly detection command <code>--aClutter</code> (<a class="el" href="andrepage.html#aClutter">Detecting ground clutter</a>) . The accumulation part is similar to the processes described above. After obtaining the accumulated <code>DBZH</code> field it can converted to <code>CLUTTER</code> for example as follows:</p>

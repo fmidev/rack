@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -96,6 +103,7 @@ $(function() {
  <div class="fragment"></div><!-- fragment --><h1><a class="anchor" id="intro"></a>
 Introduction</h1>
 <p><b>Rack</b> is a command-line program for processing weather radar data. It uses raw measurement data as input and generates <a class="el" href="productspage.html">Meteorological products</a> as well as <a class="el" href="compositespage.html">Cartesian conversions and composites</a> . <b>Rack</b> also provides methods for <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> . Quality information is supported throughout the processing chain. <b>Rack</b> also supports <a class="el" href="imagespage.html">Image processing</a> , like applying colors and transparency.</p>
+<dl class="section remark"><dt>Remarks</dt><dd>{ Rack code, tests and documentation are currently being reorganized. Parts of this documentation are not up to date. }</dd></dl>
 <p><b>Rack</b> is based on code developed at the Finnish Meteorological Institute since 2001. Part of the development work has been supported by the BALTRAD project (2009-2014), see <a href="http://www.baltrad.eu">http://www.baltrad.eu</a> . The program can be downloaded from <a href="https://github.com/fmidev/rack">https://github.com/fmidev/rack</a> .</p>
 <p>As input, <b>Rack</b> accepts azimuthal scans - volumes or separate sweeps - in HDF5 files using OPERA Information Model (ODIM, <a href="http://www.eumetnet.eu/opera">http://www.eumetnet.eu/opera</a>).</p>
 <p>After loading a volume file, a typical operation is to compute a single-radar product. The computation is carried out in polar coordinates. The result can be mapped to a Cartesian products. The projections are calculated using the Proj4 library (<a href="http://trac.osgeo.org/proj/">http://trac.osgeo.org/proj/</a>). Output files can be written in HDF5 files, PNG image files or geo-referenced GeoTIFF files. In addition, metadata, resampled grid data and vertical profiles can be output as plain text files.</p>
@@ -119,7 +127,7 @@ Usage</h1>
 <h2><a class="anchor" id="command_line_format"></a>
 Command line arguments</h2>
 <p>A typical invocation of <b>Rack</b> looks like: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> &lt;input-files&gt;  &lt;command&gt; -o &lt;file1&gt;   &lt;command2&gt; -o &lt;file2&gt;  ...</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p>The native format for data is HDF5, but data and be read or written partially using image and text format. See <a class="el" href="fileiopage.html">File input and output</a> for details.</p>
 <p>Specifically, <b>Rack</b> accepts three kinds of command line arguments:</p>
 <ol type="1">
@@ -140,9 +148,11 @@ Meteorological products</h2>
 <p>A product can be further converted to Cartesian coordinate system, explained next.</p>
 <h2><a class="anchor" id="cartesian_brief"></a>
 Converting to Cartesian images</h2>
-<p>Data in polar coordinates can be mapped to a Cartesian product with <code>--cCreate</code> (abbreviated <code>-c</code>). The simplest possible command is </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --cCreate -o cartesian.h5</div>
+<p>Data in polar coordinates can be mapped to a Cartesian product with <code>--cCreate</code> (abbreviated <code>-c</code>). One of the simplest possible command lines is</p>
+<div class="fragment"><div class="line">rack volume.h5 --cCreate \</div>
+<div class="line">  -o cartesian.h5</div>
 </div><!-- fragment --><p> which converts the first dataset (sweep) in volume.h5 to a Cartesian product. The default projection is azimuthal equidistant, centered at the radar. The projection can be changed with <code>--cProj</code> which uses <b>Proj.4</b> syntax (<a href="http://trac.osgeo.org/proj/">http://trac.osgeo.org/proj/</a>). The default size (bins x bins) can be changed with <code>--cSize</code> .</p>
-<div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --cSize 400,400 --cProj <span class="stringliteral">&#39;+proj=stere +lon_0=25.0 +lat_0=60.000&#39;</span> --cCreate -o cartesian-stere.h5</div>
+<div class="fragment"><div class="line">rack volume.h5 --cSize 400,400 --cProj &#39;+proj=stere +lon_0=25.0 +lat_0=60.000&#39; --cCreate -o cartesian-stere.h5</div>
 </div><!-- fragment --><div class="image">
 <img src="cartesians.png" alt=""/>
 <div class="caption">
@@ -153,33 +163,25 @@ Data remapped with <code>--cCreate</code> , further coloured with <code>--palett
 Selecting data</h2>
 <p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
 <p>In <b>Rack</b>, many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
-<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;,&lt;timespan&gt;   (section: general)</div>
-<div class="line">  Data selector for the next computation</div>
-<div class="line">  - path () [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
-<div class="line">  - quantity () [DBZH:VRAD:RHOHV:...]</div>
-<div class="line">  - elangle (-90:90) [min[:max]]</div>
-<div class="line">  - count (4095)</div>
-<div class="line">  - order (DATA:MIN) [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
-<div class="line">  - prf (ANY) [[&quot;ANY&quot;,&quot;SINGLE&quot;,&quot;DOUBLE&quot;]]</div>
-<div class="line">  - timespan (0:0) [range from nominal time [seconds]]</div>
-<div class="line">  See also: selectObject,selectQuantity</div>
-<div class="line"> </div>
-</div><!-- fragment --><p>Remarks on the options:</p>
+<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p>Remarks on the options:</p>
 <ul>
 <li><code>path</code> argument defines a path <em>segment</em> to be matched, with desired index ranges (example: <code>dataset2:4/data3</code>:8 )</li>
 <li>in <code>path</code> argument, a leading slash fixes the matching to the root (example: <code>/dataset</code>:/data: ), otherwise the tail part is matched</li>
 <li><code>quantity</code> argument accepts a list of strings separated by semicolon ':'</li>
 <li>each item in a <code>quantity</code> argument list can be a literal string like <code>DBZH</code> or a regular experession like <code>^DBZ[HV]?$</code></li>
 </ul>
-<p>See example sets below!</p>
+<p>See examples further below.</p>
 <p>This option is useful in selecting data for:</p>
 <ul>
-<li>partial reading a large input file (see <a class="el" href="fileiopage.html">File input and output</a> ).</li>
+<li>partial reading or writing a large file (see <a class="el" href="fileiopage.html">File input and output</a> ), or saving selected images (PNG, GeoTIFF, PPM; see <a class="el" href="imagespage.html">Image processing</a> ).</li>
 <li>selecting data for anomaly detection and removal (see <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> ).</li>
-<li>a meteorological product (see <a class="el" href="productspage.html">Meteorological products</a> ).</li>
-<li>compositing (see <a class="el" href="compositespage.html">Cartesian conversions and composites</a> ).</li>
-<li>saving images (PNG, GeoTIFF, PPM; see <a class="el" href="imagespage.html">Image processing</a> ).</li>
-<li>other data dumps, useful in debugging, for example</li>
+<li>computing a meteorological product (see <a class="el" href="productspage.html">Meteorological products</a> ).</li>
+<li>compositing (see <a class="el" href="compositespage.html">Cartesian conversions and composites</a> )</li>
+</ul>
+<p>In addition, these explicit data modification options use the same syntax</p>
+<ul>
+<li><code>--keep</code> - prune internal data structure such that only the selected part remains (<code>what</code> , <code>where</code> and <code>how</code> groups are preserved automatically).</li>
+<li><code>--delete</code> - remove parts of internal data structure – single attributes or large subtrees.</li>
 </ul>
 <p>The following command lines illustrate usage of <code>--select</code> in product generation and image output.</p>
 <div class="fragment"><div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div>
@@ -213,9 +215,6 @@ Selecting data</h2>
 <div class="line"><span class="preprocessor"># Index range test: select DATASET groups with index 3 at largest. </span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select /dataset:3 -o volume-select.txt</div>
 <div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select paths ENDING with &#39;what&#39;, &#39;where&#39;, or &#39;how&#39;. </span></div>
-<div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where|how&#39;</span> -o volume-select.txt</div>
-<div class="line"> </div>
 <div class="line"><span class="preprocessor"># For text output, select paths of elevations of at least 6.0 degrees </span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select elangle=6.0 -o volume-select.txt</div>
 <div class="line"> </div>
@@ -246,11 +245,11 @@ Selecting data</h2>
 <div class="line"># Select non-existing quantity-specific QIND field</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select quantity=HGHT/QIND -o volume-select.txt</div>
 <div class="line"> </div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>CmdDelete </dd>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure.">rack::CmdDelete</a> </dd>
 <dd>
-CmdKeep </dd>
+<a class="el" href="classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure.">rack::CmdKeep</a> </dd>
 <dd>
-CmdSetODIM </dd>
+<a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">rack::CmdSetODIM</a> </dd>
 <dd>
 <a class="el" href="classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri...">rack::CmdSelect</a> (code) </dd>
 <dd>
@@ -353,7 +352,7 @@ Default encoding of quantities</h2>
 <div class="line">  *C,{what:type:<span class="stringliteral">&quot;C&quot;</span>,what:gain:0.5,what:offset:-32,what:undetect:0,what:nodata:255} (min=-31.5)</div>
 <div class="line">   S,{what:type:<span class="stringliteral">&quot;S&quot;</span>,what:gain:0.01,what:offset:-327.68,what:undetect:0,what:nodata:65535} (min=-327.67)</div>
 <div class="line">   s,{what:type:<span class="stringliteral">&quot;s&quot;</span>,what:gain:0.01,what:offset:0,what:undetect:-32768,what:nodata:32767} (min=-327.67)</div>
-<div class="line">    <span class="keyword">virtual</span> zero=-32</div>
+<div class="line">    physical range=[-32,60] <span class="keyword">virtual</span> zero=-32</div>
 </div><!-- fragment --><p> where asterisk <code>*</code> marks the current default storage type and scaling.</p>
 <p>The full list of predefined quantity encodings are listed with </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --quantityConf <span class="stringliteral">&#39;&#39;</span></div>
 </div><!-- fragment --><p> One may freely add encodings simply by setting them with <code>--quantityConf</code> </p>

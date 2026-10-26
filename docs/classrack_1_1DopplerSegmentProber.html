@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -217,15 +224,15 @@ Collaboration diagram for DopplerSegmentProber:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad430ec99cb24c21632b9fbe17c227d03" id="r_ad430ec99cb24c21632b9fbe17c227d03"><td class="memItemLeft" align="right" valign="top"><a id="ad430ec99cb24c21632b9fbe17c227d03" name="ad430ec99cb24c21632b9fbe17c227d03"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DopplerSegmentProber</b> (const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;s, <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;d)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DopplerSegmentProber</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;s, <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;<a class="el" href="classrack_1_1DataSet.html">d</a>)</td></tr>
 <tr class="separator:ad430ec99cb24c21632b9fbe17c227d03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fefc7ca1ae21025d415c3d214529170" id="r_a3fefc7ca1ae21025d415c3d214529170"><td class="memItemLeft" align="right" valign="top"><a id="a3fefc7ca1ae21025d415c3d214529170" name="a3fefc7ca1ae21025d415c3d214529170"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DopplerSegmentProber</b> (<a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;d)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DopplerSegmentProber</b> (<a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;<a class="el" href="classrack_1_1DataSet.html">d</a>)</td></tr>
 <tr class="separator:a3fefc7ca1ae21025d415c3d214529170"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9339772ec5ac9fa929938109207f2863" id="r_a9339772ec5ac9fa929938109207f2863"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#a9339772ec5ac9fa929938109207f2863">init</a> ()</td></tr>
+<tr class="memitem:a9339772ec5ac9fa929938109207f2863" id="r_a9339772ec5ac9fa929938109207f2863"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#a9339772ec5ac9fa929938109207f2863">init</a> ()</td></tr>
 <tr class="memdesc:a9339772ec5ac9fa929938109207f2863"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update srcOdim.  <br /></td></tr>
 <tr class="separator:a9339772ec5ac9fa929938109207f2863"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae048282c7011eedc2e0492f6421ea73" id="r_aae048282c7011eedc2e0492f6421ea73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#aae048282c7011eedc2e0492f6421ea73">clear</a> ()</td></tr>
+<tr class="memitem:aae048282c7011eedc2e0492f6421ea73" id="r_aae048282c7011eedc2e0492f6421ea73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#aae048282c7011eedc2e0492f6421ea73">clear</a> ()</td></tr>
 <tr class="memdesc:aae048282c7011eedc2e0492f6421ea73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before processing each segment. Compare with <a class="el" href="classrack_1_1DopplerSegmentProber.html#a9339772ec5ac9fa929938109207f2863" title="Update srcOdim.">init()</a>, which is called once for each image.  <br /></td></tr>
 <tr class="separator:aae048282c7011eedc2e0492f6421ea73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1SegmentProber"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1SegmentProber')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html">SegmentProber&lt; double, double, drain::image::SegmentProberConf&lt; double, double &gt; &gt;</a></td></tr>
@@ -254,14 +261,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValidPixel</b> (int
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4b41689015121c6521a792ea9de1694c" id="r_a4b41689015121c6521a792ea9de1694c"><td class="memItemLeft" align="right" valign="top"><a id="a4b41689015121c6521a792ea9de1694c" name="a4b41689015121c6521a792ea9de1694c"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>relative_NI_threshold</b> = 0.9</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>relative_NI_threshold</b> = 0.9</td></tr>
 <tr class="separator:a4b41689015121c6521a792ea9de1694c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a617a47c70795bcff659815ad0efd2266" id="r_a617a47c70795bcff659815ad0efd2266"><td class="memItemLeft" align="right" valign="top"><a id="a617a47c70795bcff659815ad0efd2266" name="a617a47c70795bcff659815ad0efd2266"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>counter</b> = 0</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>counter</b> = 0</td></tr>
 <tr class="memdesc:a617a47c70795bcff659815ad0efd2266"><td class="mdescLeft">&#160;</td><td class="mdescRight">Nyquist wrap measure. <br /></td></tr>
 <tr class="separator:a617a47c70795bcff659815ad0efd2266"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a439227feff9d7f55384e8780cfc2eb82" id="r_a439227feff9d7f55384e8780cfc2eb82"><td class="memItemLeft" align="right" valign="top"><a id="a439227feff9d7f55384e8780cfc2eb82" name="a439227feff9d7f55384e8780cfc2eb82"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> = 0</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> = 0</td></tr>
 <tr class="separator:a439227feff9d7f55384e8780cfc2eb82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b954454b88f9a9535a9091e50c0643b" id="r_a0b954454b88f9a9535a9091e50c0643b"><td class="memItemLeft" align="right" valign="top"><a id="a0b954454b88f9a9535a9091e50c0643b" name="a0b954454b88f9a9535a9091e50c0643b"></a>
 <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a>&#160;</td><td class="memItemRight" valign="bottom"><b>srcODIM</b></td></tr>
@@ -282,14 +289,14 @@ const <a class="el" href="classdrain_1_1image_1_1Channel.html">Channel</a> &amp;
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a0b9f0efed7ca15230dff74e9c27e9caa" id="r_a0b9f0efed7ca15230dff74e9c27e9caa"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#a0b9f0efed7ca15230dff74e9c27e9caa">isValidSegment</a> (int i, int j) const</td></tr>
+<tr class="memitem:a0b9f0efed7ca15230dff74e9c27e9caa" id="r_a0b9f0efed7ca15230dff74e9c27e9caa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#a0b9f0efed7ca15230dff74e9c27e9caa">isValidSegment</a> (<a class="el" href="classrack_1_1DataSet.html">int</a> i, <a class="el" href="classrack_1_1DataSet.html">int</a> j) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a0b9f0efed7ca15230dff74e9c27e9caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if value in location (i,j) is not <code>nodata</code> nor <code>undetect</code> .  <br /></td></tr>
 <tr class="separator:a0b9f0efed7ca15230dff74e9c27e9caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad67839561c9ef8c4015725e4f06a80a4" id="r_ad67839561c9ef8c4015725e4f06a80a4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#ad67839561c9ef8c4015725e4f06a80a4">isValidMove</a> (int i0, int j0, int i, int j) const</td></tr>
+<tr class="memitem:ad67839561c9ef8c4015725e4f06a80a4" id="r_ad67839561c9ef8c4015725e4f06a80a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#ad67839561c9ef8c4015725e4f06a80a4">isValidMove</a> (<a class="el" href="classrack_1_1DataSet.html">int</a> i0, <a class="el" href="classrack_1_1DataSet.html">int</a> j0, <a class="el" href="classrack_1_1DataSet.html">int</a> i, <a class="el" href="classrack_1_1DataSet.html">int</a> j) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ad67839561c9ef8c4015725e4f06a80a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Application dependent.  <br /></td></tr>
 <tr class="separator:ad67839561c9ef8c4015725e4f06a80a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0c12fd03a7d2a15473e5575a13b25ae" id="r_ab0c12fd03a7d2a15473e5575a13b25ae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">visit</a> (int i, int j)</td></tr>
-<tr class="memdesc:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visiting a single pixel when not coming from any direction.  <br /></td></tr>
+<tr class="memitem:ab0c12fd03a7d2a15473e5575a13b25ae" id="r_ab0c12fd03a7d2a15473e5575a13b25ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerSegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">visit</a> (<a class="el" href="classrack_1_1DataSet.html">int</a> i, <a class="el" href="classrack_1_1DataSet.html">int</a> j)</td></tr>
+<tr class="memdesc:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Doppler-specific pixel visit (overrides <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae" title="Visiting a single pixel when not coming from any direction.">SegmentProber::visit</a>).  <br /></td></tr>
 <tr class="separator:ab0c12fd03a7d2a15473e5575a13b25ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1SegmentProber"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1SegmentProber')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html">SegmentProber&lt; double, double, drain::image::SegmentProberConf&lt; double, double &gt; &gt;</a></td></tr>
 <tr class="memitem:a35f2d5cf32d6a444b4b7fe69f755cfbb inherit pro_methods_classdrain_1_1image_1_1SegmentProber" id="r_a35f2d5cf32d6a444b4b7fe69f755cfbb"><td class="memItemLeft" align="right" valign="top">
@@ -313,11 +320,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>move</b> (int &amp;i,
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a126bb0d51fd151c43ab3c9e6f688de5f" id="r_a126bb0d51fd151c43ab3c9e6f688de5f"><td class="memItemLeft" align="right" valign="top"><a id="a126bb0d51fd151c43ab3c9e6f688de5f" name="a126bb0d51fd151c43ab3c9e6f688de5f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>NI_threshold</b> = 0.0</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NI_threshold</b> = 0.0</td></tr>
 <tr class="memdesc:a126bb0d51fd151c43ab3c9e6f688de5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">NI divided by 2. <br /></td></tr>
 <tr class="separator:a126bb0d51fd151c43ab3c9e6f688de5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad58076c05558598e44ef2b12a34cfaa1" id="r_ad58076c05558598e44ef2b12a34cfaa1"><td class="memItemLeft" align="right" valign="top"><a id="ad58076c05558598e44ef2b12a34cfaa1" name="ad58076c05558598e44ef2b12a34cfaa1"></a>
-<a class="el" href="classdrain_1_1typeLimiter.html">drain::typeLimiter</a>&lt; double &gt;::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>limit</b> = nullptr</td></tr>
+<a class="el" href="classdrain_1_1typeLimiter.html">drain::typeLimiter</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt;::value_t&#160;</td><td class="memItemRight" valign="bottom"><b>limit</b> = <a class="el" href="classrack_1_1DataSet.html">nullptr</a></td></tr>
 <tr class="separator:ad58076c05558598e44ef2b12a34cfaa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1SegmentProber"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1SegmentProber')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html">SegmentProber&lt; double, double, drain::image::SegmentProberConf&lt; double, double &gt; &gt;</a></td></tr>
 <tr class="memitem:a7d88609b141d7089515f976478d3bbab inherit pro_attribs_classdrain_1_1image_1_1SegmentProber" id="r_a7d88609b141d7089515f976478d3bbab"><td class="memItemLeft" align="right" valign="top">
@@ -348,7 +355,7 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void clear </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a> clear </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -362,7 +369,7 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
 </div><div class="memdoc">
 
 <p>Called before processing each segment. Compare with <a class="el" href="classrack_1_1DopplerSegmentProber.html#a9339772ec5ac9fa929938109207f2863" title="Update srcOdim.">init()</a>, which is called once for each image. </p>
-<p>Application dependent initialisation for statistics updated with <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#a35f2d5cf32d6a444b4b7fe69f755cfbb" title="Application dependent operation performed in each segment location (i,j).">update(int i, int j)</a> function. </p>
+<p>Application dependent initialisation for statistics updated with update(int i, int j) function. </p>
 
 <p>Reimplemented from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#aae048282c7011eedc2e0492f6421ea73">SegmentProber&lt; double, double, drain::image::SegmentProberConf&lt; double, double &gt; &gt;</a>.</p>
 
@@ -378,7 +385,7 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void init </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a> init </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -407,27 +414,27 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool isValidMove </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a> isValidMove </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>i0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>j0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>j</em>&#160;</td>
         </tr>
         <tr>
@@ -461,15 +468,15 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool isValidSegment </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a> isValidSegment </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>j</em>&#160;</td>
         </tr>
         <tr>
@@ -501,15 +508,15 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void visit </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a> visit </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>j</em>&#160;</td>
         </tr>
         <tr>
@@ -525,19 +532,14 @@ typedef <a class="el" href="classdrain_1_1image_1_1SegmentProberConf.html">drain
 </table>
 </div><div class="memdoc">
 
-<p>Visiting a single pixel when not coming from any direction. </p>
-<p>Visiting means</p><ul>
-<li>updating the status of this prober, for example by updating statistics like segment size</li>
-<li>marking the pixel visited in dst image</li>
-</ul>
+<p>Doppler-specific pixel visit (overrides <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae" title="Visiting a single pixel when not coming from any direction.">SegmentProber::visit</a>). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i0</td><td>- current i coordinate (always valid) </td></tr>
-    <tr><td class="paramname">j0</td><td>- current j coordinate (always valid) </td></tr>
+    <tr><td class="paramname">i</td><td>- current i coordinate </td></tr>
+    <tr><td class="paramname">j</td><td>- current j coordinate </td></tr>
   </table>
   </dd>
 </dl>
-<p>Mark visited</p>
 
 <p>Reimplemented from <a class="el" href="classdrain_1_1image_1_1SegmentProber.html#ab0c12fd03a7d2a15473e5575a13b25ae">SegmentProber&lt; double, double, drain::image::SegmentProberConf&lt; double, double &gt; &gt;</a>.</p>
 

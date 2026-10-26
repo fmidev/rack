@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -167,6 +174,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setArea</b> (size_t w
 <tr class="memitem:a6a6e3636a4a62765302f1f8ed2d5df85" id="r_a6a6e3636a4a62765302f1f8ed2d5df85"><td class="memItemLeft" align="right" valign="top"><a id="a6a6e3636a4a62765302f1f8ed2d5df85" name="a6a6e3636a4a62765302f1f8ed2d5df85"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getArea</b> () const</td></tr>
 <tr class="separator:a6a6e3636a4a62765302f1f8ed2d5df85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d836e1e921a5e2fdfcf175fde0e6aff" id="r_a6d836e1e921a5e2fdfcf175fde0e6aff"><td class="memItemLeft" align="right" valign="top"><a id="a6d836e1e921a5e2fdfcf175fde0e6aff" name="a6d836e1e921a5e2fdfcf175fde0e6aff"></a>
+const <a class="el" href="classdrain_1_1Frame2D.html">AreaGeometry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAreaGeometry</b> () const</td></tr>
+<tr class="separator:a6d836e1e921a5e2fdfcf175fde0e6aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab5dcc20acc42f6d5aff38120c4538d7" id="r_aab5dcc20acc42f6d5aff38120c4538d7"><td class="memItemLeft" align="right" valign="top"><a id="aab5dcc20acc42f6d5aff38120c4538d7" name="aab5dcc20acc42f6d5aff38120c4538d7"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getChannelCount</b> () const</td></tr>
 <tr class="memdesc:aab5dcc20acc42f6d5aff38120c4538d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set... <br /></td></tr>
@@ -177,15 +187,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setChannelCount</b> (
 <tr class="memitem:acabf1507fd62e6b22570a3bcab57e7cc" id="r_acabf1507fd62e6b22570a3bcab57e7cc"><td class="memItemLeft" align="right" valign="top"><a id="acabf1507fd62e6b22570a3bcab57e7cc" name="acabf1507fd62e6b22570a3bcab57e7cc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setChannelCount</b> (const <a class="el" href="classdrain_1_1image_1_1ChannelGeometry.html">ChannelGeometry</a> &amp;geom)</td></tr>
 <tr class="separator:acabf1507fd62e6b22570a3bcab57e7cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5cbf0db48addb91a055965aee55c276" id="r_ac5cbf0db48addb91a055965aee55c276"><td class="memItemLeft" align="right" valign="top"><a id="ac5cbf0db48addb91a055965aee55c276" name="ac5cbf0db48addb91a055965aee55c276"></a>
-const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getImageChannelCount</b> () const</td></tr>
-<tr class="separator:ac5cbf0db48addb91a055965aee55c276"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192161ef302e078dd2430c17617676fa" id="r_a192161ef302e078dd2430c17617676fa"><td class="memItemLeft" align="right" valign="top"><a id="a192161ef302e078dd2430c17617676fa" name="a192161ef302e078dd2430c17617676fa"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getImageChannelCount</b> () const</td></tr>
+<tr class="separator:a192161ef302e078dd2430c17617676fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8fee6de108ed1cc1cda9cb537534aad" id="r_ab8fee6de108ed1cc1cda9cb537534aad"><td class="memItemLeft" align="right" valign="top"><a id="ab8fee6de108ed1cc1cda9cb537534aad" name="ab8fee6de108ed1cc1cda9cb537534aad"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setImageChannelCount</b> (size_t imageChannels)</td></tr>
 <tr class="separator:ab8fee6de108ed1cc1cda9cb537534aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4af7decfdd31376aa291c70969738988" id="r_a4af7decfdd31376aa291c70969738988"><td class="memItemLeft" align="right" valign="top"><a id="a4af7decfdd31376aa291c70969738988" name="a4af7decfdd31376aa291c70969738988"></a>
-const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getAlphaChannelCount</b> () const</td></tr>
-<tr class="separator:a4af7decfdd31376aa291c70969738988"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc1348f80a7a330dd5cca8069e38937" id="r_a0cc1348f80a7a330dd5cca8069e38937"><td class="memItemLeft" align="right" valign="top"><a id="a0cc1348f80a7a330dd5cca8069e38937" name="a0cc1348f80a7a330dd5cca8069e38937"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getAlphaChannelCount</b> () const</td></tr>
+<tr class="separator:a0cc1348f80a7a330dd5cca8069e38937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b15ae893eeb9ceac9d7bbb7fe2af71a" id="r_a5b15ae893eeb9ceac9d7bbb7fe2af71a"><td class="memItemLeft" align="right" valign="top"><a id="a5b15ae893eeb9ceac9d7bbb7fe2af71a" name="a5b15ae893eeb9ceac9d7bbb7fe2af71a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setAlphaChannelCount</b> (size_t alphaChannels)</td></tr>
 <tr class="separator:a5b15ae893eeb9ceac9d7bbb7fe2af71a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -382,10 +392,10 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>storag
 size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>next</b> ()</td></tr>
 <tr class="separator:ae572ed60e4de48af0b9513fc69c47ef2 inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1TupleBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1TupleBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1TupleBase.html">TupleBase&lt; S, N &gt;</a></td></tr>
-<tr class="memitem:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase" id="r_a38fbd2b937dbb0b01ac0855fc0c9108f"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndexed</b> (size_t i)</td></tr>
-<tr class="memdesc:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
-<tr class="separator:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase" id="r_ad354b470fb3e4aacba4a50526d209c00"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndexed</b> (size_t)</td></tr>
+<tr class="memdesc:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
+<tr class="separator:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1TupleBase" id="r_aaa35cb0c639dd402144074fc9c454584"><td class="memTemplParams" colspan="2">
 template&lt;typename T2 , typename ... TT&gt; </td></tr>
 <tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1TupleBase"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setIndexed</b> (size_t i, T2 arg, const TT &amp;... rest)</td></tr>
@@ -398,7 +408,7 @@ const iterator&#160;</td><td class="memItemRight" valign="bottom"><b>start</b></
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The basic idea is to encode dimensions directly as a std::vector&lt;int&gt;; the number of elements is the number of dimensions. Each element states the discrete coordinate space.</p>
-<p>For example, a three-channel image having width 640 and height 400 would have dimension vector [640,400,3]. The coordinates will be: x \in {0,1,...,639}, y \in {0,1,...,399} and z \in {0,1,2}. The size of the vector of unlimited, allowing hypermatrices of any size. </p>
+<p>For example, a three-channel image having width 640 and height 400 would have dimension vector [640,400,3]. The coordinates will be: \(x \in \{0,...,639\}\), \(y \in \{0,...,399\}\) and \(z \in \{0,1,2\}\). The size of the vector of unlimited, allowing hypermatrices of any size. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1c0eb6662b0a8d02a876b893e9115558" name="a1c0eb6662b0a8d02a876b893e9115558"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c0eb6662b0a8d02a876b893e9115558">&#9670;&#160;</a></span>getChannelIndex()</h2>

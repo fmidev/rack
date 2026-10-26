@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -155,13 +162,13 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classrack_1_1CartesianOpticalFlow.html#aa0ed9c3a6c1c9b86e6c74a5b774604be">   68</a></span>    <span class="keyword">mutable</span> <a class="code hl_class" href="classdrain_1_1Time.html">drain::Time</a> <a class="code hl_variable" href="classrack_1_1CartesianOpticalFlow.html#aa0ed9c3a6c1c9b86e6c74a5b774604be">t2</a>;</div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1CartesianOpticalFlow.html#aa34b53a92346b5d5b68ca14f1d946632">getSrcData</a>(<a class="code hl_class" href="classdrain_1_1image_1_1ImageTray.html">ImageTray&lt;const Channel&gt;</a> &amp; src) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1CartesianOpticalFlow.html#aa34b53a92346b5d5b68ca14f1d946632">getSrcData</a>(<a class="code hl_class" href="classrack_1_1DataSet.html">ImageTray&lt;const Channel&gt;</a> &amp; src) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1CartesianOpticalFlow.html#a1dd206860ae9fb5b5c69cfd645cc59af">getDiff</a>(<span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height, <span class="keywordtype">double</span> max, <a class="code hl_class" href="classdrain_1_1image_1_1ImageTray.html">ImageTray&lt;Channel&gt;</a> &amp; channels) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1CartesianOpticalFlow.html#a1dd206860ae9fb5b5c69cfd645cc59af">getDiff</a>(<span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height, <span class="keywordtype">double</span> max, <a class="code hl_class" href="classrack_1_1DataSet.html">ImageTray&lt;Channel&gt;</a> &amp; channels) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1CartesianOpticalFlow.html#a909ff69bfd1383f7a8bf8bc1757194cf">getMotion</a>(<span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height, <a class="code hl_class" href="classdrain_1_1image_1_1ImageTray.html">ImageTray&lt;Channel&gt;</a> &amp; channels) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1CartesianOpticalFlow.html#a909ff69bfd1383f7a8bf8bc1757194cf">getMotion</a>(<span class="keywordtype">size_t</span> width, <span class="keywordtype">size_t</span> height, <a class="code hl_class" href="classrack_1_1DataSet.html">ImageTray&lt;Channel&gt;</a> &amp; channels) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>};</div>
@@ -220,7 +227,6 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1CmdOpticalFlowBase_html"><div class="ttname"><a href="classdrain_1_1CmdOpticalFlowBase.html">drain::CmdOpticalFlowBase</a></div><div class="ttdoc">Utility for creating a Command that runs FastOpticalFlowOp operator.</div><div class="ttdef"><b>Definition</b> CommandOpticalFlow.h:55</div></div>
 <div class="ttc" id="aclassdrain_1_1Frame2D_html"><div class="ttname"><a href="classdrain_1_1Frame2D.html">drain::Frame2D&lt; size_t &gt;</a></div></div>
 <div class="ttc" id="aclassdrain_1_1Time_html"><div class="ttname"><a href="classdrain_1_1Time.html">drain::Time</a></div><div class="ttdoc">Utility for handling time. Internally, uses tm (C time structure).</div><div class="ttdef"><b>Definition</b> Time.h:53</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1ImageTray_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageTray.html">drain::image::ImageTray</a></div><div class="ttdoc">Container applicable for Channels and Images, with alpha support.</div><div class="ttdef"><b>Definition</b> ImageTray.h:266</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianOpticalFlow_html"><div class="ttname"><a href="classrack_1_1CartesianOpticalFlow.html">rack::CartesianOpticalFlow</a></div><div class="ttdef"><b>Definition</b> cartesian-motion.h:48</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianOpticalFlow_html_a1dd206860ae9fb5b5c69cfd645cc59af"><div class="ttname"><a href="classrack_1_1CartesianOpticalFlow.html#a1dd206860ae9fb5b5c69cfd645cc59af">rack::CartesianOpticalFlow::getDiff</a></div><div class="ttdeci">virtual void getDiff(size_t width, size_t height, double max, ImageTray&lt; Channel &gt; &amp;channels) const</div><div class="ttdoc">Retrieves the difference image needed as a temporary storage. Maybe viewed for debugging.</div><div class="ttdef"><b>Definition</b> cartesian-motion.cpp:257</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianOpticalFlow_html_a2ace9f394da535a118abc1cf4190c1b6"><div class="ttname"><a href="classrack_1_1CartesianOpticalFlow.html#a2ace9f394da535a118abc1cf4190c1b6">rack::CartesianOpticalFlow::getGeometry</a></div><div class="ttdeci">virtual const AreaGeometry &amp; getGeometry() const</div><div class="ttdoc">Main operation: computes differentials and produces approximation of motion.</div><div class="ttdef"><b>Definition</b> cartesian-motion.h:56</div></div>
@@ -228,7 +234,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassrack_1_1CartesianOpticalFlow_html_a909ff69bfd1383f7a8bf8bc1757194cf"><div class="ttname"><a href="classrack_1_1CartesianOpticalFlow.html#a909ff69bfd1383f7a8bf8bc1757194cf">rack::CartesianOpticalFlow::getMotion</a></div><div class="ttdeci">void getMotion(size_t width, size_t height, ImageTray&lt; Channel &gt; &amp;channels) const</div><div class="ttdoc">The result is stored in this channel pack.</div><div class="ttdef"><b>Definition</b> cartesian-motion.cpp:312</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianOpticalFlow_html_aa0ed9c3a6c1c9b86e6c74a5b774604be"><div class="ttname"><a href="classrack_1_1CartesianOpticalFlow.html#aa0ed9c3a6c1c9b86e6c74a5b774604be">rack::CartesianOpticalFlow::t2</a></div><div class="ttdeci">drain::Time t2</div><div class="ttdoc">For storing 2nd input timestamp.</div><div class="ttdef"><b>Definition</b> cartesian-motion.h:68</div></div>
 <div class="ttc" id="aclassrack_1_1CartesianOpticalFlow_html_aa34b53a92346b5d5b68ca14f1d946632"><div class="ttname"><a href="classrack_1_1CartesianOpticalFlow.html#aa34b53a92346b5d5b68ca14f1d946632">rack::CartesianOpticalFlow::getSrcData</a></div><div class="ttdeci">virtual void getSrcData(ImageTray&lt; const Channel &gt; &amp;src) const</div><div class="ttdoc">Retrieves the intensity images used as a basis of motion analysis.</div><div class="ttdef"><b>Definition</b> cartesian-motion.cpp:47</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1293</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

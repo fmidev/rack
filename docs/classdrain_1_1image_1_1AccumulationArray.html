@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -228,19 +235,19 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>address</b> (const 
 Public Attributes</h2></td></tr>
 <tr class="memitem:a1cbd022800989bd92fa1cd54b0d05d27" id="r_a1cbd022800989bd92fa1cd54b0d05d27"><td class="memItemLeft" align="right" valign="top"><a id="a1cbd022800989bd92fa1cd54b0d05d27" name="a1cbd022800989bd92fa1cd54b0d05d27"></a>
 <a class="el" href="classdrain_1_1image_1_1ImageT.html">ImageT</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
-<tr class="memdesc:a1cbd022800989bd92fa1cd54b0d05d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array for actual data: <picture><source srcset="form_19_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ sum x_i $" src="form_19.png" width="34" height="9"/></picture>, <picture><source srcset="form_20_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ sum w_i x_i $" src="form_20.png" width="48" height="9"/></picture> or generally <picture><source srcset="form_21_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ sum w_i^r x_i^p $" src="form_21.png" width="51" height="15"/></picture>. <br /></td></tr>
+<tr class="memdesc:a1cbd022800989bd92fa1cd54b0d05d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array for actual data: \( sum x_i \), \( sum w_i x_i \) or generally \( sum w_i^r x_i^p \). <br /></td></tr>
 <tr class="separator:a1cbd022800989bd92fa1cd54b0d05d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb1d67f5ad3e8a1817cadd7cf437441e" id="r_afb1d67f5ad3e8a1817cadd7cf437441e"><td class="memItemLeft" align="right" valign="top"><a id="afb1d67f5ad3e8a1817cadd7cf437441e" name="afb1d67f5ad3e8a1817cadd7cf437441e"></a>
 <a class="el" href="classdrain_1_1image_1_1ImageT.html">ImageT</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>weight</b></td></tr>
-<tr class="memdesc:afb1d67f5ad3e8a1817cadd7cf437441e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array for weights ( <picture><source srcset="form_22_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ sum w_i $" src="form_22.png" width="36" height="9"/></picture>) <br /></td></tr>
+<tr class="memdesc:afb1d67f5ad3e8a1817cadd7cf437441e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array for weights ( \( sum w_i \)) <br /></td></tr>
 <tr class="separator:afb1d67f5ad3e8a1817cadd7cf437441e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6a3bf37080a0f9dfefd62b3c34f2bb6" id="r_aa6a3bf37080a0f9dfefd62b3c34f2bb6"><td class="memItemLeft" align="right" valign="top"><a id="aa6a3bf37080a0f9dfefd62b3c34f2bb6" name="aa6a3bf37080a0f9dfefd62b3c34f2bb6"></a>
 <a class="el" href="classdrain_1_1image_1_1ImageT.html">ImageT</a>&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>count</b></td></tr>
-<tr class="memdesc:aa6a3bf37080a0f9dfefd62b3c34f2bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array ( <picture><source srcset="form_23_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ N $" src="form_23.png" width="11" height="10"/></picture> in <picture><source srcset="form_24_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ sum_i^N $" src="form_24.png" width="33" height="15"/></picture>) <br /></td></tr>
+<tr class="memdesc:aa6a3bf37080a0f9dfefd62b3c34f2bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array ( \( N \) in \( sum_i^N \)) <br /></td></tr>
 <tr class="separator:aa6a3bf37080a0f9dfefd62b3c34f2bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a744c0e80e0a791d32c1bbd833afd7738" id="r_a744c0e80e0a791d32c1bbd833afd7738"><td class="memItemLeft" align="right" valign="top"><a id="a744c0e80e0a791d32c1bbd833afd7738" name="a744c0e80e0a791d32c1bbd833afd7738"></a>
 <a class="el" href="classdrain_1_1image_1_1ImageT.html">ImageT</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data2</b></td></tr>
-<tr class="memdesc:a744c0e80e0a791d32c1bbd833afd7738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array for auxiliary data; typically <picture><source srcset="form_25_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$ sum w_i^r x_i^{2p} $" src="form_25.png" width="56" height="16"/></picture> for std.deviation or difference (in Overwrite) <br /></td></tr>
+<tr class="memdesc:a744c0e80e0a791d32c1bbd833afd7738"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accumulation array for auxiliary data; typically \( sum w_i^r x_i^{2p} \) for std.deviation or difference (in Overwrite) <br /></td></tr>
 <tr class="separator:a744c0e80e0a791d32c1bbd833afd7738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
@@ -269,14 +276,14 @@ features</h1>
 <li>count - number of samples added (unsigned int);</li>
 <li>dataSquared - sum of squared quantities added;</li>
 </ol>
-<p>Injection. The main loop iterates radar (image) data points of type &lt;Ti&gt;, mapping each point to a single point in the target array of type &lt;T&gt;; hence the name injector.</p>
+<p>Injection. The main loop iterates radar (image) data points of type <code>Ti</code>, mapping each point to a single point in the target array of type <code>T</code>; hence the name injector.</p>
 <p>Cumulation. The compositing starts by initiating the target image, see open(). Each input radar image is projected on the target image cumulatively, see execute(). Finally, the cumulation must be completed by normalizing the result with the number/weight of cumulated inputs, see close(). Hence, the target which should be seen.</p>
 <p>The weights are stored in the first alphaChannel (index 0) of the target image. If the target has a second image channel, also the (weighted) squared values are cumulated. <br  />
 </p>
 <p>In cumulation, ...  </p><p class="formulaDsp">
-<picture><source srcset="form_144_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+\[
 x = \sqrt[p]{\frac{\sum_i {q_i}^r x_i^p}{\sum_i {q_i}^r } }
-\]" src="form_144.png" width="89" height="39"/></picture>
+\]
 </p>
 <p>The default type of target image, that is, cumulation array, is double. If no (float valued) weighting is applied, target image could be long int as well. </p>
 </div><hr/>The documentation for this class was generated from the following files:<ul>

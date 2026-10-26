@@ -1,0 +1,28 @@
+<map id="MouseEventXML&lt; N &gt;" name="MouseEventXML&lt; N &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="177,803,347,828"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1MouseXML.html" title=" " alt="" coords="215,728,309,753"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="265,768,265,802,259,802,259,768"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="237,625,287,651"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="265,665,265,728,259,728,259,665"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,508,196,548"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="141,553,246,623,243,627,139,558"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1StyleXML.html" title=" " alt="" coords="221,515,303,541"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="265,554,265,625,259,625,259,554"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="96,391,303,416"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="210,428,235,483,255,514,251,517,230,485,206,430"/>
+<area shape="rect" id="Node000007" href="$structdrain_1_1SprinterLayout.html" title=" " alt="" coords="327,391,445,416"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="315,419,281,429,260,442,252,459,251,479,260,515,255,516,246,479,247,458,256,438,278,424,313,414"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1ClassListXML.html" title="Container for style classes. Essentially a set of strings, with space&#45;separated output support." alt="" coords="401,515,509,541"/>
+<area shape="poly" id="edge13_Node000012_Node000007" title=" " alt="" coords="415,423,428,439,447,479,456,515,451,516,442,481,424,441,411,427"/>
+<area shape="rect" id="Node000008" href="$structdrain_1_1TypeLayout.html" title=" " alt="" coords="338,229,434,255"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="389,268,389,390,383,390,383,268"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="322,155,450,180"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="389,194,389,229,383,229,383,194"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="310,80,462,105"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="389,120,389,154,383,154,383,120"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="314,5,458,31"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="389,45,389,80,383,80,383,45"/>
+<area shape="poly" id="edge11_Node000003_Node000012" title=" " alt="" coords="435,553,404,579,366,604,326,621,288,633,287,628,324,616,363,599,400,574,431,548"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="469,391,607,416"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="530,430,499,486,470,517,466,513,495,482,526,427"/>
+</map>

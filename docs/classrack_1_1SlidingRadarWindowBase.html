@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -256,12 +263,12 @@ Collaboration diagram for SlidingRadarWindowBase&lt; C, R &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4e388b309c2fdb9cceb60caf5dbc7e2c" id="r_a4e388b309c2fdb9cceb60caf5dbc7e2c"><td class="memItemLeft" align="right" valign="top"><a id="a4e388b309c2fdb9cceb60caf5dbc7e2c" name="a4e388b309c2fdb9cceb60caf5dbc7e2c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (int width=0, int height=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (<a class="el" href="classrack_1_1DataSet.html">int</a> width=0, <a class="el" href="classrack_1_1DataSet.html">int</a> height=0)</td></tr>
 <tr class="separator:a4e388b309c2fdb9cceb60caf5dbc7e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a734aed9db8f03cc932e17131fbd639cb" id="r_a734aed9db8f03cc932e17131fbd639cb"><td class="memItemLeft" align="right" valign="top"><a id="a734aed9db8f03cc932e17131fbd639cb" name="a734aed9db8f03cc932e17131fbd639cb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (const C &amp;conf)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> C &amp;conf)</td></tr>
 <tr class="separator:a734aed9db8f03cc932e17131fbd639cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7337cd6d861b5c9dda9bfffc5e694796" id="r_a7337cd6d861b5c9dda9bfffc5e694796"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a7337cd6d861b5c9dda9bfffc5e694796">setSrcFrame</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;src)</td></tr>
+<tr class="memitem:a7337cd6d861b5c9dda9bfffc5e694796" id="r_a7337cd6d861b5c9dda9bfffc5e694796"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a7337cd6d861b5c9dda9bfffc5e694796">setSrcFrame</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;src)</td></tr>
 <tr class="memdesc:a7337cd6d861b5c9dda9bfffc5e694796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets input image and retrieves <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata from image Properties.  <br /></td></tr>
 <tr class="separator:a7337cd6d861b5c9dda9bfffc5e694796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1SlidingWindow"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1SlidingWindow')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow&lt; C, R &gt;</a></td></tr>
@@ -338,16 +345,16 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDstFrame</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a93bf86397028a1470554607e94b31c08" id="r_a93bf86397028a1470554607e94b31c08"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a93bf86397028a1470554607e94b31c08">initialize</a> () override</td></tr>
+<tr class="memitem:a93bf86397028a1470554607e94b31c08" id="r_a93bf86397028a1470554607e94b31c08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a93bf86397028a1470554607e94b31c08">initialize</a> () <a class="el" href="classrack_1_1DataSet.html">override</a></td></tr>
 <tr class="memdesc:a93bf86397028a1470554607e94b31c08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets class-specific initial values. Does not change general window state (e.g. location). Should not accumulate any statistics.  <br /></td></tr>
 <tr class="separator:a93bf86397028a1470554607e94b31c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a13b9759a348df8a107b43878f209a0" id="r_a3a13b9759a348df8a107b43878f209a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a3a13b9759a348df8a107b43878f209a0">setImageLimits</a> () const</td></tr>
+<tr class="memitem:a3a13b9759a348df8a107b43878f209a0" id="r_a3a13b9759a348df8a107b43878f209a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a3a13b9759a348df8a107b43878f209a0">setImageLimits</a> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a3a13b9759a348df8a107b43878f209a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets internal limits corresponding to image geometries. Typically using coordHandler.  <br /></td></tr>
 <tr class="separator:a3a13b9759a348df8a107b43878f209a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed38352b5640f6f32a62d59450e18466" id="r_aed38352b5640f6f32a62d59450e18466"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#aed38352b5640f6f32a62d59450e18466">setRangeNorm</a> ()</td></tr>
+<tr class="memitem:aed38352b5640f6f32a62d59450e18466" id="r_aed38352b5640f6f32a62d59450e18466"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#aed38352b5640f6f32a62d59450e18466">setRangeNorm</a> ()</td></tr>
 <tr class="memdesc:aed38352b5640f6f32a62d59450e18466"><td class="mdescLeft">&#160;</td><td class="mdescRight">To compensate polar geometry, set applicable range for pixel area scaling.  <br /></td></tr>
 <tr class="separator:aed38352b5640f6f32a62d59450e18466"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d054195a808d229b2d33ab54388b64" id="r_ab8d054195a808d229b2d33ab54388b64"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#ab8d054195a808d229b2d33ab54388b64">reset</a> ()</td></tr>
+<tr class="memitem:ab8d054195a808d229b2d33ab54388b64" id="r_ab8d054195a808d229b2d33ab54388b64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#ab8d054195a808d229b2d33ab54388b64">reset</a> ()</td></tr>
 <tr class="memdesc:ab8d054195a808d229b2d33ab54388b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns false, if traversal should be ended.  <br /></td></tr>
 <tr class="separator:ab8d054195a808d229b2d33ab54388b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1SlidingWindow"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1SlidingWindow')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow&lt; C, R &gt;</a></td></tr>
@@ -426,13 +433,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>debugDiag</b> (int bi
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a6795fb17795f6610ad269cc82f03d14d" id="r_a6795fb17795f6610ad269cc82f03d14d"><td class="memItemLeft" align="right" valign="top"><a id="a6795fb17795f6610ad269cc82f03d14d" name="a6795fb17795f6610ad269cc82f03d14d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNorm</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNorm</b></td></tr>
 <tr class="separator:a6795fb17795f6610ad269cc82f03d14d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e3e465334f9c8e2868a8eb9e7837ee" id="r_ab5e3e465334f9c8e2868a8eb9e7837ee"><td class="memItemLeft" align="right" valign="top"><a id="ab5e3e465334f9c8e2868a8eb9e7837ee" name="ab5e3e465334f9c8e2868a8eb9e7837ee"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNormEnd</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNormEnd</b></td></tr>
 <tr class="separator:ab5e3e465334f9c8e2868a8eb9e7837ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a63b926282526013e6d3b2a09d8a88a" id="r_a5a63b926282526013e6d3b2a09d8a88a"><td class="memItemLeft" align="right" valign="top"><a id="a5a63b926282526013e6d3b2a09d8a88a" name="a5a63b926282526013e6d3b2a09d8a88a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>countMin</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>countMin</b></td></tr>
 <tr class="separator:a5a63b926282526013e6d3b2a09d8a88a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1SlidingWindow"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1SlidingWindow')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow&lt; C, R &gt;</a></td></tr>
 <tr class="memitem:a6fdb2314558476f33753cd71079e4709 inherit pro_attribs_classdrain_1_1image_1_1SlidingWindow" id="r_a6fdb2314558476f33753cd71079e4709"><td class="memItemLeft" align="right" valign="top">
@@ -506,7 +513,7 @@ conf_t&#160;</td><td class="memItemRight" valign="bottom"><b>conf</b></td></tr>
 <tr class="separator:accd66f42de6d0772f61265114752c959 inherit pub_attribs_classdrain_1_1image_1_1WindowCore"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class C, class R = RadarWindowCore&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> C, <a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">R</a> = RadarWindowCore&gt;<br />
 class rack::SlidingRadarWindowBase&lt; C, R &gt;</div><p>A two-dimensional image processing window that handles the special <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> codes and scales the result. Template parameter for drain::SlidingWindowOpT. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -523,13 +530,13 @@ class rack::SlidingRadarWindowBase&lt; C, R &gt;</div><p>A two-dimensional image
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C , class R  = RadarWindowCore&gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> C , <a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">R</a>  = RadarWindowCore&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void initialize </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a> initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -559,13 +566,13 @@ template&lt;class C , class R  = RadarWindowCore&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C , class R  = RadarWindowCore&gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> C , <a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">R</a>  = RadarWindowCore&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool reset </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a> reset </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -590,13 +597,13 @@ template&lt;class C , class R  = RadarWindowCore&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C , class R  = RadarWindowCore&gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> C , <a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">R</a>  = RadarWindowCore&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void setImageLimits </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> setImageLimits </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -622,13 +629,13 @@ template&lt;class C , class R  = RadarWindowCore&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C , class R  = RadarWindowCore&gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> C , <a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">R</a>  = RadarWindowCore&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void setRangeNorm </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> setRangeNorm </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -653,15 +660,15 @@ template&lt;class C , class R  = RadarWindowCore&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class C , class R  = RadarWindowCore&gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> C , <a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">R</a>  = RadarWindowCore&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void setSrcFrame </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> setSrcFrame </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
           <td></td>
         </tr>

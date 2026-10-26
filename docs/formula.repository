@@ -280,3 +280,9 @@ c^2 = a^2 + b^2 - 2ab\cos\gamma
 \_form#177=116x28:\[
      \frac{\sin\alpha}{a} = \frac{\sin\beta}{b} = \frac{\sin\gamma}{c}
  \]
+\_form#178=158x16:$ d_d = \log - \sqrt { \log^2 d_x + \log^2 d_x } $
+\_form#179=83x14:$x \in \{0,...,639\}$
+\_form#180=13x9:$\sigma_x$
+\_form#181=41x13:$\sigma_x + \sigma_y$
+\_form#182=369x16:$ dst(i,j) = \sqrt{ src(i,j,0)*src2(i,j,0) + \ldots + src(i,j,k)*src2(i,j,k) } $
+\_form#183=235x16:$ dst(i,j) = \sqrt{ src(i,j,0)^2 + \ldots + src(i,j,k)^2 } $

@@ -1,0 +1,7 @@
+<map id="PrefixChecker" name="PrefixChecker">
+<area shape="rect" id="Node000001" title="A debugging facility. Obsolete?" alt="" coords="87,5,198,31"/>
+<area shape="rect" id="Node000002" href="$classrack_1_1CmdInputPrefix.html" title="Path prefix string for subsequent input files." alt="" coords="5,79,128,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,42,81,80,77,76,119,38"/>
+<area shape="rect" id="Node000003" href="$classrack_1_1CmdOutputPrefix.html" title=" " alt="" coords="152,79,285,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="167,38,208,76,204,80,163,42"/>
+</map>

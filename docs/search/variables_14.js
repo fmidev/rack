@@ -9,5 +9,6 @@ var searchData=
   ['universal_6',['UNIVERSAL',['../classrack_1_1DetectorOp.html#ac7d73861600b8d982afcbab299b339fa',1,'rack::DetectorOp']]],
   ['unset_5flayout_7',['UNSET_LAYOUT',['../classdrain_1_1Sprinter.html#af38c4bbb10fd0f9f43270479b05a61bb',1,'drain::Sprinter']]],
   ['updatehorz_8',['updateHorz',['../classdrain_1_1image_1_1SlidingWindow.html#a1b811331d86b855433d89aebfb69d9d7',1,'drain::image::SlidingWindow']]],
-  ['updatevert_9',['updateVert',['../classdrain_1_1image_1_1SlidingWindow.html#a15d208d6ee67a428e40a229c1a8dc480',1,'drain::image::SlidingWindow']]]
+  ['updatevert_9',['updateVert',['../classdrain_1_1image_1_1SlidingWindow.html#a15d208d6ee67a428e40a229c1a8dc480',1,'drain::image::SlidingWindow']]],
+  ['user_5fattr_5fprefix_10',['USER_ATTR_PREFIX',['../classdrain_1_1XML.html#a24559ed3bcf2683ac0485cacf725f3cc',1,'drain::XML']]]
 ];

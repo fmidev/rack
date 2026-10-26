@@ -5,7 +5,7 @@ var searchData=
   ['earth_5fradius_2',['EARTH_RADIUS',['../namespacerack.html#a2cb7703740f4124ff50163bdc2b0d1da',1,'rack']]],
   ['earth_5fradius_5f43_3',['EARTH_RADIUS_43',['../namespacerack.html#a70729159c5b27a350bbe3584469cfa73',1,'rack']]],
   ['earth_5fradiusi_4',['EARTH_RADIUSi',['../namespacerack.html#adbca5f3641856a2d189fb37dee290fb6',1,'rack']]],
-  ['elangle_5',['elangle',['../classrack_1_1DataSelector.html#ae93b013a8575ae9e35e2808c6801be0c',1,'rack::DataSelector::elangle'],['../classrack_1_1PolarODIM.html#ad671327f35ea8a332b53b4b6a7e07bc9',1,'rack::PolarODIM::elangle']]],
+  ['elangle_5',['elangle',['../classrack_1_1DataSelector.html#aed6463391e7cfa99735362538ea8a9ad',1,'rack::DataSelector::elangle'],['../classrack_1_1PolarODIM.html#ad671327f35ea8a332b53b4b6a7e07bc9',1,'rack::PolarODIM::elangle']]],
   ['elementcount_6',['elementCount',['../classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5',1,'drain::Castable']]],
   ['elevationangles_7',['elevationAngles',['../classrack_1_1Geometry.html#abfa52d53af3c7e628575db0feaed7007',1,'rack::Geometry']]],
   ['emptylayout_8',['emptyLayout',['../classdrain_1_1Sprinter.html#a78be6db45f71ba00c885f330328fc891',1,'drain::Sprinter']]],

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -136,8 +143,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isValidIntensity</b> 
 <tr class="memdesc:a193ee08c882b0fd24a115440011bee5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Criterion. <br /></td></tr>
 <tr class="separator:a193ee08c882b0fd24a115440011bee5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1ReferenceMap"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1ReferenceMap')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a></td></tr>
-<tr class="memitem:a4e964e562f7a529f762d82983593ac75 inherit pub_methods_classdrain_1_1ReferenceMap" id="r_a4e964e562f7a529f762d82983593ac75"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap.html#a4e964e562f7a529f762d82983593ac75">ReferenceMap</a> (char <a class="el" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>=',')</td></tr>
-<tr class="memdesc:a4e964e562f7a529f762d82983593ac75 inherit pub_methods_classdrain_1_1ReferenceMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
+<tr class="memitem:a4e964e562f7a529f762d82983593ac75 inherit pub_methods_classdrain_1_1ReferenceMap" id="r_a4e964e562f7a529f762d82983593ac75"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>ReferenceMap</b> (char <a class="el" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>=',')</td></tr>
+<tr class="memdesc:a4e964e562f7a529f762d82983593ac75 inherit pub_methods_classdrain_1_1ReferenceMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a4e964e562f7a529f762d82983593ac75 inherit pub_methods_classdrain_1_1ReferenceMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca75f7ad535c37092ae7980e2dc714eb inherit pub_methods_classdrain_1_1ReferenceMap" id="r_aca75f7ad535c37092ae7980e2dc714eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap.html#aca75f7ad535c37092ae7980e2dc714eb">ReferenceMap</a> (const <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a> &amp;rmap)</td></tr>
 <tr class="memdesc:aca75f7ad535c37092ae7980e2dc714eb inherit pub_methods_classdrain_1_1ReferenceMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor copies only the separators; does not copy the items.  <br /></td></tr>
@@ -220,7 +228,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const
 virtual const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeyList</b> () const</td></tr>
 <tr class="memdesc:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived versions may produce an ordered set of keys. <br /></td></tr>
 <tr class="separator:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab5b95d8eb31d3bab4e6a06e0bf19d794">getMap</a> () const</td></tr>
+<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">
+const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap" id="r_aa2d8c7c53beee48e997af82bfed2add4"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>exportMap</b> (std::map&lt; std::string, T2 &gt; &amp;m) const</td></tr>

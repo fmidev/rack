@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -95,40 +102,11 @@ Inheritance diagram for SmartMap&lt; T &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1SmartMap__inherit__graph.png" border="0" usemap="#aSmartMap_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="aSmartMap_3_01T_01_4_inherit__map" id="aSmartMap_3_01T_01_4_inherit__map">
-<area shape="rect" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="216,104,343,129"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="391,79,649,104"/>
-<area shape="poly" title=" " alt="" coords="356,106,399,101,400,107,357,111"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="439,128,601,153"/>
-<area shape="poly" title=" " alt="" coords="357,122,439,130,438,135,356,127"/>
-<area shape="rect" title=" " alt="" coords="5,104,168,129"/>
-<area shape="poly" title=" " alt="" coords="182,114,216,114,216,119,182,119"/>
-<area shape="rect" href="classdrain_1_1StyleXML.html" title=" " alt="" coords="697,55,780,80"/>
-<area shape="poly" title=" " alt="" coords="649,74,697,69,697,74,649,80"/>
-<area shape="rect" href="classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="713,104,764,129"/>
-<area shape="poly" title=" " alt="" coords="644,103,713,111,713,116,643,108"/>
-<area shape="rect" href="classdrain_1_1NodeXML.html" title=" " alt="" coords="830,5,1017,31"/>
-<area shape="poly" title=" " alt="" coords="774,106,778,103,792,89,801,76,811,64,827,52,861,37,895,28,896,33,863,42,829,56,814,68,805,80,796,92,782,107,777,110"/>
-<area shape="poly" title=" " alt="" coords="757,94,778,79,792,65,801,52,811,40,827,28,828,27,831,31,829,32,814,44,805,56,796,68,782,83,760,98"/>
-<area shape="rect" href="classdrain_1_1NodeXML.html" title=" " alt="" coords="828,55,1019,80"/>
-<area shape="poly" title=" " alt="" coords="777,115,827,102,905,78,907,83,829,107,778,120"/>
-<area shape="poly" title=" " alt="" coords="767,96,827,78,830,77,831,83,829,83,768,101"/>
-<area shape="rect" href="classdrain_1_1NodeXML.html" title=" " alt="" coords="833,104,1013,129"/>
-<area shape="poly" title=" " alt="" coords="778,121,833,123,833,128,778,127"/>
-<area shape="poly" title=" " alt="" coords="778,107,833,105,833,110,778,112"/>
-<area shape="rect" href="classdrain_1_1NodeXML.html" title=" " alt="" coords="834,153,1013,179"/>
-<area shape="poly" title=" " alt="" coords="768,132,829,151,835,153,833,158,827,157,766,137"/>
-<area shape="poly" title=" " alt="" coords="778,114,829,127,906,151,905,156,827,133,777,119"/>
-<area shape="rect" href="classdrain_1_1NodeXML.html" title=" " alt="" coords="862,203,985,228"/>
-<area shape="poly" title=" " alt="" coords="756,139,787,172,829,201,863,214,861,219,827,206,784,176,752,142"/>
-<area shape="poly" title=" " alt="" coords="773,136,799,158,829,177,865,191,899,200,897,205,863,196,827,182,796,162,770,141"/>
-<area shape="rect" href="classdrain_1_1NodeHTML.html" title=" " alt="" coords="1067,5,1160,31"/>
-<area shape="poly" title=" " alt="" coords="1030,15,1066,15,1066,21,1030,21"/>
-<area shape="rect" href="classdrain_1_1image_1_1NodeGDAL.html" title=" " alt="" coords="1067,55,1159,80"/>
-<area shape="poly" title=" " alt="" coords="1033,65,1067,65,1067,70,1033,70"/>
-<area shape="rect" href="classdrain_1_1image_1_1NodeSLD.html" title=" " alt="" coords="1073,104,1154,129"/>
-<area shape="poly" title=" " alt="" coords="1027,114,1072,114,1072,119,1027,119"/>
-<area shape="rect" href="classdrain_1_1image_1_1NodeSVG.html" title=" " alt="" coords="1072,153,1155,179"/>
-<area shape="poly" title=" " alt="" coords="1026,163,1072,163,1072,169,1026,169"/>
+<area shape="rect" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="23,79,150,104"/>
+<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title="A map of references to base type scalars, arrays or std::string; changing values in either are equiva..." alt="" coords="5,152,168,177"/>
+<area shape="poly" title=" " alt="" coords="89,118,89,152,84,152,84,118"/>
+<area shape="rect" title=" " alt="" coords="5,5,168,31"/>
+<area shape="poly" title=" " alt="" coords="89,44,89,79,84,79,84,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -202,7 +180,8 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const
 virtual const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeyList</b> () const</td></tr>
 <tr class="memdesc:a8ad979a05f7b8a1dbbffacd8467c7cff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived versions may produce an ordered set of keys. <br /></td></tr>
 <tr class="separator:a8ad979a05f7b8a1dbbffacd8467c7cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab5b95d8eb31d3bab4e6a06e0bf19d794">getMap</a> () const</td></tr>
+<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top"><a id="ab5b95d8eb31d3bab4e6a06e0bf19d794" name="ab5b95d8eb31d3bab4e6a06e0bf19d794"></a>
+const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMap</b> () const</td></tr>
 <tr class="separator:ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2d8c7c53beee48e997af82bfed2add4" id="r_aa2d8c7c53beee48e997af82bfed2add4"><td class="memTemplParams" colspan="2"><a id="aa2d8c7c53beee48e997af82bfed2add4" name="aa2d8c7c53beee48e997af82bfed2add4"></a>
 template&lt;class T2 &gt; </td></tr>
@@ -494,34 +473,6 @@ template&lt;class T2 &gt; </div>
 
 </div>
 </div>
-<a id="ab5b95d8eb31d3bab4e6a06e0bf19d794" name="ab5b95d8eb31d3bab4e6a06e0bf19d794"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5b95d8eb31d3bab4e6a06e0bf19d794">&#9670;&#160;</a></span>getMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const map_t &amp; getMap </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>? but &lt;T&gt; ?</p>
-
-</div>
-</div>
 <a id="a8dfbff0fda4c400c3edcd0ae920f573d" name="a8dfbff0fda4c400c3edcd0ae920f573d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8dfbff0fda4c400c3edcd0ae920f573d">&#9670;&#160;</a></span>importCastableMap()</h2>
 
@@ -553,9 +504,7 @@ template&lt;class T2 , bool STRICT = true&gt; </div>
 <p>Assign values from a map, possibly extending the map. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">m</td><td>- source of keys and values </td></tr>
-    <tr><td class="paramname">updateOnly</td><td>- bypass unexisting keys silently, otherwise throw exception. </td></tr>
-    <tr><td class="paramname">criticality</td><td>- define sensibility if new keys cannot be added (LOG_NOTE, LOG_ERROR)</td></tr>
+    <tr><td class="paramname">m</td><td>- source of keys and values</td></tr>
   </table>
   </dd>
 </dl>
@@ -656,7 +605,6 @@ template&lt;bool STRICT&gt; </div>
 <p>Assigns a value to given key; if the entry does not exist, tries to create it with directly with operator[]. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">updateOnly</td><td>- if true, only existing elements are updated, otherwise skipped; if false, tries to add elements. </td></tr>
     <tr><td class="paramname">entries</td><td>- string containing key=value pairs separated by separator </td></tr>
   </table>
   </dd>
@@ -828,7 +776,7 @@ template&lt;class T &gt; </div>
 <li>in the definition order of entries: "value,value2,...valueN" become assined as key=value, key2=value2, ... and so on.</li>
 <li>specified mode, allowing specific assignments "key=value,key2=value2,key3=value3"</li>
 </ol>
-<p>Mixed types like <code>"value,key4=value2,value3"</code> accepted but not encouraged. In the mixed mode, the unspecified keys become assigned in \i their order of appearance. Hence, in the above example <code>value3</code> will be assigned to <code>key2</code> , not <code>key3</code>.</p>
+<p>Mixed types like <code>"value,key4=value2,value3"</code> accepted but not encouraged. In the mixed mode, the unspecified keys become assigned in <em>their</em> order of appearance. Hence, in the above example <code>value3</code> will be assigned to <code>key2</code> , not <code>key3</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">criticality</td><td>- if true, skip non-existing entries silently Defines the 1) valid keys and 2) their order. </td></tr>

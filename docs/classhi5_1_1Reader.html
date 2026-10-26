@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -134,6 +141,9 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:afe2f7c63f77e2abaa189ee643813a450" id="r_afe2f7c63f77e2abaa189ee643813a450"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classhi5_1_1Reader.html#afe2f7c63f77e2abaa189ee643813a450">h5DatasetToImage</a> (hid_t id, const Hi5Tree::path_t &amp;path, <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;image)</td></tr>
 <tr class="memdesc:afe2f7c63f77e2abaa189ee643813a450"><td class="mdescLeft">&#160;</td><td class="mdescRight">const Hi5Tree::path_t &amp;path  <br /></td></tr>
 <tr class="separator:afe2f7c63f77e2abaa189ee643813a450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa50a440686681dd7ad78ce7b6101c31e" id="r_aa50a440686681dd7ad78ce7b6101c31e"><td class="memItemLeft" align="right" valign="top"><a id="aa50a440686681dd7ad78ce7b6101c31e" name="aa50a440686681dd7ad78ce7b6101c31e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>h5FileToLegend</b> (hid_t file_id, const Hi5Tree::path_t &amp;path, Hi5Tree &amp;tree)</td></tr>
+<tr class="separator:aa50a440686681dd7ad78ce7b6101c31e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classhi5_1_1Hi5Base"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classhi5_1_1Hi5Base')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classhi5_1_1Hi5Base.html">Hi5Base</a></td></tr>
 <tr class="memitem:ae8bb260b57e67f115c0a97cf8f13c29c inherit pub_static_methods_classhi5_1_1Hi5Base" id="r_ae8bb260b57e67f115c0a97cf8f13c29c"><td class="memItemLeft" align="right" valign="top">
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>handleStatus</b> (herr_t status, const std::string &amp;message, <a class="el" href="classdrain_1_1Logger.html">drain::Logger</a> &amp;mout, int lineNo=0)</td></tr>
@@ -165,6 +175,10 @@ static <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Imag
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>linkPalette</b> (const Hi5Tree &amp;palette, Hi5Tree &amp;dst)</td></tr>
 <tr class="memdesc:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the palette that has been (or will be) created with createPalette(). <br /></td></tr>
 <tr class="separator:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2373575827d13ec5f8d561394175b55 inherit pub_static_methods_classhi5_1_1Hi5Base" id="r_ab2373575827d13ec5f8d561394175b55"><td class="memItemLeft" align="right" valign="top">
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExcluded</b> (const Hi5Tree &amp;src, const typename Hi5Tree::path_t &amp;path)</td></tr>
+<tr class="memdesc:ab2373575827d13ec5f8d561394175b55 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check is the path contains at least one <code>exclude</code> marker, meaning that data at the path should be bypassed. <br /></td></tr>
+<tr class="separator:ab2373575827d13ec5f8d561394175b55 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f99aa747a87c81d474705f2944e022 inherit pub_static_methods_classhi5_1_1Hi5Base" id="r_a46f99aa747a87c81d474705f2944e022"><td class="memItemLeft" align="right" valign="top">
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>writeText</b> (const Hi5Tree &amp;src, const std::list&lt; typename Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:a46f99aa747a87c81d474705f2944e022 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
@@ -368,7 +382,7 @@ static herr_t&#160;</td><td class="memItemRight" valign="bottom"><b>iterate</b> 
 <p>Conversion from native HDF5 structure to Rack's hi5 tree structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">fid</td><td>- input in native HDF5 structure </td></tr>
+    <tr><td class="paramname">file_id</td><td>- input in native HDF5 structure </td></tr>
     <tr><td class="paramname">path</td><td>- subpath of input (typically the root, "/") </td></tr>
     <tr><td class="paramname">tree</td><td>- output in hi5 structure </td></tr>
     <tr><td class="paramname">mode</td><td>- switch for excluding attributes or datasets. Recursive , const std::string &amp;path </td></tr>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -119,35 +126,35 @@ Collaboration diagram for QualityDataSupport&lt; DT &gt;:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a0210b9ce97b891540e08da8fd930100b" id="r_a0210b9ce97b891540e08da8fd930100b"><td class="memItemLeft" align="right" valign="top"><a id="a0210b9ce97b891540e08da8fd930100b" name="a0210b9ce97b891540e08da8fd930100b"></a>
-typedef <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>plaindata_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>plaindata_t</b></td></tr>
 <tr class="separator:a0210b9ce97b891540e08da8fd930100b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e0615befc6add0f8d8e24b89322d8d8" id="r_a9e0615befc6add0f8d8e24b89322d8d8"><td class="memItemLeft" align="right" valign="top"><a id="a9e0615befc6add0f8d8e24b89322d8d8" name="a9e0615befc6add0f8d8e24b89322d8d8"></a>
-typedef <a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">ODIMPathElem::QUALITY</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>qualitygroup_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; <a class="el" href="classrack_1_1DataSet.html">plaindata_t</a>, <a class="el" href="classrack_1_1ODIMPathElem.html#aac7e8c0c44b565eb03ca3f72290439ac">ODIMPathElem::QUALITY</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>qualitygroup_t</b></td></tr>
 <tr class="separator:a9e0615befc6add0f8d8e24b89322d8d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aa51f7670e8b076a6aaabb39f5f84b994" id="r_aa51f7670e8b076a6aaabb39f5f84b994"><td class="memItemLeft" align="right" valign="top"><a id="aa51f7670e8b076a6aaabb39f5f84b994" name="aa51f7670e8b076a6aaabb39f5f84b994"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>QualityDataSupport</b> (typename plaindata_t::tree_t &amp;tree)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>QualityDataSupport</b> (<a class="el" href="classrack_1_1DataSet.html">typename</a> plaindata_t::tree_t &amp;tree)</td></tr>
 <tr class="separator:aa51f7670e8b076a6aaabb39f5f84b994"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a553aa92d407048eb05fad44453502707" id="r_a553aa92d407048eb05fad44453502707"><td class="memItemLeft" align="right" valign="top"><a id="a553aa92d407048eb05fad44453502707" name="a553aa92d407048eb05fad44453502707"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>QualityDataSupport</b> (const <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport</a>&lt; DT &gt; &amp;qds)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>QualityDataSupport</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1QualityDataSupport.html">QualityDataSupport</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">qds</a>)</td></tr>
 <tr class="separator:a553aa92d407048eb05fad44453502707"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a519b5a2fe407b7d0e519dc2fa26577da" id="r_a519b5a2fe407b7d0e519dc2fa26577da"><td class="memItemLeft" align="right" valign="top"><a id="a519b5a2fe407b7d0e519dc2fa26577da" name="a519b5a2fe407b7d0e519dc2fa26577da"></a>
-const <a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getQualityData</b> (const std::string &amp;quantity=&quot;QIND&quot;) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getQualityData</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity=&quot;QIND&quot;) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a519b5a2fe407b7d0e519dc2fa26577da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds associated quality data - maybe empty and unscaled. <br /></td></tr>
 <tr class="separator:a519b5a2fe407b7d0e519dc2fa26577da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd5f937a2179f1e8021584de1bbb5a28" id="r_abd5f937a2179f1e8021584de1bbb5a28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#abd5f937a2179f1e8021584de1bbb5a28">getQualityData</a> (const std::string &amp;quantity=&quot;QIND&quot;)</td></tr>
+<tr class="memitem:abd5f937a2179f1e8021584de1bbb5a28" id="r_abd5f937a2179f1e8021584de1bbb5a28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">plaindata_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1QualityDataSupport.html#abd5f937a2179f1e8021584de1bbb5a28">getQualityData</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity=&quot;QIND&quot;)</td></tr>
 <tr class="memdesc:abd5f937a2179f1e8021584de1bbb5a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds associated quality data - maybe empty and unscaled.  <br /></td></tr>
 <tr class="separator:abd5f937a2179f1e8021584de1bbb5a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a912cdf6e1423dbf78a812957a1f8213f" id="r_a912cdf6e1423dbf78a812957a1f8213f"><td class="memItemLeft" align="right" valign="top"><a id="a912cdf6e1423dbf78a812957a1f8213f" name="a912cdf6e1423dbf78a812957a1f8213f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasQuality</b> () const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>hasQuality</b> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a912cdf6e1423dbf78a812957a1f8213f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bd9224bde402bf209be857a19401605" id="r_a4bd9224bde402bf209be857a19401605"><td class="memItemLeft" align="right" valign="top"><a id="a4bd9224bde402bf209be857a19401605" name="a4bd9224bde402bf209be857a19401605"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasQuality</b> (const std::string &amp;quantity) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>hasQuality</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a4bd9224bde402bf209be857a19401605"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b4ed2528624dfabf321ad8e5540b696" id="r_a2b4ed2528624dfabf321ad8e5540b696"><td class="memItemLeft" align="right" valign="top"><a id="a2b4ed2528624dfabf321ad8e5540b696" name="a2b4ed2528624dfabf321ad8e5540b696"></a>
-const <a class="el" href="classrack_1_1DataGroup.html">qualitygroup_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getQuality</b> () const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataGroup.html">qualitygroup_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getQuality</b> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a2b4ed2528624dfabf321ad8e5540b696"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41f7b12adc1a96929670fd8a8e0c77ae" id="r_a41f7b12adc1a96929670fd8a8e0c77ae"><td class="memItemLeft" align="right" valign="top"><a id="a41f7b12adc1a96929670fd8a8e0c77ae" name="a41f7b12adc1a96929670fd8a8e0c77ae"></a>
 <a class="el" href="classrack_1_1DataGroup.html">qualitygroup_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getQuality</b> ()</td></tr>
@@ -160,7 +167,7 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:a97ae4fc2e8dd27ac26c0e68ed0469462"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename DT&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> <a class="el" href="classrack_1_1DataSet.html">DT</a>&gt;<br />
 class rack::QualityDataSupport&lt; DT &gt;</div><p>Base class providing quality support for <a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data.">Data</a></p>
 <p>and <a class="el" href="classrack_1_1DataSet.html" title="A map of radar data, indexed by quantity code (DBZH, VRAD, etc).">DataSet</a></p>
 <p>Essentially, an instance of <a class="el" href="classrack_1_1QualityDataSupport.html" title="Base class providing quality support for Dataand DataSet">QualityDataSupport</a> is something which has quality data as members. This data is stored in quality group, which is a map of quality fields. </p>
@@ -171,15 +178,15 @@ class rack::QualityDataSupport&lt; DT &gt;</div><p>Base class providing quality 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename DT &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classrack_1_1PlainData.html">plaindata_t</a> &amp; getQualityData </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">plaindata_t</a> &amp; getQualityData </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>quantity</em> = <code>&quot;QIND&quot;</code></td><td>)</td>
           <td></td>
         </tr>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -434,7 +441,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>        this-&gt;reset();</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        this-&gt;setType(t);</div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        this-&gt;assignContainer(l, <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    };</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>    }</div>
 </div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>...TT&gt;</div>
@@ -452,12 +459,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1CastableIterator_html"><div class="ttname"><a href="classdrain_1_1CastableIterator.html">drain::CastableIterator</a></div><div class="ttdef"><b>Definition</b> CastableIterator.h:57</div></div>
 <div class="ttc" id="aclassdrain_1_1Castable_html"><div class="ttname"><a href="classdrain_1_1Castable.html">drain::Castable</a></div><div class="ttdef"><b>Definition</b> Castable.h:76</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_a71c45090ec0db23502b8e5acb00f4ce5"><div class="ttname"><a href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">drain::Castable::elementCount</a></div><div class="ttdeci">size_t elementCount</div><div class="ttdoc">Pointer to the data variable.</div><div class="ttdef"><b>Definition</b> Castable.h:1255</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_aba0425ba66b2a61324b9d55db65c76fb"><div class="ttname"><a href="classdrain_1_1Castable.html#aba0425ba66b2a61324b9d55db65c76fb">drain::Castable::outputSeparator</a></div><div class="ttdeci">char outputSeparator</div><div class="ttdoc">Element separator usein in writing and reading character strings (streams).</div><div class="ttdef"><b>Definition</b> Castable.h:1261</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_ac659aca0a35e26228c94af12c55fcd5d"><div class="ttname"><a href="classdrain_1_1Castable.html#ac659aca0a35e26228c94af12c55fcd5d">drain::Castable::inputSeparator</a></div><div class="ttdeci">char inputSeparator</div><div class="ttdoc">Element separator usein in reading a char sequence to an (numeric) array.</div><div class="ttdef"><b>Definition</b> Castable.h:1258</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="classdrain_1_1Castable.html#ac8bb3912a3ce86b15842e79d0b421204">drain::Castable::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears strings, or for scalars and arrays, sets all the values to zero. Does not change type.</div><div class="ttdef"><b>Definition</b> Castable.cpp:81</div></div>
-<div class="ttc" id="aclassdrain_1_1Castable_html_acd653528ade0d1b7011feccbf61f89e5"><div class="ttname"><a href="classdrain_1_1Castable.html#acd653528ade0d1b7011feccbf61f89e5">drain::Castable::append</a></div><div class="ttdeci">void append(const T &amp;x)</div><div class="ttdoc">Appends the string or appends the array by one element.</div><div class="ttdef"><b>Definition</b> Castable.h:410</div></div>
-<div class="ttc" id="aclassdrain_1_1Caster_html_add9af9569af79ec26dd741fb226b38ba"><div class="ttname"><a href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">drain::Caster::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">Future member: enables setting Caster type.</div><div class="ttdef"><b>Definition</b> Caster.h:248</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_a71c45090ec0db23502b8e5acb00f4ce5"><div class="ttname"><a href="classdrain_1_1Castable.html#a71c45090ec0db23502b8e5acb00f4ce5">drain::Castable::elementCount</a></div><div class="ttdeci">size_t elementCount</div><div class="ttdoc">Pointer to the data variable.</div><div class="ttdef"><b>Definition</b> Castable.h:1264</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_aba0425ba66b2a61324b9d55db65c76fb"><div class="ttname"><a href="classdrain_1_1Castable.html#aba0425ba66b2a61324b9d55db65c76fb">drain::Castable::outputSeparator</a></div><div class="ttdeci">char outputSeparator</div><div class="ttdoc">Element separator usein in writing and reading character strings (streams).</div><div class="ttdef"><b>Definition</b> Castable.h:1270</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_ac659aca0a35e26228c94af12c55fcd5d"><div class="ttname"><a href="classdrain_1_1Castable.html#ac659aca0a35e26228c94af12c55fcd5d">drain::Castable::inputSeparator</a></div><div class="ttdeci">char inputSeparator</div><div class="ttdoc">Element separator usein in reading a char sequence to an (numeric) array.</div><div class="ttdef"><b>Definition</b> Castable.h:1267</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_ac8bb3912a3ce86b15842e79d0b421204"><div class="ttname"><a href="classdrain_1_1Castable.html#ac8bb3912a3ce86b15842e79d0b421204">drain::Castable::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdoc">Clears strings, or for scalars and arrays, sets all the values to zero. Does not change type.</div><div class="ttdef"><b>Definition</b> Castable.cpp:92</div></div>
+<div class="ttc" id="aclassdrain_1_1Castable_html_acd653528ade0d1b7011feccbf61f89e5"><div class="ttname"><a href="classdrain_1_1Castable.html#acd653528ade0d1b7011feccbf61f89e5">drain::Castable::append</a></div><div class="ttdeci">void append(const T &amp;x)</div><div class="ttdoc">Appends the string or appends the array by one element.</div><div class="ttdef"><b>Definition</b> Castable.h:416</div></div>
+<div class="ttc" id="aclassdrain_1_1Caster_html_add9af9569af79ec26dd741fb226b38ba"><div class="ttname"><a href="classdrain_1_1Caster.html#add9af9569af79ec26dd741fb226b38ba">drain::Caster::ptr</a></div><div class="ttdeci">void * ptr</div><div class="ttdoc">Future member: enables setting Caster type.</div><div class="ttdef"><b>Definition</b> Caster.h:260</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableBase_html"><div class="ttname"><a href="classdrain_1_1VariableBase.html">drain::VariableBase</a></div><div class="ttdoc">Base class for variables: Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition</b> VariableBase.h:56</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableBase_html_a1a0494203e0414c3133ee043429ecd14"><div class="ttname"><a href="classdrain_1_1VariableBase.html#a1a0494203e0414c3133ee043429ecd14">drain::VariableBase::isLinking</a></div><div class="ttdeci">virtual bool isLinking() const</div><div class="ttdoc">Tells if the pointer points to an external variable.</div><div class="ttdef"><b>Definition</b> VariableBase.h:75</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableBase_html_a601ac14cff7cf0d700b22cb1257105f2"><div class="ttname"><a href="classdrain_1_1VariableBase.html#a601ac14cff7cf0d700b22cb1257105f2">drain::VariableBase::setSize</a></div><div class="ttdeci">virtual bool setSize(size_t elementCount)</div><div class="ttdoc">Extends the array to include elementCount elements of current type.</div><div class="ttdef"><b>Definition</b> VariableBase.h:203</div></div>
@@ -475,7 +482,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1VariableInitializer_html_ae3d6c7c83bc5a2dd45ea01f05c032c8b"><div class="ttname"><a href="classdrain_1_1VariableInitializer.html#ae3d6c7c83bc5a2dd45ea01f05c032c8b">drain::VariableInitializer::init</a></div><div class="ttdeci">void init(const VariableBase &amp;v)</div><div class="ttdoc">Copies type, data and separator char.</div><div class="ttdef"><b>Definition</b> VariableBase.h:342</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableInitializer_html_ae427a0cd53d2c483a3710ed1c8ff820f"><div class="ttname"><a href="classdrain_1_1VariableInitializer.html#ae427a0cd53d2c483a3710ed1c8ff820f">drain::VariableInitializer::init</a></div><div class="ttdeci">void init(const VariableT&lt; T &gt; &amp;value)</div><div class="ttdoc">Copy constructor handler.</div><div class="ttdef"><b>Definition</b> VariableBase.h:278</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition</b> VariableT.h:87</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

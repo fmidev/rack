@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,7 +98,7 @@ $(function() {
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1ContextKit.html#aee4a5737e1021bb341e080d2dca6310a">formatStr</a></td><td class="entry"><a class="el" href="classdrain_1_1ContextKit.html">ContextKit</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getId</b>() const (defined in <a class="el" href="classdrain_1_1Context.html">Context</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getName</b>() const (defined in <a class="el" href="classdrain_1_1Context.html">Context</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getStatus</b>(const std::string &amp;key, bool update) const (defined in <a class="el" href="classdrain_1_1Context.html">Context</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getStatus</b>(const std::string &amp;key, bool update=true) const (defined in <a class="el" href="classdrain_1_1Context.html">Context</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1Context.html#a39646357c9a0c4b883870726bc410829">getStatusMap</a>() const</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getStatusMap</b>() (defined in <a class="el" href="classdrain_1_1Context.html">Context</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getUpdatedStatusMap</b>() (defined in <a class="el" href="classdrain_1_1Context.html">Context</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Context.html">Context</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>

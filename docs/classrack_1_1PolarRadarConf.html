@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -117,39 +124,39 @@ Collaboration diagram for PolarRadarConf:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae2f3c48aed7f6ec14bc7aea14d9ae4dd" id="r_ae2f3c48aed7f6ec14bc7aea14d9ae4dd"><td class="memItemLeft" align="right" valign="top"><a id="ae2f3c48aed7f6ec14bc7aea14d9ae4dd" name="ae2f3c48aed7f6ec14bc7aea14d9ae4dd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>deriveMaxRange</b> (const Hi5Tree &amp;srcPolar)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>deriveMaxRange</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;<a class="el" href="classrack_1_1DataSet.html">srcPolar</a>)</td></tr>
 <tr class="separator:ae2f3c48aed7f6ec14bc7aea14d9ae4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68a458822d23e54b20a556f67bf97520" id="r_a68a458822d23e54b20a556f67bf97520"><td class="memItemLeft" align="right" valign="top"><a id="a68a458822d23e54b20a556f67bf97520" name="a68a458822d23e54b20a556f67bf97520"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>getRange</b> (double r=1.0)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getRange</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> r=1.0)</td></tr>
 <tr class="separator:a68a458822d23e54b20a556f67bf97520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1RadarProj"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1RadarProj')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1RadarProj.html">RadarProj</a></td></tr>
 <tr class="memitem:a1149f940aa09da7a0752623a8d4d32f9 inherit pub_methods_classrack_1_1RadarProj" id="r_a1149f940aa09da7a0752623a8d4d32f9"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProj</b> (double lonDeg=0.0, double latDeg=0.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProj</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">lonDeg</a>=0.0, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">latDeg</a>=0.0)</td></tr>
 <tr class="memdesc:a1149f940aa09da7a0752623a8d4d32f9 inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly. <br /></td></tr>
 <tr class="separator:a1149f940aa09da7a0752623a8d4d32f9 inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad141b71f9a798933a0b94e1c76ecaf5d inherit pub_methods_classrack_1_1RadarProj" id="r_ad141b71f9a798933a0b94e1c76ecaf5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a> (double lon, double lat)</td></tr>
+<tr class="memitem:ad141b71f9a798933a0b94e1c76ecaf5d inherit pub_methods_classrack_1_1RadarProj" id="r_ad141b71f9a798933a0b94e1c76ecaf5d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProj.html#ad141b71f9a798933a0b94e1c76ecaf5d">setSiteLocationDeg</a> (<a class="el" href="classrack_1_1DataSet.html">double</a> lon, <a class="el" href="classrack_1_1DataSet.html">double</a> lat)</td></tr>
 <tr class="memdesc:ad141b71f9a798933a0b94e1c76ecaf5d inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly.  <br /></td></tr>
 <tr class="separator:ad141b71f9a798933a0b94e1c76ecaf5d inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6518e337354839612d0d7019f2b823b inherit pub_methods_classrack_1_1RadarProj" id="r_ad6518e337354839612d0d7019f2b823b"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setSiteLocationRad</b> (double lon, double lat)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setSiteLocationRad</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> lon, <a class="el" href="classrack_1_1DataSet.html">double</a> lat)</td></tr>
 <tr class="memdesc:ad6518e337354839612d0d7019f2b823b inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly. <br /></td></tr>
 <tr class="separator:ad6518e337354839612d0d7019f2b823b inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec7a0e30d2b640a044b434b742018fa5 inherit pub_methods_classrack_1_1RadarProj" id="r_aec7a0e30d2b640a044b434b742018fa5"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBox</b> (double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBox</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> range, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonUR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latUR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:aec7a0e30d2b640a044b434b742018fa5 inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding box in radians. <br /></td></tr>
 <tr class="separator:aec7a0e30d2b640a044b434b742018fa5 inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7711b1ba7b01d197b445842541288c49 inherit pub_methods_classrack_1_1RadarProj" id="r_a7711b1ba7b01d197b445842541288c49"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBoxDeg</b> (double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBoxDeg</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> range, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonUR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latUR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a7711b1ba7b01d197b445842541288c49 inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding box in degrees. <br /></td></tr>
 <tr class="separator:a7711b1ba7b01d197b445842541288c49 inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af88228e0ceae2eb2f7b9f4b9e569c1e2 inherit pub_methods_classrack_1_1RadarProj" id="r_af88228e0ceae2eb2f7b9f4b9e569c1e2"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setLatLonProjection</b> ()</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setLatLonProjection</b> ()</td></tr>
 <tr class="separator:af88228e0ceae2eb2f7b9f4b9e569c1e2 inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8c39feb5f5332190a3e8ba6d544a213 inherit pub_methods_classrack_1_1RadarProj" id="r_ae8c39feb5f5332190a3e8ba6d544a213"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">determineBoundingBoxM</a> (double range, double &amp;xLL, double &amp;yLL, double &amp;xUR, double &amp;yUR) const</td></tr>
+<tr class="memitem:ae8c39feb5f5332190a3e8ba6d544a213 inherit pub_methods_classrack_1_1RadarProj" id="r_ae8c39feb5f5332190a3e8ba6d544a213"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProj.html#ae8c39feb5f5332190a3e8ba6d544a213">determineBoundingBoxM</a> (<a class="el" href="classrack_1_1DataSet.html">double</a> range, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">xLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">yLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">xUR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">yUR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ae8c39feb5f5332190a3e8ba6d544a213 inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given radar's range, returns the metric bounding box using the current projection.  <br /></td></tr>
 <tr class="separator:ae8c39feb5f5332190a3e8ba6d544a213 inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a909c6d641d6edc85cfc6fd727d942934 inherit pub_methods_classrack_1_1RadarProj" id="r_a909c6d641d6edc85cfc6fd727d942934"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>determineBoundingBoxM</b> (double range, <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; double &gt; &amp;bbox) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>determineBoundingBoxM</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> range, <a class="el" href="structdrain_1_1Rectangle.html">drain::Rectangle</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;bbox) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a909c6d641d6edc85cfc6fd727d942934 inherit pub_methods_classrack_1_1RadarProj"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given radar's range, returns the metric bounding box using the current projection. <br /></td></tr>
 <tr class="separator:a909c6d641d6edc85cfc6fd727d942934 inherit pub_methods_classrack_1_1RadarProj"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Proj6"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Proj6')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Proj6.html">Proj6</a></td></tr>
@@ -236,7 +243,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getErrorString
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:ae67f0a1fe15c5c2c2935561e90808d4f" id="r_ae67f0a1fe15c5c2c2935561e90808d4f"><td class="memItemLeft" align="right" valign="top"><a id="ae67f0a1fe15c5c2c2935561e90808d4f" name="ae67f0a1fe15c5c2c2935561e90808d4f"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>maxRange</b> = 0.0</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>maxRange</b> = 0.0</td></tr>
 <tr class="separator:ae67f0a1fe15c5c2c2935561e90808d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1Proj6"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Proj6')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Proj6.html">Proj6</a></td></tr>
 <tr class="memitem:a4a1a07bf2320524baa235f8b602de836 inherit pro_attribs_classdrain_1_1Proj6" id="r_a4a1a07bf2320524baa235f8b602de836"><td class="memItemLeft" align="right" valign="top">PJ_CONTEXT *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Proj6.html#a4a1a07bf2320524baa235f8b602de836">pjContext</a> = nullptr</td></tr>

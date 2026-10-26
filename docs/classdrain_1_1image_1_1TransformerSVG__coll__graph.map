@@ -1,0 +1,22 @@
+<map id="TransformerSVG" name="TransformerSVG">
+<area shape="rect" id="Node000001" title="Applies transformation." alt="" coords="51,429,177,455"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1TreeVisitor.html" title=" " alt="" coords="5,341,180,367"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="101,379,114,428,108,429,96,381"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1TransformSVG.html" title=" " alt="" coords="205,341,319,367"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="232,376,135,431,133,427,229,371"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1Transform.html" title=" " alt="" coords="74,204,199,229"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="141,242,146,260,154,277,171,297,192,315,235,339,232,344,189,319,167,301,149,280,141,262,136,244"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1UniTuple.html" title=" " alt="" coords="181,80,351,105"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="241,116,193,157,148,205,144,202,189,153,238,112"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1Transform.html" title=" " alt="" coords="203,155,329,180"/>
+<area shape="poly" id="edge7_Node000007_Node000005" title=" " alt="" coords="269,120,269,154,263,154,263,120"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1Transform.html" title=" " alt="" coords="321,204,446,229"/>
+<area shape="poly" id="edge11_Node000009_Node000005" title=" " alt="" coords="295,111,343,153,379,202,374,205,339,156,292,116"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="194,5,338,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="269,45,269,80,263,80,263,45"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="256,193,242,233,238,256,239,278,248,312,259,340,254,342,243,314,234,279,233,255,237,232,251,191"/>
+<area shape="rect" id="Node000008" href="$structdrain_1_1image_1_1TransformSVG_1_1Translate.html" title="Angle (deg), [x,y]." alt="" coords="288,253,369,279"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="283,190,323,252,319,255,279,193"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="313,291,273,342,269,339,309,288"/>
+<area shape="poly" id="edge10_Node000003_Node000009" title=" " alt="" coords="389,244,387,282,380,302,368,319,345,335,321,345,319,340,343,330,364,315,375,300,382,281,384,243"/>
+</map>

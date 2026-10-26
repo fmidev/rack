@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -153,6 +160,9 @@ typedef&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TREE_CONTAIN
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_TREE_NAME</b> (const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">DRAIN_TREE_NAME</a> &amp;t)</td></tr>
 <tr class="memdesc:a77d888f8b37470421e92957c30e7d3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor; copy only node data at the root. <br /></td></tr>
 <tr class="separator:a77d888f8b37470421e92957c30e7d3ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64f7be67800d322ee98bc5be2dc22c2c" id="r_a64f7be67800d322ee98bc5be2dc22c2c"><td class="memItemLeft" align="right" valign="top"><a id="a64f7be67800d322ee98bc5be2dc22c2c" name="a64f7be67800d322ee98bc5be2dc22c2c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>dataEmpty</b> () const</td></tr>
+<tr class="separator:a64f7be67800d322ee98bc5be2dc22c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88f8e5231077914dccea325dc40eb195" id="r_a88f8e5231077914dccea325dc40eb195"><td class="memItemLeft" align="right" valign="top"><a id="a88f8e5231077914dccea325dc40eb195" name="a88f8e5231077914dccea325dc40eb195"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasMultipleData</b> () const</td></tr>
 <tr class="separator:a88f8e5231077914dccea325dc40eb195"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,9 +178,8 @@ virtual const node_data_t &amp;&#160;</td><td class="memItemRight" valign="botto
 <tr class="memitem:a5c30c608cd42abd182ed0b929f8ef976" id="r_a5c30c608cd42abd182ed0b929f8ef976"><td class="memItemLeft" align="right" valign="top"><a id="a5c30c608cd42abd182ed0b929f8ef976" name="a5c30c608cd42abd182ed0b929f8ef976"></a>
 virtual node_data_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getData</b> (const key_t &amp;key)</td></tr>
 <tr class="separator:a5c30c608cd42abd182ed0b929f8ef976"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd233a567e2ef795e98c75cdb37336db" id="r_acd233a567e2ef795e98c75cdb37336db"><td class="memItemLeft" align="right" valign="top"><a id="acd233a567e2ef795e98c75cdb37336db" name="acd233a567e2ef795e98c75cdb37336db"></a>
-container_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>begin</b> () const</td></tr>
-<tr class="memdesc:acd233a567e2ef795e98c75cdb37336db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Child iterator pointing to the first child. <br /></td></tr>
+<tr class="memitem:acd233a567e2ef795e98c75cdb37336db" id="r_acd233a567e2ef795e98c75cdb37336db"><td class="memItemLeft" align="right" valign="top">container_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#acd233a567e2ef795e98c75cdb37336db">begin</a> () const</td></tr>
+<tr class="memdesc:acd233a567e2ef795e98c75cdb37336db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterator interface enables for-each type iteration.  <br /></td></tr>
 <tr class="separator:acd233a567e2ef795e98c75cdb37336db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fc71669d8d9e77d86e749b72e7ec162" id="r_a1fc71669d8d9e77d86e749b72e7ec162"><td class="memItemLeft" align="right" valign="top"><a id="a1fc71669d8d9e77d86e749b72e7ec162" name="a1fc71669d8d9e77d86e749b72e7ec162"></a>
 container_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> () const</td></tr>
@@ -211,9 +220,10 @@ container_t::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>end<
 <tr class="separator:aac8e3285b400ae9f76ec76d1fb5168d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30df81da77e31bc9b1b803ed67481349" id="r_a30df81da77e31bc9b1b803ed67481349"><td class="memItemLeft" align="right" valign="top"><a id="a30df81da77e31bc9b1b803ed67481349" name="a30df81da77e31bc9b1b803ed67481349"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>operator const node_data_t &amp;</b> () const</td></tr>
+<tr class="memdesc:a30df81da77e31bc9b1b803ed67481349"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a reference to node data. <br /></td></tr>
 <tr class="separator:a30df81da77e31bc9b1b803ed67481349"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a506d28087dce1cb8836dc9799279e9ac" id="r_a506d28087dce1cb8836dc9799279e9ac"><td class="memItemLeft" align="right" valign="top"><a id="a506d28087dce1cb8836dc9799279e9ac" name="a506d28087dce1cb8836dc9799279e9ac"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>operator node_data_t &amp;</b> ()</td></tr>
+<tr class="memitem:a506d28087dce1cb8836dc9799279e9ac" id="r_a506d28087dce1cb8836dc9799279e9ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a506d28087dce1cb8836dc9799279e9ac">operator node_data_t &amp;</a> ()</td></tr>
+<tr class="memdesc:a506d28087dce1cb8836dc9799279e9ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a reference to node data.  <br /></td></tr>
 <tr class="separator:a506d28087dce1cb8836dc9799279e9ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cc2f3512809bfa39f7bddec594be2f4" id="r_a0cc2f3512809bfa39f7bddec594be2f4"><td class="memTemplParams" colspan="2">template&lt;class K &gt; </td></tr>
 <tr class="memitem:a0cc2f3512809bfa39f7bddec594be2f4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a0cc2f3512809bfa39f7bddec594be2f4">operator[]</a> (const K &amp;key)</td></tr>
@@ -279,9 +289,9 @@ template&lt;typename K &gt; </td></tr>
 <tr class="memitem:a65f43af37f0ed7b8ffe1efcbab9ba334" id="r_a65f43af37f0ed7b8ffe1efcbab9ba334"><td class="memItemLeft" align="right" valign="top"><a id="a65f43af37f0ed7b8ffe1efcbab9ba334" name="a65f43af37f0ed7b8ffe1efcbab9ba334"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasPath</b> (const path_t &amp;path) const</td></tr>
 <tr class="separator:a65f43af37f0ed7b8ffe1efcbab9ba334"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14335bbd09b1792fc55e932f29c50b0d" id="r_a14335bbd09b1792fc55e932f29c50b0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a14335bbd09b1792fc55e932f29c50b0d">initChild</a> (<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;child) const</td></tr>
-<tr class="memdesc:a14335bbd09b1792fc55e932f29c50b0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Means for automatically setting something, for example the type of a node.  <br /></td></tr>
-<tr class="separator:a14335bbd09b1792fc55e932f29c50b0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77a0a3c065d6892cd1608eae7541c005" id="r_a77a0a3c065d6892cd1608eae7541c005"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a77a0a3c065d6892cd1608eae7541c005">initChild</a> (<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;) const</td></tr>
+<tr class="memdesc:a77a0a3c065d6892cd1608eae7541c005"><td class="mdescLeft">&#160;</td><td class="mdescRight">Means for automatically setting something, for example the type of a node.  <br /></td></tr>
+<tr class="separator:a77a0a3c065d6892cd1608eae7541c005"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae383497c2ee0d0637a9506d853b244bd" id="r_ae383497c2ee0d0637a9506d853b244bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ae383497c2ee0d0637a9506d853b244bd">addChild</a> ()</td></tr>
 <tr class="memdesc:ae383497c2ee0d0637a9506d853b244bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a child with an automatically generated key (path element).  <br /></td></tr>
 <tr class="separator:ae383497c2ee0d0637a9506d853b244bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -303,12 +313,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasPath</b> (const pa
 <tr class="memitem:a5faa36e06038922b00cb3efb6c052841" id="r_a5faa36e06038922b00cb3efb6c052841"><td class="memItemLeft" align="right" valign="top"><a id="a5faa36e06038922b00cb3efb6c052841" name="a5faa36e06038922b00cb3efb6c052841"></a>
 <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>prependChild</b> (const key_t &amp;key)</td></tr>
 <tr class="separator:a5faa36e06038922b00cb3efb6c052841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfb1a6c1c17c6c344605b489ac155a8e" id="r_adfb1a6c1c17c6c344605b489ac155a8e"><td class="memItemLeft" align="right" valign="top"><a id="adfb1a6c1c17c6c344605b489ac155a8e" name="adfb1a6c1c17c6c344605b489ac155a8e"></a>
-virtual <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieveChild</b> (const key_t &amp;key)</td></tr>
-<tr class="separator:adfb1a6c1c17c6c344605b489ac155a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9472279334db77eb165ac8411f22d3d" id="r_af9472279334db77eb165ac8411f22d3d"><td class="memItemLeft" align="right" valign="top"><a id="af9472279334db77eb165ac8411f22d3d" name="af9472279334db77eb165ac8411f22d3d"></a>
-virtual const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieveChild</b> (const key_t &amp;key) const</td></tr>
-<tr class="separator:af9472279334db77eb165ac8411f22d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a572e8f0e9d515955dcf077cc09fbd138" id="r_a572e8f0e9d515955dcf077cc09fbd138"><td class="memItemLeft" align="right" valign="top"><a id="a572e8f0e9d515955dcf077cc09fbd138" name="a572e8f0e9d515955dcf077cc09fbd138"></a>
+<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> ()</td></tr>
+<tr class="memdesc:a572e8f0e9d515955dcf077cc09fbd138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a2f984a4a1a5f137fd5cfee5d42e1e34e" title="Push in the front. This is only available for unordered trees.">prependChild()</a>. <br /></td></tr>
+<tr class="separator:a572e8f0e9d515955dcf077cc09fbd138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff530e144691dccddf5979075dba334f" id="r_aff530e144691dccddf5979075dba334f"><td class="memItemLeft" align="right" valign="top"><a id="aff530e144691dccddf5979075dba334f" name="aff530e144691dccddf5979075dba334f"></a>
+<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator++</b> (int)</td></tr>
+<tr class="memdesc:aff530e144691dccddf5979075dba334f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for appendChild(). <br /></td></tr>
+<tr class="separator:aff530e144691dccddf5979075dba334f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa450468894c0ff2066310624173c0152" id="r_aa450468894c0ff2066310624173c0152"><td class="memItemLeft" align="right" valign="top">container_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#aa450468894c0ff2066310624173c0152">getChildren</a> ()</td></tr>
 <tr class="memdesc:aa450468894c0ff2066310624173c0152"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the map containing the children.  <br /></td></tr>
 <tr class="separator:aa450468894c0ff2066310624173c0152"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -328,9 +340,16 @@ node_data_t *&#160;</td><td class="memItemRight" valign="bottom"><b>operator-&gt
 void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;t)</td></tr>
 <tr class="memdesc:a11d598ca144b69a123f2e2d9ee42af3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace children (but no data?) <br /></td></tr>
 <tr class="separator:a11d598ca144b69a123f2e2d9ee42af3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8eeb47fe8e1cfb229553e55f78e38045" id="r_a8eeb47fe8e1cfb229553e55f78e38045"><td class="memItemLeft" align="right" valign="top"><a id="a8eeb47fe8e1cfb229553e55f78e38045" name="a8eeb47fe8e1cfb229553e55f78e38045"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>swapData</b> (node_data_t &amp;node)</td></tr>
+<tr class="memdesc:a8eeb47fe8e1cfb229553e55f78e38045"><td class="mdescLeft">&#160;</td><td class="mdescRight">User should redefine (implement) this function for applied node types. <br /></td></tr>
+<tr class="separator:a8eeb47fe8e1cfb229553e55f78e38045"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af1df00bf5927ff803e7a60bb8ecb66b4" id="r_af1df00bf5927ff803e7a60bb8ecb66b4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#af1df00bf5927ff803e7a60bb8ecb66b4">dataEmpty</a> (const node_data_t &amp;<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">data</a>)</td></tr>
+<tr class="memdesc:af1df00bf5927ff803e7a60bb8ecb66b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation. To be redefined (template-implemented).  <br /></td></tr>
+<tr class="separator:af1df00bf5927ff803e7a60bb8ecb66b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f62b1a68eb97169aedcda208258ba84" id="r_a7f62b1a68eb97169aedcda208258ba84"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a7f62b1a68eb97169aedcda208258ba84">isExclusive</a> ()</td></tr>
 <tr class="memdesc:a7f62b1a68eb97169aedcda208258ba84"><td class="mdescLeft">&#160;</td><td class="mdescRight">True, if this tree type can either children or node data, but not both.  <br /></td></tr>
 <tr class="separator:a7f62b1a68eb97169aedcda208258ba84"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,6 +387,12 @@ node_data_t&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:adfb1a6c1c17c6c344605b489ac155a8e" id="r_adfb1a6c1c17c6c344605b489ac155a8e"><td class="memItemLeft" align="right" valign="top"><a id="adfb1a6c1c17c6c344605b489ac155a8e" name="adfb1a6c1c17c6c344605b489ac155a8e"></a>
+virtual <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieveChild</b> (const key_t &amp;key)</td></tr>
+<tr class="separator:adfb1a6c1c17c6c344605b489ac155a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9472279334db77eb165ac8411f22d3d" id="r_af9472279334db77eb165ac8411f22d3d"><td class="memItemLeft" align="right" valign="top"><a id="af9472279334db77eb165ac8411f22d3d" name="af9472279334db77eb165ac8411f22d3d"></a>
+virtual const <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>retrieveChild</b> (const key_t &amp;key) const</td></tr>
+<tr class="separator:af9472279334db77eb165ac8411f22d3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91080c09ebdb9bd501d9c244aec87d7a" id="r_a91080c09ebdb9bd501d9c244aec87d7a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a91080c09ebdb9bd501d9c244aec87d7a">hasPath</a> (typename path_t::const_iterator it, typename path_t::const_iterator eit) const</td></tr>
 <tr class="memdesc:a91080c09ebdb9bd501d9c244aec87d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there is a node with a given path name.  <br /></td></tr>
 <tr class="separator:a91080c09ebdb9bd501d9c244aec87d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -422,7 +447,7 @@ class drain::DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</div><p>A templated class 
 </ul>
 <p>Limitation: in OrderedTree the children are in a std::map, and threrefore each child of a node has a unique key. In UnorderedTree there may be children having the same key.</p>
 <p>Addressing:</p>
-<p>tree(&lt;path&gt;) return a descendant tree[&lt;path_element&gt;] returns childs only (complains separators, for some time)</p>
+<p>tree(path) return a descendant tree[path_element] returns childs only (complains separators, for some time)</p>
 <p>Child nodes can be addressed with operator[] with std::string valued keys: </p><div class="fragment"><div class="line">OrderedTree&lt;std::string&gt; tree;</div>
 <div class="line">t[<span class="stringliteral">&quot;first&quot;</span>] = <span class="stringliteral">&quot;Hello!&quot;</span>;</div>
 <div class="line">t[<span class="stringliteral">&quot;second&quot;</span>] = <span class="stringliteral">&quot;Another greeting...&quot;</span>;</div>
@@ -440,26 +465,10 @@ class drain::DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</div><p>A templated class 
 <div class="line">t = <span class="stringliteral">&quot;Hello world&quot;</span>;</div>
 <div class="line">Tree&lt;std::string&gt; &amp;r = t; <span class="comment">// Refers to tree.</span></div>
 <div class="line">std::string &amp;s = t;       <span class="comment">// Refers to data, &quot;Hello world&quot;.</span></div>
-</div><!-- fragment --><p>Obsolete: template C - path element comparison functor, should be compatible with Path&lt;P&gt;::key_t. #ifndef DRAIN_AMBIVALUE #define DRAIN_AMBIVALUE "0.1beta" template &lt;class T, class K&gt; class CombiValue { public: </p><pre class="fragment">typedef T data_t;
-typedef K key_t;
-</pre><p> T data; CONSIDER! But Hi5Node heavy? </p><pre class="fragment">inline
-~CombiValue(){};
-</pre><p> / True, if data is structured. virtual bool hasMultipleData() const = 0;</p>
-<pre class="fragment">virtual
-const data_t &amp; getData() const = 0;
-
-virtual
-data_t &amp; getData() = 0;
-
-virtual
-const data_t &amp; getData(const key_t &amp;) const = 0;
-
-virtual
-data_t &amp; getData(const key_t &amp;) = 0;
-</pre><p> }; #endif </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+</div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">K</td><td>– key type </td></tr>
-    <tr><td class="paramname">K</td><td>– key type </td></tr>
+    <tr><td class="paramname">T</td><td>– node data type </td></tr>
+    <tr><td class="paramname">EXCLUSIVE</td><td>- a node may contain either data or children but not both. </td></tr>
   </table>
   </dd>
 </dl>
@@ -565,13 +574,43 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
 <li>UnorderedTree, MULTIPLE: return the first child named <code>key</code>, if exists, else create one.</li>
 <li>UnorderedTree, UNIQUE==false: always create a new child named <code>key</code> and return it.</li>
 </ul>
-<p>If UNORDERED and not MULTIPLE, reuse existing nodes. Behaviour of this function varies as follows:</p>
+<p>If UNORDERED and not MULTIPLE, reuse existing nodes. If UNORDERED and not MULTIPLE, reuse existing nodes. Behaviour of this function varies as follows:</p>
 <ul>
 <li>OrderedTree: create a child, if nonexistent.</li>
 <li>UnorderedTree, MULTIPLE: always add a child.</li>
 <li>UnorderedTree, not MULTIPLE: create a child, if nonexistent</li>
 </ul>
 <p>This implementation, OrderedTree has always unique keys for children. </p>
+
+</div>
+</div>
+<a id="acd233a567e2ef795e98c75cdb37336db" name="acd233a567e2ef795e98c75cdb37336db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd233a567e2ef795e98c75cdb37336db">&#9670;&#160;</a></span>begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::string,'/'&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">container_t::const_iterator begin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Iterator interface enables for-each type iteration. </p>
+<p>for (const auto &amp; entry: tree){ // ... } Child iterator pointing to the first child. </p>
 
 </div>
 </div>
@@ -635,7 +674,7 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
 </div><div class="memdoc">
 
 <p>Clears the children of this node. Does not clear data. </p>
-<p>x * </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#abd4e5c937c4b98dd42745acb33815cdf">clearData()</a> </dd>
 <dd>
 <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#ac8bb3912a3ce86b15842e79d0b421204" title="Clear children and node data.">clear()</a> </dd>
 <dd>
@@ -672,6 +711,37 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
 <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a091c6265950643e307d70411dab30bc7" title="Clears the children of this node. Does not clear data.">clearChildren()</a> </dd>
 <dd>
 <a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#aa3b723ff8f1045f2b4c2a8fae13c3989" title="Deletes a descendant node and hence its subtrees.">erase()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af1df00bf5927ff803e7a60bb8ecb66b4" name="af1df00bf5927ff803e7a60bb8ecb66b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1df00bf5927ff803e7a60bb8ecb66b4">&#9670;&#160;</a></span>dataEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::string,'/'&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool dataEmpty </td>
+          <td>(</td>
+          <td class="paramtype">const node_data_t &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Default implementation. To be redefined (template-implemented). </p>
+<p>This default applies to many STL types, like string, vector, set and list. </p>
 
 </div>
 </div>
@@ -923,8 +993,8 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
 
 </div>
 </div>
-<a id="a14335bbd09b1792fc55e932f29c50b0d" name="a14335bbd09b1792fc55e932f29c50b0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14335bbd09b1792fc55e932f29c50b0d">&#9670;&#160;</a></span>initChild()</h2>
+<a id="a77a0a3c065d6892cd1608eae7541c005" name="a77a0a3c065d6892cd1608eae7541c005"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77a0a3c065d6892cd1608eae7541c005">&#9670;&#160;</a></span>initChild()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -938,7 +1008,7 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
           <td class="memname">void initChild </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html">tree_t</a> &amp;&#160;</td>
-          <td class="paramname"><em>child</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -984,6 +1054,36 @@ template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::str
 <p>True, if this tree type can either children or node data, but not both. </p>
 <p>A <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> structure is implemented as an EXCLUSIVE tree: a node contains either a subtree or a value (FlexibleMap).</p>
 <dl class="section see"><dt>See also</dt><dd>TreeExamples </dd></dl>
+
+</div>
+</div>
+<a id="a506d28087dce1cb8836dc9799279e9ac" name="a506d28087dce1cb8836dc9799279e9ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a506d28087dce1cb8836dc9799279e9ac">&#9670;&#160;</a></span>operator node_data_t &amp;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , bool EXCLUSIVE = false, class P  = drain::Path&lt;std::string,'/'&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">operator node_data_t &amp; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return a reference to node data. </p>
+<p>Handy in functions of type fct(N &amp; node) . </p>
 
 </div>
 </div>
@@ -1128,7 +1228,7 @@ template&lt;class S &gt; </div>
 <p>Returns a descendant. Creates one if not existing already. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">path</td><td>- the path from the current node to the child node.</td></tr>
+    <tr><td class="paramname">arg</td><td>- the path from the current node to the child node.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1166,7 +1266,7 @@ template&lt;typename V &gt; </div>
 </div><div class="memdoc">
 
 <p>Assign data. </p>
-<p>If init list elements are not pairs, assign it to node data.</p>
+<p>If initializer list elements are not pairs, assign it to node data.</p>
 <p>2025/01 experimental. </p>
 
 </div>

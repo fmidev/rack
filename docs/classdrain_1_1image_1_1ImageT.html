@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -304,7 +311,7 @@ const <a class="el" href="classdrain_1_1CastableIterator.html">const_iterator</a
 <tr class="separator:a588ef1cdb59e73287f2c536b3d626c6a inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bb28edf32c65e4c794511e2ae0fe07f inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_a7bb28edf32c65e4c794511e2ae0fe07f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a7bb28edf32c65e4c794511e2ae0fe07f inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a7bb28edf32c65e4c794511e2ae0fe07f">put</a> (size_t i, T x)</td></tr>
-<tr class="memdesc:a7bb28edf32c65e4c794511e2ae0fe07f inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the intensity in location <code>i</code> to <code>x</code>. See \address.  <br /></td></tr>
+<tr class="memdesc:a7bb28edf32c65e4c794511e2ae0fe07f inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the intensity in location <code>i</code> to <code>x</code>.  <br /></td></tr>
 <tr class="separator:a7bb28edf32c65e4c794511e2ae0fe07f inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40c157e60b5859e1533ec8377cf745a0 inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_a40c157e60b5859e1533ec8377cf745a0"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a40c157e60b5859e1533ec8377cf745a0 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a40c157e60b5859e1533ec8377cf745a0">put</a> (size_t i, size_t j, T x)</td></tr>
@@ -318,6 +325,9 @@ const <a class="el" href="classdrain_1_1CastableIterator.html">const_iterator</a
 <tr class="memitem:a813bc493ef662b1775d2be72e3ea7f4e inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a813bc493ef662b1775d2be72e3ea7f4e">put</a> (const <a class="el" href="structdrain_1_1Point2D.html">Point2D</a>&lt; P &gt; &amp;p, T x)</td></tr>
 <tr class="memdesc:a813bc493ef662b1775d2be72e3ea7f4e inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the intensity at location <code>p=</code>(i,j) .  <br /></td></tr>
 <tr class="separator:a813bc493ef662b1775d2be72e3ea7f4e inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19add0b8f5fc62acd6712aaa13f70cbe inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_a19add0b8f5fc62acd6712aaa13f70cbe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a19add0b8f5fc62acd6712aaa13f70cbe">putScaled</a> (size_t i, double x) const</td></tr>
+<tr class="memdesc:a19add0b8f5fc62acd6712aaa13f70cbe inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put intensity using original physical value.  <br /></td></tr>
+<tr class="separator:a19add0b8f5fc62acd6712aaa13f70cbe inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae87833f4bf83c8bd2cd6aa44282c06c2 inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_ae87833f4bf83c8bd2cd6aa44282c06c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#ae87833f4bf83c8bd2cd6aa44282c06c2">putScaled</a> (size_t i, size_t j, double x)</td></tr>
 <tr class="memdesc:ae87833f4bf83c8bd2cd6aa44282c06c2 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put intensity using original physical value.  <br /></td></tr>
 <tr class="separator:ae87833f4bf83c8bd2cd6aa44282c06c2 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -333,6 +343,10 @@ const <a class="el" href="classdrain_1_1CastableIterator.html">const_iterator</a
 <tr class="memitem:a42b4b600b2b73b3021ed4e402b36c0b9 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a42b4b600b2b73b3021ed4e402b36c0b9">get</a> (size_t i, size_t j, size_t k) const</td></tr>
 <tr class="memdesc:a42b4b600b2b73b3021ed4e402b36c0b9 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the intensity at location <code>i</code>,j,k .  <br /></td></tr>
 <tr class="separator:a42b4b600b2b73b3021ed4e402b36c0b9 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05ef4cd7f6d3ce1e59472d6084ad9c8 inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_ad05ef4cd7f6d3ce1e59472d6084ad9c8"><td class="memItemLeft" align="right" valign="top">
+double&#160;</td><td class="memItemRight" valign="bottom"><b>getScaled</b> (size_t i) const</td></tr>
+<tr class="memdesc:ad05ef4cd7f6d3ce1e59472d6084ad9c8 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get intensity in original physical scale. <br /></td></tr>
+<tr class="separator:ad05ef4cd7f6d3ce1e59472d6084ad9c8 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad43b04198a1c919fdcc0194beaf55ddf inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_ad43b04198a1c919fdcc0194beaf55ddf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#ad43b04198a1c919fdcc0194beaf55ddf">getScaled</a> (size_t i, size_t j) const</td></tr>
 <tr class="memdesc:ad43b04198a1c919fdcc0194beaf55ddf inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get intensity in original physical scale.  <br /></td></tr>
 <tr class="separator:ad43b04198a1c919fdcc0194beaf55ddf inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -340,6 +354,10 @@ const <a class="el" href="classdrain_1_1CastableIterator.html">const_iterator</a
 <tr class="memitem:a31945418ddfece851858134b2cb8c9b0 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1ImageFrame.html#a31945418ddfece851858134b2cb8c9b0">get</a> (const <a class="el" href="structdrain_1_1Point2D.html">Point2D</a>&lt; P &gt; &amp;p) const</td></tr>
 <tr class="memdesc:a31945418ddfece851858134b2cb8c9b0 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the intensity at location <code>p=</code>(i,j) .  <br /></td></tr>
 <tr class="separator:a31945418ddfece851858134b2cb8c9b0 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b3c73379b7fb91ee5a9225c0d76aa22 inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_a9b3c73379b7fb91ee5a9225c0d76aa22"><td class="memTemplParams" colspan="2">
+template&lt;class P &gt; </td></tr>
+<tr class="memitem:a9b3c73379b7fb91ee5a9225c0d76aa22 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getScaled</b> (const <a class="el" href="structdrain_1_1Point2D.html">Point2D</a>&lt; P &gt; &amp;p) const</td></tr>
+<tr class="separator:a9b3c73379b7fb91ee5a9225c0d76aa22 inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaab98ef6f9e3b968ff7005336cdc21bc inherit pub_methods_classdrain_1_1image_1_1ImageFrame" id="r_aaab98ef6f9e3b968ff7005336cdc21bc"><td class="memTemplParams" colspan="2">
 template&lt;class T , class P &gt; </td></tr>
 <tr class="memitem:aaab98ef6f9e3b968ff7005336cdc21bc inherit pub_methods_classdrain_1_1image_1_1ImageFrame"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>putPixel</b> (const <a class="el" href="structdrain_1_1Point2D.html">Point2D</a>&lt; P &gt; &amp;p, const std::vector&lt; T &gt; &amp;pixel) const</td></tr>
@@ -407,12 +425,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getArea</b> () cons
 <tr class="memitem:aab5dcc20acc42f6d5aff38120c4538d7 inherit pub_methods_classdrain_1_1image_1_1ImageLike" id="r_aab5dcc20acc42f6d5aff38120c4538d7"><td class="memItemLeft" align="right" valign="top">
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getChannelCount</b> () const</td></tr>
 <tr class="separator:aab5dcc20acc42f6d5aff38120c4538d7 inherit pub_methods_classdrain_1_1image_1_1ImageLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5cbf0db48addb91a055965aee55c276 inherit pub_methods_classdrain_1_1image_1_1ImageLike" id="r_ac5cbf0db48addb91a055965aee55c276"><td class="memItemLeft" align="right" valign="top">
-const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getImageChannelCount</b> () const</td></tr>
-<tr class="separator:ac5cbf0db48addb91a055965aee55c276 inherit pub_methods_classdrain_1_1image_1_1ImageLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4af7decfdd31376aa291c70969738988 inherit pub_methods_classdrain_1_1image_1_1ImageLike" id="r_a4af7decfdd31376aa291c70969738988"><td class="memItemLeft" align="right" valign="top">
-const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getAlphaChannelCount</b> () const</td></tr>
-<tr class="separator:a4af7decfdd31376aa291c70969738988 inherit pub_methods_classdrain_1_1image_1_1ImageLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192161ef302e078dd2430c17617676fa inherit pub_methods_classdrain_1_1image_1_1ImageLike" id="r_a192161ef302e078dd2430c17617676fa"><td class="memItemLeft" align="right" valign="top">
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getImageChannelCount</b> () const</td></tr>
+<tr class="separator:a192161ef302e078dd2430c17617676fa inherit pub_methods_classdrain_1_1image_1_1ImageLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc1348f80a7a330dd5cca8069e38937 inherit pub_methods_classdrain_1_1image_1_1ImageLike" id="r_a0cc1348f80a7a330dd5cca8069e38937"><td class="memItemLeft" align="right" valign="top">
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getAlphaChannelCount</b> () const</td></tr>
+<tr class="separator:a0cc1348f80a7a330dd5cca8069e38937 inherit pub_methods_classdrain_1_1image_1_1ImageLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49b378d85d8bd2cbd0efba0109dc2b72 inherit pub_methods_classdrain_1_1image_1_1ImageLike" id="r_a49b378d85d8bd2cbd0efba0109dc2b72"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasAlphaChannel</b> () const</td></tr>
 <tr class="separator:a49b378d85d8bd2cbd0efba0109dc2b72 inherit pub_methods_classdrain_1_1image_1_1ImageLike"><td class="memSeparator" colspan="2">&#160;</td></tr>

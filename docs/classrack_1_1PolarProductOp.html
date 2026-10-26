@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -190,7 +197,7 @@ Inheritance diagram for PolarProductOp:</div>
 <area shape="poly" title=" " alt="" coords="1633,813,1702,804,1703,809,1634,818"/>
 <area shape="rect" href="classrack_1_1BiometOp.html" title="Detects birds and insects." alt="" coords="1717,836,1804,861"/>
 <area shape="poly" title=" " alt="" coords="1634,829,1717,840,1716,846,1633,834"/>
-<area shape="rect" href="classrack_1_1CCorOp.html" title=" " alt="" coords="1725,885,1796,911"/>
+<area shape="rect" href="classrack_1_1CCorOp.html" title="DOC: Add class description." alt="" coords="1725,885,1796,911"/>
 <area shape="poly" title=" " alt="" coords="1633,838,1656,846,1704,872,1729,883,1727,888,1702,876,1654,851,1631,843"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -199,157 +206,152 @@ Collaboration diagram for PolarProductOp:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1PolarProductOp__coll__graph.png" border="0" usemap="#aPolarProductOp_coll__map" alt="Collaboration graph"/></div>
 <map name="aPolarProductOp_coll__map" id="aPolarProductOp_coll__map">
-<area shape="rect" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="2907,98,3029,123"/>
-<area shape="rect" href="classrack_1_1VolumeOp.html" title=" " alt="" coords="2556,71,2744,97"/>
-<area shape="poly" title=" " alt="" coords="2758,90,2906,103,2906,108,2758,96"/>
-<area shape="rect" href="classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="2340,61,2507,101"/>
-<area shape="poly" title=" " alt="" coords="2520,80,2556,80,2556,86,2520,85"/>
-<area shape="rect" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="2167,69,2270,94"/>
-<area shape="poly" title=" " alt="" coords="2284,79,2340,79,2340,84,2284,84"/>
-<area shape="rect" href="classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="1996,226,2097,251"/>
-<area shape="poly" title=" " alt="" coords="2062,213,2098,167,2145,119,2188,92,2191,96,2148,123,2102,171,2066,216"/>
-<area shape="rect" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="1724,251,1831,277"/>
-<area shape="poly" title=" " alt="" coords="1844,258,1972,248,1995,245,1996,250,1972,253,1844,264"/>
-<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1335,74,1417,99"/>
-<area shape="poly" title=" " alt="" coords="1430,84,2167,79,2167,84,1430,89"/>
-<area shape="poly" title=" " alt="" coords="1431,97,1573,124,1641,144,1667,155,1686,167,1694,178,1698,189,1699,210,1700,230,1710,250,1725,261,1722,266,1706,254,1694,232,1694,210,1693,190,1690,181,1682,171,1665,159,1639,149,1572,130,1430,103"/>
-<area shape="poly" title=" " alt="" coords="1431,82,1498,89,1574,102,1641,120,1667,131,1686,143,1694,154,1698,165,1699,186,1700,206,1710,226,1731,240,1754,249,1753,254,1728,245,1706,230,1694,208,1694,186,1693,166,1690,157,1682,147,1665,135,1639,125,1572,107,1498,94,1430,87"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="891,43,1007,69"/>
-<area shape="poly" title=" " alt="" coords="1020,44,1182,27,1278,20,1375,17,2048,17,2091,22,2133,35,2198,66,2196,71,2131,40,2090,28,2048,23,1375,23,1278,25,1182,32,1021,49"/>
-<area shape="poly" title=" " alt="" coords="1020,58,1335,81,1335,86,1020,64"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="515,43,700,69"/>
-<area shape="poly" title=" " alt="" coords="714,53,890,53,890,59,714,59"/>
-<area shape="rect" title=" " alt="" coords="199,43,419,69"/>
-<area shape="poly" title=" " alt="" coords="432,53,514,53,514,59,432,59"/>
-<area shape="rect" href="classrack_1_1ODIMPathMatcher.html" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="1307,418,1445,443"/>
-<area shape="poly" title=" " alt="" coords="1459,436,1512,436,1570,430,1629,416,1683,392,1714,366,1739,334,1769,276,1774,278,1744,337,1718,370,1685,397,1630,421,1571,435,1513,441,1459,441"/>
-<area shape="rect" href="classdrain_1_1Path.html" title=" " alt="" coords="833,466,1064,491"/>
-<area shape="poly" title=" " alt="" coords="1078,463,1270,441,1306,437,1307,442,1271,447,1078,468"/>
-<area shape="rect" title=" " alt="" coords="496,465,719,490"/>
-<area shape="poly" title=" " alt="" coords="733,475,833,476,833,481,733,480"/>
-<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="531,514,683,539"/>
-<area shape="poly" title=" " alt="" coords="697,512,857,489,858,494,697,517"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="233,525,385,550"/>
-<area shape="poly" title=" " alt="" coords="398,531,531,527,531,532,398,537"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="5,525,149,550"/>
-<area shape="poly" title=" " alt="" coords="164,535,232,535,232,540,164,540"/>
-<area shape="rect" href="classdrain_1_1StringMatcherList.html" title=" " alt="" coords="1303,480,1449,520"/>
-<area shape="poly" title=" " alt="" coords="1463,512,1516,515,1574,511,1631,497,1658,486,1682,472,1719,390,1768,276,1773,278,1724,392,1686,475,1660,491,1633,502,1575,516,1516,520,1463,517"/>
-<area shape="rect" title=" " alt="" coords="867,515,1030,541"/>
-<area shape="poly" title=" " alt="" coords="1044,519,1302,502,1303,507,1044,524"/>
-<area shape="rect" href="classdrain_1_1StringMatcherList.html" title=" " alt="" coords="1295,129,1457,169"/>
-<area shape="poly" title=" " alt="" coords="1472,167,1482,169,1540,174,1588,172,1633,177,1658,185,1686,201,1695,210,1699,220,1702,229,1710,238,1728,249,1726,254,1706,242,1698,232,1694,222,1690,213,1682,205,1656,190,1632,182,1588,178,1540,179,1481,175,1471,173"/>
-<area shape="rect" title=" " alt="" coords="852,137,1045,162"/>
-<area shape="poly" title=" " alt="" coords="1059,147,1295,147,1295,152,1059,152"/>
-<area shape="rect" href="classdrain_1_1Range.html" title=" " alt="" coords="1307,194,1445,219"/>
-<area shape="poly" title=" " alt="" coords="1459,214,1684,245,1724,252,1724,257,1684,251,1458,219"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="881,187,1016,213"/>
-<area shape="poly" title=" " alt="" coords="1030,199,1307,203,1307,208,1030,204"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="535,215,679,241"/>
-<area shape="poly" title=" " alt="" coords="693,218,881,203,881,208,693,224"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="881,237,1016,262"/>
-<area shape="poly" title=" " alt="" coords="693,231,881,242,881,248,693,236"/>
-<area shape="rect" href="structrack_1_1DataOrder.html" title=" " alt="" coords="1331,357,1421,382"/>
-<area shape="poly" title=" " alt="" coords="1435,371,1489,372,1552,369,1619,359,1683,339,1707,326,1730,309,1763,275,1767,279,1733,313,1710,330,1685,344,1620,364,1553,374,1489,378,1435,377"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="855,401,1042,441"/>
-<area shape="poly" title=" " alt="" coords="1055,408,1270,383,1331,374,1332,379,1271,388,1056,413"/>
-<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="525,409,689,434"/>
-<area shape="poly" title=" " alt="" coords="703,419,855,419,855,424,703,424"/>
-<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,475,387,501"/>
-<area shape="poly" title=" " alt="" coords="401,484,437,478,471,468,483,460,495,451,548,432,550,437,497,456,486,465,473,473,438,483,402,489"/>
-<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="236,365,381,390"/>
-<area shape="poly" title=" " alt="" coords="396,387,525,407,525,412,395,393"/>
-<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="521,342,693,367"/>
-<area shape="poly" title=" " alt="" coords="395,368,521,359,521,364,395,373"/>
-<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="528,287,687,313"/>
-<area shape="poly" title=" " alt="" coords="371,359,556,310,558,315,373,364"/>
-<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="510,564,705,604"/>
-<area shape="poly" title=" " alt="" coords="341,396,421,462,443,487,457,509,473,530,497,550,520,562,518,566,495,554,469,533,453,513,438,491,417,466,337,400"/>
-<area shape="rect" title=" " alt="" coords="8,357,147,397"/>
-<area shape="poly" title=" " alt="" coords="161,375,236,375,236,380,161,380"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="851,337,1046,377"/>
-<area shape="poly" title=" " alt="" coords="1060,358,1331,365,1331,371,1060,363"/>
-<area shape="poly" title=" " alt="" coords="707,353,851,354,851,359,707,358"/>
-<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,262,387,287"/>
-<area shape="poly" title=" " alt="" coords="381,288,473,313,497,323,554,339,553,345,495,328,471,319,379,293"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="1088,284,1271,324"/>
-<area shape="poly" title=" " alt="" coords="1285,300,1457,293,1602,281,1723,268,1724,273,1602,286,1457,299,1285,305"/>
-<area shape="poly" title=" " alt="" coords="701,298,1088,301,1088,306,701,303"/>
-<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,213,387,238"/>
-<area shape="poly" title=" " alt="" coords="402,238,473,253,572,285,570,290,471,259,400,243"/>
-<area shape="rect" href="classdrain_1_1Range.html" title=" " alt="" coords="1321,243,1431,269"/>
-<area shape="poly" title=" " alt="" coords="1445,258,1481,260,1724,262,1724,267,1481,265,1445,264"/>
-<area shape="poly" title=" " alt="" coords="1030,248,1320,252,1320,258,1030,253"/>
-<area shape="rect" href="classrack_1_1ODIMPathElem.html" title=" " alt="" coords="1718,202,1837,227"/>
-<area shape="poly" title=" " alt="" coords="1851,219,1996,232,1996,237,1851,224"/>
-<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="1481,549,1684,603"/>
-<area shape="poly" title=" " alt="" coords="1648,540,1683,519,1790,443,1891,365,2029,249,2033,253,1895,369,1793,448,1685,524,1651,544"/>
-<area shape="poly" title=" " alt="" coords="718,580,1481,574,1481,579,718,586"/>
-<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,574,387,599"/>
-<area shape="poly" title=" " alt="" coords="401,583,509,582,509,588,401,589"/>
-<area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="2584,122,2716,147"/>
-<area shape="poly" title=" " alt="" coords="2730,130,2882,120,2906,117,2907,123,2883,125,2730,135"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="2341,125,2505,165"/>
-<area shape="poly" title=" " alt="" coords="2519,138,2584,135,2584,140,2519,144"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="2147,133,2291,158"/>
-<area shape="poly" title=" " alt="" coords="2305,143,2341,143,2341,148,2305,148"/>
+<area shape="rect" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input." alt="" coords="2947,98,3069,123"/>
+<area shape="rect" href="classrack_1_1VolumeOp.html" title=" " alt="" coords="2596,71,2784,97"/>
+<area shape="poly" title=" " alt="" coords="2798,90,2946,103,2946,108,2798,96"/>
+<area shape="rect" href="classrack_1_1RadarProductOp.html" title="Polar and Cartesian products." alt="" coords="2380,61,2547,101"/>
+<area shape="poly" title=" " alt="" coords="2560,80,2596,80,2596,86,2560,85"/>
+<area shape="rect" href="classrack_1_1ProductBase.html" title="Base class for radar data processors. Input can be in polar or Cartesian coordinates." alt="" coords="2207,69,2310,94"/>
+<area shape="poly" title=" " alt="" coords="2324,79,2380,79,2380,84,2324,84"/>
+<area shape="rect" href="classrack_1_1ProductConf.html" title="Shared properties for meteorological products and Cartesian products (composites and single&#45;radar ima..." alt="" coords="2036,201,2137,226"/>
+<area shape="poly" title=" " alt="" coords="2108,189,2143,154,2185,119,2230,92,2233,96,2188,124,2146,158,2111,192"/>
+<area shape="rect" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations." alt="" coords="1724,227,1831,253"/>
+<area shape="poly" title=" " alt="" coords="1844,236,1924,232,2012,224,2035,221,2036,226,2012,229,1925,237,1844,241"/>
+<area shape="rect" href="classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="1335,61,1417,86"/>
+<area shape="poly" title=" " alt="" coords="1430,71,2207,78,2207,84,1430,76"/>
+<area shape="poly" title=" " alt="" coords="1431,83,1482,93,1513,98,1541,98,1591,96,1614,97,1637,102,1661,113,1686,131,1694,142,1699,153,1699,174,1700,194,1710,214,1725,225,1722,230,1706,218,1695,196,1694,174,1693,154,1690,144,1682,135,1658,117,1635,107,1613,102,1591,101,1541,103,1513,103,1481,99,1430,88"/>
+<area shape="rect" href="classdrain_1_1ReferenceMap.html" title=" " alt="" coords="891,27,1007,53"/>
+<area shape="poly" title=" " alt="" coords="1020,32,1182,22,1375,17,2088,17,2131,22,2173,35,2238,66,2236,71,2171,40,2130,28,2088,23,1375,23,1182,28,1021,37"/>
+<area shape="poly" title=" " alt="" coords="1021,45,1088,51,1335,68,1335,74,1088,56,1020,50"/>
+<area shape="rect" href="classdrain_1_1SmartMap.html" title=" " alt="" coords="515,27,700,53"/>
+<area shape="poly" title=" " alt="" coords="714,37,890,37,890,43,714,43"/>
+<area shape="rect" title=" " alt="" coords="199,27,419,53"/>
+<area shape="poly" title=" " alt="" coords="432,37,514,37,514,43,432,43"/>
+<area shape="rect" href="classrack_1_1ODIMPathMatcher.html" title="Structure for testing if a path matches a given sequence of path elements." alt="" coords="1307,414,1445,439"/>
+<area shape="poly" title=" " alt="" coords="1459,428,1512,425,1570,416,1629,400,1683,374,1714,346,1739,312,1769,251,1774,254,1744,315,1718,349,1685,378,1631,405,1572,422,1513,430,1459,433"/>
+<area shape="rect" href="classdrain_1_1Path.html" title=" " alt="" coords="833,454,1064,479"/>
+<area shape="poly" title=" " alt="" coords="1077,452,1306,430,1307,436,1078,457"/>
+<area shape="rect" title=" " alt="" coords="496,450,719,475"/>
+<area shape="poly" title=" " alt="" coords="733,461,833,463,833,468,732,467"/>
+<area shape="rect" href="structdrain_1_1PathSeparatorPolicy.html" title="Determines how separator char (often / ) will be handled in the path." alt="" coords="531,499,683,525"/>
+<area shape="poly" title=" " alt="" coords="697,498,852,477,852,482,698,503"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="233,515,385,541"/>
+<area shape="poly" title=" " alt="" coords="398,521,531,513,531,519,398,526"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="5,515,149,541"/>
+<area shape="poly" title=" " alt="" coords="164,525,232,525,232,531,164,531"/>
+<area shape="rect" href="classdrain_1_1StringMatcherList.html" title=" " alt="" coords="1295,111,1457,151"/>
+<area shape="poly" title=" " alt="" coords="1471,144,1482,145,1540,149,1588,147,1633,152,1658,161,1686,177,1695,186,1699,196,1702,205,1710,214,1728,225,1726,230,1706,218,1698,208,1694,198,1690,189,1682,181,1656,166,1632,158,1588,153,1540,155,1481,151,1470,149"/>
+<area shape="rect" title=" " alt="" coords="852,118,1045,143"/>
+<area shape="poly" title=" " alt="" coords="1059,128,1295,128,1295,133,1059,133"/>
+<area shape="rect" href="classdrain_1_1Range.html" title=" " alt="" coords="1307,175,1445,201"/>
+<area shape="poly" title=" " alt="" coords="1459,194,1684,221,1724,228,1723,233,1684,227,1458,199"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="881,175,1016,201"/>
+<area shape="poly" title=" " alt="" coords="1030,185,1307,185,1307,191,1030,191"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="535,199,679,225"/>
+<area shape="poly" title=" " alt="" coords="693,203,881,190,881,195,693,209"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="881,225,1016,250"/>
+<area shape="poly" title=" " alt="" coords="693,216,881,230,881,235,693,221"/>
+<area shape="rect" href="structrack_1_1DataOrder.html" title="DOC: Add class description." alt="" coords="1331,338,1421,363"/>
+<area shape="poly" title=" " alt="" coords="1434,353,1489,355,1552,351,1619,341,1683,320,1708,306,1731,287,1764,251,1768,255,1735,291,1711,310,1685,325,1620,346,1553,357,1489,360,1434,359"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="855,389,1042,429"/>
+<area shape="poly" title=" " alt="" coords="1055,394,1270,365,1331,356,1332,361,1271,371,1056,399"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="525,397,689,422"/>
+<area shape="poly" title=" " alt="" coords="703,407,855,407,855,412,703,412"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,439,387,465"/>
+<area shape="poly" title=" " alt="" coords="401,436,525,418,525,424,401,442"/>
+<area shape="rect" href="classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="236,378,381,403"/>
+<area shape="poly" title=" " alt="" coords="395,400,443,404,525,407,525,412,442,409,395,405"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="521,333,693,358"/>
+<area shape="poly" title=" " alt="" coords="395,375,523,355,523,361,395,380"/>
+<area shape="rect" href="classdrain_1_1SingleFlagger.html" title=" " alt="" coords="528,271,687,297"/>
+<area shape="poly" title=" " alt="" coords="361,371,418,351,495,319,566,294,567,299,497,324,420,356,363,376"/>
+<area shape="rect" href="classdrain_1_1MultiFlagger.html" title=" " alt="" coords="510,549,705,589"/>
+<area shape="poly" title=" " alt="" coords="382,406,420,426,446,454,459,482,472,509,483,522,498,535,518,547,516,552,494,540,479,526,468,512,455,484,442,457,417,430,380,410"/>
+<area shape="rect" title=" " alt="" coords="8,371,147,411"/>
+<area shape="poly" title=" " alt="" coords="161,388,236,388,236,393,161,393"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="851,325,1046,365"/>
+<area shape="poly" title=" " alt="" coords="1060,344,1331,347,1331,353,1060,349"/>
+<area shape="poly" title=" " alt="" coords="707,343,851,343,851,348,707,348"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,315,387,341"/>
+<area shape="poly" title=" " alt="" coords="401,331,521,338,521,343,401,336"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="1088,268,1271,308"/>
+<area shape="poly" title=" " alt="" coords="1285,283,1457,275,1602,260,1723,245,1724,250,1602,266,1458,280,1285,289"/>
+<area shape="poly" title=" " alt="" coords="701,282,1088,285,1088,290,701,287"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,237,387,262"/>
+<area shape="poly" title=" " alt="" coords="401,257,472,265,528,272,527,277,472,271,401,262"/>
+<area shape="rect" href="classdrain_1_1Range.html" title=" " alt="" coords="1321,225,1431,250"/>
+<area shape="poly" title=" " alt="" coords="1445,236,1481,236,1724,237,1724,243,1481,241,1445,241"/>
+<area shape="poly" title=" " alt="" coords="1030,235,1320,235,1320,240,1030,240"/>
+<area shape="rect" href="classrack_1_1ODIMPathElem.html" title="DOC: Add class description." alt="" coords="1718,178,1837,203"/>
+<area shape="poly" title=" " alt="" coords="1851,193,2036,207,2035,212,1850,199"/>
+<area shape="rect" href="classdrain_1_1EnumFlagger.html" title=" " alt="" coords="1481,461,1684,515"/>
+<area shape="poly" title=" " alt="" coords="1645,452,1683,431,2061,224,2063,229,1685,436,1647,456"/>
+<area shape="poly" title=" " alt="" coords="718,558,1481,494,1481,499,719,563"/>
+<area shape="rect" href="classdrain_1_1FlaggerBase.html" title=" " alt="" coords="230,565,387,590"/>
+<area shape="poly" title=" " alt="" coords="401,572,509,569,510,575,401,578"/>
+<area shape="rect" href="classdrain_1_1image_1_1CoordinatePolicy.html" title="Policies for coordinate underflows and overflows." alt="" coords="2624,122,2756,147"/>
+<area shape="poly" title=" " alt="" coords="2770,130,2922,120,2946,117,2947,123,2923,125,2770,135"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="2381,125,2545,165"/>
+<area shape="poly" title=" " alt="" coords="2559,138,2624,135,2624,140,2559,144"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="2187,133,2331,158"/>
+<area shape="poly" title=" " alt="" coords="2345,143,2381,143,2381,148,2345,148"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a70cee512e9ca4028df8cc01032137669" id="r_a70cee512e9ca4028df8cc01032137669"><td class="memItemLeft" align="right" valign="top"><a id="a70cee512e9ca4028df8cc01032137669" name="a70cee512e9ca4028df8cc01032137669"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (const std::string &amp;name=__FUNCTION__, const std::string &amp;description=&quot;&quot;)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>=<a class="el" href="classrack_1_1DataSet.html">__FUNCTION__</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#a0f6aed3e388afb968642d5e6199f767f">description</a>=&quot;&quot;)</td></tr>
 <tr class="separator:a70cee512e9ca4028df8cc01032137669"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a446c27b0b8b5b1e030fe9eda1adc14" id="r_a9a446c27b0b8b5b1e030fe9eda1adc14"><td class="memItemLeft" align="right" valign="top"><a id="a9a446c27b0b8b5b1e030fe9eda1adc14" name="a9a446c27b0b8b5b1e030fe9eda1adc14"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (const <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> &amp;op)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>PolarProductOp</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PolarProductOp.html">PolarProductOp</a> &amp;<a class="el" href="classrack_1_1DataSet.html">op</a>)</td></tr>
 <tr class="separator:a9a446c27b0b8b5b1e030fe9eda1adc14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1VolumeOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1VolumeOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1VolumeOp.html">VolumeOp&lt; PolarODIM &gt;</a></td></tr>
 <tr class="memitem:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp" id="r_a29e232e54cb61cfc533bb6ec8bf5dce4"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>VolumeOp</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;name, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;description=&quot;&quot;)</td></tr>
 <tr class="separator:a29e232e54cb61cfc533bb6ec8bf5dce4 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac32ebf02c09ef65ac29ddb8f3ef33ad2 inherit pub_methods_classrack_1_1VolumeOp" id="r_ac32ebf02c09ef65ac29ddb8f3ef33ad2"><td class="memItemLeft" align="right" valign="top">virtual Hi5Tree &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#ac32ebf02c09ef65ac29ddb8f3ef33ad2">processVolume</a> (const Hi5Tree &amp;srcRoot, Hi5Tree &amp;dstRoot) const final</td></tr>
+<tr class="memitem:ac32ebf02c09ef65ac29ddb8f3ef33ad2 inherit pub_methods_classrack_1_1VolumeOp" id="r_ac32ebf02c09ef65ac29ddb8f3ef33ad2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> Hi5Tree &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1VolumeOp.html#ac32ebf02c09ef65ac29ddb8f3ef33ad2">processVolume</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;<a class="el" href="classrack_1_1DataSet.html">srcRoot</a>, Hi5Tree &amp;<a class="el" href="classrack_1_1DataSet.html">dstRoot</a>) <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">final</a></td></tr>
 <tr class="memdesc:ac32ebf02c09ef65ac29ddb8f3ef33ad2 inherit pub_methods_classrack_1_1VolumeOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse through given volume and create new, processed data (volume or polar product).  <br /></td></tr>
 <tr class="separator:ac32ebf02c09ef65ac29ddb8f3ef33ad2 inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b6c417369be4afc547b0efdef0ce09b inherit pub_methods_classrack_1_1VolumeOp" id="r_a1b6c417369be4afc547b0efdef0ce09b"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setPolarSelector</b> (const <a class="el" href="structrack_1_1PolarSelector.html">PolarSelector</a> &amp;ps)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setPolarSelector</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1PolarSelector.html">PolarSelector</a> &amp;<a class="el" href="classrack_1_1DataSet.html">ps</a>)</td></tr>
 <tr class="separator:a1b6c417369be4afc547b0efdef0ce09b inherit pub_methods_classrack_1_1VolumeOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1RadarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1RadarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp&lt; MS, MD &gt;</a></td></tr>
 <tr class="memitem:a2feec23bd5e56827ca3ce7dbcef41525 inherit pub_methods_classrack_1_1RadarProductOp" id="r_a2feec23bd5e56827ca3ce7dbcef41525"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProductOp</b> (const std::string &amp;name, const std::string &amp;description)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProductOp</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#a0f6aed3e388afb968642d5e6199f767f">description</a>)</td></tr>
 <tr class="memdesc:a2feec23bd5e56827ca3ce7dbcef41525 inherit pub_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a2feec23bd5e56827ca3ce7dbcef41525 inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d70593f7dc58853efd2bdc1b91de3f inherit pub_methods_classrack_1_1RadarProductOp" id="r_ab0d70593f7dc58853efd2bdc1b91de3f"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProductOp</b> (const <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp</a> &amp;product)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProductOp</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp</a> &amp;product)</td></tr>
 <tr class="separator:ab0d70593f7dc58853efd2bdc1b91de3f inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a628cdcd173647cad3ff5110ad4f5004a inherit pub_methods_classrack_1_1RadarProductOp" id="r_a628cdcd173647cad3ff5110ad4f5004a"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a628cdcd173647cad3ff5110ad4f5004a">getOutputQuantity</a> (const std::string &amp;inputQuantity=&quot;&quot;) const</td></tr>
+<tr class="memitem:a628cdcd173647cad3ff5110ad4f5004a inherit pub_methods_classrack_1_1RadarProductOp" id="r_a628cdcd173647cad3ff5110ad4f5004a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a628cdcd173647cad3ff5110ad4f5004a">getOutputQuantity</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classrack_1_1DataSet.html">inputQuantity</a>=&quot;&quot;) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a628cdcd173647cad3ff5110ad4f5004a inherit pub_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the primary output quantity (<a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> <code>what:quantity</code> , like DBZH)  <br /></td></tr>
 <tr class="separator:a628cdcd173647cad3ff5110ad4f5004a inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a292f36764891e35659716068deabedb6 inherit pub_methods_classrack_1_1RadarProductOp" id="r_a292f36764891e35659716068deabedb6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a292f36764891e35659716068deabedb6">processH5</a> (const Hi5Tree &amp;src, Hi5Tree &amp;dst) const</td></tr>
+<tr class="memitem:a292f36764891e35659716068deabedb6 inherit pub_methods_classrack_1_1RadarProductOp" id="r_a292f36764891e35659716068deabedb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a292f36764891e35659716068deabedb6">processH5</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;src, Hi5Tree &amp;dst) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a292f36764891e35659716068deabedb6 inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35a1faad2362a8cad87abc43671d0be5 inherit pub_methods_classrack_1_1RadarProductOp" id="r_a35a1faad2362a8cad87abc43671d0be5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a35a1faad2362a8cad87abc43671d0be5">computeSingleProduct</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstProduct) const</td></tr>
+<tr class="memitem:a35a1faad2362a8cad87abc43671d0be5 inherit pub_methods_classrack_1_1RadarProductOp" id="r_a35a1faad2362a8cad87abc43671d0be5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a35a1faad2362a8cad87abc43671d0be5">computeSingleProduct</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">srcSweeps</a>, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstProduct</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a35a1faad2362a8cad87abc43671d0be5 inherit pub_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverse the data applicable for this product and create new, processed data (volume or polar product).  <br /></td></tr>
 <tr class="separator:a35a1faad2362a8cad87abc43671d0be5 inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bf571b04a86eb0a4e8d706b6cb46afb inherit pub_methods_classrack_1_1RadarProductOp" id="r_a7bf571b04a86eb0a4e8d706b6cb46afb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a7bf571b04a86eb0a4e8d706b6cb46afb">processDataSet</a> (const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;srcSweep, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; MD &gt; &gt; &amp;dstProduct) const</td></tr>
+<tr class="memitem:a7bf571b04a86eb0a4e8d706b6cb46afb inherit pub_methods_classrack_1_1RadarProductOp" id="r_a7bf571b04a86eb0a4e8d706b6cb46afb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a7bf571b04a86eb0a4e8d706b6cb46afb">processDataSet</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">srcSweep</a>, <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1DataSet.html">MD</a> &gt; &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstProduct</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a7bf571b04a86eb0a4e8d706b6cb46afb inherit pub_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process the data of a single sweep and and write the result to given product.  <br /></td></tr>
 <tr class="separator:a7bf571b04a86eb0a4e8d706b6cb46afb inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdd0b07c680d55a7242be93a5c528c83 inherit pub_methods_classrack_1_1RadarProductOp" id="r_acdd0b07c680d55a7242be93a5c528c83"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>processData</b> (const <a class="el" href="classrack_1_1Data.html">Data</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;srcData, <a class="el" href="classrack_1_1Data.html">Data</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>processData</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Data.html">Data</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a2c153ff74de9dbffcfc6254ba8852dfb">src_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">srcData</a>, <a class="el" href="classrack_1_1Data.html">Data</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:acdd0b07c680d55a7242be93a5c528c83 inherit pub_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:a12e61bb38115c585139fb7d0e032182b inherit pub_methods_classrack_1_1ProductBase" id="r_a12e61bb38115c585139fb7d0e032182b"><td class="memItemLeft" align="right" valign="top">
-const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLastArguments</b> () const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLastArguments</b> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a12e61bb38115c585139fb7d0e032182b inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03d604a874cfe2e217a9453c6ab8bf37 inherit pub_methods_classrack_1_1ProductBase" id="r_a03d604a874cfe2e217a9453c6ab8bf37"><td class="memItemLeft" align="right" valign="top">
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~ProductBase</b> ()</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a>&#160;</td><td class="memItemRight" valign="bottom"><b>~ProductBase</b> ()</td></tr>
 <tr class="memdesc:a03d604a874cfe2e217a9453c6ab8bf37 inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
 <tr class="separator:a03d604a874cfe2e217a9453c6ab8bf37 inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fce7d9376a44d4e7ecc13994356a2f3 inherit pub_methods_classrack_1_1ProductBase" id="r_a7fce7d9376a44d4e7ecc13994356a2f3"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDataSelector</b> (const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setDataSelector</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;<a class="el" href="classrack_1_1DataSet.html">selector</a>)</td></tr>
 <tr class="memdesc:a7fce7d9376a44d4e7ecc13994356a2f3 inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the conditions of another selector. <br /></td></tr>
 <tr class="separator:a7fce7d9376a44d4e7ecc13994356a2f3 inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac85c39390665be376bb3b93c3976bf9b inherit pub_methods_classrack_1_1ProductBase" id="r_ac85c39390665be376bb3b93c3976bf9b"><td class="memItemLeft" align="right" valign="top">
-const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDataSelector</b> () const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getDataSelector</b> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ac85c39390665be376bb3b93c3976bf9b inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the data selector of this operator. <br /></td></tr>
 <tr class="separator:ac85c39390665be376bb3b93c3976bf9b inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7273bb9bd0dc076463b7c071ee923c82 inherit pub_methods_classrack_1_1ProductBase" id="r_a7273bb9bd0dc076463b7c071ee923c82"><td class="memItemLeft" align="right" valign="top">
@@ -357,18 +359,18 @@ const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;
 <tr class="memdesc:a7273bb9bd0dc076463b7c071ee923c82 inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the data selector of this operator. <br /></td></tr>
 <tr class="separator:a7273bb9bd0dc076463b7c071ee923c82 inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04a52e789bf18e40817c2b476b9e9b15 inherit pub_methods_classrack_1_1ProductBase" id="r_a04a52e789bf18e40817c2b476b9e9b15"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>help</b> (std::ostream &amp;ostr=std::cout, bool showDescription=true) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>help</b> (std::ostream &amp;ostr=std::cout, <a class="el" href="classrack_1_1DataSet.html">bool</a> <a class="el" href="classrack_1_1DataSet.html">showDescription</a>=<a class="el" href="classrack_1_1DataSet.html">true</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a04a52e789bf18e40817c2b476b9e9b15 inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the help of this operator. <br /></td></tr>
 <tr class="separator:a04a52e789bf18e40817c2b476b9e9b15 inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a321a0b675602f7e6819586253ce92d03 inherit pub_methods_classrack_1_1ProductBase" id="r_a321a0b675602f7e6819586253ce92d03"><td class="memItemLeft" align="right" valign="top">
-const <a class="el" href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAllowedEncoding</b> () const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1ReferenceMap.html">drain::ReferenceMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAllowedEncoding</b> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a321a0b675602f7e6819586253ce92d03 inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a map of encoding parameters that can be changed by the user. <br /></td></tr>
 <tr class="separator:a321a0b675602f7e6819586253ce92d03 inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bb6e0844d077c12a580c834f5235dde inherit pub_methods_classrack_1_1ProductBase" id="r_a9bb6e0844d077c12a580c834f5235dde"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a9bb6e0844d077c12a580c834f5235dde">setEncodingRequest</a> (const std::string &amp;p)</td></tr>
+<tr class="memitem:a9bb6e0844d077c12a580c834f5235dde inherit pub_methods_classrack_1_1ProductBase" id="r_a9bb6e0844d077c12a580c834f5235dde"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a9bb6e0844d077c12a580c834f5235dde">setEncodingRequest</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;p)</td></tr>
 <tr class="memdesc:a9bb6e0844d077c12a580c834f5235dde inherit pub_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set encoding parameters for the result: type,gain,offset,undetect,nodata.  <br /></td></tr>
 <tr class="separator:a9bb6e0844d077c12a580c834f5235dde inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282e68e454ff7c5689dbff12de7e125f inherit pub_methods_classrack_1_1ProductBase" id="r_a282e68e454ff7c5689dbff12de7e125f"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllowedEncoding</b> (const std::string &amp;keys)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setAllowedEncoding</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;keys)</td></tr>
 <tr class="separator:a282e68e454ff7c5689dbff12de7e125f inherit pub_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1ProductConf"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1ProductConf')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td></tr>
 <tr class="memitem:a70c56da05f530c93211fc87a8923c5c7 inherit pub_methods_classrack_1_1ProductConf" id="r_a70c56da05f530c93211fc87a8923c5c7"><td class="memItemLeft" align="right" valign="top">
@@ -376,15 +378,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllowedEncoding</b
 <tr class="memdesc:a70c56da05f530c93211fc87a8923c5c7 inherit pub_methods_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a70c56da05f530c93211fc87a8923c5c7 inherit pub_methods_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abaac419e9f8e53a768cbe0eb82b73654 inherit pub_methods_classrack_1_1ProductConf" id="r_abaac419e9f8e53a768cbe0eb82b73654"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>ProductConf</b> (const <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a> &amp;conf)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProductConf</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a> &amp;conf)</td></tr>
 <tr class="memdesc:abaac419e9f8e53a768cbe0eb82b73654 inherit pub_methods_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. <br /></td></tr>
 <tr class="separator:abaac419e9f8e53a768cbe0eb82b73654 inherit pub_methods_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
-<tr class="memitem:a55071108918aaae58d9cc5a68b414db2 inherit pub_methods_classdrain_1_1BeanLike" id="r_a55071108918aaae58d9cc5a68b414db2"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="memitem:a55071108918aaae58d9cc5a68b414db2 inherit pub_methods_classdrain_1_1BeanLike" id="r_a55071108918aaae58d9cc5a68b414db2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a55071108918aaae58d9cc5a68b414db2">BeanLike</a> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="memdesc:a55071108918aaae58d9cc5a68b414db2 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor. Re-links <code>parameters</code> to the member variables of this (new) instance.  <br /></td></tr>
 <tr class="separator:a55071108918aaae58d9cc5a68b414db2 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pub_methods_classdrain_1_1BeanLike" id="r_a2f334f14441ffc0392abd27fd2f809cb"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>BeanLike</b> (const std::string &amp;name, const std::string &amp;description=&quot;&quot;)</td></tr>
+<tr class="memitem:a2f334f14441ffc0392abd27fd2f809cb inherit pub_methods_classdrain_1_1BeanLike" id="r_a2f334f14441ffc0392abd27fd2f809cb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a2f334f14441ffc0392abd27fd2f809cb">BeanLike</a> (const std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>, const std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#a0f6aed3e388afb968642d5e6199f767f">description</a>=&quot;&quot;)</td></tr>
+<tr class="memdesc:a2f334f14441ffc0392abd27fd2f809cb inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <br /></td></tr>
 <tr class="separator:a2f334f14441ffc0392abd27fd2f809cb inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30c7acc06a33f7210be592289db3946f inherit pub_methods_classdrain_1_1BeanLike" id="r_a30c7acc06a33f7210be592289db3946f"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a30c7acc06a33f7210be592289db3946f">getName</a> () const</td></tr>
 <tr class="memdesc:a30c7acc06a33f7210be592289db3946f inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the name of an instance.  <br /></td></tr>
@@ -394,6 +396,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setAllowedEncoding</b
 <tr class="separator:a3dcaab1f96f241a6936064020621d47a inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f6485c2075b4c36114fd725551336df inherit pub_methods_classdrain_1_1BeanLike" id="r_a4f6485c2075b4c36114fd725551336df"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasParameters</b> () const</td></tr>
+<tr class="memdesc:a4f6485c2075b4c36114fd725551336df inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tells if any parameters have been linked (registered) for this bean. <br /></td></tr>
 <tr class="separator:a4f6485c2075b4c36114fd725551336df inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a423e8ba3122be02faded1df37a6e9ab2 inherit pub_methods_classdrain_1_1BeanLike" id="r_a423e8ba3122be02faded1df37a6e9ab2"><td class="memTemplParams" colspan="2">
 template&lt;class F &gt; </td></tr>
@@ -401,14 +404,16 @@ template&lt;class F &gt; </td></tr>
 <tr class="memdesc:a423e8ba3122be02faded1df37a6e9ab2 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a single parameter. <br /></td></tr>
 <tr class="separator:a423e8ba3122be02faded1df37a6e9ab2 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8fd348efbbe21b864af04985a1d6740 inherit pub_methods_classdrain_1_1BeanLike" id="r_ab8fd348efbbe21b864af04985a1d6740"><td class="memItemLeft" align="right" valign="top">
-const <a class="el" href="classdrain_1_1ReferenceMap.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> () const</td></tr>
+const <a class="el" href="classdrain_1_1BeanLike.html#a16617a6d0be2844212ed123ff6f7ce9d">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> () const</td></tr>
+<tr class="memdesc:ab8fd348efbbe21b864af04985a1d6740 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parameter map (const access). <br /></td></tr>
 <tr class="separator:ab8fd348efbbe21b864af04985a1d6740 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86fbe555c0ad35427e139f50f0522121 inherit pub_methods_classdrain_1_1BeanLike" id="r_a86fbe555c0ad35427e139f50f0522121"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classdrain_1_1ReferenceMap.html">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> ()</td></tr>
+<a class="el" href="classdrain_1_1BeanLike.html#a16617a6d0be2844212ed123ff6f7ce9d">map_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getParameters</b> ()</td></tr>
+<tr class="memdesc:a86fbe555c0ad35427e139f50f0522121 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the parameter map. <br /></td></tr>
 <tr class="separator:a86fbe555c0ad35427e139f50f0522121 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike" id="r_aa88e5c9e613dfe8d6abe61269fc44f21"><td class="memTemplParams" colspan="2">
-template&lt;class F &gt; </td></tr>
-<tr class="memitem:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParametersFromEntries</b> (const F &amp;args)</td></tr>
+<tr class="memitem:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike" id="r_aa88e5c9e613dfe8d6abe61269fc44f21"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
+<tr class="memitem:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#aa88e5c9e613dfe8d6abe61269fc44f21">setParametersFromEntries</a> (const F &amp;args)</td></tr>
+<tr class="memdesc:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets several parameters at once from a sequence of key-value pairs.  <br /></td></tr>
 <tr class="separator:aa88e5c9e613dfe8d6abe61269fc44f21 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cb20fed3030548a4ed68c3a44fcc630 inherit pub_methods_classdrain_1_1BeanLike" id="r_a7cb20fed3030548a4ed68c3a44fcc630"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setParameters</b> (std::initializer_list&lt; Variable::init_pair_t &gt; args)</td></tr>
@@ -443,56 +448,56 @@ template&lt;class F &gt; </td></tr>
 <tr class="memitem:a6d029c2a833353e5cc648be7a80dfca8 inherit pub_methods_classdrain_1_1BeanLike"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setParameter</b> (const std::string &amp;p, std::initializer_list&lt; F &gt; value)</td></tr>
 <tr class="memdesc:a6d029c2a833353e5cc648be7a80dfca8 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a single parameter. <br /></td></tr>
 <tr class="separator:a6d029c2a833353e5cc648be7a80dfca8 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57c6b39d26625540feae5df1bf7da672 inherit pub_methods_classdrain_1_1BeanLike" id="r_a57c6b39d26625540feae5df1bf7da672"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="memitem:a57c6b39d26625540feae5df1bf7da672 inherit pub_methods_classdrain_1_1BeanLike" id="r_a57c6b39d26625540feae5df1bf7da672"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a57c6b39d26625540feae5df1bf7da672">operator=</a> (const <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a> &amp;b)</td></tr>
+<tr class="memdesc:a57c6b39d26625540feae5df1bf7da672 inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns the parameter values of another bean (by key) to this one's own parameters.  <br /></td></tr>
 <tr class="separator:a57c6b39d26625540feae5df1bf7da672 inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike" id="r_a6c0f6b9b2afe4d8944e3dbd23533dbda"><td class="memItemLeft" align="right" valign="top">
-virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool compact=true) const</td></tr>
+<tr class="memitem:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike" id="r_a6c0f6b9b2afe4d8944e3dbd23533dbda"><td class="memItemLeft" align="right" valign="top">virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1BeanLike.html#a6c0f6b9b2afe4d8944e3dbd23533dbda">toStream</a> (std::ostream &amp;ostr, bool compact=true) const</td></tr>
+<tr class="memdesc:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the name, description and current parameter values.  <br /></td></tr>
 <tr class="separator:a6c0f6b9b2afe4d8944e3dbd23533dbda inherit pub_methods_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:ae31e7761befc43085af74869862df2db" id="r_ae31e7761befc43085af74869862df2db"><td class="memItemLeft" align="right" valign="top"><a id="ae31e7761befc43085af74869862df2db" name="ae31e7761befc43085af74869862df2db"></a>
-static const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarCoordPolicy</b></td></tr>
 <tr class="separator:ae31e7761befc43085af74869862df2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a93ffe6cefe38ac0e1480737fe6f8c175" id="r_a93ffe6cefe38ac0e1480737fe6f8c175"><td class="memItemLeft" align="right" valign="top"><a id="a93ffe6cefe38ac0e1480737fe6f8c175" name="a93ffe6cefe38ac0e1480737fe6f8c175"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>copyPolarGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>copyPolarGeometry</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a93ffe6cefe38ac0e1480737fe6f8c175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4fad069cd8f280261fc9e3de91b1cf0" id="r_ad4fad069cd8f280261fc9e3de91b1cf0"><td class="memItemLeft" align="right" valign="top"><a id="ad4fad069cd8f280261fc9e3de91b1cf0" name="ad4fad069cd8f280261fc9e3de91b1cf0"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;dstData) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setGeometry</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="namespacerack.html#a8d4a33d908143a879cce18c66af3b6f0">PolarDst</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:ad4fad069cd8f280261fc9e3de91b1cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35027d18c08a42943896258054ef7cc4" id="r_a35027d18c08a42943896258054ef7cc4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PolarProductOp.html#a35027d18c08a42943896258054ef7cc4">deriveDstGeometry</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;dstOdim, bool MINIMISE_RSCALE=false) const</td></tr>
+<tr class="memitem:a35027d18c08a42943896258054ef7cc4" id="r_a35027d18c08a42943896258054ef7cc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PolarProductOp.html#a35027d18c08a42943896258054ef7cc4">deriveDstGeometry</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">srcSweeps</a>, <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;<a class="el" href="classrack_1_1DataSet.html">dstOdim</a>, <a class="el" href="classrack_1_1DataSet.html">bool</a> <a class="el" href="classrack_1_1DataSet.html">MINIMISE_RSCALE</a>=<a class="el" href="classrack_1_1DataSet.html">false</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a35027d18c08a42943896258054ef7cc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Based on input data, find geometry that maximises range and ray count.  <br /></td></tr>
 <tr class="separator:a35027d18c08a42943896258054ef7cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97e2c06ddcf72a3fcdc10f477cb63342" id="r_a97e2c06ddcf72a3fcdc10f477cb63342"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PolarProductOp.html#a97e2c06ddcf72a3fcdc10f477cb63342">determineMetadata</a> (const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;srcSweeps, <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;dstOdim) const</td></tr>
+<tr class="memitem:a97e2c06ddcf72a3fcdc10f477cb63342" id="r_a97e2c06ddcf72a3fcdc10f477cb63342"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PolarProductOp.html#a97e2c06ddcf72a3fcdc10f477cb63342">determineMetadata</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">srcSweeps</a>, <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;<a class="el" href="classrack_1_1DataSet.html">dstOdim</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a97e2c06ddcf72a3fcdc10f477cb63342"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update timestamps etc.  <br /></td></tr>
 <tr class="separator:a97e2c06ddcf72a3fcdc10f477cb63342"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1RadarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1RadarProductOp')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp&lt; MS, MD &gt;</a></td></tr>
-<tr class="memitem:acd36048a38c0975b6ddcd575ec795cc3 inherit pro_methods_classrack_1_1RadarProductOp" id="r_acd36048a38c0975b6ddcd575ec795cc3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#acd36048a38c0975b6ddcd575ec795cc3">setGeometry</a> (const MS &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData) const =0</td></tr>
+<tr class="memitem:acd36048a38c0975b6ddcd575ec795cc3 inherit pro_methods_classrack_1_1RadarProductOp" id="r_acd36048a38c0975b6ddcd575ec795cc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#acd36048a38c0975b6ddcd575ec795cc3">setGeometry</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">MS</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>) <a class="el" href="classrack_1_1DataSet.html">const</a> =0</td></tr>
 <tr class="memdesc:acd36048a38c0975b6ddcd575ec795cc3 inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets automagically the suitable dst parameters.  <br /></td></tr>
 <tr class="separator:acd36048a38c0975b6ddcd575ec795cc3 inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab98ccbb1d7d34ae3c9a41b2528ab1ebd inherit pro_methods_classrack_1_1RadarProductOp" id="r_ab98ccbb1d7d34ae3c9a41b2528ab1ebd"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initDst</b> (const MS &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>initDst</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">MS</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ab98ccbb1d7d34ae3c9a41b2528ab1ebd inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialises dst data by setting suitable <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata and geometry. <br /></td></tr>
 <tr class="separator:ab98ccbb1d7d34ae3c9a41b2528ab1ebd inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp" id="r_a374ba63d22bde63d4ec14d887236b97b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a374ba63d22bde63d4ec14d887236b97b">setEncoding</a> (const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData) const</td></tr>
+<tr class="memitem:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp" id="r_a374ba63d22bde63d4ec14d887236b97b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a374ba63d22bde63d4ec14d887236b97b">setEncoding</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.  <br /></td></tr>
 <tr class="separator:a374ba63d22bde63d4ec14d887236b97b inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp" id="r_a322875e2d99379d2b04032f4d8d5ee4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a322875e2d99379d2b04032f4d8d5ee4c">setEncodingNEW</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;dstData, const std::string &amp;quantity=&quot;&quot;, const std::string &amp;args=&quot;&quot;) const</td></tr>
+<tr class="memitem:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp" id="r_a322875e2d99379d2b04032f4d8d5ee4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarProductOp.html#a322875e2d99379d2b04032f4d8d5ee4c">setEncodingNEW</a> (<a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">dst_t</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">dstData</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity=&quot;&quot;, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;args=&quot;&quot;) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable encoding parametes (type, gain, offset, undetect, nodata) for this product.  <br /></td></tr>
 <tr class="separator:a322875e2d99379d2b04032f4d8d5ee4c inherit pro_methods_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:ad4df2c00e899650fb621004091420b49 inherit pro_methods_classrack_1_1ProductBase" id="r_ad4df2c00e899650fb621004091420b49"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>ProductBase</b> (const std::string &amp;name, const std::string &amp;description)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProductBase</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#ac673bc430bdc3fdaa09f7becf98ef267">name</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classdrain_1_1BeanLike.html#a0f6aed3e388afb968642d5e6199f767f">description</a>)</td></tr>
 <tr class="memdesc:ad4df2c00e899650fb621004091420b49 inherit pro_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:ad4df2c00e899650fb621004091420b49 inherit pro_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac98f4fa0ae081f3e5a11d8c37509c4b4 inherit pro_methods_classrack_1_1ProductBase" id="r_ac98f4fa0ae081f3e5a11d8c37509c4b4"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>ProductBase</b> (const <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a> &amp;product)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ProductBase</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a> &amp;product)</td></tr>
 <tr class="separator:ac98f4fa0ae081f3e5a11d8c37509c4b4 inherit pro_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32beb292107e8d7ae71d8bec498c7239 inherit pro_methods_classrack_1_1ProductBase" id="r_a32beb292107e8d7ae71d8bec498c7239"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a32beb292107e8d7ae71d8bec498c7239">storeLastArguments</a> (const std::string &amp;p) override</td></tr>
+<tr class="memitem:a32beb292107e8d7ae71d8bec498c7239 inherit pro_methods_classrack_1_1ProductBase" id="r_a32beb292107e8d7ae71d8bec498c7239"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a32beb292107e8d7ae71d8bec498c7239">storeLastArguments</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;p) <a class="el" href="classrack_1_1DataSet.html">override</a></td></tr>
 <tr class="memdesc:a32beb292107e8d7ae71d8bec498c7239 inherit pro_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after <a class="el" href="classdrain_1_1BeanLike.html#a7cb20fed3030548a4ed68c3a44fcc630" title="Grants access to (if above hidden)">setParameters()</a>  <br /></td></tr>
 <tr class="separator:a32beb292107e8d7ae71d8bec498c7239 inherit pro_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
@@ -503,7 +508,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>initDst</b> (
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a92bac8f6fc745bee78b290dcc8de8392" id="r_a92bac8f6fc745bee78b290dcc8de8392"><td class="memItemLeft" align="right" valign="top"><a id="a92bac8f6fc745bee78b290dcc8de8392" name="a92bac8f6fc745bee78b290dcc8de8392"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>aboveSeaLevel</b></td></tr>
 <tr class="separator:a92bac8f6fc745bee78b290dcc8de8392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:acaf83ac4acd22a9f6d61220fee43b23c inherit pro_attribs_classrack_1_1ProductBase" id="r_acaf83ac4acd22a9f6d61220fee43b23c"><td class="memItemLeft" align="right" valign="top">
@@ -515,23 +520,26 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>lastArguments<
 <tr class="inherit_header pro_attribs_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike" id="r_ac673bc430bdc3fdaa09f7becf98ef267"><td class="memItemLeft" align="right" valign="top">
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="memdesc:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of this bean, typically also the name of the (derived) class. <br /></td></tr>
 <tr class="separator:ac673bc430bdc3fdaa09f7becf98ef267 inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike" id="r_a0f6aed3e388afb968642d5e6199f767f"><td class="memItemLeft" align="right" valign="top">
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>description</b></td></tr>
+<tr class="memdesc:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Brief, human-readable description of this bean. <br /></td></tr>
 <tr class="separator:a0f6aed3e388afb968642d5e6199f767f inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14a3c777481986f2ca3267992d4f233c inherit pro_attribs_classdrain_1_1BeanLike" id="r_a14a3c777481986f2ca3267992d4f233c"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classdrain_1_1ReferenceMap.html">map_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
+<a class="el" href="classdrain_1_1BeanLike.html#a16617a6d0be2844212ed123ff6f7ce9d">map_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parameters</b></td></tr>
+<tr class="memdesc:a14a3c777481986f2ca3267992d4f233c inherit pro_attribs_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parameters (name -&gt; linked variable), typically linked to member variables of the derived class. <br /></td></tr>
 <tr class="separator:a14a3c777481986f2ca3267992d4f233c inherit pro_attribs_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classrack_1_1RadarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1RadarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp&lt; MS, MD &gt;</a></td></tr>
 <tr class="memitem:a2c153ff74de9dbffcfc6254ba8852dfb inherit pub_types_classrack_1_1RadarProductOp" id="r_a2c153ff74de9dbffcfc6254ba8852dfb"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; MS const  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>src_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1DataSet.html">MS</a> <a class="el" href="classrack_1_1DataSet.html">const</a>  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>src_t</b></td></tr>
 <tr class="memdesc:a2c153ff74de9dbffcfc6254ba8852dfb inherit pub_types_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of input, that is, source. <br /></td></tr>
 <tr class="separator:a2c153ff74de9dbffcfc6254ba8852dfb inherit pub_types_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d62aa8228f835d8be4d7e853f93b394 inherit pub_types_classrack_1_1RadarProductOp" id="r_a0d62aa8228f835d8be4d7e853f93b394"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; MD &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dst_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1DataSet.html">MD</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dst_t</b></td></tr>
 <tr class="memdesc:a0d62aa8228f835d8be4d7e853f93b394 inherit pub_types_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of output, that is, destination. <br /></td></tr>
 <tr class="separator:a0d62aa8228f835d8be4d7e853f93b394 inherit pub_types_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classrack_1_1ProductConf"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1ProductConf')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td></tr>
@@ -543,22 +551,23 @@ typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; MD &gt;&
 <tr class="memdesc:a7b203200a73c5a95dc5f6da7adfc2220"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if also intermediate results (1) are saved. See &ndash;store. <br /></td></tr>
 <tr class="separator:a7b203200a73c5a95dc5f6da7adfc2220 inherit pub_types_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae9bcb3164c1f141b505474b2dfb5461 inherit pub_types_classrack_1_1ProductConf" id="r_aae9bcb3164c1f141b505474b2dfb5461"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a>&lt; <a class="el" href="classrack_1_1ProductConf.html#a7b203200a73c5a95dc5f6da7adfc2220">OutputDataVerbosity</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputFlagger</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classdrain_1_1EnumFlagger.html">drain::EnumFlagger</a>&lt; <a class="el" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a>&lt; <a class="el" href="classrack_1_1ProductConf.html#a7b203200a73c5a95dc5f6da7adfc2220">OutputDataVerbosity</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>OutputFlagger</b></td></tr>
 <tr class="separator:aae9bcb3164c1f141b505474b2dfb5461 inherit pub_types_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classdrain_1_1BeanLike"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1BeanLike')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1BeanLike.html">BeanLike</a></td></tr>
 <tr class="memitem:a16617a6d0be2844212ed123ff6f7ce9d inherit pub_types_classdrain_1_1BeanLike" id="r_a16617a6d0be2844212ed123ff6f7ce9d"><td class="memItemLeft" align="right" valign="top">
 typedef <a class="el" href="classdrain_1_1ReferenceMap.html">ReferenceMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<tr class="memdesc:a16617a6d0be2844212ed123ff6f7ce9d inherit pub_types_classdrain_1_1BeanLike"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference map type used to store this bean's parameters (name -&gt; linked variable). <br /></td></tr>
 <tr class="separator:a16617a6d0be2844212ed123ff6f7ce9d inherit pub_types_classdrain_1_1BeanLike"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
-<tr class="memitem:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase" id="r_a4d69a96f68c7fe813dada3f601b811af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a4d69a96f68c7fe813dada3f601b811af">applyODIM</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;srcODIM, bool applyDefaults=false)</td></tr>
-<tr class="memdesc:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies encoding. If type is changed, resets scaling first.  <br /></td></tr>
-<tr class="separator:a4d69a96f68c7fe813dada3f601b811af inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9844f02881cf924417fcfd8e4c7a7c0d inherit pub_static_methods_classrack_1_1ProductBase" id="r_a9844f02881cf924417fcfd8e4c7a7c0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html#a9844f02881cf924417fcfd8e4c7a7c0d">applyODIM</a> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;<a class="el" href="classrack_1_1DataSet.html">productODIM</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;<a class="el" href="classrack_1_1DataSet.html">defaultODIM</a>, <a class="el" href="classrack_1_1DataSet.html">bool</a> <a class="el" href="classrack_1_1DataSet.html">useDefaults</a>=<a class="el" href="classrack_1_1DataSet.html">false</a>)</td></tr>
+<tr class="memdesc:a9844f02881cf924417fcfd8e4c7a7c0d inherit pub_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Modifies encoding. If type is changed, resets scaling first.  <br /></td></tr>
+<tr class="separator:a9844f02881cf924417fcfd8e4c7a7c0d inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa768be216c48409c2dfe6f45c1f33935 inherit pub_static_methods_classrack_1_1ProductBase" id="r_aa768be216c48409c2dfe6f45c1f33935"><td class="memItemLeft" align="right" valign="top">
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>setRackVersion</b> (<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;metadata)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setRackVersion</b> (<a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;<a class="el" href="classrack_1_1DataSet.html">metadata</a>)</td></tr>
 <tr class="separator:aa768be216c48409c2dfe6f45c1f33935 inherit pub_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1RadarProductOp"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1RadarProductOp')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1RadarProductOp.html">RadarProductOp&lt; MS, MD &gt;</a></td></tr>
 <tr class="memitem:a582a43111f0014d61e6272cc1ed36d51 inherit pub_attribs_classrack_1_1RadarProductOp" id="r_a582a43111f0014d61e6272cc1ed36d51"><td class="memItemLeft" align="right" valign="top">
-MD&#160;</td><td class="memItemRight" valign="bottom"><b>odim</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">MD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odim</b></td></tr>
 <tr class="memdesc:a582a43111f0014d61e6272cc1ed36d51 inherit pub_attribs_classrack_1_1RadarProductOp"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default data parameters for encoding output (the product). <br /></td></tr>
 <tr class="separator:a582a43111f0014d61e6272cc1ed36d51 inherit pub_attribs_classrack_1_1RadarProductOp"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classrack_1_1ProductConf"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classrack_1_1ProductConf')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classrack_1_1ProductConf.html">ProductConf</a></td></tr>
@@ -572,12 +581,14 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>targetEncoding
 <tr class="memitem:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_classrack_1_1ProductConf" id="r_a29b7238397966b974ac5f6978867d32a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a">appendResults</a></td></tr>
 <tr class="memdesc:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_classrack_1_1ProductConf"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set, appends outputs in an hdf5 structure instead of overwriting.  <br /></td></tr>
 <tr class="separator:a29b7238397966b974ac5f6978867d32a inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4918b94f1a499764705efb9d40300c80 inherit pub_attribs_classrack_1_1ProductConf" id="r_a4918b94f1a499764705efb9d40300c80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductConf.html#a4918b94f1a499764705efb9d40300c80">appendResultQuality</a> = <a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem::DATA</a></td></tr>
+<tr class="separator:a4918b94f1a499764705efb9d40300c80 inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab79e27e4ee516b0f93fbf3013decf201 inherit pub_attribs_classrack_1_1ProductConf" id="r_ab79e27e4ee516b0f93fbf3013decf201"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classdrain_1_1EnumFlagger.html">OutputFlagger</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outputDataVerbosity</b> = DEFAULT</td></tr>
 <tr class="separator:ab79e27e4ee516b0f93fbf3013decf201 inherit pub_attribs_classrack_1_1ProductConf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_classrack_1_1ProductBase"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_classrack_1_1ProductBase')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memitem:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase" id="r_a2c647c4533f71ac1551da8776912436c"><td class="memItemLeft" align="right" valign="top">
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>setODIMspecials</b> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;productODIM)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setODIMspecials</b> (<a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;<a class="el" href="classrack_1_1DataSet.html">productODIM</a>)</td></tr>
 <tr class="memdesc:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets target encoding. <br /></td></tr>
 <tr class="separator:a2c647c4533f71ac1551da8776912436c inherit pro_static_methods_classrack_1_1ProductBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -605,9 +616,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>setODIMspecial
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void deriveDstGeometry </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> deriveDstGeometry </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>srcSweeps</em>, </td>
         </tr>
         <tr>
@@ -619,8 +630,8 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>setODIMspecial
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>MINIMISE_RSCALE</em> = <code>false</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td>
+          <td class="paramname"><em>MINIMISE_RSCALE</em> = <code><a class="el" href="classrack_1_1DataSet.html">false</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -668,9 +679,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>setODIMspecial
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void determineMetadata </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> determineMetadata </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a>&lt; <a class="el" href="namespacerack.html#a24649d611c860b4bc50a8f3444240cc6">PolarSrc</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>srcSweeps</em>, </td>
         </tr>
         <tr>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -121,7 +128,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &lt;map&gt;</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">//#include &lt;drain/util/ReferenceMap.h&gt;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">//#include &lt;drain/util/RegExp.h&gt;</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// #include &lt;drain/RegExp.h&gt;</span></div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">//#include &lt;drain/util/Sprinter.h&gt;</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">//#include &lt;drain/util/Variable.h&gt;</span></div>
@@ -140,37 +147,47 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#abb14ab4fcd8b07a046b0cd15075f433e">getLastChild</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; child, <span class="keywordtype">bool</span> create = <span class="keyword">false</span>); <span class="comment">//, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">//mout.debug(&quot;try to track if argument is a path, an attribute, or a combination of both&quot; );</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">getNewChild</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; child);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathTools.html#a7228a4db26d0009050110a864674f2c6">   66</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#a7228a4db26d0009050110a864674f2c6">completePathParser</a>(<span class="keyword">const</span> std::string &amp; s, <a class="code hl_class" href="classdrain_1_1Path.html">ODIMPath</a> &amp; path, std::string &amp; attributeKey, std::string &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">attributeValue</a>);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#abb14ab4fcd8b07a046b0cd15075f433e">getLastChild</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">child</a>, <span class="keywordtype">bool</span> create = <span class="keyword">false</span>); <span class="comment">//, (ODIMPathElem::group_t g =  ODIMPathElem::NONE);</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">getNewChild</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">child</a>, ODIMPathElem::index_t <a class="code hl_class" href="classrack_1_1DataSet.html">iMax</a>=ODIMPathElem::INDEX_MAX);</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, std::map&lt;std::string,ODIMPathElem&gt; &amp; children, <a class="code hl_typedef" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> groups);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>};</div>
-</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">child</a>);</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>} <span class="comment">// rack::</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdef"><b>Definition</b> ODIMPath.h:81</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a9b3f8eef103c06b0eb970b48a91509cb"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">rack::ODIMPathElem::group_t</a></div><div class="ttdeci">unsigned int group_t</div><div class="ttdoc">In H5, &quot;groups&quot; correspond to directories or folders in file system.</div><div class="ttdef"><b>Definition</b> ODIMPath.h:91</div></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a>(<span class="keyword">const</span> Hi5Tree &amp; tree, std::map&lt;std::string,ODIMPathElem&gt; &amp; children, <a class="code hl_typedef" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> groups);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>};</div>
+</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} <span class="comment">// rack::</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#endif </span><span class="comment">/* DATASELECTOR_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition</b> Path.h:135</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1293</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdoc">DOC: Add class description.</div><div class="ttdef"><b>Definition</b> ODIMPath.h:82</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a9b3f8eef103c06b0eb970b48a91509cb"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">rack::ODIMPathElem::group_t</a></div><div class="ttdeci">unsigned int group_t</div><div class="ttdoc">In H5, &quot;groups&quot; correspond to directories or folders in file system.</div><div class="ttdef"><b>Definition</b> ODIMPath.h:92</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathTools_html"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html">rack::ODIMPathTools</a></div><div class="ttdoc">Tool for selecting datasets based on paths, quantities and min/max elevations.</div><div class="ttdef"><b>Definition</b> ODIMPathTools.h:55</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_a16b7be5403b4f5de2fd3a53974caf2ff"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">rack::ODIMPathTools::getNextChild</a></div><div class="ttdeci">static bool getNextChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child)</div><div class="ttdoc">Derive a child with index one greater than the largest index encountered.</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:96</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_a8cd424f2f6be4a049b8b4162d898a47e"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">rack::ODIMPathTools::getChildren</a></div><div class="ttdeci">static bool getChildren(const Hi5Tree &amp;tree, std::map&lt; std::string, ODIMPathElem &gt; &amp;children, ODIMPathElem::group_t groups)</div><div class="ttdoc">Searches children of given type, returns a non-existing child with index greater than child....</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:120</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_abb14ab4fcd8b07a046b0cd15075f433e"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#abb14ab4fcd8b07a046b0cd15075f433e">rack::ODIMPathTools::getLastChild</a></div><div class="ttdeci">static bool getLastChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, bool create=false)</div><div class="ttdoc">Searches the children of child.getType(), or g if given, and stores the one with largest index.</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:44</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_abc361220b809fdbcfc0dec249b8d0cc8"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">rack::ODIMPathTools::getNewChild</a></div><div class="ttdeci">static bool getNewChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX)</div><div class="ttdoc">Searches children of given type, returns a non-existing child with index greater than child....</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:72</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_a16b7be5403b4f5de2fd3a53974caf2ff"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">rack::ODIMPathTools::getNextChild</a></div><div class="ttdeci">static bool getNextChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child)</div><div class="ttdoc">Derive a child with index one greater than the largest index encountered.</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:106</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_a7228a4db26d0009050110a864674f2c6"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#a7228a4db26d0009050110a864674f2c6">rack::ODIMPathTools::completePathParser</a></div><div class="ttdeci">static void completePathParser(const std::string &amp;s, ODIMPath &amp;path, std::string &amp;attributeKey, std::string &amp;attributeValue)</div><div class="ttdoc">Parse argument to a path and an attribute, or both.</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_a8cd424f2f6be4a049b8b4162d898a47e"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">rack::ODIMPathTools::getChildren</a></div><div class="ttdeci">static bool getChildren(const Hi5Tree &amp;tree, std::map&lt; std::string, ODIMPathElem &gt; &amp;children, ODIMPathElem::group_t groups)</div><div class="ttdoc">Searches children of given type, returns a non-existing child with index greater than child....</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:130</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_abb14ab4fcd8b07a046b0cd15075f433e"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#abb14ab4fcd8b07a046b0cd15075f433e">rack::ODIMPathTools::getLastChild</a></div><div class="ttdeci">static bool getLastChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, bool create=false)</div><div class="ttdoc">Searches the children of child.getType(), or g if given, and stores the one with largest index.</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:54</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathTools_html_abc361220b809fdbcfc0dec249b8d0cc8"><div class="ttname"><a href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">rack::ODIMPathTools::getNewChild</a></div><div class="ttdeci">static bool getNewChild(const Hi5Tree &amp;tree, ODIMPathElem &amp;child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX)</div><div class="ttdoc">Searches children of given type, returns a non-existing child with index greater than child....</div><div class="ttdef"><b>Definition</b> ODIMPathTools.cpp:82</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

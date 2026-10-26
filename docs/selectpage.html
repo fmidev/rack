@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -84,33 +91,25 @@ Selecting data</h1>
 <p>Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection criteria.  </p>
 <p>This command determines the data to be applied in subsequent input read or product generation commands.</p>
 <p>In <b>Rack</b>, many operations implictly select a subset of available data instead of using it all. For example, in computing a Pseudo CAPPI image, <code>DBZH</code> data from single-PRF sweeps is used by default.</p>
-<p><b>Synopsis</b> </p><div class="fragment"><div class="line">--select, -s &lt;path&gt;,&lt;quantity&gt;,&lt;elangle&gt;,&lt;count&gt;,&lt;order&gt;,&lt;prf&gt;,&lt;timespan&gt;   (section: general)</div>
-<div class="line">  Data selector for the next computation</div>
-<div class="line">  - path () [[/]dataset&lt;i&gt;[/data&lt;j&gt;|/quality&lt;j&gt;]]</div>
-<div class="line">  - quantity () [DBZH:VRAD:RHOHV:...]</div>
-<div class="line">  - elangle (-90:90) [min[:max]]</div>
-<div class="line">  - count (4095)</div>
-<div class="line">  - order (DATA:MIN) [[&quot;DATA&quot;,&quot;ELANGLE&quot;,&quot;TIME&quot;]:[&quot;MIN&quot;,&quot;MAX&quot;]]</div>
-<div class="line">  - prf (ANY) [[&quot;ANY&quot;,&quot;SINGLE&quot;,&quot;DOUBLE&quot;]]</div>
-<div class="line">  - timespan (0:0) [range from nominal time [seconds]]</div>
-<div class="line">  See also: selectObject,selectQuantity</div>
-<div class="line"> </div>
-</div><!-- fragment --><p>Remarks on the options:</p>
+<p><b>Synopsis</b> </p><div class="fragment"></div><!-- fragment --><p>Remarks on the options:</p>
 <ul>
 <li><code>path</code> argument defines a path <em>segment</em> to be matched, with desired index ranges (example: <code>dataset2:4/data3</code>:8 )</li>
 <li>in <code>path</code> argument, a leading slash fixes the matching to the root (example: <code>/dataset</code>:/data: ), otherwise the tail part is matched</li>
 <li><code>quantity</code> argument accepts a list of strings separated by semicolon ':'</li>
 <li>each item in a <code>quantity</code> argument list can be a literal string like <code>DBZH</code> or a regular experession like <code>^DBZ[HV]?$</code></li>
 </ul>
-<p>See example sets below!</p>
+<p>See examples further below.</p>
 <p>This option is useful in selecting data for:</p>
 <ul>
-<li>partial reading a large input file (see <a class="el" href="fileiopage.html">File input and output</a> ).</li>
+<li>partial reading or writing a large file (see <a class="el" href="fileiopage.html">File input and output</a> ), or saving selected images (PNG, GeoTIFF, PPM; see <a class="el" href="imagespage.html">Image processing</a> ).</li>
 <li>selecting data for anomaly detection and removal (see <a class="el" href="andrepage.html">Anomaly Detection and Removal (AnDRe)</a> ).</li>
-<li>a meteorological product (see <a class="el" href="productspage.html">Meteorological products</a> ).</li>
-<li>compositing (see <a class="el" href="compositespage.html">Cartesian conversions and composites</a> ).</li>
-<li>saving images (PNG, GeoTIFF, PPM; see <a class="el" href="imagespage.html">Image processing</a> ).</li>
-<li>other data dumps, useful in debugging, for example</li>
+<li>computing a meteorological product (see <a class="el" href="productspage.html">Meteorological products</a> ).</li>
+<li>compositing (see <a class="el" href="compositespage.html">Cartesian conversions and composites</a> )</li>
+</ul>
+<p>In addition, these explicit data modification options use the same syntax</p>
+<ul>
+<li><code>--keep</code> - prune internal data structure such that only the selected part remains (<code>what</code> , <code>where</code> and <code>how</code> groups are preserved automatically).</li>
+<li><code>--delete</code> - remove parts of internal data structure – single attributes or large subtrees.</li>
 </ul>
 <p>The following command lines illustrate usage of <code>--select</code> in product generation and image output.</p>
 <div class="fragment"><div class="line"><span class="preprocessor"># For a Pseudo CAPPI product, change default input selection</span></div>
@@ -131,7 +130,7 @@ Selecting data</h1>
 <div class="line"><span class="preprocessor"># For single-image output, select dBZ - preferably total dBZ - of the highest scan (from 90 6.5 2.4 1.8 1.2 0.59)</span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select quantity=TH:TV:T:DBZH:DBZ,order=ELANGLE:MAX -o volume-DBZH3.png</div>
 <div class="line"> </div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p>The following examples are less realistic than those above, but are used in unit testing of the program code. ( You may wish to change output file extension from <code></code>.txt to <code></code>.h5 ).</p>
 <div class="fragment"><div class="line"><span class="preprocessor"># Index range: select dataset3, including its subgroups. </span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select /dataset3 -o volume-select.txt</div>
@@ -144,9 +143,6 @@ Selecting data</h1>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># Index range test: select DATASET groups with index 3 at largest. </span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select /dataset:3 -o volume-select.txt</div>
-<div class="line"> </div>
-<div class="line"><span class="preprocessor"># For text output, select paths ENDING with &#39;what&#39;, &#39;where&#39;, or &#39;how&#39;. </span></div>
-<div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;what|where|how&#39;</span> -o volume-select.txt</div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor"># For text output, select paths of elevations of at least 6.0 degrees </span></div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select elangle=6.0 -o volume-select.txt</div>
@@ -178,11 +174,11 @@ Selecting data</h1>
 <div class="line"># Select non-existing quantity-specific QIND field</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select quantity=HGHT/QIND -o volume-select.txt</div>
 <div class="line"> </div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd>CmdDelete </dd>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="classrack_1_1CmdDelete.html" title="Remove parts of a hierarchical data structure.">rack::CmdDelete</a> </dd>
 <dd>
-CmdKeep </dd>
+<a class="el" href="classrack_1_1CmdKeep.html" title="Remove parts of a hierarchical data structure.">rack::CmdKeep</a> </dd>
 <dd>
-CmdSetODIM </dd>
+<a class="el" href="classrack_1_1CmdSetODIM.html" title="Modifies metadata (data attributes).">rack::CmdSetODIM</a> </dd>
 <dd>
 <a class="el" href="classrack_1_1CmdSelect.html" title="Select parts of hierarchical data using path, quantity, elevation angle and PRF mode as selection cri...">rack::CmdSelect</a> (code) </dd>
 <dd>

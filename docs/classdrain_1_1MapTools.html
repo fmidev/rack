@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -157,36 +164,36 @@ template&lt;class M , class V &gt; </td></tr>
 <tr class="separator:a260150be99ef6cca01f315674ce4af48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e5cd4366822d5c6a419927e7d162a38" id="r_a2e5cd4366822d5c6a419927e7d162a38"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:a2e5cd4366822d5c6a419927e7d162a38"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a2e5cd4366822d5c6a419927e7d162a38">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;values, char equalSign='=', const std::string &amp;trimChars=&quot;&quot;)</td></tr>
-<tr class="memdesc:a2e5cd4366822d5c6a419927e7d162a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <br /></td></tr>
+<tr class="memdesc:a2e5cd4366822d5c6a419927e7d162a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict <code>"key=value"</code> format, no positional arguments.  <br /></td></tr>
 <tr class="separator:a2e5cd4366822d5c6a419927e7d162a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a703cf0bf1a1d3d952f6d2be3f91c3625" id="r_a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a703cf0bf1a1d3d952f6d2be3f91c3625">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;values, char equals='=')</td></tr>
-<tr class="memdesc:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <br /></td></tr>
+<tr class="memdesc:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict <code>"key=value"</code> format, no positional arguments.  <br /></td></tr>
 <tr class="separator:a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdaed44d00714c3148106bc4be13d3bb" id="r_abdaed44d00714c3148106bc4be13d3bb"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:abdaed44d00714c3148106bc4be13d3bb"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#abdaed44d00714c3148106bc4be13d3bb">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::list&lt; std::string &gt; &amp;entries, char assignmentChar='=')</td></tr>
-<tr class="memdesc:abdaed44d00714c3148106bc4be13d3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... .  <br /></td></tr>
+<tr class="memdesc:abdaed44d00714c3148106bc4be13d3bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... .  <br /></td></tr>
 <tr class="separator:abdaed44d00714c3148106bc4be13d3bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30088548684b3e7eed0644649f624a68" id="r_a30088548684b3e7eed0644649f624a68"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a30088548684b3e7eed0644649f624a68"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a30088548684b3e7eed0644649f624a68">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::list&lt; std::string &gt; &amp;entries, char equals='=')</td></tr>
 <tr class="separator:a30088548684b3e7eed0644649f624a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad50ab3f874808dd6edd32b3df99e675a" id="r_ad50ab3f874808dd6edd32b3df99e675a"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:ad50ab3f874808dd6edd32b3df99e675a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#ad50ab3f874808dd6edd32b3df99e675a">setValues</a> (M &amp;dst, const std::string &amp;values, char split=',', char equals='=', const std::string &amp;trimChars=&quot;&quot;)</td></tr>
-<tr class="memdesc:ad50ab3f874808dd6edd32b3df99e675a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, assuming strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <br /></td></tr>
+<tr class="memdesc:ad50ab3f874808dd6edd32b3df99e675a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, assuming strict <code>"key=value"</code> format, no positional arguments.  <br /></td></tr>
 <tr class="separator:ad50ab3f874808dd6edd32b3df99e675a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1b85c8c6f45f34035a619ee5a3079b" id="r_a4f1b85c8c6f45f34035a619ee5a3079b"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a4f1b85c8c6f45f34035a619ee5a3079b"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a4f1b85c8c6f45f34035a619ee5a3079b">updateValues</a> (M &amp;dst, const std::string &amp;values, char split=',', char equals='=')</td></tr>
 <tr class="separator:a4f1b85c8c6f45f34035a619ee5a3079b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5acb15797cb40599a8135f737bdf877" id="r_ae5acb15797cb40599a8135f737bdf877"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:ae5acb15797cb40599a8135f737bdf877"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#ae5acb15797cb40599a8135f737bdf877">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::string &amp;values, char split=',', char equals='=')</td></tr>
-<tr class="memdesc:ae5acb15797cb40599a8135f737bdf877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... .  <br /></td></tr>
+<tr class="memdesc:ae5acb15797cb40599a8135f737bdf877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... .  <br /></td></tr>
 <tr class="separator:ae5acb15797cb40599a8135f737bdf877"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0f7b005225223e58a2df8cef636d059" id="r_ad0f7b005225223e58a2df8cef636d059"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:ad0f7b005225223e58a2df8cef636d059"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#ad0f7b005225223e58a2df8cef636d059">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::string &amp;values, char split=',', char equals='=')</td></tr>
 <tr class="separator:ad0f7b005225223e58a2df8cef636d059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a690b840273f30ebaac7b63941264f055" id="r_a690b840273f30ebaac7b63941264f055"><td class="memTemplParams" colspan="2">template&lt;class M , class V , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:a690b840273f30ebaac7b63941264f055"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a690b840273f30ebaac7b63941264f055">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, std::initializer_list&lt; V &gt; values)</td></tr>
-<tr class="memdesc:a690b840273f30ebaac7b63941264f055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... .  <br /></td></tr>
+<tr class="memdesc:a690b840273f30ebaac7b63941264f055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... .  <br /></td></tr>
 <tr class="separator:a690b840273f30ebaac7b63941264f055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fd83c85091df3d7e59c384a0bbb4f39" id="r_a1fd83c85091df3d7e59c384a0bbb4f39"><td class="memTemplParams" colspan="2">template&lt;class M , class V &gt; </td></tr>
 <tr class="memitem:a1fd83c85091df3d7e59c384a0bbb4f39"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a1fd83c85091df3d7e59c384a0bbb4f39">setValues</a> (M &amp;dst, std::initializer_list&lt; V &gt; values)</td></tr>
@@ -354,7 +361,7 @@ template&lt;class M , bool STRICT = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign values from list, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... . </p>
+<p>Assign values from list, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... . </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
@@ -362,7 +369,12 @@ template&lt;class M , bool STRICT = true&gt; </div>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keys</td><td>- ordered key list of writable entries of destination map </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -420,7 +432,7 @@ template&lt;class M , bool STRICT = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign values from string, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... . </p>
+<p>Assign values from string, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... . </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
@@ -428,7 +440,12 @@ template&lt;class M , bool STRICT = true&gt; </div>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keys</td><td>- ordered key list of writable entries of destination map </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -474,7 +491,7 @@ template&lt;class M , class V , bool STRICT = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign values from string, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... . </p>
+<p>Assign values from string, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... . </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
@@ -483,7 +500,12 @@ template&lt;class M , class V , bool STRICT = true&gt; </div>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of the already existing entries </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keys</td><td>- ordered key list of the already existing entries </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -535,7 +557,7 @@ template&lt;class M , bool STRICT = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments. </p>
+<p>Assign values from list, accepting strict <code>"key=value"</code> format, no positional arguments. </p>
 <p>If the list contains a single empty value, the destination is cleared.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
@@ -646,17 +668,16 @@ template&lt;class M , bool STRICT = true&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign values from string, assuming strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments. </p>
+<p>Assign values from string, assuming strict <code>"key=value"</code> format, no positional arguments. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">S</td><td>- source type </td></tr>
     <tr><td class="paramname">T</td><td>- destination type </td></tr>
     <tr><td class="paramname">M</td><td>- map type </td></tr>
-    <tr><td class="paramname">STRICT</td><td>- assign always; create a new entry if key does not exist</td></tr>
+    <tr><td class="paramname">STRICT</td><td>- assign always; create a new entry if key does not exist </td></tr>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
 
 </div>
 </div>
@@ -698,11 +719,10 @@ template&lt;class M , class V &gt; </div>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
-    <tr><td class="paramname">V</td><td>- value type</td></tr>
+    <tr><td class="paramname">V</td><td>- value type </td></tr>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
 
 </div>
 </div>
@@ -813,7 +833,12 @@ template&lt;class M &gt; </div>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keys</td><td>- ordered key list of writable entries of destination map </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -878,7 +903,12 @@ template&lt;class M &gt; </div>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">keys</td><td>- ordered key list of writable entries of destination map </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -924,7 +954,7 @@ template&lt;class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments. </p>
+<p>Assign values from list, accepting strict <code>"key=value"</code> format, no positional arguments. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
@@ -1031,11 +1061,10 @@ template&lt;class M &gt; </div>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">M</td><td>- map type </td></tr>
-    <tr><td class="paramname">STRICT</td><td>- assign always; create a new entry if key does not exist</td></tr>
+    <tr><td class="paramname">STRICT</td><td>- assign always; create a new entry if key does not exist </td></tr>
   </table>
   </dd>
 </dl>
-<p>\params keys - ordered key list of writable entries of destination map </p>
 
 </div>
 </div>

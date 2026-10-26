@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['elem_5ft_0',['elem_t',['../classdrain_1_1NodeXML.html#a3fa2115cdbb245c2f609f654a9888f14',1,'drain::NodeXML']]]
+  ['flexiblevariable_0',['FlexibleVariable',['../namespacedrain.html#a10699beaebe2225eeefb946abb711d27',1,'drain']]],
+  ['functorbank_1',['FunctorBank',['../namespacedrain.html#a357198f772771cb9eb77823e840cca0a',1,'drain']]]
 ];

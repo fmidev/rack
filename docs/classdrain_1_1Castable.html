@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -205,6 +212,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (const <a 
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a57bb79f369e377b5c69ff269fd048373"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>assign</b> (const T *p)</td></tr>
 <tr class="separator:a57bb79f369e377b5c69ff269fd048373"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb5b6970d300933539f46522dd1ea941" id="r_adb5b6970d300933539f46522dd1ea941"><td class="memItemLeft" align="right" valign="top"><a id="adb5b6970d300933539f46522dd1ea941" name="adb5b6970d300933539f46522dd1ea941"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>assign</b> (std::nullptr_t)</td></tr>
+<tr class="memdesc:adb5b6970d300933539f46522dd1ea941"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigning nullptr resets the castable (unsets type and clears content). <br /></td></tr>
+<tr class="separator:adb5b6970d300933539f46522dd1ea941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e715cfd9a651965241f5f2af7e76527" id="r_a8e715cfd9a651965241f5f2af7e76527"><td class="memTemplParams" colspan="2"><a id="a8e715cfd9a651965241f5f2af7e76527" name="a8e715cfd9a651965241f5f2af7e76527"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a8e715cfd9a651965241f5f2af7e76527"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>assign</b> (const T &amp;x)</td></tr>
@@ -302,9 +313,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const char *s) const</td></tr>
 <tr class="memdesc:a980d3634731950256ff4fcf1c905adfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare as a character string. <br /></td></tr>
 <tr class="separator:a980d3634731950256ff4fcf1c905adfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c8b0ad1df154c263823d2b81f62c2a6" id="r_a2c8b0ad1df154c263823d2b81f62c2a6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a2c8b0ad1df154c263823d2b81f62c2a6">operator==</a> (const nullptr_t ptr) const</td></tr>
-<tr class="memdesc:a2c8b0ad1df154c263823d2b81f62c2a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. Notice that if type is set, false is returned also for an empty array.  <br /></td></tr>
-<tr class="separator:a2c8b0ad1df154c263823d2b81f62c2a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f9edf172f0e64ef1a04d93e9799654c" id="r_a3f9edf172f0e64ef1a04d93e9799654c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Castable.html#a3f9edf172f0e64ef1a04d93e9799654c">operator==</a> (const std::nullptr_t ptr) const</td></tr>
+<tr class="memdesc:a3f9edf172f0e64ef1a04d93e9799654c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. Notice that if type is set, false is returned also for an empty array.  <br /></td></tr>
+<tr class="separator:a3f9edf172f0e64ef1a04d93e9799654c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc31bb81f10c0f6fcd4f936b2bb36fc5" id="r_acc31bb81f10c0f6fcd4f936b2bb36fc5"><td class="memTemplParams" colspan="2"><a id="acc31bb81f10c0f6fcd4f936b2bb36fc5" name="acc31bb81f10c0f6fcd4f936b2bb36fc5"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:acc31bb81f10c0f6fcd4f936b2bb36fc5"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator==</b> (const T &amp;x) const</td></tr>
@@ -456,6 +467,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setPtr</b> (void *p, 
 void&#160;</td><td class="memItemRight" valign="bottom"><b>relink</b> (<a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
 <tr class="memdesc:ad21db5fe069b6d946c01f00ddcd64591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the link and element count. <br /></td></tr>
 <tr class="separator:ad21db5fe069b6d946c01f00ddcd64591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7483d8f76ede1db911314ab7edba983b" id="r_a7483d8f76ede1db911314ab7edba983b"><td class="memItemLeft" align="right" valign="top"><a id="a7483d8f76ede1db911314ab7edba983b" name="a7483d8f76ede1db911314ab7edba983b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>relink</b> (const <a class="el" href="classdrain_1_1Castable.html">Castable</a> &amp;c)</td></tr>
+<tr class="memdesc:a7483d8f76ede1db911314ab7edba983b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the link and element count from a const source. <br /></td></tr>
+<tr class="separator:a7483d8f76ede1db911314ab7edba983b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4181a8b5f9d2e5b180597376b85758f" id="r_ad4181a8b5f9d2e5b180597376b85758f"><td class="memItemLeft" align="right" valign="top"><a id="ad4181a8b5f9d2e5b180597376b85758f" name="ad4181a8b5f9d2e5b180597376b85758f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>castElement</b> (size_t i, const <a class="el" href="classdrain_1_1Caster.html">Caster</a> &amp;c, void *p) const</td></tr>
 <tr class="memdesc:ad4181a8b5f9d2e5b180597376b85758f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Let <a class="el" href="classdrain_1_1Caster.html">Caster</a> c convert my element #i to target *p. <br /></td></tr>
@@ -1048,8 +1063,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a2c8b0ad1df154c263823d2b81f62c2a6" name="a2c8b0ad1df154c263823d2b81f62c2a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c8b0ad1df154c263823d2b81f62c2a6">&#9670;&#160;</a></span>operator==()</h2>
+<a id="a3f9edf172f0e64ef1a04d93e9799654c" name="a3f9edf172f0e64ef1a04d93e9799654c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f9edf172f0e64ef1a04d93e9799654c">&#9670;&#160;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1060,7 +1075,7 @@ template&lt;class T &gt; </div>
         <tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
-          <td class="paramtype">const nullptr_t&#160;</td>
+          <td class="paramtype">const std::nullptr_t&#160;</td>
           <td class="paramname"><em>ptr</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -1128,7 +1143,7 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Unset the type (set it to <code>void</code> ) and clear @elementCount . </p>
+<p>Unset the type (set it to <code>void</code> ) and clear <code>elementCount</code> . </p>
 
 </div>
 </div>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -78,8 +85,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdrain_1_1StringMatcher-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">StringMatcher Class Reference</div></div>
@@ -154,18 +161,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>test</b> (const std::
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getType</b> () const</td></tr>
 <tr class="separator:a49fc4eb493558cf55dd00df9ef5f8f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a46be358518b68ee78df70062eea3732c" id="r_a46be358518b68ee78df70062eea3732c"><td class="memItemLeft" align="right" valign="top">static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringMatcher.html#a46be358518b68ee78df70062eea3732c">regExpSpecialChars</a> ()</td></tr>
+<tr class="separator:a46be358518b68ee78df70062eea3732c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ae8d5190a5683a14369410595af3513d2" id="r_ae8d5190a5683a14369410595af3513d2"><td class="memItemLeft" align="right" valign="top"><a id="ae8d5190a5683a14369410595af3513d2" name="ae8d5190a5683a14369410595af3513d2"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>value</b></td></tr>
 <tr class="memdesc:ae8d5190a5683a14369410595af3513d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A visible reference to the current string / regExp. <br /></td></tr>
 <tr class="separator:ae8d5190a5683a14369410595af3513d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a12a10bb4c7261e94f834567cabe4b658" id="r_a12a10bb4c7261e94f834567cabe4b658"><td class="memItemLeft" align="right" valign="top"><a id="a12a10bb4c7261e94f834567cabe4b658" name="a12a10bb4c7261e94f834567cabe4b658"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>regExpSpecialChars</b> = &quot;^.?*[]()$&quot;</td></tr>
-<tr class="separator:a12a10bb4c7261e94f834567cabe4b658"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -264,7 +270,34 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>replace</b> (c
 <p>The internal value can be a literal string or a regular expression.</p>
 <p>Empty string is a valid key - it accepts only an empty string. If you want to accept any string, use set(".*").</p>
 <p>When setting the value, it is recognized as a literal if it contains no special characters. </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a46be358518b68ee78df70062eea3732c" name="a46be358518b68ee78df70062eea3732c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46be358518b68ee78df70062eea3732c">&#9670;&#160;</a></span>regExpSpecialChars()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; regExpSpecialChars </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Construct-on-first-use: a plain static const std::string here would be a cross-translation-unit static-initialization-order hazard (other TUs' global objects, e.g. FuzzyDetectorOp's selectors, call <a class="el" href="classdrain_1_1StringMatcher.html#a2924f6cc1546444425b9f08c2ca42327" title="Assign a string – which may be a literal or a regular expression.">set()</a> from their own static initializers, whose relative order versus this one is unspecified by the standard). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="a4f192cce90d42e8ef9f3356366259124" name="a4f192cce90d42e8ef9f3356366259124"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f192cce90d42e8ef9f3356366259124">&#9670;&#160;</a></span>isRegExp</h2>
 

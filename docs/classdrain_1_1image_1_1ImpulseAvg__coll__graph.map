@@ -1,9 +1,9 @@
 <map id="ImpulseAvg" name="ImpulseAvg">
-<area shape="rect" id="Node000001" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="134,533,233,559"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="79,444,288,484"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,498,186,533,181,533,181,498"/>
+<area shape="rect" id="Node000001" title="Averaging operator. A simple example implementation of ImpulseBucket." alt="" coords="205,547,303,572"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImpulseBucket.html" title=" " alt="" coords="149,457,359,497"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,511,257,546,251,546,251,511"/>
 <area shape="rect" id="Node000003" href="$structdrain_1_1image_1_1ImpulseAvgConf.html" title=" " alt="" coords="119,369,247,395"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="186,408,186,444,181,444,181,408"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="202,404,242,456,238,459,198,407"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="75,281,156,307"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="135,316,176,367,172,370,131,319"/>
 <area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap.html" title=" " alt="" coords="57,179,173,204"/>
@@ -17,10 +17,12 @@
 <area shape="rect" id="Node000009" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="183,129,317,155"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="253,169,255,281,250,281,248,169"/>
 <area shape="rect" id="Node000010" href="$classdrain_1_1TupleBase.html" title=" " alt="" coords="265,5,409,31"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="316,42,283,81,257,130,252,128,278,79,312,39"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="316,42,282,81,257,130,252,128,277,79,312,38"/>
 <area shape="rect" id="Node000012" href="$classdrain_1_1UniTuple.html" title="Tuple of N elements of type T." alt="" coords="292,80,427,105"/>
 <area shape="poly" id="edge12_Node000012_Node000010" title=" " alt="" coords="347,43,358,79,353,80,342,45"/>
 <area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1Decay2.html" title=" " alt="" coords="288,179,433,204"/>
 <area shape="poly" id="edge10_Node000008_Node000011" title=" " alt="" coords="340,215,267,283,263,279,337,211"/>
 <area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="362,119,363,179,358,179,357,119"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1image_1_1ValueHandler.html" title=" " alt="" coords="271,369,381,395"/>
+<area shape="poly" id="edge13_Node000002_Node000013" title=" " alt="" coords="311,407,271,459,267,456,307,404"/>
 </map>

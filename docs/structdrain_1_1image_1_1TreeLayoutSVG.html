@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -228,7 +235,15 @@ template&lt;AlignBase::Axis AX&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Given a node (requesting <a class="el" href="structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos.">Alignment</a>), re-locate it by adjusting transform.x and .y</p>
+<p>Semantics:</p>
+<ul>
+<li>if myAnchor is set, use it.</li>
+<li>if myAnchor is unset, use groups \ c defaultAlignAnchor .</li>
+<li>if also default anchor is unset, use previous object as anchor.</li>
+</ul>
+<p>defaultAlignAnchor (defined at GROUP): DEFAULT(=UNSET): use previous object NONE: use nothing, don't align (equal to FIXED class?) PREVIOUS: use previous (unneeded, this is the default for group) COLLECTIVE: use compound bounding bbox</p>
+<p>myAlignAnchor (specific anchor defined at the element, always overrides) DEFAULT(=UNSET) -&gt; use GroupAnchor NONE: don't align me! (raise error if Align set?) (equal to FIXED class?) PREVIOUS: use previous object COLLECTIVE: use compound bounding box</p>
+<p>SPECIAL: both DEFAULT: use PREVIOUS Given a node (requesting <a class="el" href="structdrain_1_1image_1_1Alignment.html" title="Container for Axis and Pos.">Alignment</a>), re-locate it by adjusting transform.x and .y</p>
 <p>The anchor always resides in the same group. </p>
 
 </div>

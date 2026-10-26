@@ -12,6 +12,6 @@ var searchData=
   ['writemetadata_9',['writeMetadata',['../classdrain_1_1image_1_1FileGeoTIFF.html#ab899ee24af4d1d30d65a9e72b36f2e75',1,'drain::image::FileGeoTIFF']]],
   ['writeprofile_10',['writeProfile',['../classrack_1_1CmdOutputFile.html#a157ca5a9eeee3cc6e78a2ab4ef198e43',1,'rack::CmdOutputFile']]],
   ['writesamples_11',['writeSamples',['../classrack_1_1CmdOutputFile.html#a93f1a90e51c5627d6981dfa0b2a69f93',1,'rack::CmdOutputFile']]],
-  ['writetext_12',['writetext',['../structhi5_1_1NodeHi5.html#ae9e766589466923fa49e54d806aa0768',1,'hi5::NodeHi5::writeText()'],['../classhi5_1_1Hi5Base.html#a46f99aa747a87c81d474705f2944e022',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, const std::list&lt; typename Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)']]],
+  ['writetext_12',['writetext',['../structhi5_1_1NodeHi5.html#a05f471780d5978a2415395453f1055cd',1,'hi5::NodeHi5::writeText()'],['../classhi5_1_1Hi5Base.html#a46f99aa747a87c81d474705f2944e022',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, const std::list&lt; typename Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)'],['../classhi5_1_1Hi5Base.html#aac5c55bae43af4e588fc51217943fbfb',1,'hi5::Hi5Base::writeText(const Hi5Tree &amp;src, std::ostream &amp;ostr=std::cout)']]],
   ['writetitle_13',['writeTitle',['../classdrain_1_1PythonIndent.html#abdfb1c9140310e333af3ecc02aa4e7e4',1,'drain::PythonIndent']]]
 ];

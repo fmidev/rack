@@ -1,3 +1,29 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classdrain_1_1image_1_1ImageOpInstaller.html" title=" " alt="" coords="5,5,140,31"/>
+<area shape="rect" id="Node000000" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="5,56,95,81"/>
+<area shape="rect" id="Node000001" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="143,56,247,81"/>
+<area shape="poly" id="edge739_Node000000_Node000001" title=" " alt="" coords="108,66,142,66,142,71,108,71"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1Channel.html" title="Image with static geometry." alt="" coords="311,31,386,56"/>
+<area shape="poly" id="edge740_Node000001_Node000002" title=" " alt="" coords="260,55,311,47,312,52,260,61"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="295,80,403,105"/>
+<area shape="poly" id="edge742_Node000001_Node000004" title=" " alt="" coords="260,76,295,82,294,87,260,81"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ChannelView.html" title="View to a single channel." alt="" coords="463,31,569,56"/>
+<area shape="poly" id="edge741_Node000002_Node000003" title=" " alt="" coords="400,41,462,41,462,46,400,46"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageView.html" title="ImageFrame that also has channels." alt="" coords="469,80,563,105"/>
+<area shape="poly" id="edge743_Node000004_Node000005" title=" " alt="" coords="417,90,468,90,468,95,417,95"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry." alt="" coords="451,129,581,155"/>
+<area shape="poly" id="edge744_Node000004_Node000006" title=" " alt="" coords="406,107,473,127,471,132,405,112"/>
+<area shape="rect" id="Node000007" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="647,5,793,31"/>
+<area shape="poly" id="edge745_Node000006_Node000007" title=" " alt="" coords="571,121,580,115,595,96,602,78,610,59,628,40,649,28,651,33,631,44,615,61,607,80,599,99,583,119,574,125"/>
+<area shape="rect" id="Node000009" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="647,55,793,80"/>
+<area shape="poly" id="edge747_Node000006_Node000009" title=" " alt="" coords="563,122,580,114,604,101,628,89,663,77,665,83,630,94,606,106,583,119,565,127"/>
+<area shape="rect" id="Node000010" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="629,104,811,129"/>
+<area shape="poly" id="edge748_Node000006_Node000010" title=" " alt="" coords="595,130,629,125,630,131,595,135"/>
+<area shape="rect" id="Node000011" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="641,153,799,179"/>
+<area shape="poly" id="edge749_Node000006_Node000011" title=" " alt="" coords="595,149,641,154,640,159,595,154"/>
+<area shape="rect" id="Node000012" href="$classdrain_1_1image_1_1Image.html" title="Class for multi&#45;channel digital images. Supports dynamic typing with base types (char,..." alt="" coords="689,203,751,228"/>
+<area shape="poly" id="edge750_Node000006_Node000012" title=" " alt="" coords="558,158,630,187,689,205,688,210,628,193,556,163"/>
+<area shape="rect" id="Node000013" href="$classdrain_1_1image_1_1ImageT.html" title="A template class for images with static storage type." alt="" coords="665,252,775,277"/>
+<area shape="poly" id="edge751_Node000006_Node000013" title=" " alt="" coords="539,163,579,201,631,237,666,251,664,256,628,242,576,205,536,167"/>
+<area shape="rect" id="Node000008" href="$classdrain_1_1image_1_1ImageData.html" title=" " alt="" coords="859,5,953,31"/>
+<area shape="poly" id="edge746_Node000007_Node000008" title=" " alt="" coords="807,15,859,15,859,21,807,21"/>
 </map>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -778,7 +785,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1typeNaturalMax_html_a2e3564ec9c21056477a83430f7922ab4"><div class="ttname"><a href="classdrain_1_1typeNaturalMax.html#a2e3564ec9c21056477a83430f7922ab4">drain::typeNaturalMax::callback</a></div><div class="ttdeci">static D callback()</div><div class="ttdef"><b>Definition</b> TypeUtils.h:754</div></div>
 <div class="ttc" id="aclassdrain_1_1typesetterEXT_html"><div class="ttname"><a href="classdrain_1_1typesetterEXT.html">drain::typesetterEXT</a></div><div class="ttdoc">Utility for implementing setType(const std::type_info &amp;t) in classes supporting setType&lt;T&gt;().</div><div class="ttdef"><b>Definition</b> TypeUtils.h:344</div></div>
 <div class="ttc" id="aclassdrain_1_1typesetterEXT_html_acfb909ad82f0472e8ab1bf1249928b1c"><div class="ttname"><a href="classdrain_1_1typesetterEXT.html#acfb909ad82f0472e8ab1bf1249928b1c">drain::typesetterEXT::callback</a></div><div class="ttdeci">static void callback(T &amp;target)</div><div class="ttdef"><b>Definition</b> TypeUtils.h:353</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1TypeUtils_html"><div class="ttname"><a href="structdrain_1_1TypeUtils.html">drain::TypeUtils</a></div><div class="ttdef"><b>Definition</b> TypeUtils.h:165</div></div>
 <div class="ttc" id="astructdrain_1_1TypeUtils_html_a1e79cd315f478f0ad81763f3a4bb397f"><div class="ttname"><a href="structdrain_1_1TypeUtils.html#a1e79cd315f478f0ad81763f3a4bb397f">drain::TypeUtils::guessType</a></div><div class="ttdeci">static const std::type_info &amp; guessType(double d, const std::type_info &amp;type=typeid(unsigned char))</div><div class="ttdoc">Returns the (loosely) minimal type that could store the value without precision loss.</div></div>
 <div class="ttc" id="astructdrain_1_1TypeUtils_html_a3b15f55b35a4382dd6edb1046bb19818"><div class="ttname"><a href="structdrain_1_1TypeUtils.html#a3b15f55b35a4382dd6edb1046bb19818">drain::TypeUtils::guessArrayType</a></div><div class="ttdeci">static const std::type_info &amp; guessArrayType(const C &amp;container)</div><div class="ttdoc">Given a vector or list of strings, suggest a matching storage type (int, double, std::string).</div><div class="ttdef"><b>Definition</b> TypeUtils.h:310</div></div>

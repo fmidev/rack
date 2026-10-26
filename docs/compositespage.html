@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -100,8 +107,74 @@ $(function() {
 </div>
 <div class="textblock"><h1><a class="anchor" id="compositing"></a>
 Compositing</h1>
-<p><b>Rack</b> can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products. On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in <b>Rack</b> . This section lists related commands and examples. A quick reference is found in <a class="el" href="quickpage.html#commands_cart">Compositing and Cartesian products</a>. Compositing motion vectors is art of its own, hence explained in a separate section, <a class="el" href="motionpage.html#motion-composites">Composites of motion fields</a> .</p>
-<div class="image">
+<p><b>Rack</b> can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products. On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in <b>Rack</b> . This section lists related commands and examples. A list of all the related command is <a class="el" href="quickpage.html#commands_cart">Compositing and Cartesian products</a>. Motion vectors are a separate topic, discussed in <a class="el" href="motionpage.html#motion-composites">Composites of motion fields</a> .</p>
+<p>An example of a command that generates a composite:</p>
+<div class="fragment"><div class="line">rack \</div>
+<div class="line">    --cSize &#39;682,1006&#39; \</div>
+<div class="line">    --cProj &#39;3067&#39; \</div>
+<div class="line">    --cBBox &#39;-196593.0,6255329.0,1044176.0,8084432.0&#39; \</div>
+<div class="line">    --cInit \</div>
+<div class="line">    --cMethod &#39;MAXIMUM&#39; \</div>
+<div class="line">    --script &#39;--select quantity=DBZH --cAdd&#39; \</div>
+<div class="line">    --inputPrefix &#39;data/&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fianj.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fikan.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fikau.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fikes.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fikor.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fikuo.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.filuo.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.finur.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fipet.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fiuta.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fivih.h5&#39; \</div>
+<div class="line">    &#39;202609261800_radar.polar.fivim.h5&#39; \</div>
+<div class="line">    --cExtract channels=DATA,WEIGHT:bbox= \</div>
+<div class="line">    --outputFile &#39;composite-fi.h5&#39;</div>
+</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> :</p>
+<div class="fragment"><div class="line">python3 -m rack.composite  \</div>
+<div class="line">  --BBOX -196593.0,6255329.0,1044176.0,8084432.0 \</div>
+<div class="line">  --PROJ 3067 \</div>
+<div class="line">  --SIZE 682,1006 \</div>
+<div class="line">  202609261800_radar.polar.fianj.h5 \</div>
+<div class="line">  202609261800_radar.polar.fikan.h5 \</div>
+<div class="line">  202609261800_radar.polar.fikau.h5 \</div>
+<div class="line">  202609261800_radar.polar.fikes.h5 \</div>
+<div class="line">  202609261800_radar.polar.fikor.h5 \</div>
+<div class="line">  202609261800_radar.polar.fikuo.h5 \</div>
+<div class="line">  202609261800_radar.polar.filuo.h5 \</div>
+<div class="line">  202609261800_radar.polar.finur.h5 \</div>
+<div class="line">  202609261800_radar.polar.fipet.h5 \</div>
+<div class="line">  202609261800_radar.polar.fiuta.h5 \</div>
+<div class="line">  202609261800_radar.polar.fivih.h5 \</div>
+<div class="line">  202609261800_radar.polar.fivim.h5 \</div>
+<div class="line">  --INDIR data/ \</div>
+<div class="line">  --OUTFILE composite-fi.h5 \</div>
+<div class="line">  --select quantity=DBZH \</div>
+<div class="line">  --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="comment"># Initialize command line generator.</span></div>
+<div class="line">composer = rack.cmdline.Composer(rack.composite)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Set parameters</span></div>
+<div class="line">composer.set(PROJ=3067)</div>
+<div class="line">composer.set(BBOX=[-196593,6255329,1044176,8084432])</div>
+<div class="line">composer.set(SIZE=[682,1006])</div>
+<div class="line"> </div>
+<div class="line">composer.set(INDIR=<span class="stringliteral">&#39;data/&#39;</span>) </div>
+<div class="line">composer.set(INFILE=<span class="stringliteral">&#39;202609261800_radar.polar.fi???.h5&#39;</span>) </div>
+<div class="line">composer.set(select=<span class="stringliteral">&#39;quantity=DBZH&#39;</span>) </div>
+<div class="line">composer.set(OUTFILE=<span class="stringliteral">&#39;composite-fi.h5&#39;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Extract command sequence</span></div>
+<div class="line">prog = composer.get_prog()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Show generated command line: </span></div>
+<div class="line">fmt = rack.cmdline.RackFormatter(params_format=<span class="stringliteral">&quot;&#39;{params}&#39;&quot;</span>) </div>
+<div class="line">print(prog.to_string(fmt))</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># Execute directly:</span></div>
+<div class="line"><span class="comment"># rack.process.run(prog, logger=logger)</span></div>
+</div><!-- fragment --><div class="image">
 <img src="composite-baltic-pair.png" alt=""/>
 <div class="caption">
 A radar image composite over the Baltic area.</div></div>
@@ -129,9 +202,20 @@ Initialisation</h2>
 </ul>
 <h3><a class="anchor" id="csize"></a>
 Size</h3>
-<p>The size of the composite, in pixels, is set with <code>–cSize</code>. </p><div class="fragment"></div><!-- fragment --><h3><a class="anchor" id="cprojections"></a>
+<p>The size of the composite, in pixels, is set with <code>–cSize</code>. </p><div class="fragment"><div class="line">--cSize &lt;width&gt;,&lt;height&gt;   (section: cart)</div>
+<div class="line">  Set size of the compositing array. Does not allocate memory.</div>
+<div class="line">  - width (400) [pixels]</div>
+<div class="line">  - height (0) [pixels]</div>
+<div class="line">  See also: cBBox,cProj,cRange,cReset</div>
+<div class="line"> </div>
+</div><!-- fragment --><h3><a class="anchor" id="cprojections"></a>
 Projection</h3>
-<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax and additionally supports direct EPSG codes, <code>--cProj\</code> 3067 . </p><div class="fragment"></div><!-- fragment --><p>If the projection is not given, <b>Rack</b> uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.</p>
+<p>Projection definition command &ndash;cProj uses <b>Proj.4</b> syntax and additionally supports direct EPSG codes, <code>--cProj\</code> 3067 . </p><div class="fragment"><div class="line">--cProj &lt;projection&gt;   (section: cart)</div>
+<div class="line">  Set projection</div>
+<div class="line">  - projection () [&lt;EPSG-code&gt;|&lt;projstr&gt; Proj.4 syntax]</div>
+<div class="line">  See also: cBBox,cReset,cSize</div>
+<div class="line"> </div>
+</div><!-- fragment --><p>If the projection is not given, <b>Rack</b> uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.</p>
 <p>When writing GeoTIFF files, using EPSG codes is recommended because not all <b>Proj.4</b> project definition strings are supported by the GeoTIFF library. The following list produced as a part of release tests.</p>
 <div class="fragment"><div class="line">4326</div>
 <div class="line">+init=epsg:4326</div>
@@ -169,11 +253,23 @@ Projection</h3>
 </div><!-- fragment --><h3><a class="anchor" id="cbbox"></a>
 Bounding box</h3>
 <p>The geographical area – the bounding box – of the composite is set with <code>--cBBox</code> taking lower left and upper right points as arguments. The points can be always given in degrees. If the applied projection is metric, the coordinates can be given as meters. If the bounding box is not explictly given with <code>--cBBox</code> command, the corner points of the first radar input are used.</p>
-<div class="fragment"></div><!-- fragment --><p>Hint: look at additional attributes of prefix <code>where:BBOX</code> written in output files. These attributes display the coordinates of metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising composite products. (Write of additional non-standard attributes is controlled with the <code>--odim</code> command. )</p>
+<div class="fragment"><div class="line">--cBBox &lt;llLon&gt;,&lt;llLat&gt;,&lt;urLon&gt;,&lt;urLat&gt;   (section: cart)</div>
+<div class="line">  Bounding box of the Cartesian product.</div>
+<div class="line">  - llLon (0) [deg|m]</div>
+<div class="line">  - llLat (0) [deg|m]</div>
+<div class="line">  - urLon (0) [deg|m]</div>
+<div class="line">  - urLat (0) [deg|m]</div>
+<div class="line">  See also: cBBoxTest,cBBoxTile,cCreateTile,cProj,cReset,cSize</div>
+<div class="line"> </div>
+</div><!-- fragment --><p>Hint: look at additional attributes of prefix <code>where:BBOX</code> written in output files. These attributes display the coordinates of metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising composite products. (Write of additional non-standard attributes is controlled with the <code>--odim</code> command. )</p>
 <h3><a class="anchor" id="cinit"></a>
 Initialisation</h3>
 <p>Command <code>--cInit</code> creates an empty compositing array of desired size in the memory and stores the essential attributes listed above. The command is optional – initialisation is implicitly invoked when the first input is introduced with <code>--cAdd</code> or <code>--cAddWeighted</code> . However, explicit command is recommended, if the user wants to get an empty image (instead of an error) in case no inputs are available.</p>
-<div class="fragment"></div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
+<div class="fragment"><div class="line">--cInit    (section: cart)</div>
+<div class="line">  Allocate memory to --cSize, applying --target and --select, if set.</div>
+<div class="line">  See also: cReset</div>
+<div class="line"> </div>
+</div><!-- fragment --><h2><a class="anchor" id="specialcodes"></a>
 Handling special codes</h2>
 <p>Radar data complying the ODIM standard applies special marker codes <code>undetect</code> and <code>nodata</code> . These codes have to be handled carefully in product generation and compositing. In <b>Rack</b> , pixel values with <code>nodata</code> are simply skipped; they are not accumulated in the composite array, for example.</p>
 <p>Handling of <code>undetect</code> can be tuned by the user with <code>--quantityConf</code> and <code>--undetectWeight</code> . The physical value or "virtual zero" replacing <code>undetect</code> codes is set using <code>--quantityConf</code> , <br  />
@@ -234,46 +330,18 @@ Direct compositing</h3>
 <li><code>DEVIATION</code> - difference or discrepancy of data (if more than one radar contributed)</li>
 </ul>
 <p>The desired combination is given as a comma-separated list of above keywords. Notice that the command <code>–cCreate</code> for creating single radar "composite" is equivalent to <code>--cAdd</code> <code>cExtract</code> <code>DATA</code>,WEIGHT . For example:</p>
-<p>A more complex command could be:</p>
-<div class="fragment"><div class="line">rack \</div>
-<div class="line">    --cSize &#39;800,800&#39; \</div>
-<div class="line">    --cProj &#39;3067&#39; \</div>
-<div class="line">    --cMethod &#39;MAXIMUM&#39; \</div>
-<div class="line">    &#39;volume.h5&#39; \</div>
-<div class="line">    --select &#39;quantity=DBZH&#39; \</div>
-<div class="line">    --cAdd \</div>
-<div class="line">    --cExtract channels=DATA,WEIGHT:bbox= \</div>
-<div class="line">    --outputFile &#39;composite-single0.h5&#39;</div>
-</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> :</p>
-<div class="fragment"><div class="line">python3 -m rack.composite  \</div>
-<div class="line">  volume.h5 \</div>
-<div class="line">  --OUTFILE composite-single0.h5 \</div>
-<div class="line">  --QUANTITY DBZH \</div>
-<div class="line">  --INDIR &#39;&#39; \</div>
-<div class="line">  --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="comment"># Initialize command line generator.</span></div>
-<div class="line">composer = rack.cmdline.Composer(rack.composite)</div>
-<div class="line"> </div>
-<div class="line"><span class="comment"># Set parameters</span></div>
-<div class="line">composer.set(INFILE=<span class="stringliteral">&#39;volume.h5&#39;</span>) </div>
-<div class="line">composer.set(QUANTITY=<span class="stringliteral">&#39;DBZH&#39;</span>) </div>
-<div class="line">composer.set(OUTFILE=<span class="stringliteral">&#39;cartesian-single.h5&#39;</span>)</div>
-<div class="line"> </div>
-<div class="line"><span class="comment"># Extract command sequence</span></div>
-<div class="line">prog = composer.get_prog()</div>
-<div class="line"> </div>
-<div class="line"><span class="comment"># Apply formatting </span></div>
-<div class="line">fmt = rack.cmdline.RackFormatter(params_format=<span class="stringliteral">&quot;&#39;{params}&#39;&quot;</span>) </div>
-<div class="line"> </div>
-<div class="line"><span class="comment"># Extract as a single string (suited to os.system call).</span></div>
-<div class="line">rack_cmd = prog.to_string(fmt)</div>
-<div class="line">os.system(rack_cmd)</div>
-</div><!-- fragment --><p>Upon initialisation of the compositing array, <code>Rack</code> stores the encoding parameters – storage type, scaling and marker values (<code>undetect</code> , <code>nodata</code>) – given explicitly or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so encoding of the output can be also set upon extraction. Reusing the above single-radar example, as follows: <br  />
+<p>Upon initialisation of the compositing array, <code>Rack</code> stores the encoding parameters – storage type, scaling and marker values (<code>undetect</code> , <code>nodata</code>) – given explicitly or adopted from the first input. Then, in extraction stage, that encoding is applied by default. The internal compositing array itself is floating point data, so encoding of the output can be also set upon extraction. Reusing the above single-radar example, as follows: <br  />
 </p>
 <p>The encoding is applied to the first field (like <code>DATA</code> ) listed; the remaining field (typically quality fields) use their default encodings. But if desired, encoding of each field can be set, for example as follows:</p>
 <p>For now, the old syntax is also supported: a string composed of single letters (<code>d</code> ), weight, (<code>w</code> ), deviation (std.dev., <code>s</code> ) and count of radars (<code>c</code> ).</p>
-<p>Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly <code></code> &lt;LLx&gt;,&lt;LLy&gt;,&lt;URx&gt;,&lt;URy&gt; or <code>DATA</code> (automatic bounding box) or <code>OVERLAP</code> (overlapping area).</p>
-<div class="fragment"></div><!-- fragment --><div class="image">
+<p>Cropping is supported by a new optional parameter: the desired bounding box can be given explicitly <code>LLx</code>,LLy,URx,URy or <code>DATA</code> (automatic bounding box) or <code>OVERLAP</code> (overlapping area).</p>
+<div class="fragment"><div class="line">--cExtract &lt;channels&gt;:&lt;bbox&gt;   (section: cart, separator: &#39;:&#39;)</div>
+<div class="line">  Extract (export) data from the internal accumulation array</div>
+<div class="line">  - channels (DATA,WEIGHT) [DATA,WEIGHT,WEIGHT_GLOBAL,COUNT,DEVIATION]</div>
+<div class="line">  - bbox () [Optional cropping: ...:&lt;LLx&gt;,&lt;LLy&gt;,&lt;URx&gt;,&lt;URy&gt; or INPUT or OVERLAP]</div>
+<div class="line">  See also: cAdd,cAddWeighted</div>
+<div class="line"> </div>
+</div><!-- fragment --><div class="image">
 <img src="composite-layers.png" alt=""/>
 <div class="caption">
 Layers extracted from the accumulation array: the composite, quality field, deviation and count of radars.</div></div>
@@ -295,16 +363,25 @@ Tiled compositing</h3>
 </div>
 <p>For example, a tile can be created as follows:</p>
 <div class="fragment"><div class="line">rack \</div>
-<div class="line">    --outputConf &#39;svg:paths=ABSOLUTE&#39; \</div>
 <div class="line">    --cSize &#39;512,614&#39; \</div>
 <div class="line">    --cProj &#39;3067&#39; \</div>
-<div class="line">    --cBBox &#39;-208000,6390000,1072000,7926000&#39; \</div>
-<div class="line">    --cMethod &#39;MAXIMUM&#39; \</div>
+<div class="line">    --cBBox &#39;-208000.0,6390000.0,1072000.0,7926000.0&#39; \</div>
 <div class="line">    --outputPrefix &#39;tiles/&#39; \</div>
-<div class="line">    --script &#39;--cCreateTile --outputFile &quot;tile-fikor.h5&quot;&#39; \</div>
+<div class="line">    --script &#39;--select quantity=DBZH --cCreateTile --outputFile &quot;tile-fikor.h5&quot;&#39; \</div>
 <div class="line">    --inputPrefix &#39;data-20140525/&#39; \</div>
 <div class="line">    &#39;201405251200_radar.polar.fikor.h5&#39;</div>
-</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> : </p><div class="fragment"><div class="line">python3 -m rack.composite  --BBOX -208000,6390000,1072000,7926000 --SIZE 512,614 --GEOCONF WRAPTEST 201405251200_radar.polar.fikor.h5 --OUTFILE tile-fikor.h5 --SCHEME TILE --INDIR data-20140525/ --OUTDIR &#39;&#39; --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
+</div><!-- fragment --><p>Experimental: the above command line can also be generated using Python utility <code>rack.composite</code> : </p><div class="fragment"><div class="line">python3 -m rack.composite  \</div>
+<div class="line">  --BBOX -208000.0,6390000.0,1072000.0,7926000.0 \</div>
+<div class="line">  --PROJ 3067 \</div>
+<div class="line">  --SIZE 512,614 \</div>
+<div class="line">  --GEOCONF WRAPTEST \</div>
+<div class="line">  --SCHEME TILE \</div>
+<div class="line">  201405251200_radar.polar.fikor.h5 \</div>
+<div class="line">  --INDIR data-20140525/ \</div>
+<div class="line">  --OUTDIR &#39;&#39; \</div>
+<div class="line">  --OUTFILE tile-fikor.h5 \</div>
+<div class="line">  --QUANTITY DBZH \</div>
+<div class="line">  --log_level INFO --print &#39; \\n  &#39; # or --exec</div>
 </div><!-- fragment --><p>Or using Python API, as follows:</p>
 <div class="fragment"><div class="line"><span class="comment"># Initialize command line generator.</span></div>
 <div class="line">composer = rack.cmdline.Composer(rack.composite)</div>
@@ -370,7 +447,7 @@ Tiles containing several radars</h3>
 <div class="line"> --cExtract DATA,WEIGHT,COUNT \</div>
 <div class="line"> --gTitle &#39;Rack Composite - ${what:date|%Y/%m}&#39; -o tile-east.h5 </div>
 </div><!-- fragment --><p>Finally, the two composites are combined </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> 201703071200_radar.opera.h5 --cAdd  tile-east.h5 --cAdd --cExtract dw -o composite-combined.h5 </div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p> Notice that the geometry is implicitly determined by the first composite data read (or projected).</p>
 <h3><a class="anchor" id="livecomposite"></a>
 Continuous compositing</h3>

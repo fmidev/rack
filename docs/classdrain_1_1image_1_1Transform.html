@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -112,6 +119,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
 <tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a591c19938010a40a7ede6562533867f5" id="r_a591c19938010a40a7ede6562533867f5"><td class="memTemplParams" colspan="2"><a id="a591c19938010a40a7ede6562533867f5" name="a591c19938010a40a7ede6562533867f5"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a591c19938010a40a7ede6562533867f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1image_1_1Transform.html">Transform</a>&lt; N &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (const T &amp;x)</td></tr>
+<tr class="separator:a591c19938010a40a7ede6562533867f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e0ac3c510d5dcbe17195c56585d90f5" id="r_a7e0ac3c510d5dcbe17195c56585d90f5"><td class="memTemplParams" colspan="2"><a id="a7e0ac3c510d5dcbe17195c56585d90f5" name="a7e0ac3c510d5dcbe17195c56585d90f5"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a7e0ac3c510d5dcbe17195c56585d90f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1image_1_1Transform.html">Transform</a>&lt; N &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (const std::initializer_list&lt; T &gt; &amp;x)</td></tr>
+<tr class="separator:a7e0ac3c510d5dcbe17195c56585d90f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0808bb91890e4eac5e11de99c3312a9" id="r_ab0808bb91890e4eac5e11de99c3312a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1Transform.html#ab0808bb91890e4eac5e11de99c3312a9">toStream</a> (std::ostream &amp;ostr) const override</td></tr>
 <tr class="separator:ab0808bb91890e4eac5e11de99c3312a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1UniTuple"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1UniTuple')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1UniTuple.html">UniTuple&lt; double, N &gt;</a></td></tr>
@@ -277,10 +292,10 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><b>storag
 double &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>next</b> ()</td></tr>
 <tr class="separator:ae572ed60e4de48af0b9513fc69c47ef2 inherit pro_methods_classdrain_1_1UniTuple"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1TupleBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1TupleBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1TupleBase.html">TupleBase&lt; S, N &gt;</a></td></tr>
-<tr class="memitem:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase" id="r_a38fbd2b937dbb0b01ac0855fc0c9108f"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndexed</b> (size_t i)</td></tr>
-<tr class="memdesc:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
-<tr class="separator:a38fbd2b937dbb0b01ac0855fc0c9108f inherit pro_methods_classdrain_1_1TupleBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase" id="r_ad354b470fb3e4aacba4a50526d209c00"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setIndexed</b> (size_t)</td></tr>
+<tr class="memdesc:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Argument stack endpoint function; final step of variadic argument set(arg, ...) . <br /></td></tr>
+<tr class="separator:ad354b470fb3e4aacba4a50526d209c00 inherit pro_methods_classdrain_1_1TupleBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1TupleBase" id="r_aaa35cb0c639dd402144074fc9c454584"><td class="memTemplParams" colspan="2">
 template&lt;typename T2 , typename ... TT&gt; </td></tr>
 <tr class="memitem:aaa35cb0c639dd402144074fc9c454584 inherit pro_methods_classdrain_1_1TupleBase"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setIndexed</b> (size_t i, T2 arg, const TT &amp;... rest)</td></tr>

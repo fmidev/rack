@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -107,23 +114,23 @@ Collaboration diagram for ExtractorH5toHTML:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6458bc5a020c88a3c6619a9c07d2aa35" id="r_a6458bc5a020c88a3c6619a9c07d2aa35"><td class="memItemLeft" align="right" valign="top"><a id="a6458bc5a020c88a3c6619a9c07d2aa35" name="a6458bc5a020c88a3c6619a9c07d2aa35"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setBaseDir</b> (const <a class="el" href="classdrain_1_1Path.html">drain::FilePath::path_t</a> &amp;dir)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setBaseDir</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">drain::FilePath::path_t</a> &amp;dir)</td></tr>
 <tr class="separator:a6458bc5a020c88a3c6619a9c07d2aa35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c93277a23bfb5f29bdd0b56ede22ce2" id="r_a1c93277a23bfb5f29bdd0b56ede22ce2"><td class="memItemLeft" align="right" valign="top"><a id="a1c93277a23bfb5f29bdd0b56ede22ce2" name="a1c93277a23bfb5f29bdd0b56ede22ce2"></a>
-<a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHtml</b> ()</td></tr>
+drain::TreeHTML &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getHtml</b> ()</td></tr>
 <tr class="separator:a1c93277a23bfb5f29bdd0b56ede22ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ba83abd7c1981303877e4a9b426f997" id="r_a4ba83abd7c1981303877e4a9b426f997"><td class="memItemLeft" align="right" valign="top"><a id="a4ba83abd7c1981303877e4a9b426f997" name="a4ba83abd7c1981303877e4a9b426f997"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPrefix</b> (const Hi5Tree &amp;tree, const Hi5Tree::path_t &amp;odimPath)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>visitPrefix</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;tree, <a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree::path_t &amp;<a class="el" href="classrack_1_1DataSet.html">odimPath</a>)</td></tr>
 <tr class="separator:a4ba83abd7c1981303877e4a9b426f997"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c3f3afba8b9c37d0a3e7d17e63a6d3a" id="r_a7c3f3afba8b9c37d0a3e7d17e63a6d3a"><td class="memItemLeft" align="right" valign="top"><a id="a7c3f3afba8b9c37d0a3e7d17e63a6d3a" name="a7c3f3afba8b9c37d0a3e7d17e63a6d3a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>visitPostfix</b> (const Hi5Tree &amp;tree, const Hi5Tree::path_t &amp;odimPath)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>visitPostfix</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;tree, <a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree::path_t &amp;<a class="el" href="classrack_1_1DataSet.html">odimPath</a>)</td></tr>
 <tr class="separator:a7c3f3afba8b9c37d0a3e7d17e63a6d3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aac37b7f133a51bb84e37f26af99dafb2" id="r_aac37b7f133a51bb84e37f26af99dafb2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ExtractorH5toHTML.html#aac37b7f133a51bb84e37f26af99dafb2">addTogglerScript</a> (<a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;head, const std::string key=&quot;toggler-script&quot;)</td></tr>
+<tr class="memitem:aac37b7f133a51bb84e37f26af99dafb2" id="r_aac37b7f133a51bb84e37f26af99dafb2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> drain::TreeHTML &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ExtractorH5toHTML.html#aac37b7f133a51bb84e37f26af99dafb2">addTogglerScript</a> (drain::TreeHTML &amp;<a class="el" href="classrack_1_1DataSet.html">head</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string key=&quot;toggler-<a class="el" href="classrack_1_1DataSet.html">script&quot;</a>)</td></tr>
 <tr class="separator:aac37b7f133a51bb84e37f26af99dafb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f280d9473e3f3a31ba849170b00c90" id="r_a66f280d9473e3f3a31ba849170b00c90"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ExtractorH5toHTML.html#a66f280d9473e3f3a31ba849170b00c90">addTogglerStyle</a> (<a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;head, const std::string key=&quot;toggler-style&quot;)</td></tr>
+<tr class="memitem:a66f280d9473e3f3a31ba849170b00c90" id="r_a66f280d9473e3f3a31ba849170b00c90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> drain::TreeHTML &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ExtractorH5toHTML.html#a66f280d9473e3f3a31ba849170b00c90">addTogglerStyle</a> (drain::TreeHTML &amp;<a class="el" href="classrack_1_1DataSet.html">head</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string key=&quot;toggler-<a class="el" href="classrack_1_1DataSet.html">style&quot;</a>)</td></tr>
 <tr class="separator:a66f280d9473e3f3a31ba849170b00c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -135,7 +142,7 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a03b83e134775f50e1f1f192acbd720da" id="r_a03b83e134775f50e1f1f192acbd720da"><td class="memItemLeft" align="right" valign="top"><a id="a03b83e134775f50e1f1f192acbd720da" name="a03b83e134775f50e1f1f192acbd720da"></a>
-<a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a>&#160;</td><td class="memItemRight" valign="bottom"><b>html</b></td></tr>
+drain::TreeHTML&#160;</td><td class="memItemRight" valign="bottom"><b>html</b></td></tr>
 <tr class="separator:a03b83e134775f50e1f1f192acbd720da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -149,16 +156,16 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp; addTogglerScript </td>
+          <td class="memname">drain::TreeHTML &amp; addTogglerScript </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;&#160;</td>
+          <td class="paramtype">drain::TreeHTML &amp;&#160;</td>
           <td class="paramname"><em>head</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>key</em> = <code>&quot;toggler-script&quot;</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string&#160;</td>
+          <td class="paramname"><em>key</em> = <code>&quot;toggler-<a class="el" href="classrack_1_1DataSet.html">script&quot;</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -186,16 +193,16 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp; addTogglerStyle </td>
+          <td class="memname">drain::TreeHTML &amp; addTogglerStyle </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacedrain.html#a655f30ae0ffe4ed0fdbcb25542c52c81">drain::TreeHTML</a> &amp;&#160;</td>
+          <td class="paramtype">drain::TreeHTML &amp;&#160;</td>
           <td class="paramname"><em>head</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string&#160;</td>
-          <td class="paramname"><em>key</em> = <code>&quot;toggler-style&quot;</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string&#160;</td>
+          <td class="paramname"><em>key</em> = <code>&quot;toggler-<a class="el" href="classrack_1_1DataSet.html">style&quot;</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>

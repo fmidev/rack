@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -85,11 +92,11 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>add</b>(const std::string &amp;key, Command &amp;cmd) (defined in <a class="el" href="classdrain_1_1Program.html">Program</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Program.html">Program</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>add</b>(const std::string &amp;key, Command &amp;cmd, iterator pos) (defined in <a class="el" href="classdrain_1_1Program.html">Program</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Program.html">Program</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#a540fc482c0f404a478fe3e68776f133e">contextIsSet</a>() const</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>contextPtr</b> (defined in <a class="el" href="classdrain_1_1Contextual.html">Contextual</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#aa93503d4d64d09604ec306f58e6f03b5">contextPtr</a></td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#af0652177ffe41db9b359137133b8f83a">Contextual</a>()</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#a8505452cd96818fc88cd9ddafe88addc">Contextual</a>(const Contextual &amp;src)</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#a13178bbb3315b778b9660459d16c62db">Contextual</a>(Context &amp;ctx)</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>getCloner</b>() (defined in <a class="el" href="classdrain_1_1Contextual.html">Contextual</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#ab28c0e18a410c3f154545f44f108966f">getCloner</a>()</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1Contextual.html#a8c292aa0c950ac9719b87d256a1d6f9f">getContext</a>() const</td><td class="entry"><a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1CommandSequence.html#a9b3baad8c612d81b96e46f84d7e97580">operator bool</a>()</td><td class="entry"><a class="el" href="classdrain_1_1CommandSequence.html">CommandSequence&lt; std::pair&lt; std::string, Command * &gt; &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Program</b>() (defined in <a class="el" href="classdrain_1_1Program.html">Program</a>)</td><td class="entry"><a class="el" href="classdrain_1_1Program.html">Program</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>

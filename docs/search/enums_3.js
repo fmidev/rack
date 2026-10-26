@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['grouptype_0',['GroupType',['../classdrain_1_1image_1_1LayoutSVG.html#a3de1267c3b87dda21863fd739439d918',1,'drain::image::LayoutSVG']]]
+  ['fieldtype_0',['FieldType',['../classdrain_1_1image_1_1Accumulator.html#aa01498a3ceb2fa74dc9536c16caef1da',1,'drain::image::Accumulator']]]
 ];

@@ -1,0 +1,13 @@
+<map id="ImageData" name="ImageData">
+<area shape="rect" id="Node000001" title=" " alt="" coords="31,372,126,397"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1image_1_1ImageT.html" title=" " alt="" coords="5,299,152,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,338,81,372,76,372,76,338"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1image_1_1ModifiableImage.html" title="Image with modifiable geometry." alt="" coords="13,225,144,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="81,264,81,299,76,299,76,264"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1image_1_1MultiChannel.html" title="Multi&#45;channel ImageFrame." alt="" coords="25,152,133,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="81,191,81,225,76,225,76,191"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1image_1_1ImageFrame.html" title="Image with static geometry." alt="" coords="27,79,131,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="81,118,81,152,76,152,76,118"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1image_1_1ImageLike.html" title="A base class for images." alt="" coords="34,5,123,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="81,44,81,79,76,79,76,44"/>
+</map>

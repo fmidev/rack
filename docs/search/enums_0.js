@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['direction_0',['Direction',['../classdrain_1_1image_1_1LayoutSVG.html#a224b9163917ac32fc95a60d8c1eec3aa',1,'drain::image::LayoutSVG']]]
+  ['alignclass_0',['AlignClass',['../structdrain_1_1image_1_1AlignSVG.html#a3e25306586887306686a483b217f12d2',1,'drain::image::AlignSVG']]]
 ];

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -135,7 +142,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_class" href="classdrain_1_1image_1_1QuantizatorFunctor.html">QuantizatorFunctor</a>(<span class="keywordtype">int</span> bits = 4) : <a class="code hl_struct" href="structdrain_1_1UnaryFunctor.html">UnaryFunctor</a>(__FUNCTION__,</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                <span class="stringliteral">&quot;Quantize to n bits. (For integer images)&quot;</span>), mask(0), bitShift(0) {</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            parameters.link(<span class="stringliteral">&quot;bits&quot;</span>, this-&gt;bits = bits);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            <a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;bits&quot;</span>, this-&gt;bits = bits);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    };</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
@@ -216,9 +223,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#endif </span><span class="comment">/*QUANTIZE_H_*/</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">// Drain</span></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a14a3c777481986f2ca3267992d4f233c"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">drain::BeanLike::parameters</a></div><div class="ttdeci">map_t parameters</div><div class="ttdoc">Parameters (name -&gt; linked variable), typically linked to member variables of the derived class.</div><div class="ttdef"><b>Definition</b> BeanLike.h:313</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:326</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1QuantizatorFunctor_html"><div class="ttname"><a href="classdrain_1_1image_1_1QuantizatorFunctor.html">drain::image::QuantizatorFunctor</a></div><div class="ttdoc">TODO: CopyOP should be quite similar.</div><div class="ttdef"><b>Definition</b> QuantizatorOp.h:50</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1UnaryFunctor_html"><div class="ttname"><a href="structdrain_1_1UnaryFunctor.html">drain::UnaryFunctor</a></div><div class="ttdef"><b>Definition</b> Functor.h:116</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

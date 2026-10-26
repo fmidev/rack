@@ -1,7 +1,7 @@
 <map id="CmdInputPrefix" name="CmdInputPrefix">
-<area shape="rect" id="Node000001" title="A debugging facility. Obsolete?" alt="" coords="2515,264,2637,289"/>
+<area shape="rect" id="Node000001" title="Path prefix string for subsequent input files." alt="" coords="2515,305,2637,331"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1SimpleCommand.html" title=" " alt="" coords="2296,257,2465,297"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2479,274,2514,274,2514,279,2479,279"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2479,295,2516,303,2515,308,2478,300"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="2123,264,2247,289"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="2261,274,2296,274,2296,279,2261,279"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="1863,264,2073,289"/>
@@ -54,4 +54,6 @@
 <area shape="poly" id="edge26_Node000026_Node000027" title=" " alt="" coords="1299,298,1424,298,1424,303,1299,303"/>
 <area shape="rect" id="Node000028" title=" " alt="" coords="713,288,933,313"/>
 <area shape="poly" id="edge27_Node000027_Node000028" title=" " alt="" coords="947,298,1099,298,1099,303,947,303"/>
+<area shape="rect" id="Node000029" href="$classrack_1_1PrefixChecker.html" title="A debugging facility. Obsolete?" alt="" coords="2325,321,2436,347"/>
+<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="2449,326,2514,320,2515,326,2450,331"/>
 </map>

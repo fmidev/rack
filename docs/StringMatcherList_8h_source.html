@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -146,7 +153,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a26dc5e2d3648ed5b3964ff3b3131de52">   60</a></span>    <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a26dc5e2d3648ed5b3964ff3b3131de52">StringMatcherList</a>(<span class="keyword">const</span> TT &amp;... args){</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="comment">// reset not needed</span></div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#ab4c4bc3af003594f475371dab4c021dc">addKey</a>(args...);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    };</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
 </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
@@ -204,7 +211,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> T2 &amp; entry: l) {</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">adaptKey</a>(entry);</div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        }</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    };</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    }</div>
 </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T2&gt;</div>
@@ -241,7 +248,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="foldopen" id="foldopen00155" data-start="{" data-end="}">
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">  155</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">test</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keywordtype">bool</span> defaultResult = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1StringMatcher.html">matcher_t</a> &amp; retrieve(<span class="keyword">const</span> std::string &amp; key) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">const</span> <a class="code hl_class" href="classFM301KeyMatcher.html">matcher_t</a> &amp; retrieve(<span class="keyword">const</span> std::string &amp; key) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
 <div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keyword">inline</span></div>
@@ -263,152 +270,153 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">  183</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">insertKeys</a>(<span class="keyword">const</span> std::string &amp; args); <span class="comment">// , const std::string &amp; separators = &quot;,&quot;</span></div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keywordtype">void</span> addKey(){};</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    <span class="comment">//void adaptKey(const std::string &amp; s);</span></div>
-<div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">  189</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">adaptKey</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1StringMatcher.html">matcher_t</a> &amp; s);</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// mutable // called by updateBean()?</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="comment">// drain::RegExp regExp;</span></div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="comment">// mutable</span></div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="comment">// list_t quantities;</span></div>
+<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">  182</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">insertKeys</a>(<span class="keyword">const</span> std::string &amp; args); <span class="comment">// , const std::string &amp; separators = &quot;,&quot;</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordtype">void</span> addKey(){};</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    <span class="comment">//void adaptKey(const std::string &amp; s);</span></div>
+<div class="foldopen" id="foldopen00188" data-start="{" data-end="}">
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">  188</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">adaptKey</a>(<span class="keyword">const</span> <a class="code hl_class" href="classFM301KeyMatcher.html">matcher_t</a> &amp; s);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="comment">// mutable // called by updateBean()?</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    <span class="comment">// drain::RegExp regExp;</span></div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="comment">// mutable</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="comment">// list_t quantities;</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>};</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00202" data-start="{" data-end="}">
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">  202</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">StringMatcherList&lt;T&gt;::insertKeys</a>(<span class="keyword">const</span> std::string &amp; args){ <span class="comment">//, const std::string &amp; separators){</span></div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="comment">// drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    this-&gt;clear();</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    std::vector&lt;std::string&gt; argv;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="comment">//const char s =</span></div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <a class="code hl_function" href="classdrain_1_1StringTools.html#ab4a1b2ba4284410cccce2bf6839306c2">drain::StringTools::split</a>(args, argv, <span class="stringliteral">&quot;,:&quot;</span>); <span class="comment">//separators);</span></div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string &amp; arg: argv){</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="comment">// mout.attention(&quot;adapting: &quot;, arg, &quot; split by &#39;&quot;, separators, &quot;&#39;&quot;);</span></div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        adaptKey(arg);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    }</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>}</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>};</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="}">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">  201</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">StringMatcherList&lt;T&gt;::insertKeys</a>(<span class="keyword">const</span> std::string &amp; args){ <span class="comment">//, const std::string &amp; separators){</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">// drain::Logger mout(__FILE__, __FUNCTION__);</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    this-&gt;clear();</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    std::vector&lt;std::string&gt; argv;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="comment">//const char s =</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <a class="code hl_function" href="classdrain_1_1StringTools.html#ab4a1b2ba4284410cccce2bf6839306c2">drain::StringTools::split</a>(args, argv, <span class="stringliteral">&quot;,:&quot;</span>); <span class="comment">//separators);</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> std::string &amp; arg: argv){</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="comment">// mout.attention(&quot;adapting: &quot;, arg, &quot; split by &#39;&quot;, separators, &quot;&#39;&quot;);</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        adaptKey(arg);</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    }</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span> </div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>}</div>
 </div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="comment">//void StringMatcherList&lt;T&gt;::adaptKey(const std::string &amp; s){</span></div>
-<div class="foldopen" id="foldopen00221" data-start="{" data-end="}">
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">  221</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">StringMatcherList&lt;T&gt;::adaptKey</a>(<span class="keyword">const</span> matcher_t &amp; matcher){</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span> </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="keywordflow">if</span> (matcher.empty()){</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    }</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        <span class="comment">//matcher_t matcher(s);</span></div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> matcher_t &amp; m: *<span class="keyword">this</span>){</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            <span class="keywordflow">if</span> (m == matcher){  <span class="comment">// two matchers are equal if they accept and reject equally.</span></div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                <span class="comment">// exists already, dont append...</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                <span class="keywordflow">return</span>;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            }</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        }</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        this-&gt;push_back(matcher);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="comment">// Save copying?</span></div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="comment">/*</span></div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">        push_back(KeyMatcher());</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="comment">        back().set(s);</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="comment">        */</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    }</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>}</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span><span class="comment">//void StringMatcherList&lt;T&gt;::adaptKey(const std::string &amp; s){</span></div>
+<div class="foldopen" id="foldopen00220" data-start="{" data-end="}">
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">  220</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">StringMatcherList&lt;T&gt;::adaptKey</a>(<span class="keyword">const</span> matcher_t &amp; matcher){</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="keywordflow">if</span> (matcher.empty()){</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    }</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="comment">//matcher_t matcher(s);</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> matcher_t &amp; m: *<span class="keyword">this</span>){</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>            <span class="keywordflow">if</span> (m == matcher){  <span class="comment">// two matchers are equal if they accept and reject equally.</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                <span class="comment">// exists already, dont append...</span></div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        }</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        this-&gt;push_back(matcher);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="comment">// Save copying?</span></div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="comment">/*</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">        push_back(KeyMatcher());</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">        back().set(s);</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span><span class="comment">        */</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    }</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>}</div>
 </div>
 </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00249" data-start="{" data-end="}">
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">  249</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">StringMatcherList&lt;T&gt;::test</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keywordtype">bool</span> defaultResult)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">if</span> (this-&gt;empty()){</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="keywordflow">return</span> defaultResult; <span class="comment">// Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.</span></div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    }</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; k: *<span class="keyword">this</span>){</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            <span class="keywordflow">if</span> (k == key){  <span class="comment">//</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>            }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        }</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    }</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>}</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00248" data-start="{" data-end="}">
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno"><a class="line" href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">  248</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">StringMatcherList&lt;T&gt;::test</a>(<span class="keyword">const</span> std::string &amp; key, <span class="keywordtype">bool</span> defaultResult)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    <span class="keywordflow">if</span> (this-&gt;empty()){</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        <span class="keywordflow">return</span> defaultResult; <span class="comment">// Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    }</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; k: *<span class="keyword">this</span>){</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>            <span class="keywordflow">if</span> (k == key){  <span class="comment">//</span></div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>                <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>            }</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        }</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    }</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>}</div>
 </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="keyword">const</span> <span class="keyword">typename</span> StringMatcherList&lt;T&gt;::matcher_t &amp; <a class="code hl_class" href="classdrain_1_1StringMatcherList.html">StringMatcherList&lt;T&gt;::retrieve</a>(<span class="keyword">const</span> std::string &amp; key)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>    <span class="keyword">const</span> matcher_t empty;</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    <span class="keywordflow">if</span> (this-&gt;empty()){</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="keywordflow">return</span> empty; <span class="comment">// Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.</span></div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    }</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; matcher: *this){</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            <span class="keywordflow">if</span> (matcher == key){  <span class="comment">//</span></div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                <span class="keywordflow">return</span> matcher;</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            }</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        }</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    }</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keywordflow">return</span> empty;</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>}</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="keyword">const</span> <span class="keyword">typename</span> StringMatcherList&lt;T&gt;::matcher_t &amp; <a class="code hl_class" href="classdrain_1_1StringMatcherList.html">StringMatcherList&lt;T&gt;::retrieve</a>(<span class="keyword">const</span> std::string &amp; key)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span> </div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keyword">static</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keyword">const</span> matcher_t empty;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    <span class="keywordflow">if</span> (this-&gt;empty()){</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="keywordflow">return</span> empty; <span class="comment">// Alternative: could need empty k - but on the other hand, why add it in a list, as it accepts anything.</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    }</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; matcher: *this){</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">if</span> (matcher == key){  <span class="comment">//</span></div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                <span class="keywordflow">return</span> matcher;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>            }</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        }</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    }</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">return</span> empty;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>}</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> StringMatcherList&lt;T&gt; &amp; selector){</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    selector.toStream(ostr);</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>}</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="keyword">typedef</span> StringMatcherList&lt;StringMatcher&gt; KeySelector;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>DRAIN_TYPENAME(KeySelector);</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>} <span class="comment">// drain::</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="preprocessor">#endif </span><span class="comment">// QUANTITY_MATCHER</span></div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>std::ostream &amp; <a class="code hl_function" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> StringMatcherList&lt;T&gt; &amp; selector){</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    selector.toStream(ostr);</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>}</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="keyword">typedef</span> StringMatcherList&lt;StringMatcher&gt; KeySelector;</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>DRAIN_TYPENAME(KeySelector);</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>} <span class="comment">// drain::</span></div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="preprocessor">#endif </span><span class="comment">// QUANTITY_MATCHER</span></div>
 </div>
 </div>
 </div>
+<div class="ttc" id="aclassFM301KeyMatcher_html"><div class="ttname"><a href="classFM301KeyMatcher.html">FM301KeyMatcher</a></div><div class="ttdef"><b>Definition</b> QuantitySelector.h:37</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a3137cf71c0eb3614a75757c718e523f5"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a3137cf71c0eb3614a75757c718e523f5">drain::Sprinter::sequenceToStream</a></div><div class="ttdeci">static std::ostream &amp; sequenceToStream(std::ostream &amp;ostr, const T &amp;x, const SprinterLayout &amp;layout)</div><div class="ttdoc">Convenience: if sequence type (array, list, set, map) not given, assume array.</div><div class="ttdef"><b>Definition</b> Sprinter.h:324</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_af69eb90cf3bc744bb539f3cb0ddfb500"><div class="ttname"><a href="classdrain_1_1Sprinter.html#af69eb90cf3bc744bb539f3cb0ddfb500">drain::Sprinter::cmdLineLayout</a></div><div class="ttdeci">static const SprinterLayout cmdLineLayout</div><div class="ttdoc">Simulates how arguments are given to command line options.</div><div class="ttdef"><b>Definition</b> Sprinter.h:251</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html">drain::StringMatcherList</a></div><div class="ttdoc">Utility for selecting a quantity label Applied by DataSelector.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:49</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a072e79b3e614b892df032d25c5efd8e2"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a072e79b3e614b892df032d25c5efd8e2">drain::StringMatcherList::setKeys</a></div><div class="ttdeci">void setKeys(const std::initializer_list&lt; T2 &gt; &amp;l)</div><div class="ttdoc">Replace current list with a new one.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:111</div></div>
-<div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a26bd69a8b2efb985cf2f72964902f6e6"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">drain::StringMatcherList::adaptKey</a></div><div class="ttdeci">void adaptKey(const matcher_t &amp;s)</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:221</div></div>
+<div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a26bd69a8b2efb985cf2f72964902f6e6"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a26bd69a8b2efb985cf2f72964902f6e6">drain::StringMatcherList::adaptKey</a></div><div class="ttdeci">void adaptKey(const matcher_t &amp;s)</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:220</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a26dc5e2d3648ed5b3964ff3b3131de52"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a26dc5e2d3648ed5b3964ff3b3131de52">drain::StringMatcherList::StringMatcherList</a></div><div class="ttdeci">StringMatcherList(const TT &amp;... args)</div><div class="ttdoc">Basic constructor.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:60</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a48af0c89f7925b8ee98235190b40681a"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a48af0c89f7925b8ee98235190b40681a">drain::StringMatcherList::operator=</a></div><div class="ttdeci">StringMatcherList operator=(const std::initializer_list&lt; matcher_t &gt; &amp;l)</div><div class="ttdoc">Replace current list with a new one.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:96</div></div>
-<div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a727cf77c98113e825bb66f03ef7177b4"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">drain::StringMatcherList::insertKeys</a></div><div class="ttdeci">void insertKeys(const std::string &amp;args)</div><div class="ttdoc">Define the list of accepted quantities as a string.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:202</div></div>
+<div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a727cf77c98113e825bb66f03ef7177b4"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a727cf77c98113e825bb66f03ef7177b4">drain::StringMatcherList::insertKeys</a></div><div class="ttdeci">void insertKeys(const std::string &amp;args)</div><div class="ttdoc">Define the list of accepted quantities as a string.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:201</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a81d355c4d6edf9809959f02f55563eee"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a81d355c4d6edf9809959f02f55563eee">drain::StringMatcherList::setKeys</a></div><div class="ttdeci">void setKeys(const std::list&lt; T2 &gt; &amp;l)</div><div class="ttdoc">Replace current list with a new one.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:120</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a8f8b49067b26526ade10f13b7ca79a12"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a8f8b49067b26526ade10f13b7ca79a12">drain::StringMatcherList::~StringMatcherList</a></div><div class="ttdeci">virtual ~StringMatcherList()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:79</div></div>
-<div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a908210ee93f0ec041f3f12dd54b517b7"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">drain::StringMatcherList::test</a></div><div class="ttdeci">bool test(const std::string &amp;key, bool defaultResult=true) const</div><div class="ttdoc">Check if key is accepted.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:249</div></div>
+<div class="ttc" id="aclassdrain_1_1StringMatcherList_html_a908210ee93f0ec041f3f12dd54b517b7"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#a908210ee93f0ec041f3f12dd54b517b7">drain::StringMatcherList::test</a></div><div class="ttdeci">bool test(const std::string &amp;key, bool defaultResult=true) const</div><div class="ttdoc">Check if key is accepted.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:248</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_ab4c4bc3af003594f475371dab4c021dc"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#ab4c4bc3af003594f475371dab4c021dc">drain::StringMatcherList::addKey</a></div><div class="ttdeci">void addKey(const matcher_t &amp;arg, const TT &amp;... args)</div><div class="ttdoc">Append keys to existing list.matcher_t.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:143</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_abf6e6039b98ffa8972628c8b0c72e288"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#abf6e6039b98ffa8972628c8b0c72e288">drain::StringMatcherList::setKeys</a></div><div class="ttdeci">void setKeys(const std::string &amp;arg, const TT &amp;... args)</div><div class="ttdoc">Define the list of accepted keys.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:134</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_ac2bddae973e75969f6b0edb7f3c304e9"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#ac2bddae973e75969f6b0edb7f3c304e9">drain::StringMatcherList::operator=</a></div><div class="ttdeci">StringMatcherList operator=(const StringMatcherList&lt; matcher_t &gt; &amp;l)</div><div class="ttdoc">Replace current list with a new one.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:90</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_ac5b3fa0eef7690a296f59e2a1212fb84"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#ac5b3fa0eef7690a296f59e2a1212fb84">drain::StringMatcherList::setKeys</a></div><div class="ttdeci">void setKeys(const StringMatcherList&lt; matcher_t &gt; &amp;l)</div><div class="ttdoc">Replace current list with a new one.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:102</div></div>
 <div class="ttc" id="aclassdrain_1_1StringMatcherList_html_af24b165022612ab593ef61a6b57ba0f6"><div class="ttname"><a href="classdrain_1_1StringMatcherList.html#af24b165022612ab593ef61a6b57ba0f6">drain::StringMatcherList::StringMatcherList</a></div><div class="ttdeci">StringMatcherList(const StringMatcherList&lt; T &gt; &amp;l)</div><div class="ttdoc">Copy constructor. Copies the list of quantities.</div><div class="ttdef"><b>Definition</b> StringMatcherList.h:68</div></div>
-<div class="ttc" id="aclassdrain_1_1StringMatcher_html"><div class="ttname"><a href="classdrain_1_1StringMatcher.html">drain::StringMatcher</a></div><div class="ttdoc">General-purpose key matcher: tests string equality, or regExp, if defined as such.</div><div class="ttdef"><b>Definition</b> StringMatcher.h:54</div></div>
-<div class="ttc" id="aclassdrain_1_1StringTools_html_ab4a1b2ba4284410cccce2bf6839306c2"><div class="ttname"><a href="classdrain_1_1StringTools.html#ab4a1b2ba4284410cccce2bf6839306c2">drain::StringTools::split</a></div><div class="ttdeci">static void split(const std::string &amp;s, T &amp;sequence, const C &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</div><div class="ttdoc">Splits and trims a given std::string to a std Sequence.</div><div class="ttdef"><b>Definition</b> StringTools.h:487</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="aclassdrain_1_1StringTools_html_ab4a1b2ba4284410cccce2bf6839306c2"><div class="ttname"><a href="classdrain_1_1StringTools.html#ab4a1b2ba4284410cccce2bf6839306c2">drain::StringTools::split</a></div><div class="ttdeci">static void split(const std::string &amp;s, T &amp;sequence, const C &amp;separators, const std::string &amp;trimChars=&quot; \t\n&quot;)</div><div class="ttdoc">Splits and trims a given std::string to a std Sequence.</div><div class="ttdef"><b>Definition</b> StringTools.h:516</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
+<div class="ttc" id="anamespacerack_html_a4a516e363f8dc7522725822a84e6e5a2"><div class="ttname"><a href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition</b> Data.h:631</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

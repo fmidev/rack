@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -133,8 +140,12 @@ template&lt;&gt; </td></tr>
 <tr class="separator:ad04a08d220bffe9e35ab2ffd3efcc65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6fd53c543007674a579452cc83b4717" id="r_af6fd53c543007674a579452cc83b4717"><td class="memItemLeft" align="right" valign="top"><a id="af6fd53c543007674a579452cc83b4717" name="af6fd53c543007674a579452cc83b4717"></a>
 template&lt;&gt; </td></tr>
-<tr class="memitem:af6fd53c543007674a579452cc83b4717"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const drain::image::Palette &amp;palette, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
+<tr class="memitem:af6fd53c543007674a579452cc83b4717"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a> &amp;palette, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
 <tr class="separator:af6fd53c543007674a579452cc83b4717"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b776b3b0e103d215eaa2d55382e91a" id="r_a44b776b3b0e103d215eaa2d55382e91a"><td class="memItemLeft" align="right" valign="top"><a id="a44b776b3b0e103d215eaa2d55382e91a" name="a44b776b3b0e103d215eaa2d55382e91a"></a>
+template&lt;&gt; </td></tr>
+<tr class="memitem:a44b776b3b0e103d215eaa2d55382e91a"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a> &amp;map, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
+<tr class="separator:a44b776b3b0e103d215eaa2d55382e91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c98b3900062db40512331341422fe44" id="r_a3c98b3900062db40512331341422fe44"><td class="memItemLeft" align="right" valign="top"><a id="a3c98b3900062db40512331341422fe44" name="a3c98b3900062db40512331341422fe44"></a>
 template&lt;&gt; </td></tr>
 <tr class="memitem:a3c98b3900062db40512331341422fe44"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">drain::image::PaletteEntry</a> &amp;entry, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
@@ -250,25 +261,25 @@ static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>
 static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, char c, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
 <tr class="memdesc:aded47ce3a9369136eb73100ab9762c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single char gets styled same way as strings. <br /></td></tr>
 <tr class="separator:aded47ce3a9369136eb73100ab9762c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa654f1b135a9b745c0d7cc208b3b7638" id="r_aa654f1b135a9b745c0d7cc208b3b7638"><td class="memItemLeft" align="right" valign="top"><a id="aa654f1b135a9b745c0d7cc208b3b7638" name="aa654f1b135a9b745c0d7cc208b3b7638"></a>
-static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool b, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:aa654f1b135a9b745c0d7cc208b3b7638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single char gets styled same way as strings. <br /></td></tr>
-<tr class="separator:aa654f1b135a9b745c0d7cc208b3b7638"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab52607b48fd84cb738bd3dc1d1fc7d0f" id="r_ab52607b48fd84cb738bd3dc1d1fc7d0f"><td class="memTemplParams" colspan="2"><a id="ab52607b48fd84cb738bd3dc1d1fc7d0f" name="ab52607b48fd84cb738bd3dc1d1fc7d0f"></a>
+<tr class="memitem:ac41569d45246b84d531779df66f42c63" id="r_ac41569d45246b84d531779df66f42c63"><td class="memItemLeft" align="right" valign="top"><a id="ac41569d45246b84d531779df66f42c63" name="ac41569d45246b84d531779df66f42c63"></a>
+static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool b, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:ac41569d45246b84d531779df66f42c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single char gets styled same way as strings. <br /></td></tr>
+<tr class="separator:ac41569d45246b84d531779df66f42c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8fc85d021855eebe9cbb55126d0412b" id="r_aa8fc85d021855eebe9cbb55126d0412b"><td class="memTemplParams" colspan="2"><a id="aa8fc85d021855eebe9cbb55126d0412b" name="aa8fc85d021855eebe9cbb55126d0412b"></a>
 template&lt;class D &gt; </td></tr>
-<tr class="memitem:ab52607b48fd84cb738bd3dc1d1fc7d0f"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:ab52607b48fd84cb738bd3dc1d1fc7d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
-<tr class="separator:ab52607b48fd84cb738bd3dc1d1fc7d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae61ae97424ae3ceeaac99ac8a16e6bff" id="r_ae61ae97424ae3ceeaac99ac8a16e6bff"><td class="memTemplParams" colspan="2"><a id="ae61ae97424ae3ceeaac99ac8a16e6bff" name="ae61ae97424ae3ceeaac99ac8a16e6bff"></a>
+<tr class="memitem:aa8fc85d021855eebe9cbb55126d0412b"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:aa8fc85d021855eebe9cbb55126d0412b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
+<tr class="separator:aa8fc85d021855eebe9cbb55126d0412b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4e32dcddc13acd1db4a627af6dc0dd" id="r_abc4e32dcddc13acd1db4a627af6dc0dd"><td class="memTemplParams" colspan="2"><a id="abc4e32dcddc13acd1db4a627af6dc0dd" name="abc4e32dcddc13acd1db4a627af6dc0dd"></a>
 template&lt;class D &gt; </td></tr>
-<tr class="memitem:ae61ae97424ae3ceeaac99ac8a16e6bff"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:ae61ae97424ae3ceeaac99ac8a16e6bff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
-<tr class="separator:ae61ae97424ae3ceeaac99ac8a16e6bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7c835a0b71728667ed352ead926c481" id="r_af7c835a0b71728667ed352ead926c481"><td class="memTemplParams" colspan="2"><a id="af7c835a0b71728667ed352ead926c481" name="af7c835a0b71728667ed352ead926c481"></a>
+<tr class="memitem:abc4e32dcddc13acd1db4a627af6dc0dd"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:abc4e32dcddc13acd1db4a627af6dc0dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
+<tr class="separator:abc4e32dcddc13acd1db4a627af6dc0dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5fa1b03428ee0f00759628996a1a1b" id="r_aac5fa1b03428ee0f00759628996a1a1b"><td class="memTemplParams" colspan="2"><a id="aac5fa1b03428ee0f00759628996a1a1b" name="aac5fa1b03428ee0f00759628996a1a1b"></a>
 template&lt;class D &gt; </td></tr>
-<tr class="memitem:af7c835a0b71728667ed352ead926c481"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D &amp;x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:af7c835a0b71728667ed352ead926c481"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default, unformatted output for basetypes and types not matching the other templates. <br /></td></tr>
-<tr class="separator:af7c835a0b71728667ed352ead926c481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5fa1b03428ee0f00759628996a1a1b"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D &amp;x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:aac5fa1b03428ee0f00759628996a1a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default, unformatted output for basetypes and types not matching the other templates. <br /></td></tr>
+<tr class="separator:aac5fa1b03428ee0f00759628996a1a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -399,13 +410,13 @@ template&lt;class M , class K &gt; </div>
 </div><div class="memdoc">
 
 <p>C++ code initializer list style: all objects with {...}, with comma ',' separator. </p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md37"></a>
 arrays  as {value, ...}</h1>
-<h1><a class="anchor" id="autotoc_md34"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 objects as {}</h1>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 pairs   as {key,value}</h1>
-<h1><a class="anchor" id="autotoc_md36"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
 strings with double quotes: "..."</h1>
 
 </div>
@@ -457,21 +468,21 @@ strings with double quotes: "..."</h1>
 
 <p>Resembles <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> structure: {"a":1,"b":22,"c":3}. </p>
 <p><a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> layout uses std::pair&lt;&gt;(first,second) to display key:value pairs.</p>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 arrays  as [value, ...]</h1>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 objects as {...}</h1>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 pairs   as {key:value}</h1>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 strings with double quotes: "..."</h1>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 arrays  as [...]</h1>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 objects as {...}, starting from the arg</h1>
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 pairs   as key:value</h1>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 strings as "..."</h1>
 
 </div>
@@ -497,13 +508,13 @@ strings as "..."</h1>
 </div><div class="memdoc">
 
 <p>C++ code initializer list style: all objects with {...}, with comma ',' separator. </p>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md41"></a>
 arrays  with [value, ...]</h1>
-<h1><a class="anchor" id="autotoc_md38"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 objects with {}</h1>
-<h1><a class="anchor" id="autotoc_md39"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 pairs   with (key,value), like tuples (of two elements)</h1>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 strings with single quotes: '...'</h1>
 
 </div>
@@ -514,6 +525,7 @@ strings with single quotes: '...'</h1>
 <li>src/drain/<a class="el" href="Castable_8h_source.html">Castable.h</a></li>
 <li>src/drain/<a class="el" href="FlexibleVariable_8h_source.html">FlexibleVariable.h</a></li>
 <li>src/drain/image/<b>Palette.cpp</b></li>
+<li>src/drain/image/<a class="el" href="Palette_8h_source.html">Palette.h</a></li>
 <li>src/drain/image/<b>PaletteEntry.cpp</b></li>
 <li>src/drain/image/<a class="el" href="PaletteEntry_8h_source.html">PaletteEntry.h</a></li>
 <li>src/drain/<a class="el" href="Reference_8h_source.html">Reference.h</a></li>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -93,51 +100,52 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:ab3bbc77716fe27402e618efffc75ac1f" id="r_ab3bbc77716fe27402e618efffc75ac1f"><td class="memItemLeft" align="right" valign="top"><a id="ab3bbc77716fe27402e618efffc75ac1f" name="ab3bbc77716fe27402e618efffc75ac1f"></a>
-typedef std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>quantity_map</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>quantity_map</b></td></tr>
 <tr class="separator:ab3bbc77716fe27402e618efffc75ac1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:adc1f4a069d8e97375ee297daf00120c4" id="r_adc1f4a069d8e97375ee297daf00120c4"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
-<tr class="memitem:adc1f4a069d8e97375ee297daf00120c4"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">getAttributes</a> (const Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, M &amp;attributes, bool updateOnly=false)</td></tr>
+<tr class="memitem:a1158bf6849201fd0c5701955c85b830f" id="r_a1158bf6849201fd0c5701955c85b830f"><td class="memItemLeft" align="right" valign="top"><a id="a1158bf6849201fd0c5701955c85b830f" name="a1158bf6849201fd0c5701955c85b830f"></a>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1TreeFileInfo.html">TreeFileInfo</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTreeFileInfo</b> ()</td></tr>
+<tr class="separator:a1158bf6849201fd0c5701955c85b830f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc1f4a069d8e97375ee297daf00120c4" id="r_adc1f4a069d8e97375ee297daf00120c4"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> M &gt; </td></tr>
+<tr class="memitem:adc1f4a069d8e97375ee297daf00120c4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#adc1f4a069d8e97375ee297daf00120c4">getAttributes</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;src, <a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree::path_t &amp;path, M &amp;attributes, <a class="el" href="classrack_1_1DataSet.html">bool</a> <a class="el" href="classrack_1_1DataSet.html">updateOnly</a>=<a class="el" href="classrack_1_1DataSet.html">false</a>)</td></tr>
 <tr class="memdesc:adc1f4a069d8e97375ee297daf00120c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Traverses upward in hierachy to find the value of the given <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products).">PolarODIM</a> where, what, or how attribute.  <br /></td></tr>
 <tr class="separator:adc1f4a069d8e97375ee297daf00120c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2386e63035ecbf521ad2e9ba1bf5190e" id="r_a2386e63035ecbf521ad2e9ba1bf5190e"><td class="memItemLeft" align="right" valign="top"><a id="a2386e63035ecbf521ad2e9ba1bf5190e" name="a2386e63035ecbf521ad2e9ba1bf5190e"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>getQuantityMap</b> (const Hi5Tree &amp;srcDataset, <a class="el" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a> &amp;m)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getQuantityMap</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;<a class="el" href="classrack_1_1DataSet.html">srcDataset</a>, <a class="el" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a> &amp;m)</td></tr>
 <tr class="separator:a2386e63035ecbf521ad2e9ba1bf5190e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc81335deb05d10009ebbb4fced6a63d" id="r_acc81335deb05d10009ebbb4fced6a63d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#acc81335deb05d10009ebbb4fced6a63d">updateInternalAttributes</a> (Hi5Tree &amp;src)</td></tr>
+<tr class="memitem:acc81335deb05d10009ebbb4fced6a63d" id="r_acc81335deb05d10009ebbb4fced6a63d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#acc81335deb05d10009ebbb4fced6a63d">updateInternalAttributes</a> (Hi5Tree &amp;src)</td></tr>
 <tr class="memdesc:acc81335deb05d10009ebbb4fced6a63d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups.  <br /></td></tr>
 <tr class="separator:acc81335deb05d10009ebbb4fced6a63d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6666e15abaf94a574aff3eb63bdddc33" id="r_a6666e15abaf94a574aff3eb63bdddc33"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a6666e15abaf94a574aff3eb63bdddc33">updateInternalAttributes</a> (const Hi5Tree &amp;src)</td></tr>
-<tr class="memdesc:a6666e15abaf94a574aff3eb63bdddc33"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <code>const</code> version does nothing, but is needed for <a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data.">Data</a>:: #supdateTree3()  <br /></td></tr>
-<tr class="separator:a6666e15abaf94a574aff3eb63bdddc33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d99b0508580bf5210e04ffbf3e53eb" id="r_ad2d99b0508580bf5210e04ffbf3e53eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad2d99b0508580bf5210e04ffbf3e53eb">updateInternalAttributes</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;)</td></tr>
+<tr class="memdesc:ad2d99b0508580bf5210e04ffbf3e53eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <code>const</code> version does nothing, but is needed for <a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data.">Data</a>:: #supdateTree3()  <br /></td></tr>
+<tr class="separator:ad2d99b0508580bf5210e04ffbf3e53eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aade65581ca60dec3907925bc94cb3088" id="r_aade65581ca60dec3907925bc94cb3088"><td class="memItemLeft" align="right" valign="top"><a id="aade65581ca60dec3907925bc94cb3088" name="aade65581ca60dec3907925bc94cb3088"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordinatePolicy</b> (Hi5Tree &amp;src, const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a> &amp;policy=<a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>(drain::image::EdgePolicy::LIMIT))</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>updateCoordinatePolicy</b> (Hi5Tree &amp;src, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a> &amp;policy=<a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>(drain::image::EdgePolicy::LIMIT))</td></tr>
 <tr class="separator:aade65581ca60dec3907925bc94cb3088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedeffcfbf1f5df54eee6e732bffd80bb" id="r_aedeffcfbf1f5df54eee6e732bffd80bb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#aedeffcfbf1f5df54eee6e732bffd80bb">getMaxRange</a> (const Hi5Tree &amp;src, bool projected=true)</td></tr>
+<tr class="memitem:aedeffcfbf1f5df54eee6e732bffd80bb" id="r_aedeffcfbf1f5df54eee6e732bffd80bb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#aedeffcfbf1f5df54eee6e732bffd80bb">getMaxRange</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;src, <a class="el" href="classrack_1_1DataSet.html">bool</a> <a class="el" href="classrack_1_1DataSet.html">projected</a>=<a class="el" href="classrack_1_1DataSet.html">true</a>)</td></tr>
 <tr class="separator:aedeffcfbf1f5df54eee6e732bffd80bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a23160d481d0055582b04d0125bd2a5" id="r_a6a23160d481d0055582b04d0125bd2a5"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a6a23160d481d0055582b04d0125bd2a5">markExcluded</a> (Hi5Tree &amp;src, bool exclude=true)</td></tr>
-<tr class="memdesc:a6a23160d481d0055582b04d0125bd2a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mark/unmark whole tree to be deleted with <a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948" title="Traverse subtree setting exclude=true .">Hi5Base::deleteExcluded()</a>  <br /></td></tr>
-<tr class="separator:a6a23160d481d0055582b04d0125bd2a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09c5875ce5f5445a0d63051617f246fa" id="r_a09c5875ce5f5445a0d63051617f246fa"><td class="memItemLeft" align="right" valign="top"><a id="a09c5875ce5f5445a0d63051617f246fa" name="a09c5875ce5f5445a0d63051617f246fa"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>markExcluded</b> (Hi5Tree &amp;src, const Hi5Tree::path_t &amp;path, bool exclude=true)</td></tr>
-<tr class="memdesc:a09c5875ce5f5445a0d63051617f246fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Un)mark groups along a path for deletion by <a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948" title="Traverse subtree setting exclude=true .">Hi5Base::deleteExcluded()</a> <br /></td></tr>
-<tr class="separator:a09c5875ce5f5445a0d63051617f246fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7fcd0bdf230be48f91d6d6d9db5b9de" id="r_ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">treeToStream</a> (const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</td></tr>
-<tr class="memdesc:ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree attribute formatter.  <br /></td></tr>
+<tr class="memitem:a157c321ef06da38312e4593ceb611db0" id="r_a157c321ef06da38312e4593ceb611db0"><td class="memItemLeft" align="right" valign="top"><a id="a157c321ef06da38312e4593ceb611db0" name="a157c321ef06da38312e4593ceb611db0"></a>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>superDump</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;src, std::ostream &amp;ostr=std::cerr)</td></tr>
+<tr class="memdesc:a157c321ef06da38312e4593ceb611db0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tree output designed above all for debugging. <br /></td></tr>
+<tr class="separator:a157c321ef06da38312e4593ceb611db0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19c0a3442701de5ccaf7f841e5cd35ea" id="r_a19c0a3442701de5ccaf7f841e5cd35ea"><td class="memItemLeft" align="right" valign="top"><a id="a19c0a3442701de5ccaf7f841e5cd35ea" name="a19c0a3442701de5ccaf7f841e5cd35ea"></a>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>adjustWhatObject</b> (Hi5Tree &amp;src)</td></tr>
+<tr class="memdesc:a19c0a3442701de5ccaf7f841e5cd35ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">If polar data contains single or several elevations, mark SCAN or PVOL, respectively. <br /></td></tr>
+<tr class="separator:a19c0a3442701de5ccaf7f841e5cd35ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7fcd0bdf230be48f91d6d6d9db5b9de" id="r_ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">treeToStream</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</td></tr>
+<tr class="memdesc:ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="mdescLeft">&#160;</td><td class="mdescRight">(Un)mark groups along a path for deletion by <a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948" title="Traverse subtree setting exclude=true .">Hi5Base::deleteExcluded()</a>  <br /></td></tr>
 <tr class="separator:ad7fcd0bdf230be48f91d6d6d9db5b9de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2b878497682897ce3d31f72d5bee6c5" id="r_aa2b878497682897ce3d31f72d5bee6c5"><td class="memItemLeft" align="right" valign="top"><a id="aa2b878497682897ce3d31f72d5bee6c5" name="aa2b878497682897ce3d31f72d5bee6c5"></a>
-static <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributeStyles</b> ()</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getAttributeStyles</b> ()</td></tr>
 <tr class="memdesc:aa2b878497682897ce3d31f72d5bee6c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of most important <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> attributes (with style suggestion). <br /></td></tr>
 <tr class="separator:aa2b878497682897ce3d31f72d5bee6c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
-<tr class="memitem:a4a0d153bc5453397aad85c17b6bcefd9" id="r_a4a0d153bc5453397aad85c17b6bcefd9"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#a4a0d153bc5453397aad85c17b6bcefd9">removeIfExcluded</a> (const Hi5Tree &amp;src)</td></tr>
-<tr class="memdesc:a4a0d153bc5453397aad85c17b6bcefd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the children of the tree if Node::exclude is set.  <br /></td></tr>
-<tr class="separator:a4a0d153bc5453397aad85c17b6bcefd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad94e3c042639d31f0b1d019235356a34" id="r_ad94e3c042639d31f0b1d019235356a34"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad94e3c042639d31f0b1d019235356a34">updateInternalAttributes</a> (Hi5Tree &amp;src, const <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;attributes)</td></tr>
-<tr class="memdesc:ad94e3c042639d31f0b1d019235356a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups.  <br /></td></tr>
+<tr class="memitem:ad94e3c042639d31f0b1d019235356a34" id="r_ad94e3c042639d31f0b1d019235356a34"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html#ad94e3c042639d31f0b1d019235356a34">updateInternalAttributes</a> (Hi5Tree &amp;src, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;attributes)</td></tr>
+<tr class="memdesc:ad94e3c042639d31f0b1d019235356a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the children of the tree if Node::exclude is set.  <br /></td></tr>
 <tr class="separator:ad94e3c042639d31f0b1d019235356a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -150,21 +158,21 @@ Static Protected Member Functions</h2></td></tr>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class M &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> M &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void getAttributes </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> getAttributes </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Hi5Tree::path_t &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree::path_t &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
@@ -176,8 +184,8 @@ template&lt;class M &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>updateOnly</em> = <code>false</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td>
+          <td class="paramname"><em>updateOnly</em> = <code><a class="el" href="classrack_1_1DataSet.html">false</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -196,14 +204,11 @@ template&lt;class M &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>- structure to be searched </td></tr>
-    <tr><td class="paramname">path</td><td>- starting path, to be continued upwards </td></tr>
-    <tr><td class="paramname">group</td><td>- "what", "where", or "how" </td></tr>
-    <tr><td class="paramname">attributeName</td><td>- name of the attribute Collects <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products).">PolarODIM</a> /where, /what and /how attributes recursively along the path and stores them in a std::map&lt;std::string,T&gt; (e.g. VariableMap or ReferenceMap, <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a>). <pre class="fragment"> Does not change attributes of src.
- \see updateAttributes()
-</pre> template &lt;class M&gt; static void getAttributesOLD(const Hi5Tree &amp;src, const std::string &amp; path, M &amp; attributes, bool updateOnly = false); </td></tr>
+    <tr><td class="paramname">path</td><td>- starting path, to be continued upwards Collects <a class="el" href="classrack_1_1PolarODIM.html" title="Metadata structure for single-radar data (polar scans, volumes and products).">PolarODIM</a> /where, /what and /how attributes recursively along the path and stores them in a std::map&lt;std::string,T&gt; (e.g. VariableMap or ReferenceMap, <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a>). Does not change attributes of src. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section see"><dt>See also</dt><dd>updateAttributes() </dd></dl>
 
 </div>
 </div>
@@ -217,16 +222,16 @@ template&lt;class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int getMaxRange </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">int</a> getMaxRange </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>projected</em> = <code>true</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td>
+          <td class="paramname"><em>projected</em> = <code><a class="el" href="classrack_1_1DataSet.html">true</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -244,75 +249,6 @@ template&lt;class M &gt; </div>
 
 </div>
 </div>
-<a id="a6a23160d481d0055582b04d0125bd2a5" name="a6a23160d481d0055582b04d0125bd2a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a23160d481d0055582b04d0125bd2a5">&#9670;&#160;</a></span>markExcluded()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void markExcluded </td>
-          <td>(</td>
-          <td class="paramtype">Hi5Tree &amp;&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>exclude</em> = <code>true</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Mark/unmark whole tree to be deleted with <a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948" title="Traverse subtree setting exclude=true .">Hi5Base::deleteExcluded()</a> </p>
-<p>This function traverses all the children and their children, recursively. Needed here, ATTRIBUTE_GROUPS not in Hi5Base. </p>
-
-</div>
-</div>
-<a id="a4a0d153bc5453397aad85c17b6bcefd9" name="a4a0d153bc5453397aad85c17b6bcefd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a0d153bc5453397aad85c17b6bcefd9">&#9670;&#160;</a></span>removeIfExcluded()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool removeIfExcluded </td>
-          <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Removes the children of the tree if Node::exclude is set. </p>
-<pre class="fragment">\return - true if children were removed
-</pre><p> static bool removeIfExcluded_REMOVE(Hi5Tree &amp; dst); Does nothing </p><dl class="section return"><dt>Returns</dt><dd>- false (always, as nothing will be removed) </dd></dl>
-
-</div>
-</div>
 <a id="ad7fcd0bdf230be48f91d6d6d9db5b9de" name="ad7fcd0bdf230be48f91d6d6d9db5b9de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad7fcd0bdf230be48f91d6d6d9db5b9de">&#9670;&#160;</a></span>treeToStream()</h2>
 
@@ -323,9 +259,9 @@ template&lt;class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool treeToStream </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> treeToStream </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree::node_data_t &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree::node_data_t &amp;&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
@@ -347,19 +283,20 @@ template&lt;class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Tree attribute formatter. </p>
-<p>Applied by <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102" title="Render a tree using character graphics.">drain::TreeUtils::dump()</a>. Example:</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classdrain_1_1Output.html">drain::Output</a> output(filename);</div>
-<div class="line"><a class="code hl_function" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a>(ctx.getHi5(RackContext::CURRENT), output, <a class="code hl_function" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">DataTools::treeToStream</a>);</div>
+<p>(Un)mark groups along a path for deletion by <a class="el" href="classhi5_1_1Hi5Base.html#a6ffc3d791e1d56c407fa7806081bf948" title="Traverse subtree setting exclude=true .">Hi5Base::deleteExcluded()</a> </p>
+<p>Tree attribute formatter Applied by <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102" title="Render a tree using character graphics.">drain::TreeUtils::dump()</a>. Example:</p>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classdrain_1_1Output.html">drain::Output</a> <a class="code hl_class" href="classrack_1_1DataSet.html">output</a>(filename);</div>
+<div class="line"><a class="code hl_function" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a>(<a class="code hl_class" href="classrack_1_1DataSet.html">ctx</a>.getHi5(RackContext::CURRENT), <a class="code hl_class" href="classrack_1_1DataSet.html">output</a>, <a class="code hl_function" href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">DataTools::treeToStream</a>);</div>
 <div class="ttc" id="aclassdrain_1_1Output_html"><div class="ttname"><a href="classdrain_1_1Output.html">drain::Output</a></div><div class="ttdoc">Output utility. Opens stdout with &quot;-&quot;. Closes upon destruction.</div><div class="ttdef"><b>Definition</b> Output.h:55</div></div>
-<div class="ttc" id="aclassdrain_1_1TreeUtils_html_a589a266c64101a3a0441be1cad6ee102"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a></div><div class="ttdeci">static bool dump(const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</div><div class="ttdoc">Render a tree using character graphics.</div><div class="ttdef"><b>Definition</b> TreeUtils.h:155</div></div>
-<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">Tree attribute formatter.</div><div class="ttdef"><b>Definition</b> DataTools.cpp:125</div></div>
+<div class="ttc" id="aclassdrain_1_1TreeUtils_html_a589a266c64101a3a0441be1cad6ee102"><div class="ttname"><a href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">drain::TreeUtils::dump</a></div><div class="ttdeci">static bool dump(const TR &amp;tree, std::ostream &amp;ostr=std::cout, bool(*callBack)(const typename TR::node_data_t &amp;, std::ostream &amp;)=TreeUtils::dataDumper, const std::string &amp;indent=&quot;&quot;)</div><div class="ttdoc">Render a tree using character graphics.</div><div class="ttdef"><b>Definition</b> TreeUtils.h:153</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1293</div></div>
+<div class="ttc" id="aclassrack_1_1DataTools_html_ad7fcd0bdf230be48f91d6d6d9db5b9de"><div class="ttname"><a href="classrack_1_1DataTools.html#ad7fcd0bdf230be48f91d6d6d9db5b9de">rack::DataTools::treeToStream</a></div><div class="ttdeci">static bool treeToStream(const Hi5Tree::node_data_t &amp;data, std::ostream &amp;ostr)</div><div class="ttdoc">(Un)mark groups along a path for deletion by Hi5Base::deleteExcluded()</div><div class="ttdef"><b>Definition</b> DataTools.cpp:222</div></div>
 </div><!-- fragment --><dl class="section return"><dt>Returns</dt><dd>– true, if data is empty, ie. no attributes or data array. </dd></dl>
 
 </div>
 </div>
-<a id="a6666e15abaf94a574aff3eb63bdddc33" name="a6666e15abaf94a574aff3eb63bdddc33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6666e15abaf94a574aff3eb63bdddc33">&#9670;&#160;</a></span>updateInternalAttributes() <span class="overload">[1/3]</span></h2>
+<a id="ad2d99b0508580bf5210e04ffbf3e53eb" name="ad2d99b0508580bf5210e04ffbf3e53eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d99b0508580bf5210e04ffbf3e53eb">&#9670;&#160;</a></span>updateInternalAttributes() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -368,10 +305,10 @@ template&lt;class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void updateInternalAttributes </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a> updateInternalAttributes </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -397,7 +334,7 @@ template&lt;class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void updateInternalAttributes </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> updateInternalAttributes </td>
           <td>(</td>
           <td class="paramtype">Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -413,7 +350,7 @@ template&lt;class M &gt; </div>
 
 <p>Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups. </p>
 <p>Traverses the data tree, updates the data (image) attributes along the path down to <code>data</code>[n] level; the lowest groups containing data arrays, that is <code>data</code> groups, are not updated.</p>
-<p>Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().</p>
+<p>Note that also the <em>coordinate</em> <em>policy</em> is updated, because the corresponding variable is linked by ImageFrame::init().</p>
 <p>Typically, this is called on the root.</p>
 <dl class="section see"><dt>See also</dt><dd>updateAttributes(Hi5Tree &amp; src, const drain::FlexVariableMap &amp; attributes) </dd></dl>
 
@@ -429,7 +366,7 @@ template&lt;class M &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void updateInternalAttributes </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> updateInternalAttributes </td>
           <td>(</td>
           <td class="paramtype">Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>src</em>, </td>
@@ -437,7 +374,7 @@ template&lt;class M &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1FlexVariableMap.html">drain::FlexVariableMap</a> &amp;&#160;</td>
           <td class="paramname"><em>attributes</em>&#160;</td>
         </tr>
         <tr>
@@ -453,9 +390,11 @@ template&lt;class M &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups. </p>
-<p>Traverses the data tree, updates the data (image) attributes along the path down to <code>data</code>[n] level; the lowest groups containing data arrays, that is <code>data</code> groups, are not updated.</p>
-<p>Note that also the \i coordinate \i policy is updated, because the corresponding variable is linked by ImageFrame::init().</p>
+<p>Removes the children of the tree if Node::exclude is set. </p>
+<pre class="fragment">\return - true if children were removed
+</pre><p> static bool removeIfExcluded_REMOVE(Hi5Tree &amp; dst); Does nothing </p><pre class="fragment">\return - false (always, as nothing will be removed)
+</pre><p> static bool removeIfExcluded(const Hi5Tree &amp; src){ return false; }; Copies values of <code>what</code> , <code>where</code> and <code>how</code> attributes to internal attributes down to <code>data</code>[n] groups. Traverses the data tree, updates the data (image) attributes along the path down to <code>data</code>[n] level; the lowest groups containing data arrays, that is <code>data</code> groups, are not updated.</p>
+<p>Note that also the <em>coordinate</em> <em>policy</em> is updated, because the corresponding variable is linked by ImageFrame::init().</p>
 <p>Typically, this is called on the root.</p>
 <dl class="section see"><dt>See also</dt><dd>updateAttributes(Hi5Tree &amp; src) </dd></dl>
 <p>Write to "hidden" variables of this node (src).</p>

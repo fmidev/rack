@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -151,10 +158,10 @@ Collaboration diagram for RadarFunctorBase:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a17815196d9acbe5cb3d8ad56657aa7da" id="r_a17815196d9acbe5cb3d8ad56657aa7da"><td class="memItemLeft" align="right" valign="top"><a id="a17815196d9acbe5cb3d8ad56657aa7da" name="a17815196d9acbe5cb3d8ad56657aa7da"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> (const <a class="el" href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a> &amp;src, <a class="el" href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a> &amp;dst, const <a class="el" href="structdrain_1_1UnaryFunctor.html">drain::UnaryFunctor</a> &amp;ftor, bool LIMIT=true) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a> &amp;src, <a class="el" href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a> &amp;dst, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structdrain_1_1UnaryFunctor.html">drain::UnaryFunctor</a> &amp;ftor, <a class="el" href="classrack_1_1DataSet.html">bool</a> LIMIT=<a class="el" href="classrack_1_1DataSet.html">true</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a17815196d9acbe5cb3d8ad56657aa7da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af96897376f008d3657703b76e57664b1" id="r_af96897376f008d3657703b76e57664b1"><td class="memItemLeft" align="right" valign="top"><a id="af96897376f008d3657703b76e57664b1" name="af96897376f008d3657703b76e57664b1"></a>
-virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>fuzzify</b> (double x)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fuzzify</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> x)</td></tr>
 <tr class="separator:af96897376f008d3657703b76e57664b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -163,10 +170,10 @@ Public Attributes</h2></td></tr>
 <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimSrc</b></td></tr>
 <tr class="separator:a27112a579c7a7abbd5fcc1d963228717"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cdecf03303ee1fbc2c768f7fdcf4c09" id="r_a4cdecf03303ee1fbc2c768f7fdcf4c09"><td class="memItemLeft" align="right" valign="top"><a id="a4cdecf03303ee1fbc2c768f7fdcf4c09" name="a4cdecf03303ee1fbc2c768f7fdcf4c09"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>nodataValue</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>nodataValue</b></td></tr>
 <tr class="separator:a4cdecf03303ee1fbc2c768f7fdcf4c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8337ce8504bfd5d505a74c80077cfb22" id="r_a8337ce8504bfd5d505a74c80077cfb22"><td class="memItemLeft" align="right" valign="top"><a id="a8337ce8504bfd5d505a74c80077cfb22" name="a8337ce8504bfd5d505a74c80077cfb22"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>undetectValue</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>undetectValue</b></td></tr>
 <tr class="separator:a8337ce8504bfd5d505a74c80077cfb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

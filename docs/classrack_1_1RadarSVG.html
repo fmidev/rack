@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -79,7 +86,6 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classrack_1_1RadarSVG-members.html">List of all members</a>  </div>
@@ -141,81 +147,80 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae27ad0fad4d1cd0bd1a2f5bda610f463" id="r_ae27ad0fad4d1cd0bd1a2f5bda610f463"><td class="memItemLeft" align="right" valign="top"><a id="ae27ad0fad4d1cd0bd1a2f5bda610f463" name="ae27ad0fad4d1cd0bd1a2f5bda610f463"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarSVG</b> (int radialBezierResolution=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarSVG</b> (<a class="el" href="classrack_1_1DataSet.html">int</a> radialBezierResolution=0)</td></tr>
 <tr class="separator:ae27ad0fad4d1cd0bd1a2f5bda610f463"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a361ef6a698e07c6ed35eeeab0606f67d" id="r_a361ef6a698e07c6ed35eeeab0606f67d"><td class="memItemLeft" align="right" valign="top"><a id="a361ef6a698e07c6ed35eeeab0606f67d" name="a361ef6a698e07c6ed35eeeab0606f67d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarSVG</b> (const <a class="el" href="classrack_1_1RadarSVG.html">RadarSVG</a> &amp;radarSvg)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarSVG</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1RadarSVG.html">RadarSVG</a> &amp;<a class="el" href="classrack_1_1DataSet.html">radarSvg</a>)</td></tr>
 <tr class="separator:a361ef6a698e07c6ed35eeeab0606f67d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa41a281ca60c21e3e446a5c65c6823d8" id="r_aa41a281ca60c21e3e446a5c65c6823d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#aa41a281ca60c21e3e446a5c65c6823d8">updateRadarConf</a> (const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;where)</td></tr>
+<tr class="memitem:aa41a281ca60c21e3e446a5c65c6823d8" id="r_aa41a281ca60c21e3e446a5c65c6823d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#aa41a281ca60c21e3e446a5c65c6823d8">updateRadarConf</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;<a class="el" href="classrack_1_1DataSet.html">where</a>)</td></tr>
 <tr class="memdesc:aa41a281ca60c21e3e446a5c65c6823d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read meta data related to polar coordinates, that is, geographic configuration of a single radar.  <br /></td></tr>
 <tr class="separator:aa41a281ca60c21e3e446a5c65c6823d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c62fb0c908c8b3a196897e45a0e92df" id="r_a2c62fb0c908c8b3a196897e45a0e92df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a2c62fb0c908c8b3a196897e45a0e92df">updateCartesianConf</a> (const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;where)</td></tr>
+<tr class="memitem:a2c62fb0c908c8b3a196897e45a0e92df" id="r_a2c62fb0c908c8b3a196897e45a0e92df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a2c62fb0c908c8b3a196897e45a0e92df">updateCartesianConf</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;<a class="el" href="classrack_1_1DataSet.html">where</a>)</td></tr>
 <tr class="memdesc:a2c62fb0c908c8b3a196897e45a0e92df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read meta data related to Cartesian data, that is, geographic configuration of a radar composite.  <br /></td></tr>
 <tr class="separator:a2c62fb0c908c8b3a196897e45a0e92df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bb17dbb17e5f1b35a2cab6ab38b3b68" id="r_a6bb17dbb17e5f1b35a2cab6ab38b3b68"><td class="memItemLeft" align="right" valign="top"><a id="a6bb17dbb17e5f1b35a2cab6ab38b3b68" name="a6bb17dbb17e5f1b35a2cab6ab38b3b68"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCartesianConf</b> (const <a class="el" href="classrack_1_1Composite.html">Composite</a> &amp;comp)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>updateCartesianConf</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Composite.html">Composite</a> &amp;<a class="el" href="classrack_1_1DataSet.html">comp</a>)</td></tr>
 <tr class="separator:a6bb17dbb17e5f1b35a2cab6ab38b3b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cdb3f70978138ebbfcb5666a2a3bbfb" id="r_a0cdb3f70978138ebbfcb5666a2a3bbfb"><td class="memItemLeft" align="right" valign="top"><a id="a0cdb3f70978138ebbfcb5666a2a3bbfb" name="a0cdb3f70978138ebbfcb5666a2a3bbfb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRadialResolution</b> (int n)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setRadialResolution</b> (<a class="el" href="classrack_1_1DataSet.html">int</a> <a class="el" href="classrack_1_1DataSet.html">n</a>)</td></tr>
 <tr class="memdesc:a0cdb3f70978138ebbfcb5666a2a3bbfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of "sectors" in a sphere. <br /></td></tr>
 <tr class="separator:a0cdb3f70978138ebbfcb5666a2a3bbfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32a68125a440ae70b13a911e505b7b44" id="r_a32a68125a440ae70b13a911e505b7b44"><td class="memItemLeft" align="right" valign="top"><a id="a32a68125a440ae70b13a911e505b7b44" name="a32a68125a440ae70b13a911e505b7b44"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getCubicBezierConf</b> (<a class="el" href="structrack_1_1RadarSVG_1_1CubicBezierConf.html">CubicBezierConf</a> &amp;conf, int n) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getCubicBezierConf</b> (<a class="el" href="structrack_1_1RadarSVG_1_1CubicBezierConf.html">CubicBezierConf</a> &amp;conf, <a class="el" href="classrack_1_1DataSet.html">int</a> <a class="el" href="classrack_1_1DataSet.html">n</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a32a68125a440ae70b13a911e505b7b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71dfce858eedf56e50cef43bbc2f714d" id="r_a71dfce858eedf56e50cef43bbc2f714d"><td class="memItemLeft" align="right" valign="top"><a id="a71dfce858eedf56e50cef43bbc2f714d" name="a71dfce858eedf56e50cef43bbc2f714d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getCubicBezierConf</b> (<a class="el" href="structrack_1_1RadarSVG_1_1CubicBezierConf.html">CubicBezierConf</a> &amp;conf, double angleStartR, double angleEndR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getCubicBezierConf</b> (<a class="el" href="structrack_1_1RadarSVG_1_1CubicBezierConf.html">CubicBezierConf</a> &amp;conf, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">angleStartR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">angleEndR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a71dfce858eedf56e50cef43bbc2f714d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af52a14c389d537e49fc110aba987e516" id="r_af52a14c389d537e49fc110aba987e516"><td class="memItemLeft" align="right" valign="top"><a id="af52a14c389d537e49fc110aba987e516" name="af52a14c389d537e49fc110aba987e516"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>convert</b> (double radius, double azimuth, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;imgPoint) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>convert</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> radius, <a class="el" href="classrack_1_1DataSet.html">double</a> azimuth, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">imgPoint</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:af52a14c389d537e49fc110aba987e516"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cbaf119065a72d908bf7d4636d32c78" id="r_a8cbaf119065a72d908bf7d4636d32c78"><td class="memItemLeft" align="right" valign="top"><a id="a8cbaf119065a72d908bf7d4636d32c78" name="a8cbaf119065a72d908bf7d4636d32c78"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>polarToMeters</b> (double radius, double azimuth, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;geoPoint) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarToMeters</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> radius, <a class="el" href="classrack_1_1DataSet.html">double</a> azimuth, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">geoPoint</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a8cbaf119065a72d908bf7d4636d32c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad596c4a9e89714e6e608852e6c8f91f8" id="r_ad596c4a9e89714e6e608852e6c8f91f8"><td class="memItemLeft" align="right" valign="top"><a id="ad596c4a9e89714e6e608852e6c8f91f8" name="ad596c4a9e89714e6e608852e6c8f91f8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>radarGeoToCompositeImage</b> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;radarPoint, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;imagePoint) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>radarGeoToCompositeImage</b> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">radarPoint</a>, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">imagePoint</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:ad596c4a9e89714e6e608852e6c8f91f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b0b5114bfdb378cd0e397d02a081420" id="r_a3b0b5114bfdb378cd0e397d02a081420"><td class="memItemLeft" align="right" valign="top"><a id="a3b0b5114bfdb378cd0e397d02a081420" name="a3b0b5114bfdb378cd0e397d02a081420"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>moveTo</b> (drain::svgPATH &amp;elem, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;imgPoint, double radiusM, double azimuthR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>moveTo</b> (drain::svgPATH &amp;elem, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">imgPoint</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">radiusM</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">azimuthR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a3b0b5114bfdb378cd0e397d02a081420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move to image point at (radius, azimuth) <br /></td></tr>
 <tr class="separator:a3b0b5114bfdb378cd0e397d02a081420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35bee6cdba744df9706d82062750c374" id="r_a35bee6cdba744df9706d82062750c374"><td class="memItemLeft" align="right" valign="top"><a id="a35bee6cdba744df9706d82062750c374" name="a35bee6cdba744df9706d82062750c374"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>moveTo</b> (drain::svgPATH &amp;elem, double radius, double azimuth) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>moveTo</b> (drain::svgPATH &amp;elem, <a class="el" href="classrack_1_1DataSet.html">double</a> radius, <a class="el" href="classrack_1_1DataSet.html">double</a> azimuth) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a35bee6cdba744df9706d82062750c374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a942a37ee35e34919d85d7f0f24ebf3fc" id="r_a942a37ee35e34919d85d7f0f24ebf3fc"><td class="memItemLeft" align="right" valign="top"><a id="a942a37ee35e34919d85d7f0f24ebf3fc" name="a942a37ee35e34919d85d7f0f24ebf3fc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>lineTo</b> (drain::svgPATH &amp;elem, double radius, double azimuth) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lineTo</b> (drain::svgPATH &amp;elem, <a class="el" href="classrack_1_1DataSet.html">double</a> radius, <a class="el" href="classrack_1_1DataSet.html">double</a> azimuth) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a942a37ee35e34919d85d7f0f24ebf3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f77154dcbead93e3729a12f97f7220f" id="r_a0f77154dcbead93e3729a12f97f7220f"><td class="memItemLeft" align="right" valign="top"><a id="a0f77154dcbead93e3729a12f97f7220f" name="a0f77154dcbead93e3729a12f97f7220f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>lineTo</b> (drain::svgPATH &amp;elem, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;imgPoint, double radiusM, double azimuthR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lineTo</b> (drain::svgPATH &amp;elem, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">imgPoint</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">radiusM</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">azimuthR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a0f77154dcbead93e3729a12f97f7220f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ec57d99b6595b08ce38560bcc6c9db2" id="r_a5ec57d99b6595b08ce38560bcc6c9db2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a5ec57d99b6595b08ce38560bcc6c9db2">cubicBezierTo</a> (drain::svgPATH &amp;elem, double radiusM, double azimuthStartR, double azimuthEndR) const</td></tr>
+<tr class="memitem:a5ec57d99b6595b08ce38560bcc6c9db2" id="r_a5ec57d99b6595b08ce38560bcc6c9db2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a5ec57d99b6595b08ce38560bcc6c9db2">cubicBezierTo</a> (drain::svgPATH &amp;elem, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">radiusM</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">azimuthStartR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">azimuthEndR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a5ec57d99b6595b08ce38560bcc6c9db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single command to draw arc.  <br /></td></tr>
 <tr class="separator:a5ec57d99b6595b08ce38560bcc6c9db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2135896314d6ee1ef320c6cba2de2127" id="r_a2135896314d6ee1ef320c6cba2de2127"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a2135896314d6ee1ef320c6cba2de2127">cubicBezierTo</a> (drain::svgPATH &amp;elem, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;imgPoint, double radiusM, double azimuthStartR, double azimuthEndR) const</td></tr>
+<tr class="memitem:a2135896314d6ee1ef320c6cba2de2127" id="r_a2135896314d6ee1ef320c6cba2de2127"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a2135896314d6ee1ef320c6cba2de2127">cubicBezierTo</a> (drain::svgPATH &amp;elem, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">imgPoint</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">radiusM</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">azimuthStartR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">azimuthEndR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:a2135896314d6ee1ef320c6cba2de2127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad57b2102bb10b96b86751028419ae0ab" id="r_ad57b2102bb10b96b86751028419ae0ab"><td class="memItemLeft" align="right" valign="top"><a id="ad57b2102bb10b96b86751028419ae0ab" name="ad57b2102bb10b96b86751028419ae0ab"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> (drain::svgPATH &amp;elem) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> (drain::svgPATH &amp;elem) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:ad57b2102bb10b96b86751028419ae0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7772fdb463a91f698dbcc94ae6002272" id="r_a7772fdb463a91f698dbcc94ae6002272"><td class="memItemLeft" align="right" valign="top"><a id="a7772fdb463a91f698dbcc94ae6002272" name="a7772fdb463a91f698dbcc94ae6002272"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>drawSector</b> (drain::svgPATH &amp;elem, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;radius, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;azimuthR={0.0, 0.0}) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>drawSector</b> (drain::svgPATH &amp;elem, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;radius, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">azimuthR</a>={0.0, 0.0}) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a7772fdb463a91f698dbcc94ae6002272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience: draw sector, starting from radius.min, ending at radius.max, in azimuth range azimuthR.min ... azimuthR.max. <br /></td></tr>
 <tr class="separator:a7772fdb463a91f698dbcc94ae6002272"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57ddcd5cebdbde9eb99ed25b9e15b6a8" id="r_a57ddcd5cebdbde9eb99ed25b9e15b6a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a57ddcd5cebdbde9eb99ed25b9e15b6a8">drawCircle</a> (drain::svgPATH &amp;elem, const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;radius) const</td></tr>
+<tr class="memitem:a57ddcd5cebdbde9eb99ed25b9e15b6a8" id="r_a57ddcd5cebdbde9eb99ed25b9e15b6a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a57ddcd5cebdbde9eb99ed25b9e15b6a8">drawCircle</a> (drain::svgPATH &amp;elem, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;radius) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a57ddcd5cebdbde9eb99ed25b9e15b6a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience: draw circle (disk or annulus)  <br /></td></tr>
 <tr class="separator:a57ddcd5cebdbde9eb99ed25b9e15b6a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a16a67ecc548e7c9c6b3dafae4c625939" id="r_a16a67ecc548e7c9c6b3dafae4c625939"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a16a67ecc548e7c9c6b3dafae4c625939">getOverlayGroup</a> (drain::image::TreeSVG &amp;svgDoc)</td></tr>
-<tr class="memdesc:a16a67ecc548e7c9c6b3dafae4c625939"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets some CSS properties applicable in radar graphics (grids, sectors).  <br /></td></tr>
-<tr class="separator:a16a67ecc548e7c9c6b3dafae4c625939"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:adf3c8fdf3c977e4de2beb659021be904" id="r_adf3c8fdf3c977e4de2beb659021be904"><td class="memItemLeft" align="right" valign="top"><a id="adf3c8fdf3c977e4de2beb659021be904" name="adf3c8fdf3c977e4de2beb659021be904"></a>
-<a class="el" href="classrack_1_1PolarRadarConf.html">PolarRadarConf</a>&#160;</td><td class="memItemRight" valign="bottom"><b>radarProj</b></td></tr>
+<tr class="memitem:adf3c8fdf3c977e4de2beb659021be904" id="r_adf3c8fdf3c977e4de2beb659021be904"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1PolarRadarConf.html">PolarRadarConf</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#adf3c8fdf3c977e4de2beb659021be904">radarProj</a></td></tr>
+<tr class="memdesc:adf3c8fdf3c977e4de2beb659021be904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets some CSS properties applicable in radar graphics (grids, sectors).  <br /></td></tr>
 <tr class="separator:adf3c8fdf3c977e4de2beb659021be904"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1240e07a8bcc6cd9f35a8de24ad45beb" id="r_a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RadarSVG.html#a1240e07a8bcc6cd9f35a8de24ad45beb">geoFrame</a></td></tr>
-<tr class="memdesc:a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such.  <br /></td></tr>
+<tr class="memitem:a14ee39a9a59b08e6fad497e78e450f7e" id="r_a14ee39a9a59b08e6fad497e78e450f7e"><td class="memItemLeft" align="right" valign="top"><a id="a14ee39a9a59b08e6fad497e78e450f7e" name="a14ee39a9a59b08e6fad497e78e450f7e"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>source</b></td></tr>
+<tr class="memdesc:a14ee39a9a59b08e6fad497e78e450f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such. <br /></td></tr>
+<tr class="separator:a14ee39a9a59b08e6fad497e78e450f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1240e07a8bcc6cd9f35a8de24ad45beb" id="r_a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="memItemLeft" align="right" valign="top"><a id="a1240e07a8bcc6cd9f35a8de24ad45beb" name="a1240e07a8bcc6cd9f35a8de24ad45beb"></a>
+<a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><b>geoFrame</b></td></tr>
+<tr class="memdesc:a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Geographic extent and projection (Cartesian) <br /></td></tr>
 <tr class="separator:a1240e07a8bcc6cd9f35a8de24ad45beb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7453217298750f696fe71fad65eafba" id="r_ab7453217298750f696fe71fad65eafba"><td class="memItemLeft" align="right" valign="top"><a id="ab7453217298750f696fe71fad65eafba" name="ab7453217298750f696fe71fad65eafba"></a>
 <a class="el" href="structrack_1_1RadarSVG_1_1CubicBezierConf.html">CubicBezierConf</a>&#160;</td><td class="memItemRight" valign="bottom"><b>conf</b></td></tr>
@@ -224,7 +229,7 @@ Public Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a60eccf1a0b27787d521fadf4db7859fe" id="r_a60eccf1a0b27787d521fadf4db7859fe"><td class="memItemLeft" align="right" valign="top"><a id="a60eccf1a0b27787d521fadf4db7859fe" name="a60eccf1a0b27787d521fadf4db7859fe"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution</b></td></tr>
 <tr class="separator:a60eccf1a0b27787d521fadf4db7859fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -239,7 +244,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void cubicBezierTo </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> cubicBezierTo </td>
           <td>(</td>
           <td class="paramtype">drain::svgPATH &amp;&#160;</td>
           <td class="paramname"><em>elem</em>, </td>
@@ -247,19 +252,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>radiusM</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>azimuthStartR</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>azimuthEndR</em>&#160;</td>
         </tr>
         <tr>
@@ -273,6 +278,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 <p>Single command to draw arc. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">elem</td><td>- SVG path element to which the arc is appended </td></tr>
+    <tr><td class="paramname">radiusM</td><td>- radius, in metres </td></tr>
+    <tr><td class="paramname">azimuthStartR</td><td>- start azimuth, in radians </td></tr>
+    <tr><td class="paramname">azimuthEndR</td><td>- end azimuth, in radians</td></tr>
     <tr><td class="paramname">drain::Point2D&lt;int&gt;</td><td>&amp; imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR) </td></tr>
   </table>
   </dd>
@@ -287,7 +296,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void cubicBezierTo </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> cubicBezierTo </td>
           <td>(</td>
           <td class="paramtype">drain::svgPATH &amp;&#160;</td>
           <td class="paramname"><em>elem</em>, </td>
@@ -295,25 +304,25 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>imgPoint</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>radiusM</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>azimuthStartR</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>azimuthEndR</em>&#160;</td>
         </tr>
         <tr>
@@ -325,6 +334,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">elem</td><td>- SVG path element to which the arc is appended </td></tr>
+    <tr><td class="paramname">imgPoint</td><td>- starting point, should be "already" compatible with (radiusM, azimuthStartR) </td></tr>
+    <tr><td class="paramname">radiusM</td><td>- radius, in metres </td></tr>
+    <tr><td class="paramname">azimuthStartR</td><td>- start azimuth, in radians </td></tr>
+    <tr><td class="paramname">azimuthEndR</td><td>- end azimuth, in radians</td></tr>
     <tr><td class="paramname">drain::Point2D&lt;int&gt;</td><td>&amp; imgPoint - starting point, should be "already" compatible with (radiusM, azimutthStartR) </td></tr>
   </table>
   </dd>
@@ -342,7 +356,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void drawCircle </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> drawCircle </td>
           <td>(</td>
           <td class="paramtype">drain::svgPATH &amp;&#160;</td>
           <td class="paramname"><em>elem</em>, </td>
@@ -350,7 +364,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; double &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>radius</em>&#160;</td>
         </tr>
         <tr>
@@ -371,36 +385,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 
 </div>
 </div>
-<a id="a16a67ecc548e7c9c6b3dafae4c625939" name="a16a67ecc548e7c9c6b3dafae4c625939"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16a67ecc548e7c9c6b3dafae4c625939">&#9670;&#160;</a></span>getOverlayGroup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">drain::image::TreeSVG &amp; getOverlayGroup </td>
-          <td>(</td>
-          <td class="paramtype">drain::image::TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>svgDoc</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets some CSS properties applicable in radar graphics (grids, sectors). </p>
-<p>Creates a style element only if it does not exist already.</p>
-<p>More general style is obtained with <a class="el" href="classrack_1_1RackSVG.html#af4ddfe50407c12284aed9a99a61da449" title="Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be alig...">RackSVG::getStyle()</a>. Get (create) group dedicated for layers drawn over radar data </p>
-
-</div>
-</div>
 <a id="a2c62fb0c908c8b3a196897e45a0e92df" name="a2c62fb0c908c8b3a196897e45a0e92df"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c62fb0c908c8b3a196897e45a0e92df">&#9670;&#160;</a></span>updateCartesianConf()</h2>
 
@@ -408,9 +392,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void updateCartesianConf </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> updateCartesianConf </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td>
           <td class="paramname"><em>where</em></td><td>)</td>
           <td></td>
         </tr>
@@ -429,9 +413,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void updateRadarConf </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> updateRadarConf </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a> &amp;&#160;</td>
           <td class="paramname"><em>where</em></td><td>)</td>
           <td></td>
         </tr>
@@ -444,20 +428,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a1240e07a8bcc6cd9f35a8de24ad45beb" name="a1240e07a8bcc6cd9f35a8de24ad45beb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1240e07a8bcc6cd9f35a8de24ad45beb">&#9670;&#160;</a></span>geoFrame</h2>
+<a id="adf3c8fdf3c977e4de2beb659021be904" name="adf3c8fdf3c977e4de2beb659021be904"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf3c8fdf3c977e4de2beb659021be904">&#9670;&#160;</a></span>radarProj</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1image_1_1GeoFrame.html">drain::image::GeoFrame</a> geoFrame</td>
+          <td class="memname"><a class="el" href="classrack_1_1PolarRadarConf.html">PolarRadarConf</a> radarProj</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>If r is inside +/-100% = [-1.0,1.0], return that portion of maximum range, else the argument as such. </p>
-<p>Geographic extent and projection (Cartesian) </p>
+<p>Sets some CSS properties applicable in radar graphics (grids, sectors). </p>
+<p>Creates a style element only if it does not exist already.</p>
+<p>More general style is obtained with RackSVG::getStyle(). </p>
 
 </div>
 </div>

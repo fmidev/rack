@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -98,7 +105,7 @@ $(function() {
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#a38a2a77d0974bc15a7e349679c9a38c1">StringMapper</a>(const std::string &amp;format=&quot;&quot;, const std::string &amp;validChars=&quot;[a-zA-Z0-9_]+&quot;, bool formatting=true)</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#aa648ebfd6af64e0435257ac7d8061153">StringMapper</a>(const RegExp &amp;regexp, bool formatting=true)</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#a1fa7cb7a2693d4dac029ffa9b0ce601b">StringMapper</a>(const StringMapper &amp;mapper)</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#ae0a3324409d405177019c60c26c5933a">toStr</a>(const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=-1, const VariableFormatter&lt; T &gt; &amp;formatter=VariableFormatter&lt; T &gt;()) const</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#a304934fa6a16bf388cb9f9491bad293c">toStr</a>(const std::map&lt; std::string, T &gt; &amp;m, int replaceChar=REMOVE_MISSING_VARIABLE, const VariableFormatter&lt; T &gt; &amp;formatter=VariableFormatter&lt; T &gt;()) const</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#ad3b601f11b6fa853b5a79424eae4dd26">toStream</a>(std::ostream &amp;ostr) const</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html#a816562818ad1f800c6cf9583b1b2c4b6">toStream</a>(std::ostream &amp;ostr, const std::map&lt; std::string, T &gt; &amp;variables, int replace=REMOVE_MISSING_VARIABLE, const VariableFormatter&lt; T &gt; &amp;formatter=VariableFormatter&lt; T &gt;()) const</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>updateRegExp</b>() (defined in <a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a>)</td><td class="entry"><a class="el" href="classdrain_1_1StringMapper.html">StringMapper</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">protected</span></td></tr>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -110,18 +117,18 @@ Collaboration diagram for Sun:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5d855eb1fbb61a8eae825abff195db0e" id="r_a5d855eb1fbb61a8eae825abff195db0e"><td class="memItemLeft" align="right" valign="top"><a id="a5d855eb1fbb61a8eae825abff195db0e" name="a5d855eb1fbb61a8eae825abff195db0e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Sun</b> (const std::string &amp;datestr=&quot;197001010000&quot;, double lon=0.0, double lat=0.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Sun</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classrack_1_1DataSet.html">datestr</a>=&quot;197001010000&quot;, <a class="el" href="classrack_1_1DataSet.html">double</a> lon=0.0, <a class="el" href="classrack_1_1DataSet.html">double</a> lat=0.0)</td></tr>
 <tr class="separator:a5d855eb1fbb61a8eae825abff195db0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a29ebece5e367ca97f99a0f938ec99303" id="r_a29ebece5e367ca97f99a0f938ec99303"><td class="memItemLeft" align="right" valign="top"><a id="a29ebece5e367ca97f99a0f938ec99303" name="a29ebece5e367ca97f99a0f938ec99303"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setStarTime</b> (const std::string &amp;datestr)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setStarTime</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classrack_1_1DataSet.html">datestr</a>)</td></tr>
 <tr class="separator:a29ebece5e367ca97f99a0f938ec99303"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4484d1aa2e0a8682f6c584a12be80b5d" id="r_a4484d1aa2e0a8682f6c584a12be80b5d"><td class="memItemLeft" align="right" valign="top"><a id="a4484d1aa2e0a8682f6c584a12be80b5d" name="a4484d1aa2e0a8682f6c584a12be80b5d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setLocation</b> (double lon, double lat)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setLocation</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> lon, <a class="el" href="classrack_1_1DataSet.html">double</a> lat)</td></tr>
 <tr class="separator:a4484d1aa2e0a8682f6c584a12be80b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a923a347905801212e72cb0851ae00134" id="r_a923a347905801212e72cb0851ae00134"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Sun.html#a923a347905801212e72cb0851ae00134">getSunPos</a> (const std::string &amp;datestr, double lonDeg, double latDeg, double &amp;azmRad, double &amp;elevRad)</td></tr>
+<tr class="memitem:a923a347905801212e72cb0851ae00134" id="r_a923a347905801212e72cb0851ae00134"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Sun.html#a923a347905801212e72cb0851ae00134">getSunPos</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;<a class="el" href="classrack_1_1DataSet.html">datestr</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">lonDeg</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">latDeg</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">azmRad</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">elevRad</a>)</td></tr>
 <tr class="memdesc:a923a347905801212e72cb0851ae00134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sun azimuth and elevation angle at a given time in a geographical position.  <br /></td></tr>
 <tr class="separator:a923a347905801212e72cb0851ae00134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -132,10 +139,10 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8207de54f59022e3e99c0e98cd09c55f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_structrack_1_1Horizontal"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_structrack_1_1Horizontal')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="structrack_1_1Horizontal.html">Horizontal</a></td></tr>
 <tr class="memitem:a36c83e30816691b43ccf1b3376b6b0b8 inherit pub_attribs_structrack_1_1Horizontal" id="r_a36c83e30816691b43ccf1b3376b6b0b8"><td class="memItemLeft" align="right" valign="top">
-double&#160;</td><td class="memItemRight" valign="bottom"><b>azm</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>azm</b></td></tr>
 <tr class="separator:a36c83e30816691b43ccf1b3376b6b0b8 inherit pub_attribs_structrack_1_1Horizontal"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dda1d2ff84ad30e50a542bfd0cac21e inherit pub_attribs_structrack_1_1Horizontal" id="r_a8dda1d2ff84ad30e50a542bfd0cac21e"><td class="memItemLeft" align="right" valign="top">
-double&#160;</td><td class="memItemRight" valign="bottom"><b>elev</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>elev</b></td></tr>
 <tr class="separator:a8dda1d2ff84ad30e50a542bfd0cac21e inherit pub_attribs_structrack_1_1Horizontal"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -149,33 +156,33 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>elev</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void getSunPos </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> getSunPos </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>datestr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>lonDeg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>latDeg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td>
           <td class="paramname"><em>azmRad</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a> &amp;&#160;</td>
           <td class="paramname"><em>elevRad</em>&#160;</td>
         </tr>
         <tr>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -209,10 +216,12 @@ typedef std::list&lt; std::pair&lt; std::string, <a class="el" href="classdrain_
 <tr class="memitem:ab28c0e18a410c3f154545f44f108966f inherit pub_static_methods_classdrain_1_1Contextual" id="r_ab28c0e18a410c3f154545f44f108966f"><td class="memTemplParams" colspan="2">
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ab28c0e18a410c3f154545f44f108966f inherit pub_static_methods_classdrain_1_1Contextual"><td class="memTemplItemLeft" align="right" valign="top">static <a class="el" href="structdrain_1_1Cloner.html">Cloner</a>&lt; <a class="el" href="classdrain_1_1Context.html">Context</a>, T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getCloner</b> ()</td></tr>
+<tr class="memdesc:ab28c0e18a410c3f154545f44f108966f inherit pub_static_methods_classdrain_1_1Contextual"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the object cloner. <br /></td></tr>
 <tr class="separator:ab28c0e18a410c3f154545f44f108966f inherit pub_static_methods_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1Contextual"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1Contextual')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1Contextual.html">Contextual</a></td></tr>
 <tr class="memitem:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual" id="r_aa93503d4d64d09604ec306f58e6f03b5"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classdrain_1_1Context.html">Context</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>contextPtr</b></td></tr>
+<tr class="memdesc:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the current context; nullptr if not set. <br /></td></tr>
 <tr class="separator:aa93503d4d64d09604ec306f58e6f03b5 inherit pro_attribs_classdrain_1_1Contextual"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

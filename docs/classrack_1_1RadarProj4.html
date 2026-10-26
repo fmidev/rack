@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -114,19 +121,19 @@ Collaboration diagram for RadarProj4:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aeecac857ee8be7473bd06c6758540260" id="r_aeecac857ee8be7473bd06c6758540260"><td class="memItemLeft" align="right" valign="top"><a id="aeecac857ee8be7473bd06c6758540260" name="aeecac857ee8be7473bd06c6758540260"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProj4</b> (double lon=0.0, double lat=0.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarProj4</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> lon=0.0, <a class="el" href="classrack_1_1DataSet.html">double</a> lat=0.0)</td></tr>
 <tr class="memdesc:aeecac857ee8be7473bd06c6758540260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly. <br /></td></tr>
 <tr class="separator:aeecac857ee8be7473bd06c6758540260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4484d1aa2e0a8682f6c584a12be80b5d" id="r_a4484d1aa2e0a8682f6c584a12be80b5d"><td class="memItemLeft" align="right" valign="top"><a id="a4484d1aa2e0a8682f6c584a12be80b5d" name="a4484d1aa2e0a8682f6c584a12be80b5d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setLocation</b> (double lon, double lat)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setLocation</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> lon, <a class="el" href="classrack_1_1DataSet.html">double</a> lat)</td></tr>
 <tr class="memdesc:a4484d1aa2e0a8682f6c584a12be80b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets location of the radar and the azimuthal equidistant (AEQD) projection accordingly. <br /></td></tr>
 <tr class="separator:a4484d1aa2e0a8682f6c584a12be80b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec7a0e30d2b640a044b434b742018fa5" id="r_aec7a0e30d2b640a044b434b742018fa5"><td class="memItemLeft" align="right" valign="top"><a id="aec7a0e30d2b640a044b434b742018fa5" name="aec7a0e30d2b640a044b434b742018fa5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBox</b> (double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBox</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> range, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonUR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latUR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:aec7a0e30d2b640a044b434b742018fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding box in radians. <br /></td></tr>
 <tr class="separator:aec7a0e30d2b640a044b434b742018fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7711b1ba7b01d197b445842541288c49" id="r_a7711b1ba7b01d197b445842541288c49"><td class="memItemLeft" align="right" valign="top"><a id="a7711b1ba7b01d197b445842541288c49" name="a7711b1ba7b01d197b445842541288c49"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBoxDeg</b> (double range, double &amp;lonLL, double &amp;latLL, double &amp;lonUR, double &amp;latUR) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getBoundingBoxDeg</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> range, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latLL</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">lonUR</a>, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">latUR</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a7711b1ba7b01d197b445842541288c49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding box in degrees. <br /></td></tr>
 <tr class="separator:a7711b1ba7b01d197b445842541288c49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1Proj6"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1Proj6')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1Proj6.html">Proj6</a></td></tr>

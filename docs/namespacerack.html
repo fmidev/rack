@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -118,9 +125,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects birds and insects.  <a href="classrack_1_1BiometOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1BirdOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CappiOp.html">CappiOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">CAPPI and Pseudo-CAPPI: the constant altitude planar position indicator product.  <a href="classrack_1_1CappiOp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Cart2PolarOp.html">Cart2PolarOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.  <a href="classrack_1_1Cart2PolarOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianBBox.html">CartesianBBox</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,8 +187,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianTime.html">CartesianTime</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CCorOp.html">CCorOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1CCorOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ChaffOp.html">ChaffOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1ChaffOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ClutterOp.html">ClutterOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Based on pre-computed clutter map, scales the clutter probability for desired sweeps.  <a href="classrack_1_1ClutterOp.html#details">More...</a><br /></td></tr>
@@ -193,8 +206,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdBaseSelective.html">CmdBaseSelective</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdCart2Polar.html">CmdCart2Polar</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdCheckType.html">CmdCheckType</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default handler for requests without own handler. Handles options that are recognized as 1) files to be read or 2) <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> properties to be assigned in current H5 structure.  <a href="classrack_1_1CmdCheckType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdCompleteODIM.html">CmdCompleteODIM</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensure correct <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> types after setting attributes.  <a href="classrack_1_1CmdCompleteODIM.html#details">More...</a><br /></td></tr>
@@ -278,7 +292,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInputPalette.html">CmdInputPalette</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInputPrefix.html">CmdInputPrefix</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A debugging facility. Obsolete?  <a href="classrack_1_1CmdInputPrefix.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Path prefix string for subsequent input files.  <a href="classrack_1_1CmdInputPrefix.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdInputSelect.html">CmdInputSelect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrack_1_1Data.html" title="Data structure consisting of plain data and an optional quality data.">Data</a> selector for subsequent input files.  <a href="classrack_1_1CmdInputSelect.html#details">More...</a><br /></td></tr>
@@ -296,6 +310,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdLegendOut.html">CmdLegendOut</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdLinkImage.html">CmdLinkImage</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdModifyQuality.html">CmdModifyQuality</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdMove.html">CmdMove</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rename or move data groups and attributes.  <a href="classrack_1_1CmdMove.html#details">More...</a><br /></td></tr>
@@ -345,8 +361,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdRadarDot.html">CmdRadarDot</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdRadarDotTest.html">CmdRadarDotTest</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdRadarGrid.html">CmdRadarGrid</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdRadarLabel.html">CmdRadarLabel</a></td></tr>
@@ -394,6 +408,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdTitleHeights.html">CmdTitleHeights</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdTransform.html">CmdTransform</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdUpdateVariables.html">CmdUpdateVariables</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CmdValidate.html">CmdValidate</a></td></tr>
@@ -427,6 +443,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ConvOp.html">ConvOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes Cb s or bottoms in kilometers for a given dBZ threshold, typically 20, 40 or 45 dBZ.  <a href="classrack_1_1ConvOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CoordBox.html">CoordBox</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Coordinates.html">Coordinates</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple spherical coordinate computation. Does not handle projections, but earth coords.  <a href="classrack_1_1Coordinates.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -450,7 +468,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataMarker.html">DataMarker</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple class marking true data with a given constant value, typically a CLASS label.  <a href="classrack_1_1DataMarker.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataModifier.html">DataModifier</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tool for selecting datasets based on paths, quantities and min/max elevations.  <a href="classrack_1_1DataModifier.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1DataOrder.html">DataOrder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="structrack_1_1DataOrder.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSelector.html">DataSelector</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tool for selecting datasets based on paths, quantities and min/max elevations.  <a href="classrack_1_1DataSelector.html#details">More...</a><br /></td></tr>
@@ -463,6 +485,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataSetMap.html">DataSetMap</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DatasetSelector.html">DatasetSelector</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1DatasetSelector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DataTools.html">DataTools</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tool for selecting datasets based on paths, quantities and min/max elevations.  <a href="classrack_1_1DataTools.html#details">More...</a><br /></td></tr>
@@ -552,6 +575,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writable data type.  <a href="structrack_1_1DstType.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DualPolBioMetOp.html">DualPolBioMetOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1DualPolBioMetOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1EchoTopOp.html">EchoTopOp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -592,7 +616,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A single-ray "product" storing the altitude at each bin.  <a href="classrack_1_1FunctorOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1FuzzyDetectorOp.html">FuzzyDetectorOp</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a>.  <a href="classrack_1_1FuzzyDetectorOp.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for <a class="el" href="classrack_1_1BirdOp.html" title="DOC: Add class description.">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html" title="DOC: Add class description.">InsectOp</a>.  <a href="classrack_1_1FuzzyDetectorOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1GapFillOp.html">GapFillOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple gap filler based on distance transformation.  <a href="classrack_1_1GapFillOp.html#details">More...</a><br /></td></tr>
@@ -641,6 +665,10 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ImageSection.html">ImageSection</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1InsectOp.html">InsectOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1InsectOp.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1InteractiveSVG.html">InteractiveSVG</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tools for adding user interaction to SVG displays.  <a href="classrack_1_1InteractiveSVG.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1JammingOp.html">JammingOp</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A detector for widespread electromagnetic interference.  <a href="classrack_1_1JammingOp.html#details">More...</a><br /></td></tr>
@@ -649,6 +677,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Quick emitter detection based on subtracting a horizontal segment lengths by inversed vertical segment lengths.  <a href="classrack_1_1LineOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1LocalFunctorBank.html">LocalFunctorBank</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1LocalFunctorBank.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1MainModule.html">MainModule</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -672,19 +701,25 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata (quantity, gain, offset, undetect, nodata, date, time)  <a href="classrack_1_1ODIM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMNodeValidator.html">ODIMNodeValidator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1ODIMNodeValidator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1ODIMPathElem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1ODIMPathElem2.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Element in a chain in testing a path for a match.  <a href="classrack_1_1ODIMPathElemMatcher.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ODIMPathLess.html">ODIMPathLess</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="structrack_1_1ODIMPathLess.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ODIMPathLessElangle.html">ODIMPathLessElangle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="structrack_1_1ODIMPathLessElangle.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1ODIMPathLessTime.html">ODIMPathLessTime</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="structrack_1_1ODIMPathLessTime.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for testing if a path matches a given sequence of path elements.  <a href="classrack_1_1ODIMPathMatcher.html#details">More...</a><br /></td></tr>
@@ -693,6 +728,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tool for selecting datasets based on paths, quantities and min/max elevations.  <a href="classrack_1_1ODIMPathTools.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMValidator.html">ODIMValidator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1ODIMValidator.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMVariableHandler.html">ODIMVariableHandler</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -760,6 +796,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PrecipZsnow.html">PrecipZsnow</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PrecipZZDR.html">PrecipZZDR</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1PrefixChecker.html">PrefixChecker</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A debugging facility. Obsolete?  <a href="classrack_1_1PrefixChecker.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ProductBase.html">ProductBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for radar data processors. Input can be in polar or Cartesian coordinates.  <a href="classrack_1_1ProductBase.html#details">More...</a><br /></td></tr>
@@ -880,8 +919,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A two-dimensional image processing window that handles the special <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> codes and scales the result. Template parameter for drain::SlidingWindowOpT.  <a href="classrack_1_1SlidingRadarWindowBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1SourceODIM.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SpeckleOp.html">SpeckleOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1SpeckleOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1SrcType.html">SrcType</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only data type.  <a href="structrack_1_1SrcType.html#details">More...</a><br /></td></tr>
@@ -897,6 +938,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TestModule.html">TestModule</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TestOp.html">TestOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1TestOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structrack_1_1TestSection.html">TestSection</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -905,6 +947,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TitleCreatorSVG.html">TitleCreatorSVG</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Formats titles from metadata. Invoked by <a class="el" href="classdrain_1_1TreeUtils.html#a3487b023a9c115792f41c1f155ea2f0f" title="Traverse tree, visiting each node as a prefix operation.">drain::TreeUtils::traverse()</a>  <a href="classrack_1_1TitleCreatorSVG.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TreeFileInfo.html">TreeFileInfo</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1TreeFileInfo.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1TreeWrapper.html">TreeWrapper</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for all kinds of radar data.  <a href="classrack_1_1TreeWrapper.html#details">More...</a><br /></td></tr>
@@ -939,83 +984,78 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class designed for "sequential" "parallel" processing of Sweeps.  <a href="classrack_1_1VolumeTraversalOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ZDRvarOp.html">ZDRvarOp</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">DOC: Add class description.  <a href="classrack_1_1ZDRvarOp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a93c1ec09981979b207b6684a6bc18400" id="r_a93c1ec09981979b207b6684a6bc18400"><td class="memItemLeft" align="right" valign="top"><a id="a93c1ec09981979b207b6684a6bc18400" name="a93c1ec09981979b207b6684a6bc18400"></a>
-typedef <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1ODIM.html">ODIM</a> const  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BasicSrc</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1ODIM.html">ODIM</a> <a class="el" href="classrack_1_1DataSet.html">const</a>  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BasicSrc</b></td></tr>
 <tr class="memdesc:a93c1ec09981979b207b6684a6bc18400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only data (supports top-level <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> properties only) <br /></td></tr>
 <tr class="separator:a93c1ec09981979b207b6684a6bc18400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24649d611c860b4bc50a8f3444240cc6" id="r_a24649d611c860b4bc50a8f3444240cc6"><td class="memItemLeft" align="right" valign="top"><a id="a24649d611c860b4bc50a8f3444240cc6" name="a24649d611c860b4bc50a8f3444240cc6"></a>
-typedef <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> const  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PolarSrc</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> <a class="el" href="classrack_1_1DataSet.html">const</a>  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PolarSrc</b></td></tr>
 <tr class="memdesc:a24649d611c860b4bc50a8f3444240cc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only data in polar coordinates. <br /></td></tr>
 <tr class="separator:a24649d611c860b4bc50a8f3444240cc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4171bbafcb1321212341354e7b01474b" id="r_a4171bbafcb1321212341354e7b01474b"><td class="memItemLeft" align="right" valign="top"><a id="a4171bbafcb1321212341354e7b01474b" name="a4171bbafcb1321212341354e7b01474b"></a>
-typedef <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> const  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CartesianSrc</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> <a class="el" href="classrack_1_1DataSet.html">const</a>  &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CartesianSrc</b></td></tr>
 <tr class="memdesc:a4171bbafcb1321212341354e7b01474b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only data in Cartesian coordinates. <br /></td></tr>
 <tr class="separator:a4171bbafcb1321212341354e7b01474b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fccc31eb430dd33e795fded404cd57e" id="r_a4fccc31eb430dd33e795fded404cd57e"><td class="memItemLeft" align="right" valign="top"><a id="a4fccc31eb430dd33e795fded404cd57e" name="a4fccc31eb430dd33e795fded404cd57e"></a>
-typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BasicDst</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>BasicDst</b></td></tr>
 <tr class="separator:a4fccc31eb430dd33e795fded404cd57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d4a33d908143a879cce18c66af3b6f0" id="r_a8d4a33d908143a879cce18c66af3b6f0"><td class="memItemLeft" align="right" valign="top"><a id="a8d4a33d908143a879cce18c66af3b6f0" name="a8d4a33d908143a879cce18c66af3b6f0"></a>
-typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PolarDst</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>PolarDst</b></td></tr>
 <tr class="memdesc:a8d4a33d908143a879cce18c66af3b6f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writable data in polar coordinates. <br /></td></tr>
 <tr class="separator:a8d4a33d908143a879cce18c66af3b6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2148ebc1da07283b8fde15a9d04ff41" id="r_ab2148ebc1da07283b8fde15a9d04ff41"><td class="memItemLeft" align="right" valign="top"><a id="ab2148ebc1da07283b8fde15a9d04ff41" name="ab2148ebc1da07283b8fde15a9d04ff41"></a>
-typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CartesianDst</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CartesianDst</b></td></tr>
 <tr class="memdesc:ab2148ebc1da07283b8fde15a9d04ff41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writable data in Cartesian coordinates. <br /></td></tr>
 <tr class="separator:ab2148ebc1da07283b8fde15a9d04ff41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af36110f9442c61364896b0fe28c6b6bf" id="r_af36110f9442c61364896b0fe28c6b6bf"><td class="memItemLeft" align="right" valign="top"><a id="af36110f9442c61364896b0fe28c6b6bf" name="af36110f9442c61364896b0fe28c6b6bf"></a>
-typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1RhiODIM.html">RhiODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RhiDst</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1RhiODIM.html">RhiODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>RhiDst</b></td></tr>
 <tr class="memdesc:af36110f9442c61364896b0fe28c6b6bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writable data in vertical coordinates, with (pseudo) RHI metadata. <br /></td></tr>
 <tr class="separator:af36110f9442c61364896b0fe28c6b6bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26d75ad7b8adc4e11abe1c8faa28a591" id="r_a26d75ad7b8adc4e11abe1c8faa28a591"><td class="memItemLeft" align="right" valign="top"><a id="a26d75ad7b8adc4e11abe1c8faa28a591" name="a26d75ad7b8adc4e11abe1c8faa28a591"></a>
-typedef <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1VerticalProfileODIM.html">VerticalProfileODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>VprDst</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1DstType.html">DstType</a>&lt; <a class="el" href="classrack_1_1VerticalProfileODIM.html">VerticalProfileODIM</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>VprDst</b></td></tr>
 <tr class="memdesc:a26d75ad7b8adc4e11abe1c8faa28a591"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writable data in vertical coordinates, with profile metadata. <br /></td></tr>
 <tr class="separator:a26d75ad7b8adc4e11abe1c8faa28a591"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac18bd2b57aca8c821319872aef848367" id="r_ac18bd2b57aca8c821319872aef848367"><td class="memItemLeft" align="right" valign="top"><a id="ac18bd2b57aca8c821319872aef848367" name="ac18bd2b57aca8c821319872aef848367"></a>
-typedef <a class="el" href="classdrain_1_1Path.html">drain::Path</a>&lt; <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>,'/', true, false, true &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPath</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classdrain_1_1Path.html">drain::Path</a>&lt; <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>,'/', <a class="el" href="classrack_1_1DataSet.html">true</a>, <a class="el" href="classrack_1_1DataSet.html">false</a>, <a class="el" href="classrack_1_1DataSet.html">true</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPath</b></td></tr>
 <tr class="separator:ac18bd2b57aca8c821319872aef848367"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09080a12e390ddc010090c8eafee6dfb" id="r_a09080a12e390ddc010090c8eafee6dfb"><td class="memItemLeft" align="right" valign="top"><a id="a09080a12e390ddc010090c8eafee6dfb" name="a09080a12e390ddc010090c8eafee6dfb"></a>
-typedef std::list&lt; <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathList</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> std::list&lt; <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathList</b></td></tr>
 <tr class="separator:a09080a12e390ddc010090c8eafee6dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab020fc7d0627e95a6e7dccdde4fb490" id="r_aab020fc7d0627e95a6e7dccdde4fb490"><td class="memItemLeft" align="right" valign="top"><a id="aab020fc7d0627e95a6e7dccdde4fb490" name="aab020fc7d0627e95a6e7dccdde4fb490"></a>
-typedef std::vector&lt; <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathElemSeq</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> std::vector&lt; <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ODIMPathElemSeq</b></td></tr>
 <tr class="separator:aab020fc7d0627e95a6e7dccdde4fb490"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a341f7354d658d71d6c2bf12547f17b3f" id="r_a341f7354d658d71d6c2bf12547f17b3f"><td class="memItemLeft" align="right" valign="top">typedef std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a></td></tr>
+<tr class="memitem:a341f7354d658d71d6c2bf12547f17b3f" id="r_a341f7354d658d71d6c2bf12547f17b3f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">typedef</a> std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a></td></tr>
 <tr class="separator:a341f7354d658d71d6c2bf12547f17b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c77789755b24e30206e39ca8b27321e" id="r_a2c77789755b24e30206e39ca8b27321e"><td class="memItemLeft" align="right" valign="top"><a id="a2c77789755b24e30206e39ca8b27321e" name="a2c77789755b24e30206e39ca8b27321e"></a>
-typedef <a class="el" href="classdrain_1_1CommandInstaller.html">drain::CommandInstaller</a>&lt; 'a', <a class="el" href="structrack_1_1AnDReSection.html">AnDReSection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AnDReInstaller</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classdrain_1_1CommandInstaller.html">drain::CommandInstaller</a>&lt; 'a', <a class="el" href="structrack_1_1AnDReSection.html">AnDReSection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AnDReInstaller</b></td></tr>
 <tr class="memdesc:a2c77789755b24e30206e39ca8b27321e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keep combined OBSOLETE? <br /></td></tr>
 <tr class="separator:a2c77789755b24e30206e39ca8b27321e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ac42ee26fd356179bedeee831bbcd24ea" id="r_ac42ee26fd356179bedeee831bbcd24ea"><td class="memItemLeft" align="right" valign="top"><a id="ac42ee26fd356179bedeee831bbcd24ea" name="ac42ee26fd356179bedeee831bbcd24ea"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;selector)</td></tr>
-<tr class="separator:ac42ee26fd356179bedeee831bbcd24ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3608cb0e7e272833da2bc789a9ac60b" id="r_ad3608cb0e7e272833da2bc789a9ac60b"><td class="memItemLeft" align="right" valign="top"><a id="ad3608cb0e7e272833da2bc789a9ac60b" name="ad3608cb0e7e272833da2bc789a9ac60b"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="structrack_1_1DataOrder.html">DataOrder</a> &amp;order)</td></tr>
-<tr class="separator:ad3608cb0e7e272833da2bc789a9ac60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a516e363f8dc7522725822a84e6e5a2" id="r_a4a516e363f8dc7522725822a84e6e5a2"><td class="memTemplParams" colspan="2">template&lt;typename DT &gt; </td></tr>
-<tr class="memitem:a4a516e363f8dc7522725822a84e6e5a2"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt; &amp;d)</td></tr>
+<tr class="memitem:a4a516e363f8dc7522725822a84e6e5a2" id="r_a4a516e363f8dc7522725822a84e6e5a2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; </td></tr>
+<tr class="memitem:a4a516e363f8dc7522725822a84e6e5a2"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">d</a>)</td></tr>
 <tr class="separator:a4a516e363f8dc7522725822a84e6e5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac237e4ac21a699829d3091b7a8b1bd17" id="r_ac237e4ac21a699829d3091b7a8b1bd17"><td class="memTemplParams" colspan="2"><a id="ac237e4ac21a699829d3091b7a8b1bd17" name="ac237e4ac21a699829d3091b7a8b1bd17"></a>
-template&lt;class DT , <a class="el" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> G&gt; </td></tr>
-<tr class="memitem:ac237e4ac21a699829d3091b7a8b1bd17"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; DT, G &gt; &amp;d)</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">DT</a> , <a class="el" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> G&gt; </td></tr>
+<tr class="memitem:ac237e4ac21a699829d3091b7a8b1bd17"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataGroup.html">DataGroup</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a>, <a class="el" href="classrack_1_1DataSet.html">G</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">d</a>)</td></tr>
 <tr class="separator:ac237e4ac21a699829d3091b7a8b1bd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab70104e0c5de0199fba6053cd6a4db82" id="r_ab70104e0c5de0199fba6053cd6a4db82"><td class="memTemplParams" colspan="2"><a id="ab70104e0c5de0199fba6053cd6a4db82" name="ab70104e0c5de0199fba6053cd6a4db82"></a>
-template&lt;typename DT &gt; </td></tr>
-<tr class="memitem:ab70104e0c5de0199fba6053cd6a4db82"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1Data.html">Data</a>&lt; DT &gt; &amp;d)</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; </td></tr>
+<tr class="memitem:ab70104e0c5de0199fba6053cd6a4db82"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Data.html">Data</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">d</a>)</td></tr>
 <tr class="separator:ab70104e0c5de0199fba6053cd6a4db82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a520e06eaaee828f4ae4f36494c3af378" id="r_a520e06eaaee828f4ae4f36494c3af378"><td class="memTemplParams" colspan="2"><a id="a520e06eaaee828f4ae4f36494c3af378" name="a520e06eaaee828f4ae4f36494c3af378"></a>
-template&lt;typename DT &gt; </td></tr>
-<tr class="memitem:a520e06eaaee828f4ae4f36494c3af378"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; DT &gt; &amp;d)</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; </td></tr>
+<tr class="memitem:a520e06eaaee828f4ae4f36494c3af378"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">d</a>)</td></tr>
 <tr class="memdesc:a520e06eaaee828f4ae4f36494c3af378"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps quantities and geometry. <br /></td></tr>
 <tr class="separator:a520e06eaaee828f4ae4f36494c3af378"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1d4f6fcd23c68f0af3003ea56396f62" id="r_ac1d4f6fcd23c68f0af3003ea56396f62"><td class="memItemLeft" align="right" valign="top"><a id="ac1d4f6fcd23c68f0af3003ea56396f62" name="ac1d4f6fcd23c68f0af3003ea56396f62"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1DataCoder.html">DataCoder</a> &amp;coder)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataCoder.html">DataCoder</a> &amp;<a class="el" href="classrack_1_1DataSet.html">coder</a>)</td></tr>
 <tr class="separator:ac1d4f6fcd23c68f0af3003ea56396f62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8c9d46e32d9f0495a5bc9d744461e81" id="r_ad8c9d46e32d9f0495a5bc9d744461e81"><td class="memItemLeft" align="right" valign="top"><a id="ad8c9d46e32d9f0495a5bc9d744461e81" name="ad8c9d46e32d9f0495a5bc9d744461e81"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (DataOrder::Crit)</td></tr>
@@ -1027,62 +1067,70 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 <tr class="memitem:ac681a7d6a4a2f59deee4bb0131558984" id="r_ac681a7d6a4a2f59deee4bb0131558984"><td class="memItemLeft" align="right" valign="top"><a id="ac681a7d6a4a2f59deee4bb0131558984" name="ac681a7d6a4a2f59deee4bb0131558984"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (<a class="el" href="classrack_1_1DataSelector.html#a0aae288aae6ee801cf92cd15f6d57df5">DataSelector::Prf</a>)</td></tr>
 <tr class="separator:ac681a7d6a4a2f59deee4bb0131558984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac42ee26fd356179bedeee831bbcd24ea" id="r_ac42ee26fd356179bedeee831bbcd24ea"><td class="memItemLeft" align="right" valign="top"><a id="ac42ee26fd356179bedeee831bbcd24ea" name="ac42ee26fd356179bedeee831bbcd24ea"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSelector.html">DataSelector</a> &amp;<a class="el" href="classrack_1_1DataSet.html">selector</a>)</td></tr>
+<tr class="separator:ac42ee26fd356179bedeee831bbcd24ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3608cb0e7e272833da2bc789a9ac60b" id="r_ad3608cb0e7e272833da2bc789a9ac60b"><td class="memItemLeft" align="right" valign="top"><a id="ad3608cb0e7e272833da2bc789a9ac60b" name="ad3608cb0e7e272833da2bc789a9ac60b"></a>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1DataOrder.html">DataOrder</a> &amp;order)</td></tr>
+<tr class="separator:ad3608cb0e7e272833da2bc789a9ac60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e1f4d9172ae991f994a282e2bcd5d2c" id="r_a5e1f4d9172ae991f994a282e2bcd5d2c"><td class="memItemLeft" align="right" valign="top"><a id="a5e1f4d9172ae991f994a282e2bcd5d2c" name="a5e1f4d9172ae991f994a282e2bcd5d2c"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;odim)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIM.html">ODIM</a> &amp;odim)</td></tr>
 <tr class="separator:a5e1f4d9172ae991f994a282e2bcd5d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3409bc9c6ca228375d285ae83a978d9" id="r_aa3409bc9c6ca228375d285ae83a978d9"><td class="memItemLeft" align="right" valign="top"><a id="aa3409bc9c6ca228375d285ae83a978d9" name="aa3409bc9c6ca228375d285ae83a978d9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e1, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e2)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">e1</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">e2</a>)</td></tr>
 <tr class="separator:aa3409bc9c6ca228375d285ae83a978d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3057539c7dfb3a4859e8df1adca566f1" id="r_a3057539c7dfb3a4859e8df1adca566f1"><td class="memItemLeft" align="right" valign="top"><a id="a3057539c7dfb3a4859e8df1adca566f1" name="a3057539c7dfb3a4859e8df1adca566f1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;</b> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e1, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e2)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">e1</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">e2</a>)</td></tr>
 <tr class="memdesc:a3057539c7dfb3a4859e8df1adca566f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Important! <br /></td></tr>
 <tr class="separator:a3057539c7dfb3a4859e8df1adca566f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93fe79d781da647da1b543bc45b80ca7" id="r_a93fe79d781da647da1b543bc45b80ca7"><td class="memItemLeft" align="right" valign="top"><a id="a93fe79d781da647da1b543bc45b80ca7" name="a93fe79d781da647da1b543bc45b80ca7"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;p)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;p)</td></tr>
 <tr class="separator:a93fe79d781da647da1b543bc45b80ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace9c61917353f235f87721027f950d92" id="r_ace9c61917353f235f87721027f950d92"><td class="memItemLeft" align="right" valign="top"><a id="ace9c61917353f235f87721027f950d92" name="ace9c61917353f235f87721027f950d92"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e1, const <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e2)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">e1</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">e2</a>)</td></tr>
 <tr class="separator:ace9c61917353f235f87721027f950d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18fb9038af8779982a2170c98ae3a543" id="r_a18fb9038af8779982a2170c98ae3a543"><td class="memItemLeft" align="right" valign="top"><a id="a18fb9038af8779982a2170c98ae3a543" name="a18fb9038af8779982a2170c98ae3a543"></a>
-std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;&gt;</b> (std::istream &amp;istr, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;p)</td></tr>
+std::istream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&gt;&gt;</b> (std::istream &amp;<a class="el" href="classrack_1_1DataSet.html">istr</a>, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;p)</td></tr>
 <tr class="separator:a18fb9038af8779982a2170c98ae3a543"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e5c00485f86aabb2930a4f880882822" id="r_a3e5c00485f86aabb2930a4f880882822"><td class="memItemLeft" align="right" valign="top"><a id="a3e5c00485f86aabb2930a4f880882822" name="a3e5c00485f86aabb2930a4f880882822"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a> &amp;elem)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a> &amp;elem)</td></tr>
 <tr class="separator:a3e5c00485f86aabb2930a4f880882822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3226157f932c1d561136242a7a27f44" id="r_ae3226157f932c1d561136242a7a27f44"><td class="memItemLeft" align="right" valign="top"><a id="ae3226157f932c1d561136242a7a27f44" name="ae3226157f932c1d561136242a7a27f44"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp;p)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp;p)</td></tr>
 <tr class="separator:ae3226157f932c1d561136242a7a27f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96150b90eee598a5199f8fedd58605df" id="r_a96150b90eee598a5199f8fedd58605df"><td class="memItemLeft" align="right" valign="top"><a id="a96150b90eee598a5199f8fedd58605df" name="a96150b90eee598a5199f8fedd58605df"></a>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>completePathParser</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;s, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path, std::string &amp;attributeKey, std::string &amp;<a class="el" href="classrack_1_1DataSet.html">attributeValue</a>)</td></tr>
+<tr class="separator:a96150b90eee598a5199f8fedd58605df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92103be145791bd37553fbf6f25a6193" id="r_a92103be145791bd37553fbf6f25a6193"><td class="memItemLeft" align="right" valign="top"><a id="a92103be145791bd37553fbf6f25a6193" name="a92103be145791bd37553fbf6f25a6193"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ODIMNodeValidator.html">ODIMNodeValidator</a> &amp;v)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ODIMNodeValidator.html">ODIMNodeValidator</a> &amp;v)</td></tr>
 <tr class="separator:a92103be145791bd37553fbf6f25a6193"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9752acd22ff43eedc9da2929dc2a0776" id="r_a9752acd22ff43eedc9da2929dc2a0776"><td class="memItemLeft" align="right" valign="top"><a id="a9752acd22ff43eedc9da2929dc2a0776" name="a9752acd22ff43eedc9da2929dc2a0776"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;q)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Quantity.html">Quantity</a> &amp;<a class="el" href="classrack_1_1DataSet.html">q</a>)</td></tr>
 <tr class="separator:a9752acd22ff43eedc9da2929dc2a0776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6732304fbb4d42d40a53372e2a6c919" id="r_ae6732304fbb4d42d40a53372e2a6c919"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#ae6732304fbb4d42d40a53372e2a6c919">getQuantityMap</a> ()</td></tr>
 <tr class="separator:ae6732304fbb4d42d40a53372e2a6c919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84efd4b5c5a1b9e0e4b24fe0715006cc" id="r_a84efd4b5c5a1b9e0e4b24fe0715006cc"><td class="memItemLeft" align="right" valign="top"><a id="a84efd4b5c5a1b9e0e4b24fe0715006cc" name="a84efd4b5c5a1b9e0e4b24fe0715006cc"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;map)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1QuantityMap.html">QuantityMap</a> &amp;map)</td></tr>
 <tr class="separator:a84efd4b5c5a1b9e0e4b24fe0715006cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69d650a30847d0a3b2de45c646a589c6" id="r_a69d650a30847d0a3b2de45c646a589c6"><td class="memItemLeft" align="right" valign="top"><a id="a69d650a30847d0a3b2de45c646a589c6" name="a69d650a30847d0a3b2de45c646a589c6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>metres2pix</b> (const <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a> &amp;frame, const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; double &gt; &amp;geo, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;img)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>metres2pix</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1GeoFrame.html">GeoFrame</a> &amp;frame, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt; &amp;geo, <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;<a class="el" href="classrack_1_1DataSet.html">img</a>)</td></tr>
 <tr class="separator:a69d650a30847d0a3b2de45c646a589c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af762effc974ce9f525b957d92e15848f" id="r_af762effc974ce9f525b957d92e15848f"><td class="memItemLeft" align="right" valign="top"><a id="af762effc974ce9f525b957d92e15848f" name="af762effc974ce9f525b957d92e15848f"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>quoted</b> (const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path)</td></tr>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>quoted</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path)</td></tr>
 <tr class="separator:af762effc974ce9f525b957d92e15848f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65e82e5caef8014ec1c6cb2f4d173818" id="r_a65e82e5caef8014ec1c6cb2f4d173818"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a65e82e5caef8014ec1c6cb2f4d173818">writeGroupToDot</a> (std::ostream &amp;ostr, const Hi5Tree &amp;group, int &amp;index, <a class="el" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> selector, const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path=<a class="el" href="classdrain_1_1Path.html">ODIMPath</a>())</td></tr>
+<tr class="memitem:a65e82e5caef8014ec1c6cb2f4d173818" id="r_a65e82e5caef8014ec1c6cb2f4d173818"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a65e82e5caef8014ec1c6cb2f4d173818">writeGroupToDot</a> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;group, <a class="el" href="classrack_1_1DataSet.html">int</a> &amp;index, <a class="el" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> <a class="el" href="classrack_1_1DataSet.html">selector</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path=<a class="el" href="classdrain_1_1Path.html">ODIMPath</a>())</td></tr>
 <tr class="separator:a65e82e5caef8014ec1c6cb2f4d173818"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af438f7e5852a5bc0a886e8cac3fc042e" id="r_af438f7e5852a5bc0a886e8cac3fc042e"><td class="memTemplParams" colspan="2">template&lt;class P &gt; </td></tr>
-<tr class="memitem:af438f7e5852a5bc0a886e8cac3fc042e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#af438f7e5852a5bc0a886e8cac3fc042e">sampleData</a> (const typename P::dataset_t &amp;dataset, const <a class="el" href="classdrain_1_1image_1_1Sampler.html">Sampler</a> &amp;sampler, const std::string &amp;format, std::ostream &amp;ostr)</td></tr>
+<tr class="memitem:af438f7e5852a5bc0a886e8cac3fc042e" id="r_af438f7e5852a5bc0a886e8cac3fc042e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> P &gt; </td></tr>
+<tr class="memitem:af438f7e5852a5bc0a886e8cac3fc042e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#af438f7e5852a5bc0a886e8cac3fc042e">sampleData</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">typename</a> P::dataset_t &amp;<a class="el" href="classrack_1_1DataSet.html">dataset</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1Sampler.html">Sampler</a> &amp;sampler, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;format, std::ostream &amp;ostr)</td></tr>
 <tr class="separator:af438f7e5852a5bc0a886e8cac3fc042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fe0d3cfb8ca6e0e45df72f1fd73a262" id="r_a7fe0d3cfb8ca6e0e45df72f1fd73a262"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a7fe0d3cfb8ca6e0e45df72f1fd73a262">addCoordMonitor</a> (drain::image::TreeSVG &amp;textObject, const std::string &amp;cls)</td></tr>
-<tr class="separator:a7fe0d3cfb8ca6e0e45df72f1fd73a262"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf6b7e9b2bdf6bc0d84419ee45e1dd4c" id="r_aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"><td class="memTemplParams" colspan="2"><a id="aaf6b7e9b2bdf6bc0d84419ee45e1dd4c" name="aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>encodeToRGBAimage</b> (const <a class="el" href="classdrain_1_1image_1_1Image.html">Image</a> &amp;data, <a class="el" href="classdrain_1_1image_1_1ImageT.html">drain::image::ImageT</a>&lt; uint8_t &gt; &amp;dataImage)</td></tr>
-<tr class="separator:aaf6b7e9b2bdf6bc0d84419ee45e1dd4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ce5c7d0b4aab598c55357c9d0f8e6c3" id="r_a0ce5c7d0b4aab598c55357c9d0f8e6c3"><td class="memItemLeft" align="right" valign="top"><a id="a0ce5c7d0b4aab598c55357c9d0f8e6c3" name="a0ce5c7d0b4aab598c55357c9d0f8e6c3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_OSTREAM</b> (<a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a>)</td></tr>
+<tr class="separator:a0ce5c7d0b4aab598c55357c9d0f8e6c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46d9de098257c751c4bb36a0b0b86c2a" id="r_a46d9de098257c751c4bb36a0b0b86c2a"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a46d9de098257c751c4bb36a0b0b86c2a">addCoordMonitor</a> (drain::image::TreeSVG &amp;<a class="el" href="classrack_1_1DataSet.html">textObject</a>, <a class="el" href="classdrain_1_1image_1_1MouseXML.html#a064dd6903edf7f9e2f353b8c336db620">MouseXML::ElemClass</a> cls)</td></tr>
+<tr class="separator:a46d9de098257c751c4bb36a0b0b86c2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4529b561ba64738c5b239d58fe62f7fc" id="r_a4529b561ba64738c5b239d58fe62f7fc"><td class="memItemLeft" align="right" valign="top">drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a4529b561ba64738c5b239d58fe62f7fc">addDummyObject</a> (drain::image::TreeSVG &amp;group)</td></tr>
 <tr class="separator:a4529b561ba64738c5b239d58fe62f7fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11b6f031ad0ea0856803ce1677e42c80" id="r_a11b6f031ad0ea0856803ce1677e42c80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a11b6f031ad0ea0856803ce1677e42c80">process</a> (int argc, const char **argv)</td></tr>
+<tr class="memitem:a11b6f031ad0ea0856803ce1677e42c80" id="r_a11b6f031ad0ea0856803ce1677e42c80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a11b6f031ad0ea0856803ce1677e42c80">process</a> (<a class="el" href="classrack_1_1DataSet.html">int</a> <a class="el" href="classrack_1_1DataSet.html">argc</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">char</a> **<a class="el" href="classrack_1_1DataSet.html">argv</a>)</td></tr>
 <tr class="separator:a11b6f031ad0ea0856803ce1677e42c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4dbc1bdf80196654e84e25936287f2d" id="r_aa4dbc1bdf80196654e84e25936287f2d"><td class="memItemLeft" align="right" valign="top"><a id="aa4dbc1bdf80196654e84e25936287f2d" name="aa4dbc1bdf80196654e84e25936287f2d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRAIN_ENUM_DICT</b> (Hdf5Context::Hi5Role)</td></tr>
@@ -1092,86 +1140,89 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memdesc:a30f6515d7c254556c6b64f0ded9424a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default instance. <br /></td></tr>
 <tr class="separator:a30f6515d7c254556c6b64f0ded9424a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a621bb2ffa4b96b7b214859e4c38973a5" id="r_a621bb2ffa4b96b7b214859e4c38973a5"><td class="memItemLeft" align="right" valign="top"><a id="a621bb2ffa4b96b7b214859e4c38973a5" name="a621bb2ffa4b96b7b214859e4c38973a5"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1ProductBase.html">rack::ProductBase</a> &amp;op)</td></tr>
+std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1ProductBase.html">rack::ProductBase</a> &amp;<a class="el" href="classrack_1_1DataSet.html">op</a>)</td></tr>
 <tr class="separator:a621bb2ffa4b96b7b214859e4c38973a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a253917f57da82948270417a9f334ac1e" id="r_a253917f57da82948270417a9f334ac1e"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a253917f57da82948270417a9f334ac1e"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#a253917f57da82948270417a9f334ac1e">dbzToZ</a> (const T &amp;dBZ)</td></tr>
+<tr class="memitem:a253917f57da82948270417a9f334ac1e" id="r_a253917f57da82948270417a9f334ac1e"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> T &gt; </td></tr>
+<tr class="memitem:a253917f57da82948270417a9f334ac1e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#a253917f57da82948270417a9f334ac1e">dbzToZ</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> T &amp;<a class="el" href="classrack_1_1DataSet.html">dBZ</a>)</td></tr>
 <tr class="separator:a253917f57da82948270417a9f334ac1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98a437f5978978602ddb0dade22539ac" id="r_a98a437f5978978602ddb0dade22539ac"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a98a437f5978978602ddb0dade22539ac"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#a98a437f5978978602ddb0dade22539ac">zToDbz</a> (const T &amp;Z)</td></tr>
+<tr class="memitem:a98a437f5978978602ddb0dade22539ac" id="r_a98a437f5978978602ddb0dade22539ac"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> T &gt; </td></tr>
+<tr class="memitem:a98a437f5978978602ddb0dade22539ac"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacerack.html#a98a437f5978978602ddb0dade22539ac">zToDbz</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> T &amp;<a class="el" href="classrack_1_1DataSet.html">Z</a>)</td></tr>
 <tr class="separator:a98a437f5978978602ddb0dade22539ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2bd517538e8909d6f46fa3dc1dcb99e" id="r_ab2bd517538e8909d6f46fa3dc1dcb99e"><td class="memTemplParams" colspan="2"><a id="ab2bd517538e8909d6f46fa3dc1dcb99e" name="ab2bd517538e8909d6f46fa3dc1dcb99e"></a>
-template&lt;class OD &gt; </td></tr>
-<tr class="memitem:ab2bd517538e8909d6f46fa3dc1dcb99e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, const <a class="el" href="classrack_1_1RadarDataPicker.html">RadarDataPicker</a>&lt; OD &gt; &amp;p)</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">OD</a> &gt; </td></tr>
+<tr class="memitem:ab2bd517538e8909d6f46fa3dc1dcb99e"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;ostr, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1RadarDataPicker.html">RadarDataPicker</a>&lt; <a class="el" href="classrack_1_1DataSet.html">OD</a> &gt; &amp;p)</td></tr>
 <tr class="separator:ab2bd517538e8909d6f46fa3dc1dcb99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:ad0e225b7a1c56b3d37ac068238e4f755" id="r_ad0e225b7a1c56b3d37ac068238e4f755"><td class="memItemLeft" align="right" valign="top"><a id="ad0e225b7a1c56b3d37ac068238e4f755" name="ad0e225b7a1c56b3d37ac068238e4f755"></a>
-<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimROOT</b> (ODIMPathElem::ROOT)</td></tr>
+<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimROOT</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ODIMPathElem::ROOT</a>)</td></tr>
 <tr class="separator:ad0e225b7a1c56b3d37ac068238e4f755"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90863738dab3c124b26001572a7cac19" id="r_a90863738dab3c124b26001572a7cac19"><td class="memItemLeft" align="right" valign="top"><a id="a90863738dab3c124b26001572a7cac19" name="a90863738dab3c124b26001572a7cac19"></a>
-<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimWHERE</b> (ODIMPathElem::WHERE)</td></tr>
+<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimWHERE</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#ae645a547d8405a586c62a717666c25b3">ODIMPathElem::WHERE</a>)</td></tr>
 <tr class="separator:a90863738dab3c124b26001572a7cac19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a954b2fc5dac594e5f6950cf4de50c564" id="r_a954b2fc5dac594e5f6950cf4de50c564"><td class="memItemLeft" align="right" valign="top"><a id="a954b2fc5dac594e5f6950cf4de50c564" name="a954b2fc5dac594e5f6950cf4de50c564"></a>
-<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimWHAT</b> (ODIMPathElem::WHAT)</td></tr>
+<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimWHAT</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#a1884541cc245c9e95976459d1694dd70">ODIMPathElem::WHAT</a>)</td></tr>
 <tr class="separator:a954b2fc5dac594e5f6950cf4de50c564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7bb1b915a7433ecda3ed604466ec6b0" id="r_ad7bb1b915a7433ecda3ed604466ec6b0"><td class="memItemLeft" align="right" valign="top"><a id="ad7bb1b915a7433ecda3ed604466ec6b0" name="ad7bb1b915a7433ecda3ed604466ec6b0"></a>
-<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimARRAY</b> (ODIMPathElem::ARRAY)</td></tr>
+<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>odimARRAY</b> (<a class="el" href="classrack_1_1ODIMPathElem.html#ae7011caba8882ad9b6bef266ac92335a">ODIMPathElem::ARRAY</a>)</td></tr>
 <tr class="separator:ad7bb1b915a7433ecda3ed604466ec6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaade3b0a8d2f5a59bdbfeeb480758797" id="r_aaade3b0a8d2f5a59bdbfeeb480758797"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#aaade3b0a8d2f5a59bdbfeeb480758797">listFileExtension</a> (&quot;.*\\.(lst|vol)$&quot;, REG_EXTENDED)</td></tr>
-<tr class="memdesc:aaade3b0a8d2f5a59bdbfeeb480758797"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising hdf5 files.  <br /></td></tr>
-<tr class="separator:aaade3b0a8d2f5a59bdbfeeb480758797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cc85cc7b60148516528acf5eeaa5d28" id="r_a7cc85cc7b60148516528acf5eeaa5d28"><td class="memItemLeft" align="right" valign="top"><a id="a7cc85cc7b60148516528acf5eeaa5d28" name="a7cc85cc7b60148516528acf5eeaa5d28"></a>
-const <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>listFileInfo</b> (&quot;lst|vol&quot;)</td></tr>
+<tr class="memitem:a7cc85cc7b60148516528acf5eeaa5d28" id="r_a7cc85cc7b60148516528acf5eeaa5d28"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a7cc85cc7b60148516528acf5eeaa5d28">listFileInfo</a> (&quot;lst|<a class="el" href="classrack_1_1DataSet.html">vol&quot;</a>)</td></tr>
+<tr class="memdesc:a7cc85cc7b60148516528acf5eeaa5d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising hdf5 files.  <br /></td></tr>
 <tr class="separator:a7cc85cc7b60148516528acf5eeaa5d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cda91b3da2d6f2815439749807e5da5" id="r_a2cda91b3da2d6f2815439749807e5da5"><td class="memItemLeft" align="right" valign="top"><a id="a2cda91b3da2d6f2815439749807e5da5" name="a2cda91b3da2d6f2815439749807e5da5"></a>
-const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>textFileExtension</b> (&quot;.*\\.(txt)$&quot;, REG_EXTENDED|REG_ICASE)</td></tr>
-<tr class="memdesc:a2cda91b3da2d6f2815439749807e5da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising text files. <br /></td></tr>
-<tr class="separator:a2cda91b3da2d6f2815439749807e5da5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a065c43967b089b314d28001b53da956a" id="r_a065c43967b089b314d28001b53da956a"><td class="memItemLeft" align="right" valign="top"><a id="a065c43967b089b314d28001b53da956a" name="a065c43967b089b314d28001b53da956a"></a>
-const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>arrayFileExtension</b> (&quot;.*\\.(mat)$&quot;, REG_EXTENDED|REG_ICASE)</td></tr>
-<tr class="memdesc:a065c43967b089b314d28001b53da956a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising numeric array files (in plain text format anyway). <br /></td></tr>
+<tr class="memitem:aebdaf39b4655361185a9698166ed41b5" id="r_aebdaf39b4655361185a9698166ed41b5"><td class="memItemLeft" align="right" valign="top"><a id="aebdaf39b4655361185a9698166ed41b5" name="aebdaf39b4655361185a9698166ed41b5"></a>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>textFileInfo</b> (&quot;txt&quot;)</td></tr>
+<tr class="memdesc:aebdaf39b4655361185a9698166ed41b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising text files. <br /></td></tr>
+<tr class="separator:aebdaf39b4655361185a9698166ed41b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d73ad70cc2ec98d8fa7273d3466ab0c" id="r_a1d73ad70cc2ec98d8fa7273d3466ab0c"><td class="memItemLeft" align="right" valign="top"><a id="a1d73ad70cc2ec98d8fa7273d3466ab0c" name="a1d73ad70cc2ec98d8fa7273d3466ab0c"></a>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>jsonFileInfo</b> (&quot;json&quot;)</td></tr>
+<tr class="separator:a1d73ad70cc2ec98d8fa7273d3466ab0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a065c43967b089b314d28001b53da956a" id="r_a065c43967b089b314d28001b53da956a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerack.html#a065c43967b089b314d28001b53da956a">arrayFileExtension</a> (&quot;.*\\.(mat)$&quot;, REG_EXTENDED|<a class="el" href="classrack_1_1DataSet.html">REG_ICASE</a>)</td></tr>
+<tr class="memdesc:a065c43967b089b314d28001b53da956a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising text files.  <br /></td></tr>
 <tr class="separator:a065c43967b089b314d28001b53da956a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae24579491e45b3ad1f1b50479a3119fc" id="r_ae24579491e45b3ad1f1b50479a3119fc"><td class="memItemLeft" align="right" valign="top"><a id="ae24579491e45b3ad1f1b50479a3119fc" name="ae24579491e45b3ad1f1b50479a3119fc"></a>
-const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sampleFileExtension</b> (&quot;.*\\.(dat)$&quot;, REG_EXTENDED|REG_ICASE)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>sampleFileExtension</b> (&quot;.*\\.(dat)$&quot;, REG_EXTENDED|<a class="el" href="classrack_1_1DataSet.html">REG_ICASE</a>)</td></tr>
 <tr class="memdesc:ae24579491e45b3ad1f1b50479a3119fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for sparsely resampled data. <br /></td></tr>
 <tr class="separator:ae24579491e45b3ad1f1b50479a3119fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7c7d1bbd875a2b8fc7d4f39fce58929" id="r_aa7c7d1bbd875a2b8fc7d4f39fce58929"><td class="memItemLeft" align="right" valign="top"><a id="aa7c7d1bbd875a2b8fc7d4f39fce58929" name="aa7c7d1bbd875a2b8fc7d4f39fce58929"></a>
-const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dotFileExtension</b> (&quot;.*\\.(dot)$&quot;, REG_EXTENDED|REG_ICASE)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dotFileExtension</b> (&quot;.*\\.(dot)$&quot;, REG_EXTENDED|<a class="el" href="classrack_1_1DataSet.html">REG_ICASE</a>)</td></tr>
 <tr class="memdesc:aa7c7d1bbd875a2b8fc7d4f39fce58929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising Graphviz DOT files. <br /></td></tr>
 <tr class="separator:aa7c7d1bbd875a2b8fc7d4f39fce58929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aebdfefe173f811b4d1ee3e4068caee" id="r_a3aebdfefe173f811b4d1ee3e4068caee"><td class="memItemLeft" align="right" valign="top"><a id="a3aebdfefe173f811b4d1ee3e4068caee" name="a3aebdfefe173f811b4d1ee3e4068caee"></a>
-const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>h5FileExtension</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>h5FileExtension</b></td></tr>
 <tr class="memdesc:a3aebdfefe173f811b4d1ee3e4068caee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising hdf5 files. <br /></td></tr>
 <tr class="separator:a3aebdfefe173f811b4d1ee3e4068caee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a910d7f597eb1ab4ae9bee3a3d8b42214" id="r_a910d7f597eb1ab4ae9bee3a3d8b42214"><td class="memItemLeft" align="right" valign="top"><a id="a910d7f597eb1ab4ae9bee3a3d8b42214" name="a910d7f597eb1ab4ae9bee3a3d8b42214"></a>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a>&#160;</td><td class="memItemRight" valign="bottom"><b>listFileExtension</b></td></tr>
+<tr class="memdesc:a910d7f597eb1ab4ae9bee3a3d8b42214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input file lists. <br /></td></tr>
+<tr class="separator:a910d7f597eb1ab4ae9bee3a3d8b42214"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbca5f3641856a2d189fb37dee290fb6" id="r_adbca5f3641856a2d189fb37dee290fb6"><td class="memItemLeft" align="right" valign="top"><a id="adbca5f3641856a2d189fb37dee290fb6" name="adbca5f3641856a2d189fb37dee290fb6"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUSi</b> = 6371000</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUSi</b> = 6371000</td></tr>
 <tr class="memdesc:adbca5f3641856a2d189fb37dee290fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Approximated radius of Earth, integer. <br /></td></tr>
 <tr class="separator:adbca5f3641856a2d189fb37dee290fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb7703740f4124ff50163bdc2b0d1da" id="r_a2cb7703740f4124ff50163bdc2b0d1da"><td class="memItemLeft" align="right" valign="top"><a id="a2cb7703740f4124ff50163bdc2b0d1da" name="a2cb7703740f4124ff50163bdc2b0d1da"></a>
-const double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS</b> = static_cast&lt;double&gt;(EARTH_RADIUSi)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS</b> = <a class="el" href="classrack_1_1DataSet.html">static_cast</a>&lt;<a class="el" href="classrack_1_1DataSet.html">double</a>&gt;(EARTH_RADIUSi)</td></tr>
 <tr class="memdesc:a2cb7703740f4124ff50163bdc2b0d1da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Approximated radius of Earth, integer. <br /></td></tr>
 <tr class="separator:a2cb7703740f4124ff50163bdc2b0d1da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70729159c5b27a350bbe3584469cfa73" id="r_a70729159c5b27a350bbe3584469cfa73"><td class="memItemLeft" align="right" valign="top"><a id="a70729159c5b27a350bbe3584469cfa73" name="a70729159c5b27a350bbe3584469cfa73"></a>
-const double&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS_43</b> = EARTH_RADIUS * 4.0 / 3.0</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>EARTH_RADIUS_43</b> = EARTH_RADIUS * 4.0 / 3.0</td></tr>
 <tr class="memdesc:a70729159c5b27a350bbe3584469cfa73"><td class="mdescLeft">&#160;</td><td class="mdescRight">The standard 4/3 radius applied in radar to compensate the decreasing density of the atmosphere. <br /></td></tr>
 <tr class="separator:a70729159c5b27a350bbe3584469cfa73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1f3fd00e58578b19545f6b4e151389d" id="r_ad1f3fd00e58578b19545f6b4e151389d"><td class="memItemLeft" align="right" valign="top"><a id="ad1f3fd00e58578b19545f6b4e151389d" name="ad1f3fd00e58578b19545f6b4e151389d"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadiusMI</b> = 6371000</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadiusMI</b> = 6371000</td></tr>
 <tr class="separator:ad1f3fd00e58578b19545f6b4e151389d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a561b6a61a2d863adaadbc5b78c531e6b" id="r_a561b6a61a2d863adaadbc5b78c531e6b"><td class="memItemLeft" align="right" valign="top"><a id="a561b6a61a2d863adaadbc5b78c531e6b" name="a561b6a61a2d863adaadbc5b78c531e6b"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43MI</b> = (earthRadiusMI * 4) / 3</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43MI</b> = (earthRadiusMI * 4) / 3</td></tr>
 <tr class="separator:a561b6a61a2d863adaadbc5b78c531e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac10447db375e68c7f4ccf225f5311067" id="r_ac10447db375e68c7f4ccf225f5311067"><td class="memItemLeft" align="right" valign="top"><a id="ac10447db375e68c7f4ccf225f5311067" name="ac10447db375e68c7f4ccf225f5311067"></a>
-const float&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43MF</b> = static_cast&lt;float&gt;(earthRadiusMI) * 4.0 / 3.0</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">float</a>&#160;</td><td class="memItemRight" valign="bottom"><b>earthRadius43MF</b> = <a class="el" href="classrack_1_1DataSet.html">static_cast</a>&lt;<a class="el" href="classrack_1_1DataSet.html">float</a>&gt;(earthRadiusMI) * 4.0 / 3.0</td></tr>
 <tr class="separator:ac10447db375e68c7f4ccf225f5311067"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb78d90f796066eca175346a0fee5a72" id="r_acb78d90f796066eca175346a0fee5a72"><td class="memItemLeft" align="right" valign="top"><a id="acb78d90f796066eca175346a0fee5a72" name="acb78d90f796066eca175346a0fee5a72"></a>
-const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarLeftCoords</b> (drain::image::EdgePolicy::POLAR, drain::image::EdgePolicy::WRAP, drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::WRAP)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>polarLeftCoords</b> (drain::image::EdgePolicy::POLAR, drain::image::EdgePolicy::WRAP, drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::WRAP)</td></tr>
 <tr class="memdesc:acb78d90f796066eca175346a0fee5a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard (?) orientation of polar coords in radar data. <br /></td></tr>
 <tr class="separator:acb78d90f796066eca175346a0fee5a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67bdb4a4cc121df49ff91b187ed7b2c0" id="r_a67bdb4a4cc121df49ff91b187ed7b2c0"><td class="memItemLeft" align="right" valign="top"><a id="a67bdb4a4cc121df49ff91b187ed7b2c0" name="a67bdb4a4cc121df49ff91b187ed7b2c0"></a>
-const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>limitCoords</b> (drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::LIMIT)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a>&#160;</td><td class="memItemRight" valign="bottom"><b>limitCoords</b> (drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::LIMIT, drain::image::EdgePolicy::LIMIT)</td></tr>
 <tr class="memdesc:a67bdb4a4cc121df49ff91b187ed7b2c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default coordinate policy; no wrapping or mirroring at edges. <br /></td></tr>
 <tr class="separator:a67bdb4a4cc121df49ff91b187ed7b2c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -1185,12 +1236,41 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Rack is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser Public License for more details.</p>
 <p>You should have received a copy of the GNU General Public License along with Rack. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 <p>Version history:</p>
+<p>Version 21.0</p><ul>
+<li>HDF5 output: write chunk size; set Conventions only if unset Release 21.0.1</li>
+<li>Removed rack::ImagePanel (now in drain) Release 21.0.2</li>
+<li>SVG image element transform tests Release 21.0.4</li>
+<li>TransformerSVG Version 21.1, 21.2</li>
+<li>Quay.io test Version 21.3</li>
+<li>undetectQualityCoeff, default=0.95; Version 21.3.1</li>
+<li>Minor changes for RHEL environments Version 21.3.2</li>
+<li>distanceWeight Version 21.4</li>
+<li>modifyQuality (removed distanceWeight)</li>
+<li>select cleared after outputFile Release 21.4.1</li>
+<li>Python fixes Version 21.5</li>
+<li>Fixed typos and minor bugs causing warnings Version 21.6</li>
+<li>Claude based checks and small edits Release 21.6.0 &ndash;select applies directly to output file (no &ndash;delete needed) Release 21.6.1 &ndash;delete attribute bug detected Release 21.6.2</li>
+<li><a class="el" href="classrack_1_1DataModifier.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataModifier</a>: revised data selection (exclusion) &ndash;delete param 'attribute' added Release 21.6.3&ndash;</li>
+<li>Removed debug output</li>
+<li>Debugging quay.io build problem</li>
+<li>Small adjustments in internal documentation Version 21.7</li>
+<li>Accumulator fields: w - WEIGHT, W - WEIGHT_GLOBAL &ndash;append data,qualityGroup=dataset - choose group for quality, in cCreate</li>
+<li>Fix: getHi5() does not return empty (parallel computing) Release 21.7.1</li>
+<li>Fix: C++14 nullptr_t issues Version 21.8</li>
+<li>Polar accumulation: &ndash;pExtract supports field names ("DATA,WEIGHT,COUNT"), not only "dwsc". Release 21.8.1</li>
+<li>Fix: relative Doppler speed scale back to plain "VRAD". Release 21.8.2</li>
+<li>Fix: outputTree, empty nodes back</li>
+<li><a class="el" href="classrack_1_1Cart2PolarOp.html" title="Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.">Cart2PolarOp</a>, &ndash;cPolar rscale=500,lon=21.64,lat=60.12 Version 21.9</li>
+<li>PVOL/SCAN automagic: single sweeps extracted from a volume will have object=SCAN Version 21.9.1</li>
+<li>Fix: Data::copyEncoding(EncodingODIM), affected CumulativePolarOp Release 21.9.2</li>
+<li>CI/CD test. Identical with 21.9.1.</li>
+</ul>
 <p>Version 20</p><ul>
 <li>Revised SVG output, including gPanel and gRadarLabel</li>
 <li>VsCode support for C++11, and revised Makefile Version 20.0</li>
 <li>Pruned #include:s Version 20.1</li>
 <li>addPolar: fixed default encoding</li>
-<li><a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a>: WIGOS more 2.4 sensitive Version 20.2</li>
+<li><a class="el" href="classrack_1_1SourceODIM.html" title="DOC: Add class description.">SourceODIM</a>: WIGOS more 2.4 sensitive Version 20.2</li>
 <li><a class="el" href="classrack_1_1CumulativeProductOp.html" title="Base class for flat (2D) products computed in the polar coordinate system.">CumulativeProductOp</a>: fixed encoding (when using src)</li>
 <li>Removed CmdOutputQuantity Version 20.3</li>
 <li>Convert re-factored Version 20.4</li>
@@ -1203,7 +1283,30 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li><a class="el" href="classrack_1_1RadarDataPicker.html" title="Base class for utilities traversing radar data with Sampler.">RadarDataPicker</a>: removed obsolete member 'ref' Version 20.5beta &ndash;for: command line structure for loop Version 20.5 &ndash;for: command line structure for loop</li>
 <li>outputImage PNG: fixed encoding request (was skipped without explicit &ndash;select) Release 20.5.1</li>
 <li>SVG: redesigning MASK and CLIP: ensure for panels Release 20.5.2 &ndash;delete 'all' added</li>
-<li>revised input sweep/volume file triggering Release 20.5.3 &ndash; inputFile: better *.lst vs *.vol separation and triggering logic</li>
+<li>revised input sweep/volume file triggering Release 20.5.3 &ndash; inputFile: better *.lst vs *.vol separation and triggering logic Release 20.5.4</li>
+<li>Rename &ndash;for back to &ndash;forEach due to name conflict in Python with 'def for(...)' Release 20.5.5 &ndash;pVerticalProfile distance unit change km -&gt; m ; now warns if small numbers (kms) Version 20.6 beta</li>
+<li>New namespace odim</li>
+<li>Graphics: redesigned VectorImagePanel, CLIPPER, cRect</li>
+<li>Todo: (p)reserve slot for ${composite-name} (file-independently) and finally raise FLOATER</li>
+<li>GeoFrame bbox conversions Version 20.6 beta2</li>
+<li>XML sets ID only upon explicit request Version 20.6</li>
+<li>Partially revised imagePanelGroup (mouse interaction) Version 20.6.1</li>
+<li>Tree: proper swapData() through template specification: NodeHi5::swap, NodeSVG::swap, ...</li>
+<li>Partially revised imagePanelGroup (mouse interaction) Release 20.6.2</li>
+<li>ImagePanel object Version 20.7</li>
+<li>Fixed text alignment (gLabel)</li>
+<li>TextPanel object</li>
+<li>setUserAttribute, getUserAttribute with <a class="el" href="classdrain_1_1XML.html#a24559ed3bcf2683ac0485cacf725f3cc" title="In XML variants, like SVG, it is possible to use any user defined attributes using prefix &quot;data-&quot; .">XML::USER_ATTR_PREFIX</a>="data-"</li>
+<li>SVG margin now plain (not linked) Variable Release 20.7.1</li>
+<li>MouseXML: shared event handling Release 20.7.2</li>
+<li>MouseSVG: combined mouse event initialisation and handling Version 20.8beta</li>
+<li>ImagePanelSVG - cCoord, cRect, cData using shared code &amp; objects Release 20.8.2</li>
+<li>JavaScript //?#include header</li>
+<li>Reorganized JS code Release 20.8.3</li>
+<li>FileGeoTIFF::close(): removed GeoTIFF version debugging Release 20.8.4</li>
+<li>Renamed MouseXML2 to MouseEventXML Version 20.9</li>
+<li>Python: rack.maps, rack.vpr, rack.pseudorhi</li>
+<li>InputPrefix/OutputPrefix check, better matching for SVG path pruning</li>
 </ul>
 <p>Version 19</p><ul>
 <li>Simplified tree path element handling (including lookup table) Version 19.0</li>
@@ -1288,9 +1391,9 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>Typo fix: MINIMUM explanation Release 13.2</li>
 <li>Revised cExtract field handling, float type as default Release 13.3</li>
 <li>ProductBase::completeEncoding(odim, encoding) -&gt; odim.completeEncoding(encoding)</li>
-<li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html">DualPolBioMetOp</a>: dbzParam is a range (needed for birds) Release 13.4</li>
+<li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html" title="DOC: Add class description.">DualPolBioMetOp</a>: dbzParam is a range (needed for birds) Release 13.4</li>
 <li><a class="el" href="classrack_1_1CappiOp.html" title="CAPPI and Pseudo-CAPPI: the constant altitude planar position indicator product.">CappiOp</a> height Release 13.5</li>
-<li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html">DualPolBioMetOp</a>: local functor bank Release 13.6</li>
+<li><a class="el" href="classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp.">FuzzyDetectorOp</a>, <a class="el" href="classrack_1_1DualPolBioMetOp.html" title="DOC: Add class description.">DualPolBioMetOp</a>: local functor bank Release 13.6</li>
 <li>andre::AltitudeOp Release 13.7</li>
 <li><a class="el" href="classdrain_1_1BinaryThresholdFunctor.html" title="Thresholds intensity values.">drain::BinaryThresholdFunctor</a>: threshold is a span, inside which no thresholding. Release 13.8</li>
 <li>Minor changes (UniCloner -&gt; LocalCloner) Release 13.9</li>
@@ -1318,9 +1421,9 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>Alias &ndash;paletteDefault, -P for &ndash;palette "default"</li>
 <li>gGroupTile reference overwrite fixed Release 12.7.1</li>
 <li>SVG &ndash;outputConf svg:paths=PREFIX adds explicit prefix "./" to relative paths (enabling colons ':' in path/filenames) Version 12.8</li>
-<li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> redesigned under FuzzyDualPolOp Version 12.9</li>
-<li><a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> with brightness adjustment (gamma correction) Release 12.91</li>
-<li>Fixed <a class="el" href="classrack_1_1BirdOp.html">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html">InsectOp</a> bug Release 12.92</li>
+<li><a class="el" href="classrack_1_1BirdOp.html" title="DOC: Add class description.">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html" title="DOC: Add class description.">InsectOp</a> redesigned under FuzzyDualPolOp Version 12.9</li>
+<li><a class="el" href="classrack_1_1BirdOp.html" title="DOC: Add class description.">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html" title="DOC: Add class description.">InsectOp</a> with brightness adjustment (gamma correction) Release 12.91</li>
+<li>Fixed <a class="el" href="classrack_1_1BirdOp.html" title="DOC: Add class description.">BirdOp</a> and <a class="el" href="classrack_1_1InsectOp.html" title="DOC: Add class description.">InsectOp</a> bug Release 12.92</li>
 <li>NonMet palette color (lighter orange) Release 12.93</li>
 <li>better XML entity (special chars) support, started revising StringTool::replace() Release 12.94</li>
 <li>revised StringTool::replace()</li>
@@ -1387,7 +1490,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 </ul>
 <p>Version 9.3.1</p><ul>
 <li>odim (version command): added "KILOMETERS"</li>
-<li>added Proj4 version check with if for proj_context_clone()</li>
+<li>added Proj4 version check with #if for proj_context_clone()</li>
 </ul>
 <p>Version 9.3</p><ul>
 <li>pCappi: Pseudo CAPPI as default (weightMin==-1 &lt; 0 )</li>
@@ -1444,9 +1547,8 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>Fixed date &amp; time formatting for GDAL variables, eg. &ndash;format '{"nominal-time", "${what:date|%Y/%m/%d} ${what:time|%H:%M} UTC"}'</li>
 </ul>
 <p>Version 8.7.5</p><ul>
-<li>Added support for GDAL variables, issued like &ndash;/what:GDAL:&lt;key&gt;=</li>
+<li>Added support for GDAL variables, issued like &ndash;/what:GDAL:&lt;key&gt;=&lt;value&gt; or &ndash;format '{"key", 12.345,"key2", "value"}'</li>
 </ul>
-<p>or &ndash;format '{"key", 12.345,"key2", "value"}'</p>
 <p>Version 8.7.4</p><ul>
 <li>Fix: Added support of (double) hyphen matching in scripts (&ndash;palette "" and &ndash;format "\"something\"")</li>
 </ul>
@@ -1454,7 +1556,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <li>Fix: <a class="el" href="classrack_1_1Composite.html" title="Cartesian composite (mosaic) of data from several radars.">Composite</a> extract (internal variables)</li>
 </ul>
 <p>Version 8.7.2</p><ul>
-<li>Fix: <a class="el" href="classrack_1_1SourceODIM.html">SourceODIM</a></li>
+<li>Fix: <a class="el" href="classrack_1_1SourceODIM.html" title="DOC: Add class description.">SourceODIM</a></li>
 <li>Fix: VariableT&lt;&gt;::operator==(const char *s)</li>
 </ul>
 <p>Version 8.7.1</p><ul>
@@ -1505,7 +1607,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <p>Version 7.9 &ndash; Palette aliases, like DBZH-&gt;DBZ, DBHV-&gt;DBZ, TH-&gt;DBZ, TV-&gt; ... &ndash; Fixed PGM 16bit read/write bugs &ndash; <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a> supports list and regexp: &ndash;selectQuantity 'DBZH,DBZV,TH,^DBZH.*$'</p>
 <p>Version 7.83 &ndash; Revised ODIMElement, ODIMElementMatcher, <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>, QuantitySelector</p>
 <p>Version 7.81 &ndash; Further revised/simplified <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a></p>
-<p>Version 7.8 &ndash; Revised <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>: #selectPaths() &ndash; New functionality: selective read &ndash;inputSelect &ndash; Log: adjustable sublevels: accept&lt;LOG_DEBUG&gt;(...) , fail&lt;LOG_INFO&gt;(...) &ndash; Revised definitions: Variable, ReferenceVariable, FlexibleVariable &ndash; Image processing: keys instead of numeric indices &ndash; Check rscale, nbins, nrays in compositing</p>
+<p>Version 7.8 &ndash; Revised <a class="el" href="classrack_1_1DataSelector.html" title="Tool for selecting datasets based on paths, quantities and min/max elevations.">DataSelector</a>: #selectPaths() &ndash; New functionality: selective read &ndash;inputSelect &ndash; Log: adjustable sublevels: accept(LOG_DEBUG)(...) , fail(LOG_INFO)(...) &ndash; Revised definitions: Variable, ReferenceVariable, FlexibleVariable &ndash; Image processing: keys instead of numeric indices &ndash; Check rscale, nbins, nrays in compositing</p>
 <p>Version 7.79 &ndash; DistanceTransform: literal keywords: "4-CONNECTED", "8-CONNECTED", "16-CONNECTED",</p>
 <p>Version 7.78 &ndash; Logger: added op(), enabling log(level)(args...) &ndash; Palette: fixed file search &ndash; Input: adjustable error level</p>
 <p>Version 7.77 &ndash; Logger arg order &ndash; Fixed conversion bug</p>
@@ -1585,9 +1687,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 </ul>
 <p>Version 5.45</p><ul>
 <li>Output format confs generalized: &ndash;outputConf (replaced &ndash;outputTiffConf)</li>
-<li>Plain numeric EPSG codes recognized in &ndash;cProj </li>
-</ul>
-<p>, some (4236, 3067) also predefined for portability</p><ul>
+<li>Plain numeric EPSG codes recognized in &ndash;cProj (value) , some (4236, 3067) also predefined for portability</li>
 <li>GeoFrame refactored (Metric =&gt; Native)</li>
 </ul>
 <p>Version 5.44</p><ul>
@@ -1642,7 +1742,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::map&lt;std::string,<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&gt; <a class="el" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a></td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">typedef</a> std::map&lt;std::string,<a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>&gt; <a class="el" href="namespacerack.html#a341f7354d658d71d6c2bf12547f17b3f">ODIMPathElemMap</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1651,8 +1751,8 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a7fe0d3cfb8ca6e0e45df72f1fd73a262" name="a7fe0d3cfb8ca6e0e45df72f1fd73a262"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fe0d3cfb8ca6e0e45df72f1fd73a262">&#9670;&#160;</a></span>addCoordMonitor()</h2>
+<a id="a46d9de098257c751c4bb36a0b0b86c2a" name="a46d9de098257c751c4bb36a0b0b86c2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d9de098257c751c4bb36a0b0b86c2a">&#9670;&#160;</a></span>addCoordMonitor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1666,7 +1766,7 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classdrain_1_1image_1_1MouseXML.html#a064dd6903edf7f9e2f353b8c336db620">MouseXML::ElemClass</a>&#160;</td>
           <td class="paramname"><em>cls</em>&#160;</td>
         </tr>
         <tr>
@@ -1705,15 +1805,15 @@ const <a class="el" href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::i
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double dbzToZ </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">double</a> dbzToZ </td>
           <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> T &amp;&#160;</td>
           <td class="paramname"><em>dBZ</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1725,9 +1825,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Converts Z from logarithmic to linear scale.  </p><p class="formulaDsp">
-<picture><source srcset="form_164_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+\[
     Z = 10^{dBZ/10}
-\]" src="form_164.png" width="74" height="13"/></picture>
+\]
 </p>
  
 </div>
@@ -1760,13 +1860,13 @@ template&lt;class T &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename DT &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">typename</a> <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::ostream &amp; operator&lt;&lt; </td>
+          <td class="memname">std::ostream &amp; <a class="el" href="classrack_1_1DataSet.html">operator</a>&lt;&lt; </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>ostr</em>, </td>
@@ -1774,7 +1874,7 @@ template&lt;typename DT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; DT &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1DataSet.html">DT</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>d</em>&#160;</td>
         </tr>
         <tr>
@@ -1805,15 +1905,15 @@ template&lt;typename DT &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int process </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">int</a> process </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const char **&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">char</a> **&#160;</td>
           <td class="paramname"><em>argv</em>&#160;</td>
         </tr>
         <tr>
@@ -1824,8 +1924,8 @@ template&lt;typename DT &gt; </div>
       </table>
 </div><div class="memdoc">
 <p>Main program - renamed to facilitate calls from outside, esp. JNI calls. The standard main() will call this directly. </p>
-<p>If a plain argument &lt;arg&gt; is given, forward it to this command. Equivalent to <code>--inputFile</code> <code></code> &lt;arg&gt; .</p>
-<p>If command is not found, it is redirected to this command. <code>--setODIM</code> <code></code> &lt;arg&gt; which checks if it starts with a leading slash</p>
+<p>If a plain argument <code>arg</code> is given, forward it to this command. Equivalent to <code>--inputFile</code> <code>arg</code> .</p>
+<p>If command is not found, it is redirected to this command. <code>--setODIM</code> <code>arg</code> which checks if it starts with a leading slash</p>
 
 </div>
 </div>
@@ -1835,24 +1935,24 @@ template&lt;typename DT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class P &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> P &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">void sampleData </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> sampleData </td>
           <td>(</td>
-          <td class="paramtype">const typename P::dataset_t &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">typename</a> P::dataset_t &amp;&#160;</td>
           <td class="paramname"><em>dataset</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1Sampler.html">Sampler</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1Sampler.html">Sampler</a> &amp;&#160;</td>
           <td class="paramname"><em>sampler</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>format</em>, </td>
         </tr>
         <tr>
@@ -1884,7 +1984,7 @@ template&lt;class P &gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void writeGroupToDot </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> writeGroupToDot </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>ostr</em>, </td>
@@ -1892,13 +1992,13 @@ template&lt;class P &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>group</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a> &amp;&#160;</td>
           <td class="paramname"><em>index</em>, </td>
         </tr>
         <tr>
@@ -1910,7 +2010,7 @@ template&lt;class P &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;&#160;</td>
           <td class="paramname"><em>path</em> = <code><a class="el" href="classdrain_1_1Path.html">ODIMPath</a>()</code>&#160;</td>
         </tr>
         <tr>
@@ -1933,15 +2033,15 @@ template&lt;class P &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double zToDbz </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">double</a> zToDbz </td>
           <td>(</td>
-          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> T &amp;&#160;</td>
           <td class="paramname"><em>Z</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1953,31 +2053,31 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 <p>Converts Z from logarithmic to linear scale.  </p><p class="formulaDsp">
-<picture><source srcset="form_165_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaDsp" alt="\[
+\[
     dBZ = 10\log_{10}Z = 10 \ln Z / \ln 10
-\]" src="form_165.png" width="181" height="14"/></picture>
+\]
 </p>
  
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="aaade3b0a8d2f5a59bdbfeeb480758797" name="aaade3b0a8d2f5a59bdbfeeb480758797"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaade3b0a8d2f5a59bdbfeeb480758797">&#9670;&#160;</a></span>listFileExtension</h2>
+<a id="a065c43967b089b314d28001b53da956a" name="a065c43967b089b314d28001b53da956a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a065c43967b089b314d28001b53da956a">&#9670;&#160;</a></span>arrayFileExtension</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> listFileExtension </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1RegExp.html">drain::RegExp</a> arrayFileExtension </td>
           <td>(</td>
-          <td class="paramtype">&quot;.*\\.(lst|vol)$&quot;&#160;</td>
+          <td class="paramtype">&quot;.*\\.(mat)$&quot;&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">REG_EXTENDED&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">REG_EXTENDED</a>|&#160;</td>
+          <td class="paramname"><em>REG_ICASE</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1987,8 +2087,28 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>Syntax for recognising text files. </p>
+<p>Syntax for recognising numeric array files (in plain text format anyway). </p>
+
+</div>
+</div>
+<a id="a7cc85cc7b60148516528acf5eeaa5d28" name="a7cc85cc7b60148516528acf5eeaa5d28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cc85cc7b60148516528acf5eeaa5d28">&#9670;&#160;</a></span>listFileInfo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a> listFileInfo </td>
+          <td>(</td>
+          <td class="paramtype">&quot;lst|<a class="el" href="classrack_1_1DataSet.html">vol&quot;</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 <p>Syntax for recognising hdf5 files. </p>
-<p>Input file lists.</p>
 <p>Syntax for command files, typically used reading HDF5 input lists. </p>
 
 </div>

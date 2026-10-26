@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -136,226 +143,241 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>(<a class="code hl_typedef" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> groups = <a class="code hl_variable" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ROOT</a>, index_t index = 0, index_t indexMax = INDEX_MAX) :</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="comment">// ODIMPathElem(group, index),</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="comment">// index(index),</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment">// indexMax(indexMax),</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        flags(ODIMPathElem::getDictionary(), this-&gt;group, <span class="charliteral">&#39;|&#39;</span>){</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        this-&gt;group = groups;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        this-&gt;index = index;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        this-&gt;indexMax = indexMax;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    };</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathElemMatcher.html#a83b46a9174407973df224526218fb3e8">   55</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a83b46a9174407973df224526218fb3e8">ODIMPathElemMatcher</a>(<a class="code hl_typedef" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> groups = <a class="code hl_variable" href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">ROOT</a>, <a class="code hl_class" href="classrack_1_1DataSet.html">index_t</a> index = 0, <a class="code hl_class" href="classrack_1_1DataSet.html">index_t</a> indexMax = INDEX_MAX) :</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="comment">// ODIMPathElem(group, index),</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment">// index(index),</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="comment">// indexMax(indexMax),</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        flags(<a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>::getDictionary(), <a class="code hl_class" href="classrack_1_1DataSet.html">this</a>-&gt;group, <span class="stringliteral">&#39;|&#39;</span>){</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        this-&gt;group = groups;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        this-&gt;index = index;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        this-&gt;indexMax = indexMax;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    };</div>
+</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp;e) :</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="comment">// ODIMPathElem(e),</span></div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <span class="comment">// index(e.index),</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="comment">// indexMax(e.indexMax),</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        flags(ODIMPathElem::getDictionary(), this-&gt;group, <span class="charliteral">&#39;|&#39;</span>) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this-&gt;group = e.group; <span class="comment">// needed?</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        this-&gt;index = e.index;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        this-&gt;indexMax = e.indexMax;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e) :</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="comment">// ODIMPathElem(e),</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="comment">// index(e.index),</span></div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="comment">// indexMax(0xffff),</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        flags(ODIMPathElem::getDictionary(), this-&gt;group,  <span class="charliteral">&#39;|&#39;</span>) {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        this-&gt;group  = e.group; <span class="comment">// needed?</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        this-&gt;index = e.index;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        this-&gt;indexMax = INDEX_MAX; <span class="comment">// ??</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>(<span class="keyword">const</span> std::string &amp;s) :</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="comment">//  index(0),</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="comment">// indexMax(0xffff),</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        flags(ODIMPathElem::getDictionary(), this-&gt;group,  <span class="charliteral">&#39;|&#39;</span>) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="comment">// TODO: virtual reset(){}</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        group = 0;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        index = 0;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        this-&gt;indexMax = INDEX_MAX;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">set</a>(s);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    }</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">~ODIMPathElemMatcher</a>(){};</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    <span class="comment">//  ambiguous! index 5 could mean range 5:5 or 0:0xffff ?</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">//bool</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">set</a>(<span class="keyword">const</span> std::string &amp;s);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathElemMatcher.html#a4091b167fb0d3a8f4b54fb5d67fe2bba">   68</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a4091b167fb0d3a8f4b54fb5d67fe2bba">ODIMPathElemMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp;e) :</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>(),</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="comment">// index(e.index),</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="comment">// indexMax(e.indexMax),</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        flags(<a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>::getDictionary(), <a class="code hl_class" href="classrack_1_1DataSet.html">this</a>-&gt;group, <span class="stringliteral">&#39;|&#39;</span>) {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        this-&gt;group = e.group; <span class="comment">// needed?</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        this-&gt;index = e.index;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        this-&gt;indexMax = e.indexMax;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    }</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathElemMatcher.html#a37d676523578db7228cb64451011741f">   80</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a37d676523578db7228cb64451011741f">ODIMPathElemMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;e) :</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="comment">// ODIMPathElem(e),</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="comment">// index(e.index),</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="comment">// indexMax(0xffff),</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        flags(<a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>::getDictionary(), <a class="code hl_class" href="classrack_1_1DataSet.html">this</a>-&gt;group,  <span class="stringliteral">&#39;|&#39;</span>) {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        this-&gt;group  = e.group; <span class="comment">// needed?</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        this-&gt;index = e.index;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        this-&gt;indexMax = INDEX_MAX; <span class="comment">// ??</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
+</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">inline</span></div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathElemMatcher.html#ad9abfb7d9e059d6876b2c26de9c7a670">   92</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#ad9abfb7d9e059d6876b2c26de9c7a670">ODIMPathElemMatcher</a>(<span class="keyword">const</span> std::string &amp;s) :</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="comment">//  index(0),</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="comment">// indexMax(0xffff),</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        flags(<a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>::getDictionary(), <a class="code hl_class" href="classrack_1_1DataSet.html">this</a>-&gt;group,  <span class="stringliteral">&#39;|&#39;</span>) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="comment">// TODO: virtual reset(){}</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        group = 0;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        index = 0;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        this-&gt;indexMax = INDEX_MAX;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">set</a>(s);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">virtual</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">~ODIMPathElemMatcher</a>(){};</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="comment">//  ambiguous! index 5 could mean range 5:5 or 0:0xffff ?</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">bool</span> isSingle()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">return</span> (!<a class="code hl_function" href="classrack_1_1ODIMPathElem.html#aa3672834c6627f73acc4219096301ada">isIndexed</a>()) || (index == indexMax);</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp; operator=(<a class="code hl_typedef" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> g){</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        index = 0;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        indexMax = INDEX_MAX;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        group = g;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp; operator=(<span class="keyword">const</span> std::string &amp;s){</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        index = 0;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        indexMax = INDEX_MAX;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">set</a>(s);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#ae87ed6c5ce24259cd6bbad6c7642ad6c">test</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; elem) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keyword">virtual</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="comment">//bool</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">set</a>(<span class="keyword">const</span> std::string &amp;s);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keywordtype">bool</span> isSingle()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">return</span> (!<a class="code hl_function" href="classrack_1_1ODIMPathElem.html#aa3672834c6627f73acc4219096301ada">isIndexed</a>()) || (index == indexMax);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a83b46a9174407973df224526218fb3e8">ODIMPathElemMatcher</a> &amp; operator=(<a class="code hl_typedef" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> g){</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        index = 0;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        indexMax = INDEX_MAX;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        group = g;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keyword">inline</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a83b46a9174407973df224526218fb3e8">ODIMPathElemMatcher</a> &amp; operator=(<span class="keyword">const</span> std::string &amp;s){</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        index = 0;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        indexMax = INDEX_MAX;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">set</a>(s);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    }</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="comment">// Applied only as a upper limit in path matching.</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    index_t indexMax;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    <span class="comment">//drain::Flagger flags;</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="comment">//drain::Flagger2&lt;drain::MultiFlagger&lt;group_t&gt; &gt; flags;</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <a class="code hl_class" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger&lt;group_t, group_t&gt;</a> flags;</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="comment">//drain::MultiFlagger&lt;group_t&gt; flags;</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    std::ostream &amp; <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">toStream</a>(std::ostream &amp; sstr) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="comment">// FUTURE extension:</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">typedef</span> <a class="code hl_class" href="classdrain_1_1Range.html">drain::Range&lt;index_t&gt;</a> <a class="code hl_class" href="classdrain_1_1Range.html">idx_range_t</a>;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#ae87ed6c5ce24259cd6bbad6c7642ad6c">test</a>(<span class="keyword">const</span> ODIMPathElem &amp; elem) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="comment">// Applied only as a upper limit in path matching.</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    index_t indexMax;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="comment">//drain::Flagger flags;</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    <span class="comment">//drain::Flagger2&lt;drain::MultiFlagger&lt;group_t&gt; &gt; flags;</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <a class="code hl_class" href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger&lt;group_t, group_t&gt;</a> flags;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="comment">//drain::MultiFlagger&lt;group_t&gt; flags;</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    <span class="keyword">virtual</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    std::ostream &amp; <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">toStream</a>(std::ostream &amp; sstr) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#ae8fdc4f52a127ef297a7965f42d2a5cf">extractIndex</a>(<span class="keyword">const</span> std::string &amp;s);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="comment">// FUTURE extension:</span></div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keyword">typedef</span> <a class="code hl_class" href="classdrain_1_1Range.html">drain::Range&lt;index_t&gt;</a> idx_range_t;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a79b6cdd0b4ef339ae7d787f255d066a5">extractPrefix</a>(<span class="keyword">const</span> std::string &amp;s, <span class="keywordtype">bool</span> indexed);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#ae8fdc4f52a127ef297a7965f42d2a5cf">extractIndex</a>(<span class="keyword">const</span> std::string &amp;s);</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>};</div>
-</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    <span class="keyword">virtual</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a79b6cdd0b4ef339ae7d787f255d066a5">extractPrefix</a>(<span class="keyword">const</span> std::string &amp;s, <span class="keywordtype">bool</span> indexed);</div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment">// Note: Elem, not MatcherElem</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="keywordtype">void</span> ODIMPathElem::extractIndex(<span class="keyword">const</span> std::string &amp;s, <a class="code hl_class" href="classdrain_1_1Range.html">ODIMPathElemMatcher::idx_range_t</a> &amp; idx);</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a> &amp; p) {</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    p.<a class="code hl_function" href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">toStream</a>(ostr);</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>}</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment">//template &lt;&gt;</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment">//char drain::TextReader::scanSegmentToValue(std::istream &amp; istr, const std::string &amp; endChars, ODIMPathElemMatcher::idx_range_t &amp; dst);</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="foldopen" id="foldopen00186" data-start="{" data-end="};">
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html">  186</a></span><span class="keyword">class </span><a class="code hl_class" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1Path.html">drain::Path</a>&lt;ODIMPathElemMatcher&gt; {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
-<div class="foldopen" id="foldopen00191" data-start="{" data-end="}">
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">  191</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">ODIMPathMatcher</a>() : <a class="code hl_namespace" href="namespacedrain.html">drain</a>::<a class="code hl_class" href="classdrain_1_1Path.html">Path</a>&lt;<a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>&gt;() {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>};</div>
 </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="foldopen" id="foldopen00196" data-start="{" data-end="}">
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">  196</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">ODIMPathMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> &amp; matcher) : <a class="code hl_namespace" href="namespacedrain.html">drain</a>::<a class="code hl_class" href="classdrain_1_1Path.html">Path</a>&lt;<a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>&gt;(matcher) {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment">// Note: Elem, not MatcherElem</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathElem.html#ae8fdc4f52a127ef297a7965f42d2a5cf">ODIMPathElem::extractIndex</a>(<span class="keyword">const</span> std::string &amp;s, ODIMPathElemMatcher::idx_range_t &amp; idx);</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>std::ostream &amp; <a class="code hl_function" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> ODIMPathElemMatcher &amp; p) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    p.toStream(ostr);</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>}</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment">//template &lt;&gt;</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment">//char drain::TextReader::scanSegmentToValue(std::istream &amp; istr, const std::string &amp; endChars, ODIMPathElemMatcher::idx_range_t &amp; dst);</span></div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="foldopen" id="foldopen00190" data-start="{" data-end="};">
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html">  190</a></span><span class="keyword">class </span><a class="code hl_class" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1Path.html">drain::Path</a>&lt;ODIMPathElemMatcher&gt; {</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">  195</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">ODIMPathMatcher</a>() : <a class="code hl_namespace" href="namespacedrain.html">drain</a>::<a class="code hl_class" href="classdrain_1_1Path.html">Path</a>&lt;<a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>&gt;() {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
 </div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... T&gt;</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">ODIMPathMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; elem, <span class="keyword">const</span> T &amp;... rest){</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        setElems(elem, rest...);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="comment">//updateBean(); ?</span></div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    }</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="foldopen" id="foldopen00207" data-start="{" data-end="}">
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a0f8e7a436262f6574107b659a36a996a">  207</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a0f8e7a436262f6574107b659a36a996a">ODIMPathMatcher</a>(<span class="keyword">const</span> std::string &amp; path){</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        set(path);</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="comment">//assign(path);</span></div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    }</div>
+<div class="foldopen" id="foldopen00200" data-start="{" data-end="}">
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">  200</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">ODIMPathMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathMatcher.html">ODIMPathMatcher</a> &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">matcher</a>) : <a class="code hl_namespace" href="namespacedrain.html">drain</a>::<a class="code hl_class" href="classdrain_1_1Path.html">Path</a>&lt;<a class="code hl_class" href="classrack_1_1ODIMPathElemMatcher.html">ODIMPathElemMatcher</a>&gt;(<a class="code hl_class" href="classrack_1_1DataSet.html">matcher</a>) {</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    }</div>
 </div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="foldopen" id="foldopen00214" data-start="{" data-end="}">
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a8f5e948bdf87c616678d20fcb9c7cee0">  214</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a8f5e948bdf87c616678d20fcb9c7cee0">ODIMPathMatcher</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * path){</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        set(path);</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="comment">// assign(path);</span></div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>    }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> ... T&gt;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">ODIMPathMatcher</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp; elem, <span class="keyword">const</span> T &amp;... <a class="code hl_class" href="classrack_1_1DataSet.html">rest</a>){</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <a class="code hl_class" href="classrack_1_1DataSet.html">setElems</a>(elem, <a class="code hl_class" href="classrack_1_1DataSet.html">rest</a>...);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="comment">//updateBean(); ?</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    }</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a0f8e7a436262f6574107b659a36a996a">  211</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a0f8e7a436262f6574107b659a36a996a">ODIMPathMatcher</a>(<span class="keyword">const</span> std::string &amp; path){</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        set(path);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        <span class="comment">//assign(path);</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
 </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    <span class="comment">//  void parse(const std::string &amp; path);</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="foldopen" id="foldopen00218" data-start="{" data-end="}">
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno"><a class="line" href="classrack_1_1ODIMPathMatcher.html#a8f5e948bdf87c616678d20fcb9c7cee0">  218</a></span>    <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a8f5e948bdf87c616678d20fcb9c7cee0">ODIMPathMatcher</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * path){</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        separator.<a class="code hl_variable" href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">acceptTrailing</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        set(path);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        <span class="comment">// assign(path);</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    }</div>
+</div>
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a6c78207104d24b2b8d6d0d30cc5444f3">ensureLimitingSlash</a>();</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="comment">//  void parse(const std::string &amp; path);</span></div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a023f1517a499509055441ff871d563df">isLiteral</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a6c78207104d24b2b8d6d0d30cc5444f3">ensureLimitingSlash</a>();</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">extractPath</a>(<a class="code hl_class" href="classdrain_1_1Path.html">ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">match</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a2ec248b46babdb59a0da0464647bfdcc">matchHead</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a89a204f184a652cee07e924718f54b2c">matchTail</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a93c74cf43d36d26dd55ee9e08eedf7cd">matchElem</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a> &amp; elem, <span class="keywordtype">bool</span> defaultValue = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>};</div>
-</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a023f1517a499509055441ff871d563df">isLiteral</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">extractPath</a>(<a class="code hl_class" href="classdrain_1_1Path.html">ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">match</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span> </div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a2ec248b46babdb59a0da0464647bfdcc">matchHead</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a89a204f184a652cee07e924718f54b2c">matchTail</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp; path) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classrack_1_1ODIMPathMatcher.html#a93c74cf43d36d26dd55ee9e08eedf7cd">matchElem</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a> &amp; elem, <span class="keywordtype">bool</span> <a class="code hl_class" href="classrack_1_1DataSet.html">defaultValue</a> = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>}  <span class="comment">// namespace rack</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>};</div>
+</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span> </div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassdrain_1_1MultiFlagger_html"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a></div><div class="ttdef"><b>Definition</b> Flags.h:213</div></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>}  <span class="comment">// namespace rack</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassdrain_1_1MultiFlagger_html"><div class="ttname"><a href="classdrain_1_1MultiFlagger.html">drain::MultiFlagger</a></div><div class="ttdef"><b>Definition</b> Flags.h:217</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition</b> Path.h:135</div></div>
 <div class="ttc" id="aclassdrain_1_1Range_html"><div class="ttname"><a href="classdrain_1_1Range.html">drain::Range</a></div><div class="ttdef"><b>Definition</b> Range.h:52</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1293</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html">rack::ODIMPathElemMatcher</a></div><div class="ttdoc">Element in a chain in testing a path for a match.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:49</div></div>
 <div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a2924f6cc1546444425b9f08c2ca42327"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a2924f6cc1546444425b9f08c2ca42327">rack::ODIMPathElemMatcher::set</a></div><div class="ttdeci">virtual void set(const std::string &amp;s)</div><div class="ttdoc">Assign a string to this path element.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:46</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a6a6da9a816777c12f788994d17d5a2fc"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">rack::ODIMPathElemMatcher::toStream</a></div><div class="ttdeci">virtual std::ostream &amp; toStream(std::ostream &amp;sstr) const</div><div class="ttdoc">For string presentation.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:345</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a79b6cdd0b4ef339ae7d787f255d066a5"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a79b6cdd0b4ef339ae7d787f255d066a5">rack::ODIMPathElemMatcher::extractPrefix</a></div><div class="ttdeci">virtual bool extractPrefix(const std::string &amp;s, bool indexed)</div><div class="ttdoc">Given the non-numeric prefix of a group, like &quot;dataset&quot; or &quot;data&quot;, set the group.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:140</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_ae87ed6c5ce24259cd6bbad6c7642ad6c"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#ae87ed6c5ce24259cd6bbad6c7642ad6c">rack::ODIMPathElemMatcher::test</a></div><div class="ttdeci">bool test(const ODIMPathElem &amp;elem) const</div><div class="ttdoc">Test if the elem has the same group, and elem.index is within [index,indexMax].</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:193</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_ae8fdc4f52a127ef297a7965f42d2a5cf"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#ae8fdc4f52a127ef297a7965f42d2a5cf">rack::ODIMPathElemMatcher::extractIndex</a></div><div class="ttdeci">virtual void extractIndex(const std::string &amp;s)</div><div class="ttdoc">Extracts index range of type &lt;index&gt;[:&lt;indexMax&gt;].</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:94</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdef"><b>Definition</b> ODIMPath.h:81</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a7e8d276c4a8ea4d800d9b084f21aa339"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">rack::ODIMPathElem::ROOT</a></div><div class="ttdeci">static const group_t ROOT</div><div class="ttdef"><b>Definition</b> ODIMPath.h:101</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a9b3f8eef103c06b0eb970b48a91509cb"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">rack::ODIMPathElem::group_t</a></div><div class="ttdeci">unsigned int group_t</div><div class="ttdoc">In H5, &quot;groups&quot; correspond to directories or folders in file system.</div><div class="ttdef"><b>Definition</b> ODIMPath.h:91</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_aa3672834c6627f73acc4219096301ada"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#aa3672834c6627f73acc4219096301ada">rack::ODIMPathElem::isIndexed</a></div><div class="ttdeci">bool isIndexed() const</div><div class="ttdoc">Abbreviation of (group == NONE)</div><div class="ttdef"><b>Definition</b> ODIMPath.h:320</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html">rack::ODIMPathMatcher</a></div><div class="ttdoc">Structure for testing if a path matches a given sequence of path elements.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:186</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a023f1517a499509055441ff871d563df"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a023f1517a499509055441ff871d563df">rack::ODIMPathMatcher::isLiteral</a></div><div class="ttdeci">bool isLiteral() const</div><div class="ttdoc">Checks if corresponds to a single path, implying that all the index ranges are singletons.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:232</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a0f8e7a436262f6574107b659a36a996a"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a0f8e7a436262f6574107b659a36a996a">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const std::string &amp;path)</div><div class="ttdoc">Almost copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:207</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a2ec248b46babdb59a0da0464647bfdcc"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a2ec248b46babdb59a0da0464647bfdcc">rack::ODIMPathMatcher::matchHead</a></div><div class="ttdeci">bool matchHead(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match leading part of path.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:270</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a6c78207104d24b2b8d6d0d30cc5444f3"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a6c78207104d24b2b8d6d0d30cc5444f3">rack::ODIMPathMatcher::ensureLimitingSlash</a></div><div class="ttdeci">bool ensureLimitingSlash()</div><div class="ttdoc">Resolves &quot;where|where&quot;.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:69</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a89a204f184a652cee07e924718f54b2c"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a89a204f184a652cee07e924718f54b2c">rack::ODIMPathMatcher::matchTail</a></div><div class="ttdeci">bool matchTail(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match trailing part of path.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:298</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a8f5e948bdf87c616678d20fcb9c7cee0"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a8f5e948bdf87c616678d20fcb9c7cee0">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const char *path)</div><div class="ttdoc">Almost copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:214</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a93c74cf43d36d26dd55ee9e08eedf7cd"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a93c74cf43d36d26dd55ee9e08eedf7cd">rack::ODIMPathMatcher::matchElem</a></div><div class="ttdeci">bool matchElem(const rack::ODIMPathElem &amp;elem, bool defaultValue=true) const</div><div class="ttdoc">Match single element. If matcher path does not contain it, return defaultValue.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:325</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a9c84418569baf8b11fb677b7d0aa51e2"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher()</div><div class="ttdoc">Basic constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:191</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a9e6aad70e974852e27c666f0ca8132cd"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const ODIMPathMatcher &amp;matcher)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:196</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_aa015c6cbbebb3ce748e43d001ef5fdb6"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">rack::ODIMPathMatcher::extractPath</a></div><div class="ttdeci">void extractPath(ODIMPath &amp;path) const</div><div class="ttdoc">Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:243</div></div>
-<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_af401e10cb74c00e9b29975682c36e630"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">rack::ODIMPathMatcher::match</a></div><div class="ttdeci">bool match(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match the leading part of path , if matcher starts with root. Else, match the trailing part.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:256</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a37d676523578db7228cb64451011741f"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a37d676523578db7228cb64451011741f">rack::ODIMPathElemMatcher::ODIMPathElemMatcher</a></div><div class="ttdeci">ODIMPathElemMatcher(const ODIMPathElem &amp;e)</div><div class="ttdoc">Constructor from ODIMPathElem.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:80</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a4091b167fb0d3a8f4b54fb5d67fe2bba"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a4091b167fb0d3a8f4b54fb5d67fe2bba">rack::ODIMPathElemMatcher::ODIMPathElemMatcher</a></div><div class="ttdeci">ODIMPathElemMatcher(const ODIMPathElemMatcher &amp;e)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:68</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a6a6da9a816777c12f788994d17d5a2fc"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a6a6da9a816777c12f788994d17d5a2fc">rack::ODIMPathElemMatcher::toStream</a></div><div class="ttdeci">virtual std::ostream &amp; toStream(std::ostream &amp;sstr) const</div><div class="ttdoc">For string presentation.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:344</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a79b6cdd0b4ef339ae7d787f255d066a5"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a79b6cdd0b4ef339ae7d787f255d066a5">rack::ODIMPathElemMatcher::extractPrefix</a></div><div class="ttdeci">virtual bool extractPrefix(const std::string &amp;s, bool indexed)</div><div class="ttdoc">Given the non-numeric prefix of a group, like &quot;dataset&quot; or &quot;data&quot;, set the group.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:139</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_a83b46a9174407973df224526218fb3e8"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#a83b46a9174407973df224526218fb3e8">rack::ODIMPathElemMatcher::ODIMPathElemMatcher</a></div><div class="ttdeci">ODIMPathElemMatcher(ODIMPathElem::group_t groups=ROOT, index_t index=0, index_t indexMax=INDEX_MAX)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:55</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_ad9abfb7d9e059d6876b2c26de9c7a670"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#ad9abfb7d9e059d6876b2c26de9c7a670">rack::ODIMPathElemMatcher::ODIMPathElemMatcher</a></div><div class="ttdeci">ODIMPathElemMatcher(const std::string &amp;s)</div><div class="ttdoc">Constructor from string.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:92</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_ae87ed6c5ce24259cd6bbad6c7642ad6c"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#ae87ed6c5ce24259cd6bbad6c7642ad6c">rack::ODIMPathElemMatcher::test</a></div><div class="ttdeci">bool test(const ODIMPathElem &amp;elem) const</div><div class="ttdoc">Test if the elem has the same group, and elem.index is within [index,indexMax].</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:192</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElemMatcher_html_ae8fdc4f52a127ef297a7965f42d2a5cf"><div class="ttname"><a href="classrack_1_1ODIMPathElemMatcher.html#ae8fdc4f52a127ef297a7965f42d2a5cf">rack::ODIMPathElemMatcher::extractIndex</a></div><div class="ttdeci">virtual void extractIndex(const std::string &amp;s)</div><div class="ttdoc">Extracts index range of type index[:indexMax].</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:91</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html">rack::ODIMPathElem</a></div><div class="ttdoc">DOC: Add class description.</div><div class="ttdef"><b>Definition</b> ODIMPath.h:82</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a7e8d276c4a8ea4d800d9b084f21aa339"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a7e8d276c4a8ea4d800d9b084f21aa339">rack::ODIMPathElem::ROOT</a></div><div class="ttdeci">static const group_t ROOT</div><div class="ttdef"><b>Definition</b> ODIMPath.h:102</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_a9b3f8eef103c06b0eb970b48a91509cb"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">rack::ODIMPathElem::group_t</a></div><div class="ttdeci">unsigned int group_t</div><div class="ttdoc">In H5, &quot;groups&quot; correspond to directories or folders in file system.</div><div class="ttdef"><b>Definition</b> ODIMPath.h:92</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_aa3672834c6627f73acc4219096301ada"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#aa3672834c6627f73acc4219096301ada">rack::ODIMPathElem::isIndexed</a></div><div class="ttdeci">bool isIndexed() const</div><div class="ttdoc">Abbreviation of (group == NONE)</div><div class="ttdef"><b>Definition</b> ODIMPath.h:330</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathElem_html_ae8fdc4f52a127ef297a7965f42d2a5cf"><div class="ttname"><a href="classrack_1_1ODIMPathElem.html#ae8fdc4f52a127ef297a7965f42d2a5cf">rack::ODIMPathElem::extractIndex</a></div><div class="ttdeci">virtual void extractIndex(const std::string &amp;s)</div><div class="ttdoc">Given a string starting with a numeral, try to extract the index.</div><div class="ttdef"><b>Definition</b> ODIMPath.cpp:138</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html">rack::ODIMPathMatcher</a></div><div class="ttdoc">Structure for testing if a path matches a given sequence of path elements.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:190</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a023f1517a499509055441ff871d563df"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a023f1517a499509055441ff871d563df">rack::ODIMPathMatcher::isLiteral</a></div><div class="ttdeci">bool isLiteral() const</div><div class="ttdoc">Checks if corresponds to a single path, implying that all the index ranges are singletons.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:231</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a0f8e7a436262f6574107b659a36a996a"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a0f8e7a436262f6574107b659a36a996a">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const std::string &amp;path)</div><div class="ttdoc">Almost copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:211</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a2ec248b46babdb59a0da0464647bfdcc"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a2ec248b46babdb59a0da0464647bfdcc">rack::ODIMPathMatcher::matchHead</a></div><div class="ttdeci">bool matchHead(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match leading part of path.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:269</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a6c78207104d24b2b8d6d0d30cc5444f3"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a6c78207104d24b2b8d6d0d30cc5444f3">rack::ODIMPathMatcher::ensureLimitingSlash</a></div><div class="ttdeci">bool ensureLimitingSlash()</div><div class="ttdoc">Resolves &quot;where|where&quot;.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:66</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a89a204f184a652cee07e924718f54b2c"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a89a204f184a652cee07e924718f54b2c">rack::ODIMPathMatcher::matchTail</a></div><div class="ttdeci">bool matchTail(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match trailing part of path.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:297</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a8f5e948bdf87c616678d20fcb9c7cee0"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a8f5e948bdf87c616678d20fcb9c7cee0">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const char *path)</div><div class="ttdoc">Almost copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:218</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a93c74cf43d36d26dd55ee9e08eedf7cd"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a93c74cf43d36d26dd55ee9e08eedf7cd">rack::ODIMPathMatcher::matchElem</a></div><div class="ttdeci">bool matchElem(const rack::ODIMPathElem &amp;elem, bool defaultValue=true) const</div><div class="ttdoc">Match single element. If matcher path does not contain it, return defaultValue.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:324</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a9c84418569baf8b11fb677b7d0aa51e2"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a9c84418569baf8b11fb677b7d0aa51e2">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher()</div><div class="ttdoc">Basic constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:195</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_a9e6aad70e974852e27c666f0ca8132cd"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#a9e6aad70e974852e27c666f0ca8132cd">rack::ODIMPathMatcher::ODIMPathMatcher</a></div><div class="ttdeci">ODIMPathMatcher(const ODIMPathMatcher &amp;matcher)</div><div class="ttdoc">Copy constructor.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.h:200</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_aa015c6cbbebb3ce748e43d001ef5fdb6"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#aa015c6cbbebb3ce748e43d001ef5fdb6">rack::ODIMPathMatcher::extractPath</a></div><div class="ttdeci">void extractPath(ODIMPath &amp;path) const</div><div class="ttdoc">Convert to a single path, assuming uniqueness. Future option: extract all the enumerated paths.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:242</div></div>
+<div class="ttc" id="aclassrack_1_1ODIMPathMatcher_html_af401e10cb74c00e9b29975682c36e630"><div class="ttname"><a href="classrack_1_1ODIMPathMatcher.html#af401e10cb74c00e9b29975682c36e630">rack::ODIMPathMatcher::match</a></div><div class="ttdeci">bool match(const rack::ODIMPath &amp;path) const</div><div class="ttdoc">Match the leading part of path , if matcher starts with root. Else, match the trailing part.</div><div class="ttdef"><b>Definition</b> ODIMPathMatcher.cpp:255</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
+<div class="ttc" id="anamespacerack_html_a4a516e363f8dc7522725822a84e6e5a2"><div class="ttname"><a href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition</b> Data.h:631</div></div>
 <div class="ttc" id="astructdrain_1_1PathSeparatorPolicy_html_a4fcdbf6521cca7572527797e2450b87d"><div class="ttname"><a href="structdrain_1_1PathSeparatorPolicy.html#a4fcdbf6521cca7572527797e2450b87d">drain::PathSeparatorPolicy::acceptTrailing</a></div><div class="ttdeci">bool &amp; acceptTrailing</div><div class="ttdoc">If true, allow trailing empty elements (appearing as repeated separators)</div><div class="ttdef"><b>Definition</b> Path.h:78</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

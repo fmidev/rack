@@ -11,12 +11,13 @@ var searchData=
   ['alpha_8',['alpha',['../classdrain_1_1image_1_1PaletteEntry.html#ae2d28b585b5fcf3544f3769c51ed121b',1,'drain::image::PaletteEntry']]],
   ['altitude_9',['altitude',['../classrack_1_1CappiOp.html#a2b13d276aee0d9fd646c8fa3647e869b',1,'rack::CappiOp']]],
   ['altituderange_10',['altitudeRange',['../classrack_1_1VerticalCrossSectionODIM.html#aab3e5e4b81b71252eaa9482bc6cbbdec',1,'rack::VerticalCrossSectionODIM']]],
-  ['appendresults_11',['appendResults',['../classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a',1,'rack::ProductConf']]],
-  ['array_12',['ARRAY',['../classrack_1_1ODIMPathElem.html#ae7011caba8882ad9b6bef266ac92335a',1,'rack::ODIMPathElem']]],
-  ['arrayfileextension_13',['arrayFileExtension',['../namespacerack.html#a065c43967b089b314d28001b53da956a',1,'rack']]],
-  ['arrayseparator_14',['arrayseparator',['../classdrain_1_1SmartMapFoo.html#a360531fdf0529252ca32fe16010bab62',1,'drain::SmartMapFoo::arraySeparator'],['../classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62',1,'drain::SmartMap::arraySeparator']]],
-  ['attribute_5fgroups_15',['ATTRIBUTE_GROUPS',['../classrack_1_1ODIMPathElem.html#a91088dff85a58e36fa01ec17e5205629',1,'rack::ODIMPathElem']]],
-  ['attributegroups_16',['attributeGroups',['../classrack_1_1EncodingODIM.html#a6ffa197e53e449b00a626f72e7522661',1,'rack::EncodingODIM']]],
-  ['avgwindow_17',['avgWindow',['../classrack_1_1EchoTopOp.html#a30b175f3f846f3fc4830e363e1b41b12',1,'rack::EchoTopOp']]],
-  ['azmrange_18',['azmRange',['../classrack_1_1PolarSector.html#aaf210e045624c0f194803e187c79da2f',1,'rack::PolarSector']]]
+  ['appendresultquality_11',['appendResultQuality',['../classrack_1_1ProductConf.html#a4918b94f1a499764705efb9d40300c80',1,'rack::ProductConf']]],
+  ['appendresults_12',['appendResults',['../classrack_1_1ProductConf.html#a29b7238397966b974ac5f6978867d32a',1,'rack::ProductConf']]],
+  ['array_13',['ARRAY',['../classrack_1_1ODIMPathElem.html#ae7011caba8882ad9b6bef266ac92335a',1,'rack::ODIMPathElem']]],
+  ['arrayfileextension_14',['arrayFileExtension',['../namespacerack.html#a065c43967b089b314d28001b53da956a',1,'rack']]],
+  ['arrayseparator_15',['arraySeparator',['../classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62',1,'drain::SmartMap']]],
+  ['attribute_5fgroups_16',['ATTRIBUTE_GROUPS',['../classrack_1_1ODIMPathElem.html#a91088dff85a58e36fa01ec17e5205629',1,'rack::ODIMPathElem']]],
+  ['attributegroups_17',['attributeGroups',['../classrack_1_1EncodingODIM.html#a6ffa197e53e449b00a626f72e7522661',1,'rack::EncodingODIM']]],
+  ['avgwindow_18',['avgWindow',['../classrack_1_1EchoTopOp.html#a30b175f3f846f3fc4830e363e1b41b12',1,'rack::EchoTopOp']]],
+  ['azmrange_19',['azmRange',['../classrack_1_1PolarSector.html#aaf210e045624c0f194803e187c79da2f',1,'rack::PolarSector']]]
 ];

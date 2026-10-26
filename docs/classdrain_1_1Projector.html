@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -198,8 +205,8 @@ Static Protected Member Functions</h2></td></tr>
 <tr class="memitem:a6282ab3940aa420b286dd2df4ae3c433" id="r_a6282ab3940aa420b286dd2df4ae3c433"><td class="memItemLeft" align="right" valign="top"><a id="a6282ab3940aa420b286dd2df4ae3c433" name="a6282ab3940aa420b286dd2df4ae3c433"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>getProjDefStr</b> (const <a class="el" href="classdrain_1_1Dictionary.html">ProjDef</a> &amp;dict, std::stringstream &amp;sstr, const std::set&lt; std::string &gt; &amp;excludeKeys={&quot;+type&quot;})</td></tr>
 <tr class="separator:a6282ab3940aa420b286dd2df4ae3c433"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb99ba8dd1394652797076dc9716b824" id="r_adb99ba8dd1394652797076dc9716b824"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Projector.html#adb99ba8dd1394652797076dc9716b824">isLongLat</a> (const PJ *prj)</td></tr>
-<tr class="memdesc:adb99ba8dd1394652797076dc9716b824"><td class="mdescLeft">&#160;</td><td class="mdescRight">For setting projection.  <br /></td></tr>
+<tr class="memitem:adb99ba8dd1394652797076dc9716b824" id="r_adb99ba8dd1394652797076dc9716b824"><td class="memItemLeft" align="right" valign="top"><a id="adb99ba8dd1394652797076dc9716b824" name="adb99ba8dd1394652797076dc9716b824"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isLongLat</b> (const PJ *prj)</td></tr>
 <tr class="separator:adb99ba8dd1394652797076dc9716b824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
@@ -229,42 +236,6 @@ Friends</h2></td></tr>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>Proj6</b></td></tr>
 <tr class="separator:ab525eb05c96724ef02046ef66cf2f957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="adb99ba8dd1394652797076dc9716b824" name="adb99ba8dd1394652797076dc9716b824"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb99ba8dd1394652797076dc9716b824">&#9670;&#160;</a></span>isLongLat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool isLongLat </td>
-          <td>(</td>
-          <td class="paramtype">const PJ *&#160;</td>
-          <td class="paramname"><em>prj</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>For setting projection. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">projStr</td><td>- string in Proj format </td></tr>
-    <tr><td class="paramname">CRS</td><td>- set or unset </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/drain/util/<a class="el" href="Projector_8h_source.html">Projector.h</a></li>
 <li>src/drain/util/<b>Projector.cpp</b></li>

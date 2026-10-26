@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -180,17 +187,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a1237289d07d0a994a3588b7550eee0" id="r_a9a1237289d07d0a994a3588b7550eee0"><td class="memItemLeft" align="right" valign="top"><a id="a9a1237289d07d0a994a3588b7550eee0" name="a9a1237289d07d0a994a3588b7550eee0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CommandBank</b> (const <a class="el" href="classdrain_1_1CommandBank.html">CommandBank</a> &amp;bank)</td></tr>
 <tr class="separator:a9a1237289d07d0a994a3588b7550eee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e9c2f9459288922238bc6915306cddc" id="r_a6e9c2f9459288922238bc6915306cddc"><td class="memTemplParams" colspan="2"><a id="a6e9c2f9459288922238bc6915306cddc" name="a6e9c2f9459288922238bc6915306cddc"></a>
-template&lt;class D , char PREFIX = 0&gt; </td></tr>
-<tr class="memitem:a6e9c2f9459288922238bc6915306cddc"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addExternal</b> (const D &amp;entry, char alias=0)</td></tr>
+<tr class="memitem:a6e9c2f9459288922238bc6915306cddc" id="r_a6e9c2f9459288922238bc6915306cddc"><td class="memTemplParams" colspan="2">template&lt;class D , char PREFIX = 0&gt; </td></tr>
+<tr class="memitem:a6e9c2f9459288922238bc6915306cddc"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a6e9c2f9459288922238bc6915306cddc">addExternal</a> (const D &amp;entry, char alias=0)</td></tr>
+<tr class="memdesc:a6e9c2f9459288922238bc6915306cddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a command.  <br /></td></tr>
 <tr class="separator:a6e9c2f9459288922238bc6915306cddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a124cdedaf409f19fd6128ad93a723e36" id="r_a124cdedaf409f19fd6128ad93a723e36"><td class="memTemplParams" colspan="2"><a id="a124cdedaf409f19fd6128ad93a723e36" name="a124cdedaf409f19fd6128ad93a723e36"></a>
-template&lt;class D &gt; </td></tr>
-<tr class="memitem:a124cdedaf409f19fd6128ad93a723e36"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addExternal</b> (char PREFIX, const D &amp;entry, char alias=0)</td></tr>
+<tr class="memitem:a124cdedaf409f19fd6128ad93a723e36" id="r_a124cdedaf409f19fd6128ad93a723e36"><td class="memTemplParams" colspan="2">template&lt;class D &gt; </td></tr>
+<tr class="memitem:a124cdedaf409f19fd6128ad93a723e36"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a124cdedaf409f19fd6128ad93a723e36">addExternal</a> (char PREFIX, const D &amp;entry, char alias=0)</td></tr>
+<tr class="memdesc:a124cdedaf409f19fd6128ad93a723e36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a command.  <br /></td></tr>
 <tr class="separator:a124cdedaf409f19fd6128ad93a723e36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa339c016d10dd4151049d86e487380d1" id="r_aa339c016d10dd4151049d86e487380d1"><td class="memTemplParams" colspan="2"><a id="aa339c016d10dd4151049d86e487380d1" name="aa339c016d10dd4151049d86e487380d1"></a>
-template&lt;class D , char PREFIX = 0&gt; </td></tr>
-<tr class="memitem:aa339c016d10dd4151049d86e487380d1"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>addExternal</b> (const D &amp;entry, const std::string &amp;key, char alias=0)</td></tr>
+<tr class="memitem:aa339c016d10dd4151049d86e487380d1" id="r_aa339c016d10dd4151049d86e487380d1"><td class="memTemplParams" colspan="2">template&lt;class D , char PREFIX = 0&gt; </td></tr>
+<tr class="memitem:aa339c016d10dd4151049d86e487380d1"><td class="memTemplItemLeft" align="right" valign="top">D &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#aa339c016d10dd4151049d86e487380d1">addExternal</a> (const D &amp;entry, const std::string &amp;key, char alias=0)</td></tr>
+<tr class="memdesc:aa339c016d10dd4151049d86e487380d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a command.  <br /></td></tr>
 <tr class="separator:aa339c016d10dd4151049d86e487380d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc5666ebd1812a1e773d4ddd009e3a1" id="r_accc5666ebd1812a1e773d4ddd009e3a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#accc5666ebd1812a1e773d4ddd009e3a1">readFileTXT</a> (const std::string &amp;filename, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
 <tr class="memdesc:accc5666ebd1812a1e773d4ddd009e3a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Include commands from file, inserting them before iterator.  <br /></td></tr>
@@ -198,7 +205,7 @@ template&lt;class D , char PREFIX = 0&gt; </td></tr>
 <tr class="memitem:a9d30ea0dc8fad979b1949f35d7e5c431" id="r_a9d30ea0dc8fad979b1949f35d7e5c431"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a9d30ea0dc8fad979b1949f35d7e5c431">readFile</a> (const std::string &amp;filename, <a class="el" href="classdrain_1_1Program.html">Program</a> &amp;prog) const</td></tr>
 <tr class="separator:a9d30ea0dc8fad979b1949f35d7e5c431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c91999a3155475b553dc86fd821ce81" id="r_a3c91999a3155475b553dc86fd821ce81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a3c91999a3155475b553dc86fd821ce81">scriptify</a> (int argc, const char **argv, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
-<tr class="memdesc:a3c91999a3155475b553dc86fd821ce81"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html">Convert</a> program arguments a script. Like in main(), actual command arguments start from 1.  <br /></td></tr>
+<tr class="memdesc:a3c91999a3155475b553dc86fd821ce81"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> program arguments a script. Like in main(), actual command arguments start from 1.  <br /></td></tr>
 <tr class="separator:a3c91999a3155475b553dc86fd821ce81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e08a888d70b4590cc8ffb14df2089aa" id="r_a6e08a888d70b4590cc8ffb14df2089aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#a6e08a888d70b4590cc8ffb14df2089aa">scriptify</a> (const std::string &amp;cmdLine, <a class="el" href="classdrain_1_1Script.html">Script</a> &amp;script) const</td></tr>
 <tr class="memdesc:a6e08a888d70b4590cc8ffb14df2089aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits a command line to a list of commands, that is, a script.  <br /></td></tr>
@@ -255,7 +262,7 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a49571bd761a4485e9414209c5d7d2fc9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>exportStatus</b> (std::map&lt; std::string, T &gt; &amp;statusMap) const</td></tr>
 <tr class="separator:a49571bd761a4485e9414209c5d7d2fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab12cca9a7711004eb276eec05002833e" id="r_ab12cca9a7711004eb276eec05002833e"><td class="memItemLeft" align="right" valign="top"><a id="ab12cca9a7711004eb276eec05002833e" name="ab12cca9a7711004eb276eec05002833e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setScriptTriggerFlag</b> (bank_section_t sectionFlag)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setScriptTriggerFlag</b> (<a class="el" href="namespacedrain.html#a4c73756effb822c0be15c26d3a5e339b">bank_section_t</a> sectionFlag)</td></tr>
 <tr class="separator:ab12cca9a7711004eb276eec05002833e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeccc733a60d52f6ee2ca892368b6c48" id="r_afeccc733a60d52f6ee2ca892368b6c48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#afeccc733a60d52f6ee2ca892368b6c48">setDefaultCmdKey</a> (const std::string &amp;s)</td></tr>
 <tr class="memdesc:afeccc733a60d52f6ee2ca892368b6c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set command - key, not getName() - that is used if a plain argument is given.  <br /></td></tr>
@@ -377,7 +384,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::os
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a65163847655f407062834a530cd66f0f" id="r_a65163847655f407062834a530cd66f0f"><td class="memItemLeft" align="right" valign="top"><a id="a65163847655f407062834a530cd66f0f" name="a65163847655f407062834a530cd66f0f"></a>
 static std::set&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>trimWords</b> ()</td></tr>
-<tr class="memdesc:a65163847655f407062834a530cd66f0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Words that are moved from class name prior to composing a command name. <br /></td></tr>
+<tr class="memdesc:a65163847655f407062834a530cd66f0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Words that should be removed from class name when automatically composing a command name. <br /></td></tr>
 <tr class="separator:a65163847655f407062834a530cd66f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe12f5ad6907164ef8e296967f9f0efa" id="r_afe12f5ad6907164ef8e296967f9f0efa"><td class="memItemLeft" align="right" valign="top"><a id="afe12f5ad6907164ef8e296967f9f0efa" name="afe12f5ad6907164ef8e296967f9f0efa"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>deriveCmdName</b> (std::string &amp;name, char prefix=0)</td></tr>
@@ -395,7 +402,7 @@ Public Attributes</h2></td></tr>
 <a class="el" href="classdrain_1_1StringMapper.html">drain::StringMapper</a>&#160;</td><td class="memItemRight" valign="bottom"><b>logFileSyntax</b></td></tr>
 <tr class="separator:ac1d5bcd65f2184089baad125695ee896"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71c9fd767453e4d16ca55a279ba64cef" id="r_a71c9fd767453e4d16ca55a279ba64cef"><td class="memItemLeft" align="right" valign="top"><a id="a71c9fd767453e4d16ca55a279ba64cef" name="a71c9fd767453e4d16ca55a279ba64cef"></a>
-bank_section_t&#160;</td><td class="memItemRight" valign="bottom"><b>scriptTriggerFlag</b></td></tr>
+<a class="el" href="namespacedrain.html#a4c73756effb822c0be15c26d3a5e339b">bank_section_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>scriptTriggerFlag</b></td></tr>
 <tr class="memdesc:a71c9fd767453e4d16ca55a279ba64cef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member and methods for special commands. <br /></td></tr>
 <tr class="separator:a71c9fd767453e4d16ca55a279ba64cef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9b227182b46f1b39b9994093bca5257" id="r_aa9b227182b46f1b39b9994093bca5257"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1CommandBank.html#aa9b227182b46f1b39b9994093bca5257">defaultCmdKey</a></td></tr>
@@ -459,11 +466,146 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>title</b></td>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Container and execution tools for commands derived from <a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a>. </p>
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md23"></a>
 Storage for commands, providing list, help and cloning facilities</h1>
-<h1><a class="anchor" id="autotoc_md20"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Utilities for creating scripts and programs</h1>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a124cdedaf409f19fd6128ad93a723e36" name="a124cdedaf409f19fd6128ad93a723e36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a124cdedaf409f19fd6128ad93a723e36">&#9670;&#160;</a></span>addExternal() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class D &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">D &amp; addExternal </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>PREFIX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const D &amp;&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a command. </p>
+<p>An instance (entry) is needed for bean ref command, for example. </p>
+
+</div>
+</div>
+<a id="a6e9c2f9459288922238bc6915306cddc" name="a6e9c2f9459288922238bc6915306cddc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e9c2f9459288922238bc6915306cddc">&#9670;&#160;</a></span>addExternal() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class D , char PREFIX = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">D &amp; addExternal </td>
+          <td>(</td>
+          <td class="paramtype">const D &amp;&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a command. </p>
+<p>An instance (entry) is needed for bean ref command, for example. </p>
+
+</div>
+</div>
+<a id="aa339c016d10dd4151049d86e487380d1" name="aa339c016d10dd4151049d86e487380d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa339c016d10dd4151049d86e487380d1">&#9670;&#160;</a></span>addExternal() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class D , char PREFIX = 0&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">D &amp; addExternal </td>
+          <td>(</td>
+          <td class="paramtype">const D &amp;&#160;</td>
+          <td class="paramname"><em>entry</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>alias</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add a command. </p>
+<p>An instance (entry) is needed for bean ref command, for example. </p>
+
+</div>
+</div>
 <a id="a3dfb8500ab482604e11ec36d73858b9d" name="a3dfb8500ab482604e11ec36d73858b9d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3dfb8500ab482604e11ec36d73858b9d">&#9670;&#160;</a></span>append()</h2>
 
@@ -796,8 +938,8 @@ Utilities for creating scripts and programs</h1>
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classdrain_1_1Convert.html">Convert</a> program arguments a script. Like in main(), actual command arguments start from 1. </p>
-<p>Converts linux command line to pairs of strings: (&lt;cmd&gt;, [params])</p>
+<p><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> program arguments a script. Like in main(), actual command arguments start from 1. </p>
+<p>Converts linux command line to pairs of strings: (<code>cmd</code>, [params])</p>
 <p>Non-static – <a class="el" href="classdrain_1_1CommandBank.html" title="Container and execution tools for commands derived from Command.">CommandBank</a> is needed for checking if a command has arguments.</p>
 <p>Starts from argument 1 instead of 0. </p>
 
@@ -904,7 +1046,7 @@ Utilities for creating scripts and programs</h1>
 </div><div class="memdoc">
 
 <p><a class="el" href="classdrain_1_1Command.html" title="Base class for commands: typically actions taking parameters but also plain variable assignments and ...">Command</a> that is used, if a plain argument is given. </p>
-<p>Technically, plain <code></code> &lt;argument&gt; is replaced by <code>defaultCmd</code> <code></code> &lt;argument&gt; </p>
+<p>Technically, a plain <code>argument</code> is replaced by <code>defaultCmd</code> <code>argument</code> </p>
 
 </div>
 </div>

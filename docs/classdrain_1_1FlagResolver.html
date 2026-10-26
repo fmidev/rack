@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -277,7 +284,7 @@ template&lt;typename T &gt; </div>
 <p>Computes bitwise OR function on the numeric or alphabetic value(s) presented by a string. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">key</td><td>– A string containing keys ("note,error") or values ("4,8,32") or a mixture of them. </td></tr>
+    <tr><td class="paramname">keys</td><td>– A string containing keys ("note,error") or values ("4,8,32") or a mixture of them. </td></tr>
     <tr><td class="paramname">separator</td><td>– if given, splits string to several keys </td></tr>
   </table>
   </dd>

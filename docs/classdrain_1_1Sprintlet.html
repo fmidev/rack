@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -145,8 +152,12 @@ template&lt;&gt; </td></tr>
 <tr class="separator:ad04a08d220bffe9e35ab2ffd3efcc65f inherit pub_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6fd53c543007674a579452cc83b4717 inherit pub_methods_classdrain_1_1Sprinter" id="r_af6fd53c543007674a579452cc83b4717"><td class="memItemLeft" align="right" valign="top">
 template&lt;&gt; </td></tr>
-<tr class="memitem:af6fd53c543007674a579452cc83b4717 inherit pub_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const drain::image::Palette &amp;palette, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
+<tr class="memitem:af6fd53c543007674a579452cc83b4717 inherit pub_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a> &amp;palette, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
 <tr class="separator:af6fd53c543007674a579452cc83b4717 inherit pub_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44b776b3b0e103d215eaa2d55382e91a inherit pub_methods_classdrain_1_1Sprinter" id="r_a44b776b3b0e103d215eaa2d55382e91a"><td class="memItemLeft" align="right" valign="top">
+template&lt;&gt; </td></tr>
+<tr class="memitem:a44b776b3b0e103d215eaa2d55382e91a inherit pub_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a> &amp;map, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
+<tr class="separator:a44b776b3b0e103d215eaa2d55382e91a inherit pub_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c98b3900062db40512331341422fe44 inherit pub_methods_classdrain_1_1Sprinter" id="r_a3c98b3900062db40512331341422fe44"><td class="memItemLeft" align="right" valign="top">
 template&lt;&gt; </td></tr>
 <tr class="memitem:a3c98b3900062db40512331341422fe44 inherit pub_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">drain::image::PaletteEntry</a> &amp;entry, const <a class="el" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp;layout)</td></tr>
@@ -272,25 +283,25 @@ static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>
 static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, char c, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
 <tr class="memdesc:aded47ce3a9369136eb73100ab9762c1e inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single char gets styled same way as strings. <br /></td></tr>
 <tr class="separator:aded47ce3a9369136eb73100ab9762c1e inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa654f1b135a9b745c0d7cc208b3b7638 inherit pub_static_methods_classdrain_1_1Sprinter" id="r_aa654f1b135a9b745c0d7cc208b3b7638"><td class="memItemLeft" align="right" valign="top">
-static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool b, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:aa654f1b135a9b745c0d7cc208b3b7638 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single char gets styled same way as strings. <br /></td></tr>
-<tr class="separator:aa654f1b135a9b745c0d7cc208b3b7638 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab52607b48fd84cb738bd3dc1d1fc7d0f inherit pub_static_methods_classdrain_1_1Sprinter" id="r_ab52607b48fd84cb738bd3dc1d1fc7d0f"><td class="memTemplParams" colspan="2">
+<tr class="memitem:ac41569d45246b84d531779df66f42c63 inherit pub_static_methods_classdrain_1_1Sprinter" id="r_ac41569d45246b84d531779df66f42c63"><td class="memItemLeft" align="right" valign="top">
+static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, bool b, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:ac41569d45246b84d531779df66f42c63 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Single char gets styled same way as strings. <br /></td></tr>
+<tr class="separator:ac41569d45246b84d531779df66f42c63 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8fc85d021855eebe9cbb55126d0412b inherit pub_static_methods_classdrain_1_1Sprinter" id="r_aa8fc85d021855eebe9cbb55126d0412b"><td class="memTemplParams" colspan="2">
 template&lt;class D &gt; </td></tr>
-<tr class="memitem:ab52607b48fd84cb738bd3dc1d1fc7d0f inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:ab52607b48fd84cb738bd3dc1d1fc7d0f inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
-<tr class="separator:ab52607b48fd84cb738bd3dc1d1fc7d0f inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae61ae97424ae3ceeaac99ac8a16e6bff inherit pub_static_methods_classdrain_1_1Sprinter" id="r_ae61ae97424ae3ceeaac99ac8a16e6bff"><td class="memTemplParams" colspan="2">
+<tr class="memitem:aa8fc85d021855eebe9cbb55126d0412b inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:aa8fc85d021855eebe9cbb55126d0412b inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
+<tr class="separator:aa8fc85d021855eebe9cbb55126d0412b inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc4e32dcddc13acd1db4a627af6dc0dd inherit pub_static_methods_classdrain_1_1Sprinter" id="r_abc4e32dcddc13acd1db4a627af6dc0dd"><td class="memTemplParams" colspan="2">
 template&lt;class D &gt; </td></tr>
-<tr class="memitem:ae61ae97424ae3ceeaac99ac8a16e6bff inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:ae61ae97424ae3ceeaac99ac8a16e6bff inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
-<tr class="separator:ae61ae97424ae3ceeaac99ac8a16e6bff inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7c835a0b71728667ed352ead926c481 inherit pub_static_methods_classdrain_1_1Sprinter" id="r_af7c835a0b71728667ed352ead926c481"><td class="memTemplParams" colspan="2">
+<tr class="memitem:abc4e32dcddc13acd1db4a627af6dc0dd inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D *x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:abc4e32dcddc13acd1db4a627af6dc0dd inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer: redirect to actual target object. <br /></td></tr>
+<tr class="separator:abc4e32dcddc13acd1db4a627af6dc0dd inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5fa1b03428ee0f00759628996a1a1b inherit pub_static_methods_classdrain_1_1Sprinter" id="r_aac5fa1b03428ee0f00759628996a1a1b"><td class="memTemplParams" colspan="2">
 template&lt;class D &gt; </td></tr>
-<tr class="memitem:af7c835a0b71728667ed352ead926c481 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D &amp;x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;layout=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
-<tr class="memdesc:af7c835a0b71728667ed352ead926c481 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default, unformatted output for basetypes and types not matching the other templates. <br /></td></tr>
-<tr class="separator:af7c835a0b71728667ed352ead926c481 inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac5fa1b03428ee0f00759628996a1a1b inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memTemplItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, const D &amp;x, const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp;=<a class="el" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>)</td></tr>
+<tr class="memdesc:aac5fa1b03428ee0f00759628996a1a1b inherit pub_static_methods_classdrain_1_1Sprinter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default, unformatted output for basetypes and types not matching the other templates. <br /></td></tr>
+<tr class="separator:aac5fa1b03428ee0f00759628996a1a1b inherit pub_static_methods_classdrain_1_1Sprinter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_classdrain_1_1Sprinter"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_classdrain_1_1Sprinter')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="classdrain_1_1Sprinter.html">Sprinter</a></td></tr>
 <tr class="memitem:af38c4bbb10fd0f9f43270479b05a61bb inherit pub_static_attribs_classdrain_1_1Sprinter" id="r_af38c4bbb10fd0f9f43270479b05a61bb"><td class="memItemLeft" align="right" valign="top">
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>UNSET_LAYOUT</b> = {&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;}</td></tr>

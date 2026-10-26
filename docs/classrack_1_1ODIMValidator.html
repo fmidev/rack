@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -82,12 +89,17 @@ $(function() {
   <div class="headertitle"><div class="title">ODIMValidator Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>DOC: Add class description.  
+ <a href="classrack_1_1ODIMValidator.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="ODIMValidator_8h_source.html">ODIMValidator.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for ODIMValidator:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1ODIMValidator__inherit__graph.png" border="0" usemap="#aODIMValidator_inherit__map" alt="Inheritance graph"/></div>
 <map name="aODIMValidator_inherit__map" id="aODIMValidator_inherit__map">
-<area shape="rect" title=" " alt="" coords="47,79,163,104"/>
+<area shape="rect" title="DOC: Add class description." alt="" coords="47,79,163,104"/>
 <area shape="rect" title=" " alt="" coords="5,5,205,31"/>
 <area shape="poly" title=" " alt="" coords="108,44,108,79,103,79,103,44"/>
 </map>
@@ -97,7 +109,7 @@ Collaboration diagram for ODIMValidator:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1ODIMValidator__coll__graph.png" border="0" usemap="#aODIMValidator_coll__map" alt="Collaboration graph"/></div>
 <map name="aODIMValidator_coll__map" id="aODIMValidator_coll__map">
-<area shape="rect" title=" " alt="" coords="47,79,163,104"/>
+<area shape="rect" title="DOC: Add class description." alt="" coords="47,79,163,104"/>
 <area shape="rect" title=" " alt="" coords="5,5,205,31"/>
 <area shape="poly" title=" " alt="" coords="108,44,108,79,103,79,103,44"/>
 </map>
@@ -105,11 +117,13 @@ Collaboration diagram for ODIMValidator:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a03021be8ebad41c92deafec6a8efc600" id="r_a03021be8ebad41c92deafec6a8efc600"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMValidator.html#a03021be8ebad41c92deafec6a8efc600">validate</a> (const std::string &amp;path, H5I_type_t h5type=H5I_GROUP) const</td></tr>
+<tr class="memitem:a03021be8ebad41c92deafec6a8efc600" id="r_a03021be8ebad41c92deafec6a8efc600"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMValidator.html#a03021be8ebad41c92deafec6a8efc600">validate</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;path, <a class="el" href="classrack_1_1DataSet.html">H5I_type_t</a> <a class="el" href="classrack_1_1DataSet.html">h5type</a>=<a class="el" href="classrack_1_1DataSet.html">H5I_GROUP</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a03021be8ebad41c92deafec6a8efc600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches for an entry with matching <code>pathRegExp</code>.  <br /></td></tr>
 <tr class="separator:a03021be8ebad41c92deafec6a8efc600"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>DOC: Add class description. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a03021be8ebad41c92deafec6a8efc600" name="a03021be8ebad41c92deafec6a8efc600"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a03021be8ebad41c92deafec6a8efc600">&#9670;&#160;</a></span>validate()</h2>
 
@@ -119,14 +133,14 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">ODIMValidator::const_iterator validate </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">H5I_type_t&#160;</td>
-          <td class="paramname"><em>h5type</em> = <code>H5I_GROUP</code>&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">H5I_type_t</a>&#160;</td>
+          <td class="paramname"><em>h5type</em> = <code><a class="el" href="classrack_1_1DataSet.html">H5I_GROUP</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>

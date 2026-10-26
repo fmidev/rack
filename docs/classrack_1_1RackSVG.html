@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -87,11 +94,11 @@ $(function() {
 <p>SVG support for creating aligned image panels.  
  <a href="classrack_1_1RackSVG.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="graphics-panel_8h_source.html">graphics-panel.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="graphics-base_8h_source.html">graphics-base.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a064dd6903edf7f9e2f353b8c336db620" id="r_a064dd6903edf7f9e2f353b8c336db620"><td class="memItemLeft" align="right" valign="top"><a id="a064dd6903edf7f9e2f353b8c336db620" name="a064dd6903edf7f9e2f353b8c336db620"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>ElemClass</b> { <br />
+<tr class="memitem:a064dd6903edf7f9e2f353b8c336db620" id="r_a064dd6903edf7f9e2f353b8c336db620"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">ElemClass</a> { <br />
 &#160;&#160;<b>NONE</b> = 0
 , <b>MAIN_TITLE</b> = 1
 , <b>GROUP_TITLE</b> = 2
@@ -102,155 +109,60 @@ Public Types</h2></td></tr>
 , <b>GENERAL</b> = 32
 , <b>ALL</b> = (63)
 , <br />
-&#160;&#160;<b>IMAGE_PANEL</b>
-, <b>IMAGE_BORDER</b>
-, <b>BACKGROUND_RECT</b>
-, <b>SIDE_PANEL</b>
-, <br />
-&#160;&#160;<b>BORDER</b>
-, <b>MOUSE</b>
-, <b>MOUSE_TRACKER</b>
-, <b>MONITOR</b>
-, <br />
-&#160;&#160;<b>SELECTOR</b>
-, <b>DATA_ARRAY</b>
+&#160;&#160;<b>SIDE_PANEL</b>
+, <b>BORDER</b>
 <br />
  }</td></tr>
 <tr class="separator:a064dd6903edf7f9e2f353b8c336db620"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af4ddfe50407c12284aed9a99a61da449" id="r_af4ddfe50407c12284aed9a99a61da449"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#af4ddfe50407c12284aed9a99a61da449">getStyle</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
-<tr class="memdesc:af4ddfe50407c12284aed9a99a61da449"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned.  <br /></td></tr>
-<tr class="separator:af4ddfe50407c12284aed9a99a61da449"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8849f1d0329537735f5b87631b1733d" id="r_aa8849f1d0329537735f5b87631b1733d"><td class="memItemLeft" align="right" valign="top"><a id="aa8849f1d0329537735f5b87631b1733d" name="aa8849f1d0329537735f5b87631b1733d"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getOnLoadScript</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
-<tr class="separator:aa8849f1d0329537735f5b87631b1733d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7caa2b31908f1d281c8e9bc8aa9c35ed" id="r_a7caa2b31908f1d281c8e9bc8aa9c35ed"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a7caa2b31908f1d281c8e9bc8aa9c35ed">getJavaScriptDefs</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
-<tr class="separator:a7caa2b31908f1d281c8e9bc8aa9c35ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06be656d43a2e9414257cf5ef9e6cf97" id="r_a06be656d43a2e9414257cf5ef9e6cf97"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a06be656d43a2e9414257cf5ef9e6cf97">addJavaScripsDef</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const std::string &amp;key, const std::string &amp;section=&quot;cls&quot;)</td></tr>
-<tr class="memdesc:a06be656d43a2e9414257cf5ef9e6cf97"><td class="mdescLeft">&#160;</td><td class="mdescRight">key =&gt; Rack.cls.key = 'key';  <br /></td></tr>
-<tr class="separator:a06be656d43a2e9414257cf5ef9e6cf97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadbef20d9d69dc9e79097ad49eeac0b4" id="r_aadbef20d9d69dc9e79097ad49eeac0b4"><td class="memItemLeft" align="right" valign="top"><a id="aadbef20d9d69dc9e79097ad49eeac0b4" name="aadbef20d9d69dc9e79097ad49eeac0b4"></a>
-static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>guessFormat</b> (const std::string &amp;key)</td></tr>
-<tr class="memdesc:aadbef20d9d69dc9e79097ad49eeac0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns timeformat <br /></td></tr>
+<tr class="memitem:a6e2011dedf950ba9351463b81d890b8d" id="r_a6e2011dedf950ba9351463b81d890b8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a6e2011dedf950ba9351463b81d890b8d">addStyle</a> (drain::image::TreeSVG &amp;style)</td></tr>
+<tr class="separator:a6e2011dedf950ba9351463b81d890b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadbef20d9d69dc9e79097ad49eeac0b4" id="r_aadbef20d9d69dc9e79097ad49eeac0b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#aadbef20d9d69dc9e79097ad49eeac0b4">guessFormat</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;key)</td></tr>
+<tr class="memdesc:aadbef20d9d69dc9e79097ad49eeac0b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns timeformat  <br /></td></tr>
 <tr class="separator:aadbef20d9d69dc9e79097ad49eeac0b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a368521d5445e990893cec70bd1cd7281" id="r_a368521d5445e990893cec70bd1cd7281"><td class="memItemLeft" align="right" valign="top"><a id="a368521d5445e990893cec70bd1cd7281" name="a368521d5445e990893cec70bd1cd7281"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getMainGroup</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
-<tr class="memdesc:a368521d5445e990893cec70bd1cd7281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top-level GROUP used by Rack. All the graphic elements will be created inside this element. <br /></td></tr>
-<tr class="separator:a368521d5445e990893cec70bd1cd7281"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a469826ee9aed1cfaf02872077e58e2e9" id="r_a469826ee9aed1cfaf02872077e58e2e9"><td class="memItemLeft" align="right" valign="top"><a id="a469826ee9aed1cfaf02872077e58e2e9" name="a469826ee9aed1cfaf02872077e58e2e9"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getCurrentAlignedGroup</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
-<tr class="separator:a469826ee9aed1cfaf02872077e58e2e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b06181fc0f457814428d1d3b6450b1a" id="r_a1b06181fc0f457814428d1d3b6450b1a"><td class="memItemLeft" align="right" valign="top"><a id="a1b06181fc0f457814428d1d3b6450b1a" name="a1b06181fc0f457814428d1d3b6450b1a"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getImagePanelGroup</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;filepath)</td></tr>
-<tr class="memdesc:a1b06181fc0f457814428d1d3b6450b1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">For each image an own group is created (for clarity, to contain also title TEXT's etc) <br /></td></tr>
-<tr class="separator:a1b06181fc0f457814428d1d3b6450b1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca9d204580f2eec6fecda3b9f42e590f" id="r_aca9d204580f2eec6fecda3b9f42e590f"><td class="memItemLeft" align="right" valign="top"><a id="aca9d204580f2eec6fecda3b9f42e590f" name="aca9d204580f2eec6fecda3b9f42e590f"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getImagePanelGroup</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx)</td></tr>
-<tr class="separator:aca9d204580f2eec6fecda3b9f42e590f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae77d9d4e4c2a5d1281ae95db6520d7e" id="r_aae77d9d4e4c2a5d1281ae95db6520d7e"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#aae77d9d4e4c2a5d1281ae95db6520d7e">getAdapterGroup</a> (drain::image::TreeSVG &amp;group)</td></tr>
-<tr class="memdesc:aae77d9d4e4c2a5d1281ae95db6520d7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return current row or column of image panels.  <br /></td></tr>
-<tr class="separator:aae77d9d4e4c2a5d1281ae95db6520d7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2b425fe1122ba3a9937c8c7c8e3cce9" id="r_af2b425fe1122ba3a9937c8c7c8e3cce9"><td class="memItemLeft" align="right" valign="top"><a id="af2b425fe1122ba3a9937c8c7c8e3cce9" name="af2b425fe1122ba3a9937c8c7c8e3cce9"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>consumeAlignRequest</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, <a class="el" href="classdrain_1_1image_1_1NodeSVG.html">drain::image::NodeSVG</a> &amp;node)</td></tr>
-<tr class="memdesc:af2b425fe1122ba3a9937c8c7c8e3cce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply an alignment, to next object only. <br /></td></tr>
-<tr class="separator:af2b425fe1122ba3a9937c8c7c8e3cce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba3044de2d9066a0d465eb752d084e84" id="r_aba3044de2d9066a0d465eb752d084e84"><td class="memItemLeft" align="right" valign="top"><a id="aba3044de2d9066a0d465eb752d084e84" name="aba3044de2d9066a0d465eb752d084e84"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>applyInclusion</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;cxt, const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;filepath)</td></tr>
-<tr class="separator:aba3044de2d9066a0d465eb752d084e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5ac255150fe42192d29795aeef03e77" id="r_ae5ac255150fe42192d29795aeef03e77"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#ae5ac255150fe42192d29795aeef03e77">addImage</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;src, const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;filepath)</td></tr>
-<tr class="memdesc:ae5ac255150fe42192d29795aeef03e77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add pixel image (PNG).  <br /></td></tr>
-<tr class="separator:ae5ac255150fe42192d29795aeef03e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48d3310ec53a3fdd9ddc7541beda93d7" id="r_a48d3310ec53a3fdd9ddc7541beda93d7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a48d3310ec53a3fdd9ddc7541beda93d7">addImage</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const drain::image::TreeSVG &amp;<a class="el" href="structdrain_1_1image_1_1svg.html">svg</a>, const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;filepath)</td></tr>
-<tr class="memdesc:a48d3310ec53a3fdd9ddc7541beda93d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Currently, uses file link (does not embed)  <br /></td></tr>
-<tr class="separator:a48d3310ec53a3fdd9ddc7541beda93d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1d021da3c43f0a1dd0e59c2ea36c387" id="r_ab1d021da3c43f0a1dd0e59c2ea36c387"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#ab1d021da3c43f0a1dd0e59c2ea36c387">addImage</a> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; drain::image::svg::coord_t &gt; &amp;frame, const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;filepath, const std::string &amp;styleClass=&quot;&quot;)</td></tr>
-<tr class="memdesc:ab1d021da3c43f0a1dd0e59c2ea36c387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add external image from a file path.  <br /></td></tr>
-<tr class="separator:ab1d021da3c43f0a1dd0e59c2ea36c387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a019e3a1bd06d80934d7e4b8d2027d924" id="r_a019e3a1bd06d80934d7e4b8d2027d924"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a019e3a1bd06d80934d7e4b8d2027d924">addTitleBox</a> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;object, RackSVG::ElemClass elemClass)</td></tr>
+<tr class="memitem:a019e3a1bd06d80934d7e4b8d2027d924" id="r_a019e3a1bd06d80934d7e4b8d2027d924"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a019e3a1bd06d80934d7e4b8d2027d924">addTitleBox</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;object, <a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a> <a class="el" href="classrack_1_1DataSet.html">elemClass</a>)</td></tr>
 <tr class="memdesc:a019e3a1bd06d80934d7e4b8d2027d924"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a title from background rectangle and TEXT elements (MAINTITLE, LOCATION, TIME, GENERAL)  <br /></td></tr>
 <tr class="separator:a019e3a1bd06d80934d7e4b8d2027d924"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a037d3a52e0bd5fea27a0db331d4b9787" id="r_a037d3a52e0bd5fea27a0db331d4b9787"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a037d3a52e0bd5fea27a0db331d4b9787">appendTitleElements</a> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const std::string &amp;anchor, RackSVG::ElemClass elemClass)</td></tr>
+<tr class="memitem:a037d3a52e0bd5fea27a0db331d4b9787" id="r_a037d3a52e0bd5fea27a0db331d4b9787"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a037d3a52e0bd5fea27a0db331d4b9787">appendTitleElements</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;anchor, <a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a> <a class="el" href="classrack_1_1DataSet.html">elemClass</a>)</td></tr>
 <tr class="memdesc:a037d3a52e0bd5fea27a0db331d4b9787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add title elements in given group, to "reserve slots" for actual text content to be added later.  <br /></td></tr>
 <tr class="separator:a037d3a52e0bd5fea27a0db331d4b9787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a459b194288eec4b26b97c9a26b9d3257" id="r_a459b194288eec4b26b97c9a26b9d3257"><td class="memItemLeft" align="right" valign="top"><a id="a459b194288eec4b26b97c9a26b9d3257" name="a459b194288eec4b26b97c9a26b9d3257"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>appendTitleElements</b> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const char *anchor, RackSVG::ElemClass elemClass)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>appendTitleElements</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">char</a> *anchor, <a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a> <a class="el" href="classrack_1_1DataSet.html">elemClass</a>)</td></tr>
 <tr class="separator:a459b194288eec4b26b97c9a26b9d3257"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbc5e2488c0d071f9e7393d5002d4efd" id="r_abbc5e2488c0d071f9e7393d5002d4efd"><td class="memItemLeft" align="right" valign="top"><a id="abbc5e2488c0d071f9e7393d5002d4efd" name="abbc5e2488c0d071f9e7393d5002d4efd"></a>
+<a class="el" href="classrack_1_1DataSet.html">static</a> drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>appendTitleElements</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1ClassXML.html">drain::ClassXML</a> &amp;anchor, <a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a> <a class="el" href="classrack_1_1DataSet.html">elemClass</a>)</td></tr>
+<tr class="separator:abbc5e2488c0d071f9e7393d5002d4efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61eb114aae5b8f2b54cbe844d722318f" id="r_a61eb114aae5b8f2b54cbe844d722318f"><td class="memTemplParams" colspan="2"><a id="a61eb114aae5b8f2b54cbe844d722318f" name="a61eb114aae5b8f2b54cbe844d722318f"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a61eb114aae5b8f2b54cbe844d722318f"><td class="memTemplItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>appendTitleElements</b> (const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, const T &amp;anchorId, RackSVG::ElemClass elemClass)</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> T &gt; </td></tr>
+<tr class="memitem:a61eb114aae5b8f2b54cbe844d722318f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> drain::image::TreeSVG &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>appendTitleElements</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;conf, drain::image::TreeSVG &amp;group, <a class="el" href="classrack_1_1DataSet.html">const</a> T &amp;<a class="el" href="classrack_1_1DataSet.html">anchorId</a>, <a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a> <a class="el" href="classrack_1_1DataSet.html">elemClass</a>)</td></tr>
 <tr class="separator:a61eb114aae5b8f2b54cbe844d722318f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7917adfb0c43e95cb21531ec8332550" id="r_aa7917adfb0c43e95cb21531ec8332550"><td class="memItemLeft" align="right" valign="top"><a id="aa7917adfb0c43e95cb21531ec8332550" name="aa7917adfb0c43e95cb21531ec8332550"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>addRectangleGroup</b> (<a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx, const <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; double &gt; &amp;frame={200, 200})</td></tr>
-<tr class="memdesc:aa7917adfb0c43e95cb21531ec8332550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add rectangle. <br /></td></tr>
-<tr class="separator:aa7917adfb0c43e95cb21531ec8332550"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bee81aad53a1b509f7b8fca055def71" id="r_a6bee81aad53a1b509f7b8fca055def71"><td class="memItemLeft" align="right" valign="top">static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1RackSVG.html#a6bee81aad53a1b509f7b8fca055def71">addImageBorder</a> (drain::image::TreeSVG &amp;imagePanel)</td></tr>
-<tr class="memdesc:a6bee81aad53a1b509f7b8fca055def71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add.  <br /></td></tr>
-<tr class="separator:a6bee81aad53a1b509f7b8fca055def71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f10a43dc4207aa4ef651c6ea47022f" id="r_a44f10a43dc4207aa4ef651c6ea47022f"><td class="memItemLeft" align="right" valign="top"><a id="a44f10a43dc4207aa4ef651c6ea47022f" name="a44f10a43dc4207aa4ef651c6ea47022f"></a>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>addMetaData</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;src, <a class="el" href="classdrain_1_1image_1_1ImagePanel.html">drain::image::ImagePanel</a> &amp;<a class="el" href="classrack_1_1DataSet.html">imagePanel</a>)</td></tr>
+<tr class="separator:a44f10a43dc4207aa4ef651c6ea47022f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SVG support for creating aligned image panels. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab1d021da3c43f0a1dd0e59c2ea36c387" name="ab1d021da3c43f0a1dd0e59c2ea36c387"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1d021da3c43f0a1dd0e59c2ea36c387">&#9670;&#160;</a></span>addImage() <span class="overload">[1/3]</span></h2>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a064dd6903edf7f9e2f353b8c336db620" name="a064dd6903edf7f9e2f353b8c336db620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a064dd6903edf7f9e2f353b8c336db620">&#9670;&#160;</a></span>ElemClass</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void addImage </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Frame2D.html">drain::Frame2D</a>&lt; drain::image::svg::coord_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>frame</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;&#160;</td>
-          <td class="paramname"><em>filepath</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>styleClass</em> = <code>&quot;&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">enum</a> <a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">ElemClass</a></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-
-<p>Add external image from a file path. </p>
-<p>Add pixel image (PNG)</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">styleClass</td><td>- optional style class, possibly FLOAT </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section see"><dt>See also</dt><dd>rack::Interactive::ElemClass </dd></dl>
 
 </div>
 </div>
-<a id="ae5ac255150fe42192d29795aeef03e77" name="ae5ac255150fe42192d29795aeef03e77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5ac255150fe42192d29795aeef03e77">&#9670;&#160;</a></span>addImage() <span class="overload">[2/3]</span></h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6e2011dedf950ba9351463b81d890b8d" name="a6e2011dedf950ba9351463b81d890b8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e2011dedf950ba9351463b81d890b8d">&#9670;&#160;</a></span>addStyle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -259,100 +171,10 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void addImage </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;&#160;</td>
-          <td class="paramname"><em>filepath</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Add pixel image (PNG). </p>
-<p>Idea: keep this minimal, add components only upon (eventual) saving of the SVG file. </p>
-
-</div>
-</div>
-<a id="a48d3310ec53a3fdd9ddc7541beda93d7" name="a48d3310ec53a3fdd9ddc7541beda93d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48d3310ec53a3fdd9ddc7541beda93d7">&#9670;&#160;</a></span>addImage() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void addImage </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const drain::image::TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>svg</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1FilePath.html">drain::FilePath</a> &amp;&#160;</td>
-          <td class="paramname"><em>filepath</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Currently, uses file link (does not embed) </p>
-<p>Add SVG image. </p>
-
-</div>
-</div>
-<a id="a6bee81aad53a1b509f7b8fca055def71" name="a6bee81aad53a1b509f7b8fca055def71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bee81aad53a1b509f7b8fca055def71">&#9670;&#160;</a></span>addImageBorder()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">drain::image::TreeSVG &amp; addImageBorder </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> addStyle </td>
           <td>(</td>
           <td class="paramtype">drain::image::TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>imagePanel</em></td><td>)</td>
+          <td class="paramname"><em>style</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -362,61 +184,7 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Add. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">imagePanel</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a06be656d43a2e9414257cf5ef9e6cf97" name="a06be656d43a2e9414257cf5ef9e6cf97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06be656d43a2e9414257cf5ef9e6cf97">&#9670;&#160;</a></span>addJavaScripsDef()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">drain::image::TreeSVG &amp; addJavaScripsDef </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>section</em> = <code>&quot;cls&quot;</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>key =&gt; Rack.cls.key = 'key'; </p>
-<p>TODO template</p>
-<p>TODO template</p>
-<p>Is return value needed? </p>
+<p>These mainly for PANELS </p>
 
 </div>
 </div>
@@ -432,7 +200,7 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
         <tr>
           <td class="memname">drain::image::TreeSVG &amp; addTitleBox </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
         </tr>
         <tr>
@@ -444,7 +212,7 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RackSVG::ElemClass&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a>&#160;</td>
           <td class="paramname"><em>elemClass</em>&#160;</td>
         </tr>
         <tr>
@@ -477,7 +245,7 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
         <tr>
           <td class="memname">drain::image::TreeSVG &amp; appendTitleElements </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structrack_1_1ConfSVG.html">ConfSVG</a> &amp;&#160;</td>
           <td class="paramname"><em>conf</em>, </td>
         </tr>
         <tr>
@@ -489,13 +257,13 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
           <td class="paramname"><em>anchor</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RackSVG::ElemClass&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1RackSVG.html#a064dd6903edf7f9e2f353b8c336db620">RackSVG::ElemClass</a>&#160;</td>
           <td class="paramname"><em>elemClass</em>&#160;</td>
         </tr>
         <tr>
@@ -516,8 +284,8 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
 
 </div>
 </div>
-<a id="aae77d9d4e4c2a5d1281ae95db6520d7e" name="aae77d9d4e4c2a5d1281ae95db6520d7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae77d9d4e4c2a5d1281ae95db6520d7e">&#9670;&#160;</a></span>getAdapterGroup()</h2>
+<a id="aadbef20d9d69dc9e79097ad49eeac0b4" name="aadbef20d9d69dc9e79097ad49eeac0b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadbef20d9d69dc9e79097ad49eeac0b4">&#9670;&#160;</a></span>guessFormat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -526,10 +294,10 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">drain::image::TreeSVG &amp; getAdapterGroup </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp; guessFormat </td>
           <td>(</td>
-          <td class="paramtype">drain::image::TreeSVG &amp;&#160;</td>
-          <td class="paramname"><em>group</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;&#160;</td>
+          <td class="paramname"><em>key</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -540,71 +308,16 @@ static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bo
 </table>
 </div><div class="memdoc">
 
-<p>Return current row or column of image panels. </p>
-<p>Intermediate group "hiding" translation that moves upper left corner of the object to the origin. </p>
-
-</div>
-</div>
-<a id="a7caa2b31908f1d281c8e9bc8aa9c35ed" name="a7caa2b31908f1d281c8e9bc8aa9c35ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7caa2b31908f1d281c8e9bc8aa9c35ed">&#9670;&#160;</a></span>getJavaScriptDefs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">drain::image::TreeSVG &amp; getJavaScriptDefs </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>// static Rack = { cls = {},</p>
-<p>} Rack.cls.SELECTOR = 'SELECTOR'; </p>
-
-</div>
-</div>
-<a id="af4ddfe50407c12284aed9a99a61da449" name="af4ddfe50407c12284aed9a99a61da449"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4ddfe50407c12284aed9a99a61da449">&#9670;&#160;</a></span>getStyle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">drain::image::TreeSVG &amp; getStyle </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>ctx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Some SVG style classes. Identifiers for IMAGE and RECT elements over which TEXT elements will be aligned. </p>
+<p>returns timeformat </p>
 <p>Group identifiers for elements which be automatically aligned (stacked horizontally or vertically)</p>
-<p>Initialize styles, if undone. </p>
+<p>key =&gt; Rack.cls.key = 'key'; TODO template</p>
+<p>Is return value needed? </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/main/<a class="el" href="graphics-panel_8h_source.html">graphics-panel.h</a></li>
+<li>src/main/<a class="el" href="graphics-base_8h_source.html">graphics-base.h</a></li>
+<li>src/main/<b>graphics-base.cpp</b></li>
 <li>src/main/<b>graphics-panel.cpp</b></li>
 </ul>
 </div><!-- contents -->

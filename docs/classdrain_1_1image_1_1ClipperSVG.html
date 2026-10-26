@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -79,7 +86,6 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classdrain_1_1image_1_1ClipperSVG-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ClipperSVG Class Reference</div></div>
@@ -108,9 +114,6 @@ Collaboration diagram for ClipperSVG:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a47ce81c9338e8761a77b6a801fb0dd2c" id="r_a47ce81c9338e8761a77b6a801fb0dd2c"><td class="memItemLeft" align="right" valign="top"><a id="a47ce81c9338e8761a77b6a801fb0dd2c" name="a47ce81c9338e8761a77b6a801fb0dd2c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ClipperSVG</b> (TreeSVG &amp;root)</td></tr>
-<tr class="separator:a47ce81c9338e8761a77b6a801fb0dd2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69b006c9958446a8f49b3e75fbb761ba" id="r_a69b006c9958446a8f49b3e75fbb761ba"><td class="memItemLeft" align="right" valign="top"><a id="a69b006c9958446a8f49b3e75fbb761ba" name="a69b006c9958446a8f49b3e75fbb761ba"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ClipperSVG</b> (const <a class="el" href="classdrain_1_1image_1_1ClipperSVG.html">ClipperSVG</a> &amp;clipper)</td></tr>
 <tr class="separator:a69b006c9958446a8f49b3e75fbb761ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,17 +139,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a04af1d4652e989f287dba8c71ac63257"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensures a clipping path o f type RECT of given size.  <br /></td></tr>
 <tr class="separator:a04af1d4652e989f287dba8c71ac63257"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:abd7962ae9628251fb626cda5e1f55c71" id="r_abd7962ae9628251fb626cda5e1f55c71"><td class="memItemLeft" align="right" valign="top"><a id="abd7962ae9628251fb626cda5e1f55c71" name="abd7962ae9628251fb626cda5e1f55c71"></a>
-TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>root</b></td></tr>
-<tr class="separator:abd7962ae9628251fb626cda5e1f55c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a39cf677ee766a4f54d4ec3e1a96742d4" id="r_a39cf677ee766a4f54d4ec3e1a96742d4"><td class="memItemLeft" align="right" valign="top"><a id="a39cf677ee766a4f54d4ec3e1a96742d4" name="a39cf677ee766a4f54d4ec3e1a96742d4"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CLIP</b></td></tr>
-<tr class="separator:a39cf677ee766a4f54d4ec3e1a96742d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d78582d771da66e75c87433fd58bec2" id="r_a7d78582d771da66e75c87433fd58bec2"><td class="memItemLeft" align="right" valign="top"><a id="a7d78582d771da66e75c87433fd58bec2" name="a7d78582d771da66e75c87433fd58bec2"></a>
+static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CLIPPED</b></td></tr>
+<tr class="separator:a7d78582d771da66e75c87433fd58bec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a04af1d4652e989f287dba8c71ac63257" name="a04af1d4652e989f287dba8c71ac63257"></a>

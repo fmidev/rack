@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -79,14 +86,16 @@ $(function() {
 <li>data&#160;:&#160;<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#a36fa01075ecacd03b83c14c5385d7a67">DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</a>, <a class="el" href="classdrain_1_1image_1_1AccumulationArray.html#a1cbd022800989bd92fa1cd54b0d05d27">AccumulationArray</a></li>
 <li>DATA&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathElem.html#ae4959f5bf3904a0fa6f56a0c648a776f">ODIMPathElem</a></li>
 <li>data2&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1AccumulationArray.html#a744c0e80e0a791d32c1bbd833afd7738">AccumulationArray</a></li>
+<li>DATA_ARRAY&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1ImagePanel.html#a8eeca101c696261edcb3bd906c480109">ImagePanel</a></li>
 <li>DATA_GROUPS&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathElem.html#ab8c31771d3dd020765063e9e14f03df4">ODIMPathElem</a></li>
 <li>data_t&#160;:&#160;<a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">RadarDataPicker&lt; OD &gt;</a></li>
 <li>dataBBoxNat&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a7950eb43d69e9d04b042c97a09dc0972">GeoFrame</a></li>
 <li>DataCoder()&#160;:&#160;<a class="el" href="classrack_1_1DataCoder.html#a22ef09d1a71efc022fb159f25506bdac">DataCoder</a></li>
 <li>dataDumper()&#160;:&#160;<a class="el" href="classdrain_1_1TreeUtils.html#a3d5a5ee8ef6b4170ff78b0da10d11d75">TreeUtils</a></li>
+<li>dataEmpty()&#160;:&#160;<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#af1df00bf5927ff803e7a60bb8ecb66b4">DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</a></li>
 <li>DataGroup()&#160;:&#160;<a class="el" href="classrack_1_1DataGroup.html#afb13ef70a690e0b53d86241f169d5db3">DataGroup&lt; DT, G &gt;</a></li>
 <li>dataOverlapBBoxNat&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1GeoFrame.html#ac471ad9c76658d2ae8443bfb7da2b279">GeoFrame</a></li>
-<li>DataSelector()&#160;:&#160;<a class="el" href="classrack_1_1DataSelector.html#a243a73ad4b7de64f107ab07d7a96654f">DataSelector</a></li>
+<li>DataSelector()&#160;:&#160;<a class="el" href="classrack_1_1DataSelector.html#a58817392eb6a2a3dd8fd8ce0dfb5855c">DataSelector</a></li>
 <li>dataSelector&#160;:&#160;<a class="el" href="classrack_1_1RadarAccumulatorBase.html#a2fe1ad87be83ea67c8e51843cb791be4">RadarAccumulatorBase</a></li>
 <li>DataSet()&#160;:&#160;<a class="el" href="classrack_1_1DataSet.html#aaffff8e8252523e294328aa58257af15">DataSet&lt; DT &gt;</a></li>
 <li>DATASET&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathElem.html#a2c2cca41ac00b8a84eadd3e4ab36551c">ODIMPathElem</a></li>
@@ -120,6 +129,7 @@ $(function() {
 <li>deriveDimensions()&#160;:&#160;<a class="el" href="classhi5_1_1Writer.html#aa07c0e876eaa5267c60dd61c3cb28055">Writer</a></li>
 <li>deriveDstGeometry()&#160;:&#160;<a class="el" href="classrack_1_1PolarProductOp.html#a35027d18c08a42943896258054ef7cc4">PolarProductOp</a></li>
 <li>deriveWindow()&#160;:&#160;<a class="el" href="classrack_1_1PolarSector.html#a1c7e742e920716d64d13e74f8518b7a0">PolarSector</a></li>
+<li>description&#160;:&#160;<a class="el" href="classdrain_1_1BeanLike.html#a0f6aed3e388afb968642d5e6199f767f">BeanLike</a></li>
 <li>detectBox()&#160;:&#160;<a class="el" href="structdrain_1_1image_1_1TreeLayoutSVG.html#a771051ef75028889bf427889791fbb6a">TreeLayoutSVG</a></li>
 <li>detectionThreshold&#160;:&#160;<a class="el" href="classrack_1_1DataCoder.html#abad7c5528d2d9fba4e33019ccbcd8bd0">DataCoder</a></li>
 <li>DetectorOp()&#160;:&#160;<a class="el" href="classrack_1_1DetectorOp.html#a2f50e39be9c0a4d5a12b076800615d7e">DetectorOp</a></li>
@@ -136,24 +146,22 @@ $(function() {
 <li>distanceRange&#160;:&#160;<a class="el" href="classrack_1_1PolarSector.html#a669a1779692d0f68d319bfbc8f001e05">PolarSector</a></li>
 <li>DistanceTransformExponentialOp()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1DistanceTransformExponentialOp.html#a1a4fe965a437ec0af185d6a3d078e390">DistanceTransformExponentialOp</a></li>
 <li>distinguishNodata()&#160;:&#160;<a class="el" href="classrack_1_1ODIM.html#ab10b691f99e2571ced30081d0c247259">ODIM</a></li>
-<li>docToStream()&#160;:&#160;<a class="el" href="classdrain_1_1NodeXML.html#a7c48941d60f48105687762fd027cf7f6">NodeXML&lt; T &gt;</a></li>
 <li>docTypeToStream()&#160;:&#160;<a class="el" href="classdrain_1_1NodeXML.html#a093340011b130f567d96c8f6ae49ecfb">NodeXML&lt; T &gt;</a></li>
 <li>DopplerAvgOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerAvgOp.html#adc572a3a7fb2040c2c3d11803a212389">DopplerAvgOp</a></li>
-<li>DopplerDevOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerDevOp.html#a55ecc51d13a57e2206545cb02ae98198">DopplerDevOp</a></li>
 <li>DopplerDiffOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerDiffOp.html#a98cda70dc6686a3e4db9cd26a4201a37">DopplerDiffOp</a></li>
-<li>DopplerEccentricityOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerEccentricityOp.html#af96d10198dc526cea9673d1c4ebba823">DopplerEccentricityOp</a></li>
 <li>DopplerInversionOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerInversionOp.html#aad07f397bedc59f9bd1fcbe4ad5e15e0">DopplerInversionOp</a></li>
-<li>DopplerNoiseOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerNoiseOp.html#a9d25d48fbc11b2990eca3916ba91bdc3">DopplerNoiseOp</a></li>
+<li>DopplerNoiseOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerNoiseOp.html#a0ee1be3a391a29b86338410743c38dfc">DopplerNoiseOp</a></li>
 <li>DopplerWindOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerWindOp.html#a0dcef30ef1cd84334cf75f42df0aa221">DopplerWindOp</a></li>
-<li>DopplerWindowOp()&#160;:&#160;<a class="el" href="classrack_1_1DopplerWindowOp.html#a9d0712e5744365b5f5ac871497abd701">DopplerWindowOp&lt; W &gt;</a></li>
 <li>DRAIN_TREE_NAME()&#160;:&#160;<a class="el" href="classdrain_1_1DRAIN__TREE__NAME.html#aad38ef804f0ccedc2ff064214fef789c">DRAIN_TREE_NAME&lt; T, EXCLUSIVE, P &gt;</a></li>
+<li>DRAIN_XML_TREE()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1MouseXML.html#acd8aad3b38464a6621e2c4286fcfb22b">MouseXML</a>, <a class="el" href="classdrain_1_1JavaScriptXML.html#a5ba205ed04065c143dd7a1a0a3b51e5d">JavaScriptXML</a></li>
 <li>drawCircle()&#160;:&#160;<a class="el" href="classrack_1_1RadarSVG.html#a57ddcd5cebdbde9eb99ed25b9e15b6a8">RadarSVG</a></li>
 <li>drawSector()&#160;:&#160;<a class="el" href="classrack_1_1RadarSVG.html#a7772fdb463a91f698dbcc94ae6002272">RadarSVG</a></li>
 <li>drop()&#160;:&#160;<a class="el" href="structdrain_1_1Cloner.html#ad9025fef85f830d2243229c00463bfbc">Cloner&lt; B, S &gt;</a>, <a class="el" href="structdrain_1_1ClonerBase.html#a6dc2ece479cdbb171f17dba8cc032025">ClonerBase&lt; T &gt;</a></li>
 <li>dst_t&#160;:&#160;<a class="el" href="classrack_1_1RadarProductOp.html#a0d62aa8228f835d8be4d7e853f93b394">RadarProductOp&lt; MS, MD &gt;</a></li>
 <li>dstWeight&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1OpticalFlowCore.html#ab42b55ed1704b2203cf869e6479357f2">OpticalFlowCore</a></li>
 <li>Dt&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1OpticalFlowCore1.html#a9f4dd89de55b694fec77651703723baf">OpticalFlowCore1</a></li>
-<li>dump()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1Image.html#ac2236179b2770b16ac72abb636634efd">Image</a>, <a class="el" href="classdrain_1_1SmartMap.html#ac2236179b2770b16ac72abb636634efd">SmartMap&lt; T &gt;</a>, <a class="el" href="classdrain_1_1SmartMapFoo.html#ac2236179b2770b16ac72abb636634efd">SmartMapFoo&lt; T &gt;</a>, <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">TreeUtils</a></li>
+<li>DualPolBioMetOp()&#160;:&#160;<a class="el" href="classrack_1_1DualPolBioMetOp.html#ae3aa72db4832490e4c9b52307e3fd35e">DualPolBioMetOp</a></li>
+<li>dump()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1Image.html#ac2236179b2770b16ac72abb636634efd">Image</a>, <a class="el" href="classdrain_1_1SmartMap.html#ac2236179b2770b16ac72abb636634efd">SmartMap&lt; T &gt;</a>, <a class="el" href="classdrain_1_1TreeUtils.html#a589a266c64101a3a0441be1cad6ee102">TreeUtils</a></li>
 <li>dumpContents()&#160;:&#160;<a class="el" href="classdrain_1_1TreeUtils.html#a4970a288b19248cec045228e77c32806">TreeUtils</a></li>
 <li>Dx&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1OpticalFlowCore1.html#ab80246d52b732fdfbe543df0a68201ea">OpticalFlowCore1</a></li>
 <li>Dy&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1OpticalFlowCore1.html#ab52da0f78f8183cd4a9deacc3cac2aae">OpticalFlowCore1</a></li>

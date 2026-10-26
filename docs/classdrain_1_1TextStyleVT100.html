@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -151,6 +158,9 @@ typedef std::map&lt; drain::TextStyle::Line, int &gt;&#160;</td><td class="memIt
 , <b>OVERLINE</b> =4
  }</td></tr>
 <tr class="separator:ac99175932926af9407c76909e7f31d17 inherit pub_types_classdrain_1_1TextStyle"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0da83e35f29c11f7f3c637234f2149f9 inherit pub_types_classdrain_1_1TextStyle" id="r_a0da83e35f29c11f7f3c637234f2149f9"><td class="memItemLeft" align="right" valign="top"><a id="a0da83e35f29c11f7f3c637234f2149f9" name="a0da83e35f29c11f7f3c637234f2149f9"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>Control</b> { <b>RESET</b> =0
+ }</td></tr>
+<tr class="separator:a0da83e35f29c11f7f3c637234f2149f9 inherit pub_types_classdrain_1_1TextStyle"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -162,9 +172,9 @@ template&lt;typename ... T&gt; </td></tr>
 template&lt;typename ... TT&gt; </td></tr>
 <tr class="memitem:a00deef5dfed3f5bc9684e06013da871b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>write</b> (std::ostream &amp;ostr, const TT &amp;... args) const</td></tr>
 <tr class="separator:a00deef5dfed3f5bc9684e06013da871b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3f32a7ddf48dd6e6733b5782ab201b3" id="r_ab3f32a7ddf48dd6e6733b5782ab201b3"><td class="memItemLeft" align="right" valign="top"><a id="ab3f32a7ddf48dd6e6733b5782ab201b3" name="ab3f32a7ddf48dd6e6733b5782ab201b3"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>startWrite</b> (std::ostream &amp;ostr) const</td></tr>
-<tr class="separator:ab3f32a7ddf48dd6e6733b5782ab201b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abef486d2840f3df5226762841d76d699" id="r_abef486d2840f3df5226762841d76d699"><td class="memItemLeft" align="right" valign="top"><a id="abef486d2840f3df5226762841d76d699" name="abef486d2840f3df5226762841d76d699"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>startWrite</b> (std::ostream &amp;) const</td></tr>
+<tr class="separator:abef486d2840f3df5226762841d76d699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b2472cd630661085a5f5139068f4836" id="r_a5b2472cd630661085a5f5139068f4836"><td class="memItemLeft" align="right" valign="top"><a id="a5b2472cd630661085a5f5139068f4836" name="a5b2472cd630661085a5f5139068f4836"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>endWrite</b> (std::ostream &amp;ostr) const</td></tr>
 <tr class="separator:a5b2472cd630661085a5f5139068f4836"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -197,6 +207,10 @@ template&lt;&gt; </td></tr>
 <tr class="memitem:ad264d4c9b2107348187cfaa6a5a1be31"><td class="memTemplItemLeft" align="right" valign="top">const std::map&lt; TextStyle::Style, int &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getCodeMap</b> ()</td></tr>
 <tr class="separator:ad264d4c9b2107348187cfaa6a5a1be31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1TextStyle"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1TextStyle')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1TextStyle.html">TextStyle</a></td></tr>
+<tr class="memitem:a39c4bc39647980e10a326419a70efc39 inherit pub_methods_classdrain_1_1TextStyle" id="r_a39c4bc39647980e10a326419a70efc39"><td class="memTemplParams" colspan="2">
+template&lt;typename ... T&gt; </td></tr>
+<tr class="memitem:a39c4bc39647980e10a326419a70efc39 inherit pub_methods_classdrain_1_1TextStyle"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (Control ctrl, const T &amp;... args)</td></tr>
+<tr class="separator:a39c4bc39647980e10a326419a70efc39 inherit pub_methods_classdrain_1_1TextStyle"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a732cafb73bda6315ebb8ee85dc0e1c46 inherit pub_methods_classdrain_1_1TextStyle" id="r_a732cafb73bda6315ebb8ee85dc0e1c46"><td class="memTemplParams" colspan="2">
 template&lt;typename ... T&gt; </td></tr>
 <tr class="memitem:a732cafb73bda6315ebb8ee85dc0e1c46 inherit pub_methods_classdrain_1_1TextStyle"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const T &amp;... args)</td></tr>
@@ -232,27 +246,31 @@ static const line_codemap_t&#160;</td><td class="memItemRight" valign="bottom"><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a787878793ea7a238d3c5e667d9810322" id="r_a787878793ea7a238d3c5e667d9810322"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ... TT&gt; </td></tr>
-<tr class="memitem:a787878793ea7a238d3c5e667d9810322"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextStyleVT100.html#a787878793ea7a238d3c5e667d9810322">_append</a> (std::ostream &amp;ostr, bool init, const T &amp;arg, const TT &amp;... args) const</td></tr>
-<tr class="separator:a787878793ea7a238d3c5e667d9810322"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae2fe553708bdeea4d49b363b4b2a541" id="r_aae2fe553708bdeea4d49b363b4b2a541"><td class="memTemplParams" colspan="2"><a id="aae2fe553708bdeea4d49b363b4b2a541" name="aae2fe553708bdeea4d49b363b4b2a541"></a>
+<tr class="memitem:a753854dc1403b2e739c1ba48a8989fab" id="r_a753854dc1403b2e739c1ba48a8989fab"><td class="memTemplParams" colspan="2">template&lt;typename T , typename ... TT&gt; </td></tr>
+<tr class="memitem:a753854dc1403b2e739c1ba48a8989fab"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1TextStyleVT100.html#a753854dc1403b2e739c1ba48a8989fab">_append</a> (std::ostream &amp;ostr, bool INIT, const T &amp;arg, const TT &amp;... args) const</td></tr>
+<tr class="separator:a753854dc1403b2e739c1ba48a8989fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5537ea0b9236c0b58284b02af47299c" id="r_ad5537ea0b9236c0b58284b02af47299c"><td class="memTemplParams" colspan="2"><a id="ad5537ea0b9236c0b58284b02af47299c" name="ad5537ea0b9236c0b58284b02af47299c"></a>
 template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:aae2fe553708bdeea4d49b363b4b2a541"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool start, const Colour &amp;colour, const TT &amp;... args) const</td></tr>
-<tr class="separator:aae2fe553708bdeea4d49b363b4b2a541"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5940e958367bb893498c96627621a975" id="r_a5940e958367bb893498c96627621a975"><td class="memTemplParams" colspan="2"><a id="a5940e958367bb893498c96627621a975" name="a5940e958367bb893498c96627621a975"></a>
+<tr class="memitem:ad5537ea0b9236c0b58284b02af47299c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool START, const Colour &amp;colour, const TT &amp;... args) const</td></tr>
+<tr class="separator:ad5537ea0b9236c0b58284b02af47299c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b4a28227aeb31358ddf9de008f4e700" id="r_a3b4a28227aeb31358ddf9de008f4e700"><td class="memTemplParams" colspan="2"><a id="a3b4a28227aeb31358ddf9de008f4e700" name="a3b4a28227aeb31358ddf9de008f4e700"></a>
 template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:a5940e958367bb893498c96627621a975"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool start, const Line &amp;line, const TT &amp;... args) const</td></tr>
-<tr class="separator:a5940e958367bb893498c96627621a975"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84cc69e252e9e1d0042bc485d8f12e23" id="r_a84cc69e252e9e1d0042bc485d8f12e23"><td class="memTemplParams" colspan="2"><a id="a84cc69e252e9e1d0042bc485d8f12e23" name="a84cc69e252e9e1d0042bc485d8f12e23"></a>
+<tr class="memitem:a3b4a28227aeb31358ddf9de008f4e700"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool START, const Line &amp;line, const TT &amp;... args) const</td></tr>
+<tr class="separator:a3b4a28227aeb31358ddf9de008f4e700"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d247123aa6cbf4858926c6474428be" id="r_ae1d247123aa6cbf4858926c6474428be"><td class="memTemplParams" colspan="2"><a id="ae1d247123aa6cbf4858926c6474428be" name="ae1d247123aa6cbf4858926c6474428be"></a>
 template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:a84cc69e252e9e1d0042bc485d8f12e23"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool start, const Style &amp;style, const TT &amp;... args) const</td></tr>
-<tr class="separator:a84cc69e252e9e1d0042bc485d8f12e23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d247123aa6cbf4858926c6474428be"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool START, const Style &amp;style, const TT &amp;... args) const</td></tr>
+<tr class="separator:ae1d247123aa6cbf4858926c6474428be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4e249b72c3a32c44f7c1570b9c9dd6f" id="r_ac4e249b72c3a32c44f7c1570b9c9dd6f"><td class="memTemplParams" colspan="2"><a id="ac4e249b72c3a32c44f7c1570b9c9dd6f" name="ac4e249b72c3a32c44f7c1570b9c9dd6f"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:ac4e249b72c3a32c44f7c1570b9c9dd6f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool START, const Control &amp;ctrl) const</td></tr>
+<tr class="separator:ac4e249b72c3a32c44f7c1570b9c9dd6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd51f1003c9f2266381b7123d93266e0" id="r_abd51f1003c9f2266381b7123d93266e0"><td class="memItemLeft" align="right" valign="top"><a id="abd51f1003c9f2266381b7123d93266e0" name="abd51f1003c9f2266381b7123d93266e0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>_append</b> (std::ostream &amp;ostr, bool init) const</td></tr>
 <tr class="separator:abd51f1003c9f2266381b7123d93266e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae73ac1622f07e8e63725c97649fdb211" id="r_ae73ac1622f07e8e63725c97649fdb211"><td class="memItemLeft" align="right" valign="top"><a id="ae73ac1622f07e8e63725c97649fdb211" name="ae73ac1622f07e8e63725c97649fdb211"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>_appendControlPrefix</b> (std::ostream &amp;ostr, bool start) const</td></tr>
-<tr class="separator:ae73ac1622f07e8e63725c97649fdb211"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751318f4579aad0dd877a05327fe0eaa" id="r_a751318f4579aad0dd877a05327fe0eaa"><td class="memItemLeft" align="right" valign="top"><a id="a751318f4579aad0dd877a05327fe0eaa" name="a751318f4579aad0dd877a05327fe0eaa"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>_appendControlPrefix</b> (std::ostream &amp;ostr, bool START) const</td></tr>
+<tr class="separator:a751318f4579aad0dd877a05327fe0eaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa984be1e40b01d8578e5002ecff6355f" id="r_aa984be1e40b01d8578e5002ecff6355f"><td class="memItemLeft" align="right" valign="top"><a id="aa984be1e40b01d8578e5002ecff6355f" name="aa984be1e40b01d8578e5002ecff6355f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>_appendControlSuffix</b> (std::ostream &amp;ostr) const</td></tr>
 <tr class="separator:aa984be1e40b01d8578e5002ecff6355f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -290,8 +308,8 @@ Line&#160;</td><td class="memItemRight" valign="bottom"><b>line</b></td></tr>
 <tr class="separator:a2c1ae74866a23db4ab70ebf1afdd0472 inherit pub_attribs_classdrain_1_1TextStyle"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a787878793ea7a238d3c5e667d9810322" name="a787878793ea7a238d3c5e667d9810322"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a787878793ea7a238d3c5e667d9810322">&#9670;&#160;</a></span>_append()</h2>
+<a id="a753854dc1403b2e739c1ba48a8989fab" name="a753854dc1403b2e739c1ba48a8989fab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a753854dc1403b2e739c1ba48a8989fab">&#9670;&#160;</a></span>_append()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -311,7 +329,7 @@ template&lt;typename T , typename ... TT&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>init</em>, </td>
+          <td class="paramname"><em>INIT</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -337,7 +355,7 @@ template&lt;typename T , typename ... TT&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Default implemenation for normal input elements. For control elements, see following specializations. </p>
+<p>Default implementation for normal input elements. For control elements, see following specializations. </p>
 
 </div>
 </div>

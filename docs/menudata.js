@@ -153,9 +153,9 @@ var menudata={children:[
 {text:"x",url:"functions_vars_x.html#index_x"},
 {text:"y",url:"functions_vars_y.html#index_y"}]},
 {text:"Typedefs",url:"functions_type.html",children:[
+{text:"b",url:"functions_type.html#index_b"},
 {text:"c",url:"functions_type.html#index_c"},
 {text:"d",url:"functions_type.html#index_d"},
-{text:"e",url:"functions_type.html#index_e"},
 {text:"g",url:"functions_type.html#index_g"},
 {text:"i",url:"functions_type.html#index_i"},
 {text:"k",url:"functions_type.html#index_k"},

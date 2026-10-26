@@ -1,18 +1,11 @@
 <map id="NodeGDAL" name="NodeGDAL">
-<area shape="rect" id="Node000001" title=" " alt="" coords="138,387,230,412"/>
-<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1GDAL.html" title=" " alt="" coords="80,313,139,339"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,346,174,385,170,388,129,350"/>
-<area shape="rect" id="Node000003" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="163,313,354,339"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,350,198,388,194,385,235,346"/>
-<area shape="rect" id="Node000004" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="233,240,284,265"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="253,279,254,313,249,313,247,279"/>
-<area shape="poly" id="edge8_Node000003_Node000004" title=" " alt="" coords="270,279,268,313,263,313,265,279"/>
-<area shape="rect" id="Node000005" href="$classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,159,264,185"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="166,190,242,238,239,242,163,194"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="71,79,198,104"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="137,118,137,159,132,159,132,118"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="53,5,216,31"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="137,44,137,79,132,79,132,44"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="289,152,479,192"/>
-<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="343,202,278,242,276,238,340,197"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="63,240,155,265"/>
+<area shape="rect" id="Node000002" href="$structdrain_1_1image_1_1GDAL.html" title=" " alt="" coords="5,167,64,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="58,199,99,238,95,242,55,203"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1NodeXML.html" title=" " alt="" coords="89,167,279,192"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,203,123,242,120,238,160,199"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1XML.html" title="Base class for XML &quot;nodes&quot;, to be data elements T for drain::Tree&lt;T&gt;" alt="" coords="159,93,209,119"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="187,132,187,167,181,167,181,132"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="89,5,279,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="187,59,187,93,181,93,181,59"/>
 </map>

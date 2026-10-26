@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -77,10 +84,11 @@ $(function() {
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>call()&#160;:&#160;<a class="el" href="classdrain_1_1Type.html#abca75388a53f5bfc1812f7897a400cdb">Type</a></li>
 <li>callback()&#160;:&#160;<a class="el" href="classdrain_1_1compactName.html#ab9d1ce86982f88bcc17692a936364949">compactName</a>, <a class="el" href="classdrain_1_1complexName.html#ab9d1ce86982f88bcc17692a936364949">complexName</a>, <a class="el" href="classdrain_1_1fitsIn.html#ab9d1ce86982f88bcc17692a936364949">fitsIn</a>, <a class="el" href="classdrain_1_1isSigned.html#ab9d1ce86982f88bcc17692a936364949">isSigned</a>, <a class="el" href="classdrain_1_1simpleName.html#ab9d1ce86982f88bcc17692a936364949">simpleName</a>, <a class="el" href="classdrain_1_1sizeGetter.html#ab9d1ce86982f88bcc17692a936364949">sizeGetter</a>, <a class="el" href="structdrain_1_1Type_1_1isEnum.html#ab9d1ce86982f88bcc17692a936364949">Type::isEnum</a>, <a class="el" href="classdrain_1_1Type_1_1typeSetter.html#acfb909ad82f0472e8ab1bf1249928b1c">Type::typeSetter</a>, <a class="el" href="structdrain_1_1Type_1_1typeSetterPROTE.html#a0b575719336a9c68b2db33c6994214ce">Type::typeSetterPROTE</a>, <a class="el" href="classdrain_1_1typeIsFloat.html#ab9d1ce86982f88bcc17692a936364949">typeIsFloat</a>, <a class="el" href="classdrain_1_1typeIsFundamental.html#ab9d1ce86982f88bcc17692a936364949">typeIsFundamental</a>, <a class="el" href="classdrain_1_1typeIsInteger.html#ab9d1ce86982f88bcc17692a936364949">typeIsInteger</a>, <a class="el" href="classdrain_1_1typeIsScalar.html#ab9d1ce86982f88bcc17692a936364949">typeIsScalar</a>, <a class="el" href="classdrain_1_1typeIsSmallInt.html#a2e3564ec9c21056477a83430f7922ab4">typeIsSmallInt</a>, <a class="el" href="classdrain_1_1typeLimiter.html#ab9d1ce86982f88bcc17692a936364949">typeLimiter&lt; D &gt;</a>, <a class="el" href="classdrain_1_1typeMax.html#a2e3564ec9c21056477a83430f7922ab4">typeMax</a>, <a class="el" href="classdrain_1_1typeMin.html#a2e3564ec9c21056477a83430f7922ab4">typeMin</a>, <a class="el" href="classdrain_1_1typeNaturalMax.html#a2e3564ec9c21056477a83430f7922ab4">typeNaturalMax</a>, <a class="el" href="classdrain_1_1typesetterEXT.html#acfb909ad82f0472e8ab1bf1249928b1c">typesetterEXT</a>, <a class="el" href="classrack_1_1typeIsFundamental.html#ab9d1ce86982f88bcc17692a936364949">typeIsFundamental</a></li>
-<li>CappiOp()&#160;:&#160;<a class="el" href="classrack_1_1CappiOp.html#addb083340c3baadc28b2a8710db34ad7">CappiOp</a></li>
+<li>CappiOp()&#160;:&#160;<a class="el" href="classrack_1_1CappiOp.html#a072cd6b88b00d433def492cd32290178">CappiOp</a></li>
 <li>CartesianDataPicker()&#160;:&#160;<a class="el" href="classrack_1_1CartesianDataPicker.html#a3afc9c87a8e60c5b7f7acff395a19125">CartesianDataPicker</a></li>
 <li>CartesianModule()&#160;:&#160;<a class="el" href="classrack_1_1CartesianModule.html#ab97332924ad328df05dec4a37601db00">CartesianModule</a></li>
-<li>Castable()&#160;:&#160;<a class="el" href="classdrain_1_1Castable.html#a483ba604aa35a8c0e9370bc84b26b062">Castable</a></li>
+<li>CartesianODIM()&#160;:&#160;<a class="el" href="classrack_1_1CartesianODIM.html#a2a4f8c34b36d07c4c5685dcbb6cb7f97">CartesianODIM</a></li>
+<li>Castable()&#160;:&#160;<a class="el" href="classdrain_1_1Castable.html#adc3aad5fcd44076857432cbc7f4dd2da">Castable</a></li>
 <li>castElement()&#160;:&#160;<a class="el" href="classdrain_1_1Castable.html#ad4181a8b5f9d2e5b180597376b85758f">Castable</a></li>
 <li>Caster()&#160;:&#160;<a class="el" href="classdrain_1_1Caster.html#ab19a8dd52e83ac4e956fea0835f2ef00">Caster</a></li>
 <li>CCorOp()&#160;:&#160;<a class="el" href="classrack_1_1CCorOp.html#ad70f32d5ba03285787ce61fa5e14107a">CCorOp</a></li>
@@ -89,7 +97,7 @@ $(function() {
 <li>checkAliasing()&#160;:&#160;<a class="el" href="classrack_1_1PolarODIM.html#a2743f48882b763e200e544c998dc97af">PolarODIM</a></li>
 <li>checkCompositingMethod()&#160;:&#160;<a class="el" href="classrack_1_1RadarAccumulator.html#a716d4ddabb95c7a8dc98a07b9d8c1a87">RadarAccumulator&lt; AC, OD &gt;</a></li>
 <li>checkExtension()&#160;:&#160;<a class="el" href="classdrain_1_1FileInfo.html#ad41bfe4261031b8ef325935260450652">FileInfo</a></li>
-<li>checkGeometry()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1Tray.html#af15f1c92b76c80617351197ed8f4a517">Tray&lt; T &gt;</a></li>
+<li>checkGeometry()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1Tray.html#a3ece03359f830840be68c2ff041d05be">Tray&lt; T &gt;</a></li>
 <li>checkPath()&#160;:&#160;<a class="el" href="classdrain_1_1FileInfo.html#a719e2d3aaae43e24124374cf3df1ff7f">FileInfo</a></li>
 <li>checkQuantity()&#160;:&#160;<a class="el" href="classrack_1_1Composite.html#ac62fcc5973a87cbf0370d039e75bba20">Composite</a></li>
 <li>checkType()&#160;:&#160;<a class="el" href="classrack_1_1EncodingODIM.html#aa92161f8c90566cc09228b585ed740bd">EncodingODIM</a></li>
@@ -101,29 +109,32 @@ $(function() {
 <li>Cloner()&#160;:&#160;<a class="el" href="structdrain_1_1Cloner.html#a5aed860ffb22742ad439d24c0eec2529">Cloner&lt; B, S &gt;</a></li>
 <li>close()&#160;:&#160;<a class="el" href="classdrain_1_1Log.html#a5ae591df94fc66ccb85cbb6565368bca">Log</a></li>
 <li>ClutterOp()&#160;:&#160;<a class="el" href="classrack_1_1ClutterOp.html#a1b8c130be8246c61d7c7928bd43f5f01">ClutterOp</a></li>
+<li>CmdAppend()&#160;:&#160;<a class="el" href="classrack_1_1CmdAppend.html#a1d85e97beb332f6e8f8cffa0111bf2b4">CmdAppend</a></li>
 <li>CmdFormat()&#160;:&#160;<a class="el" href="classrack_1_1CmdFormat.html#acbdbcd0d9b9c952ca5f3f008304f78db">CmdFormat</a></li>
 <li>CmdKeep()&#160;:&#160;<a class="el" href="classrack_1_1CmdKeep.html#a9915284cf28a7552726dd6fb21cef0f1">CmdKeep</a></li>
 <li>CmdMove()&#160;:&#160;<a class="el" href="classrack_1_1CmdMove.html#ad0f4e5b66ccaae37d5b5fbb07630fb3f">CmdMove</a></li>
 <li>collect()&#160;:&#160;<a class="el" href="classrack_1_1VolumeTraversalOp.html#ad5e14cdbd3939b5ab3a24caf7fbddcb9">VolumeTraversalOp</a></li>
-<li>collectPaths()&#160;:&#160;<a class="el" href="classrack_1_1DataSelector.html#aed08d641ce5d8464b6b367d9a6e6990c">DataSelector</a></li>
+<li>collectPaths()&#160;:&#160;<a class="el" href="classrack_1_1DataSelector.html#a8e770315a4d55a12c44085ed988407c4">DataSelector</a></li>
+<li>Command()&#160;:&#160;<a class="el" href="classdrain_1_1Command.html#ad28e0ea1b2f21af735f423e1df4c511a">Command</a></li>
 <li>CommandModule()&#160;:&#160;<a class="el" href="classdrain_1_1CommandModule.html#abcd0ddd15701abd1f1acd08c153eac89">CommandModule&lt; PREFIX, SECTION &gt;</a></li>
 <li>CommandSection()&#160;:&#160;<a class="el" href="classdrain_1_1CommandSection.html#a7c242550014f38ef33385157ff42a1a7">CommandSection</a></li>
 <li>commentToStream()&#160;:&#160;<a class="el" href="classdrain_1_1StyleXML.html#a9ca8c9ab9c6a71d081f46c5959885aac">StyleXML</a></li>
 <li>commitAddedCommands()&#160;:&#160;<a class="el" href="classdrain_1_1CommandBank.html#a2b6967fe6302e5ee537bade6103549a2">CommandBank</a></li>
-<li>compareT()&#160;:&#160;<a class="el" href="classdrain_1_1Caster.html#a8b8a3274780b72992426635a523ef7b7">Caster</a></li>
+<li>compareT()&#160;:&#160;<a class="el" href="classdrain_1_1Caster.html#a2b9f3cc50ce1a43b0c93d7257a0747cd">Caster</a></li>
 <li>CompleteAlignment()&#160;:&#160;<a class="el" href="structdrain_1_1image_1_1CompleteAlignment.html#abcd882047c81b0f088715984af50beff">CompleteAlignment&lt; AX, A &gt;</a></li>
+<li>completePathParser()&#160;:&#160;<a class="el" href="classrack_1_1ODIMPathTools.html#a7228a4db26d0009050110a864674f2c6">ODIMPathTools</a></li>
 <li>Composite()&#160;:&#160;<a class="el" href="classrack_1_1Composite.html#ad32ac54b34b46a0a6292ff69ea4c6bcc">Composite</a></li>
 <li>compute()&#160;:&#160;<a class="el" href="classdrain_1_1Histogram.html#a60ab9c25803cd39684fff842743f4f0a">Histogram</a></li>
 <li>computeDifferentials()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1FastOpticalFlow2Op.html#a1f2464d99ac05ae04dd857c41137f27d">FastOpticalFlow2Op</a>, <a class="el" href="classdrain_1_1image_1_1FastOpticalFlowOp.html#a1f2464d99ac05ae04dd857c41137f27d">FastOpticalFlowOp</a></li>
 <li>computeProducts()&#160;:&#160;<a class="el" href="classrack_1_1DetectorOp.html#a25a295f0a084712adbce414a9018446d">DetectorOp</a>, <a class="el" href="classrack_1_1VolumeTraversalOp.html#ad58894855eaed6432d64f7ad5a4c071a">VolumeTraversalOp</a></li>
 <li>computeSingleProduct()&#160;:&#160;<a class="el" href="classrack_1_1ConvOp.html#a8b53bd83486c71ea59f152087c61569d">ConvOp</a>, <a class="el" href="classrack_1_1CumulativeProductOp.html#a8b53bd83486c71ea59f152087c61569d">CumulativeProductOp</a>, <a class="el" href="classrack_1_1EchoTopOp.html#a2fd13de5116e084c6b39f5ee83de9275">EchoTopOp</a>, <a class="el" href="classrack_1_1PseudoRhiOp.html#a0510c85b0b46b0e99b7993c12d123453">PseudoRhiOp</a>, <a class="el" href="classrack_1_1RadarProductOp.html#a35a1faad2362a8cad87abc43671d0be5">RadarProductOp&lt; MS, MD &gt;</a>, <a class="el" href="classrack_1_1VerticalProfileOp.html#a7139729883d4b9bba3bce9812cf96054">VerticalProfileOp</a>, <a class="el" href="classrack_1_1VerticalWindProfileOp.html#a7139729883d4b9bba3bce9812cf96054">VerticalWindProfileOp</a></li>
 <li>confToStream()&#160;:&#160;<a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a449de2cb2b4d6aa5bbf3ae65e109aed6">AlignSVG</a></li>
-<li>consumeAlignRequest()&#160;:&#160;<a class="el" href="classrack_1_1RackSVG.html#af2b425fe1122ba3a9937c8c7c8e3cce9">RackSVG</a></li>
+<li>consumeAlignRequest()&#160;:&#160;<a class="el" href="classrack_1_1GraphicsContext.html#a2072cd78ce9fea79380ff99343817536">GraphicsContext</a></li>
 <li>consumeParameters()&#160;:&#160;<a class="el" href="classrack_1_1DataSelector.html#a90d055ece641ecb6586b7097f7c8aa9f">DataSelector</a></li>
 <li>contextIsSet()&#160;:&#160;<a class="el" href="classdrain_1_1Contextual.html#a540fc482c0f404a478fe3e68776f133e">Contextual</a></li>
-<li>Contextual()&#160;:&#160;<a class="el" href="classdrain_1_1Contextual.html#a8505452cd96818fc88cd9ddafe88addc">Contextual</a></li>
+<li>Contextual()&#160;:&#160;<a class="el" href="classdrain_1_1Contextual.html#af0652177ffe41db9b359137133b8f83a">Contextual</a></li>
 <li>contract()&#160;:&#160;<a class="el" href="structdrain_1_1Rectangle.html#a99316794e63ffb39fdc532d1fea46bfe">Rectangle&lt; T &gt;</a></li>
-<li>convert()&#160;:&#160;<a class="el" href="classdrain_1_1Convert.html#a13ecaf9d544d3106e525ec8d08f513b3">Convert</a>, <a class="el" href="classdrain_1_1ConvertOld.html#a83dfab6cd228017012669684fdcc3c2e">ConvertOld&lt; T &gt;</a>, <a class="el" href="structdrain_1_1Enum.html#a8facdbb525590e31f97fdcb7a0fe097d">Enum&lt; E, OWNER &gt;</a>, <a class="el" href="classdrain_1_1StringTools.html#a1030b0194101575bd68b1c996422346d">StringTools</a></li>
+<li>convert()&#160;:&#160;<a class="el" href="classdrain_1_1Convert.html#a13ecaf9d544d3106e525ec8d08f513b3">Convert</a>, <a class="el" href="classdrain_1_1ConvertOld.html#a83dfab6cd228017012669684fdcc3c2e">ConvertOld&lt; T &gt;</a>, <a class="el" href="structdrain_1_1Enum.html#a8facdbb525590e31f97fdcb7a0fe097d">Enum&lt; E, OWNER &gt;</a>, <a class="el" href="classdrain_1_1image_1_1GeoFrame.html#a02ed366c1bf212c3b441ac4054037198">GeoFrame</a>, <a class="el" href="classdrain_1_1StringTools.html#a1030b0194101575bd68b1c996422346d">StringTools</a></li>
 <li>convertEscaped()&#160;:&#160;<a class="el" href="classdrain_1_1StringTools.html#a4b443726ce74bfd5356a403ef80e87c9">StringTools</a></li>
 <li>convertFrom()&#160;:&#160;<a class="el" href="classdrain_1_1ConvertOld.html#a98e6ebcacbfdb1f0f808fcd49ca64f8d">ConvertOld&lt; T &gt;</a></li>
 <li>convertGrayImage()&#160;:&#160;<a class="el" href="classrack_1_1RackContext.html#ac2db6577a5cf69508988d0eb048c946b">RackContext</a></li>
@@ -145,8 +156,7 @@ $(function() {
 <li>createChain()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1DistanceModel.html#ae3d2f912ed952ead96316928136e6e6c">DistanceModel</a></li>
 <li>createFieldList()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1Accumulator.html#a41df600f60332e639eaf0bab8165c311">Accumulator</a></li>
 <li>createLookUp()&#160;:&#160;<a class="el" href="classdrain_1_1ImageCodeMap.html#a8c29d19faa51e298e5cb0981e536f876">ImageCodeMap&lt; T &gt;</a></li>
-<li>createMask()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#afef73264e412e1be7df13bb4538c271e">MaskerSVG</a></li>
-<li>createMaskId()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#aaf304360d4426a123a017176a65c766d">MaskerSVG</a></li>
+<li>createMask()&#160;:&#160;<a class="el" href="classdrain_1_1image_1_1MaskerSVG.html#acc8f9ad0ad72ad8a80e0eab97dfae9a4">MaskerSVG</a></li>
 <li>createSimpleQualityData()&#160;:&#160;<a class="el" href="classrack_1_1PlainData.html#aa6a0e6dca6a71aeadec4112784e0eed7">PlainData&lt; DT &gt;</a></li>
 <li>critical()&#160;:&#160;<a class="el" href="classdrain_1_1Logger.html#a7fa2d247703954e5fa92d13de7189f97">Logger</a></li>
 <li>crop()&#160;:&#160;<a class="el" href="structdrain_1_1Rectangle.html#a5a64263f4ac3cc6d28bcf53bfee7b0c6">Rectangle&lt; T &gt;</a></li>

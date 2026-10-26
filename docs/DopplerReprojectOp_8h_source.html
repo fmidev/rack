@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -134,11 +141,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="classrack_1_1DopplerReprojectOp.html">DopplerReprojectOp</a>() : <a class="code hl_class" href="classrack_1_1DopplerOp.html">DopplerOp</a>(__FUNCTION__, <span class="stringliteral">&quot;Creates virtual &quot;</span>) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="classrack_1_1DopplerReprojectOp.html">DopplerReprojectOp</a>() : <a class="code hl_class" href="classrack_1_1DopplerOp.html">DopplerOp</a>(<a class="code hl_class" href="classrack_1_1DataSet.html">__FUNCTION__</a>, <span class="stringliteral">&quot;Creates virtual &quot;</span>) {</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        parameters.link(<span class="stringliteral">&quot;nyquist&quot;</span>, <a class="code hl_variable" href="classrack_1_1RadarProductOp.html#a582a43111f0014d61e6272cc1ed36d51">odim</a>.NI = 100.0, <span class="stringliteral">&quot;max-unamb-velocity&quot;</span>);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        parameters.link(<span class="stringliteral">&quot;match&quot;</span>, matchOriginal=0, <span class="stringliteral">&quot;flag(aliased=1,nodata=2)&quot;</span>); <span class="comment">// ALIASED=1, NODATA=2</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        parameters.link(<span class="stringliteral">&quot;quantity&quot;</span>, <a class="code hl_variable" href="classrack_1_1RadarProductOp.html#a582a43111f0014d61e6272cc1ed36d51">odim</a>.quantity = <span class="stringliteral">&quot;VRAD&quot;</span>, <span class="stringliteral">&quot;output-quantity&quot;</span>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;nyquist&quot;</span>, <a class="code hl_variable" href="classrack_1_1RadarProductOp.html#a582a43111f0014d61e6272cc1ed36d51">odim</a>.NI = 100.0, <span class="stringliteral">&quot;max-unamb-velocity&quot;</span>);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;match&quot;</span>, matchOriginal=0, <span class="stringliteral">&quot;flag(aliased=1,nodata=2)&quot;</span>); <span class="comment">// ALIASED=1, NODATA=2</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;quantity&quot;</span>, <a class="code hl_variable" href="classrack_1_1RadarProductOp.html#a582a43111f0014d61e6272cc1ed36d51">odim</a>.quantity = <span class="stringliteral">&quot;VRAD&quot;</span>, <span class="stringliteral">&quot;output-quantity&quot;</span>);</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        dataSelector.setMaxCount(1);</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="comment">//dataSelector.setQuantities(&quot;^(AMVU|AMVV|VRAD)$&quot;);</span></div>
@@ -150,7 +157,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="comment">//  void processData(const Data&lt;PolarSrc&gt; &amp; srcData, Data&lt;PolarDst&gt; &amp; dstData) const;</span></div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">virtual</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1DopplerReprojectOp.html#a96da3a703dd26c1165ef2d5db4bc9ec8">processDataSet</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1DataSet.html">DataSet&lt;PolarSrc&gt;</a> &amp; srcSweep, <a class="code hl_class" href="classrack_1_1DataSet.html">DataSet&lt;PolarDst&gt;</a> &amp; dstProduct) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classrack_1_1DopplerReprojectOp.html#a96da3a703dd26c1165ef2d5db4bc9ec8">processDataSet</a>(<span class="keyword">const</span> <a class="code hl_class" href="classrack_1_1DataSet.html">DataSet&lt;PolarSrc&gt;</a> &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">srcSweep</a>, <a class="code hl_class" href="classrack_1_1DataSet.html">DataSet&lt;PolarDst&gt;</a> &amp; <a class="code hl_class" href="classrack_1_1DataSet.html">dstProduct</a>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordtype">int</span> matchOriginal = 0;</div>
@@ -168,13 +175,14 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">// Rack</span></div>
-<div class="ttc" id="aclassrack_1_1DataSelector_html_a30eccaa8ad96962759b84db2e7a623bf"><div class="ttname"><a href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">rack::DataSelector::setQuantities</a></div><div class="ttdeci">void setQuantities(const std::string &amp;s)</div><div class="ttdoc">Sets basic quantities and quality quantities. These sets are separated by '/'.</div><div class="ttdef"><b>Definition</b> DataSelector.cpp:282</div></div>
-<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1275</div></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a14a3c777481986f2ca3267992d4f233c"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">drain::BeanLike::parameters</a></div><div class="ttdeci">map_t parameters</div><div class="ttdoc">Parameters (name -&gt; linked variable), typically linked to member variables of the derived class.</div><div class="ttdef"><b>Definition</b> BeanLike.h:313</div></div>
+<div class="ttc" id="aclassrack_1_1DataSelector_html_a30eccaa8ad96962759b84db2e7a623bf"><div class="ttname"><a href="classrack_1_1DataSelector.html#a30eccaa8ad96962759b84db2e7a623bf">rack::DataSelector::setQuantities</a></div><div class="ttdeci">void setQuantities(const std::string &amp;s)</div><div class="ttdoc">Sets basic quantities and quality quantities. These sets are separated by '/'.</div><div class="ttdef"><b>Definition</b> DataSelector.cpp:299</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1293</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerOp_html"><div class="ttname"><a href="classrack_1_1DopplerOp.html">rack::DopplerOp</a></div><div class="ttdoc">Base class for computing products using Doppler speed [VRAD] data.</div><div class="ttdef"><b>Definition</b> DopplerOp.h:49</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerReprojectOp_html"><div class="ttname"><a href="classrack_1_1DopplerReprojectOp.html">rack::DopplerReprojectOp</a></div><div class="ttdef"><b>Definition</b> DopplerReprojectOp.h:46</div></div>
 <div class="ttc" id="aclassrack_1_1DopplerReprojectOp_html_a96da3a703dd26c1165ef2d5db4bc9ec8"><div class="ttname"><a href="classrack_1_1DopplerReprojectOp.html#a96da3a703dd26c1165ef2d5db4bc9ec8">rack::DopplerReprojectOp::processDataSet</a></div><div class="ttdeci">virtual void processDataSet(const DataSet&lt; PolarSrc &gt; &amp;srcSweep, DataSet&lt; PolarDst &gt; &amp;dstProduct) const</div><div class="ttdef"><b>Definition</b> DopplerReprojectOp.cpp:57</div></div>
 <div class="ttc" id="aclassrack_1_1RadarProductOp_html_a582a43111f0014d61e6272cc1ed36d51"><div class="ttname"><a href="classrack_1_1RadarProductOp.html#a582a43111f0014d61e6272cc1ed36d51">rack::RadarProductOp::odim</a></div><div class="ttdeci">MD odim</div><div class="ttdoc">The default data parameters for encoding output (the product).</div><div class="ttdef"><b>Definition</b> RadarProductOp.h:101</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

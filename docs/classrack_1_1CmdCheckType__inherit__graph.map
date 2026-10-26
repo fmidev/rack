@@ -1,5 +1,5 @@
 <map id="CmdCheckType" name="CmdCheckType">
-<area shape="rect" id="Node000001" title="Default handler for requests without own handler. Handles options that are recognized as 1) files to ..." alt="" coords="49,299,172,324"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="49,299,172,324"/>
 <area shape="rect" id="Node000002" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="49,225,173,251"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,264,113,299,108,299,108,264"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1BeanCommand.html" title=" " alt="" coords="5,152,216,177"/>

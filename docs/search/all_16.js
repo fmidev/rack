@@ -26,5 +26,5 @@ var searchData=
   ['quantizatorfunctor_23',['QuantizatorFunctor',['../classdrain_1_1image_1_1QuantizatorFunctor.html',1,'drain::image']]],
   ['quick_20reference_24',['Quick reference',['../quickpage.html',1,'']]],
   ['quit_25',['quit',['../classdrain_1_1Logger.html#a63239a9e36ffb5cf0eb0214e548880d4',1,'drain::Logger']]],
-  ['quotes_3a_26',['quotes:',['../classdrain_1_1Sprinter.html#autotoc_md36',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md32',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md40',1,'strings with single quotes: &apos;...&apos;']]]
+  ['quotes_3a_26',['quotes:',['../classdrain_1_1Sprinter.html#autotoc_md40',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md36',1,'strings with double quotes: &quot;...&quot;'],['../classdrain_1_1Sprinter.html#autotoc_md44',1,'strings with single quotes: &apos;...&apos;']]]
 ];

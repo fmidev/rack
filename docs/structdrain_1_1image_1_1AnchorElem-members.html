@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -85,8 +92,8 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>Anchor</b> enum name (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>AnchorElem</b>(const std::string &amp;s=&quot;&quot;) (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>AnchorElem</b>(const AnchorElem &amp;a) (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>COLLECTIVE_CURRENT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>COLLECTIVE_FINAL</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>COLLECTIVE_FINAL</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>CURRENT_COMPOUND</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>DEFAULT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>isCollective</b>() const (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>isNone</b>() const (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -95,11 +102,12 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>isSpecific</b>() const (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>NEXT</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>NONE</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>PREVIOUS</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>set</b>(const std::string &amp;s) (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>set</b>(const AnchorElem::Anchor &amp;anchor) (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>str</b>() const (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>str</b>() (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator=</b>(const AnchorElem &amp;)=default (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>PREVIOUS</b> enum value (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>set</b>(const std::string &amp;s) (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>set</b>(const AnchorElem::Anchor &amp;anchor) (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>str</b>() const (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>str</b>() (defined in <a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1AnchorElem.html">AnchorElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

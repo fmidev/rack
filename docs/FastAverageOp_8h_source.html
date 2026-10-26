@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -408,11 +415,11 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span> </div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span><span class="comment">// Drain</span></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:667</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:326</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:676</div></div>
 <div class="ttc" id="aclassdrain_1_1ValueScaling_html"><div class="ttname"><a href="classdrain_1_1ValueScaling.html">drain::ValueScaling</a></div><div class="ttdoc">Linear scaling and physical range for image intensities.</div><div class="ttdef"><b>Definition</b> ValueScaling.h:63</div></div>
-<div class="ttc" id="aclassdrain_1_1ValueScaling_html_a9ef9e1e908348b1ff202d1c458204ead"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#a9ef9e1e908348b1ff202d1c458204ead">drain::ValueScaling::setConversionScale</a></div><div class="ttdeci">void setConversionScale(double scale, double offset=0.0, double scaleOut=1.0, double offsetOut=0.0)</div><div class="ttdoc">If the intensities of the image correspond to a physical value (like temperature),...</div><div class="ttdef"><b>Definition</b> ValueScaling.h:181</div></div>
-<div class="ttc" id="aclassdrain_1_1ValueScaling_html_acf954467cd56251ea20d7e53c4f552eb"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#acf954467cd56251ea20d7e53c4f552eb">drain::ValueScaling::inv</a></div><div class="ttdeci">double inv(double y) const</div><div class="ttdoc">Inverse scaling: given physically meaningful value y, returns the corresponding code value.</div><div class="ttdef"><b>Definition</b> ValueScaling.h:300</div></div>
+<div class="ttc" id="aclassdrain_1_1ValueScaling_html_a9ef9e1e908348b1ff202d1c458204ead"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#a9ef9e1e908348b1ff202d1c458204ead">drain::ValueScaling::setConversionScale</a></div><div class="ttdeci">void setConversionScale(double scale, double offset=0.0, double scaleOut=1.0, double offsetOut=0.0)</div><div class="ttdoc">If the intensities of the image correspond to a physical value (like temperature),...</div><div class="ttdef"><b>Definition</b> ValueScaling.h:182</div></div>
+<div class="ttc" id="aclassdrain_1_1ValueScaling_html_acf954467cd56251ea20d7e53c4f552eb"><div class="ttname"><a href="classdrain_1_1ValueScaling.html#acf954467cd56251ea20d7e53c4f552eb">drain::ValueScaling::inv</a></div><div class="ttdeci">double inv(double y) const</div><div class="ttdoc">Inverse scaling: given physically meaningful value y, returns the corresponding code value.</div><div class="ttdef"><b>Definition</b> ValueScaling.h:301</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Channel_html"><div class="ttname"><a href="classdrain_1_1image_1_1Channel.html">drain::image::Channel</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition</b> ImageChannel.h:58</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FastAverageOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1FastAverageOp.html">drain::image::FastAverageOp</a></div><div class="ttdoc">Sliding window averaging operator with optional weighting support.</div><div class="ttdef"><b>Definition</b> FastAverageOp.h:301</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1FastAverageOp_html_a56efd711511a84ab900466e2db2004d9"><div class="ttname"><a href="classdrain_1_1image_1_1FastAverageOp.html#a56efd711511a84ab900466e2db2004d9">drain::image::FastAverageOp::traverseChannel</a></div><div class="ttdeci">virtual void traverseChannel(const Channel &amp;src, Channel &amp;dst) const</div><div class="ttdoc">Main operation, for plain (unweighted) image data.</div><div class="ttdef"><b>Definition</b> FastAverageOp.cpp:55</div></div>
@@ -428,7 +435,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1image_1_1SlidingStripeAverage_html"><div class="ttname"><a href="classdrain_1_1image_1_1SlidingStripeAverage.html">drain::image::SlidingStripeAverage</a></div><div class="ttdoc">Stripe window for computing averages.</div><div class="ttdef"><b>Definition</b> FastAverageOp.h:50</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1SlidingStripeAverage_html_a6365dca5a7d8ddb694726a53b55a4c27"><div class="ttname"><a href="classdrain_1_1image_1_1SlidingStripeAverage.html#a6365dca5a7d8ddb694726a53b55a4c27">drain::image::SlidingStripeAverage::initialize</a></div><div class="ttdeci">virtual void initialize()</div><div class="ttdef"><b>Definition</b> FastAverageOp.h:70</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1WindowOp_html"><div class="ttname"><a href="classdrain_1_1image_1_1WindowOp.html">drain::image::WindowOp</a></div><div class="ttdef"><b>Definition</b> WindowOp.h:50</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D</a></div><div class="ttdef"><b>Definition</b> Point.h:48</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -88,11 +95,12 @@ $(function() {
 </ul>
 </div>
 <div class="textblock"><p><b>Rack</b> supports reading sweep and volume files in HDF5 format using OPERA information model (ODIM). In addition, supports reading and writing data as images and text files.</p>
+<p>Please take a look also at <a class="el" href="svgpage.html">Writing SVG files</a> .</p>
 <h1><a class="anchor" id="fileio_h5"></a>
 Reading and writing HDF5 files</h1>
 <p>Input files are given as plain arguments or alternatively with explicit command <code>--inputFile</code> , abbreviated <code>-i</code>. If several files are given, they will be internally combined in the internal HDF5 structure, adding datasets incrementally.</p>
 <p>Outputs are generated using <code>--outputFile</code> , abbreviated <code>-o</code>. Hence, combining sweep files to a volume is obtained simply with </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> sweep1.h5 sweep2.h5 sweep3.h5  -o volume-combined.h5 </div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --><p>In combining sweep data to volumes, <b>Rack</b> creates and updates one <code>/dataset&lt;i&gt;</code> group for each <em>elevation</em> <em>angle</em> . Further, <b>Rack</b> creates and updates one <code>/data&lt;i&gt;</code> group for each <em>quantity</em> ; new input overwrites existing data of the same quantity.</p>
 <p>If quality information &ndash; stored under some <code>/quality</code>[i] group and marked with <code>what:quantity=QIND</code> &ndash; is read, the overall quality indices are updated automatically. See <a class="el" href="fileiopage.html#file_quality">Reading and combining quality data</a> below for further details.</p>
  <div class="image">
@@ -119,10 +127,7 @@ Reading and writing text files</h1>
 </div><!-- fragment --><p> For using format templates and hadling multiple files on a single command line, see <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a>.</p>
 <p>Volume can be also created using a text file like the one created above, that is, with the desired structure and data types. </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.txt -o volume-<span class="keyword">new</span>.h5</div>
 </div><!-- fragment --><p>One can modify the metadata directly from the command line by means of <code>--setODIM</code> <code>&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; command.</p>
-<div class="fragment"><div class="line">--setODIM  &lt;assignment&gt;  (Section: general)</div>
-<div class="line">  Set data properties (ODIM). Works also directly: --/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]. See --completeODIM</div>
-<div class="line">    assignment= [/&lt;path&gt;:&lt;key&gt;[=&lt;value&gt;]]</div>
-</div><!-- fragment --><p>The command has a special shorthand <code>--/&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; . For example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=myValue          -o volume-<span class="keyword">new</span>.h5</div>
+<div class="fragment"></div><!-- fragment --><p>The command has a special shorthand <code>--/&lt;path&gt;</code>:&lt;attribute&gt;=&lt;value&gt; . For example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=myValue          -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset1/how:myKey=123.456          -o volume-<span class="keyword">new</span>.h5</div>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5   --/dataset2/data3/what:quantity=<span class="stringliteral">&quot;PROB&quot;</span> -o volume-<span class="keyword">new</span>.h5</div>
 </div><!-- fragment --><p>This feature can be used for completing incomplete ODIM metadata or adding arbitrary metadata. The actual radar data can be read or saved as image files as explained below.</p>
@@ -178,8 +183,7 @@ A PNG image generated with <code>-o</code> .</div></div>
 <li>PGM/PPM files: all the comments are replaced by that string.</li>
 <li>GeoTIFF files: if the argument starts with a curly brace <code>'{'</code> , it is read in as JSON , and (first-level) key-value pairs are stored as GDAL attributes.</li>
 </ul>
-<p>In addition, for GeoTIFF files, attributes set with <code>--/how</code>:GDAL:&lt;key&gt;=</p>
-<p>will be also added as GDAL variables.</p>
+<p>In addition, for GeoTIFF files, attributes set with <code>--/how</code>:GDAL:key=value will be also added as GDAL variables.</p>
 <p><b>Rack</b> can also save all the data sets in separate files with a single command, producing <code>sweep000.png</code> , <code>sweep001.png</code> and so on. This is achieved with <code>--outputRawImages</code> , abbreviated -O . The command stores the image data directly, without rescaling pixel values.</p>
 <p><b>Reading</b> image files creates and updates internal HDF5 structure, adding grid data:</p><ol type="1">
 <li>in the first encountered <code>/data&lt;i&gt;</code> or <code>/quality&lt;i&gt;</code> group containing an empty <code>/data</code> (ie. uninitialized image), or if not found:</li>
@@ -191,7 +195,7 @@ A PNG image generated with <code>-o</code> .</div></div>
 <li>by inputting a text file as explained above</li>
 <li>on the command line, like <code>--/dataset1/data2/what</code>:quantity=DBZH (see changing)</li>
 </ol>
-<p>Metadata can be set before or after image inputs. Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.txt sweep1.png --/dataset1/data1/where:rscale=500  &lt;commands&gt;</div>
+<p>Metadata can be set before or after image inputs. Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.txt sweep1.png --/dataset1/data1/where:rscale=500  (commands...)</div>
 </div><!-- fragment --><p>Some important ODIM attributes can be added automatically with <code>--completeODIM</code> command, which sets <code>nbins</code> , <code>nrays</code> , <code>xsize</code> , and <code>ysize</code> equal to data dimensions, if already loaded as image.</p>
 <h2><a class="anchor" id="geotiff_remarks"></a>
 Remarks on GeoTIFF images</h2>
@@ -226,13 +230,7 @@ Writing HTML files</h1>
 <div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --pCappi 1500 -c --encoding quantity=<span class="stringliteral">&#39;DBZH&#39;</span>  --palette <span class="stringliteral">&#39;default&#39;</span> -o pCappi-1500m-RGB.html</div>
 </div><!-- fragment --><h1><a class="anchor" id="histograms"></a>
 Histograms</h1>
-<div class="fragment"><div class="line">--histogram  &lt;count&gt;,&lt;range&gt;,&lt;filename&gt;,&lt;attribute&gt;  (Section: general)</div>
-<div class="line">  Histogram. Optionally --format using keys index,range,count,label</div>
-<div class="line">    count=0 </div>
-<div class="line">    range=0:0 </div>
-<div class="line">    filename= [&lt;filename&gt;.txt|-]</div>
-<div class="line">    attribute=histogram [&lt;attribute_key&gt;]</div>
-</div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=TH&#39;</span> --histogram filename=histogram.dat</div>
+<div class="fragment"></div><!-- fragment --><p>Example: </p><div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> volume.h5 --select <span class="stringliteral">&#39;quantity=TH&#39;</span> --histogram filename=histogram.dat</div>
 </div><!-- fragment --><p>The resulting file consists of lines containing values and counts </p><div class="fragment"><div class="line"># ${index}   =${count} #${label} [${range}[ </div>
 <div class="line"># [0,256] [-327.68,327.68]</div>
 <div class="line">0    =97192 #undetect [-327.68:-325.12[ </div>
@@ -302,8 +300,8 @@ Illustrating data structure</h1>
 <div class="line"> </div>
 <div class="line">dot volume-tree.dot -Tpng -o volume-tree.png</div>
 <div class="line">dot volume-tree.dot -Tpdf -o volume-tree.pdf</div>
-</div><!-- fragment --><p>The desired path can be selected with <code>--select</code> path=&lt;group&gt;[/&lt;group&gt;] or simply <code>--select</code> &lt;group&gt;[/&lt;group&gt;] because path is the first argument key. <br  />
- The most relevant groups are <code>dataset:</code> , and <code>data:</code> , and <code>quality:</code> . The colon <code></code>: is compulsory for separating <code>data&lt;index&gt;</code> groups from lower level <code>data</code> group in ODIM. In the current version, groups <code>what</code> , <code>what</code> and <code>how</code> are handled somewhat automagically. (See <a class="el" href="index.html#selecting">Selecting data</a> .)</p>
+</div><!-- fragment --><p>The desired path can be selected with <code>--select</code> path=group[/group] or simply <code>--select</code> group[/group] because path is the first argument key. <br  />
+ The most relevant groups are <code>dataset:</code> , and <code>data:</code> , and <code>quality:</code> . The colon <code></code>: is compulsory for separating <code>data(index)</code> groups from lower level <code>data</code> group in ODIM. In the current version, groups <code>what</code> , <code>what</code> and <code>how</code> are handled somewhat automagically. (See <a class="el" href="index.html#selecting">Selecting data</a> .)</p>
  <div class="image">
 <img src="volume-tree.png" alt=""/>
 <div class="caption">
@@ -325,8 +323,6 @@ Reading and combining quality data</h1>
 <div class="line">dataset1/data2/quality2/what:quantity=<span class="stringliteral">&quot;CLASS&quot;</span></div>
 <div class="line">dataset1/data2/quality3/what:quantity=<span class="stringliteral">&quot;EMITTER.LINE&quot;</span></div>
 <div class="line">dataset1/data2/what:quantity=<span class="stringliteral">&quot;DBZH&quot;</span></div>
-<div class="line">dataset1/data3/what:quantity=<span class="stringliteral">&quot;DBZH_norm&quot;</span></div>
-<div class="line">dataset1/data4/what:quantity=<span class="stringliteral">&quot;DBZH_norm&quot;</span></div>
 <div class="line">dataset1/quality1/what:quantity=<span class="stringliteral">&quot;QIND&quot;</span></div>
 <div class="line">dataset1/quality2/what:quantity=<span class="stringliteral">&quot;CLASS&quot;</span></div>
 <div class="line">dataset1/quality3/what:quantity=<span class="stringliteral">&quot;JAMMING&quot;</span></div>

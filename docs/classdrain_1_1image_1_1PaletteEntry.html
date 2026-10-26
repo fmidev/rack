@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -142,10 +149,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4fb6c5bb4b8697e2092be52da6d402b9" id="r_a4fb6c5bb4b8697e2092be52da6d402b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4fb6c5bb4b8697e2092be52da6d402b9">PaletteEntry</a> (const color_vect_t &amp;<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a6d24d7d1c78a340316a847cc50d73bd6">color</a>, <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a971f427ed0f36249c1fe6715ceff00ad">value_t</a> <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#ae2d28b585b5fcf3544f3769c51ed121b">alpha</a>=255.0, bool <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a4aefc4965852492e2f02de00f05e6698">hidden</a>=false)</td></tr>
 <tr class="separator:a4fb6c5bb4b8697e2092be52da6d402b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedc9e4fa87457c44a46ceec222d5e0bc" id="r_aedc9e4fa87457c44a46ceec222d5e0bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#aedc9e4fa87457c44a46ceec222d5e0bc">PaletteEntry</a> (const std::initializer_list&lt; Variable::init_pair_t &gt; &amp;args)</td></tr>
-<tr class="memdesc:aedc9e4fa87457c44a46ceec222d5e0bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor supporting Palette initialization using "{key,value}" form.  <br /></td></tr>
+<tr class="memdesc:aedc9e4fa87457c44a46ceec222d5e0bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor supporting <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> initialization using "{key,value}" form.  <br /></td></tr>
 <tr class="separator:aedc9e4fa87457c44a46ceec222d5e0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f8a82202c43518a50ad374e26742799" id="r_a8f8a82202c43518a50ad374e26742799"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a8f8a82202c43518a50ad374e26742799">PaletteEntry</a> (const char *<a class="el" href="classdrain_1_1image_1_1PaletteEntry.html#a1dd28f5ea7b5b0780013e960944ddaa0">label</a>)</td></tr>
-<tr class="memdesc:a8f8a82202c43518a50ad374e26742799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special dummy constructor for reading a title or other metadata related to Palette.  <br /></td></tr>
+<tr class="memdesc:a8f8a82202c43518a50ad374e26742799"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special dummy constructor for reading a title or other metadata related to <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a>.  <br /></td></tr>
 <tr class="separator:a8f8a82202c43518a50ad374e26742799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68aba642f20f85ae939c2f6121ae4536" id="r_a68aba642f20f85ae939c2f6121ae4536"><td class="memItemLeft" align="right" valign="top"><a id="a68aba642f20f85ae939c2f6121ae4536" name="a68aba642f20f85ae939c2f6121ae4536"></a>
 <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a> &amp;b)</td></tr>
@@ -271,7 +278,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This constructor supports Palette initialization of form: </p><div class="fragment"><div class="line">palette = {</div>
+<p>This constructor supports <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> initialization of form: </p><div class="fragment"><div class="line">palette = {</div>
 <div class="line">   { 10, {{<span class="stringliteral">&quot;label&quot;</span>,<span class="stringliteral">&quot;Timing problem&quot;</span>},{<span class="stringliteral">&quot;color&quot;</span>,{240,240,240}},{<span class="stringliteral">&quot;code&quot;</span>,<span class="stringliteral">&quot;tech.err.time&quot;</span>},{<span class="stringliteral">&quot;alpha&quot;</span>,255}} },</div>
 <div class="line">   { 13, {{<span class="stringliteral">&quot;label&quot;</span>,<span class="stringliteral">&quot;Unclassified&quot;</span>},{<span class="stringliteral">&quot;color&quot;</span>,{144,144,144}},{<span class="stringliteral">&quot;code&quot;</span>,<span class="stringliteral">&quot;tech.class.unclass&quot;</span>},{<span class="stringliteral">&quot;alpha&quot;</span>,255}} },</div>
 <div class="line">   { 64, {{<span class="stringliteral">&quot;label&quot;</span>,<span class="stringliteral">&quot;Precipitation&quot;</span>},{<span class="stringliteral">&quot;color&quot;</span>,{80,208,80}},{<span class="stringliteral">&quot;code&quot;</span>,<span class="stringliteral">&quot;precip&quot;</span>},{<span class="stringliteral">&quot;alpha&quot;</span>,255}} },</div>
@@ -317,7 +324,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This constructor supports Palette initialization with following entry syntax: </p><div class="fragment"><div class="line">palette = {</div>
+<p>This constructor supports <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> initialization with following entry syntax: </p><div class="fragment"><div class="line">palette = {</div>
 <div class="line">   {<span class="stringliteral">&quot;nodata&quot;</span>, {<span class="stringliteral">&quot;nodata&quot;</span>, <span class="stringliteral">&quot;Data unavailable&quot;</span>, {255.0,255.0,255.0}} },</div>
 <div class="line">   {<span class="stringliteral">&quot;undetect&quot;</span>, {<span class="stringliteral">&quot;undetect&quot;</span>, <span class="stringliteral">&quot;Measurement failed&quot;</span>, {0.0,0.0,0.0}} },</div>
 <div class="line">   {     -32.0, {<span class="stringliteral">&quot;noise&quot;</span>, <span class="stringliteral">&quot;Noise&quot;</span>, {0.0,0.0,0.0}} },</div>
@@ -357,7 +364,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This constructor supports Palette initialization of form: </p><div class="fragment"><div class="line">palette = {</div>
+<p>This constructor supports <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> initialization of form: </p><div class="fragment"><div class="line">palette = {</div>
 <div class="line">    {<span class="stringliteral">&quot;nodata&quot;</span>, {<span class="stringliteral">&quot;Data unavailable&quot;</span>, {255.0,255.0,255.0}} },</div>
 <div class="line">    {<span class="stringliteral">&quot;undetect&quot;</span>, {<span class="stringliteral">&quot;Measurement failed&quot;</span>, {0.0,0.0,0.0}} },</div>
 <div class="line">    {     -32.0, {<span class="stringliteral">&quot;Noise&quot;</span>, {0.0,0.0,0.0}} },</div>
@@ -382,7 +389,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Constructor supporting Palette initialization using "{key,value}" form. </p>
+<p>Constructor supporting <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> initialization using "{key,value}" form. </p>
 <div class="fragment"><div class="line">palette = {</div>
 <div class="line">   { 10, {{<span class="stringliteral">&quot;label&quot;</span>,<span class="stringliteral">&quot;Timing problem&quot;</span>},{<span class="stringliteral">&quot;color&quot;</span>,{240,240,240}},{<span class="stringliteral">&quot;code&quot;</span>,<span class="stringliteral">&quot;tech.err.time&quot;</span>},{<span class="stringliteral">&quot;alpha&quot;</span>,255}} },</div>
 <div class="line">   { 13, {{<span class="stringliteral">&quot;label&quot;</span>,<span class="stringliteral">&quot;Unclassified&quot;</span>},{<span class="stringliteral">&quot;color&quot;</span>,{144,144,144}},{<span class="stringliteral">&quot;code&quot;</span>,<span class="stringliteral">&quot;tech.class.unclass&quot;</span>},{<span class="stringliteral">&quot;alpha&quot;</span>,255}} },</div>
@@ -408,8 +415,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Special dummy constructor for reading a title or other metadata related to Palette. </p>
-<p>This constructor supports Palette initialization of form: </p><div class="fragment"><div class="line">palette = {</div>
+<p>Special dummy constructor for reading a title or other metadata related to <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a>. </p>
+<p>This constructor supports <a class="el" href="classdrain_1_1image_1_1Palette.html">Palette</a> initialization of form: </p><div class="fragment"><div class="line">palette = {</div>
 <div class="line">   { <span class="stringliteral">&quot;title&quot;</span>, {<span class="stringliteral">&quot;Radar reflectivity&quot;</span>} }</div>
 <div class="line">   <span class="comment">// ...</span></div>
 </div><!-- fragment --> 
@@ -445,7 +452,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
   <table class="params">
     <tr><td class="paramname">ostr</td><td>- output stream </td></tr>
     <tr><td class="paramname">separator</td><td>- char after palette index </td></tr>
-    <tr><td class="paramname">separator2</td><td>- char after each color intensity value </td></tr>
   </table>
   </dd>
 </dl>

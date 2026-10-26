@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -187,27 +194,27 @@ Collaboration diagram for CartesianDataPicker:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3afc9c87a8e60c5b7f7acff395a19125" id="r_a3afc9c87a8e60c5b7f7acff395a19125"><td class="memItemLeft" align="right" valign="top"><a id="a3afc9c87a8e60c5b7f7acff395a19125" name="a3afc9c87a8e60c5b7f7acff395a19125"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>CartesianDataPicker</b> (<a class="el" href="classdrain_1_1ReferenceMap2.html">drain::ReferenceMap2</a>&lt;&gt; &amp;<a class="el" href="structdrain_1_1image_1_1SamplePicker.html#a1f3c0486f929b078f5715ab196c21d06">variableMap</a>, const <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &amp;<a class="el" href="classrack_1_1RadarDataPicker.html#abab6dc903904ffb1e771ac3f5fd17df1">odim</a>)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>CartesianDataPicker</b> (<a class="el" href="classdrain_1_1ReferenceMap2.html">drain::ReferenceMap2</a>&lt;&gt; &amp;<a class="el" href="structdrain_1_1image_1_1SamplePicker.html#a1f3c0486f929b078f5715ab196c21d06">variableMap</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &amp;<a class="el" href="classrack_1_1RadarDataPicker.html#abab6dc903904ffb1e771ac3f5fd17df1">odim</a>)</td></tr>
 <tr class="memdesc:a3afc9c87a8e60c5b7f7acff395a19125"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a3afc9c87a8e60c5b7f7acff395a19125"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a067b23b138995a352192a419346c5cb3" id="r_a067b23b138995a352192a419346c5cb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianDataPicker.html#a067b23b138995a352192a419346c5cb3">setPosition</a> (int i, int j) const</td></tr>
+<tr class="memitem:a067b23b138995a352192a419346c5cb3" id="r_a067b23b138995a352192a419346c5cb3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1CartesianDataPicker.html#a067b23b138995a352192a419346c5cb3">setPosition</a> (<a class="el" href="classrack_1_1DataSet.html">int</a> i, <a class="el" href="classrack_1_1DataSet.html">int</a> j) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a067b23b138995a352192a419346c5cb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets image position (in 2D Cartesian space) and calculates corresponding geographical coordinates.  <br /></td></tr>
 <tr class="separator:a067b23b138995a352192a419346c5cb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1RadarDataPicker"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1RadarDataPicker')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1RadarDataPicker.html">RadarDataPicker&lt; CartesianODIM &gt;</a></td></tr>
 <tr class="memitem:a749c14d7bd59dab65fdfe7bc1e2faa19 inherit pub_methods_classrack_1_1RadarDataPicker" id="r_a749c14d7bd59dab65fdfe7bc1e2faa19"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>RadarDataPicker</b> (<a class="el" href="classdrain_1_1ReferenceMap2.html">drain::ReferenceMap2</a>&lt;&gt; &amp;variableMap, const <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &amp;odim)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RadarDataPicker</b> (<a class="el" href="classdrain_1_1ReferenceMap2.html">drain::ReferenceMap2</a>&lt;&gt; &amp;variableMap, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &amp;odim)</td></tr>
 <tr class="memdesc:a749c14d7bd59dab65fdfe7bc1e2faa19 inherit pub_methods_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:a749c14d7bd59dab65fdfe7bc1e2faa19 inherit pub_methods_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a199c6ecb0168ab807c926d43954fc846 inherit pub_methods_classrack_1_1RadarDataPicker" id="r_a199c6ecb0168ab807c926d43954fc846"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (const <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">data_t</a> &amp;data, double &amp;value) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getValue</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">data_t</a> &amp;data, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;value) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a199c6ecb0168ab807c926d43954fc846 inherit pub_methods_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a value, and scales it unless <code>nodata</code> or <code>undetect</code>. <br /></td></tr>
 <tr class="separator:a199c6ecb0168ab807c926d43954fc846 inherit pub_methods_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f8ed9ab2490a64a04312fcad64e098c inherit pub_methods_classrack_1_1RadarDataPicker" id="r_a4f8ed9ab2490a64a04312fcad64e098c"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>handleValue</b> (const <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">data_t</a> &amp;data, double &amp;value) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>handleValue</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">data_t</a> &amp;data, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;value) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a4f8ed9ab2490a64a04312fcad64e098c inherit pub_methods_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns false, is value is invalid. <br /></td></tr>
 <tr class="separator:a4f8ed9ab2490a64a04312fcad64e098c inherit pub_methods_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classrack_1_1RadarDataPicker" id="r_a1b35461471ece8bcba97c97b0fb7a091"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr=std::cout) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints images geometry, buffer size and type information. <br /></td></tr>
 <tr class="separator:a1b35461471ece8bcba97c97b0fb7a091 inherit pub_methods_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_structdrain_1_1image_1_1SamplePicker"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structdrain_1_1image_1_1SamplePicker')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structdrain_1_1image_1_1SamplePicker.html">SamplePicker</a></td></tr>
@@ -252,40 +259,40 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>height</b> = 0</td></t
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classrack_1_1RadarDataPicker"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classrack_1_1RadarDataPicker')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classrack_1_1RadarDataPicker.html">RadarDataPicker&lt; CartesianODIM &gt;</a></td></tr>
 <tr class="memitem:a16c06d16e861c01940d74ff99afe6ec6 inherit pub_types_classrack_1_1RadarDataPicker" id="r_a16c06d16e861c01940d74ff99afe6ec6"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> const &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>src_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="structrack_1_1SrcType.html">SrcType</a>&lt; <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> <a class="el" href="classrack_1_1DataSet.html">const</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>src_t</b></td></tr>
 <tr class="memdesc:a16c06d16e861c01940d74ff99afe6ec6 inherit pub_types_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input source type. <br /></td></tr>
 <tr class="separator:a16c06d16e861c01940d74ff99afe6ec6 inherit pub_types_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a998eb92c837fe0e3d2367ff64225ba68 inherit pub_types_classrack_1_1RadarDataPicker" id="r_a998eb92c837fe0e3d2367ff64225ba68"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarDataPicker.html#a16c06d16e861c01940d74ff99afe6ec6">src_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classrack_1_1PlainData.html">PlainData</a>&lt; <a class="el" href="classrack_1_1RadarDataPicker.html#a16c06d16e861c01940d74ff99afe6ec6">src_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>data_t</b></td></tr>
 <tr class="memdesc:a998eb92c837fe0e3d2367ff64225ba68 inherit pub_types_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input data type. <br /></td></tr>
 <tr class="separator:a998eb92c837fe0e3d2367ff64225ba68 inherit pub_types_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a098637a31b73874b18fb9992cd538419 inherit pub_types_classrack_1_1RadarDataPicker" id="r_a098637a31b73874b18fb9992cd538419"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1RadarDataPicker.html#a16c06d16e861c01940d74ff99afe6ec6">src_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dataset_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> <a class="el" href="classrack_1_1DataSet.html">DataSet</a>&lt; <a class="el" href="classrack_1_1RadarDataPicker.html#a16c06d16e861c01940d74ff99afe6ec6">src_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>dataset_t</b></td></tr>
 <tr class="memdesc:a098637a31b73874b18fb9992cd538419 inherit pub_types_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input dataSet type. <br /></td></tr>
 <tr class="separator:a098637a31b73874b18fb9992cd538419 inherit pub_types_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab89674900a5be75e3fb828e826bb9daf inherit pub_types_classrack_1_1RadarDataPicker" id="r_ab89674900a5be75e3fb828e826bb9daf"><td class="memItemLeft" align="right" valign="top">
-typedef std::map&lt; std::string, const <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">data_t</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">typedef</a> std::map&lt; std::string, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1RadarDataPicker.html#a998eb92c837fe0e3d2367ff64225ba68">data_t</a> &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
 <tr class="memdesc:ab89674900a5be75e3fb828e826bb9daf inherit pub_types_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map type compatible with Sampler. <br /></td></tr>
 <tr class="separator:ab89674900a5be75e3fb828e826bb9daf inherit pub_types_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1RadarDataPicker"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1RadarDataPicker')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1RadarDataPicker.html">RadarDataPicker&lt; CartesianODIM &gt;</a></td></tr>
 <tr class="memitem:af88b946fb90d5f08b5fb740c70e98c10 inherit pro_attribs_classrack_1_1RadarDataPicker" id="r_af88b946fb90d5f08b5fb740c70e98c10"><td class="memItemLeft" align="right" valign="top">
-double&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>x</b></td></tr>
 <tr class="memdesc:af88b946fb90d5f08b5fb740c70e98c10 inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metric coordinate corresponding to longitudinal coordinate. <br /></td></tr>
 <tr class="separator:af88b946fb90d5f08b5fb740c70e98c10 inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab927965981178aa1fba979a37168db2a inherit pro_attribs_classrack_1_1RadarDataPicker" id="r_ab927965981178aa1fba979a37168db2a"><td class="memItemLeft" align="right" valign="top">
-double&#160;</td><td class="memItemRight" valign="bottom"><b>y</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>y</b></td></tr>
 <tr class="memdesc:ab927965981178aa1fba979a37168db2a inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metric coordinate corresponding to latitudinal coordinate. <br /></td></tr>
 <tr class="separator:ab927965981178aa1fba979a37168db2a inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa96391e04b5977c50b96d77bea86a01d inherit pro_attribs_classrack_1_1RadarDataPicker" id="r_aa96391e04b5977c50b96d77bea86a01d"><td class="memItemLeft" align="right" valign="top">
-double&#160;</td><td class="memItemRight" valign="bottom"><b>lon</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lon</b></td></tr>
 <tr class="memdesc:aa96391e04b5977c50b96d77bea86a01d inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitudinal coordinate (degrees) <br /></td></tr>
 <tr class="separator:aa96391e04b5977c50b96d77bea86a01d inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7972334534f68166121a6e51b0aac2d6 inherit pro_attribs_classrack_1_1RadarDataPicker" id="r_a7972334534f68166121a6e51b0aac2d6"><td class="memItemLeft" align="right" valign="top">
-double&#160;</td><td class="memItemRight" valign="bottom"><b>lat</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lat</b></td></tr>
 <tr class="memdesc:a7972334534f68166121a6e51b0aac2d6 inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitudinal coordinate (degrees) <br /></td></tr>
 <tr class="separator:a7972334534f68166121a6e51b0aac2d6 inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abab6dc903904ffb1e771ac3f5fd17df1 inherit pro_attribs_classrack_1_1RadarDataPicker" id="r_abab6dc903904ffb1e771ac3f5fd17df1"><td class="memItemLeft" align="right" valign="top">
-const <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>odim</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>odim</b></td></tr>
 <tr class="memdesc:abab6dc903904ffb1e771ac3f5fd17df1 inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Metadata for navigating and scaling grid data. <br /></td></tr>
 <tr class="separator:abab6dc903904ffb1e771ac3f5fd17df1 inherit pro_attribs_classrack_1_1RadarDataPicker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -300,15 +307,15 @@ const <a class="el" href="classrack_1_1CartesianODIM.html">CartesianODIM</a> &am
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void setPosition </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> setPosition </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>i</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td>
           <td class="paramname"><em>j</em>&#160;</td>
         </tr>
         <tr>

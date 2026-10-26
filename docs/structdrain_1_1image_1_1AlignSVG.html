@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -84,7 +91,7 @@ $(function() {
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="structdrain_1_1image_1_1AlignSVG-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">AlignSVG Struct Reference</div></div>
+  <div class="headertitle"><div class="title">AlignSVG Struct Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -119,6 +126,13 @@ Public Types</h2></td></tr>
 , <b>ANCHOR</b> = 1
  }</td></tr>
 <tr class="separator:a3b5e9e55eb7b08d5702a101e529e5507"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e25306586887306686a483b217f12d2" id="r_a3e25306586887306686a483b217f12d2"><td class="memItemLeft" align="right" valign="top"><a id="a3e25306586887306686a483b217f12d2" name="a3e25306586887306686a483b217f12d2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a3e25306586887306686a483b217f12d2">AlignClass</a> { <b>COMPOUND</b>
+, <b>FIXED</b>
+, <b>INDEPENDENT</b>
+, <b>NEUTRAL</b>
+ }</td></tr>
+<tr class="memdesc:a3e25306586887306686a483b217f12d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moved from Layput. <br /></td></tr>
+<tr class="separator:a3e25306586887306686a483b217f12d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3476037a2d8e6d6eb03af9900f0fd0c" id="r_aa3476037a2d8e6d6eb03af9900f0fd0c"><td class="memItemLeft" align="right" valign="top"><a id="aa3476037a2d8e6d6eb03af9900f0fd0c" name="aa3476037a2d8e6d6eb03af9900f0fd0c"></a>
 typedef <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment</a>&lt; const AlignBase::Axis, AlignBase::Axis::HORZ &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>HorzAlign</b></td></tr>
 <tr class="separator:aa3476037a2d8e6d6eb03af9900f0fd0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,6 +176,9 @@ template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a92f3a7173cf553b6c23533b558e436fc" id="r_a92f3a7173cf553b6c23533b558e436fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a92f3a7173cf553b6c23533b558e436fc">setAlign</a> (const std::string &amp;align)</td></tr>
 <tr class="memdesc:a92f3a7173cf553b6c23533b558e436fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">High-level, user friendly interface for setting the alignments for both OBJECT itself and its ANCHOR object.  <br /></td></tr>
 <tr class="separator:a92f3a7173cf553b6c23533b558e436fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6343ecb899faee23e404e1749623487" id="r_ad6343ecb899faee23e404e1749623487"><td class="memItemLeft" align="right" valign="top"><a id="ad6343ecb899faee23e404e1749623487" name="ad6343ecb899faee23e404e1749623487"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setAlign</b> (<a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a3e25306586887306686a483b217f12d2">AlignClass</a> cls)</td></tr>
+<tr class="separator:ad6343ecb899faee23e404e1749623487"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47425e0d734ead6ddfcdd28b0df1dd1c" id="r_a47425e0d734ead6ddfcdd28b0df1dd1c"><td class="memItemLeft" align="right" valign="top"><a id="a47425e0d734ead6ddfcdd28b0df1dd1c" name="a47425e0d734ead6ddfcdd28b0df1dd1c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isAligned</b> () const</td></tr>
 <tr class="memdesc:a47425e0d734ead6ddfcdd28b0df1dd1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if any setting is set... <br /></td></tr>
@@ -193,6 +210,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>swapAlign</b> ()</td>
 <tr class="memitem:ab82825e3ea336347f5b70e9440ee6b10" id="r_ab82825e3ea336347f5b70e9440ee6b10"><td class="memTemplParams" colspan="2"><a id="ab82825e3ea336347f5b70e9440ee6b10" name="ab82825e3ea336347f5b70e9440ee6b10"></a>
 template&lt;typename OBJ , typename A &gt; </td></tr>
 <tr class="memitem:ab82825e3ea336347f5b70e9440ee6b10"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structdrain_1_1image_1_1AlignBase.html#a94c3a04b97f81dd5db990b01eb6521a0">AlignBase::Pos</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getAlignPos</b> (const OBJ &amp;owner, const A &amp;axis)</td></tr>
+<tr class="memdesc:ab82825e3ea336347f5b70e9440ee6b10"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Dictionary.html" title="Two-way mapping between strings and objects of template class T.">Dictionary</a> of horizontal (LEFT,CENTER,RIGHT) flags. <br /></td></tr>
 <tr class="separator:ab82825e3ea336347f5b70e9440ee6b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33a8b38b8e7e65a57983e164a803dfc1" id="r_a33a8b38b8e7e65a57983e164a803dfc1"><td class="memTemplParams" colspan="2"><a id="a33a8b38b8e7e65a57983e164a803dfc1" name="a33a8b38b8e7e65a57983e164a803dfc1"></a>
 template&lt;typename OBJ , typename A &gt; </td></tr>
@@ -254,6 +272,9 @@ typedef std::vector&lt; align_vect_t &gt;&#160;</td><td class="memItemRight" val
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:ae53278344813004096c0dc00a4fb2bac" id="r_ae53278344813004096c0dc00a4fb2bac"><td class="memItemLeft" align="right" valign="top"><a id="ae53278344813004096c0dc00a4fb2bac" name="ae53278344813004096c0dc00a4fb2bac"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setAlignClass</b> (<a class="el" href="structdrain_1_1image_1_1AlignSVG.html#a3e25306586887306686a483b217f12d2">AlignClass</a> cls)=0</td></tr>
+<tr class="separator:ae53278344813004096c0dc00a4fb2bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bdf7e25519a39cb8d814d446d9e2789" id="r_a8bdf7e25519a39cb8d814d446d9e2789"><td class="memTemplParams" colspan="2"><a id="a8bdf7e25519a39cb8d814d446d9e2789" name="a8bdf7e25519a39cb8d814d446d9e2789"></a>
 template&lt;typename P , typename A , typename V &gt; </td></tr>
 <tr class="memitem:a8bdf7e25519a39cb8d814d446d9e2789"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>modifyAlign</b> (const P &amp;owner, const A &amp;axis, const V &amp;value)</td></tr>

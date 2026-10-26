@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -85,13 +92,15 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>coord_t</b> typedef (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>empty</b>() const (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>matrix</b> (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>rotate</b> (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>scale</b> (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>setTranslate</b>(const coord_t &amp;x, const coord_t &amp;y) (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setTranslateX</b>(const coord_t &amp;x) (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>setTranslateY</b>(const coord_t &amp;y) (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr) const (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>TransformSVG</b>() (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator=</b>(const TransformSVG &amp;)=default (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>rotate</b> (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>scale</b> (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setTranslate</b>(const coord_t &amp;x, const coord_t &amp;y) (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>setTranslateX</b>(const coord_t &amp;x) (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setTranslateY</b>(const coord_t &amp;y) (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>toStream</b>(std::ostream &amp;ostr) const (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html#a135c976aca374d12d366a56748eda204">TransformSVG</a>()</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html#aecb2f1bc48df2185f056e2996cb09c22">TransformSVG</a>(const TransformSVG &amp;tr)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>translate</b> (defined in <a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a>)</td><td class="entry"><a class="el" href="classdrain_1_1image_1_1TransformSVG.html">TransformSVG</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

@@ -1,7 +1,7 @@
 <map id="CmdRect" name="CmdRect">
-<area shape="rect" id="Node000001" title=" " alt="" coords="62,372,143,397"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="133,372,214,397"/>
 <area shape="rect" id="Node000002" href="$classrack_1_1CmdPolarBase.html" title=" " alt="" coords="44,299,161,324"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,338,105,372,100,372,100,338"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,332,164,370,160,374,122,336"/>
 <area shape="rect" id="Node000003" href="$classrack_1_1Graphic.html" title=" " alt="" coords="5,225,77,251"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="62,260,95,297,91,300,58,263"/>
 <area shape="rect" id="Node000004" href="$classdrain_1_1BasicCommand.html" title="Simple implementation of Command: adds name , description and parameters ." alt="" coords="102,225,226,251"/>
@@ -12,4 +12,6 @@
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="167,118,167,152,161,152,161,118"/>
 <area shape="rect" id="Node000007" href="$classdrain_1_1Contextual.html" title=" " alt="" coords="117,5,211,31"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="167,44,167,79,161,79,161,44"/>
+<area shape="rect" id="Node000008" href="$classrack_1_1InteractiveSVG.html" title="Tools for adding user interaction to SVG displays." alt="" coords="185,299,303,324"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="225,336,187,374,183,370,221,332"/>
 </map>

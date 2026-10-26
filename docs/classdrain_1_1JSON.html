@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -281,15 +288,10 @@ template&lt;class T &gt; </div>
 
 <p>Read value (<a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> syntax). Read stream until a value has been extracted, with type recognition. </p>
 <p>Allowed syntax:</p><ul>
-<li>string: "&lt;value&gt;"</li>
-<li>scalar: </li>
+<li>string: "(value)"</li>
+<li>scalar: (value)</li>
+<li>array: [(value),(value),(value),(...)] </li>
 </ul>
-<ul>
-<li>array: [</li>
-</ul>
-<p>,</p>
-<p>,</p>
-<p>,&lt;...&gt;] </p>
 
 </div>
 </div>

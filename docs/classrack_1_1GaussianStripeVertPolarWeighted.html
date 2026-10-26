@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -220,17 +227,17 @@ Collaboration diagram for GaussianStripeVertPolarWeighted:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a42b6e92b6d307e18fea3638748f25fcc" id="r_a42b6e92b6d307e18fea3638748f25fcc"><td class="memItemLeft" align="right" valign="top"><a id="a42b6e92b6d307e18fea3638748f25fcc" name="a42b6e92b6d307e18fea3638748f25fcc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>GaussianStripeVertPolarWeighted</b> (double radius=1.0, int height=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>GaussianStripeVertPolarWeighted</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> radius=1.0, <a class="el" href="classrack_1_1DataSet.html">int</a> height=0)</td></tr>
 <tr class="separator:a42b6e92b6d307e18fea3638748f25fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5c54df7ed3b930268c8d7752c101725" id="r_ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1GaussianStripeVertPolarWeighted.html#ac5c54df7ed3b930268c8d7752c101725">update</a> ()</td></tr>
+<tr class="memitem:ac5c54df7ed3b930268c8d7752c101725" id="r_ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1GaussianStripeVertPolarWeighted.html#ac5c54df7ed3b930268c8d7752c101725">update</a> ()</td></tr>
 <tr class="memdesc:ac5c54df7ed3b930268c8d7752c101725"><td class="mdescLeft">&#160;</td><td class="mdescRight">At each location, this is called to calculate and store something in members.  <br /></td></tr>
 <tr class="separator:ac5c54df7ed3b930268c8d7752c101725"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b47b8daf97e9407250d2043c379e7cb" id="r_a2b47b8daf97e9407250d2043c379e7cb"><td class="memItemLeft" align="right" valign="top"><a id="a2b47b8daf97e9407250d2043c379e7cb" name="a2b47b8daf97e9407250d2043c379e7cb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRangeNorm</b> (const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;odim)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setRangeNorm</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;odim)</td></tr>
 <tr class="memdesc:a2b47b8daf97e9407250d2043c379e7cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set range (bin) index, at which aspect ratio of along-beam and cross-beam distances is unity. <br /></td></tr>
 <tr class="separator:a2b47b8daf97e9407250d2043c379e7cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acea63fd9ce30d78d9fb8e7bb6e71170f" id="r_acea63fd9ce30d78d9fb8e7bb6e71170f"><td class="memItemLeft" align="right" valign="top"><a id="acea63fd9ce30d78d9fb8e7bb6e71170f" name="acea63fd9ce30d78d9fb8e7bb6e71170f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>getRangeNorm</b> ()</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getRangeNorm</b> ()</td></tr>
 <tr class="memdesc:acea63fd9ce30d78d9fb8e7bb6e71170f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Range index, at which aspect ratio of along-beam and cross-beam distances is unity. <br /></td></tr>
 <tr class="separator:acea63fd9ce30d78d9fb8e7bb6e71170f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1GaussianStripeWeighted"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1GaussianStripeWeighted')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1GaussianStripeWeighted.html">GaussianStripeWeighted&lt; false &gt;</a></td></tr>
@@ -299,7 +306,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDstFrame</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:af52e25f13d4917ba7fc999855d387a24" id="r_af52e25f13d4917ba7fc999855d387a24"><td class="memItemLeft" align="right" valign="top"><a id="af52e25f13d4917ba7fc999855d387a24" name="af52e25f13d4917ba7fc999855d387a24"></a>
-<a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>normRange</b></td></tr>
+<a class="el" href="classdrain_1_1Range.html">drain::Range</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>normRange</b></td></tr>
 <tr class="memdesc:af52e25f13d4917ba7fc999855d387a24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Range of bin indices: min: aspect ratio of along-beam and cross-beam distances is unity. <br /></td></tr>
 <tr class="separator:af52e25f13d4917ba7fc999855d387a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1GaussianStripe"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1GaussianStripe')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1GaussianStripe.html">GaussianStripe&lt; DIR, WeightedWindowCore &gt;</a></td></tr>
@@ -419,7 +426,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>debugDiag</b> (int bi
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void update </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> update </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

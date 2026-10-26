@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,8 +98,8 @@ Defining scripts</h1>
 <p>In operational radar product generation, a frequent need is to repeat a routine to several inputs, say tens or even hundreds of input volumes. <br  />
  <b>Rack</b> supports defining such routines as <em>scripts</em> that can be invoked repeatedly using a single command line. A script is command sequence that is then executed automatically for <em>each</em> <em>input:</em> </p>
 <div class="fragment"><div class="line"><a class="code hl_namespace" href="namespacerack.html">rack</a> --script <span class="stringliteral">&#39;&lt;cnd&gt; &lt;cmd2&gt; ...&#39;</span>  &lt;file&gt; &lt;file2&gt; &lt;file3&gt; ...</div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
-</div><!-- fragment --><p>So, <code>--inputFile</code> &lt;file&gt; command – or simply <code></code> &lt;file&gt; – implicitly triggers the script.</p>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
+</div><!-- fragment --><p>So, <code>--inputFile</code> file command – or simply <code>file</code> – implicitly triggers the script.</p>
 <p>One can also invoke the script explicitly with <code>--execScript</code> command. Defining a script also turns on <em>variable</em> <em>expansion</em> &ndash; see also examples in <a class="el" href="text-output-page.html#templates">Formatting metadata output using templates</a> .</p>
 <h2><a class="anchor" id="script_sites"></a>
 Example: product generation for each volume.</h2>

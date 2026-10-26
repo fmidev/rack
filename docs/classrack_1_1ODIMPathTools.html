@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -90,17 +97,21 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7228a4db26d0009050110a864674f2c6" id="r_a7228a4db26d0009050110a864674f2c6"><td class="memItemLeft" align="right" valign="top"><a id="a7228a4db26d0009050110a864674f2c6" name="a7228a4db26d0009050110a864674f2c6"></a>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>completePathParser</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;s, <a class="el" href="classdrain_1_1Path.html">ODIMPath</a> &amp;path, std::string &amp;attributeKey, std::string &amp;<a class="el" href="classrack_1_1DataSet.html">attributeValue</a>)</td></tr>
+<tr class="memdesc:a7228a4db26d0009050110a864674f2c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse argument to a path and an attribute, or both. <br /></td></tr>
+<tr class="separator:a7228a4db26d0009050110a864674f2c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb14ab4fcd8b07a046b0cd15075f433e" id="r_abb14ab4fcd8b07a046b0cd15075f433e"><td class="memItemLeft" align="right" valign="top"><a id="abb14ab4fcd8b07a046b0cd15075f433e" name="abb14ab4fcd8b07a046b0cd15075f433e"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>getLastChild</b> (const Hi5Tree &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child, bool create=false)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getLastChild</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">child</a>, <a class="el" href="classrack_1_1DataSet.html">bool</a> create=<a class="el" href="classrack_1_1DataSet.html">false</a>)</td></tr>
 <tr class="memdesc:abb14ab4fcd8b07a046b0cd15075f433e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches the children of child.getType(), or g if given, and stores the one with largest index. <br /></td></tr>
 <tr class="separator:abb14ab4fcd8b07a046b0cd15075f433e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc361220b809fdbcfc0dec249b8d0cc8" id="r_abc361220b809fdbcfc0dec249b8d0cc8"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">getNewChild</a> (const Hi5Tree &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child, ODIMPathElem::index_t iMax=ODIMPathElem::INDEX_MAX)</td></tr>
+<tr class="memitem:abc361220b809fdbcfc0dec249b8d0cc8" id="r_abc361220b809fdbcfc0dec249b8d0cc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html#abc361220b809fdbcfc0dec249b8d0cc8">getNewChild</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">child</a>, ODIMPathElem::index_t <a class="el" href="classrack_1_1DataSet.html">iMax</a>=ODIMPathElem::INDEX_MAX)</td></tr>
 <tr class="memdesc:abc361220b809fdbcfc0dec249b8d0cc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches children of given type, returns a non-existing child with index greater than child.index.  <br /></td></tr>
 <tr class="separator:abc361220b809fdbcfc0dec249b8d0cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a16b7be5403b4f5de2fd3a53974caf2ff" id="r_a16b7be5403b4f5de2fd3a53974caf2ff"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a> (const Hi5Tree &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;child)</td></tr>
+<tr class="memitem:a16b7be5403b4f5de2fd3a53974caf2ff" id="r_a16b7be5403b4f5de2fd3a53974caf2ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html#a16b7be5403b4f5de2fd3a53974caf2ff">getNextChild</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;tree, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &amp;<a class="el" href="classrack_1_1DataSet.html">child</a>)</td></tr>
 <tr class="memdesc:a16b7be5403b4f5de2fd3a53974caf2ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derive a child with index one greater than the largest index encountered.  <br /></td></tr>
 <tr class="separator:a16b7be5403b4f5de2fd3a53974caf2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8cd424f2f6be4a049b8b4162d898a47e" id="r_a8cd424f2f6be4a049b8b4162d898a47e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a> (const Hi5Tree &amp;tree, std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt; &amp;children, <a class="el" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> groups)</td></tr>
+<tr class="memitem:a8cd424f2f6be4a049b8b4162d898a47e" id="r_a8cd424f2f6be4a049b8b4162d898a47e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ODIMPathTools.html#a8cd424f2f6be4a049b8b4162d898a47e">getChildren</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;tree, std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a> &gt; &amp;children, <a class="el" href="classrack_1_1ODIMPathElem.html#a9b3f8eef103c06b0eb970b48a91509cb">ODIMPathElem::group_t</a> groups)</td></tr>
 <tr class="memdesc:a8cd424f2f6be4a049b8b4162d898a47e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Searches children of given type, returns a non-existing child with index greater than child.index.  <br /></td></tr>
 <tr class="separator:a8cd424f2f6be4a049b8b4162d898a47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -118,9 +129,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>getLastChild</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool getChildren </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> getChildren </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -163,9 +174,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>getLastChild</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool getNewChild </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> getNewChild </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>
@@ -208,9 +219,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>getLastChild</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool getNextChild </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">bool</a> getNextChild </td>
           <td>(</td>
-          <td class="paramtype">const Hi5Tree &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> Hi5Tree &amp;&#160;</td>
           <td class="paramname"><em>tree</em>, </td>
         </tr>
         <tr>

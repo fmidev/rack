@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -134,9 +141,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <a class="code hl_class" href="classdrain_1_1image_1_1QuadTreeOp.html">QuadTreeOp</a>(<span class="keywordtype">size_t</span> width=0, <span class="keywordtype">size_t</span> height=0, <span class="keyword">const</span> std::string &amp; interpolation = <span class="stringliteral">&quot;n&quot;</span>) : <a class="code hl_class" href="classdrain_1_1image_1_1ImageOp.html">ImageOp</a>(__FUNCTION__, <span class="stringliteral">&quot;Resize geometry and scale intensities&quot;</span>) {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        this-&gt;parameters.link(<span class="stringliteral">&quot;width&quot;</span>,  this-&gt;width=width, <span class="stringliteral">&quot;pix&quot;</span>);</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this-&gt;parameters.link(<span class="stringliteral">&quot;height&quot;</span>, this-&gt;height=height, <span class="stringliteral">&quot;pix&quot;</span>);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        this-&gt;parameters.link(<span class="stringliteral">&quot;interpolation&quot;</span>, this-&gt;interpolation=interpolation, <span class="stringliteral">&quot;n=nearest,b=bilinear&quot;</span>);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        this-&gt;<a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;width&quot;</span>,  this-&gt;width=width, <span class="stringliteral">&quot;pix&quot;</span>);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this-&gt;<a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;height&quot;</span>, this-&gt;height=height, <span class="stringliteral">&quot;pix&quot;</span>);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        this-&gt;<a class="code hl_variable" href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">parameters</a>.link(<span class="stringliteral">&quot;interpolation&quot;</span>, this-&gt;interpolation=interpolation, <span class="stringliteral">&quot;n=nearest,b=bilinear&quot;</span>);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordtype">size_t</span> width;</div>
@@ -174,6 +181,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#endif </span><span class="comment">/*ResizeOP_H_*/</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">// Drain</span></div>
+<div class="ttc" id="aclassdrain_1_1BeanLike_html_a14a3c777481986f2ca3267992d4f233c"><div class="ttname"><a href="classdrain_1_1BeanLike.html#a14a3c777481986f2ca3267992d4f233c">drain::BeanLike::parameters</a></div><div class="ttdeci">map_t parameters</div><div class="ttdoc">Parameters (name -&gt; linked variable), typically linked to member variables of the derived class.</div><div class="ttdef"><b>Definition</b> BeanLike.h:313</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageConf_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageConf.html">drain::image::ImageConf</a></div><div class="ttdoc">Struct for image (excluding data)</div><div class="ttdef"><b>Definition</b> ImageConf.h:333</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition</b> ImageFrame.h:62</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageMod_html_a5190755c358b359fbdd9401048404de5"><div class="ttname"><a href="classdrain_1_1image_1_1ImageMod.html#a5190755c358b359fbdd9401048404de5">drain::image::ImageMod::srcAlpha</a></div><div class="ttdeci">virtual int srcAlpha() const</div><div class="ttdoc">Tell if alpha channel(s) is required in input.</div><div class="ttdef"><b>Definition</b> ImageMod.h:66</div></div>
@@ -182,7 +190,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1image_1_1QuadTreeOp_html_a7677214686bb22edd93d35e348e459ec"><div class="ttname"><a href="classdrain_1_1image_1_1QuadTreeOp.html#a7677214686bb22edd93d35e348e459ec">drain::image::QuadTreeOp::process</a></div><div class="ttdeci">virtual void process(const ImageFrame &amp;src, ImageFrame &amp;dst) const</div><div class="ttdoc">The main functionality called by traverseFrame() after image compatibility check and tmp allocations.</div><div class="ttdef"><b>Definition</b> QuadTreeOp.cpp:45</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1QuadTreeOp_html_aceecc0dea1cf9cd89b621eb6cb530f84"><div class="ttname"><a href="classdrain_1_1image_1_1QuadTreeOp.html#aceecc0dea1cf9cd89b621eb6cb530f84">drain::image::QuadTreeOp::process</a></div><div class="ttdeci">virtual void process(const ImageFrame &amp;src, const ImageFrame &amp;srcAlpha, ImageFrame &amp;dst, ImageFrame &amp;dstAlpha) const</div><div class="ttdoc">The main functionality called by traverseFrame() after image compatibility check and tmp allocations.</div><div class="ttdef"><b>Definition</b> QuadTreeOp.h:96</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1QuadTreeOp_html_af8cd0e155e06c085b1967b2608f85cbb"><div class="ttname"><a href="classdrain_1_1image_1_1QuadTreeOp.html#af8cd0e155e06c085b1967b2608f85cbb">drain::image::QuadTreeOp::getDstConf</a></div><div class="ttdeci">virtual void getDstConf(const ImageConf &amp;src, ImageConf &amp;dst) const</div><div class="ttdoc">Given source image, determine respective dest image configuration.</div><div class="ttdef"><b>Definition</b> QuadTreeOp.cpp:38</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

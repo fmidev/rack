@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -159,9 +166,11 @@ template&lt;class K , class V &gt; </td></tr>
 <tr class="separator:ad41d5de0984d1dff696acfc9f6d274c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b443726ce74bfd5356a403ef80e87c9" id="r_a4b443726ce74bfd5356a403ef80e87c9"><td class="memItemLeft" align="right" valign="top"><a id="a4b443726ce74bfd5356a403ef80e87c9" name="a4b443726ce74bfd5356a403ef80e87c9"></a>
 static std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>convertEscaped</b> (std::string &amp;s)</td></tr>
-<tr class="memdesc:a4b443726ce74bfd5356a403ef80e87c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret commond special chars: tab '\t', newline '<br  />
-' and carriage return '\r'. <br /></td></tr>
+<tr class="memdesc:a4b443726ce74bfd5356a403ef80e87c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpret common special chars: tab '\t', newline '\n' and carriage return '\r'. <br /></td></tr>
 <tr class="separator:a4b443726ce74bfd5356a403ef80e87c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1195dcb1c9b985c825e6ba0d55f82fda" id="r_a1195dcb1c9b985c825e6ba0d55f82fda"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a1195dcb1c9b985c825e6ba0d55f82fda">getSafeKey</a> (const std::string &amp;src, std::string &amp;dst, const std::string &amp;accept=&quot;_&quot;, const std::string &amp;toUnderScore=&quot;&quot;)</td></tr>
+<tr class="memdesc:a1195dcb1c9b985c825e6ba0d55f82fda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ensure a safe variable name.  <br /></td></tr>
+<tr class="separator:a1195dcb1c9b985c825e6ba0d55f82fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55aa8698f514bcac221b0fa4c9fb1f2e" id="r_a55aa8698f514bcac221b0fa4c9fb1f2e"><td class="memItemLeft" align="right" valign="top"><a id="a55aa8698f514bcac221b0fa4c9fb1f2e" name="a55aa8698f514bcac221b0fa4c9fb1f2e"></a>
 static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>trim</b> (const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</td></tr>
 <tr class="memdesc:a55aa8698f514bcac221b0fa4c9fb1f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string without leading and trailing whitespace (or str undesired chars). <br /></td></tr>
@@ -216,7 +225,7 @@ template&lt;class T &gt; </td></tr>
 <tr class="separator:ad3df59f00593c599f2ffd2e021b6a8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d60a294430beeb5acd44c59156d3f9d" id="r_a2d60a294430beeb5acd44c59156d3f9d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a2d60a294430beeb5acd44c59156d3f9d"><td class="memTemplItemLeft" align="right" valign="top">static const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1StringTools.html#a2d60a294430beeb5acd44c59156d3f9d">lazyConvert</a> (const std::string &amp;s, T &amp;tmp)</td></tr>
-<tr class="memdesc:a2d60a294430beeb5acd44c59156d3f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html">Convert</a> only if needed. If T is std::string, returns s directly.  <br /></td></tr>
+<tr class="memdesc:a2d60a294430beeb5acd44c59156d3f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> only if needed. If T is std::string, returns s directly.  <br /></td></tr>
 <tr class="separator:a2d60a294430beeb5acd44c59156d3f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -250,7 +259,7 @@ template&lt;class T &gt; </div>
 <p>This version is slow for string targets (T).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>- input string </td></tr>
+    <tr><td class="paramname">s</td><td>- input string </td></tr>
   </table>
   </dd>
 </dl>
@@ -298,7 +307,7 @@ template&lt;class T &gt; </div>
 <p>This version is slow for string targets (T).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>- input string </td></tr>
+    <tr><td class="paramname">s</td><td>- input string </td></tr>
     <tr><td class="paramname">dst</td><td>- destination</td></tr>
   </table>
   </dd>
@@ -430,8 +439,8 @@ template&lt;class T &gt; </div>
 <p>Extract common leading part, truncating the input strings. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">src1</td><td>- input string </td></tr>
-    <tr><td class="paramname">src2</td><td>- input string </td></tr>
+    <tr><td class="paramname">s1</td><td>- input string </td></tr>
+    <tr><td class="paramname">s2</td><td>- input string </td></tr>
     <tr><td class="paramname">prefix</td><td>- common leading part of src1 and src2 </td></tr>
   </table>
   </dd>
@@ -493,6 +502,69 @@ template&lt;class T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>- index of the first deviating character, ie. length of the common part, rounded by <code>step</code> </dd>
 <dd>
 - index of the first deviating character, ie. length of the common part. </dd></dl>
+
+</div>
+</div>
+<a id="a1195dcb1c9b985c825e6ba0d55f82fda" name="a1195dcb1c9b985c825e6ba0d55f82fda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1195dcb1c9b985c825e6ba0d55f82fda">&#9670;&#160;</a></span>getSafeKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void getSafeKey </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>dst</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>accept</em> = <code>&quot;_&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>toUnderScore</em> = <code>&quot;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ensure a safe variable name. </p>
+<p>The resulting string:</p><ul>
+<li>contains only alphanumeric characters and underscores</li>
+<li>will not start with a number</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">src</td><td>- original string </td></tr>
+    <tr><td class="paramname">dst</td><td>- resulting string </td></tr>
+    <tr><td class="paramname">accept</td><td>- list of non-alphanumeric character accepted as such. </td></tr>
+    <tr><td class="paramname">toUnderScore</td><td>- list of other non-alphanumeric character accepted, but converted to underscore. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -620,10 +692,10 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classdrain_1_1Convert.html">Convert</a> only if needed. If T is std::string, returns s directly. </p>
+<p><a class="el" href="classdrain_1_1Convert.html" title="DOC: Add class description.">Convert</a> only if needed. If T is std::string, returns s directly. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>- input string </td></tr>
+    <tr><td class="paramname">s</td><td>- input string </td></tr>
     <tr><td class="paramname">tmp</td><td>- "hidden" temporary value; returned reference should be read instead of this. </td></tr>
   </table>
   </dd>
@@ -1068,7 +1140,7 @@ template&lt;class T1 , class T2 , class C &gt; </div>
 <p>Coupled trimming: remove a single leading and trailing char, if both found. </p>
 <div class="fragment"><div class="line">s = <a class="code hl_function" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;\&quot;test\&quot;&quot;</span>);</div>
 <div class="line">s = <a class="code hl_function" href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">trim</a>(<span class="stringliteral">&quot;{test}&quot;</span>, <span class="stringliteral">&quot;{&quot;</span>, <span class="stringliteral">&quot;}&quot;</span>);</div>
-<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition</b> StringTools.cpp:251</div></div>
+<div class="ttc" id="aclassdrain_1_1StringTools_html_a55aa8698f514bcac221b0fa4c9fb1f2e"><div class="ttname"><a href="classdrain_1_1StringTools.html#a55aa8698f514bcac221b0fa4c9fb1f2e">drain::StringTools::trim</a></div><div class="ttdeci">static std::string trim(const std::string &amp;s, const std::string &amp;trimChars=&quot; \t\n\r&quot;)</div><div class="ttdoc">Returns a string without leading and trailing whitespace (or str undesired chars).</div><div class="ttdef"><b>Definition</b> StringTools.cpp:279</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

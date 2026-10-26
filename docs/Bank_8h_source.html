@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -690,9 +697,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_a200a448afe485eb1ca3273066361b302"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#a200a448afe485eb1ca3273066361b302">drain::FlagResolver::dict_t</a></div><div class="ttdeci">drain::Dictionary&lt; key_t, ivalue_t &gt; dict_t</div><div class="ttdoc">&quot;Recommended&quot; dictionary type. All the methods are templates, however.</div><div class="ttdef"><b>Definition</b> FlagBase.h:64</div></div>
 <div class="ttc" id="aclassdrain_1_1FlagResolver_html_ab183329c42ba3c3176c65a3f19adf665"><div class="ttname"><a href="classdrain_1_1FlagResolver.html#ab183329c42ba3c3176c65a3f19adf665">drain::FlagResolver::addEntry</a></div><div class="ttdeci">static ivalue_t addEntry(drain::Dictionary&lt; key_t, T &gt; &amp;dict, const key_t &amp;key, ivalue_t i=0)</div><div class="ttdoc">Add a new entry in the dictionary.</div></div>
 <div class="ttc" id="aclassdrain_1_1LocalCloner_html"><div class="ttname"><a href="classdrain_1_1LocalCloner.html">drain::LocalCloner</a></div><div class="ttdoc">Creates an entries offered by a bank and destroys them upon exit.</div><div class="ttdef"><b>Definition</b> Bank.h:482</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:667</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:326</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:676</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1Bank_1_1bank__id_html"><div class="ttname"><a href="structdrain_1_1Bank_1_1bank__id.html">drain::Bank::bank_id</a></div><div class="ttdef"><b>Definition</b> Bank.h:82</div></div>
 <div class="ttc" id="astructdrain_1_1ClonerBase_html"><div class="ttname"><a href="structdrain_1_1ClonerBase.html">drain::ClonerBase</a></div><div class="ttdef"><b>Definition</b> Cloner.h:46</div></div>
 <div class="ttc" id="astructdrain_1_1ClonerBase_html_a05384666b24e4f096243ebf311436ee5"><div class="ttname"><a href="structdrain_1_1ClonerBase.html#a05384666b24e4f096243ebf311436ee5">drain::ClonerBase::index_t</a></div><div class="ttdeci">size_t index_t</div><div class="ttdoc">Each cloned entry has an index.</div><div class="ttdef"><b>Definition</b> Cloner.h:52</div></div>

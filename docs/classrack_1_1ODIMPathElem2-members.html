@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -124,10 +131,10 @@ $(function() {
   <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#a77f782fea0a3f0646bd1e8f5af97e4ad">isRoot</a>() const</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#a23144efb139e0fa8a53c08aeab52c96f">LEGEND</a></td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#a9317d8f4b5135b6dbf0762d51b4ec7c6">NONE</a></td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ODIMPathElem</b>(group_t group=ROOT, index_t index=1) (defined in <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>ODIMPathElem</b>(const ODIMPathElem &amp;e) (defined in <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ODIMPathElem</b>(const std::string &amp;s) (defined in <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>ODIMPathElem</b>(const char *s) (defined in <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#add8ec33fb91c1978989051ae3c3313ee">ODIMPathElem</a>(group_t group=ROOT, index_t index=1)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#a39ec701b5fcdd0416fe602684bc4632c">ODIMPathElem</a>(const ODIMPathElem &amp;e)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#a0a02326b874078155a6c8a2c8d75fc35">ODIMPathElem</a>(const std::string &amp;s)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html#ae68f514969810b1a7bfeebe1c9a653db">ODIMPathElem</a>(const char *s)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ODIMPathElem2</b>() (defined in <a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>ODIMPathElem2</b>(const ODIMPathElem &amp;elem, const double elangle, const std::string &amp;date, const std::string &amp;time) (defined in <a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem2.html">ODIMPathElem2</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator const std::string &amp;</b>() const (defined in <a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a>)</td><td class="entry"><a class="el" href="classrack_1_1ODIMPathElem.html">ODIMPathElem</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>

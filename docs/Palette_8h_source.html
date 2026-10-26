@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -135,38 +142,43 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="keyword">class </span>Palette : <span class="keyword">public</span> ImageCodeMap&lt;PaletteEntry&gt; {</div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html">   55</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1image_1_1Palette.html">Palette</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap</a>&lt;PaletteEntry&gt; {</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">static</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> SprinterLayout cppLayout2;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> cppLayout2;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    Palette() : ImageCodeMap&lt;PaletteEntry&gt;(), refinement(0) {</div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html#a03d3c5ccb7700407f850692c09600432">   64</a></span>    <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a03d3c5ccb7700407f850692c09600432">Palette</a>() : <a class="code hl_class" href="classdrain_1_1ImageCodeMap.html">ImageCodeMap</a>&lt;<a class="code hl_class" href="classdrain_1_1image_1_1PaletteEntry.html">PaletteEntry</a>&gt;(), <a class="code hl_variable" href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">refinement</a>(0) {</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    };</div>
+</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    Palette(std::initializer_list&lt;std::pair&lt;Variable, PaletteEntry&gt; &gt; inits);</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a03d3c5ccb7700407f850692c09600432">Palette</a>(std::initializer_list&lt;std::pair&lt;Variable, PaletteEntry&gt; &gt; inits);</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">const</span> value_type &amp; getEntryByCode(<span class="keyword">const</span> std::string &amp; code, <span class="keywordtype">bool</span> lenient=<span class="keyword">true</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">const</span> value_type &amp; <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ad11f74101f00d8cd4963fa83c472d2de">getEntryByCode</a>(<span class="keyword">const</span> std::string &amp; code, <span class="keywordtype">bool</span> lenient=<span class="keyword">true</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">const</span> key_type getValueByCode(<span class="keyword">const</span> std::string &amp; code, <span class="keywordtype">bool</span> lenient=<span class="keyword">true</span>)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keyword">const</span> value_type &amp; entry = getEntryByCode(code, lenient);</div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html#a883a831c2fee0fda6428689a42765f71">   93</a></span>    key_type <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a883a831c2fee0fda6428689a42765f71">getValueByCode</a>(<span class="keyword">const</span> std::string &amp; code, <span class="keywordtype">bool</span> lenient=<span class="keyword">true</span>)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keyword">const</span> value_type &amp; entry = <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ad11f74101f00d8cd4963fa83c472d2de">getEntryByCode</a>(code, lenient);</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">return</span> entry.first;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    }</div>
+</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordtype">void</span> reset();</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordtype">void</span> addEntry(<span class="keywordtype">double</span> min, <span class="keywordtype">double</span> red=0.0, <span class="keywordtype">double</span> green=0.0, <span class="keywordtype">double</span> blue=0.0, <span class="keyword">const</span> std::string &amp;<span class="keywordtype">id</span>=<span class="stringliteral">&quot;&quot;</span>, <span class="keyword">const</span> std::string &amp; label =<span class="stringliteral">&quot;&quot;</span>); <span class="comment">// alpha?</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a25d7fdab9f214438a7426a2105c6be66">addEntry</a>(<span class="keywordtype">double</span> min, <span class="keywordtype">double</span> red=0.0, <span class="keywordtype">double</span> green=0.0, <span class="keywordtype">double</span> blue=0.0, <span class="keyword">const</span> std::string &amp;<span class="keywordtype">id</span>=<span class="stringliteral">&quot;&quot;</span>, <span class="keyword">const</span> std::string &amp; label =<span class="stringliteral">&quot;&quot;</span>); <span class="comment">// alpha?</span></div>
 <div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> load(<span class="keyword">const</span> std::string &amp; filename, <span class="keywordtype">bool</span> flexible = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a88e6ff2a6dffa1ab171816a5d2c08c55">load</a>(<span class="keyword">const</span> std::string &amp; filename, <span class="keywordtype">bool</span> flexible = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">void</span> loadTXT(std::istream &amp; ifstr);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a1687ab9095531548a9587859c833d8b1">loadTXT</a>(std::istream &amp; ifstr);</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">void</span> loadJSON(std::istream &amp; ifstr);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ae6d0d8a1af04f6763b7265e7ce39c979">loadJSON</a>(std::istream &amp; ifstr);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordtype">void</span> write(<span class="keyword">const</span> std::string &amp; filename) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
@@ -178,33 +190,35 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="comment">// Export formatted</span></div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordtype">void</span> exportFMT(std::ostream &amp; ostr, <span class="keyword">const</span> std::string &amp; format) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordtype">void</span> exportSVGLegend(TreeSVG &amp; svg, <span class="keywordtype">bool</span> up = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a0f526f15c83eacd4f693b6c117aec1cb">exportSVGLegend</a>(TreeSVG &amp; <a class="code hl_struct" href="structdrain_1_1image_1_1svg.html">svg</a>, <span class="keywordtype">bool</span> up = <span class="keyword">true</span>) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordtype">void</span> exportSLD(TreeSLD &amp; sld) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#afd0629b2505f27b547cae0c19c27e860">exportSLD</a>(TreeSLD &amp; sld) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="comment">// void convertJSON(const drain::JSONtree::tree_t &amp; json);</span></div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="keyword">const</span> ChannelGeometry &amp; getChannels()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        update();</div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html#a6e721589c6d0acf5235a8b2a0c43cd84">  143</a></span>    <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1image_1_1ChannelGeometry.html">ChannelGeometry</a> &amp; <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#a6e721589c6d0acf5235a8b2a0c43cd84">getChannels</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ae124d51d9d3050b2f6c4a4f3f632cecc">update</a>();</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordflow">return</span> channels;</div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    }</div>
+</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    std::string title;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72">  149</a></span>    std::string <a class="code hl_variable" href="classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72">title</a>;</div>
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="comment">//  std::string id; ?</span></div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    <span class="keyword">typedef</span> std::map&lt;std::string,PaletteEntry&gt; spec_t;</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    spec_t specialCodes; <span class="comment">// To be read from palette</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">  155</a></span>    <span class="keyword">typedef</span> std::map&lt;std::string,PaletteEntry&gt; <a class="code hl_typedef" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    <a class="code hl_typedef" href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">spec_t</a> specialCodes; <span class="comment">// To be read from palette</span></div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordtype">void</span> refine(<span class="keywordtype">size_t</span> n=0);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ab15ab3da69af1c8c1d85036c0914cb40">refine</a>(<span class="keywordtype">size_t</span> n=0);</div>
 <div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="comment">// typedef drain::Dictionary&lt;key_t, std::string&gt; dict_t;</span></div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
 <div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
 <div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keywordtype">size_t</span> refinement;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">  169</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">refinement</a>;</div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="comment">// Metadata - for example, the file path of a loaded palette.</span></div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    std::string comment;</div>
@@ -214,19 +228,20 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="comment">// dict_t dictionary; // deprecating!</span></div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordtype">void</span> update() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ae124d51d9d3050b2f6c4a4f3f632cecc">update</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordtype">void</span> importJSON(<span class="keyword">const</span> drain::JSONtree &amp; json);</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classdrain_1_1image_1_1Palette.html#ab5cdf6928327d820a7114b8d7b89f23c">importJSON</a>(<span class="keyword">const</span> drain::JSONtree &amp; json);</div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keyword">mutable</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    ChannelGeometry channels;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <a class="code hl_class" href="classdrain_1_1image_1_1ChannelGeometry.html">ChannelGeometry</a> channels;</div>
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>};</div>
+</div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> Palette &amp; p){</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1image_1_1Palette.html">Palette</a> &amp; p){</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    p.exportTXT(ostr);</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    <span class="keywordflow">return</span> ostr;</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>}</div>
@@ -234,14 +249,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
 <div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="keyword">class </span>PaletteMap : <span class="keyword">public</span> std::map&lt;std::string,drain::image::Palette&gt; {</div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="};">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="classdrain_1_1image_1_1PaletteMap.html">  201</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1image_1_1PaletteMap.html">PaletteMap</a> : <span class="keyword">public</span> std::map&lt;std::string,drain::image::Palette&gt; {</div>
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keyword">inline</span></div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    Palette &amp; get(<span class="keyword">const</span> std::string &amp; key){</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <a class="code hl_class" href="classdrain_1_1image_1_1Palette.html">Palette</a> &amp; get(<span class="keyword">const</span> std::string &amp; key){</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">if</span> (aliases.hasKey(key)){</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)[aliases.getValue(key)];</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)[aliases.<a class="code hl_function" href="classdrain_1_1Dictionary.html#a6e778797e86f98f8491cf1141ccfcb2b">getValue</a>(key)];</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        }</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)[key];</div>
@@ -259,20 +275,44 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="comment">// std::map&lt;std::string,std::string&gt; aliasMap;</span></div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>};</div>
+</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
 <div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>} <span class="comment">// image::</span></div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> drain::image::Palette &amp; map, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp; layout);</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a> &amp; map, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp; layout);</div>
 <div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>} <span class="comment">// drain::</span></div>
 <div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassdrain_1_1Dictionary_html"><div class="ttname"><a href="classdrain_1_1Dictionary.html">drain::Dictionary</a></div><div class="ttdoc">Two-way mapping between strings and objects of template class T.</div><div class="ttdef"><b>Definition</b> Dictionary.h:61</div></div>
+<div class="ttc" id="aclassdrain_1_1Dictionary_html_a6e778797e86f98f8491cf1141ccfcb2b"><div class="ttname"><a href="classdrain_1_1Dictionary.html#a6e778797e86f98f8491cf1141ccfcb2b">drain::Dictionary::getValue</a></div><div class="ttdeci">const V &amp; getValue(const K &amp;key, bool lenient=true) const</div><div class="ttdoc">Given a key, return the first value associated with it.</div><div class="ttdef"><b>Definition</b> Dictionary.h:147</div></div>
+<div class="ttc" id="aclassdrain_1_1ImageCodeMap_html"><div class="ttname"><a href="classdrain_1_1ImageCodeMap.html">drain::ImageCodeMap</a></div><div class="ttdef"><b>Definition</b> ImageCodebook.h:52</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a0ca2b3b1888b2ca8c58e3fe9bec62ff6"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition</b> Sprinter.h:423</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1ChannelGeometry_html"><div class="ttname"><a href="classdrain_1_1image_1_1ChannelGeometry.html">drain::image::ChannelGeometry</a></div><div class="ttdef"><b>Definition</b> Geometry.h:47</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteEntry_html"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteEntry.html">drain::image::PaletteEntry</a></div><div class="ttdoc">Container for color, transparency (alpha) and textual id and description. Does not contain intensity ...</div><div class="ttdef"><b>Definition</b> PaletteEntry.h:142</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1PaletteMap_html"><div class="ttname"><a href="classdrain_1_1image_1_1PaletteMap.html">drain::image::PaletteMap</a></div><div class="ttdef"><b>Definition</b> Palette.h:201</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html">drain::image::Palette</a></div><div class="ttdef"><b>Definition</b> Palette.h:55</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a035cc4acd17a4350b30ff127f3c09a08"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a035cc4acd17a4350b30ff127f3c09a08">drain::image::Palette::refinement</a></div><div class="ttdeci">size_t refinement</div><div class="ttdoc">void updateDictionary();</div><div class="ttdef"><b>Definition</b> Palette.h:169</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a03d3c5ccb7700407f850692c09600432"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a03d3c5ccb7700407f850692c09600432">drain::image::Palette::Palette</a></div><div class="ttdeci">Palette()</div><div class="ttdoc">Basic constructor.</div><div class="ttdef"><b>Definition</b> Palette.h:64</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a0f526f15c83eacd4f693b6c117aec1cb"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a0f526f15c83eacd4f693b6c117aec1cb">drain::image::Palette::exportSVGLegend</a></div><div class="ttdeci">void exportSVGLegend(TreeSVG &amp;svg, bool up=true) const</div><div class="ttdoc">Returns a legend as an SVG graphic.</div><div class="ttdef"><b>Definition</b> Palette.cpp:1122</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a1687ab9095531548a9587859c833d8b1"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a1687ab9095531548a9587859c833d8b1">drain::image::Palette::loadTXT</a></div><div class="ttdeci">void loadTXT(std::istream &amp;ifstr)</div><div class="ttdoc">Loads a palette from a text file.</div><div class="ttdef"><b>Definition</b> Palette.cpp:476</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a25d7fdab9f214438a7426a2105c6be66"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a25d7fdab9f214438a7426a2105c6be66">drain::image::Palette::addEntry</a></div><div class="ttdeci">void addEntry(double min, double red=0.0, double green=0.0, double blue=0.0, const std::string &amp;id=&quot;&quot;, const std::string &amp;label=&quot;&quot;)</div><div class="ttdoc">Add one color. Deprecating; brace-enclosed initialization more preferable.</div><div class="ttdef"><b>Definition</b> Palette.cpp:94</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a550c0674e51a45d86b0bcc8ab049163c"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a550c0674e51a45d86b0bcc8ab049163c">drain::image::Palette::spec_t</a></div><div class="ttdeci">std::map&lt; std::string, PaletteEntry &gt; spec_t</div><div class="ttdoc">Some kind of identity key for the palette, typically filename to avoid reloading.</div><div class="ttdef"><b>Definition</b> Palette.h:155</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a6e721589c6d0acf5235a8b2a0c43cd84"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a6e721589c6d0acf5235a8b2a0c43cd84">drain::image::Palette::getChannels</a></div><div class="ttdeci">const ChannelGeometry &amp; getChannels() const</div><div class="ttdoc">Export palette such.</div><div class="ttdef"><b>Definition</b> Palette.h:143</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a883a831c2fee0fda6428689a42765f71"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a883a831c2fee0fda6428689a42765f71">drain::image::Palette::getValueByCode</a></div><div class="ttdeci">key_type getValueByCode(const std::string &amp;code, bool lenient=true) const</div><div class="ttdoc">Shorthand invoking fgetEntryByCode for retrieving the code.</div><div class="ttdef"><b>Definition</b> Palette.h:93</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_a88e6ff2a6dffa1ab171816a5d2c08c55"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#a88e6ff2a6dffa1ab171816a5d2c08c55">drain::image::Palette::load</a></div><div class="ttdeci">void load(const std::string &amp;filename, bool flexible=false)</div><div class="ttdoc">Loads a palette from text file.</div><div class="ttdef"><b>Definition</b> Palette.cpp:329</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_ab15ab3da69af1c8c1d85036c0914cb40"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#ab15ab3da69af1c8c1d85036c0914cb40">drain::image::Palette::refine</a></div><div class="ttdeci">void refine(size_t n=0)</div><div class="ttdoc">Extend palette to contain n entries (&quot;colors&quot;) by adding intermediate entries.</div><div class="ttdef"><b>Definition</b> Palette.cpp:259</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_ab5cdf6928327d820a7114b8d7b89f23c"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#ab5cdf6928327d820a7114b8d7b89f23c">drain::image::Palette::importJSON</a></div><div class="ttdeci">void importJSON(const drain::JSONtree &amp;json)</div><div class="ttdoc">Creates a palette from json object.</div><div class="ttdef"><b>Definition</b> Palette.cpp:717</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_ac30fed21fe991cc8475ce543929f8b72"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#ac30fed21fe991cc8475ce543929f8b72">drain::image::Palette::title</a></div><div class="ttdeci">std::string title</div><div class="ttdoc">Name of the palette. In reading files, the first comment line (without the prefix '#') is copied to t...</div><div class="ttdef"><b>Definition</b> Palette.h:149</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_ad11f74101f00d8cd4963fa83c472d2de"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#ad11f74101f00d8cd4963fa83c472d2de">drain::image::Palette::getEntryByCode</a></div><div class="ttdeci">const value_type &amp; getEntryByCode(const std::string &amp;code, bool lenient=true) const</div><div class="ttdef"><b>Definition</b> Palette.cpp:117</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_ae124d51d9d3050b2f6c4a4f3f632cecc"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#ae124d51d9d3050b2f6c4a4f3f632cecc">drain::image::Palette::update</a></div><div class="ttdeci">void update() const</div><div class="ttdoc">Container for special codes ??</div><div class="ttdef"><b>Definition</b> Palette.cpp:211</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_ae6d0d8a1af04f6763b7265e7ce39c979"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#ae6d0d8a1af04f6763b7265e7ce39c979">drain::image::Palette::loadJSON</a></div><div class="ttdeci">void loadJSON(std::istream &amp;ifstr)</div><div class="ttdoc">Loads a palette from a json file. Under revision; support may be dropped later.</div><div class="ttdef"><b>Definition</b> Palette.cpp:689</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1Palette_html_afd0629b2505f27b547cae0c19c27e860"><div class="ttname"><a href="classdrain_1_1image_1_1Palette.html#afd0629b2505f27b547cae0c19c27e860">drain::image::Palette::exportSLD</a></div><div class="ttdeci">void exportSLD(TreeSLD &amp;sld) const</div><div class="ttdoc">Export as SLD structure supported by GeoServer.</div><div class="ttdef"><b>Definition</b> Palette.cpp:1305</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:136</div></div>
+<div class="ttc" id="astructdrain_1_1image_1_1svg_html"><div class="ttname"><a href="structdrain_1_1image_1_1svg.html">drain::image::svg</a></div><div class="ttdef"><b>Definition</b> SVG.h:53</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

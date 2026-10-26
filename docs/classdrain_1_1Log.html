@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -165,16 +172,16 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>USE_VT100</b><
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:a9344c34c0a2e0b8f954af4db2c482ba6" id="r_a9344c34c0a2e0b8f954af4db2c482ba6"><td class="memItemLeft" align="right" valign="top"><a id="a9344c34c0a2e0b8f954af4db2c482ba6" name="a9344c34c0a2e0b8f954af4db2c482ba6"></a>
-std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><b>ostrPtr</b></td></tr>
+std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><b>ostrPtr</b> = &amp; std::cerr</td></tr>
 <tr class="separator:a9344c34c0a2e0b8f954af4db2c482ba6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab07e58a51d19f5b226964a5fa004b9bf" id="r_ab07e58a51d19f5b226964a5fa004b9bf"><td class="memItemLeft" align="right" valign="top"><a id="ab07e58a51d19f5b226964a5fa004b9bf" name="ab07e58a51d19f5b226964a5fa004b9bf"></a>
 std::ofstream&#160;</td><td class="memItemRight" valign="bottom"><b>ofstr</b></td></tr>
 <tr class="separator:ab07e58a51d19f5b226964a5fa004b9bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf8a68e4a6b210d40b7700e10d2e599e" id="r_abf8a68e4a6b210d40b7700e10d2e599e"><td class="memItemLeft" align="right" valign="top"><a id="abf8a68e4a6b210d40b7700e10d2e599e" name="abf8a68e4a6b210d40b7700e10d2e599e"></a>
-<a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>verbosityLevel</b></td></tr>
+<a class="el" href="classdrain_1_1Log.html#a034d684c2bb4195c725dae147ac44a4f">level_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>verbosityLevel</b> = LOG_NOTICE</td></tr>
 <tr class="separator:abf8a68e4a6b210d40b7700e10d2e599e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a754294e1b4da8cac699ad4ff57cf26c8" id="r_a754294e1b4da8cac699ad4ff57cf26c8"><td class="memItemLeft" align="right" valign="top"><a id="a754294e1b4da8cac699ad4ff57cf26c8" name="a754294e1b4da8cac699ad4ff57cf26c8"></a>
-long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b></td></tr>
+long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b> = 0</td></tr>
 <tr class="separator:a754294e1b4da8cac699ad4ff57cf26c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -185,8 +192,8 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>millisecondsStart</b>
 </div><!-- fragment --><div class="fragment"><div class="line">debug.error() &lt;&lt; <span class="stringliteral">&quot; overflow error, value=&quot;</span> &lt;&lt; 5 &lt;&lt; debug.endl();</div>
 </div><!-- fragment --><div class="fragment"><div class="line"><a class="code hl_class" href="classdrain_1_1Log.html">Log</a> monitor;</div>
 <div class="line"><a class="code hl_class" href="classdrain_1_1Logger.html">Logger</a> mout(monitor, <span class="stringliteral">&quot;FunctionName&quot;</span>) ;</div>
-<div class="ttc" id="aclassdrain_1_1Log_html"><div class="ttname"><a href="classdrain_1_1Log.html">drain::Log</a></div><div class="ttdoc">Handler for notifications sent by a Logger.</div><div class="ttdef"><b>Definition</b> Log.h:147</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
+<div class="ttc" id="aclassdrain_1_1Log_html"><div class="ttname"><a href="classdrain_1_1Log.html">drain::Log</a></div><div class="ttdoc">Handler for notifications sent by a Logger.</div><div class="ttdef"><b>Definition</b> Log.h:159</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:326</div></div>
 </div><!-- fragment --><p> TODO: add direct feed, perhaps Log::error() could instantiate a source? </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a139dc5433c7b26b6bc26affbd7dad450" name="a139dc5433c7b26b6bc26affbd7dad450"></a>

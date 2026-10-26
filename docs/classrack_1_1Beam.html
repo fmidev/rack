@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -78,7 +85,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="classrack_1_1Beam-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Beam Class Reference</div></div>
 </div><!--header-->
@@ -87,32 +95,42 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a28399e08240c2963746257392441c34a" id="r_a28399e08240c2963746257392441c34a"><td class="memItemLeft" align="right" valign="top"><a id="a28399e08240c2963746257392441c34a" name="a28399e08240c2963746257392441c34a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Beam</b> (double widthDeg=1.0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Beam</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">widthDeg</a>=1.0)</td></tr>
 <tr class="separator:a28399e08240c2963746257392441c34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c580ab0b68300940dbf966c6ddfd9d9" id="r_a4c580ab0b68300940dbf966c6ddfd9d9"><td class="memItemLeft" align="right" valign="top"><a id="a4c580ab0b68300940dbf966c6ddfd9d9" name="a4c580ab0b68300940dbf966c6ddfd9d9"></a>
-<a class="el" href="classrack_1_1Beam.html">Beam</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const double &amp;widthDeg)</td></tr>
+<a class="el" href="classrack_1_1Beam.html">Beam</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;<a class="el" href="classrack_1_1DataSet.html">widthDeg</a>)</td></tr>
 <tr class="separator:a4c580ab0b68300940dbf966c6ddfd9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28c9ab2dbb7b674c08c710ab99bc4630" id="r_a28c9ab2dbb7b674c08c710ab99bc4630"><td class="memItemLeft" align="right" valign="top"><a id="a28c9ab2dbb7b674c08c710ab99bc4630" name="a28c9ab2dbb7b674c08c710ab99bc4630"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setBeamWidthDeg</b> (double <a class="el" href="classrack_1_1Beam.html#a9df23e056f5d1a0388cd8190431c0e03">width</a>)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setBeamWidthDeg</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1Beam.html#a9df23e056f5d1a0388cd8190431c0e03">width</a>)</td></tr>
 <tr class="memdesc:a28c9ab2dbb7b674c08c710ab99bc4630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set beam width in degrees. <br /></td></tr>
 <tr class="separator:a28c9ab2dbb7b674c08c710ab99bc4630"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cc4b52b7251c7ec6ef3b3804007764f" id="r_a5cc4b52b7251c7ec6ef3b3804007764f"><td class="memItemLeft" align="right" valign="top"><a id="a5cc4b52b7251c7ec6ef3b3804007764f" name="a5cc4b52b7251c7ec6ef3b3804007764f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setBeamWidthRad</b> (double <a class="el" href="classrack_1_1Beam.html#a9df23e056f5d1a0388cd8190431c0e03">width</a>)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setBeamWidthRad</b> (<a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1Beam.html#a9df23e056f5d1a0388cd8190431c0e03">width</a>)</td></tr>
 <tr class="memdesc:a5cc4b52b7251c7ec6ef3b3804007764f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set beam width in radians. <br /></td></tr>
 <tr class="separator:a5cc4b52b7251c7ec6ef3b3804007764f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e5849208bb7900b89d4e37822b5465" id="r_ae2e5849208bb7900b89d4e37822b5465"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Beam.html#ae2e5849208bb7900b89d4e37822b5465">getBeamPowerDeg</a> (double d) const</td></tr>
+<tr class="memitem:ae2e5849208bb7900b89d4e37822b5465" id="r_ae2e5849208bb7900b89d4e37822b5465"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Beam.html#ae2e5849208bb7900b89d4e37822b5465">getBeamPowerDeg</a> (<a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">d</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ae2e5849208bb7900b89d4e37822b5465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaussian beam power.  <br /></td></tr>
 <tr class="separator:ae2e5849208bb7900b89d4e37822b5465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46a5b2c471e75e73cbf065a76417a31d" id="r_a46a5b2c471e75e73cbf065a76417a31d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Beam.html#a46a5b2c471e75e73cbf065a76417a31d">getBeamPowerRad</a> (double d) const</td></tr>
+<tr class="memitem:a46a5b2c471e75e73cbf065a76417a31d" id="r_a46a5b2c471e75e73cbf065a76417a31d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Beam.html#a46a5b2c471e75e73cbf065a76417a31d">getBeamPowerRad</a> (<a class="el" href="classrack_1_1DataSet.html">double</a> <a class="el" href="classrack_1_1DataSet.html">d</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a46a5b2c471e75e73cbf065a76417a31d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gaussian beam power.  <br /></td></tr>
 <tr class="separator:a46a5b2c471e75e73cbf065a76417a31d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:a9df23e056f5d1a0388cd8190431c0e03" id="r_a9df23e056f5d1a0388cd8190431c0e03"><td class="memItemLeft" align="right" valign="top"><a id="a9df23e056f5d1a0388cd8190431c0e03" name="a9df23e056f5d1a0388cd8190431c0e03"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
 <tr class="memdesc:a9df23e056f5d1a0388cd8190431c0e03"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrack_1_1Beam.html">Beam</a> width in degrees. <br /></td></tr>
 <tr class="separator:a9df23e056f5d1a0388cd8190431c0e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5f6ee2bc967e0e6e5b87063f98d7bef" id="r_ab5f6ee2bc967e0e6e5b87063f98d7bef"><td class="memItemLeft" align="right" valign="top"><a id="ab5f6ee2bc967e0e6e5b87063f98d7bef" name="ab5f6ee2bc967e0e6e5b87063f98d7bef"></a>
+<a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><b>scaledCoeff</b></td></tr>
+<tr class="memdesc:ab5f6ee2bc967e0e6e5b87063f98d7bef"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classrack_1_1Beam.html">Beam</a> width (degrees) squared. <br /></td></tr>
+<tr class="separator:ab5f6ee2bc967e0e6e5b87063f98d7bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
+<tr class="memitem:a2091cd7d80fdd31762020bce86138587" id="r_a2091cd7d80fdd31762020bce86138587"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">static</a> <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1Beam.html#a2091cd7d80fdd31762020bce86138587">coeff</a> = 4.0 * log(<a class="el" href="classrack_1_1DataSet.html">sqrt</a>(2.0))</td></tr>
+<tr class="memdesc:a2091cd7d80fdd31762020bce86138587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Coeff for <a class="el" href="classrack_1_1Beam.html#ae2e5849208bb7900b89d4e37822b5465" title="Gaussian beam power.">getBeamPowerDeg()</a>  <br /></td></tr>
+<tr class="separator:a2091cd7d80fdd31762020bce86138587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae2e5849208bb7900b89d4e37822b5465" name="ae2e5849208bb7900b89d4e37822b5465"></a>
@@ -122,9 +140,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double getBeamPowerDeg </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">double</a> getBeamPowerDeg </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>d</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -153,9 +171,9 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double getBeamPowerRad </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">double</a> getBeamPowerRad </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>d</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -175,6 +193,32 @@ double&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>relative (normalized) beam power </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2091cd7d80fdd31762020bce86138587" name="a2091cd7d80fdd31762020bce86138587"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2091cd7d80fdd31762020bce86138587">&#9670;&#160;</a></span>coeff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DataSet.html">double</a> coeff = 4.0 * log(<a class="el" href="classrack_1_1DataSet.html">sqrt</a>(2.0))</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Coeff for <a class="el" href="classrack_1_1Beam.html#ae2e5849208bb7900b89d4e37822b5465" title="Gaussian beam power.">getBeamPowerDeg()</a> </p>
+<p>Fuzzy alternatives for fast computation. Note: seldom needed, unless computed in the innermost loop. </p>
 
 </div>
 </div>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -326,9 +333,9 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>}</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a97d1fa3b32d89c804ad1f653332584a2"><div class="ttname"><a href="classdrain_1_1Logger.html#a97d1fa3b32d89c804ad1f653332584a2">drain::Logger::fail</a></div><div class="ttdeci">Logger &amp; fail(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue. Special type of Logger::warn().</div><div class="ttdef"><b>Definition</b> Log.h:454</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_ab55ebf7d0a7f176aac2e77e9c5cbc78b"><div class="ttname"><a href="classdrain_1_1Logger.html#ab55ebf7d0a7f176aac2e77e9c5cbc78b">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition</b> Log.h:417</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:326</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a97d1fa3b32d89c804ad1f653332584a2"><div class="ttname"><a href="classdrain_1_1Logger.html#a97d1fa3b32d89c804ad1f653332584a2">drain::Logger::fail</a></div><div class="ttdeci">Logger &amp; fail(const TT &amp;... args)</div><div class="ttdoc">Possible error, but execution can continue. Special type of Logger::warn().</div><div class="ttdef"><b>Definition</b> Log.h:463</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_ab55ebf7d0a7f176aac2e77e9c5cbc78b"><div class="ttname"><a href="classdrain_1_1Logger.html#ab55ebf7d0a7f176aac2e77e9c5cbc78b">drain::Logger::error</a></div><div class="ttdeci">Logger &amp; error(const TT &amp;... args)</div><div class="ttdoc">Echoes.</div><div class="ttdef"><b>Definition</b> Log.h:426</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceT_html"><div class="ttname"><a href="classdrain_1_1ReferenceT.html">drain::ReferenceT</a></div><div class="ttdoc">Intermediate class supporting link() in various forms.</div><div class="ttdef"><b>Definition</b> ReferenceT.h:63</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceT_html_a05afeb6087bd1766e64923a39a68d790"><div class="ttname"><a href="classdrain_1_1ReferenceT.html#a05afeb6087bd1766e64923a39a68d790">drain::ReferenceT::link</a></div><div class="ttdeci">ReferenceT &amp; link(VariableT&lt; VariableInitializer&lt; ReferenceT&lt; VariableBase &gt; &gt; &gt; &amp;x)</div><div class="ttdoc">Linkage for a FlexibleVariable.</div><div class="ttdef"><b>Definition</b> ReferenceT.h:102</div></div>
 <div class="ttc" id="aclassdrain_1_1ReferenceT_html_a225214dc1d668dbd37ca47ccb876aaff"><div class="ttname"><a href="classdrain_1_1ReferenceT.html#a225214dc1d668dbd37ca47ccb876aaff">drain::ReferenceT::link</a></div><div class="ttdeci">ReferenceT &amp; link(void *p, const std::type_info &amp;t, size_t count=1)</div><div class="ttdoc">Set pointer to p, of given type.</div><div class="ttdef"><b>Definition</b> ReferenceT.h:159</div></div>
@@ -340,7 +347,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1ReferenceT_html_afe500e54d958c11a66a96cc830a3611b"><div class="ttname"><a href="classdrain_1_1ReferenceT.html#afe500e54d958c11a66a96cc830a3611b">drain::ReferenceT::link</a></div><div class="ttdeci">ReferenceT &amp; link(VariableT&lt; ReferenceT&lt; Castable &gt; &gt; &amp;x)</div><div class="ttdoc">Linkage for Reference, above all for copy constructor.</div><div class="ttdef"><b>Definition</b> ReferenceT.h:95</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableInitializer_html"><div class="ttname"><a href="classdrain_1_1VariableInitializer.html">drain::VariableInitializer</a></div><div class="ttdef"><b>Definition</b> VariableBase.h:255</div></div>
 <div class="ttc" id="aclassdrain_1_1VariableT_html"><div class="ttname"><a href="classdrain_1_1VariableT.html">drain::VariableT</a></div><div class="ttdoc">VariableT is a final class applied through typedefs Variable, Reference and FlexibleVariable.</div><div class="ttdef"><b>Definition</b> VariableT.h:87</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1TypeName_html"><div class="ttname"><a href="structdrain_1_1TypeName.html">drain::TypeName</a></div><div class="ttdoc">Default implementation.</div><div class="ttdef"><b>Definition</b> TypeName.h:54</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->

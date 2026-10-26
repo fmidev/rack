@@ -1,8 +1,8 @@
 <map id="FuzzyDetectorOp" name="FuzzyDetectorOp">
 <area shape="rect" id="Node000001" title="Base class for BirdOp and InsectOp." alt="" coords="105,607,239,632"/>
-<area shape="rect" id="Node000011" href="$classrack_1_1ChaffOp.html" title=" " alt="" coords="5,680,80,705"/>
+<area shape="rect" id="Node000011" href="$classrack_1_1ChaffOp.html" title="DOC: Add class description." alt="" coords="5,680,80,705"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="140,641,65,682,63,677,138,636"/>
-<area shape="rect" id="Node000012" href="$classrack_1_1DualPolBioMetOp.html" title=" " alt="" coords="104,680,240,705"/>
+<area shape="rect" id="Node000012" href="$classrack_1_1DualPolBioMetOp.html" title="DOC: Add class description." alt="" coords="104,680,240,705"/>
 <area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="175,646,175,680,169,680,169,646"/>
 <area shape="rect" id="Node000015" href="$classrack_1_1NonMet2Op.html" title="Marks bins with low RhoHV value as probable anomalies." alt="" coords="264,680,363,705"/>
 <area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="208,636,291,677,289,682,205,640"/>
@@ -24,8 +24,8 @@
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="135,40,165,77,161,80,130,43"/>
 <area shape="rect" id="Node000010" href="$classdrain_1_1BeanLike.html" title="Something which has a name, a description and possibly some parameters of varying type." alt="" coords="190,5,271,31"/>
 <area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="214,43,184,80,179,77,210,40"/>
-<area shape="rect" id="Node000013" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="91,753,157,779"/>
+<area shape="rect" id="Node000013" href="$classrack_1_1BirdOp.html" title="DOC: Add class description." alt="" coords="91,753,157,779"/>
 <area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="159,718,134,755,130,752,154,715"/>
-<area shape="rect" id="Node000014" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="182,753,261,779"/>
+<area shape="rect" id="Node000014" href="$classrack_1_1InsectOp.html" title="DOC: Add class description." alt="" coords="182,753,261,779"/>
 <area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="190,715,216,752,211,755,186,718"/>
 </map>

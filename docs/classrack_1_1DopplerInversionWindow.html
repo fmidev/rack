@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -233,33 +240,33 @@ Collaboration diagram for DopplerInversionWindow:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6f3d25184b4e1d78764083f5d29f5bb3" id="r_a6f3d25184b4e1d78764083f5d29f5bb3"><td class="memItemLeft" align="right" valign="top"><a id="a6f3d25184b4e1d78764083f5d29f5bb3" name="a6f3d25184b4e1d78764083f5d29f5bb3"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DopplerInversionWindow</b> (const <a class="el" href="classrack_1_1DopplerInversionConfig.html">DopplerInversionConfig</a> &amp;conf, const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;odimOut)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>DopplerInversionWindow</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DopplerInversionConfig.html">DopplerInversionConfig</a> &amp;conf, <a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;odimOut)</td></tr>
 <tr class="separator:a6f3d25184b4e1d78764083f5d29f5bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae498d5c317cdf47a1ab446a0b8aed65f" id="r_ae498d5c317cdf47a1ab446a0b8aed65f"><td class="memItemLeft" align="right" valign="top"><a id="ae498d5c317cdf47a1ab446a0b8aed65f" name="ae498d5c317cdf47a1ab446a0b8aed65f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setDstFrame2</b> (<a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;d2)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><b>setDstFrame2</b> (<a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a> &amp;d2)</td></tr>
 <tr class="separator:ae498d5c317cdf47a1ab446a0b8aed65f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25a40b6614565f755233080a384c35f1" id="r_a25a40b6614565f755233080a384c35f1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a25a40b6614565f755233080a384c35f1">initialize</a> ()</td></tr>
+<tr class="memitem:a25a40b6614565f755233080a384c35f1" id="r_a25a40b6614565f755233080a384c35f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a25a40b6614565f755233080a384c35f1">initialize</a> ()</td></tr>
 <tr class="memdesc:a25a40b6614565f755233080a384c35f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets class-specific initial values. Does not change general window state (e.g. location). Should not accumulate any statistics.  <br /></td></tr>
 <tr class="separator:a25a40b6614565f755233080a384c35f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76b1889070dc8fcd48f97dbc1aad96ac" id="r_a76b1889070dc8fcd48f97dbc1aad96ac"><td class="memItemLeft" align="right" valign="top"><a id="a76b1889070dc8fcd48f97dbc1aad96ac" name="a76b1889070dc8fcd48f97dbc1aad96ac"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getDerivative</b> (const <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;p, double &amp;diff, bool debug=false) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getDerivative</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;p, <a class="el" href="classrack_1_1DataSet.html">double</a> &amp;diff, <a class="el" href="classrack_1_1DataSet.html">bool</a> debug=<a class="el" href="classrack_1_1DataSet.html">false</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a76b1889070dc8fcd48f97dbc1aad96ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the derivative (m/s)/beam. Often rescaled with beam width. <br /></td></tr>
 <tr class="separator:a76b1889070dc8fcd48f97dbc1aad96ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1SlidingRadarWindow"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1SlidingRadarWindow')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1SlidingRadarWindow.html">SlidingRadarWindow&lt; DopplerInversionConfig &gt;</a></td></tr>
 <tr class="memitem:a8ca02ed80e6a10e2597929faf6e39bad inherit pub_methods_classrack_1_1SlidingRadarWindow" id="r_a8ca02ed80e6a10e2597929faf6e39bad"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindow</b> (int width=0, int height=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindow</b> (<a class="el" href="classrack_1_1DataSet.html">int</a> width=0, <a class="el" href="classrack_1_1DataSet.html">int</a> height=0)</td></tr>
 <tr class="separator:a8ca02ed80e6a10e2597929faf6e39bad inherit pub_methods_classrack_1_1SlidingRadarWindow"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abca57581dcda0317c662db03b8d55d12 inherit pub_methods_classrack_1_1SlidingRadarWindow" id="r_abca57581dcda0317c662db03b8d55d12"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindow</b> (const <a class="el" href="classrack_1_1DopplerInversionConfig.html">DopplerInversionConfig</a> &amp;conf)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindow</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1DopplerInversionConfig.html">DopplerInversionConfig</a> &amp;conf)</td></tr>
 <tr class="separator:abca57581dcda0317c662db03b8d55d12 inherit pub_methods_classrack_1_1SlidingRadarWindow"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classrack_1_1SlidingRadarWindowBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrack_1_1SlidingRadarWindowBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrack_1_1SlidingRadarWindowBase.html">SlidingRadarWindowBase&lt; C, R &gt;</a></td></tr>
 <tr class="memitem:a4e388b309c2fdb9cceb60caf5dbc7e2c inherit pub_methods_classrack_1_1SlidingRadarWindowBase" id="r_a4e388b309c2fdb9cceb60caf5dbc7e2c"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (int width=0, int height=0)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (<a class="el" href="classrack_1_1DataSet.html">int</a> width=0, <a class="el" href="classrack_1_1DataSet.html">int</a> height=0)</td></tr>
 <tr class="separator:a4e388b309c2fdb9cceb60caf5dbc7e2c inherit pub_methods_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a734aed9db8f03cc932e17131fbd639cb inherit pub_methods_classrack_1_1SlidingRadarWindowBase" id="r_a734aed9db8f03cc932e17131fbd639cb"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (const C &amp;conf)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SlidingRadarWindowBase</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> C &amp;conf)</td></tr>
 <tr class="separator:a734aed9db8f03cc932e17131fbd639cb inherit pub_methods_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7337cd6d861b5c9dda9bfffc5e694796 inherit pub_methods_classrack_1_1SlidingRadarWindowBase" id="r_a7337cd6d861b5c9dda9bfffc5e694796"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a7337cd6d861b5c9dda9bfffc5e694796">setSrcFrame</a> (const <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;src)</td></tr>
+<tr class="memitem:a7337cd6d861b5c9dda9bfffc5e694796 inherit pub_methods_classrack_1_1SlidingRadarWindowBase" id="r_a7337cd6d861b5c9dda9bfffc5e694796"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a7337cd6d861b5c9dda9bfffc5e694796">setSrcFrame</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a> &amp;src)</td></tr>
 <tr class="memdesc:a7337cd6d861b5c9dda9bfffc5e694796 inherit pub_methods_classrack_1_1SlidingRadarWindowBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets input image and retrieves <a class="el" href="classrack_1_1ODIM.html" title="ODIM metadata (quantity, gain, offset, undetect, nodata, date, time)">ODIM</a> metadata from image Properties.  <br /></td></tr>
 <tr class="separator:a7337cd6d861b5c9dda9bfffc5e694796 inherit pub_methods_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classdrain_1_1image_1_1SlidingWindow"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1image_1_1SlidingWindow')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow&lt; C, R &gt;</a></td></tr>
@@ -334,7 +341,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setDstFrame</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:ab2506b87a1ca30d0c7207549b0dd89b0" id="r_ab2506b87a1ca30d0c7207549b0dd89b0"><td class="memItemLeft" align="right" valign="top"><a id="ab2506b87a1ca30d0c7207549b0dd89b0" name="ab2506b87a1ca30d0c7207549b0dd89b0"></a>
-const <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>odimOut</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1PolarODIM.html">PolarODIM</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>odimOut</b></td></tr>
 <tr class="separator:ab2506b87a1ca30d0c7207549b0dd89b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc29311bcf9724b239ec708d76bf8ce9" id="r_abc29311bcf9724b239ec708d76bf8ce9"><td class="memItemLeft" align="right" valign="top"><a id="abc29311bcf9724b239ec708d76bf8ce9" name="abc29311bcf9724b239ec708d76bf8ce9"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>functorSetup</b></td></tr>
@@ -359,35 +366,35 @@ conf_t&#160;</td><td class="memItemRight" valign="bottom"><b>conf</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a7d3b4d6afe70341b757b4f42133bdaac" id="r_a7d3b4d6afe70341b757b4f42133bdaac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a7d3b4d6afe70341b757b4f42133bdaac">addLeadingValue</a> (double x)</td></tr>
+<tr class="memitem:a7d3b4d6afe70341b757b4f42133bdaac" id="r_a7d3b4d6afe70341b757b4f42133bdaac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a7d3b4d6afe70341b757b4f42133bdaac">addLeadingValue</a> (<a class="el" href="classrack_1_1DataSet.html">double</a> x)</td></tr>
 <tr class="memdesc:a7d3b4d6afe70341b757b4f42133bdaac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the converted (natural-scaled) value.  <br /></td></tr>
 <tr class="separator:a7d3b4d6afe70341b757b4f42133bdaac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74321f15646216f53f08258f8e912bc7" id="r_a74321f15646216f53f08258f8e912bc7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a74321f15646216f53f08258f8e912bc7">removeTrailingValue</a> (double x)</td></tr>
+<tr class="memitem:a74321f15646216f53f08258f8e912bc7" id="r_a74321f15646216f53f08258f8e912bc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a74321f15646216f53f08258f8e912bc7">removeTrailingValue</a> (<a class="el" href="classrack_1_1DataSet.html">double</a> x)</td></tr>
 <tr class="memdesc:a74321f15646216f53f08258f8e912bc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles the converted (natural-scaled) value.  <br /></td></tr>
 <tr class="separator:a74321f15646216f53f08258f8e912bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33546596741d7ed29fd393dd4b2e77c6" id="r_a33546596741d7ed29fd393dd4b2e77c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a33546596741d7ed29fd393dd4b2e77c6">addPixel</a> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;p)</td></tr>
+<tr class="memitem:a33546596741d7ed29fd393dd4b2e77c6" id="r_a33546596741d7ed29fd393dd4b2e77c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a33546596741d7ed29fd393dd4b2e77c6">addPixel</a> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;p)</td></tr>
 <tr class="memdesc:a33546596741d7ed29fd393dd4b2e77c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the pixel located at (p.x,p.y) to the window statistic/quantity.  <br /></td></tr>
 <tr class="separator:a33546596741d7ed29fd393dd4b2e77c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08a84b9724626969f58efead5e21311a" id="r_a08a84b9724626969f58efead5e21311a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a08a84b9724626969f58efead5e21311a">removePixel</a> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;p)</td></tr>
+<tr class="memitem:a08a84b9724626969f58efead5e21311a" id="r_a08a84b9724626969f58efead5e21311a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#a08a84b9724626969f58efead5e21311a">removePixel</a> (<a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;p)</td></tr>
 <tr class="memdesc:a08a84b9724626969f58efead5e21311a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the pixel located at (p.x,p.y) from the window statistic/quantity.  <br /></td></tr>
 <tr class="separator:a08a84b9724626969f58efead5e21311a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac759501cf6c7895a70eecbef0226ae1" id="r_aac759501cf6c7895a70eecbef0226ae1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#aac759501cf6c7895a70eecbef0226ae1">write</a> ()</td></tr>
+<tr class="memitem:aac759501cf6c7895a70eecbef0226ae1" id="r_aac759501cf6c7895a70eecbef0226ae1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#aac759501cf6c7895a70eecbef0226ae1">write</a> ()</td></tr>
 <tr class="memdesc:aac759501cf6c7895a70eecbef0226ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write the result in the target image.  <br /></td></tr>
 <tr class="separator:aac759501cf6c7895a70eecbef0226ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204" id="r_ac8bb3912a3ce86b15842e79d0b421204"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a> ()</td></tr>
+<tr class="memitem:ac8bb3912a3ce86b15842e79d0b421204" id="r_ac8bb3912a3ce86b15842e79d0b421204"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1DopplerInversionWindow.html#ac8bb3912a3ce86b15842e79d0b421204">clear</a> ()</td></tr>
 <tr class="memdesc:ac8bb3912a3ce86b15842e79d0b421204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the applied statistics. Redefined in derived classes.  <br /></td></tr>
 <tr class="separator:ac8bb3912a3ce86b15842e79d0b421204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1a8785d9434920ada01ac02fbf13f03" id="r_ac1a8785d9434920ada01ac02fbf13f03"><td class="memItemLeft" align="right" valign="top"><a id="ac1a8785d9434920ada01ac02fbf13f03" name="ac1a8785d9434920ada01ac02fbf13f03"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isDiag</b> (int step) const</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><b>isDiag</b> (<a class="el" href="classrack_1_1DataSet.html">int</a> step) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:ac1a8785d9434920ada01ac02fbf13f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classrack_1_1SlidingRadarWindowBase"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classrack_1_1SlidingRadarWindowBase')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classrack_1_1SlidingRadarWindowBase.html">SlidingRadarWindowBase&lt; C, R &gt;</a></td></tr>
-<tr class="memitem:a3a13b9759a348df8a107b43878f209a0 inherit pro_methods_classrack_1_1SlidingRadarWindowBase" id="r_a3a13b9759a348df8a107b43878f209a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a3a13b9759a348df8a107b43878f209a0">setImageLimits</a> () const</td></tr>
+<tr class="memitem:a3a13b9759a348df8a107b43878f209a0 inherit pro_methods_classrack_1_1SlidingRadarWindowBase" id="r_a3a13b9759a348df8a107b43878f209a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#a3a13b9759a348df8a107b43878f209a0">setImageLimits</a> () <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:a3a13b9759a348df8a107b43878f209a0 inherit pro_methods_classrack_1_1SlidingRadarWindowBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets internal limits corresponding to image geometries. Typically using coordHandler.  <br /></td></tr>
 <tr class="separator:a3a13b9759a348df8a107b43878f209a0 inherit pro_methods_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed38352b5640f6f32a62d59450e18466 inherit pro_methods_classrack_1_1SlidingRadarWindowBase" id="r_aed38352b5640f6f32a62d59450e18466"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#aed38352b5640f6f32a62d59450e18466">setRangeNorm</a> ()</td></tr>
+<tr class="memitem:aed38352b5640f6f32a62d59450e18466 inherit pro_methods_classrack_1_1SlidingRadarWindowBase" id="r_aed38352b5640f6f32a62d59450e18466"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#aed38352b5640f6f32a62d59450e18466">setRangeNorm</a> ()</td></tr>
 <tr class="memdesc:aed38352b5640f6f32a62d59450e18466 inherit pro_methods_classrack_1_1SlidingRadarWindowBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">To compensate polar geometry, set applicable range for pixel area scaling.  <br /></td></tr>
 <tr class="separator:aed38352b5640f6f32a62d59450e18466 inherit pro_methods_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d054195a808d229b2d33ab54388b64 inherit pro_methods_classrack_1_1SlidingRadarWindowBase" id="r_ab8d054195a808d229b2d33ab54388b64"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#ab8d054195a808d229b2d33ab54388b64">reset</a> ()</td></tr>
+<tr class="memitem:ab8d054195a808d229b2d33ab54388b64 inherit pro_methods_classrack_1_1SlidingRadarWindowBase" id="r_ab8d054195a808d229b2d33ab54388b64"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1SlidingRadarWindowBase.html#ab8d054195a808d229b2d33ab54388b64">reset</a> ()</td></tr>
 <tr class="memdesc:ab8d054195a808d229b2d33ab54388b64 inherit pro_methods_classrack_1_1SlidingRadarWindowBase"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns false, if traversal should be ended.  <br /></td></tr>
 <tr class="separator:ab8d054195a808d229b2d33ab54388b64 inherit pro_methods_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_classdrain_1_1image_1_1SlidingWindow"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classdrain_1_1image_1_1SlidingWindow')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow&lt; C, R &gt;</a></td></tr>
@@ -461,23 +468,23 @@ Protected Attributes</h2></td></tr>
 <tr class="memdesc:a06a3c6f3d15b73e559d52065a4cb9249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handling altitude. <br /></td></tr>
 <tr class="separator:a06a3c6f3d15b73e559d52065a4cb9249"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7439a3fd7a9b158eba96320993875433" id="r_a7439a3fd7a9b158eba96320993875433"><td class="memItemLeft" align="right" valign="top"><a id="a7439a3fd7a9b158eba96320993875433" name="a7439a3fd7a9b158eba96320993875433"></a>
-<a class="el" href="classdrain_1_1FuzzyBell2.html">drain::FuzzyBell2</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>diffQuality</b></td></tr>
+<a class="el" href="classdrain_1_1FuzzyBell2.html">drain::FuzzyBell2</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>diffQuality</b></td></tr>
 <tr class="separator:a7439a3fd7a9b158eba96320993875433"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d676b36d4f5038650d8f6aa4bb1d5ba" id="r_a2d676b36d4f5038650d8f6aa4bb1d5ba"><td class="memItemLeft" align="right" valign="top"><a id="a2d676b36d4f5038650d8f6aa4bb1d5ba" name="a2d676b36d4f5038650d8f6aa4bb1d5ba"></a>
-<a class="el" href="classdrain_1_1FuzzyBell2.html">drain::FuzzyBell2</a>&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>matrixInformation</b></td></tr>
+<a class="el" href="classdrain_1_1FuzzyBell2.html">drain::FuzzyBell2</a>&lt; <a class="el" href="classrack_1_1DataSet.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>matrixInformation</b></td></tr>
 <tr class="separator:a2d676b36d4f5038650d8f6aa4bb1d5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae127654f7670c901a9e177681eadb7dc" id="r_ae127654f7670c901a9e177681eadb7dc"><td class="memItemLeft" align="right" valign="top"><a id="ae127654f7670c901a9e177681eadb7dc" name="ae127654f7670c901a9e177681eadb7dc"></a>
 <a class="el" href="classdrain_1_1image_1_1ImageView.html">drain::image::ImageView</a>&#160;</td><td class="memItemRight" valign="bottom"><b>dst2</b></td></tr>
 <tr class="separator:ae127654f7670c901a9e177681eadb7dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classrack_1_1SlidingRadarWindowBase"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrack_1_1SlidingRadarWindowBase')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrack_1_1SlidingRadarWindowBase.html">SlidingRadarWindowBase&lt; C, R &gt;</a></td></tr>
 <tr class="memitem:a6795fb17795f6610ad269cc82f03d14d inherit pro_attribs_classrack_1_1SlidingRadarWindowBase" id="r_a6795fb17795f6610ad269cc82f03d14d"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNorm</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNorm</b></td></tr>
 <tr class="separator:a6795fb17795f6610ad269cc82f03d14d inherit pro_attribs_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e3e465334f9c8e2868a8eb9e7837ee inherit pro_attribs_classrack_1_1SlidingRadarWindowBase" id="r_ab5e3e465334f9c8e2868a8eb9e7837ee"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNormEnd</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rangeNormEnd</b></td></tr>
 <tr class="separator:ab5e3e465334f9c8e2868a8eb9e7837ee inherit pro_attribs_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a63b926282526013e6d3b2a09d8a88a inherit pro_attribs_classrack_1_1SlidingRadarWindowBase" id="r_a5a63b926282526013e6d3b2a09d8a88a"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>countMin</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><b>countMin</b></td></tr>
 <tr class="separator:a5a63b926282526013e6d3b2a09d8a88a inherit pro_attribs_classrack_1_1SlidingRadarWindowBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classdrain_1_1image_1_1SlidingWindow"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1image_1_1SlidingWindow')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1image_1_1SlidingWindow.html">SlidingWindow&lt; C, R &gt;</a></td></tr>
 <tr class="memitem:a6fdb2314558476f33753cd71079e4709 inherit pro_attribs_classdrain_1_1image_1_1SlidingWindow" id="r_a6fdb2314558476f33753cd71079e4709"><td class="memItemLeft" align="right" valign="top">
@@ -544,9 +551,9 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void addLeadingValue </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a> addLeadingValue </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -574,9 +581,9 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void addPixel </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> addPixel </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>
@@ -606,7 +613,7 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void clear </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> clear </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -636,7 +643,7 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void initialize </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -669,9 +676,9 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void removePixel </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> removePixel </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; int &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="structdrain_1_1Point2D.html">drain::Point2D</a>&lt; <a class="el" href="classrack_1_1DataSet.html">int</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>
@@ -700,9 +707,9 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void removeTrailingValue </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">virtual</a> <a class="el" href="classrack_1_1DataSet.html">void</a> removeTrailingValue </td>
           <td>(</td>
-          <td class="paramtype">double&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">double</a>&#160;</td>
           <td class="paramname"><em>x</em></td><td>)</td>
           <td></td>
         </tr>
@@ -730,7 +737,7 @@ typedef C&#160;</td><td class="memItemRight" valign="bottom"><b>conf_t</b></td><
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void write </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> write </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -123,7 +130,7 @@ typedef std::list&lt; std::string &gt;&#160;</td><td class="memItemRight" valign
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aebc80be1bbe44103f53e281061a1ef5e" id="r_aebc80be1bbe44103f53e281061a1ef5e"><td class="memTemplParams" colspan="2">template&lt;class M , class F &gt; </td></tr>
 <tr class="memitem:aebc80be1bbe44103f53e281061a1ef5e"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMapTools.html#aebc80be1bbe44103f53e281061a1ef5e">get</a> (const M &amp;m, const typename M::key_type &amp;key, F &amp;value)</td></tr>
-<tr class="memdesc:aebc80be1bbe44103f53e281061a1ef5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the key is found, the value is returned as a reference.  <br /></td></tr>
+<tr class="memdesc:aebc80be1bbe44103f53e281061a1ef5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the key is found, the value is assigned.  <br /></td></tr>
 <tr class="separator:aebc80be1bbe44103f53e281061a1ef5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25e8d9403af623e05ba6ee12318601b0" id="r_a25e8d9403af623e05ba6ee12318601b0"><td class="memTemplParams" colspan="2"><a id="a25e8d9403af623e05ba6ee12318601b0" name="a25e8d9403af623e05ba6ee12318601b0"></a>
 template&lt;class M , class S , bool STRICT = true&gt; </td></tr>
@@ -187,36 +194,36 @@ template&lt;class M , class V &gt; </td></tr>
 <tr class="separator:a260150be99ef6cca01f315674ce4af48 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e5cd4366822d5c6a419927e7d162a38 inherit pub_static_methods_classdrain_1_1MapTools" id="r_a2e5cd4366822d5c6a419927e7d162a38"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:a2e5cd4366822d5c6a419927e7d162a38 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a2e5cd4366822d5c6a419927e7d162a38">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;values, char equalSign='=', const std::string &amp;trimChars=&quot;&quot;)</td></tr>
-<tr class="memdesc:a2e5cd4366822d5c6a419927e7d162a38 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <br /></td></tr>
+<tr class="memdesc:a2e5cd4366822d5c6a419927e7d162a38 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict <code>"key=value"</code> format, no positional arguments.  <br /></td></tr>
 <tr class="separator:a2e5cd4366822d5c6a419927e7d162a38 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a703cf0bf1a1d3d952f6d2be3f91c3625 inherit pub_static_methods_classdrain_1_1MapTools" id="r_a703cf0bf1a1d3d952f6d2be3f91c3625"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a703cf0bf1a1d3d952f6d2be3f91c3625 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a703cf0bf1a1d3d952f6d2be3f91c3625">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;values, char equals='=')</td></tr>
-<tr class="memdesc:a703cf0bf1a1d3d952f6d2be3f91c3625 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <br /></td></tr>
+<tr class="memdesc:a703cf0bf1a1d3d952f6d2be3f91c3625 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting strict <code>"key=value"</code> format, no positional arguments.  <br /></td></tr>
 <tr class="separator:a703cf0bf1a1d3d952f6d2be3f91c3625 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdaed44d00714c3148106bc4be13d3bb inherit pub_static_methods_classdrain_1_1MapTools" id="r_abdaed44d00714c3148106bc4be13d3bb"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:abdaed44d00714c3148106bc4be13d3bb inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#abdaed44d00714c3148106bc4be13d3bb">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::list&lt; std::string &gt; &amp;entries, char assignmentChar='=')</td></tr>
-<tr class="memdesc:abdaed44d00714c3148106bc4be13d3bb inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... .  <br /></td></tr>
+<tr class="memdesc:abdaed44d00714c3148106bc4be13d3bb inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from list, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... .  <br /></td></tr>
 <tr class="separator:abdaed44d00714c3148106bc4be13d3bb inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30088548684b3e7eed0644649f624a68 inherit pub_static_methods_classdrain_1_1MapTools" id="r_a30088548684b3e7eed0644649f624a68"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a30088548684b3e7eed0644649f624a68 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a30088548684b3e7eed0644649f624a68">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::list&lt; std::string &gt; &amp;entries, char equals='=')</td></tr>
 <tr class="separator:a30088548684b3e7eed0644649f624a68 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad50ab3f874808dd6edd32b3df99e675a inherit pub_static_methods_classdrain_1_1MapTools" id="r_ad50ab3f874808dd6edd32b3df99e675a"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:ad50ab3f874808dd6edd32b3df99e675a inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#ad50ab3f874808dd6edd32b3df99e675a">setValues</a> (M &amp;dst, const std::string &amp;values, char split=',', char equals='=', const std::string &amp;trimChars=&quot;&quot;)</td></tr>
-<tr class="memdesc:ad50ab3f874808dd6edd32b3df99e675a inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, assuming strict "&lt;key&gt;=&lt;value&gt;" format, no positional arguments.  <br /></td></tr>
+<tr class="memdesc:ad50ab3f874808dd6edd32b3df99e675a inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, assuming strict <code>"key=value"</code> format, no positional arguments.  <br /></td></tr>
 <tr class="separator:ad50ab3f874808dd6edd32b3df99e675a inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f1b85c8c6f45f34035a619ee5a3079b inherit pub_static_methods_classdrain_1_1MapTools" id="r_a4f1b85c8c6f45f34035a619ee5a3079b"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:a4f1b85c8c6f45f34035a619ee5a3079b inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a4f1b85c8c6f45f34035a619ee5a3079b">updateValues</a> (M &amp;dst, const std::string &amp;values, char split=',', char equals='=')</td></tr>
 <tr class="separator:a4f1b85c8c6f45f34035a619ee5a3079b inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5acb15797cb40599a8135f737bdf877 inherit pub_static_methods_classdrain_1_1MapTools" id="r_ae5acb15797cb40599a8135f737bdf877"><td class="memTemplParams" colspan="2">template&lt;class M , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:ae5acb15797cb40599a8135f737bdf877 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#ae5acb15797cb40599a8135f737bdf877">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::string &amp;values, char split=',', char equals='=')</td></tr>
-<tr class="memdesc:ae5acb15797cb40599a8135f737bdf877 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... .  <br /></td></tr>
+<tr class="memdesc:ae5acb15797cb40599a8135f737bdf877 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... .  <br /></td></tr>
 <tr class="separator:ae5acb15797cb40599a8135f737bdf877 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0f7b005225223e58a2df8cef636d059 inherit pub_static_methods_classdrain_1_1MapTools" id="r_ad0f7b005225223e58a2df8cef636d059"><td class="memTemplParams" colspan="2">template&lt;class M &gt; </td></tr>
 <tr class="memitem:ad0f7b005225223e58a2df8cef636d059 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#ad0f7b005225223e58a2df8cef636d059">updateValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, const std::string &amp;values, char split=',', char equals='=')</td></tr>
 <tr class="separator:ad0f7b005225223e58a2df8cef636d059 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a690b840273f30ebaac7b63941264f055 inherit pub_static_methods_classdrain_1_1MapTools" id="r_a690b840273f30ebaac7b63941264f055"><td class="memTemplParams" colspan="2">template&lt;class M , class V , bool STRICT = true&gt; </td></tr>
 <tr class="memitem:a690b840273f30ebaac7b63941264f055 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a690b840273f30ebaac7b63941264f055">setValues</a> (M &amp;dst, const std::list&lt; std::string &gt; &amp;keys, std::initializer_list&lt; V &gt; values)</td></tr>
-<tr class="memdesc:a690b840273f30ebaac7b63941264f055 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments <code></code> &lt;key&gt;=,&lt;key2&gt;=&lt;value2&gt; and positional arguments <code></code> ,&lt;value2&gt;... .  <br /></td></tr>
+<tr class="memdesc:a690b840273f30ebaac7b63941264f055 inherit pub_static_methods_classdrain_1_1MapTools"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from string, accepting keyword arguments like <code>"key=value"</code> and positional arguments like <code>value</code>... .  <br /></td></tr>
 <tr class="separator:a690b840273f30ebaac7b63941264f055 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fd83c85091df3d7e59c384a0bbb4f39 inherit pub_static_methods_classdrain_1_1MapTools" id="r_a1fd83c85091df3d7e59c384a0bbb4f39"><td class="memTemplParams" colspan="2">template&lt;class M , class V &gt; </td></tr>
 <tr class="memitem:a1fd83c85091df3d7e59c384a0bbb4f39 inherit pub_static_methods_classdrain_1_1MapTools"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1MapTools.html#a1fd83c85091df3d7e59c384a0bbb4f39">setValues</a> (M &amp;dst, std::initializer_list&lt; V &gt; values)</td></tr>
@@ -272,12 +279,8 @@ template&lt;class M , class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>If the key is found, the value is returned as a reference. </p>
-<pre class="fragment">\param m - map in which keys are searched
-
-\tparam M - map type
-\tparam F - target value type
-</pre><p> template &lt;class M&gt; static const typename M::mapped_type &amp; <a class="el" href="classdrain_1_1MapTools.html#a7de6cef8e35335293f9e46b9018bf3aa" title="If the key is found, the value is returned as a reference.">get(const M &amp; m, const typename M::key_type &amp; key)</a>{ typename M::const_iterator it = m.find(key); if (it != m.end()){ return it-&gt;second; } else { static const typename M::mapped_type empty; return empty; } } If the key is found, the value is assigned. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>If the key is found, the value is assigned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">m</td><td>- map in which keys are searched</td></tr>
   </table>

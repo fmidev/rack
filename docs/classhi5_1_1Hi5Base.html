@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -132,6 +139,10 @@ static <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Imag
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>linkPalette</b> (const Hi5Tree &amp;palette, Hi5Tree &amp;dst)</td></tr>
 <tr class="memdesc:ad53431d3f72edbc7c40989ab2415a974"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the palette that has been (or will be) created with createPalette(). <br /></td></tr>
 <tr class="separator:ad53431d3f72edbc7c40989ab2415a974"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2373575827d13ec5f8d561394175b55" id="r_ab2373575827d13ec5f8d561394175b55"><td class="memItemLeft" align="right" valign="top"><a id="ab2373575827d13ec5f8d561394175b55" name="ab2373575827d13ec5f8d561394175b55"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExcluded</b> (const Hi5Tree &amp;src, const typename Hi5Tree::path_t &amp;path)</td></tr>
+<tr class="memdesc:ab2373575827d13ec5f8d561394175b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check is the path contains at least one <code>exclude</code> marker, meaning that data at the path should be bypassed. <br /></td></tr>
+<tr class="separator:ab2373575827d13ec5f8d561394175b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f99aa747a87c81d474705f2944e022" id="r_a46f99aa747a87c81d474705f2944e022"><td class="memItemLeft" align="right" valign="top"><a id="a46f99aa747a87c81d474705f2944e022" name="a46f99aa747a87c81d474705f2944e022"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>writeText</b> (const Hi5Tree &amp;src, const std::list&lt; typename Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:a46f99aa747a87c81d474705f2944e022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
@@ -302,7 +313,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>writeText</b> 
 <p>Split full path string to path object and attribute key. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">s</td><td>- string containing path and/or attribute</td></tr>
+    <tr><td class="paramname">line</td><td>- string containing path and/or attribute</td></tr>
   </table>
   </dd>
 </dl>

@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -536,7 +543,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span> </div>
 <div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>    <span class="keyword">static</span></div>
 <div class="foldopen" id="foldopen00493" data-start="{" data-end="}">
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#aa654f1b135a9b745c0d7cc208b3b7638">  493</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#aa654f1b135a9b745c0d7cc208b3b7638">toStream</a>(std::ostream &amp; ostr, <span class="keywordtype">bool</span> b, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) { <span class="comment">// short int?</span></div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#ac41569d45246b84d531779df66f42c63">  493</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#ac41569d45246b84d531779df66f42c63">toStream</a>(std::ostream &amp; ostr, <span class="keywordtype">bool</span> b, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) { <span class="comment">// short int?</span></div>
 <div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>        <span class="comment">//return basicToStream(ostr, b?&quot;true&quot;:&quot;false&quot;, layout.stringChars);</span></div>
 <div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>        <span class="keywordflow">return</span> ostr &lt;&lt; (b ? <span class="stringliteral">&quot;true&quot;</span>:<span class="stringliteral">&quot;false&quot;</span>);</div>
 <div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>    }</div>
@@ -546,7 +553,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> D&gt;</div>
 <div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>    <span class="keyword">static</span></div>
 <div class="foldopen" id="foldopen00502" data-start="{" data-end="}">
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#ab52607b48fd84cb738bd3dc1d1fc7d0f">  502</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#ab52607b48fd84cb738bd3dc1d1fc7d0f">toStream</a>(std::ostream &amp; ostr, D *x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) {</div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#aa8fc85d021855eebe9cbb55126d0412b">  502</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#aa8fc85d021855eebe9cbb55126d0412b">toStream</a>(std::ostream &amp; ostr, D *x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) {</div>
 <div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>        <span class="keywordflow">if</span> (x == <span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>            <span class="keywordflow">return</span> ostr &lt;&lt; <span class="stringliteral">&quot;null&quot;</span>;</div>
 <div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (x == 0)</div>
@@ -559,7 +566,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> D&gt;</div>
 <div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>    <span class="keyword">static</span></div>
 <div class="foldopen" id="foldopen00514" data-start="{" data-end="}">
-<div class="line"><a id="l00514" name="l00514"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#ae61ae97424ae3ceeaac99ac8a16e6bff">  514</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#ae61ae97424ae3ceeaac99ac8a16e6bff">toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> D *x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) {</div>
+<div class="line"><a id="l00514" name="l00514"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#abc4e32dcddc13acd1db4a627af6dc0dd">  514</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#abc4e32dcddc13acd1db4a627af6dc0dd">toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> D *x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) {</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span>        <span class="keywordflow">return</span> ostr &lt;&lt; *x;</div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>    }</div>
 </div>
@@ -567,141 +574,140 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> D&gt;</div>
 <div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>    <span class="keyword">static</span></div>
 <div class="foldopen" id="foldopen00521" data-start="{" data-end="}">
-<div class="line"><a id="l00521" name="l00521"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#af7c835a0b71728667ed352ead926c481">  521</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#af7c835a0b71728667ed352ead926c481">toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> D &amp;x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) {</div>
-<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>        <span class="comment">// Layout not used</span></div>
-<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>        <span class="keywordflow">return</span> ostr &lt;&lt; x;</div>
-<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span>    }</div>
+<div class="line"><a id="l00521" name="l00521"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#aac5fa1b03428ee0f00759628996a1a1b">  521</a></span>    std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#aac5fa1b03428ee0f00759628996a1a1b">toStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> D &amp;x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">defaultLayout</a>) {</div>
+<div class="line"><a id="l00522" name="l00522"></a><span class="lineno">  522</span>        <span class="keywordflow">return</span> ostr &lt;&lt; x;</div>
+<div class="line"><a id="l00523" name="l00523"></a><span class="lineno">  523</span>    }</div>
 </div>
+<div class="line"><a id="l00524" name="l00524"></a><span class="lineno">  524</span> </div>
 <div class="line"><a id="l00525" name="l00525"></a><span class="lineno">  525</span> </div>
-<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span> </div>
-<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span>};</div>
+<div class="line"><a id="l00526" name="l00526"></a><span class="lineno">  526</span>};</div>
 </div>
+<div class="line"><a id="l00527" name="l00527"></a><span class="lineno">  527</span> </div>
 <div class="line"><a id="l00528" name="l00528"></a><span class="lineno">  528</span> </div>
 <div class="line"><a id="l00529" name="l00529"></a><span class="lineno">  529</span> </div>
-<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span> </div>
-<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00532" data-start="{" data-end="}">
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">  532</a></span>std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">Sprinter::treeToStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> T &amp; tree, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp; layout, <span class="keywordtype">short</span> indent){</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span><span class="comment">// template &lt;class T, bool EXCL&gt;//</span></div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span><span class="comment">// std::ostream &amp; Sprinter::treeToStream(std::ostream &amp; ostr, const Tree&lt;T,EXCL&gt; &amp; tree, const drain::SprinterLayout &amp; layout, short indent){</span></div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span> </div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> DATA     = !tree.data.empty();</div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> CHILDREN = !tree.empty();</div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
-<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>    <span class="keywordflow">if</span> (! (DATA||CHILDREN)){</div>
-<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>        <span class="comment">// Also empty element should return something, here {}, but could be &quot;&quot; or null ?</span></div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>        ostr &lt;&lt; layout.mapChars.prefix &lt;&lt; layout.mapChars.suffix; <span class="comment">// &#39;\n&#39;;</span></div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>        <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>    }</div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span> </div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>    <span class="keyword">const</span> std::string pad(2*indent, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno">  530</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00531" data-start="{" data-end="}">
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">  531</a></span>std::ostream &amp; <a class="code hl_function" href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">Sprinter::treeToStream</a>(std::ostream &amp; ostr, <span class="keyword">const</span> T &amp; tree, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a> &amp; layout, <span class="keywordtype">short</span> indent){</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span><span class="comment">// template &lt;class T, bool EXCL&gt;//</span></div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span><span class="comment">// std::ostream &amp; Sprinter::treeToStream(std::ostream &amp; ostr, const Tree&lt;T,EXCL&gt; &amp; tree, const drain::SprinterLayout &amp; layout, short indent){</span></div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span> </div>
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> DATA     = !tree.data.empty();</div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    <span class="keyword">const</span> <span class="keywordtype">bool</span> CHILDREN = !tree.empty();</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span> </div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>    <span class="keywordflow">if</span> (! (DATA||CHILDREN)){</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>        <span class="comment">// Also empty element should return something, here {}, but could be &quot;&quot; or null ?</span></div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>        ostr &lt;&lt; layout.mapChars.prefix &lt;&lt; layout.mapChars.suffix; <span class="comment">// &#39;\n&#39;;</span></div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>        <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>    }</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span> </div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>    <span class="keyword">const</span> std::string pad(2*indent, <span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span> </div>
 <div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span> </div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span> </div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>    <span class="keywordflow">if</span> (DATA){</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a>(ostr, tree.data, layout);</div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>        <span class="comment">//return ostr;</span></div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>        <span class="comment">/*</span></div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span><span class="comment">        char sep = 0;</span></div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span><span class="comment">        for (const auto &amp; entry: tree.data){</span></div>
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span><span class="comment">            if (sep){</span></div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span><span class="comment">                ostr &lt;&lt; sep;</span></div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span><span class="comment">                ostr &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="comment">            }</span></div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span><span class="comment">            else {</span></div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span><span class="comment">                sep = layout.mapChars.separator;</span></div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span><span class="comment">            }</span></div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span><span class="comment">            ostr &lt;&lt; pad &lt;&lt; &quot;  &quot; &lt;&lt; &#39;&quot;&#39; &lt;&lt; entry.first &lt;&lt; &#39;&quot;&#39; &lt;&lt; layout.pairChars.separator &lt;&lt; &#39; &#39;;</span></div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span><span class="comment">            drain::Sprinter::toStream(ostr, entry.second, layout);</span></div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="comment">        }</span></div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span><span class="comment">        */</span></div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>        <span class="keywordflow">if</span> (CHILDREN)</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>            ostr &lt;&lt; layout.mapChars.separator;</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>        ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>    }</div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span> </div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>    ostr &lt;&lt; layout.mapChars.prefix &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span> </div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    <span class="keywordflow">if</span> (CHILDREN){</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        <span class="keywordtype">char</span> sep = 0;</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: tree){</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>            <span class="keywordflow">if</span> (sep){</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>                ostr &lt;&lt; sep;</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>                ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>            }</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>            <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>                sep = layout.mapChars.separator;</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>            }</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            ostr &lt;&lt; pad &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span> &lt;&lt; entry.first &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span> &lt;&lt;  layout.pairChars.separator &lt;&lt; <span class="charliteral">&#39; &#39;</span>;  <span class="comment">// if empty?</span></div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>            <a class="code hl_function" href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">treeToStream</a>(ostr, entry.second, layout, indent+1); <span class="comment">// recursion</span></div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>        }</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>        ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>    }</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>    ostr &lt;&lt; pad &lt;&lt; layout.mapChars.suffix; <span class="comment">//  &lt;&lt; &#39;\n&#39;;</span></div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span> </div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>    <span class="keywordflow">return</span> ostr;</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>}</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>    <span class="keywordflow">if</span> (DATA){</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>        <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a>(ostr, tree.data, layout);</div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        <span class="comment">//return ostr;</span></div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>        <span class="comment">/*</span></div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span><span class="comment">        char sep = 0;</span></div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span><span class="comment">        for (const auto &amp; entry: tree.data){</span></div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span><span class="comment">            if (sep){</span></div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span><span class="comment">                ostr &lt;&lt; sep;</span></div>
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span><span class="comment">                ostr &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span><span class="comment">            }</span></div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span><span class="comment">            else {</span></div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span><span class="comment">                sep = layout.mapChars.separator;</span></div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span><span class="comment">            }</span></div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span><span class="comment">            ostr &lt;&lt; pad &lt;&lt; &quot;  &quot; &lt;&lt; &#39;&quot;&#39; &lt;&lt; entry.first &lt;&lt; &#39;&quot;&#39; &lt;&lt; layout.pairChars.separator &lt;&lt; &#39; &#39;;</span></div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span><span class="comment">            drain::Sprinter::toStream(ostr, entry.second, layout);</span></div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span><span class="comment">        }</span></div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="comment">        */</span></div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>        <span class="keywordflow">if</span> (CHILDREN)</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>            ostr &lt;&lt; layout.mapChars.separator;</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>        ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>    }</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span> </div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>    ostr &lt;&lt; layout.mapChars.prefix &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span> </div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    <span class="keywordflow">if</span> (CHILDREN){</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        <span class="keywordtype">char</span> sep = 0;</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp; entry: tree){</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>            <span class="keywordflow">if</span> (sep){</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>                ostr &lt;&lt; sep;</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>                ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>            }</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>            <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>                sep = layout.mapChars.separator;</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>            }</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>            ostr &lt;&lt; pad &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span> &lt;&lt; entry.first &lt;&lt; <span class="charliteral">&#39;&quot;&#39;</span> &lt;&lt;  layout.pairChars.separator &lt;&lt; <span class="charliteral">&#39; &#39;</span>;  <span class="comment">// if empty?</span></div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            <a class="code hl_function" href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">treeToStream</a>(ostr, entry.second, layout, indent+1); <span class="comment">// recursion</span></div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>        }</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>        ostr &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>    }</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span> </div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    ostr &lt;&lt; pad &lt;&lt; layout.mapChars.suffix; <span class="comment">//  &lt;&lt; &#39;\n&#39;;</span></div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span> </div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>    <span class="keywordflow">return</span> ostr;</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>}</div>
 </div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span> </div>
 <div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span><span class="comment">// MOVE to json files const SprinterLayout Sprinter::layoutJSON;</span></div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span> </div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> L=Spr<span class="keywordtype">int</span>erLayout&gt;</div>
-<div class="foldopen" id="foldopen00606" data-start="{" data-end="};">
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprintlet.html">  606</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1Sprintlet.html">Sprintlet</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1Sprinter.html">Sprinter</a> {</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span> </div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span> </div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    <span class="keyword">const</span> T &amp; src;</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>    <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> layout;</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span> </div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    <a class="code hl_class" href="classdrain_1_1Sprintlet.html">Sprintlet</a>(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout = L()) : src(x), layout(layout) {</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    }</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>    <span class="comment">// Dangerous? Sprinter(const Sprinter&lt;T&gt; &amp; x) : src(x.src){}</span></div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span> </div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>    std::ostream &amp; toStream(std::ostream &amp; ostr)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">Sprinter::toStream</a>(ostr, src, layout);</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>    }</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    std::string str()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        std::stringstream sstr;</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>        <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">Sprinter::toStream</a>(sstr, src, layout);</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>        <span class="keywordflow">return</span> sstr.str();</div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>    }</div>
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span> </div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>};</div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span><span class="comment">// MOVE to json files const SprinterLayout Sprinter::layoutJSON;</span></div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span> </div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span> </div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> L=Spr<span class="keywordtype">int</span>erLayout&gt;</div>
+<div class="foldopen" id="foldopen00605" data-start="{" data-end="};">
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno"><a class="line" href="classdrain_1_1Sprintlet.html">  605</a></span><span class="keyword">class </span><a class="code hl_class" href="classdrain_1_1Sprintlet.html">Sprintlet</a> : <span class="keyword">public</span> <a class="code hl_class" href="classdrain_1_1Sprinter.html">Sprinter</a> {</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span> </div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    <span class="keyword">const</span> T &amp; src;</div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> layout;</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span> </div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>    <a class="code hl_class" href="classdrain_1_1Sprintlet.html">Sprintlet</a>(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> <a class="code hl_struct" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a> &amp; layout = L()) : src(x), layout(layout) {</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>    }</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>    <span class="comment">// Dangerous? Sprinter(const Sprinter&lt;T&gt; &amp; x) : src(x.src){}</span></div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span> </div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>    std::ostream &amp; toStream(std::ostream &amp; ostr)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">Sprinter::toStream</a>(ostr, src, layout);</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>    }</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span> </div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>    std::string str()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>        std::stringstream sstr;</div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        <a class="code hl_function" href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">Sprinter::toStream</a>(sstr, src, layout);</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>        <span class="keywordflow">return</span> sstr.str();</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    }</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span> </div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>};</div>
 </div>
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span> </div>
 <div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span> </div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span> </div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> L&gt;</div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Sprintlet.html">Sprintlet&lt;T,L&gt;</a> &amp; sp){</div>
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    <span class="keywordflow">return</span> sp.toStream(ostr);</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>}</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T, <span class="keyword">class</span> L&gt;</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Sprintlet.html">Sprintlet&lt;T,L&gt;</a> &amp; sp){</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    <span class="keywordflow">return</span> sp.toStream(ostr);</div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>}</div>
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span> </div>
 <div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span> </div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span> </div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span><span class="comment">// Short cut (constructor wrappers)</span></div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span> </div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>Sprintlet&lt;T&gt; sprinter(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> <span class="keywordtype">char</span> *arrayCaps, <span class="keyword">const</span> <span class="keywordtype">char</span> *mapCaps=<span class="stringliteral">&quot;{,}&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *pairCaps=<span class="stringliteral">&quot;(:)&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *stringCaps=<span class="stringliteral">&quot;\&quot;&quot;</span>){</div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, SprinterLayout(arrayCaps,mapCaps,pairCaps,stringCaps)); <span class="comment">// copy const</span></div>
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>}</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span> </div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span><span class="comment">// SprinterLayout</span></div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>Sprintlet&lt;T&gt; sprinter(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> SprinterLayout &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#af8f0689b7a24be4bcde36addd2e0d48a">Sprinter::jsonLayout</a>){</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, layout); <span class="comment">// copy const</span></div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>}</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span><span class="comment">// Short cut (constructor wrappers)</span></div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span> </div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>Sprintlet&lt;T&gt; sprinter(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> <span class="keywordtype">char</span> *arrayCaps, <span class="keyword">const</span> <span class="keywordtype">char</span> *mapCaps=<span class="stringliteral">&quot;{,}&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *pairCaps=<span class="stringliteral">&quot;(:)&quot;</span>, <span class="keyword">const</span> <span class="keywordtype">char</span> *stringCaps=<span class="stringliteral">&quot;\&quot;&quot;</span>){</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, SprinterLayout(arrayCaps,mapCaps,pairCaps,stringCaps)); <span class="comment">// copy const</span></div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>}</div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span> </div>
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span><span class="comment">// SprinterLayout</span></div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span><span class="keyword">inline</span></div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>Sprintlet&lt;T&gt; sprinter(<span class="keyword">const</span> T &amp; x, <span class="keyword">const</span> SprinterLayout &amp; layout = <a class="code hl_variable" href="classdrain_1_1Sprinter.html#af8f0689b7a24be4bcde36addd2e0d48a">Sprinter::jsonLayout</a>){</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>    <span class="keywordflow">return</span> Sprintlet&lt;T&gt;(x, layout); <span class="comment">// copy const</span></div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>}</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
 <div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span> </div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span> </div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>} <span class="comment">// drain</span></div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>} <span class="comment">// drain</span></div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span> </div>
 <div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span> </div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span> </div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span> </div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span> </div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html"><div class="ttname"><a href="classdrain_1_1Sprinter.html">drain::Sprinter</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:198</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a0ca2b3b1888b2ca8c58e3fe9bec62ff6"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a0ca2b3b1888b2ca8c58e3fe9bec62ff6">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::initializer_list&lt; T &gt; &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">New (experimental)</div><div class="ttdef"><b>Definition</b> Sprinter.h:423</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a0f762e88bf4b149cf4dba0d340b57d7e"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a0f762e88bf4b149cf4dba0d340b57d7e">drain::Sprinter::mapPairToStream</a></div><div class="ttdeci">static std::ostream &amp; mapPairToStream(std::ostream &amp;ostr, const std::pair&lt; K, V &gt; &amp;x, const SprinterLayout &amp;layout)</div><div class="ttdoc">If (key,value) pairs needs specific layout in maps, use this. (Compare with list of tuples).</div><div class="ttdef"><b>Definition</b> Sprinter.h:300</div></div>
@@ -715,25 +721,25 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a90895f9b4e24b2bf8cbc1d44bb699fd5"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a90895f9b4e24b2bf8cbc1d44bb699fd5">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const std::string &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">Conventional type: std::string. Notice prefix revealed.</div><div class="ttdef"><b>Definition</b> Sprinter.h:473</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a92cfea3e1831f25400edace57a17c2d8"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a92cfea3e1831f25400edace57a17c2d8">drain::Sprinter::defaultLayout</a></div><div class="ttdeci">static const SprinterLayout defaultLayout</div><div class="ttdoc">Displays objects with {...}, arrays with [...], pairs with (,) and strings without hyphens.</div><div class="ttdef"><b>Definition</b> Sprinter.h:206</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_a96b50cc7cf3794f2bc07b07b79b857e6"><div class="ttname"><a href="classdrain_1_1Sprinter.html#a96b50cc7cf3794f2bc07b07b79b857e6">drain::Sprinter::jsLayout</a></div><div class="ttdeci">static const SprinterLayout jsLayout</div><div class="ttdoc">JavaScript layout. Like JSON layout, but keys without hyphens.</div><div class="ttdef"><b>Definition</b> Sprinter.h:227</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_aa654f1b135a9b745c0d7cc208b3b7638"><div class="ttname"><a href="classdrain_1_1Sprinter.html#aa654f1b135a9b745c0d7cc208b3b7638">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, bool b, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">Single char gets styled same way as strings.</div><div class="ttdef"><b>Definition</b> Sprinter.h:493</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_ab52607b48fd84cb738bd3dc1d1fc7d0f"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ab52607b48fd84cb738bd3dc1d1fc7d0f">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, D *x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">Pointer: redirect to actual target object.</div><div class="ttdef"><b>Definition</b> Sprinter.h:502</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_ab8aec1f46f1ff3b764988d03f10a0e8b"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">drain::Sprinter::treeToStream</a></div><div class="ttdeci">static std::ostream &amp; treeToStream(std::ostream &amp;ostr, const T &amp;tree, const drain::SprinterLayout &amp;layout, short indent=0)</div><div class="ttdoc">Write drain::Tree's or any trees that have tree::data[] member.</div><div class="ttdef"><b>Definition</b> Sprinter.h:532</div></div>
+<div class="ttc" id="aclassdrain_1_1Sprinter_html_aa8fc85d021855eebe9cbb55126d0412b"><div class="ttname"><a href="classdrain_1_1Sprinter.html#aa8fc85d021855eebe9cbb55126d0412b">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, D *x, const SprinterLayout &amp;=defaultLayout)</div><div class="ttdoc">Pointer: redirect to actual target object.</div><div class="ttdef"><b>Definition</b> Sprinter.h:502</div></div>
+<div class="ttc" id="aclassdrain_1_1Sprinter_html_aac5fa1b03428ee0f00759628996a1a1b"><div class="ttname"><a href="classdrain_1_1Sprinter.html#aac5fa1b03428ee0f00759628996a1a1b">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const D &amp;x, const SprinterLayout &amp;=defaultLayout)</div><div class="ttdoc">Default, unformatted output for basetypes and types not matching the other templates.</div><div class="ttdef"><b>Definition</b> Sprinter.h:521</div></div>
+<div class="ttc" id="aclassdrain_1_1Sprinter_html_ab8aec1f46f1ff3b764988d03f10a0e8b"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ab8aec1f46f1ff3b764988d03f10a0e8b">drain::Sprinter::treeToStream</a></div><div class="ttdeci">static std::ostream &amp; treeToStream(std::ostream &amp;ostr, const T &amp;tree, const drain::SprinterLayout &amp;layout, short indent=0)</div><div class="ttdoc">Write drain::Tree's or any trees that have tree::data[] member.</div><div class="ttdef"><b>Definition</b> Sprinter.h:531</div></div>
+<div class="ttc" id="aclassdrain_1_1Sprinter_html_abc4e32dcddc13acd1db4a627af6dc0dd"><div class="ttname"><a href="classdrain_1_1Sprinter.html#abc4e32dcddc13acd1db4a627af6dc0dd">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const D *x, const SprinterLayout &amp;=defaultLayout)</div><div class="ttdoc">Pointer: redirect to actual target object.</div><div class="ttdef"><b>Definition</b> Sprinter.h:514</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_ac2f0ae63613f2bd33e5da9126a4778c6"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ac2f0ae63613f2bd33e5da9126a4778c6">drain::Sprinter::lineLayout</a></div><div class="ttdeci">static const SprinterLayout lineLayout</div><div class="ttdoc">Put each array and object element on a separate line.</div><div class="ttdef"><b>Definition</b> Sprinter.h:215</div></div>
+<div class="ttc" id="aclassdrain_1_1Sprinter_html_ac41569d45246b84d531779df66f42c63"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ac41569d45246b84d531779df66f42c63">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, bool b, const SprinterLayout &amp;=defaultLayout)</div><div class="ttdoc">Single char gets styled same way as strings.</div><div class="ttdef"><b>Definition</b> Sprinter.h:493</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_ac6f2406e541475ed22ffcc86ae8a4f74"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ac6f2406e541475ed22ffcc86ae8a4f74">drain::Sprinter::basicToStream</a></div><div class="ttdeci">static std::ostream &amp; basicToStream(std::ostream &amp;ostr, const T &amp;x, const TypeLayout &amp;myChars)</div><div class="ttdoc">Routine for non-sequence types that may like prefix and suffix, anyway.</div><div class="ttdef"><b>Definition</b> Sprinter.h:411</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_acf838be5191762196b047276f48d176a"><div class="ttname"><a href="classdrain_1_1Sprinter.html#acf838be5191762196b047276f48d176a">drain::Sprinter::cppLayout</a></div><div class="ttdeci">static const SprinterLayout cppLayout</div><div class="ttdoc">C++ code initializer list style: all objects with {...}, with comma ',' separator.</div><div class="ttdef"><b>Definition</b> Sprinter.h:239</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_addd4bed3e30de5a3fd5c821b37f21b9b"><div class="ttname"><a href="classdrain_1_1Sprinter.html#addd4bed3e30de5a3fd5c821b37f21b9b">drain::Sprinter::sequenceToStream</a></div><div class="ttdeci">static std::ostream &amp; sequenceToStream(std::ostream &amp;ostr, const T &amp;x, const TypeLayout &amp;myChars, const SprinterLayout &amp;layout)</div><div class="ttdoc">Print sequence x with myChars, continue recursively with layout.</div><div class="ttdef"><b>Definition</b> Sprinter.h:332</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_aded47ce3a9369136eb73100ab9762c1e"><div class="ttname"><a href="classdrain_1_1Sprinter.html#aded47ce3a9369136eb73100ab9762c1e">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, char c, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">Single char gets styled same way as strings.</div><div class="ttdef"><b>Definition</b> Sprinter.h:487</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_ae61ae97424ae3ceeaac99ac8a16e6bff"><div class="ttname"><a href="classdrain_1_1Sprinter.html#ae61ae97424ae3ceeaac99ac8a16e6bff">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const D *x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">Pointer: redirect to actual target object.</div><div class="ttdef"><b>Definition</b> Sprinter.h:514</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_af13e4413d1262199c9225b62628f7706"><div class="ttname"><a href="classdrain_1_1Sprinter.html#af13e4413d1262199c9225b62628f7706">drain::Sprinter::mapToStream</a></div><div class="ttdeci">static std::ostream &amp; mapToStream(std::ostream &amp;ostr, const M &amp;m, const SprinterLayout &amp;layout, const K &amp;keys)</div><div class="ttdoc">Given a sequence or subsequence of keys, output values of a map in that order.</div><div class="ttdef"><b>Definition</b> Sprinter.h:363</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_af38c4bbb10fd0f9f43270479b05a61bb"><div class="ttname"><a href="classdrain_1_1Sprinter.html#af38c4bbb10fd0f9f43270479b05a61bb">drain::Sprinter::UNSET_LAYOUT</a></div><div class="ttdeci">static const SprinterLayout UNSET_LAYOUT</div><div class="ttdoc">Marker for unset layout.</div><div class="ttdef"><b>Definition</b> Sprinter.h:203</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_af69eb90cf3bc744bb539f3cb0ddfb500"><div class="ttname"><a href="classdrain_1_1Sprinter.html#af69eb90cf3bc744bb539f3cb0ddfb500">drain::Sprinter::cmdLineLayout</a></div><div class="ttdeci">static const SprinterLayout cmdLineLayout</div><div class="ttdoc">Simulates how arguments are given to command line options.</div><div class="ttdef"><b>Definition</b> Sprinter.h:251</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprinter_html_af7c835a0b71728667ed352ead926c481"><div class="ttname"><a href="classdrain_1_1Sprinter.html#af7c835a0b71728667ed352ead926c481">drain::Sprinter::toStream</a></div><div class="ttdeci">static std::ostream &amp; toStream(std::ostream &amp;ostr, const D &amp;x, const SprinterLayout &amp;layout=defaultLayout)</div><div class="ttdoc">Default, unformatted output for basetypes and types not matching the other templates.</div><div class="ttdef"><b>Definition</b> Sprinter.h:521</div></div>
 <div class="ttc" id="aclassdrain_1_1Sprinter_html_af8f0689b7a24be4bcde36addd2e0d48a"><div class="ttname"><a href="classdrain_1_1Sprinter.html#af8f0689b7a24be4bcde36addd2e0d48a">drain::Sprinter::jsonLayout</a></div><div class="ttdeci">static const SprinterLayout jsonLayout</div><div class="ttdoc">Resembles JSON structure: {&quot;a&quot;:1,&quot;b&quot;:22,&quot;c&quot;:3}.</div><div class="ttdef"><b>Definition</b> Sprinter.h:224</div></div>
-<div class="ttc" id="aclassdrain_1_1Sprintlet_html"><div class="ttname"><a href="classdrain_1_1Sprintlet.html">drain::Sprintlet</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:606</div></div>
+<div class="ttc" id="aclassdrain_1_1Sprintlet_html"><div class="ttname"><a href="classdrain_1_1Sprintlet.html">drain::Sprintlet</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:605</div></div>
 <div class="ttc" id="aclassdrain_1_1TupleBase_html_aa44b40b76d867bd2717f07be73611879"><div class="ttname"><a href="classdrain_1_1TupleBase.html#aa44b40b76d867bd2717f07be73611879">drain::TupleBase::assignSequence</a></div><div class="ttdeci">tuplebase_t &amp; assignSequence(T &amp;sequence, bool LENIENT=false)</div><div class="ttdoc">Proposed for tuples only; derived classes should not shadow this.</div><div class="ttdef"><b>Definition</b> TupleBase.h:287</div></div>
 <div class="ttc" id="aclassdrain_1_1TypeLayoutBase_html"><div class="ttname"><a href="classdrain_1_1TypeLayoutBase.html">drain::TypeLayoutBase</a></div><div class="ttdoc">Small container for printing style for putting of structured objects (array, maps,...</div><div class="ttdef"><b>Definition</b> Sprinter.h:57</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition</b> UniTuple.h:65</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 <div class="ttc" id="astructdrain_1_1SprinterLayout_html"><div class="ttname"><a href="structdrain_1_1SprinterLayout.html">drain::SprinterLayout</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:136</div></div>
 <div class="ttc" id="astructdrain_1_1TypeLayout_html"><div class="ttname"><a href="structdrain_1_1TypeLayout.html">drain::TypeLayout</a></div><div class="ttdef"><b>Definition</b> Sprinter.h:79</div></div>
 <div class="ttc" id="astructdrain_1_1TypeLayout_html_a3f9ff895908c4f2f5de2155c6d08c5db"><div class="ttname"><a href="structdrain_1_1TypeLayout.html#a3f9ff895908c4f2f5de2155c6d08c5db">drain::TypeLayout::TypeLayout</a></div><div class="ttdeci">TypeLayout(const char layout[4])</div><div class="ttdoc">Constructor accepting three-letter chars: {prefix,separator,suffix}.</div><div class="ttdef"><b>Definition</b> Sprinter.h:101</div></div>

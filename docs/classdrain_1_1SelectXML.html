@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -91,16 +98,14 @@ Collaboration diagram for SelectXML&lt; E &gt;:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1SelectXML__coll__graph.png" border="0" usemap="#aSelectXML_3_01E_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="aSelectXML_3_01E_01_4_coll__map" id="aSelectXML_3_01E_01_4_coll__map">
-<area shape="rect" title=" " alt="" coords="75,281,203,307"/>
-<area shape="rect" href="classdrain_1_1ClassXML.html" title="A wrapper marking string an CSS effect." alt="" coords="47,193,132,219"/>
-<area shape="poly" title=" " alt="" coords="105,229,134,279,129,282,100,232"/>
-<area shape="rect" href="classdrain_1_1MultiEnumWrapper.html" title=" " alt="" coords="5,80,152,105"/>
-<area shape="poly" title=" " alt="" coords="84,119,91,193,86,193,78,119"/>
-<area shape="rect" title=" " alt="" coords="108,5,167,31"/>
-<area shape="poly" title=" " alt="" coords="121,43,90,81,86,78,117,40"/>
-<area shape="rect" href="classdrain_1_1StringWrapper.html" title=" " alt="" coords="91,129,303,169"/>
-<area shape="poly" title=" " alt="" coords="151,42,191,128,186,130,146,44"/>
-<area shape="poly" title=" " alt="" coords="187,183,146,282,141,280,182,181"/>
+<area shape="rect" title=" " alt="" coords="71,183,199,208"/>
+<area shape="rect" href="classdrain_1_1ClassXML.html" title="A wrapper marking string an CSS effect." alt="" coords="5,87,91,113"/>
+<area shape="poly" title=" " alt="" coords="70,121,126,181,122,184,66,124"/>
+<area shape="rect" title=" " alt="" coords="104,5,163,31"/>
+<area shape="poly" title=" " alt="" coords="113,42,62,89,58,85,110,38"/>
+<area shape="rect" href="classdrain_1_1StringWrapper.html" title=" " alt="" coords="115,80,327,120"/>
+<area shape="poly" title=" " alt="" coords="158,38,202,78,199,82,154,42"/>
+<area shape="poly" title=" " alt="" coords="197,132,148,184,144,180,193,128"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -110,16 +115,23 @@ Public Member Functions</h2></td></tr>
 template&lt;class ... TT&gt; </td></tr>
 <tr class="memitem:a29235acaff28e0bc10ef9b898ea4777b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SelectXML</b> (TT... args)</td></tr>
 <tr class="separator:a29235acaff28e0bc10ef9b898ea4777b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fbe171fcd5f7d1657108a889bb99387" id="r_a0fbe171fcd5f7d1657108a889bb99387"><td class="memTemplParams" colspan="2"><a id="a0fbe171fcd5f7d1657108a889bb99387" name="a0fbe171fcd5f7d1657108a889bb99387"></a>
+template&lt;class T &gt; </td></tr>
+<tr class="memitem:a0fbe171fcd5f7d1657108a889bb99387"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1SelectXML.html">SelectXML</a>&lt; E &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator=</b> (const T &amp;arg)</td></tr>
+<tr class="separator:a0fbe171fcd5f7d1657108a889bb99387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaf8ddfdb85ce05d720bf9d567f2dd49" id="r_aaaf8ddfdb85ce05d720bf9d567f2dd49"><td class="memItemLeft" align="right" valign="top"><a id="aaaf8ddfdb85ce05d720bf9d567f2dd49" name="aaaf8ddfdb85ce05d720bf9d567f2dd49"></a>
+<a class="el" href="classdrain_1_1SelectXML.html">SelectXML</a>&lt; E &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const char *arg)</td></tr>
+<tr class="separator:aaaf8ddfdb85ce05d720bf9d567f2dd49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a254cab7cc539d2365bb995259d5f7d8c" id="r_a254cab7cc539d2365bb995259d5f7d8c"><td class="memTemplParams" colspan="2">template&lt;class T , class ... TT&gt; </td></tr>
 <tr class="memitem:a254cab7cc539d2365bb995259d5f7d8c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SelectXML.html#a254cab7cc539d2365bb995259d5f7d8c">set</a> (const T &amp;arg, TT... args)</td></tr>
 <tr class="separator:a254cab7cc539d2365bb995259d5f7d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c65c9e8327b51928d9235ad3c4fbfa3" id="r_a5c65c9e8327b51928d9235ad3c4fbfa3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SelectXML.html#a5c65c9e8327b51928d9235ad3c4fbfa3">set</a> (const E &amp;arg)</td></tr>
+<tr class="memdesc:a5c65c9e8327b51928d9235ad3c4fbfa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set element.  <br /></td></tr>
+<tr class="separator:a5c65c9e8327b51928d9235ad3c4fbfa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af12eeffe1f4b5b041f8e319eda80ea98" id="r_af12eeffe1f4b5b041f8e319eda80ea98"><td class="memTemplParams" colspan="2"><a id="af12eeffe1f4b5b041f8e319eda80ea98" name="af12eeffe1f4b5b041f8e319eda80ea98"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:af12eeffe1f4b5b041f8e319eda80ea98"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>set</b> (const T &amp;arg)</td></tr>
 <tr class="separator:af12eeffe1f4b5b041f8e319eda80ea98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c65c9e8327b51928d9235ad3c4fbfa3" id="r_a5c65c9e8327b51928d9235ad3c4fbfa3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SelectXML.html#a5c65c9e8327b51928d9235ad3c4fbfa3">set</a> (const E &amp;arg)</td></tr>
-<tr class="memdesc:a5c65c9e8327b51928d9235ad3c4fbfa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set element.  <br /></td></tr>
-<tr class="separator:a5c65c9e8327b51928d9235ad3c4fbfa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add207d518eb4a6d80c35ca61571cdc36" id="r_add207d518eb4a6d80c35ca61571cdc36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SelectXML.html#add207d518eb4a6d80c35ca61571cdc36">set</a> (const std::string &amp;arg)</td></tr>
 <tr class="memdesc:add207d518eb4a6d80c35ca61571cdc36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set CSS class.  <br /></td></tr>
 <tr class="separator:add207d518eb4a6d80c35ca61571cdc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,7 +198,13 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>currentStr</b>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename E&gt;<br />
-class drain::SelectXML&lt; E &gt;</div><p>NEW! 2026 </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+class drain::SelectXML&lt; E &gt;</div><p>NEW </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>- element tag_t (enum or integer)</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>OLD </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>- element tag_t (enum or integer) </td></tr>
   </table>
@@ -372,7 +390,8 @@ template&lt;class T &gt; </div>
 <p>For setting an element type that is not (yet) supported in the enumeration dictionary.</p>
 <dl class="section see"><dt>See also</dt><dd>template E </dd>
 <dd>
-drain::Enum&lt;E&gt; </dd></dl>
+drain::Enum&lt;E&gt;</dd></dl>
+<p>NEW <a class="el" href="structdrain_1_1Enum.html" title="A container for a static dictionary of enumeration values.">Enum</a> dropped, redefine this if needed </p>
 
 </div>
 </div>

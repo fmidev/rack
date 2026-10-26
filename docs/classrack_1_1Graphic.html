@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -90,31 +97,29 @@ Inheritance diagram for Graphic:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1Graphic__inherit__graph.png" border="0" usemap="#aGraphic_inherit__map" alt="Inheritance graph"/></div>
 <map name="aGraphic_inherit__map" id="aGraphic_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,252,77,277"/>
-<area shape="rect" href="classrack_1_1CmdPolarBase.html" title=" " alt="" coords="125,252,243,277"/>
-<area shape="poly" title=" " alt="" coords="91,262,125,262,125,267,91,267"/>
-<area shape="rect" href="classrack_1_1CmdCoords.html" title=" " alt="" coords="311,5,409,31"/>
-<area shape="poly" title=" " alt="" coords="188,238,200,195,220,142,249,88,268,62,289,40,310,27,313,31,292,44,272,66,253,91,225,144,205,197,193,239"/>
-<area shape="rect" href="classrack_1_1CmdData.html" title=" " alt="" coords="319,55,401,80"/>
-<area shape="poly" title=" " alt="" coords="192,238,206,205,227,165,255,124,289,89,317,74,320,79,292,93,259,128,232,168,211,207,197,240"/>
-<area shape="rect" href="classrack_1_1CmdDot.html" title=" " alt="" coords="323,104,397,129"/>
-<area shape="poly" title=" " alt="" coords="198,239,236,189,261,162,289,138,321,123,324,128,292,143,264,166,240,192,202,242"/>
-<area shape="rect" href="classrack_1_1CmdRadarDot.html" title=" " alt="" coords="303,153,417,179"/>
-<area shape="poly" title=" " alt="" coords="210,241,246,214,289,188,316,176,318,181,292,192,249,218,213,245"/>
-<area shape="rect" href="classrack_1_1CmdRadarDotTest.html" title=" " alt="" coords="291,203,429,228"/>
-<area shape="poly" title=" " alt="" coords="242,246,313,226,314,231,244,251"/>
-<area shape="rect" href="classrack_1_1CmdRadarGrid.html" title=" " alt="" coords="301,252,419,277"/>
-<area shape="poly" title=" " alt="" coords="256,262,301,262,301,267,256,267"/>
-<area shape="rect" href="classrack_1_1CmdRadarLabel.html" title=" " alt="" coords="297,301,423,327"/>
-<area shape="poly" title=" " alt="" coords="244,279,314,299,313,304,242,284"/>
-<area shape="rect" href="classrack_1_1CmdRadarRay.html" title=" " alt="" coords="303,351,417,376"/>
-<area shape="poly" title=" " alt="" coords="214,284,250,310,292,336,321,348,318,353,289,340,247,315,210,288"/>
-<area shape="rect" href="classrack_1_1CmdRadarSector.html" title=" " alt="" coords="295,400,425,425"/>
-<area shape="poly" title=" " alt="" coords="203,287,240,337,265,363,292,385,316,398,313,402,289,390,261,366,236,340,198,291"/>
-<area shape="rect" href="classrack_1_1CmdRect.html" title=" " alt="" coords="319,449,401,475"/>
-<area shape="poly" title=" " alt="" coords="197,289,232,361,259,400,292,435,321,450,318,455,289,439,255,404,228,364,192,291"/>
-<area shape="rect" href="classrack_1_1CmdTestData.html" title=" " alt="" coords="305,499,415,524"/>
-<area shape="poly" title=" " alt="" coords="193,290,205,332,225,384,254,438,272,462,292,484,312,496,309,501,289,488,268,466,249,440,220,386,200,334,188,291"/>
+<area shape="rect" title=" " alt="" coords="5,228,77,253"/>
+<area shape="rect" href="classrack_1_1CmdPolarBase.html" title=" " alt="" coords="125,228,243,253"/>
+<area shape="poly" title=" " alt="" coords="91,238,125,238,125,243,91,243"/>
+<area shape="rect" href="classrack_1_1CmdCoords.html" title=" " alt="" coords="307,5,405,31"/>
+<area shape="poly" title=" " alt="" coords="190,214,203,176,224,130,252,82,289,40,307,28,310,33,292,44,256,85,228,132,208,178,195,216"/>
+<area shape="rect" href="classrack_1_1CmdData.html" title=" " alt="" coords="315,55,397,80"/>
+<area shape="poly" title=" " alt="" coords="195,215,231,153,258,119,289,89,313,76,316,81,292,93,262,122,236,156,199,217"/>
+<area shape="rect" href="classrack_1_1CmdDot.html" title=" " alt="" coords="319,104,393,129"/>
+<area shape="poly" title=" " alt="" coords="203,216,241,177,289,138,317,125,320,130,292,143,244,181,207,219"/>
+<area shape="rect" href="classrack_1_1CmdRadarDot.html" title=" " alt="" coords="299,153,413,179"/>
+<area shape="poly" title=" " alt="" coords="221,219,290,188,318,176,320,181,292,192,224,224"/>
+<area shape="rect" href="classrack_1_1CmdRadarGrid.html" title=" " alt="" coords="297,203,415,228"/>
+<area shape="poly" title=" " alt="" coords="256,227,297,221,298,227,257,233"/>
+<area shape="rect" href="classrack_1_1CmdRadarLabel.html" title=" " alt="" coords="293,252,419,277"/>
+<area shape="poly" title=" " alt="" coords="257,248,293,253,293,259,256,253"/>
+<area shape="rect" href="classrack_1_1CmdRadarRay.html" title=" " alt="" coords="299,301,413,327"/>
+<area shape="poly" title=" " alt="" coords="226,257,292,286,322,299,320,304,290,291,224,262"/>
+<area shape="rect" href="classrack_1_1CmdRadarSector.html" title=" " alt="" coords="291,351,421,376"/>
+<area shape="poly" title=" " alt="" coords="208,262,245,299,292,336,317,348,314,353,289,340,241,303,204,266"/>
+<area shape="rect" href="classrack_1_1CmdRect.html" title=" " alt="" coords="315,400,397,425"/>
+<area shape="poly" title=" " alt="" coords="200,264,236,325,262,357,292,385,317,399,314,403,289,389,258,361,232,328,195,267"/>
+<area shape="rect" href="classrack_1_1CmdTestData.html" title=" " alt="" coords="301,449,411,475"/>
+<area shape="poly" title=" " alt="" coords="195,266,209,303,229,348,257,394,292,435,312,447,309,451,289,439,253,397,224,350,204,305,190,267"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -122,31 +127,28 @@ Collaboration diagram for Graphic:</div>
 <div class="dyncontent">
 <div class="center"><img src="classrack_1_1Graphic__coll__graph.png" border="0" usemap="#aGraphic_coll__map" alt="Collaboration graph"/></div>
 <map name="aGraphic_coll__map" id="aGraphic_coll__map">
-<area shape="rect" title=" " alt="" coords="43,243,115,268"/>
-<area shape="rect" href="classdrain_1_1ClassXML.html" title="A wrapper marking string an CSS effect." alt="" coords="36,155,121,180"/>
-<area shape="poly" title=" " alt="" coords="81,194,81,242,76,242,76,194"/>
-<area shape="rect" href="classdrain_1_1MultiEnumWrapper.html" title=" " alt="" coords="5,80,152,105"/>
-<area shape="poly" title=" " alt="" coords="81,120,81,154,76,154,76,120"/>
-<area shape="rect" title=" " alt="" coords="49,5,108,31"/>
-<area shape="poly" title=" " alt="" coords="81,45,81,80,76,80,76,45"/>
+<area shape="rect" title=" " alt="" coords="12,168,84,193"/>
+<area shape="rect" href="classdrain_1_1ClassXML.html" title="A wrapper marking string an CSS effect." alt="" coords="5,80,91,105"/>
+<area shape="poly" title=" " alt="" coords="51,119,51,167,45,167,45,119"/>
+<area shape="rect" title=" " alt="" coords="19,5,77,31"/>
+<area shape="poly" title=" " alt="" coords="51,45,51,80,45,80,45,45"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a95af2586912c0f7dfca5b3fa3ef95742" id="r_a95af2586912c0f7dfca5b3fa3ef95742"><td class="memItemLeft" align="right" valign="top"><a id="a95af2586912c0f7dfca5b3fa3ef95742" name="a95af2586912c0f7dfca5b3fa3ef95742"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>GRAPHIC</b> { <br />
-&#160;&#160;<b>VECTOR_OVERLAY</b>
-, <b>HIGHLIGHT</b>
+&#160;&#160;<b>HIGHLIGHT</b>
 , <b>GRID</b>
 , <b>DOT</b>
+, <b>RAY</b>
 , <br />
-&#160;&#160;<b>RAY</b>
-, <b>SECTOR</b>
+&#160;&#160;<b>SECTOR</b>
 , <b>ANNULUS</b>
 , <b>CIRCLE</b>
+, <b>RECTANGLE</b>
 , <br />
-&#160;&#160;<b>RECTANGLE</b>
-, <b>SPOT</b>
+&#160;&#160;<b>SPOT</b>
 , <b>LABEL</b>
 <br />
  }</td></tr>
@@ -155,25 +157,25 @@ Public Types</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae8150a981271a7eebc1c66b121acf08e" id="r_ae8150a981271a7eebc1c66b121acf08e"><td class="memItemLeft" align="right" valign="top"><a id="ae8150a981271a7eebc1c66b121acf08e" name="ae8150a981271a7eebc1c66b121acf08e"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Graphic</b> (GRAPHIC g=RAY)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Graphic</b> (GRAPHIC <a class="el" href="classrack_1_1DataSet.html">g</a>=RAY)</td></tr>
 <tr class="separator:ae8150a981271a7eebc1c66b121acf08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ff36eb822e8d0a0d89eeb60b1e4edec" id="r_a0ff36eb822e8d0a0d89eeb60b1e4edec"><td class="memItemLeft" align="right" valign="top"><a id="a0ff36eb822e8d0a0d89eeb60b1e4edec" name="a0ff36eb822e8d0a0d89eeb60b1e4edec"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Graphic</b> (const <a class="el" href="classrack_1_1Graphic.html">Graphic</a> &amp;g)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Graphic</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classrack_1_1Graphic.html">Graphic</a> &amp;<a class="el" href="classrack_1_1DataSet.html">g</a>)</td></tr>
 <tr class="separator:a0ff36eb822e8d0a0d89eeb60b1e4edec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb7e1be426fe1bb852fcdfcd838d2fb" id="r_a0eb7e1be426fe1bb852fcdfcd838d2fb"><td class="memItemLeft" align="right" valign="top"><a id="a0eb7e1be426fe1bb852fcdfcd838d2fb" name="a0eb7e1be426fe1bb852fcdfcd838d2fb"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Graphic</b> (const <a class="el" href="classdrain_1_1ClassXML.html">drain::ClassXML</a> &amp;cls)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Graphic</b> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1ClassXML.html">drain::ClassXML</a> &amp;cls)</td></tr>
 <tr class="separator:a0eb7e1be426fe1bb852fcdfcd838d2fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a72825661231c88686b995c0f50b1d0aa" id="r_a72825661231c88686b995c0f50b1d0aa"><td class="memItemLeft" align="right" valign="top"><a id="a72825661231c88686b995c0f50b1d0aa" name="a72825661231c88686b995c0f50b1d0aa"></a>
-static drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGraphicStyle</b> (drain::image::TreeSVG &amp;svgDoc)</td></tr>
+<a class="el" href="classrack_1_1DataSet.html">static</a> drain::image::TreeSVG &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getGraphicStyle</b> (drain::image::TreeSVG &amp;<a class="el" href="classrack_1_1DataSet.html">svgDoc</a>)</td></tr>
 <tr class="separator:a72825661231c88686b995c0f50b1d0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4e8498bed0047fab85e14c1af29d030a" id="r_a4e8498bed0047fab85e14c1af29d030a"><td class="memItemLeft" align="right" valign="top"><a id="a4e8498bed0047fab85e14c1af29d030a" name="a4e8498bed0047fab85e14c1af29d030a"></a>
-const <a class="el" href="classdrain_1_1ClassXML.html">drain::ClassXML</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cls</b></td></tr>
+<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1ClassXML.html">drain::ClassXML</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cls</b></td></tr>
 <tr class="separator:a4e8498bed0047fab85e14c1af29d030a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>

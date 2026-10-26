@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -177,23 +184,29 @@ typedef std::map&lt; std::string, <a class="el" href="classrack_1_1ODIMPathElem.
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
-<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a427347a7905bb31e148e56dacd75dad6" id="r_a427347a7905bb31e148e56dacd75dad6"><td class="memItemLeft" align="right" valign="top"><a id="a427347a7905bb31e148e56dacd75dad6" name="a427347a7905bb31e148e56dacd75dad6"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>NodeHi5</b> (const <a class="el" href="structhi5_1_1NodeHi5.html">NodeHi5</a> &amp;n)</td></tr>
 <tr class="separator:a427347a7905bb31e148e56dacd75dad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc" id="r_a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top"><a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>empty</b> () const</td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9fd6955aa1014f41e7633a9d89da3d" id="r_acd9fd6955aa1014f41e7633a9d89da3d"><td class="memItemLeft" align="right" valign="top"><a id="acd9fd6955aa1014f41e7633a9d89da3d" name="acd9fd6955aa1014f41e7633a9d89da3d"></a>
 <a class="el" href="structhi5_1_1NodeHi5.html">NodeHi5</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="structhi5_1_1NodeHi5.html">hi5::NodeHi5</a> &amp;node)</td></tr>
 <tr class="separator:acd9fd6955aa1014f41e7633a9d89da3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9e766589466923fa49e54d806aa0768" id="r_ae9e766589466923fa49e54d806aa0768"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhi5_1_1NodeHi5.html#ae9e766589466923fa49e54d806aa0768">writeText</a> (std::ostream &amp;ostr=std::cout, const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;prefix=<a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a>()) const</td></tr>
+<tr class="memitem:a05f471780d5978a2415395453f1055cd" id="r_a05f471780d5978a2415395453f1055cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structhi5_1_1NodeHi5.html#a05f471780d5978a2415395453f1055cd">writeText</a> (std::ostream &amp;ostr, const std::string &amp;prefix) const</td></tr>
+<tr class="separator:a05f471780d5978a2415395453f1055cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9e766589466923fa49e54d806aa0768" id="r_ae9e766589466923fa49e54d806aa0768"><td class="memItemLeft" align="right" valign="top"><a id="ae9e766589466923fa49e54d806aa0768" name="ae9e766589466923fa49e54d806aa0768"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>writeText</b> (std::ostream &amp;ostr=std::cout, const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;prefix=<a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a>()) const</td></tr>
 <tr class="separator:ae9e766589466923fa49e54d806aa0768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a144c7ab36d036d7be0954174f2567c15" id="r_a144c7ab36d036d7be0954174f2567c15"><td class="memItemLeft" align="right" valign="top"><a id="a144c7ab36d036d7be0954174f2567c15" name="a144c7ab36d036d7be0954174f2567c15"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>swap</b> (<a class="el" href="structhi5_1_1NodeHi5.html">NodeHi5</a> &amp;n)</td></tr>
+<tr class="separator:a144c7ab36d036d7be0954174f2567c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4cf78a2a02e93fc59bb07e53938ddc53" id="r_a4cf78a2a02e93fc59bb07e53938ddc53"><td class="memItemLeft" align="right" valign="top"><a id="a4cf78a2a02e93fc59bb07e53938ddc53" name="a4cf78a2a02e93fc59bb07e53938ddc53"></a>
-<a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Image</a>&#160;</td><td class="memItemRight" valign="bottom"><b>image</b></td></tr>
-<tr class="separator:a4cf78a2a02e93fc59bb07e53938ddc53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefd0fe34bd73002f11f6b3ba71d5dcb9" id="r_aefd0fe34bd73002f11f6b3ba71d5dcb9"><td class="memItemLeft" align="right" valign="top"><a id="aefd0fe34bd73002f11f6b3ba71d5dcb9" name="aefd0fe34bd73002f11f6b3ba71d5dcb9"></a>
+<a class="el" href="classdrain_1_1image_1_1Image.html">image_type</a>&#160;</td><td class="memItemRight" valign="bottom"><b>image</b></td></tr>
+<tr class="separator:aefd0fe34bd73002f11f6b3ba71d5dcb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6dd565e2de7172fa0fbcca0f8b42f5d" id="r_ad6dd565e2de7172fa0fbcca0f8b42f5d"><td class="memItemLeft" align="right" valign="top"><a id="ad6dd565e2de7172fa0fbcca0f8b42f5d" name="ad6dd565e2de7172fa0fbcca0f8b42f5d"></a>
 <a class="el" href="classdrain_1_1VariableMap.html">drain::VariableMap</a>&#160;</td><td class="memItemRight" valign="bottom"><b>attributes</b></td></tr>
 <tr class="separator:ad6dd565e2de7172fa0fbcca0f8b42f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,8 +219,8 @@ Public Attributes</h2></td></tr>
 <p>Node to be used in a h5 structure, ie. TreeNode&lt;NodeHi5&gt;. A node serves both as a group or a data set; if a data set is empty its node is treated as a group.</p>
 <p>ODIM conventions are purposely not included in the Hi5 utilities. For example, path naming conventions (dataset1/data3/...) and some special attributes like Conventions="ODIM_H5/V2_0" are left to the application code. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae9e766589466923fa49e54d806aa0768" name="ae9e766589466923fa49e54d806aa0768"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9e766589466923fa49e54d806aa0768">&#9670;&#160;</a></span>writeText()</h2>
+<a id="a05f471780d5978a2415395453f1055cd" name="a05f471780d5978a2415395453f1055cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05f471780d5978a2415395453f1055cd">&#9670;&#160;</a></span>writeText()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,13 +229,13 @@ Public Attributes</h2></td></tr>
           <td class="memname">void writeText </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>ostr</em> = <code>std::cout</code>, </td>
+          <td class="paramname"><em>ostr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a> &amp;&#160;</td>
-          <td class="paramname"><em>prefix</em> = <code><a class="el" href="classdrain_1_1Path.html">rack::ODIMPath</a>()</code>&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prefix</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -249,7 +262,7 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Marker for excluding from any "serious" file write. </p>
-<p>Marker for excluding from any "serious" file write. </p>
+<p>Subtrees marked with <code>exclude</code> will be be bypassed upon file write. </p>
 
 </div>
 </div>

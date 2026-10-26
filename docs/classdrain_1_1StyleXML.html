@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -86,21 +93,15 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="bak_2TreeXML_8h_source.html">TreeXML.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="StyleXML_8h_source.html">StyleXML.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for StyleXML:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1StyleXML__inherit__graph.png" border="0" usemap="#aStyleXML_inherit__map" alt="Inheritance graph"/></div>
 <map name="aStyleXML_inherit__map" id="aStyleXML_inherit__map">
-<area shape="rect" title=" " alt="" coords="221,225,304,251"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,152,264,177"/>
-<area shape="poly" title=" " alt="" coords="169,182,243,223,240,227,166,186"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="71,79,198,104"/>
-<area shape="poly" title=" " alt="" coords="137,118,137,152,132,152,132,118"/>
-<area shape="rect" title=" " alt="" coords="53,5,216,31"/>
-<area shape="poly" title=" " alt="" coords="137,44,137,79,132,79,132,44"/>
-<area shape="rect" title=" " alt="" coords="289,152,495,177"/>
-<area shape="poly" title=" " alt="" coords="360,186,285,227,283,223,358,182"/>
+<area shape="rect" title=" " alt="" coords="67,79,150,104"/>
+<area shape="rect" title=" " alt="" coords="5,5,212,31"/>
+<area shape="poly" title=" " alt="" coords="111,44,111,79,106,79,106,44"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -108,30 +109,30 @@ Collaboration diagram for StyleXML:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1StyleXML__coll__graph.png" border="0" usemap="#aStyleXML_coll__map" alt="Collaboration graph"/></div>
 <map name="aStyleXML_coll__map" id="aStyleXML_coll__map">
-<area shape="rect" title=" " alt="" coords="351,508,433,533"/>
-<area shape="rect" href="classdrain_1_1ReferenceMap2.html" title=" " alt="" coords="5,391,264,416"/>
-<area shape="poly" title=" " alt="" coords="174,419,368,506,365,510,171,424"/>
-<area shape="rect" href="classdrain_1_1SmartMap.html" title="A base class for smart maps providing methods for importing and exporting values, among others." alt="" coords="71,229,198,255"/>
-<area shape="poly" title=" " alt="" coords="137,268,137,390,132,390,132,268"/>
-<area shape="rect" title=" " alt="" coords="53,155,216,180"/>
-<area shape="poly" title=" " alt="" coords="137,194,137,229,132,229,132,194"/>
-<area shape="rect" title=" " alt="" coords="289,391,495,416"/>
-<area shape="poly" title=" " alt="" coords="395,429,395,508,389,508,389,429"/>
-<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="520,391,637,416"/>
-<area shape="poly" title=" " alt="" coords="550,425,412,510,409,506,547,421"/>
-<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="531,229,627,255"/>
-<area shape="poly" title=" " alt="" coords="581,268,581,390,576,390,576,268"/>
-<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="515,155,643,180"/>
-<area shape="poly" title=" " alt="" coords="581,194,581,229,576,229,576,194"/>
-<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="503,80,655,105"/>
-<area shape="poly" title=" " alt="" coords="581,120,581,154,576,154,576,120"/>
-<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="507,5,651,31"/>
-<area shape="poly" title=" " alt="" coords="581,45,581,80,576,80,576,45"/>
+<area shape="rect" title=" " alt="" coords="89,508,171,533"/>
+<area shape="rect" title=" " alt="" coords="5,391,212,416"/>
+<area shape="poly" title=" " alt="" coords="116,429,131,507,125,508,111,430"/>
+<area shape="rect" href="structdrain_1_1SprinterLayout.html" title=" " alt="" coords="237,391,354,416"/>
+<area shape="poly" title=" " alt="" coords="269,426,148,510,145,506,266,422"/>
+<area shape="rect" href="structdrain_1_1TypeLayout.html" title=" " alt="" coords="247,229,343,255"/>
+<area shape="poly" title=" " alt="" coords="298,268,298,390,293,390,293,268"/>
+<area shape="rect" href="classdrain_1_1TypeLayoutBase.html" title="Small container for printing style for putting of structured objects (array, maps,..." alt="" coords="231,155,359,180"/>
+<area shape="poly" title=" " alt="" coords="298,194,298,229,293,229,293,194"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="219,80,371,105"/>
+<area shape="poly" title=" " alt="" coords="298,120,298,154,293,154,293,120"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="223,5,367,31"/>
+<area shape="poly" title=" " alt="" coords="298,45,298,80,293,80,293,45"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a12abd976a7db18520e4d07d9f89ab9cb" id="r_a12abd976a7db18520e4d07d9f89ab9cb"><td class="memItemLeft" align="right" valign="top"><a id="a12abd976a7db18520e4d07d9f89ab9cb" name="a12abd976a7db18520e4d07d9f89ab9cb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>StyleXML</b> (const std::initializer_list&lt; std::pair&lt; std::string, <a class="el" href="namespacedrain.html#ab7d12e28978bddd9b2fda7142a1c0420">Variable</a> &gt; &gt; &amp;inits)</td></tr>
+<tr class="separator:a12abd976a7db18520e4d07d9f89ab9cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae10b29d282e786ef27acc0e922fa7876" id="r_ae10b29d282e786ef27acc0e922fa7876"><td class="memItemLeft" align="right" valign="top"><a id="ae10b29d282e786ef27acc0e922fa7876" name="ae10b29d282e786ef27acc0e922fa7876"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>StyleXML</b> (const <a class="el" href="classdrain_1_1StyleXML.html">StyleXML</a> &amp;stl)</td></tr>
+<tr class="separator:ae10b29d282e786ef27acc0e922fa7876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af713e11fce8d4421087788606f76d48b" id="r_af713e11fce8d4421087788606f76d48b"><td class="memTemplParams" colspan="2"><a id="af713e11fce8d4421087788606f76d48b" name="af713e11fce8d4421087788606f76d48b"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:af713e11fce8d4421087788606f76d48b"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><b>get</b> (const key_type &amp;key, const T &amp;defaultValue=T()) const</td></tr>
@@ -139,122 +140,6 @@ template&lt;class T &gt; </td></tr>
 <tr class="memitem:a575c480dc303ce82c3c085fd76209fea" id="r_a575c480dc303ce82c3c085fd76209fea"><td class="memItemLeft" align="right" valign="top"><a id="a575c480dc303ce82c3c085fd76209fea" name="a575c480dc303ce82c3c085fd76209fea"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const key_type &amp;key, const char *defaultValue) const</td></tr>
 <tr class="separator:a575c480dc303ce82c3c085fd76209fea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classdrain_1_1ReferenceMap2"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1ReferenceMap2')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2&lt; FlexibleVariable &gt;</a></td></tr>
-<tr class="memitem:a5660c340292d7a6d78a1340b39e9586b inherit pub_methods_classdrain_1_1ReferenceMap2" id="r_a5660c340292d7a6d78a1340b39e9586b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1VariableT.html">ref_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap2.html#a5660c340292d7a6d78a1340b39e9586b">link</a> (const std::string &amp;key, F &amp;x)</td></tr>
-<tr class="memdesc:a5660c340292d7a6d78a1340b39e9586b inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Associates a map entry with a variable.  <br /></td></tr>
-<tr class="separator:a5660c340292d7a6d78a1340b39e9586b inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a799f8e600c100562f938efe551208a5e inherit pub_methods_classdrain_1_1ReferenceMap2" id="r_a799f8e600c100562f938efe551208a5e"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classdrain_1_1VariableT.html">ref_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>link</b> (const std::string &amp;key, void *ptr, const std::type_info &amp;type, size_t count=1)</td></tr>
-<tr class="memdesc:a799f8e600c100562f938efe551208a5e inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a reference to a basic type or std::string. (Also for basetype arrays.) <br /></td></tr>
-<tr class="separator:a799f8e600c100562f938efe551208a5e inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dce7c1b4c80958f746c1edd167da363 inherit pub_methods_classdrain_1_1ReferenceMap2" id="r_a3dce7c1b4c80958f746c1edd167da363"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>unlink</b> (const std::string &amp;key)</td></tr>
-<tr class="separator:a3dce7c1b4c80958f746c1edd167da363 inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dbc53b52637b91d21d08d9d372fdda2 inherit pub_methods_classdrain_1_1ReferenceMap2" id="r_a7dbc53b52637b91d21d08d9d372fdda2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap2.html#a7dbc53b52637b91d21d08d9d372fdda2">copyStruct</a> (const <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2</a>&lt; <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a> &gt; &amp;m, const T2 &amp;src, T2 &amp;dst, <a class="el" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1">extLinkPolicy</a> policy=RESERVE)</td></tr>
-<tr class="memdesc:a7dbc53b52637b91d21d08d9d372fdda2 inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Experimental. Copies references and values of a structure to another.  <br /></td></tr>
-<tr class="separator:a7dbc53b52637b91d21d08d9d372fdda2 inherit pub_methods_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classdrain_1_1SmartMap"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classdrain_1_1SmartMap')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classdrain_1_1SmartMap.html">SmartMap&lt; T &gt;</a></td></tr>
-<tr class="memitem:adf5c2b9b2cc510115fd1f16eca5488df inherit pub_methods_classdrain_1_1SmartMap" id="r_adf5c2b9b2cc510115fd1f16eca5488df"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#adf5c2b9b2cc510115fd1f16eca5488df">SmartMap</a> (char <a class="el" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>='\0', char <a class="el" href="classdrain_1_1SmartMap.html#a360531fdf0529252ca32fe16010bab62">arraySeparator</a>=':')</td></tr>
-<tr class="separator:adf5c2b9b2cc510115fd1f16eca5488df inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cab261405d46bcfcd724f396c0ec608 inherit pub_methods_classdrain_1_1SmartMap" id="r_a0cab261405d46bcfcd724f396c0ec608"><td class="memItemLeft" align="right" valign="top">
-&#160;</td><td class="memItemRight" valign="bottom"><b>SmartMap</b> (const <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a> &amp;smap)</td></tr>
-<tr class="separator:a0cab261405d46bcfcd724f396c0ec608 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae048282c7011eedc2e0492f6421ea73 inherit pub_methods_classdrain_1_1SmartMap" id="r_aae048282c7011eedc2e0492f6421ea73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#aae048282c7011eedc2e0492f6421ea73">clear</a> ()</td></tr>
-<tr class="separator:aae048282c7011eedc2e0492f6421ea73 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2caa6fea9e9725a1d3dde96af1e1ff9 inherit pub_methods_classdrain_1_1SmartMap" id="r_ad2caa6fea9e9725a1d3dde96af1e1ff9"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasKey</b> (const std::string &amp;key) const</td></tr>
-<tr class="separator:ad2caa6fea9e9725a1d3dde96af1e1ff9 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe464e25c8f6b69f9fc017b58427fc87 inherit pub_methods_classdrain_1_1SmartMap" id="r_abe464e25c8f6b69f9fc017b58427fc87"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#abe464e25c8f6b69f9fc017b58427fc87">get</a> (const std::string &amp;key, const std::string &amp;defaultValue) const</td></tr>
-<tr class="memdesc:abe464e25c8f6b69f9fc017b58427fc87 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a value, or default value if value is unset.  <br /></td></tr>
-<tr class="separator:abe464e25c8f6b69f9fc017b58427fc87 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8390a381c0b062fc137f5ff60b107bce inherit pub_methods_classdrain_1_1SmartMap" id="r_a8390a381c0b062fc137f5ff60b107bce"><td class="memItemLeft" align="right" valign="top">
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get</b> (const std::string &amp;key, const char *defaultValue) const</td></tr>
-<tr class="separator:a8390a381c0b062fc137f5ff60b107bce inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf434be8e7aeb060b0626f010c899415 inherit pub_methods_classdrain_1_1SmartMap" id="r_adf434be8e7aeb060b0626f010c899415"><td class="memTemplParams" colspan="2">template&lt;class T2 &gt; </td></tr>
-<tr class="memitem:adf434be8e7aeb060b0626f010c899415 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">T2&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#adf434be8e7aeb060b0626f010c899415">get</a> (const std::string &amp;key, const T2 &amp;defaultValue) const</td></tr>
-<tr class="memdesc:adf434be8e7aeb060b0626f010c899415 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves a value, if set, else returns the given default value.  <br /></td></tr>
-<tr class="separator:adf434be8e7aeb060b0626f010c899415 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4574abfbf9714e3f58112c3f0661ba8 inherit pub_methods_classdrain_1_1SmartMap" id="r_aa4574abfbf9714e3f58112c3f0661ba8"><td class="memItemLeft" align="right" valign="top">virtual T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#aa4574abfbf9714e3f58112c3f0661ba8">operator[]</a> (const std::string &amp;key)</td></tr>
-<tr class="memdesc:aa4574abfbf9714e3f58112c3f0661ba8 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an element. Creates one, conditionally.  <br /></td></tr>
-<tr class="separator:aa4574abfbf9714e3f58112c3f0661ba8 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54f0dad4c8c9d51228bd52e7da4d1fbc inherit pub_methods_classdrain_1_1SmartMap" id="r_a54f0dad4c8c9d51228bd52e7da4d1fbc"><td class="memItemLeft" align="right" valign="top">virtual const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a54f0dad4c8c9d51228bd52e7da4d1fbc">operator[]</a> (const std::string &amp;key) const</td></tr>
-<tr class="memdesc:a54f0dad4c8c9d51228bd52e7da4d1fbc inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike with std::map, operator[] const is defined, returning reference to a static empty instance.  <br /></td></tr>
-<tr class="separator:a54f0dad4c8c9d51228bd52e7da4d1fbc inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap" id="r_a8ad979a05f7b8a1dbbffacd8467c7cff"><td class="memItemLeft" align="right" valign="top">
-virtual const keylist_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getKeyList</b> () const</td></tr>
-<tr class="memdesc:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Derived versions may produce an ordered set of keys. <br /></td></tr>
-<tr class="separator:a8ad979a05f7b8a1dbbffacd8467c7cff inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab5b95d8eb31d3bab4e6a06e0bf19d794"><td class="memItemLeft" align="right" valign="top">const map_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab5b95d8eb31d3bab4e6a06e0bf19d794">getMap</a> () const</td></tr>
-<tr class="separator:ab5b95d8eb31d3bab4e6a06e0bf19d794 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap" id="r_aa2d8c7c53beee48e997af82bfed2add4"><td class="memTemplParams" colspan="2">
-template&lt;class T2 &gt; </td></tr>
-<tr class="memitem:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>exportMap</b> (std::map&lt; std::string, T2 &gt; &amp;m) const</td></tr>
-<tr class="memdesc:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the contents to another map. <br /></td></tr>
-<tr class="separator:aa2d8c7c53beee48e997af82bfed2add4 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abdeb20db9d3140efabc28b2dc643ce53 inherit pub_methods_classdrain_1_1SmartMap" id="r_abdeb20db9d3140efabc28b2dc643ce53"><td class="memTemplParams" colspan="2">template&lt;bool STRICT = true&gt; </td></tr>
-<tr class="memitem:abdeb20db9d3140efabc28b2dc643ce53 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#abdeb20db9d3140efabc28b2dc643ce53">importEntries</a> (const std::string &amp;entries, char assignmentChar='=', char separatorChar=0)</td></tr>
-<tr class="memdesc:abdeb20db9d3140efabc28b2dc643ce53 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns a value to given key; if the entry does not exist, tries to create it with directly with operator[].  <br /></td></tr>
-<tr class="separator:abdeb20db9d3140efabc28b2dc643ce53 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a313ee508d82e1c99f65134807858d036 inherit pub_methods_classdrain_1_1SmartMap" id="r_a313ee508d82e1c99f65134807858d036"><td class="memTemplParams" colspan="2">template&lt;bool STRICT = true&gt; </td></tr>
-<tr class="memitem:a313ee508d82e1c99f65134807858d036 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a313ee508d82e1c99f65134807858d036">importEntries</a> (const std::list&lt; std::string &gt; &amp;entries, char assignmentChar='=')</td></tr>
-<tr class="separator:a313ee508d82e1c99f65134807858d036 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af96c05d0eecedaf1550432f0b74eb304 inherit pub_methods_classdrain_1_1SmartMap" id="r_af96c05d0eecedaf1550432f0b74eb304"><td class="memTemplParams" colspan="2">template&lt;class S , bool STRICT = true&gt; </td></tr>
-<tr class="memitem:af96c05d0eecedaf1550432f0b74eb304 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#af96c05d0eecedaf1550432f0b74eb304">importMap</a> (const std::map&lt; std::string, S &gt; &amp;m)</td></tr>
-<tr class="memdesc:af96c05d0eecedaf1550432f0b74eb304 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map, overriding existing entries.  <br /></td></tr>
-<tr class="separator:af96c05d0eecedaf1550432f0b74eb304 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dfbff0fda4c400c3edcd0ae920f573d inherit pub_methods_classdrain_1_1SmartMap" id="r_a8dfbff0fda4c400c3edcd0ae920f573d"><td class="memTemplParams" colspan="2">template&lt;class T2 , bool STRICT = true&gt; </td></tr>
-<tr class="memitem:a8dfbff0fda4c400c3edcd0ae920f573d inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a8dfbff0fda4c400c3edcd0ae920f573d">importCastableMap</a> (const <a class="el" href="classdrain_1_1SmartMap.html">drain::SmartMap</a>&lt; T2 &gt; &amp;m)</td></tr>
-<tr class="memdesc:a8dfbff0fda4c400c3edcd0ae920f573d inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map, possibly extending the map.  <br /></td></tr>
-<tr class="separator:a8dfbff0fda4c400c3edcd0ae920f573d inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap" id="r_ab3c45b7f1a61f1fbdc052cb4c6fb0c6d"><td class="memTemplParams" colspan="2">template&lt;class T2 &gt; </td></tr>
-<tr class="memitem:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ab3c45b7f1a61f1fbdc052cb4c6fb0c6d">updateFromMap</a> (const std::map&lt; std::string, T2 &gt; &amp;m)</td></tr>
-<tr class="memdesc:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assign values from a map. Updates existing entries only.  <br /></td></tr>
-<tr class="separator:ab3c45b7f1a61f1fbdc052cb4c6fb0c6d inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6e5c73c11a06c116b99c6589b4770b3 inherit pub_methods_classdrain_1_1SmartMap" id="r_ab6e5c73c11a06c116b99c6589b4770b3"><td class="memTemplParams" colspan="2">
-template&lt;class T2 &gt; </td></tr>
-<tr class="memitem:ab6e5c73c11a06c116b99c6589b4770b3 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>updateFromCastableMap</b> (const <a class="el" href="classdrain_1_1SmartMap.html">drain::SmartMap</a>&lt; T2 &gt; &amp;m)</td></tr>
-<tr class="memdesc:ab6e5c73c11a06c116b99c6589b4770b3 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience. <br /></td></tr>
-<tr class="separator:ab6e5c73c11a06c116b99c6589b4770b3 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecbaf3ef2409d613580baf9b4f5d1b99 inherit pub_methods_classdrain_1_1SmartMap" id="r_aecbaf3ef2409d613580baf9b4f5d1b99"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setValues</b> (const std::string &amp;entries, char assignmentChar='=', char separatorChar=0)</td></tr>
-<tr class="memdesc:aecbaf3ef2409d613580baf9b4f5d1b99 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets values. If strictness==STRICTLY_CLOSED, throws exception if tries to assign a non-existing entry. <br /></td></tr>
-<tr class="separator:aecbaf3ef2409d613580baf9b4f5d1b99 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e73ab480b5653ea1fe0754d1860e24f inherit pub_methods_classdrain_1_1SmartMap" id="r_a7e73ab480b5653ea1fe0754d1860e24f"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setValues</b> (const char *entries, char assignmentChar='=', char separatorChar=0)</td></tr>
-<tr class="separator:a7e73ab480b5653ea1fe0754d1860e24f inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5660ab0d6690eb8d2bfdaf485d3f1f39 inherit pub_methods_classdrain_1_1SmartMap" id="r_a5660ab0d6690eb8d2bfdaf485d3f1f39"><td class="memTemplParams" colspan="2">
-template&lt;class S &gt; </td></tr>
-<tr class="memitem:a5660ab0d6690eb8d2bfdaf485d3f1f39 inherit pub_methods_classdrain_1_1SmartMap"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>setValuesSEQ</b> (const S &amp;sequence)</td></tr>
-<tr class="separator:a5660ab0d6690eb8d2bfdaf485d3f1f39 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1d11a3b6eb61c9b84c60da45703b717 inherit pub_methods_classdrain_1_1SmartMap" id="r_ac1d11a3b6eb61c9b84c60da45703b717"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>updateValues</b> (const std::string &amp;entries, char assignmentChar='=', char separatorChar=0)</td></tr>
-<tr class="memdesc:ac1d11a3b6eb61c9b84c60da45703b717 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets applicable values ie. modifies existing entries only. In ordered maps, skips extra entries silently. <br /></td></tr>
-<tr class="separator:ac1d11a3b6eb61c9b84c60da45703b717 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeff55d77dcee78a3600e0fa9ae9ee33b inherit pub_methods_classdrain_1_1SmartMap" id="r_aeff55d77dcee78a3600e0fa9ae9ee33b"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> (std::ostream &amp;ostr) const</td></tr>
-<tr class="separator:aeff55d77dcee78a3600e0fa9ae9ee33b inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a3f556fbd19992ce4b7ac80fb957910 inherit pub_methods_classdrain_1_1SmartMap" id="r_a3a3f556fbd19992ce4b7ac80fb957910"><td class="memItemLeft" align="right" valign="top">
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getKeys</b> () const</td></tr>
-<tr class="memdesc:a3a3f556fbd19992ce4b7ac80fb957910 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for std::string output. <br /></td></tr>
-<tr class="separator:a3a3f556fbd19992ce4b7ac80fb957910 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac46d54856697c46a1e49e6567004fc0 inherit pub_methods_classdrain_1_1SmartMap" id="r_aac46d54856697c46a1e49e6567004fc0"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>getValues</b> (std::ostream &amp;ostr) const</td></tr>
-<tr class="memdesc:aac46d54856697c46a1e49e6567004fc0 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the values. <br /></td></tr>
-<tr class="separator:aac46d54856697c46a1e49e6567004fc0 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa01b686e5a02568f77baaeee981665d2 inherit pub_methods_classdrain_1_1SmartMap" id="r_aa01b686e5a02568f77baaeee981665d2"><td class="memItemLeft" align="right" valign="top">
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>getValues</b> () const</td></tr>
-<tr class="memdesc:aa01b686e5a02568f77baaeee981665d2 inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenience function for std::string output. <br /></td></tr>
-<tr class="separator:aa01b686e5a02568f77baaeee981665d2 inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea7cc107e87c7515808e57ed55ec2c8c inherit pub_methods_classdrain_1_1SmartMap" id="r_aea7cc107e87c7515808e57ed55ec2c8c"><td class="memItemLeft" align="right" valign="top">
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>toStream</b> (std::ostream &amp;ostr, char equal='=', char startChar='{', char endChar='}', char separatorChar=',') const</td></tr>
-<tr class="memdesc:aea7cc107e87c7515808e57ed55ec2c8c inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Note: parameters discarded. <br /></td></tr>
-<tr class="separator:aea7cc107e87c7515808e57ed55ec2c8c inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6370f2f2d1a59ba8c4b1170a63c8ae1e inherit pub_methods_classdrain_1_1SmartMap" id="r_a6370f2f2d1a59ba8c4b1170a63c8ae1e"><td class="memItemLeft" align="right" valign="top">
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStr</b> (char equal='=', char start=0, char end=0, char <a class="el" href="classdrain_1_1SmartMap.html#a6989953791434c8ea982054551c9e154">separator</a>=0) const</td></tr>
-<tr class="separator:a6370f2f2d1a59ba8c4b1170a63c8ae1e inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2236179b2770b16ac72abb636634efd inherit pub_methods_classdrain_1_1SmartMap" id="r_ac2236179b2770b16ac72abb636634efd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#ac2236179b2770b16ac72abb636634efd">dump</a> (std::ostream &amp;ostr=std::cout) const</td></tr>
-<tr class="memdesc:ac2236179b2770b16ac72abb636634efd inherit pub_methods_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write map as a <a class="el" href="classdrain_1_1JSON.html" title="Utility for extracting JSON-compatible strings, numbers or arrays of numbers in text data.">JSON</a> code.  <br /></td></tr>
-<tr class="separator:ac2236179b2770b16ac72abb636634efd inherit pub_methods_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -266,15 +151,15 @@ template&lt;class ... TT&gt; </td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a429bac7bab09281b2f9d59b747c77950" id="r_a429bac7bab09281b2f9d59b747c77950"><td class="memItemLeft" align="right" valign="top"><a id="a429bac7bab09281b2f9d59b747c77950" name="a429bac7bab09281b2f9d59b747c77950"></a>
+<tr class="memitem:a656b8fd48a8ea9115bb75956791d978b" id="r_a656b8fd48a8ea9115bb75956791d978b"><td class="memItemLeft" align="right" valign="top"><a id="a656b8fd48a8ea9115bb75956791d978b" name="a656b8fd48a8ea9115bb75956791d978b"></a>
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>styleLineLayout</b></td></tr>
-<tr class="separator:a429bac7bab09281b2f9d59b747c77950"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48149ac554adc9ab2ad5bc9f8a82feb7" id="r_a48149ac554adc9ab2ad5bc9f8a82feb7"><td class="memItemLeft" align="right" valign="top"><a id="a48149ac554adc9ab2ad5bc9f8a82feb7" name="a48149ac554adc9ab2ad5bc9f8a82feb7"></a>
+<tr class="separator:a656b8fd48a8ea9115bb75956791d978b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab942b807573d875faa6154cb187ec956" id="r_ab942b807573d875faa6154cb187ec956"><td class="memItemLeft" align="right" valign="top"><a id="ab942b807573d875faa6154cb187ec956" name="ab942b807573d875faa6154cb187ec956"></a>
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>styleRecordLayout</b></td></tr>
-<tr class="separator:a48149ac554adc9ab2ad5bc9f8a82feb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fae221527037d0ea3252426d761b1ba" id="r_a7fae221527037d0ea3252426d761b1ba"><td class="memItemLeft" align="right" valign="top"><a id="a7fae221527037d0ea3252426d761b1ba" name="a7fae221527037d0ea3252426d761b1ba"></a>
+<tr class="separator:ab942b807573d875faa6154cb187ec956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a915eb0cfc102d22bcf68eb49bc3e1f81" id="r_a915eb0cfc102d22bcf68eb49bc3e1f81"><td class="memItemLeft" align="right" valign="top"><a id="a915eb0cfc102d22bcf68eb49bc3e1f81" name="a915eb0cfc102d22bcf68eb49bc3e1f81"></a>
 static const <a class="el" href="structdrain_1_1SprinterLayout.html">SprinterLayout</a>&#160;</td><td class="memItemRight" valign="bottom"><b>styleRecordLayoutActual</b></td></tr>
-<tr class="separator:a7fae221527037d0ea3252426d761b1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a915eb0cfc102d22bcf68eb49bc3e1f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a9b1ddecfffd7cebf5653c780ae1602" id="r_a4a9b1ddecfffd7cebf5653c780ae1602"><td class="memItemLeft" align="right" valign="top"><a id="a4a9b1ddecfffd7cebf5653c780ae1602" name="a4a9b1ddecfffd7cebf5653c780ae1602"></a>
 static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>TEXT_ANCHOR</b></td></tr>
 <tr class="separator:a4a9b1ddecfffd7cebf5653c780ae1602"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -288,66 +173,13 @@ template&lt;class T , class ... TT&gt; </td></tr>
 <tr class="memitem:a06abce34350d04ce3507e25000aa6c76" id="r_a06abce34350d04ce3507e25000aa6c76"><td class="memItemLeft" align="right" valign="top"><a id="a06abce34350d04ce3507e25000aa6c76" name="a06abce34350d04ce3507e25000aa6c76"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>argsToStream</b> (std::ostream &amp;ostr)</td></tr>
 <tr class="separator:a06abce34350d04ce3507e25000aa6c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classdrain_1_1ReferenceMap2"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1ReferenceMap2')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1ReferenceMap2.html">ReferenceMap2&lt; FlexibleVariable &gt;</a></td></tr>
-<tr class="memitem:ad13ba38bb41ac1206987e9c82d85b6d1 inherit pub_types_classdrain_1_1ReferenceMap2" id="r_ad13ba38bb41ac1206987e9c82d85b6d1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1ReferenceMap2.html#ad13ba38bb41ac1206987e9c82d85b6d1">extLinkPolicy</a> </td></tr>
-<tr class="separator:ad13ba38bb41ac1206987e9c82d85b6d1 inherit pub_types_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a084cb3a13dc4dcbcb44a9c1c2036eec2 inherit pub_types_classdrain_1_1ReferenceMap2" id="r_a084cb3a13dc4dcbcb44a9c1c2036eec2"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ref_t</b></td></tr>
-<tr class="separator:a084cb3a13dc4dcbcb44a9c1c2036eec2 inherit pub_types_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59f67c79e9e4de7279832e6a64276b09 inherit pub_types_classdrain_1_1ReferenceMap2" id="r_a59f67c79e9e4de7279832e6a64276b09"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; <a class="el" href="namespacedrain.html#a10699beaebe2225eeefb946abb711d27">FlexibleVariable</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
-<tr class="separator:a59f67c79e9e4de7279832e6a64276b09 inherit pub_types_classdrain_1_1ReferenceMap2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_types_classdrain_1_1SmartMap"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classdrain_1_1SmartMap')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classdrain_1_1SmartMap.html">SmartMap&lt; T &gt;</a></td></tr>
-<tr class="memitem:ad9104bdc6e21f2f16c18ce33b5720aa4 inherit pub_types_classdrain_1_1SmartMap" id="r_ad9104bdc6e21f2f16c18ce33b5720aa4"><td class="memItemLeft" align="right" valign="top">
-typedef <a class="el" href="classdrain_1_1SmartMap.html">SmartMap</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>smap_t</b></td></tr>
-<tr class="separator:ad9104bdc6e21f2f16c18ce33b5720aa4 inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b94410f67a58121dba70f1031c4ba43 inherit pub_types_classdrain_1_1SmartMap" id="r_a5b94410f67a58121dba70f1031c4ba43"><td class="memItemLeft" align="right" valign="top">
-typedef std::map&lt; std::string, T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>map_t</b></td></tr>
-<tr class="separator:a5b94410f67a58121dba70f1031c4ba43 inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64646a187ac923aa5d6ba4d69226c3d8 inherit pub_types_classdrain_1_1SmartMap" id="r_a64646a187ac923aa5d6ba4d69226c3d8"><td class="memItemLeft" align="right" valign="top">
-typedef map_t::key_type&#160;</td><td class="memItemRight" valign="bottom"><b>key_t</b></td></tr>
-<tr class="separator:a64646a187ac923aa5d6ba4d69226c3d8 inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d3784ffe3470e4332d29991f9094791 inherit pub_types_classdrain_1_1SmartMap" id="r_a2d3784ffe3470e4332d29991f9094791"><td class="memItemLeft" align="right" valign="top">
-typedef map_t::mapped_type&#160;</td><td class="memItemRight" valign="bottom"><b>value_t</b></td></tr>
-<tr class="separator:a2d3784ffe3470e4332d29991f9094791 inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20ace51330c543522edd91ed93bdcd0a inherit pub_types_classdrain_1_1SmartMap" id="r_a20ace51330c543522edd91ed93bdcd0a"><td class="memItemLeft" align="right" valign="top">
-typedef map_t::value_type&#160;</td><td class="memItemRight" valign="bottom"><b>entry_t</b></td></tr>
-<tr class="separator:a20ace51330c543522edd91ed93bdcd0a inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36b214ba86026bdad0ee8573d26f87cb inherit pub_types_classdrain_1_1SmartMap" id="r_a36b214ba86026bdad0ee8573d26f87cb"><td class="memItemLeft" align="right" valign="top">
-typedef std::list&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>keylist_t</b></td></tr>
-<tr class="separator:a36b214ba86026bdad0ee8573d26f87cb inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02720ab92b997d08a475408a87a9a378 inherit pub_types_classdrain_1_1SmartMap" id="r_a02720ab92b997d08a475408a87a9a378"><td class="memItemLeft" align="right" valign="top">
-typedef map_t::iterator&#160;</td><td class="memItemRight" valign="bottom"><b>iterator</b></td></tr>
-<tr class="memdesc:a02720ab92b997d08a475408a87a9a378 inherit pub_types_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Needed? <br /></td></tr>
-<tr class="separator:a02720ab92b997d08a475408a87a9a378 inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b1044fb589ffa9451ee2a57f7649293 inherit pub_types_classdrain_1_1SmartMap" id="r_a1b1044fb589ffa9451ee2a57f7649293"><td class="memItemLeft" align="right" valign="top">
-typedef map_t::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><b>const_iterator</b></td></tr>
-<tr class="separator:a1b1044fb589ffa9451ee2a57f7649293 inherit pub_types_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_classdrain_1_1SmartMap"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classdrain_1_1SmartMap')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classdrain_1_1SmartMap.html">SmartMap&lt; T &gt;</a></td></tr>
-<tr class="memitem:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1SmartMap" id="r_a6989953791434c8ea982054551c9e154"><td class="memItemLeft" align="right" valign="top">
-char&#160;</td><td class="memItemRight" valign="bottom"><b>separator</b></td></tr>
-<tr class="memdesc:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default character used for splitting input and output. See setValues. <br /></td></tr>
-<tr class="separator:a6989953791434c8ea982054551c9e154 inherit pub_attribs_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a360531fdf0529252ca32fe16010bab62 inherit pub_attribs_classdrain_1_1SmartMap" id="r_a360531fdf0529252ca32fe16010bab62"><td class="memItemLeft" align="right" valign="top">
-char&#160;</td><td class="memItemRight" valign="bottom"><b>arraySeparator</b></td></tr>
-<tr class="memdesc:a360531fdf0529252ca32fe16010bab62 inherit pub_attribs_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default separator character for array elements (std::vector's) <br /></td></tr>
-<tr class="separator:a360531fdf0529252ca32fe16010bab62 inherit pub_attribs_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_classdrain_1_1SmartMap"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classdrain_1_1SmartMap')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classdrain_1_1SmartMap.html">SmartMap&lt; T &gt;</a></td></tr>
-<tr class="memitem:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap" id="r_a3e9d8363daba3503121bd79ad72093b0"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1SmartMap.html#a3e9d8363daba3503121bd79ad72093b0">keyList</a></td></tr>
-<tr class="memdesc:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns values from std::string of type "value,value2,...valueN".  <br /></td></tr>
-<tr class="separator:a3e9d8363daba3503121bd79ad72093b0 inherit pro_attribs_classdrain_1_1SmartMap"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Flexibility is used (at least) in:</p><ul>
 <li>linking box.height to font-size (in TEXT or TSPAN elems) </li>
 </ul>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
-<li>bak/<a class="el" href="bak_2TreeXML_8h_source.html">TreeXML.h</a></li>
 <li>src/drain/util/<a class="el" href="StyleXML_8h_source.html">StyleXML.h</a></li>
-<li>bak/<b>TreeXML.cpp</b></li>
 <li>src/drain/util/<b>StyleXML.cpp</b></li>
 </ul>
 </div><!-- contents -->

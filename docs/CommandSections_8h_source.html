@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -154,13 +161,13 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keyword">const</span> std::string title;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="comment">//const drain::Flagger::ivalue_t index;</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">const</span> bank_section_t index;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="namespacedrain.html#a4c73756effb822c0be15c26d3a5e339b">bank_section_t</a> index;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">operator</span> <span class="keyword">const</span> std::string &amp; () <span class="keyword">const</span> {</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordflow">return</span> title;</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    }</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">operator</span> bank_section_t ()<span class="keyword"> const </span>{ <span class="comment">// drain::Flagger::ivalue_t</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keyword">operator</span> <a class="code hl_typedef" href="namespacedrain.html#a4c73756effb822c0be15c26d3a5e339b">bank_section_t</a> ()<span class="keyword"> const </span>{ <span class="comment">// drain::Flagger::ivalue_t</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordflow">return</span> index;</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
@@ -175,7 +182,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
   <span class="comment">// drain::Flagger::ivalue_t</span><div class="foldopen" id="foldopen00094" data-start="{" data-end="}">
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandSection.html#a7c242550014f38ef33385157ff42a1a7">   94</a></span>    <a class="code hl_function" href="classdrain_1_1CommandSection.html#a7c242550014f38ef33385157ff42a1a7">CommandSection</a>(<span class="keyword">const</span> std::string &amp; title, bank_section_t index) : title(title), index(index){</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classdrain_1_1CommandSection.html#a7c242550014f38ef33385157ff42a1a7">   94</a></span>    <a class="code hl_function" href="classdrain_1_1CommandSection.html#a7c242550014f38ef33385157ff42a1a7">CommandSection</a>(<span class="keyword">const</span> std::string &amp; title, <a class="code hl_typedef" href="namespacedrain.html#a4c73756effb822c0be15c26d3a5e339b">bank_section_t</a> index) : title(title), index(index){</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">if</span> (index &gt; 0){</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <a class="code hl_function" href="namespacedrain.html#a569239d05d6fef65d2712f8239abfd65">drain::getCommandBank</a>().sections.add(title, index);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="comment">//bank_section_t i = FlagResolver::getFreeBit(drain::getCommandBank().sections);</span></div>
@@ -245,9 +252,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment">// Rack</span></div>
 <div class="ttc" id="aclassdrain_1_1CommandSection_html"><div class="ttname"><a href="classdrain_1_1CommandSection.html">drain::CommandSection</a></div><div class="ttdef"><b>Definition</b> CommandSections.h:54</div></div>
 <div class="ttc" id="aclassdrain_1_1CommandSection_html_a7c242550014f38ef33385157ff42a1a7"><div class="ttname"><a href="classdrain_1_1CommandSection.html#a7c242550014f38ef33385157ff42a1a7">drain::CommandSection::CommandSection</a></div><div class="ttdeci">CommandSection(const std::string &amp;title, bank_section_t index)</div><div class="ttdef"><b>Definition</b> CommandSections.h:94</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:313</div></div>
-<div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:667</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html"><div class="ttname"><a href="classdrain_1_1Logger.html">drain::Logger</a></div><div class="ttdoc">LogSourc e is the means for a function or any program segment to &quot;connect&quot; to a Log.</div><div class="ttdef"><b>Definition</b> Log.h:326</div></div>
+<div class="ttc" id="aclassdrain_1_1Logger_html_a60f37798e5868468cf39e92bd496ea2d"><div class="ttname"><a href="classdrain_1_1Logger.html#a60f37798e5868468cf39e92bd496ea2d">drain::Logger::debug</a></div><div class="ttdeci">Logger &amp; debug(const TT &amp;... args)</div><div class="ttdoc">Debug information.</div><div class="ttdef"><b>Definition</b> Log.h:676</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
+<div class="ttc" id="anamespacedrain_html_a4c73756effb822c0be15c26d3a5e339b"><div class="ttname"><a href="namespacedrain.html#a4c73756effb822c0be15c26d3a5e339b">drain::bank_section_t</a></div><div class="ttdeci">int bank_section_t</div><div class="ttdoc">Class to be used as one base class.</div><div class="ttdef"><b>Definition</b> CommandBank.h:59</div></div>
 <div class="ttc" id="anamespacedrain_html_a569239d05d6fef65d2712f8239abfd65"><div class="ttname"><a href="namespacedrain.html#a569239d05d6fef65d2712f8239abfd65">drain::getCommandBank</a></div><div class="ttdeci">CommandBank &amp; getCommandBank()</div><div class="ttdoc">Global program command registry. Optional utility.</div><div class="ttdef"><b>Definition</b> CommandBank.cpp:52</div></div>
 <div class="ttc" id="astructdrain_1_1DeprecatingSection_html"><div class="ttname"><a href="structdrain_1_1DeprecatingSection.html">drain::DeprecatingSection</a></div><div class="ttdef"><b>Definition</b> CommandSections.h:113</div></div>
 <div class="ttc" id="astructdrain_1_1GeneralSection_html"><div class="ttname"><a href="structdrain_1_1GeneralSection.html">drain::GeneralSection</a></div><div class="ttdef"><b>Definition</b> CommandSections.h:122</div></div>

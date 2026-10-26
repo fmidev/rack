@@ -1,8 +1,8 @@
 <map id="DotLink" name="DotLink">
-<area shape="rect" id="Node000001" title=" " alt="" coords="78,420,150,445"/>
-<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title=" " alt="" coords="67,243,150,268"/>
+<area shape="rect" id="Node000001" title="DOC: Add class description." alt="" coords="78,420,150,445"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1DotEntity.html" title="DOC: Add class description." alt="" coords="67,243,150,268"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,282,116,420,111,420,107,282"/>
-<area shape="rect" id="Node000006" href="$classdrain_1_1DotNode.html" title=" " alt="" coords="131,317,209,343"/>
+<area shape="rect" id="Node000006" href="$classdrain_1_1DotNode.html" title="DOC: Add class description." alt="" coords="131,317,209,343"/>
 <area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="130,277,162,315,158,319,125,280"/>
 <area shape="rect" id="Node000003" href="$classdrain_1_1VariableMap.html" title="A map of Variables." alt="" coords="57,155,160,180"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,194,111,242,106,242,106,194"/>

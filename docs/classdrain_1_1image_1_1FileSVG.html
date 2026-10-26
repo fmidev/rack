@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -83,12 +90,17 @@ $(function() {
   <div class="headertitle"><div class="title">FileSVG Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>DOC: Add class description.  
+ <a href="classdrain_1_1image_1_1FileSVG.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="TreeSVG_8h_source.html">TreeSVG.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for FileSVG:</div>
 <div class="dyncontent">
 <div class="center"><img src="classdrain_1_1image_1_1FileSVG__coll__graph.png" border="0" usemap="#aFileSVG_coll__map" alt="Collaboration graph"/></div>
 <map name="aFileSVG_coll__map" id="aFileSVG_coll__map">
-<area shape="rect" title=" " alt="" coords="5,181,77,207"/>
+<area shape="rect" title="DOC: Add class description." alt="" coords="5,181,77,207"/>
 <area shape="rect" href="classdrain_1_1FileInfo.html" title=" " alt="" coords="6,93,77,119"/>
 <area shape="poly" title=" " alt="" coords="44,133,44,181,39,181,39,133"/>
 <area shape="rect" href="classdrain_1_1RegExp.html" title=" " alt="" coords="6,5,77,31"/>
@@ -100,6 +112,7 @@ Collaboration diagram for FileSVG:</div>
 Public Types</h2></td></tr>
 <tr class="memitem:adbd58f24854ccf0cf931ca798dcdd431" id="r_adbd58f24854ccf0cf931ca798dcdd431"><td class="memItemLeft" align="right" valign="top"><a id="adbd58f24854ccf0cf931ca798dcdd431" name="adbd58f24854ccf0cf931ca798dcdd431"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>PathPolicy</b> { <b>ABSOLUTE</b> = 1
 , <b>PREFIXED</b> = 2
+, <b>RELATIVE</b> = 2
  }</td></tr>
 <tr class="separator:adbd58f24854ccf0cf931ca798dcdd431"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbc98e5512e8ff519f2e7d0d0f5e6ee6" id="r_afbc98e5512e8ff519f2e7d0d0f5e6ee6"><td class="memItemLeft" align="right" valign="top"><a id="afbc98e5512e8ff519f2e7d0d0f5e6ee6" name="afbc98e5512e8ff519f2e7d0d0f5e6ee6"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>IncludePolicy</b> { <br />
@@ -127,8 +140,19 @@ static const <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a
 <tr class="memitem:a60eccf1a0b27787d521fadf4db7859fe" id="r_a60eccf1a0b27787d521fadf4db7859fe"><td class="memItemLeft" align="right" valign="top"><a id="a60eccf1a0b27787d521fadf4db7859fe" name="a60eccf1a0b27787d521fadf4db7859fe"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>radialBezierResolution</b> = 8</td></tr>
 <tr class="separator:a60eccf1a0b27787d521fadf4db7859fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ad33362fcd04aab7d8598291c9c6a92" id="r_a0ad33362fcd04aab7d8598291c9c6a92"><td class="memItemLeft" align="right" valign="top"><a id="a0ad33362fcd04aab7d8598291c9c6a92" name="a0ad33362fcd04aab7d8598291c9c6a92"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>visualDebugLevel</b> = 0</td></tr>
+<tr class="separator:a0ad33362fcd04aab7d8598291c9c6a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd96822b55a5c82f9d910c5e33127d47" id="r_afd96822b55a5c82f9d910c5e33127d47"><td class="memItemLeft" align="right" valign="top"><a id="afd96822b55a5c82f9d910c5e33127d47" name="afd96822b55a5c82f9d910c5e33127d47"></a>
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG</b> = &quot;SVG_DEBUG&quot;</td></tr>
+<tr class="separator:afd96822b55a5c82f9d910c5e33127d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7779d00125aa3a5e84ead0b96c67bd81" id="r_a7779d00125aa3a5e84ead0b96c67bd81"><td class="memItemLeft" align="right" valign="top"><a id="a7779d00125aa3a5e84ead0b96c67bd81" name="a7779d00125aa3a5e84ead0b96c67bd81"></a>
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUG_ALIGN</b> = &quot;SVG_DEBUG_ALIGN&quot;</td></tr>
+<tr class="separator:a7779d00125aa3a5e84ead0b96c67bd81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>DOC: Add class description. </p>
+</div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/drain/image/<a class="el" href="TreeSVG_8h_source.html">TreeSVG.h</a></li>
 <li>src/drain/image/<b>TreeSVG.cpp</b></li>
 </ul>

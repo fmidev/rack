@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -116,7 +123,7 @@ Collaboration diagram for Logger:</div>
 <area shape="poly" title=" " alt="" coords="85,45,85,80,79,80,79,45"/>
 <area shape="rect" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger." alt="" coords="183,80,229,105"/>
 <area shape="poly" title=" " alt="" coords="209,119,209,167,203,167,203,119"/>
-<area shape="rect" href="structdrain_1_1Notification.html" title=" " alt="" coords="253,80,351,105"/>
+<area shape="rect" href="structdrain_1_1Notification.html" title="DOC: Add class description." alt="" coords="253,80,351,105"/>
 <area shape="poly" title=" " alt="" coords="291,119,269,146,233,170,230,166,266,142,287,115"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
@@ -132,13 +139,15 @@ typedef void *&#160;</td><td class="memItemRight" valign="bottom"><b>oper</b></t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaefb6cbeed150415649af955fa6825da" id="r_aaefb6cbeed150415649af955fa6825da"><td class="memTemplParams" colspan="2">template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:aaefb6cbeed150415649af955fa6825da"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#aaefb6cbeed150415649af955fa6825da">Logger</a> (const char *filename, const TT &amp;...args)</td></tr>
-<tr class="memdesc:aaefb6cbeed150415649af955fa6825da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start logging,.  <br /></td></tr>
+<tr class="memitem:aaefb6cbeed150415649af955fa6825da" id="r_aaefb6cbeed150415649af955fa6825da"><td class="memTemplParams" colspan="2"><a id="aaefb6cbeed150415649af955fa6825da" name="aaefb6cbeed150415649af955fa6825da"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:aaefb6cbeed150415649af955fa6825da"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Logger</b> (const char *filename, const TT &amp;...args)</td></tr>
+<tr class="memdesc:aaefb6cbeed150415649af955fa6825da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start logging,. <br /></td></tr>
 <tr class="separator:aaefb6cbeed150415649af955fa6825da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af020c398c251ff669271daa68f02be67" id="r_af020c398c251ff669271daa68f02be67"><td class="memTemplParams" colspan="2">template&lt;typename ... TT&gt; </td></tr>
-<tr class="memitem:af020c398c251ff669271daa68f02be67"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#af020c398c251ff669271daa68f02be67">Logger</a> (<a class="el" href="classdrain_1_1Log.html">Log</a> &amp;log, const char *filename, const TT &amp;...args)</td></tr>
-<tr class="memdesc:af020c398c251ff669271daa68f02be67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start logging,.  <br /></td></tr>
+<tr class="memitem:af020c398c251ff669271daa68f02be67" id="r_af020c398c251ff669271daa68f02be67"><td class="memTemplParams" colspan="2"><a id="af020c398c251ff669271daa68f02be67" name="af020c398c251ff669271daa68f02be67"></a>
+template&lt;typename ... TT&gt; </td></tr>
+<tr class="memitem:af020c398c251ff669271daa68f02be67"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Logger</b> (<a class="el" href="classdrain_1_1Log.html">Log</a> &amp;log, const char *filename, const TT &amp;...args)</td></tr>
+<tr class="memdesc:af020c398c251ff669271daa68f02be67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start logging,. <br /></td></tr>
 <tr class="separator:af020c398c251ff669271daa68f02be67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1d3edbdfb372725aa2854614e16abd5" id="r_aa1d3edbdfb372725aa2854614e16abd5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#aa1d3edbdfb372725aa2854614e16abd5">isLevel</a> (level_t l)</td></tr>
 <tr class="memdesc:aa1d3edbdfb372725aa2854614e16abd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true, if the log monitor level is at least l.  <br /></td></tr>
@@ -300,13 +309,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>endTiming</b> ()</td>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:a290db0c6a031527698af2e3436eac4f4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const T &amp;x)</td></tr>
 <tr class="separator:a290db0c6a031527698af2e3436eac4f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade72bdbed58d6d7056c042ce1425f5e6" id="r_ade72bdbed58d6d7056c042ce1425f5e6"><td class="memItemLeft" align="right" valign="top"><a id="ade72bdbed58d6d7056c042ce1425f5e6" name="ade72bdbed58d6d7056c042ce1425f5e6"></a>
+<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::nullptr_t)</td></tr>
+<tr class="memdesc:ade72bdbed58d6d7056c042ce1425f5e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">nullptr_t overload: avoids ambiguous operator&lt;&lt; in C++14. <br /></td></tr>
+<tr class="separator:ade72bdbed58d6d7056c042ce1425f5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf81d3fdaf258088d7692fa70cece087" id="r_aaf81d3fdaf258088d7692fa70cece087"><td class="memItemLeft" align="right" valign="top"><a id="aaf81d3fdaf258088d7692fa70cece087" name="aaf81d3fdaf258088d7692fa70cece087"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>end</b> ()</td></tr>
 <tr class="separator:aaf81d3fdaf258088d7692fa70cece087"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adae949c1f2d716f64cf76f2556512c95" id="r_adae949c1f2d716f64cf76f2556512c95"><td class="memItemLeft" align="right" valign="top"><a id="adae949c1f2d716f64cf76f2556512c95" name="adae949c1f2d716f64cf76f2556512c95"></a>
-<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (oper op)</td></tr>
-<tr class="memdesc:adae949c1f2d716f64cf76f2556512c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handling flush operator. <br /></td></tr>
-<tr class="separator:adae949c1f2d716f64cf76f2556512c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a559390a2e0c1a424a7ede422b2bccc3a" id="r_a559390a2e0c1a424a7ede422b2bccc3a"><td class="memItemLeft" align="right" valign="top"><a id="a559390a2e0c1a424a7ede422b2bccc3a" name="a559390a2e0c1a424a7ede422b2bccc3a"></a>
+<a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (oper)</td></tr>
+<tr class="memdesc:a559390a2e0c1a424a7ede422b2bccc3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handling flush operator. <br /></td></tr>
+<tr class="separator:a559390a2e0c1a424a7ede422b2bccc3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20916e24748be43d8178b79956e998b6" id="r_a20916e24748be43d8178b79956e998b6"><td class="memItemLeft" align="right" valign="top"><a id="a20916e24748be43d8178b79956e998b6" name="a20916e24748be43d8178b79956e998b6"></a>
 <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (const <a class="el" href="classdrain_1_1Logger.html">Logger</a> &amp;l)</td></tr>
 <tr class="memdesc:a20916e24748be43d8178b79956e998b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">NEW: sending "mout" insread of "mout.endl" Handling flush operator. <br /></td></tr>
@@ -364,9 +377,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>describeTiming</b> ()
 <tr class="memitem:a5cfe065351fa06fc117b52087bb759d2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdrain_1_1Logger.html#a5cfe065351fa06fc117b52087bb759d2">setPrefix</a> (const char *filename, const TT &amp;... args)</td></tr>
 <tr class="memdesc:a5cfe065351fa06fc117b52087bb759d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a label that starts every line in the log.  <br /></td></tr>
 <tr class="separator:a5cfe065351fa06fc117b52087bb759d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1963768e36fa7fec76dc4b2fb595a3fe" id="r_a1963768e36fa7fec76dc4b2fb595a3fe"><td class="memItemLeft" align="right" valign="top"><a id="a1963768e36fa7fec76dc4b2fb595a3fe" name="a1963768e36fa7fec76dc4b2fb595a3fe"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPrefix</b> (std::stringstream &amp;sstr)</td></tr>
-<tr class="separator:a1963768e36fa7fec76dc4b2fb595a3fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae35adccb22bbf5408012aa7c2831e35d" id="r_ae35adccb22bbf5408012aa7c2831e35d"><td class="memItemLeft" align="right" valign="top"><a id="ae35adccb22bbf5408012aa7c2831e35d" name="ae35adccb22bbf5408012aa7c2831e35d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>appendPrefix</b> (std::stringstream &amp;)</td></tr>
+<tr class="separator:ae35adccb22bbf5408012aa7c2831e35d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a005a905ebadd9b1b8bb440addefd48f8" id="r_a005a905ebadd9b1b8bb440addefd48f8"><td class="memTemplParams" colspan="2"><a id="a005a905ebadd9b1b8bb440addefd48f8" name="a005a905ebadd9b1b8bb440addefd48f8"></a>
 template&lt;typename T , typename ... TT&gt; </td></tr>
 <tr class="memitem:a005a905ebadd9b1b8bb440addefd48f8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>appendPrefix</b> (std::stringstream &amp;sstr, const T &amp;arg, const TT &amp;... args)</td></tr>
@@ -425,92 +438,7 @@ const <a class="el" href="structdrain_1_1Notification.html">Notification</a> *&#
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LogSourc e is the means for a function or any program segment to "connect" to a <a class="el" href="classdrain_1_1Log.html" title="Handler for notifications sent by a Logger.">Log</a>. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aaefb6cbeed150415649af955fa6825da" name="aaefb6cbeed150415649af955fa6825da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaefb6cbeed150415649af955fa6825da">&#9670;&#160;</a></span>Logger() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TT&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1Logger.html">Logger</a> </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TT &amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Start logging,. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">funcName</td><td>- name of the finction, often assigned as standard C macro <b>FUNCTION</b> . </td></tr>
-    <tr><td class="paramname">name</td><td>- specifier of the source, file name for example (to be basenamed). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af020c398c251ff669271daa68f02be67" name="af020c398c251ff669271daa68f02be67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af020c398c251ff669271daa68f02be67">&#9670;&#160;</a></span>Logger() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename ... TT&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classdrain_1_1Logger.html">Logger</a> </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classdrain_1_1Log.html">Log</a> &amp;&#160;</td>
-          <td class="paramname"><em>log</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>filename</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const TT &amp;...&#160;</td>
-          <td class="paramname"><em>args</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Start logging,. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">funcName</td><td>- name of the finction, often assigned as standard C macro <b>FUNCTION</b> . </td></tr>
-    <tr><td class="paramname">name</td><td>- specifier of the source, file name for example (to be basenamed). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a60f37798e5868468cf39e92bd496ea2d" name="a60f37798e5868468cf39e92bd496ea2d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60f37798e5868468cf39e92bd496ea2d">&#9670;&#160;</a></span>debug()</h2>
 
@@ -804,17 +732,11 @@ template&lt;typename ... TT&gt; </div>
 \param name - __FILE__
 </pre><p> void setPrefixOLD(const char *functionName, const char * name); </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filename</td><td>– as returned by built-in macro <b>FILE</b> </td></tr>
-    <tr><td class="paramname">func_name</td><td>– as returned by built-in macro <b>FUNCTION</b></td></tr>
+    <tr><td class="paramname">filename</td><td>– as returned by built-in macro <b>FILE</b></td></tr>
   </table>
   </dd>
 </dl>
-<p>TODO:</p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func_params</td><td>– optional function and template parameters, formulated by the user. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>// TODO: CHECK: previously documented parameter 'func_params' - optional function and template parameters, formulated by the user. - no longer in the signature; reconsider or remove. </p>
 <p>Start from s2, because dir may contain '.'</p>
 
 </div>

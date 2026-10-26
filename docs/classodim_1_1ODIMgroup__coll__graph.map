@@ -1,0 +1,13 @@
+<map id="ODIMgroup" name="ODIMgroup">
+<area shape="rect" id="Node000001" title=" " alt="" coords="65,347,160,372"/>
+<area shape="rect" id="Node000002" href="$classdrain_1_1EnumFlagger.html" title=" " alt="" coords="5,257,220,297"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,311,115,346,110,346,110,311"/>
+<area shape="rect" id="Node000003" href="$classdrain_1_1SingleFlagger.html" title=" " alt="" coords="17,183,209,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,222,115,257,110,257,110,222"/>
+<area shape="rect" id="Node000004" href="$classdrain_1_1FlaggerBase.html" title=" " alt="" coords="13,95,170,120"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="100,133,112,181,107,183,95,134"/>
+<area shape="rect" id="Node000005" href="$classdrain_1_1Dictionary.html" title="Two&#45;way mapping between strings and objects of template class T." alt="" coords="195,95,340,120"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="236,129,135,185,132,180,233,124"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="198,5,337,45"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="270,59,270,94,265,94,265,59"/>
+</map>

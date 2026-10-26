@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -149,7 +156,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">//      dst.at(100,100) == 255;</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        rand();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <a class="code hl_class" href="classrack_1_1DataSet.html">rand</a>();</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0; j&lt;height; j++){</div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0; i&lt;width; i++){</div>
@@ -211,14 +218,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
 <div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">#endif </span><span class="comment">/* RACKOP_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_a7bb28edf32c65e4c794511e2ae0fe07f"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#a7bb28edf32c65e4c794511e2ae0fe07f">drain::image::ImageFrame::put</a></div><div class="ttdeci">void put(size_t i, T x)</div><div class="ttdoc">Sets the intensity in location i to x. See \address.</div><div class="ttdef"><b>Definition</b> ImageFrame.h:187</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_ade620a483321962e790d84932ffa4a28"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#ade620a483321962e790d84932ffa4a28">drain::image::ImageFrame::get</a></div><div class="ttdeci">T get(size_t i) const</div><div class="ttdoc">Gets the intensity at location i. See address().</div><div class="ttdef"><b>Definition</b> ImageFrame.h:249</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_a7bb28edf32c65e4c794511e2ae0fe07f"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#a7bb28edf32c65e4c794511e2ae0fe07f">drain::image::ImageFrame::put</a></div><div class="ttdeci">void put(size_t i, T x)</div><div class="ttdoc">Sets the intensity in location i to x.</div><div class="ttdef"><b>Definition</b> ImageFrame.h:191</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html_ade620a483321962e790d84932ffa4a28"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html#ade620a483321962e790d84932ffa4a28">drain::image::ImageFrame::get</a></div><div class="ttdeci">T get(size_t i) const</div><div class="ttdoc">Gets the intensity at location i. See address().</div><div class="ttdef"><b>Definition</b> ImageFrame.h:263</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1Image_html"><div class="ttname"><a href="classdrain_1_1image_1_1Image.html">drain::image::Image</a></div><div class="ttdoc">Class for multi-channel digital images. Supports dynamic typing with base types (char,...</div><div class="ttdef"><b>Definition</b> Image.h:183</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ModifiableImage_html_a3ad146f43f1c207fc9861b69fc6eb4f1"><div class="ttname"><a href="classdrain_1_1image_1_1ModifiableImage.html#a3ad146f43f1c207fc9861b69fc6eb4f1">drain::image::ModifiableImage::setGeometry</a></div><div class="ttdeci">virtual void setGeometry(size_t width, size_t height, size_t imageChannels=1, size_t alphaChannels=0)</div><div class="ttdoc">Resizes the image, keeps the current type.</div><div class="ttdef"><b>Definition</b> Image.h:87</div></div>
+<div class="ttc" id="aclassrack_1_1DataSet_html"><div class="ttname"><a href="classrack_1_1DataSet.html">rack::DataSet</a></div><div class="ttdoc">A map of radar data, indexed by quantity code (DBZH, VRAD, etc).</div><div class="ttdef"><b>Definition</b> Data.h:1293</div></div>
 <div class="ttc" id="aclassrack_1_1ExtRackOp_html"><div class="ttname"><a href="classrack_1_1ExtRackOp.html">rack::ExtRackOp</a></div><div class="ttdoc">Base class for radar data processors.</div><div class="ttdef"><b>Definition</b> ExtRackOp.h:43</div></div>
 <div class="ttc" id="aclassrack_1_1ExtRackOp_html_a032232064ae35418a7a8c3aa7d6d3666"><div class="ttname"><a href="classrack_1_1ExtRackOp.html#a032232064ae35418a7a8c3aa7d6d3666">rack::ExtRackOp::ExtRackOp</a></div><div class="ttdeci">ExtRackOp(int horz=8, int vert=16)</div><div class="ttdoc">Kuvaus doxygeniin.</div><div class="ttdef"><b>Definition</b> ExtRackOp.h:58</div></div>
 <div class="ttc" id="aclassrack_1_1PolarProductOp_html"><div class="ttname"><a href="classrack_1_1PolarProductOp.html">rack::PolarProductOp</a></div><div class="ttdoc">Base class for flat (2D) products computed in the polar coordinate system. Volume is used as input.</div><div class="ttdef"><b>Definition</b> PolarProductOp.h:59</div></div>
-<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:44</div></div>
+<div class="ttc" id="anamespacerack_html"><div class="ttname"><a href="namespacerack.html">rack</a></div><div class="ttdef"><b>Definition</b> AltitudeOp.cpp:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

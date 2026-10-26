@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -299,7 +306,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keyword">inline</span></div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> FilePath &amp; p) {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>std::ostream &amp; <a class="code hl_function" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> FilePath &amp; p) {</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keywordflow">return</span> p.toStream(ostr);</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>}</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
@@ -313,7 +320,8 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1FilePath_html_a5cb3b000f0e35b8b9aad8a39e9bff192"><div class="ttname"><a href="classdrain_1_1FilePath.html#a5cb3b000f0e35b8b9aad8a39e9bff192">drain::FilePath::FilePath</a></div><div class="ttdeci">FilePath(const TT &amp;... args)</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition</b> FilePath.h:64</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html"><div class="ttname"><a href="classdrain_1_1Path.html">drain::Path</a></div><div class="ttdef"><b>Definition</b> Path.h:135</div></div>
 <div class="ttc" id="aclassdrain_1_1Path_html_aa6eeb6f7ac9d5e04e8797984ab1ec40c"><div class="ttname"><a href="classdrain_1_1Path.html#aa6eeb6f7ac9d5e04e8797984ab1ec40c">drain::Path::append</a></div><div class="ttdeci">void append(const T2 &amp;arg, const TT &amp;... args)</div><div class="ttdoc">Append path with element(s), path(s) or string(s).</div><div class="ttdef"><b>Definition</b> Path.h:223</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
+<div class="ttc" id="anamespacerack_html_a4a516e363f8dc7522725822a84e6e5a2"><div class="ttname"><a href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition</b> Data.h:631</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

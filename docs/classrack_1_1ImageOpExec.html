@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -95,12 +102,12 @@ Inheritance diagram for ImageOpExec:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad6ed39c30cf75482e99cbd2f93c95566" id="r_ad6ed39c30cf75482e99cbd2f93c95566"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ImageOpExec.html#ad6ed39c30cf75482e99cbd2f93c95566">execOp</a> (const <a class="el" href="classdrain_1_1image_1_1ImageOp.html">drain::image::ImageOp</a> &amp;imageOp, <a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;ctx) const</td></tr>
+<tr class="memitem:ad6ed39c30cf75482e99cbd2f93c95566" id="r_ad6ed39c30cf75482e99cbd2f93c95566"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrack_1_1ImageOpExec.html#ad6ed39c30cf75482e99cbd2f93c95566">execOp</a> (<a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1ImageOp.html">drain::image::ImageOp</a> &amp;<a class="el" href="classrack_1_1DataSet.html">imageOp</a>, <a class="el" href="classrack_1_1RackContext.html">RackContext</a> &amp;<a class="el" href="classrack_1_1DataSet.html">ctx</a>) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="memdesc:ad6ed39c30cf75482e99cbd2f93c95566"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared function, to minimize copies in template classes.  <br /></td></tr>
 <tr class="separator:ad6ed39c30cf75482e99cbd2f93c95566"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaccc22f831bb14590a62355419121170" id="r_aaccc22f831bb14590a62355419121170"><td class="memTemplParams" colspan="2"><a id="aaccc22f831bb14590a62355419121170" name="aaccc22f831bb14590a62355419121170"></a>
-template&lt;class OD &gt; </td></tr>
-<tr class="memitem:aaccc22f831bb14590a62355419121170"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>updateGeometryODIM</b> (Hi5Tree &amp;dstGroup, const std::string &amp;quantity, <a class="el" href="classdrain_1_1image_1_1Geometry.html">drain::image::Geometry</a> &amp;geometry) const</td></tr>
+template&lt;<a class="el" href="classrack_1_1DataSet.html">class</a> <a class="el" href="classrack_1_1DataSet.html">OD</a> &gt; </td></tr>
+<tr class="memitem:aaccc22f831bb14590a62355419121170"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classrack_1_1DataSet.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><b>updateGeometryODIM</b> (Hi5Tree &amp;<a class="el" href="classrack_1_1DataSet.html">dstGroup</a>, <a class="el" href="classrack_1_1DataSet.html">const</a> std::string &amp;quantity, <a class="el" href="classdrain_1_1image_1_1Geometry.html">drain::image::Geometry</a> &amp;geometry) <a class="el" href="classrack_1_1DataSet.html">const</a></td></tr>
 <tr class="separator:aaccc22f831bb14590a62355419121170"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -111,9 +118,9 @@ template&lt;class OD &gt; </td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void execOp </td>
+          <td class="memname"><a class="el" href="classrack_1_1DataSet.html">void</a> execOp </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classdrain_1_1image_1_1ImageOp.html">drain::image::ImageOp</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classrack_1_1DataSet.html">const</a> <a class="el" href="classdrain_1_1image_1_1ImageOp.html">drain::image::ImageOp</a> &amp;&#160;</td>
           <td class="paramname"><em>imageOp</em>, </td>
         </tr>
         <tr>

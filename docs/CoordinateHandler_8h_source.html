@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -466,7 +473,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span><span class="comment">// std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, const CoordinatePolicy &amp; policy);</span></div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span> </div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; ostr, <span class="keyword">const</span> CoordinateHandler2D &amp; handler);</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>std::ostream &amp; <a class="code hl_function" href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">operator&lt;&lt;</a>(std::ostream &amp; ostr, <span class="keyword">const</span> CoordinateHandler2D &amp; handler);</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span> </div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>} <span class="comment">// image</span></div>
 <div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
@@ -495,9 +502,10 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1image_1_1CoordinatePolicy_html"><div class="ttname"><a href="classdrain_1_1image_1_1CoordinatePolicy.html">drain::image::CoordinatePolicy</a></div><div class="ttdoc">Policies for coordinate underflows and overflows.</div><div class="ttdef"><b>Definition</b> CoordinatePolicy.h:100</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageConf_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageConf.html">drain::image::ImageConf</a></div><div class="ttdoc">Struct for image (excluding data)</div><div class="ttdef"><b>Definition</b> ImageConf.h:333</div></div>
 <div class="ttc" id="aclassdrain_1_1image_1_1ImageFrame_html"><div class="ttname"><a href="classdrain_1_1image_1_1ImageFrame.html">drain::image::ImageFrame</a></div><div class="ttdoc">Image with static geometry.</div><div class="ttdef"><b>Definition</b> ImageFrame.h:62</div></div>
-<div class="ttc" id="aclassdrain_1_1image_1_1ImageLike_html_a5cd9d5d31809e0b4bf73f90f3b4c1b6e"><div class="ttname"><a href="classdrain_1_1image_1_1ImageLike.html#a5cd9d5d31809e0b4bf73f90f3b4c1b6e">drain::image::ImageLike::getCoordinatePolicy</a></div><div class="ttdeci">const CoordinatePolicy &amp; getCoordinatePolicy() const</div><div class="ttdoc">Coord policy.</div><div class="ttdef"><b>Definition</b> ImageLike.h:174</div></div>
+<div class="ttc" id="aclassdrain_1_1image_1_1ImageLike_html_a5cd9d5d31809e0b4bf73f90f3b4c1b6e"><div class="ttname"><a href="classdrain_1_1image_1_1ImageLike.html#a5cd9d5d31809e0b4bf73f90f3b4c1b6e">drain::image::ImageLike::getCoordinatePolicy</a></div><div class="ttdeci">const CoordinatePolicy &amp; getCoordinatePolicy() const</div><div class="ttdoc">Coord policy.</div><div class="ttdef"><b>Definition</b> ImageLike.h:179</div></div>
 <div class="ttc" id="anamespacedrain_1_1image_html_a530d4f1788b65e1121d351ad1d05a7d5"><div class="ttname"><a href="namespacedrain_1_1image.html#a530d4f1788b65e1121d351ad1d05a7d5">drain::image::coord_overflow_t</a></div><div class="ttdeci">unsigned int coord_overflow_t</div><div class="ttdoc">typedef drain::GlobalFlags&lt;CoordinatePolicy&gt; coord_overflow_flagger_t;</div><div class="ttdef"><b>Definition</b> CoordinateHandler.h:72</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
+<div class="ttc" id="anamespacerack_html_a4a516e363f8dc7522725822a84e6e5a2"><div class="ttname"><a href="namespacerack.html#a4a516e363f8dc7522725822a84e6e5a2">rack::operator&lt;&lt;</a></div><div class="ttdeci">std::ostream &amp; operator&lt;&lt;(std::ostream &amp;ostr, const PlainData&lt; DT &gt; &amp;d)</div><div class="ttdef"><b>Definition</b> Data.h:631</div></div>
 <div class="ttc" id="astructdrain_1_1Point2D_html"><div class="ttname"><a href="structdrain_1_1Point2D.html">drain::Point2D</a></div><div class="ttdef"><b>Definition</b> Point.h:48</div></div>
 <div class="ttc" id="astructdrain_1_1image_1_1Position_html"><div class="ttname"><a href="structdrain_1_1image_1_1Position.html">drain::image::Position</a></div><div class="ttdef"><b>Definition</b> Direction.h:46</div></div>
 </div><!-- fragment --></div><!-- contents -->

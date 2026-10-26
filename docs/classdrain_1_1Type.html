@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -295,7 +302,7 @@ template&lt;class F , class T &gt; </div>
 <p>Maps std::type_info to the corresponding template, calling a desired modifier function.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>- struct with static method T callback&lt;type&gt;(), where <code>type</code> is a basetype or std::string. </td></tr>
+    <tr><td class="paramname">F</td><td>- struct with static method T callback(type)(), where <code>type</code> is a basetype or std::string. </td></tr>
     <tr><td class="paramname">T</td><td>- return type </td></tr>
   </table>
   </dd>
@@ -343,7 +350,7 @@ template&lt;class F , class T &gt; </div>
 <p>Maps std::type_info to the corresponding template, calling a desired modifier function.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>- struct that implements static void callback&lt;type&gt;(T &amp; target), where <code></code> &lt;type&gt; is basetype or std::string. </td></tr>
+    <tr><td class="paramname">F</td><td>- struct that implements static void callback(T &amp; target) for the resolved <code>type</code> (basetype or std::string). </td></tr>
     <tr><td class="paramname">T</td><td>- target object class</td></tr>
   </table>
   </dd>
@@ -403,7 +410,7 @@ template&lt;class F , class T , class T2 &gt; </div>
 <p>Maps std::type_info to the corresponding template, calling a desired modifier function.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">F</td><td>- struct that implements static callback&lt;type&gt;(T &amp; target), where <code>type</code> is basetype or std::string. </td></tr>
+    <tr><td class="paramname">F</td><td>- struct that implements static callback(type)(T &amp; target), where <code>type</code> is basetype or std::string. </td></tr>
     <tr><td class="paramname">T</td><td>- target object class </td></tr>
     <tr><td class="paramname">T2</td><td>- selector type (<a class="el" href="classdrain_1_1Type.html" title="Utilities related to std::type_info.">Type</a> or typecode as char or string) </td></tr>
   </table>

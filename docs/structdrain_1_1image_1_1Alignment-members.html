@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -89,10 +96,11 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>axis</b> (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>get</b>(const AlignBase::Axis &amp;defaultValue) const (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>get</b>(const AlignBase::Pos &amp;defaultValue) const (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator==</b>(const Alignment&lt; AX2, A2 &gt; &amp;align) const (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>pos</b> (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>reset</b>() (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html#a98516c865985b97804de2e8c79394820">~Alignment</a>()</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator=</b>(const Alignment &amp;)=default (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator==</b>(const Alignment&lt; AX2, A2 &gt; &amp;align) const (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>pos</b> (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>reset</b>() (defined in <a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a>)</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html#a98516c865985b97804de2e8c79394820">~Alignment</a>()</td><td class="entry"><a class="el" href="structdrain_1_1image_1_1Alignment.html">Alignment&lt; AX, A &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

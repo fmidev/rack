@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -76,16 +83,24 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><ul><li class="level2"><a href="#python_stats2">Another API Example</a></li>
+<ul><li class="level1"><a href="#stat_overview">Statistics</a><ul><li class="level2"><a href="#stat_usage">Usage</a></li>
+<li class="level2"><a href="#stat_examples">Examples</a><ul><ul><li class="level4"><a href="#stat_convenience">Convenience</a></li>
 </ul>
+</ul>
+</li>
+<li class="level2"><a href="#python_stats2">Another API Example</a></li>
+<li class="level2"><a href="#stat_python_api">Python API Example</a></li>
+<li class="level2"><a href="#stat_explanation">Explanation</a></li>
+</ul>
+</li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="statistics"></a>
+<div class="textblock"><h1><a class="anchor" id="stat_overview"></a>
 Statistics</h1>
 <p><b>Experimental</b> </p>
 <p>Basic command line usage of Rack supports extracting metadata of radar data in several ways, as explained in <a class="el" href="text-output-page.html#text-output">Extracting metadata</a> . To effectively extract metadata from large amount of data and display statistics as graphics, Rack comes with <code>rack.statistics</code> which is a Python module under Python package <code>rack</code> (see <a class="el" href="python_utilities.html">Python3 utilities for Rack</a>).</p>
 <p>The current functionality of <code>rack.statistics</code> especially for monitoring incoming data.</p>
-<h2><a class="anchor" id="statistics_usage"></a>
+<h2><a class="anchor" id="stat_usage"></a>
 Usage</h2>
 <p>Usage of <code>rack.statistics</code> typically consists of two steps:</p>
 <ol type="1">
@@ -94,10 +109,10 @@ Usage</h2>
 </ol>
 <p>In the collection stage, the script invokes <code>rack</code> repeatedly as a subprocess.</p>
 <p>Similarly, in the illustration stage, <code>gnuplot</code> is invoked.</p>
-<h2><a class="anchor" id="examples"></a>
+<h2><a class="anchor" id="stat_examples"></a>
 Examples</h2>
 <p>In the following examples, it is assumed that environment variable <code>PYTHONPATH</code> contains the directory under which the modules are located.</p>
-<h4><a class="anchor" id="convenience"></a>
+<h4><a class="anchor" id="stat_convenience"></a>
 Convenience</h4>
 <p>Instead of defining syntaxes on the command line with:</p>
 <ul>
@@ -173,7 +188,7 @@ Another API Example</h2>
 <div class="line">python3 -m rack.statistics --config stat1.json \</div>
 <div class="line">  --gnuplot-columns TIME_START_REL,ELANGLE --gnuplot fin.png \</div>
 <div class="line">  statistics/fi???/00min/20240423-*.txt</div>
-</div><!-- fragment --><h2><a class="anchor" id="python_api"></a>
+</div><!-- fragment --><h2><a class="anchor" id="stat_python_api"></a>
 Python API Example</h2>
 <div class="fragment"><div class="line"><span class="keyword">import</span> rack.statistics</div>
 <div class="line"> </div>
@@ -190,7 +205,7 @@ Python API Example</h2>
 <div class="line"><span class="preprocessor"># TH-DBZH-VRAD-WRAD-ZDR-KDP-RHOHV-DBZHC-SQI-PHIDP-HCLASS-ZDRC-TX-DBZX</span></div>
 <div class="line"> </div>
 <div class="line">...</div>
-</div><!-- fragment --><h2><a class="anchor" id="explanation"></a>
+</div><!-- fragment --><h2><a class="anchor" id="stat_explanation"></a>
 Explanation</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">

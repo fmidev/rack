@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -105,9 +112,13 @@ Collaboration diagram for Writer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classhi5_1_1Writer__coll__graph.png" border="0" usemap="#aWriter_coll__map" alt="Collaboration graph"/></div>
 <map name="aWriter_coll__map" id="aWriter_coll__map">
-<area shape="rect" title="Converts Rack&#39;s h5 structure to native h5 structure applied for file output." alt="" coords="12,79,75,104"/>
-<area shape="rect" href="classhi5_1_1Hi5Base.html" title="Base class for Reader and Writer, essentially just wrapping some utilities." alt="" coords="5,5,81,31"/>
-<area shape="poly" title=" " alt="" coords="46,44,46,79,41,79,41,44"/>
+<area shape="rect" title="Converts Rack&#39;s h5 structure to native h5 structure applied for file output." alt="" coords="33,168,96,193"/>
+<area shape="rect" href="classhi5_1_1Hi5Base.html" title="Base class for Reader and Writer, essentially just wrapping some utilities." alt="" coords="5,80,81,105"/>
+<area shape="poly" title=" " alt="" coords="52,118,64,167,59,168,47,119"/>
+<area shape="rect" href="classdrain_1_1UniTuple.html" title=" " alt="" coords="106,80,269,105"/>
+<area shape="poly" title=" " alt="" coords="161,116,83,170,80,166,158,111"/>
+<area shape="rect" href="classdrain_1_1TupleBase.html" title=" " alt="" coords="115,5,259,31"/>
+<area shape="poly" title=" " alt="" coords="190,45,190,80,185,80,185,45"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -183,6 +194,10 @@ static <a class="el" href="classdrain_1_1image_1_1Image.html">drain::image::Imag
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>linkPalette</b> (const Hi5Tree &amp;palette, Hi5Tree &amp;dst)</td></tr>
 <tr class="memdesc:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Links the palette that has been (or will be) created with createPalette(). <br /></td></tr>
 <tr class="separator:ad53431d3f72edbc7c40989ab2415a974 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2373575827d13ec5f8d561394175b55 inherit pub_static_methods_classhi5_1_1Hi5Base" id="r_ab2373575827d13ec5f8d561394175b55"><td class="memItemLeft" align="right" valign="top">
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExcluded</b> (const Hi5Tree &amp;src, const typename Hi5Tree::path_t &amp;path)</td></tr>
+<tr class="memdesc:ab2373575827d13ec5f8d561394175b55 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check is the path contains at least one <code>exclude</code> marker, meaning that data at the path should be bypassed. <br /></td></tr>
+<tr class="separator:ab2373575827d13ec5f8d561394175b55 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f99aa747a87c81d474705f2944e022 inherit pub_static_methods_classhi5_1_1Hi5Base" id="r_a46f99aa747a87c81d474705f2944e022"><td class="memItemLeft" align="right" valign="top">
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>writeText</b> (const Hi5Tree &amp;src, const std::list&lt; typename Hi5Tree::path_t &gt; &amp;paths, std::ostream &amp;ostr=std::cout)</td></tr>
 <tr class="memdesc:a46f99aa747a87c81d474705f2944e022 inherit pub_static_methods_classhi5_1_1Hi5Base"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dumps the H5 structure, attributes and data properties. <br /></td></tr>
@@ -211,6 +226,10 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ac1f14b2e393ba47a28d48983ec0fe021" id="r_ac1f14b2e393ba47a28d48983ec0fe021"><td class="memItemLeft" align="right" valign="top"><a id="ac1f14b2e393ba47a28d48983ec0fe021" name="ac1f14b2e393ba47a28d48983ec0fe021"></a>
 static unsigned short&#160;</td><td class="memItemRight" valign="bottom"><b>compressionLevel</b> = 6</td></tr>
 <tr class="separator:ac1f14b2e393ba47a28d48983ec0fe021"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a699e11111ea2f75cf0430f1ca3465843" id="r_a699e11111ea2f75cf0430f1ca3465843"><td class="memItemLeft" align="right" valign="top"><a id="a699e11111ea2f75cf0430f1ca3465843" name="a699e11111ea2f75cf0430f1ca3465843"></a>
+static <a class="el" href="classdrain_1_1UniTuple.html">drain::UniTuple</a>&lt; size_t, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>chunkSize</b> = {0,0}</td></tr>
+<tr class="memdesc:a699e11111ea2f75cf0430f1ca3465843"><td class="mdescLeft">&#160;</td><td class="mdescRight">chunk dimensions: width, height (channels always as actual number) <br /></td></tr>
+<tr class="separator:a699e11111ea2f75cf0430f1ca3465843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
@@ -546,9 +565,10 @@ template&lt;class K , class V &gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">v</td><td>- vector containing pairs, perhaps obtaining by adding </td></tr>
-    <tr><td class="paramname">f</td><td>- HDF5 file id </td></tr>
+    <tr><td class="paramname">fid</td><td>- HDF5 file id </td></tr>
     <tr><td class="paramname">path</td><td>- location of the target dataset </td></tr>
-    <tr><td class="paramname">label1</td><td>- label of the first value </td></tr>
+    <tr><td class="paramname">labelFirst</td><td>- label of the first value </td></tr>
+    <tr><td class="paramname">labelSecond</td><td>- label of the second value </td></tr>
   </table>
   </dd>
 </dl>

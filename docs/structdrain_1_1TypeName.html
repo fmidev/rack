@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -77,8 +84,8 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="structdrain_1_1TypeName-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">TypeName&lt; T &gt; Struct Template Reference</div></div>
 </div><!--header-->
@@ -89,17 +96,18 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="TypeName_8h_source.html">TypeName.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ac91ebb8fe9956bbc1dfa3a22c9012235" id="r_ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="memItemLeft" align="right" valign="top"><a id="ac91ebb8fe9956bbc1dfa3a22c9012235" name="ac91ebb8fe9956bbc1dfa3a22c9012235"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>operator const std::string &amp;</b> () const</td></tr>
+<tr class="separator:ac91ebb8fe9956bbc1dfa3a22c9012235"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a51f1a16ca850cd6d04ba97263e39c9c2" id="r_a51f1a16ca850cd6d04ba97263e39c9c2"><td class="memItemLeft" align="right" valign="top"><a id="a51f1a16ca850cd6d04ba97263e39c9c2" name="a51f1a16ca850cd6d04ba97263e39c9c2"></a>
 static const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>str</b> ()</td></tr>
+<tr class="memdesc:a51f1a16ca850cd6d04ba97263e39c9c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default implementation: name returned by std::type_info::name() <br /></td></tr>
 <tr class="separator:a51f1a16ca850cd6d04ba97263e39c9c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:a7bc01a07e03974323861c0f1230c3910" id="r_a7bc01a07e03974323861c0f1230c3910"><td class="memItemLeft" align="right" valign="top"><a id="a7bc01a07e03974323861c0f1230c3910" name="a7bc01a07e03974323861c0f1230c3910"></a>
-static const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>nameOLD</b></td></tr>
-<tr class="separator:a7bc01a07e03974323861c0f1230c3910"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T&gt;<br />

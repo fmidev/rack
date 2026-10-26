@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -143,22 +150,22 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    T &amp; max;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
 <div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classdrain_1_1Range.html#a2447c3569ff5873341357ebf64e37d7d">   59</a></span>    <a class="code hl_function" href="classdrain_1_1Range.html#a2447c3569ff5873341357ebf64e37d7d">Range</a>(T min=T(), T max=T()) : min(this-&gt;next()),  max(this-&gt;next()) {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        this-&gt;set(min, max);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classdrain_1_1Range.html#a2447c3569ff5873341357ebf64e37d7d">   59</a></span>    <a class="code hl_function" href="classdrain_1_1Range.html#a2447c3569ff5873341357ebf64e37d7d">Range</a>(T min=T(), T max=T()) :</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,2&gt;(min, max), min((*this)[0]), max((*this)[1]) {</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    };</div>
 </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
 <div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classdrain_1_1Range.html#a3e1914f9f5702cbbeaaf1ee9607918fa">   64</a></span>    <a class="code hl_function" href="classdrain_1_1Range.html#a3e1914f9f5702cbbeaaf1ee9607918fa">Range</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Range.html">Range&lt;T&gt;</a> &amp; r) :  min(this-&gt;next()), max(this-&gt;next()){</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        this-&gt;set(r.tuple());</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classdrain_1_1Range.html#a3e1914f9f5702cbbeaaf1ee9607918fa">   64</a></span>    <a class="code hl_function" href="classdrain_1_1Range.html#a3e1914f9f5702cbbeaaf1ee9607918fa">Range</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Range.html">Range&lt;T&gt;</a> &amp; r) :</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,2&gt;(r.tuple()), min((*this)[0]), max((*this)[1]) {</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    };</div>
 </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keyword">template</span> &lt;<span class="keyword">class</span> T2&gt;</div>
 <div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classdrain_1_1Range.html#ae9e5ceaf19388ebf9bbf02966717b94a">   70</a></span>    <a class="code hl_function" href="classdrain_1_1Range.html#ae9e5ceaf19388ebf9bbf02966717b94a">Range</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Range.html">Range&lt;T2&gt;</a> &amp; r) :  min(this-&gt;next()), max(this-&gt;next()){</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this-&gt;set(r.tuple());</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    };</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classdrain_1_1Range.html#ae9e5ceaf19388ebf9bbf02966717b94a">   70</a></span>    <a class="code hl_function" href="classdrain_1_1Range.html#ae9e5ceaf19388ebf9bbf02966717b94a">Range</a>(<span class="keyword">const</span> <a class="code hl_class" href="classdrain_1_1Range.html">Range&lt;T2&gt;</a> &amp; r) :</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,2&gt;(r.tuple()), min((*this)[0]), max((*this)[1]) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
 </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="comment">// Reference (parasite)</span></div>
@@ -166,7 +173,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <a class="code hl_class" href="classdrain_1_1Range.html">Range</a>(<a class="code hl_class" href="classdrain_1_1UniTuple.html">drain::UniTuple&lt;T,N&gt;</a> &amp; tuple, <span class="keywordtype">size_t</span> i) :</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <a class="code hl_namespace" href="namespacedrain.html">drain</a>::<a class="code hl_class" href="classdrain_1_1UniTuple.html">UniTuple</a>&lt;T,2&gt;(tuple, i), <span class="comment">// start in new pos!</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        min(this-&gt;next()),max(this-&gt;next()){</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    };</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
 <div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
@@ -300,7 +307,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassdrain_1_1Range_html_ae9e5ceaf19388ebf9bbf02966717b94a"><div class="ttname"><a href="classdrain_1_1Range.html#ae9e5ceaf19388ebf9bbf02966717b94a">drain::Range::Range</a></div><div class="ttdeci">Range(const Range&lt; T2 &gt; &amp;r)</div><div class="ttdoc">Copy constructor variants.</div><div class="ttdef"><b>Definition</b> Range.h:70</div></div>
 <div class="ttc" id="aclassdrain_1_1SteppedRange_html"><div class="ttname"><a href="classdrain_1_1SteppedRange.html">drain::SteppedRange</a></div><div class="ttdef"><b>Definition</b> Range.h:170</div></div>
 <div class="ttc" id="aclassdrain_1_1UniTuple_html"><div class="ttname"><a href="classdrain_1_1UniTuple.html">drain::UniTuple</a></div><div class="ttdoc">Tuple of N elements of type T.</div><div class="ttdef"><b>Definition</b> UniTuple.h:65</div></div>
-<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> DataSelector.cpp:1277</div></div>
+<div class="ttc" id="anamespacedrain_html"><div class="ttname"><a href="namespacedrain.html">drain</a></div><div class="ttdef"><b>Definition</b> Data.h:1473</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

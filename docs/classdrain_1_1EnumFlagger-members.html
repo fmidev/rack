@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -86,13 +93,14 @@ $(function() {
   <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#a9f117303e8baf1326c913d4efdb22818">EnumFlagger</a>()</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#a299af96955a95737dc53398caa8c983e">EnumFlagger</a>(const storage_t &amp;v)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>EnumFlagger</b>(const T &amp;... arg) (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>fbase_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#af9e814eec199193985df42fa55416257">getValueNEW</a>(const std::string &amp;key)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>ivalue_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#ab6a9346a53511cfbe7ff171222366a7a">operator=</a>(const EnumFlagger&lt; F &gt; &amp;flagger)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator=</b>(const T &amp;v) (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>storage_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>value_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#a6f510aaeb22e8653cd562ff721bf3376">EnumFlagger</a>(const EnumFlagger &amp;)=default</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>fbase_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#af9e814eec199193985df42fa55416257">getValueNEW</a>(const std::string &amp;key)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">static</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>ivalue_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html#ab6a9346a53511cfbe7ff171222366a7a">operator=</a>(const EnumFlagger&lt; F &gt; &amp;flagger)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>operator=</b>(const T &amp;v) (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>storage_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>value_t</b> typedef (defined in <a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a>)</td><td class="entry"><a class="el" href="classdrain_1_1EnumFlagger.html">EnumFlagger&lt; F &gt;</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.17-->
 <!-- start footer part -->

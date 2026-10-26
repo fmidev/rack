@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -438,7 +445,7 @@ template&lt;bool DIR = true, class R  = WindowCore&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function \i must</p><ol type="1">
+<p>This function <em>must</em> </p><ol type="1">
 <li>set image limits (limits of the total scanning area)</li>
 <li>set (initial) loop limits (limits of the window scanning area. Typically window origin is in the center.</li>
 <li>set starting location (typically 0,0) </li>

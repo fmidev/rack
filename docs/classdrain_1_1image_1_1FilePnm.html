@@ -13,6 +13,13 @@
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
 <link href="rack.css" rel="stylesheet" type="text/css"/>
 </head>
@@ -151,8 +158,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>readFrame</b> 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:aefc06af35d230ebe8d66e306c7362df1" id="r_aefc06af35d230ebe8d66e306c7362df1"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdrain_1_1image_1_1FilePnm.html#aefc06af35d230ebe8d66e306c7362df1">fileInfo</a></td></tr>
-<tr class="memdesc:aefc06af35d230ebe8d66e306c7362df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising pnm files.  <br /></td></tr>
+<tr class="memitem:aefc06af35d230ebe8d66e306c7362df1" id="r_aefc06af35d230ebe8d66e306c7362df1"><td class="memItemLeft" align="right" valign="top"><a id="aefc06af35d230ebe8d66e306c7362df1" name="aefc06af35d230ebe8d66e306c7362df1"></a>
+static const <a class="el" href="classdrain_1_1FileInfo.html">FileInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fileInfo</b></td></tr>
+<tr class="memdesc:aefc06af35d230ebe8d66e306c7362df1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Syntax for recognising PNM image files. <br /></td></tr>
 <tr class="separator:aefc06af35d230ebe8d66e306c7362df1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -289,38 +297,12 @@ Static Public Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">image</td><td>- image </td></tr>
-    <tr><td class="paramname">pathPrefix</td><td>-</td></tr>
+    <tr><td class="paramname">path</td><td>- output file path</td></tr>
   </table>
   </dd>
 </dl>
 <p>Writes drain::Image to a png image file applying G,GA, RGB or RGBA color model. Writes in 8 or 16 bits, according to template class. Floating point images will be scaled as 16 bit integral (unsigned short int). </p>
 <p>FILE HEADER</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aefc06af35d230ebe8d66e306c7362df1" name="aefc06af35d230ebe8d66e306c7362df1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefc06af35d230ebe8d66e306c7362df1">&#9670;&#160;</a></span>fileInfo</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="classdrain_1_1FileInfo.html">drain::FileInfo</a> fileInfo</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Syntax for recognising pnm files. </p>
-<p>Syntax for recognising PNM image files. </p>
 
 </div>
 </div>

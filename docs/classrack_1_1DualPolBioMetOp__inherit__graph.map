@@ -1,8 +1,8 @@
 <map id="DualPolBioMetOp" name="DualPolBioMetOp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="45,680,181,705"/>
-<area shape="rect" id="Node000012" href="$classrack_1_1BirdOp.html" title=" " alt="" coords="32,753,99,779"/>
+<area shape="rect" id="Node000001" title="DOC: Add class description." alt="" coords="45,680,181,705"/>
+<area shape="rect" id="Node000012" href="$classrack_1_1BirdOp.html" title="DOC: Add class description." alt="" coords="32,753,99,779"/>
 <area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="100,718,75,755,71,752,96,715"/>
-<area shape="rect" id="Node000013" href="$classrack_1_1InsectOp.html" title=" " alt="" coords="123,753,202,779"/>
+<area shape="rect" id="Node000013" href="$classrack_1_1InsectOp.html" title="DOC: Add class description." alt="" coords="123,753,202,779"/>
 <area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="131,715,157,752,152,755,127,718"/>
 <area shape="rect" id="Node000002" href="$classrack_1_1FuzzyDetectorOp.html" title="Base class for BirdOp and InsectOp." alt="" coords="47,607,180,632"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,646,116,680,111,680,111,646"/>
