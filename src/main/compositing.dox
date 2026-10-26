@@ -9,8 +9,60 @@
 \b Rack can also create radar image composites, sometimes called mosaics. In weather services, composites are often preferred to single-radar products.
 On the other hand, a Cartesian product displaying single-radar data is identified with an single-radar "composite" in 
 \b Rack . 
-This section lists related commands and examples. A quick reference is found in \ref commands_cart.
-Compositing motion vectors is art of its own, hence explained in a separate section, \ref motion-composites .
+This section lists related commands and examples. A list of all the related command is \ref commands_cart.
+Motion vectors are a separate topic, discussed in \ref motion-composites .
+
+An example of a command that generates a composite:
+
+\~conf{.sh}
+{
+  "shell": true
+}
+\~
+
+\include composite-nordic_rack.sh
+
+Experimental: the above command line can also be generated using Python utility \c rack.composite :
+
+\include composite-nordic_py.sh
+
+\~conf{.py}
+{
+  "workdir": "env/composite-fi/",
+  "imports": ["logging", "rack.prog","rack.composite"],
+  "prepend_code": ["logger = logging.getLogger(__name__)"],
+  "append_code": [
+	"# rack_cmd = prog.to_string(fmt)"
+   ],
+  "tests" : {
+  	"rack.sh": {
+  	  "returncode": 0
+  	}
+  }
+}
+\~ 
+
+\code{.py}
+# Initialize command line generator.
+composer = rack.cmdline.Composer(rack.composite)
+
+# Set parameters
+composer.set(INDIR='data/') 
+composer.set(INFILE='202609261800_radar.polar.fik??.h5') 
+composer.set(select='quantity=DBZH') 
+composer.set(OUTFILE='composite-fi.h5')
+
+# Extract command sequence
+prog = composer.get_prog()
+
+# Show generated command line: 
+fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+print(prog.to_string(fmt))
+
+# Execute directly:
+# rack.process.run(prog, logger=logger)
+\endcode
+
 
 \~exec
 OUTFILE=composite-baltic.h5 DEMO=1 BBOX=0,47,40,73 SIZE=600,800 PRODUCT=pCappi,700 METHOD=WAVG,2,3,-32  ./make-composite.sh data-20140924  #exec 
@@ -194,46 +246,6 @@ For example:
 rack volume.h5 -Q DBZH --cAdd --cExtract DATA --cExtract WEIGHT -o composite-single.h5
 \~ 
 
-A more complex command could be:
-
-\include composite-singleX_rack.sh
-
-Experimental: the above command line can also be generated using Python utility \c rack.composite :
-
-\include composite-singleX_py.sh
-
-\~conf{py}
-{
-  "imports": ["logging", "rack.prog","rack.composite"],
-  "prepend_code": ["logger = logging.getLogger(__name__)"],
-  "tests" : {
-  	"rack.sh": {
-  	  "returncode": 0
-  	}
-  }
-}
-\~ 
-
-\code{.py}
-# Initialize command line generator.
-composer = rack.cmdline.Composer(rack.composite)
-
-# Set parameters
-composer.set(INFILE='volume.h5') 
-# composer.set(QUANTITY='DBZH')
-composer.set(select='quantity=DBZH') 
-composer.set(OUTFILE='cartesian-single.h5')
-
-# Extract command sequence
-prog = composer.get_prog()
-
-# Optional: show generated command line: 
-# fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
-# print(prog.to_string(fmt))
-
-# Execute directly
-rack.process.run(prog, logger=logger)
-\endcode
 
 
 Upon initialisation of the compositing array, \c Rack stores the encoding parameters – storage type, scaling and marker values (\c undetect , \c nodata) – given explicitly 

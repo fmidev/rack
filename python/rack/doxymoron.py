@@ -379,14 +379,13 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
 
 
 
-def run_shell(block: Block, cliconf: CliConf) -> None:
+def run_sh_lines(lines: list, cliconf: CliConf) -> None:
 
     script = [] #'echo']  # debug
     # if 'head' in mainConf: # ???
     #    script.extend(mainConf['head'])
-    content = block
-    if isinstance(block, Block):
-        content = block.content
+    #if isinstance(block, Block):
+    #    content = block.content
 
     # check if shlex makes sense here
     #if cliconf.prepend_args and isinstance(cliconf.prepend_args, str):
@@ -397,7 +396,7 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
     #    cliconf.append_args = shlex.split(cliconf.append_args)           
 
     pending_code = None
-    for line in content:
+    for line in lines:
         code = line.split("#", 1)
         code = code[0].strip()
         if code:
@@ -448,18 +447,6 @@ def run_shell(block: Block, cliconf: CliConf) -> None:
         logger.info(f"{Emoji.RUN.value} Executing line: {line}")
         rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir)
 
-    # Join...
-    #cmd = " ".join(script)
-    # Emoji.SCRIPT.value
-    #logger.info(f"{Emoji.RUN.value} Executing shell script: {cmd}")
-
-    # run_shell_system(cmd)
-    # "Protocol" for maps: if BBOX, PROJ and SIZE are present, ensure the map is downloaded before running the script. This allows to use {BBOX}, {PROJ} and {SIZE} in the script, for example, to pass them to a map server.
-    # cmd += " --format 'BBOX={BBOX}, PROJ={what:EPSG}, SIZE={where:xsize}x{where:ysize}\n' -o '{outputFileBase}.cnf'"
-    # Example of using conf values in the script, if needed.
-    # logger.warning(f"{Emoji.WARNING.value} BBOX handling removed {cmd}")
-    # logger.warning(f"{Emoji.RUN.value} Executing shell script: {cmd}")
-    # run_shell_subprocess(cmd, cliconf.shell)
     
 
 def run_py_block(block: Block, pyconf: PyConf) -> None:
@@ -592,19 +579,43 @@ def main() -> int:
     total_blocks = 0
     for key, obj in scan_dox(args.docfile):
 
-        # if 'head' in conf:
-        #    print("[HEAD] " + "\n[HEAD] ".join(conf['head']))
-        # print ('kind: ', kind)
+        if key in {"section", "subsection"}:
+            # Simply echo the titles, to help visualize the structure of the document. 
+            # No further processing is done for these commands.
+            # logger.info(f"{key.upper()}: {obj}")
+            styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
+            logger.info(Emoji.SCRIPT.value + styleWrapper.str(f" {key.upper()}: {obj}"))
 
-        if key in {"example", "include"}:
+        elif key == '~conf':
+            block: Block = obj 
+            dst = mainConf
+            if block.arg == '.sh':
+                dst = cliconf
+            elif block.arg == '.py':
+                dst = pyconf
+            elif block.arg == 'py':
+                logger.warning(f"Deprecated conf type: {block.arg} at line {block.start_line}, use '.py' instead")
+                dst = pyconf
+            else:
+                raise ValueError(f"Unknown conf type: {block.arg} at line {block.start_line}")
+            #logger.info(obj)
+            logger.info(f"Parsing conf[{block.arg}] on line {block.start_line}")
+            conf = rack.config.parse(block.content, dst, rack.config.PARSE_ERROR)
+            logger.debug(json.JSONEncoder(indent=2).encode(conf))
+            logger.info(f"{Emoji.SUCCESS.value} parsed")
+            # print(json.str(), file=sys.stderr)
+
+        elif key in {"example", "include"}:
             # Handle example command, e.g. by running the example script and capturing its output
             
             logger.debug(f"[{key}] {obj}")
 
             p = str(obj)
-            if p.endswith('py.sh'): # removed trailing _ because LaTeX
+            if p.endswith('py.sh'): 
+                # Do not run the script, but remember it for later use in a Python snippet.
                 pyconf.include_py_sh = p
             elif p.endswith('rack.sh'):
+                # Do not run the script, but remember it for later use in a Python snippet.
                 pyconf.include_rack_sh = p
             elif p.endswith('exec.sh'):
                 # No path search. Script path should include directory (relative ok)
@@ -629,58 +640,30 @@ def main() -> int:
                 # Delegate to demo/Makefile, e.g. "cExtract.hlp" -> `make cExtract.hlp`
                 logger.info(f"{Emoji.RUN.value}  make {p}")
                 rack.process.run(["make", p], description=f"make {p}", logger=logger)
-
-        elif key in {"section", "subsection"}:
-            #logger.info(f"{key.upper()}: {obj}")
-            styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
-            logger.info(Emoji.SCRIPT.value + styleWrapper.str(f" {key.upper()}: {obj}"))
             
-        elif key == '~conf':
+        elif key == 'code' or key == "~exec":
             block: Block = obj 
-            dst = mainConf
-            if block.arg == '.sh':
-                dst = cliconf
-            elif block.arg == '.py':
-                dst = pyconf
-            elif block.arg == 'py':
-                logger.warning(f"Deprecated conf type: {block.arg} at line {block.start_line}, use '.py' instead")
-                dst = pyconf
-            else:
-                raise ValueError(f"Unknown conf type: {block.arg} at line {block.start_line}")
-            #logger.info(obj)
-            logger.info(f"Parsing conf[{block.arg}] on line {block.start_line}")
-            conf = rack.config.parse(block.content, dst, rack.config.PARSE_ERROR)
-            # logger.info(f"parsed conf({block.arg}): {conf}")            
-            # json.str() # dump(conf, sys.stderr, indent=2)
-            # logger.debug(styleDebug.str(json.JSONEncoder(indent=2).encode(conf)))
-            logger.debug(json.JSONEncoder(indent=2).encode(conf))
-            logger.info(f"{Emoji.SUCCESS.value} parsed")
-            # print(json.str(), file=sys.stderr)
-
-        elif key == 'code':
-            block: Block = obj 
-            #print(f"[PY ] block at line {block.start_line}")
             if block.arg == '.py':
                 logger.info(f"{Emoji.RUN.value}  Handling Python code from line {block.start_line}:")
                 run_py_block(block, pyconf) # Todo: flag to also run the generated command line.
                 pyconf.reset()   
             elif block.arg == '.sh':
                 logger.info(f"{Emoji.RUN.value}  Handling shell code from line {block.start_line}")
-                run_shell(block, cliconf)
+                run_sh_lines(block.content, cliconf)
                 cliconf.reset()
             elif block.arg == None:
                 logger.warning(f"Skipping code{{}} at line {block.start_line}")
             else:
                 logger.warning(f"unknown code arg='{block.arg}' at line {block.start_line}")
             
-        elif key == "~exec":
-            block: Block = obj 
-            if block.arg == '.sh':
-                run_shell(block, cliconf)
-                cliconf.reset()
-            else:
-                logger.warning(f"Skipping {key}[{block.arg}] at line {block.start_line}")
-            continue
+        #elif key == "~exec":
+        #    block: Block = obj 
+        #    if block.arg == '.sh':
+        #        run_shell(block, cliconf)
+        #        cliconf.reset()
+        #    else:
+        #        logger.warning(f"Skipping {key}[{block.arg}] at line {block.start_line}")
+        #    continue
         else:
             raise RuntimeError(f"Unknown key: {key}")
 

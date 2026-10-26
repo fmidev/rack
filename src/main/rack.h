@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(21,9,1)
+#define RACK_VERSION drain::Version<>(21,9,2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -94,6 +94,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - PVOL/SCAN automagic: single sweeps extracted from a volume will have object=SCAN
  *  Version 21.9.1
  *  - Fix: Data::copyEncoding(EncodingODIM), affected CumulativePolarOp
+ *  Release 21.9.2
+ *  - CI/CD test. Identical with 21.9.1.
  *
  *
  *  Version 20

@@ -3,8 +3,6 @@ import logging
 
 import rack.prog
 import rack.cmdline
-import rack.style
-# logger = logging.getLogger(__name__)
 from rack.style import Style, Color, Effect
 
 def run(prog: rack.prog.CommandSequence,  
@@ -13,8 +11,7 @@ def run(prog: rack.prog.CommandSequence,
         shell = False,
         cwd = None
         ):
-    # logger.info(prog.to_string(fmt))
-    #logger.debug(f"Command:\n{prog.to_string(fmt)}")
+    
     logger.debug(f"Command:\n{prog}")
 
     if isinstance(prog, rack.prog.CommandSequence):
@@ -65,5 +62,6 @@ def handle_result(result: subprocess.CompletedProcess,
             logger.warning(f"stderr:\n{result.stderr.rstrip()}")
         logger.warning(f"Failed: \n{description}")
         logger.error(f"Command exited with code {result.returncode}")
+        logger.warning("Failed ARGS: "+ " ".join(result.args))
         raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout, stderr=result.stderr) 
         #exit(result.returncode)

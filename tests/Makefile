@@ -21,6 +21,12 @@ test-svg:
 	cd ../demo && ./test-svg.sh
 
 
+# ====== Misc ======
+
+# Save help lines of a command
+%.hlp:
+	ls out/$@ || rack --help $* > out/$@
+
 # get-data:
 #	@ echo "Arguments:"
 #	@ cd data/ && make help | grep '^get-data'

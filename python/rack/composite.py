@@ -8,6 +8,7 @@ Utility for constructing strings that can be executed in shell.
 """
 import argparse
 from html import parser
+import glob as glob_module
 import json
 import sys
 from pathlib import Path
@@ -24,7 +25,7 @@ import rack.maps
 import rack.process
 import rack.prog
 import rack.svg
-import subprocess
+# import subprocess
 
 logger = rack.log.logger.getChild(Path(__file__).stem)
 # logger.setLevel(logging.INFO)
@@ -34,6 +35,8 @@ reg = rack.prog.Register
 # Global
 default_tiledir  = 'tiles/'
 default_tilename = '${what:date}${what:time}-GEOCONF={GEOCONF}_${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5'
+
+useGlobbing = True
 
 class scheme:
     TILE  = "TILE"
@@ -53,13 +56,8 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
-
     """
-    parser.add_argument("--host", default="localhost", help="Server hostname")
-    parser.add_argument("--port", type=int, default=8080, help="Server port")
-    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
-    parser.add_argument("--timeout", type=float, default=5.0, help="Request timeout (seconds)")
-    parser.add_argument("--logfile", default=None, help="Path to log file")
+    Adds arguments to the parser. Returns the parser.
     """
 
     parser.add_argument(
@@ -535,17 +533,40 @@ def handle_dataset(args):
 
 
 
+def apply_globbing(infiles: list, indir: str) -> list:
+    """Expand glob patterns in infiles, optionally prepended with indir.
+
+    When indir is 'AUTO' or empty, patterns are used as-is.
+    Returns a flat sorted list of matched paths; warns for unmatched patterns.
+    """
+    prefix = '' if indir in ('AUTO', '') else indir.rstrip('/') + '/'
+    result = []
+    for pattern in infiles:
+        full_pattern = prefix + pattern if prefix else pattern
+        matched = sorted(glob_module.glob(full_pattern))
+        if not matched:
+            logger.warning(f"No files matched glob pattern: {full_pattern}")
+        result.extend(matched)
+    return result
+
+
 def handle_infile(args, progBuilder: rack.core.Rack):
-    
-    # TODO: glob handling/bypassing support 
+
     logger.debug(f"INFILE {args.INFILE}")
-        
+
     if type(args.INFILE) == str:
         args.INFILE = [ args.INFILE ]
-    
+
     if not args.INFILE:
         logger.warning("No input files?")
         return
+
+    if useGlobbing:
+        globbed = apply_globbing(args.INFILE, args.INDIR)
+        if globbed:
+            logger.debug(f"Globbing expanded {len(args.INFILE)} pattern(s) to {len(globbed)} file(s)")
+            args.INFILE = globbed
+            args.INDIR = 'AUTO'  # recompute shared prefix from actual resolved paths
 
     shortPaths=[]
     if (args.INDIR == 'AUTO'):
@@ -554,7 +575,7 @@ def handle_infile(args, progBuilder: rack.core.Rack):
     #print("check! "+args.INDIR)
     if args.INDIR:
         if not args.INDIR.endswith('/'):
-            args.INDIR+'/'
+            args.INDIR = args.INDIR+'/'
             logger.info("added '/' to INDIR")
         progBuilder.inputPrefix(args.INDIR)
 
@@ -875,7 +896,7 @@ def main():
     if args.exec:
         desc = "Executing command sequence with subprocess.run()"
         logger.info(desc)
-        last_line = rack.process.run(prog, description=desc, logger=logger)
+        last_line = rack.process.run(prog, description=desc, logger=logger, shell=True) # shell?
         logger.info(f"Process executed, last line:\n {last_line}")
 
 

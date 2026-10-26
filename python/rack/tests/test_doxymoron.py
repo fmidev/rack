@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from rack.doxymoron import Block, CliConf, run_shell
+from rack.doxymoron import Block, CliConf, run_sh_lines
 
 
 class TestRunShell(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestRunShell(unittest.TestCase):
             "rack.doxymoron.rack.process.run",
             side_effect=lambda command, **kwargs: commands.append(command),
         ):
-            run_shell(block, CliConf())
+            run_sh_lines(block.content, CliConf())
 
         self.assertEqual(
             commands,
