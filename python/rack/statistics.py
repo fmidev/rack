@@ -310,6 +310,10 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
     # for (k,v) in var_map:
     #    log.info(f"Variable '{k}': rack_expr='{v}'")
 
+    # TODO: the separator-join / zip pattern below (forward: join keys into a format string;
+    # reverse: split values and zip back with keys) is the SEPARATOR-delimited special case
+    # of the general {VAR}-template matching in rack.variables.match_syntax.
+    # Consider replacing lines 307-356 with that utility if the separator ever appears in values.
     (keys, fmts) = zip(*var_map)
     # log.debug(values)
     # fmt = values
@@ -352,7 +356,7 @@ def extract_metadata(INFILES:list, variables:dict, metadata=dict()):
 
             line = i.split(SEPARATOR)
             
-            # quantity-wise info
+            # quantity-wise info  (reverse step: split output line → dict; see TODO above)
             info = dict(zip(variable_keys, i.split(SEPARATOR)))
 
             # for (k,v) in info.items():

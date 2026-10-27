@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 import rack.config
 import rack.log
+import rack.variables
 
 
 logger = rack.log.logger.getChild(pathlib.Path(__file__).stem)
@@ -159,6 +160,18 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         "--mapForce",
         action='store_true',
         help="bypass cache and force retrieval of map from server") 
+
+    parser.add_argument(
+        "OUTFILE",
+        nargs='*',
+        metavar="<path>",
+        help=(
+            "One or more literal output paths for the desired map file(s). "
+            "Internal variables (CRS, BBOX, layers, SIZE, …) are derived from each path "
+            f"using the cache syntax ({MAP_CACHE_PATH_SYNTAX!r}). "
+            "Missing files are retrieved from the WMS server."
+        ),
+    )
 
     parser.add_argument(
         "--mapLink",
@@ -764,6 +777,9 @@ def main():
     parser = build_parser()
 
     argv = sys.argv[1:]
+    if not argv:
+        parser.print_help()
+        sys.exit(0)
     if len(argv) >= 2 and argv[0] in ('-h', '--help'):
         if print_argument_help(parser, argv[1]):
             return
@@ -805,6 +821,61 @@ def main():
             show_wms_layer(root, args.show_layer)
         else:
             logger.error(f"No endpoint found for server '{args.mapServer}'")
+        return
+
+    if args.OUTFILE:
+        if len(args.OUTFILE) > 1 and args.mapLink:
+            logger.warning(
+                "--mapLink is ignored when multiple OUTFILEs are given "
+                "(cannot link multiple files to one path)."
+            )
+
+        cache_syntax = args.mapCache  # honour any user-supplied --mapCache syntax
+
+        for outfile in args.OUTFILE:
+            # Reverse-derive internal variables from the literal path, then fetch if missing.
+            path_vars = rack.variables.match_syntax(cache_syntax, outfile)
+            if path_vars is None:
+                logger.error(
+                    f"OUTFILE '{outfile}' does not match the cache syntax "
+                    f"'{cache_syntax}'. Cannot derive WMS parameters."
+                )
+                sys.exit(1)
+            logger.info(f"Variables derived from '{outfile}': {path_vars}")
+
+            cache_path = pathlib.Path(outfile)
+            if cache_path.exists() and not args.mapForce:
+                logger.info(f"Map already exists at: {cache_path}")
+                if args.mapLink and len(args.OUTFILE) == 1:
+                    link_map(cache_path, args.mapLink)
+                continue
+
+            # Reconstruct the WMS parameters needed to fetch the map.
+            CRS = path_vars.get('CRS', '')
+            epsg_str = CRS.rsplit(':', 1)[-1] if ':' in CRS else CRS
+            try:
+                EPSG = int(epsg_str)
+            except ValueError:
+                logger.error(f"Cannot parse EPSG code from CRS='{CRS}' (in '{outfile}').")
+                sys.exit(1)
+
+            layers = path_vars.get('layers', '')
+            server_conf_data = get_server_conf(args.mapServer, layers=layers, epsg=EPSG)
+
+            # SIZE is stored as separate WIDTH / HEIGHT fields in the path syntax.
+            SIZE = f"{path_vars.get('WIDTH', '800')},{path_vars.get('HEIGHT', '600')}"
+
+            mapLink = args.mapLink if len(args.OUTFILE) == 1 else None
+            get(
+                serverConf=server_conf_data,
+                EPSG=EPSG,
+                mapLayers=layers,
+                mapForce=args.mapForce,
+                mapLink=mapLink,
+                BBOX=path_vars.get('BBOX', ''),
+                SIZE=SIZE,
+                styles=path_vars.get('styles', ''),
+            )
         return
 
     server_conf = get_server_conf(args.mapServer)

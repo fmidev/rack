@@ -57,6 +57,9 @@ clean-data-cache:
 # ... and start deletion from subdirectories. Note: cache/Cache.md 
 	rm -vrf cache/data-*/
 
+clean-map-cache:
+	rm -vrf cache/mapcache/
+
 # Link scripts of the distribution
 #scripts:
 #	@ ln -vs ../scripts
@@ -110,3 +113,22 @@ $(SYNTH_PRECIP_POL): $(SYNTH_PRECIP_CART)
 
 # Phony shortcut
 get-data-synth-precip-polar: $(SYNTH_PRECIP_POL)
+
+
+mapcache:
+	mkdir --parents cache/mapcache
+	ln -sf cache/mapcache/ .
+
+# Maps
+get-maps-all: mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kiira.png
+	@ echo "Ok"
+
+
+mapcache/map-gulf-gray.png: mapcache
+	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer OPENFMI --mapLayers 'Basemaps:naturalearthgray' --SIZE 640,384 --PROJ 3067 --mapLink $@
+
+mapcache/map-gulf.png: mapcache
+	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer default --SIZE 640,384 --PROJ 3067 --mapLink $@
+
+mapcache/map-kiira.png: mapcache
+	python3 -m rack.maps --BBOX='-47793,6427699,631909,7104304' --mapServer default  --SIZE 1000,1000 --PROJ 3067 --mapLink $@
