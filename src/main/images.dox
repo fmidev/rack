@@ -25,7 +25,7 @@ Notice that this command will not affect the actual radar data (HDF5 structure) 
 (The one \c --image command required in earlier versions of rack is called implicitly.) 
 For converting the actual data, use \c --convert as explained in \ref conversions . 
 
-\~comment
+\~remark
 Certain commands like \c --imageAlpha will implicitly call \c --image when necessary.
 \~
 

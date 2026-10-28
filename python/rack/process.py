@@ -5,13 +5,15 @@ import rack.prog
 import rack.cmdline
 from rack.style import Style, Color, Effect
 
-def run(prog: rack.prog.CommandSequence,  
+def run(prog: rack.prog.CommandSequence,
         description: str = "Running subprocess",
         logger: logging.Logger = logging.getLogger(__name__),
         shell = False,
-        cwd = None
+        cwd = None,
+        stdout_file = None,
+        stderr_file = None,
         ):
-    
+
     logger.debug(f"Command:\n{prog}")
 
     if isinstance(prog, rack.prog.CommandSequence):
@@ -22,14 +24,23 @@ def run(prog: rack.prog.CommandSequence,
     if cwd:
         logger.info(f"Running command in directory: {cwd}")
 
-    result = subprocess.run(prog, 
-                            stdout=subprocess.PIPE, 
-                            stderr=subprocess.PIPE, 
+    result = subprocess.run(prog,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
                             text=True,
                             shell=shell,
                             cwd=cwd
                             )
-    
+
+    # Caller is expected to truncate stdout_file/stderr_file beforehand if a fresh
+    # capture (rather than one accumulated over several calls) is wanted.
+    if stdout_file:
+        with open(stdout_file, "a", encoding="utf-8") as f:
+            f.write(result.stdout)
+    if stderr_file:
+        with open(stderr_file, "a", encoding="utf-8") as f:
+            f.write(result.stderr)
+
     try:
         logger.debug(f"Command: return code {result.returncode}")
         handle_result(result, description=description, logger=logger)

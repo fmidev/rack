@@ -55,7 +55,7 @@ File \c volume.txt will consist of lines of ODIM entries as follows:
 
 Note that strings are presented in double quotes and arrays as comma-separated values in brackets. 
 
-\~DEPRECATED
+\~remark
 The storage types are indicated in the braces. The most frequent types are:
  - \c # - string
  - \c C - unsigned character

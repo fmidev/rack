@@ -42,6 +42,10 @@ logger.addHandler(handler)
 # Extensions of \include targets that should be built via `make` (demo/Makefile)
 MAKE_EXTENSIONS = {"hlp"}
 
+# Where linkFile-captured scripts are written, so Doxygen's EXAMPLE_PATH/HTML_EXTRA_FILES
+# (see Doxyfile) can serve them as plain \linkfile{...} download links.
+LINK_FILE_DIR = Path("..", "tests", "out")
+
 @dataclass
 class ReplaceRule:
     src: str
@@ -77,6 +81,8 @@ class CliConf(BaseConf):
     replacements: List[ReplaceRule] = field(default_factory=list)
     validations: List[ValidationRule] = field(default_factory=list)
     shell: bool = False
+    # Filename (under LINK_FILE_DIR) to dump the assembled script to, for \linkfile{...}
+    linkFile: Optional[str] = None
 
     def apply_replacements(self, s: str) -> str:
         for r in self.replacements:
@@ -89,6 +95,7 @@ class CliConf(BaseConf):
         self.stdoutToFile = None
         self.stderrToFile = None
         self.shell = False
+        self.linkFile = None
 
 @dataclass
 class PyConf(BaseConf):
@@ -131,6 +138,10 @@ class PyConf(BaseConf):
 
 # Recognizes \example and \include commands
 SINGLE_LINE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include|section|subsection)))\s*(?:(?P<arg>.+))?$")
+
+# Recognizes \linkfile{...} (see ALIASES in Doxyfile): a link-only sibling of \include,
+# naming the same kind of generated/example file but not embedding it inline.
+LINKFILE_CMD_RE = re.compile(r"^\\linkfile\{(?P<arg>[^}]*)\}\s*$")
 
 # KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
 # Accept either a plain command line, or a line prefixed with "$ "
@@ -203,6 +214,15 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
                 logger.debug(f"line {i}: handling  {cmd}({arg})")
             else:
                 logger.debug(f"line {i}: bypassing {cmd}({arg})")
+            i += 1
+            continue
+
+        # Detect \linkfile{...}
+        m = LINKFILE_CMD_RE.match(line.strip())
+        if m:
+            arg = m.group("arg")
+            yield ("linkfile", arg.strip())
+            logger.debug(f"line {i}: handling  linkfile({arg})")
             i += 1
             continue
 
@@ -379,22 +399,16 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
 
 
 
-def run_sh_lines(lines: list, cliconf: CliConf) -> None:
+def run_shell_lines(lines: list, cliconf: CliConf) -> None:
+    """
+    Shared shell-execution engine, used for \\code{.sh}/\\~exec{.sh} blocks and
+    \\include'd shell scripts (*_exec.sh). Strips '#' comments, joins
+    backslash-continued lines into full command lines, applies
+    cliconf.prepend_args/append_args to the first command line only (consumed
+    once), and runs each resulting command line as a subprocess.
+    """
 
-    script = [] #'echo']  # debug
-    # if 'head' in mainConf: # ???
-    #    script.extend(mainConf['head'])
-    #if isinstance(block, Block):
-    #    content = block.content
-
-    # check if shlex makes sense here
-    #if cliconf.prepend_args and isinstance(cliconf.prepend_args, str):
-    #    cliconf.prepend_args = shlex.split(cliconf.prepend_args)           
-
-    # check if shlex makes sense here
-    #if cliconf.append_args and isinstance(cliconf.append_args, str):
-    #    cliconf.append_args = shlex.split(cliconf.append_args)           
-
+    script = []
     pending_code = None
     for line in lines:
         code = line.split("#", 1)
@@ -405,49 +419,45 @@ def run_sh_lines(lines: list, cliconf: CliConf) -> None:
             if code.endswith("\\"):
                 pending_code = code[:-1].rstrip()
                 continue
-
-            # Do this only once, after the 1st arg
-            if cliconf.prepend_args:
-                #code = code.split(" ", 1)
-                code = shlex.split(code)
-                # code.pop(0)  # Remove the command itself, e.g. "rack"
-                #script = [code.pop(0), cliconf.prepend_args]
-                #code = " ".join([code[0], cliconf.prepend_args, code[1:]])
-                #cmd = [code.pop(0), 
-                code = " ".join([code[0], cliconf.prepend_args, *code[1:]])
-                # script.extend(code)
-                # print(f"DEBUG: script={script}, code={code}, prepend_args={cliconf.prepend_args}")
-                # script =  [" ".join(script)]
-                cliconf.prepend_args = "" #[]  # Clear after use
-            
             script.append(code)
-            
             pending_code = None
 
     if pending_code is not None:
-        script.append(pending_code + "\\")
+        script.append(pending_code)
 
-    if cliconf.append_args:
-        #script = ["echo "] 
-        # append end of the last item, if it exists, otherwise append as a new item
-        if script:
-            script[-1] += ' ' + cliconf.append_args
-            # script[-1] += " " + " ".join(cliconf.append_args)
-        else:
-            script.append(cliconf.append_args)
-            # script.append(" ".join(cliconf.append_args))
-        # script[:-1] += cliconf.append_args
-        # script[:-1] += cliconf.append_args
-        # script.extend(cliconf.append_args)
-    
-    # script.extend(block.content)
+    # prepend_args/append_args apply to the first command line only, consumed once.
+    if script and (cliconf.prepend_args or cliconf.append_args):
+        tokens = shlex.split(script[0])
+        if cliconf.prepend_args:
+            tokens = [tokens[0], cliconf.prepend_args, *tokens[1:]]
+        code = " ".join(tokens)
+        if cliconf.append_args:
+            code += " " + cliconf.append_args
+        script[0] = code
+        cliconf.prepend_args = ""
+        cliconf.append_args = ""
+
     logger.info(f"{Emoji.RUN.value} Executing shell script: {script}")
+
+    if cliconf.linkFile:
+        # \linkfile{...} serves the .txt-suffixed copy directly (see ALIASES in Doxyfile) -
+        # it is the only file written here, not a twin alongside an extension-true original.
+        linkpath = Path(LINK_FILE_DIR, cliconf.linkFile + ".txt")
+        logger.info(f"{Emoji.DISC.value}  writing {linkpath} (for \\linkfile)")
+        linkpath.write_text("\n".join(script) + "\n", encoding="utf-8")
+
+    # A fresh capture per block: truncate once, then each subprocess call appends.
+    if cliconf.stdoutToFile:
+        Path(cliconf.stdoutToFile).write_text("", encoding="utf-8")
+    if cliconf.stderrToFile:
+        Path(cliconf.stderrToFile).write_text("", encoding="utf-8")
 
     for line in script:
         logger.info(f"{Emoji.RUN.value} Executing line: {line}")
-        rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir)
+        rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir,
+                          stdout_file=cliconf.stdoutToFile, stderr_file=cliconf.stderrToFile)
 
-    
+
 
 def run_py_block(block: Block, pyconf: PyConf) -> None:
     
@@ -605,36 +615,26 @@ def main() -> int:
             logger.info(f"{Emoji.SUCCESS.value} parsed")
             # print(json.str(), file=sys.stderr)
 
-        elif key in {"example", "include"}:
+        elif key in {"example", "include", "linkfile"}:
             # Handle example command, e.g. by running the example script and capturing its output
-            
+
             logger.debug(f"[{key}] {obj}")
 
             p = str(obj)
-            if p.endswith('py.sh'): 
+            # \linkfile{...} serves its target as a browser-renderable .txt copy (see ALIASES
+            # in Doxyfile), so the file that gets generated must carry that suffix too.
+            generated_name = p + ".txt" if key == "linkfile" else p
+            if p.endswith('py.sh'):
                 # Do not run the script, but remember it for later use in a Python snippet.
-                pyconf.include_py_sh = p
+                pyconf.include_py_sh = generated_name
             elif p.endswith('rack.sh'):
                 # Do not run the script, but remember it for later use in a Python snippet.
-                pyconf.include_rack_sh = p
+                pyconf.include_rack_sh = generated_name
             elif p.endswith('exec.sh'):
                 # No path search. Script path should include directory (relative ok)
                 logger.info(f"{Emoji.RUN.value}  running {p}")
-                script = Path(p)
-                lines = script.read_text(encoding="utf-8").splitlines()
-                # Drop line-continuation backslashes, so joining produces one clean command line.
-                lines = [line.rstrip().removesuffix("\\").rstrip() for line in lines]
-                if cliconf.append_args:
-                    lines.extend(cliconf.append_args)
-                # Normally, add something useful, but here, a test:
-                # lines.append("--wrong arg")
-                command = " ".join(lines) + "\n"
-                script = Path(p).with_suffix(".tmp")
-                logger.info(f"{Emoji.DISC.value}  writing {script}")
-                logger.info(f"{Emoji.DISC.value}  {command}")
-                script.write_text(command, encoding="utf-8")
-                # logger.debug(f"{Emoji.RUN.value}  Executing file: {script}")
-                rack.process.run(["sh", str(script)], description=script, logger=logger)
+                lines = Path(p).read_text(encoding="utf-8").splitlines()
+                run_shell_lines(lines, cliconf)
                 cliconf.reset()
             elif Path(p).suffix.lstrip(".") in MAKE_EXTENSIONS:
                 # Delegate to demo/Makefile, e.g. "cExtract.hlp" -> `make cExtract.hlp`
@@ -649,7 +649,7 @@ def main() -> int:
                 pyconf.reset()   
             elif block.arg == '.sh':
                 logger.info(f"{Emoji.RUN.value}  Handling shell code from line {block.start_line}")
-                run_sh_lines(block.content, cliconf)
+                run_shell_lines(block.content, cliconf)
                 cliconf.reset()
             elif block.arg == None:
                 logger.warning(f"Skipping code{{}} at line {block.start_line}")

@@ -120,7 +120,12 @@ mapcache:
 	ln -sf cache/mapcache/ .
 
 # Maps
-get-maps-all: mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kiira.png
+get-maps-all: #mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kiira.png
+	for i in `find env/*/ -type l -iname 'map-*.png'`; do \
+	echo $${i}; python3 -m rack.maps `readlink $${i}`; \
+	echo; \
+	done
+#python3 -m rack.maps `find env/*/ -type l -iname 'map-*.png' -printf '%l\n'`
 	@ echo "Ok"
 
 
@@ -132,3 +137,5 @@ mapcache/map-gulf.png: mapcache
 
 mapcache/map-kiira.png: mapcache
 	python3 -m rack.maps --BBOX='-47793,6427699,631909,7104304' --mapServer default  --SIZE 1000,1000 --PROJ 3067 --mapLink $@
+
+

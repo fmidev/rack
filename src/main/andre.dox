@@ -378,7 +378,7 @@ rack volume-anomalous.h5  <...detection commands...>  --aDamper 0.5,0.1  --aGapF
 \endcode
 
 
-\~rema
+\~remark
  #ack andre-detected.h5 --aDamper 0.5,0.1  --aGapFill 2000m,5deg  -o andre-cleaned.png 
  #onvert +append -frame 1  volume-anomalous.png andre-cleaned.png -resize 75%  andre-all.png 
  #image latex  andre-all.png "A sweep (left) and its corrected version using remover and gap filling (right)." 

@@ -41,7 +41,7 @@ There are several parameters, determining the window width and height, minimum p
 
 There is also an exponential (yet asymmetric)  \c --pDopplerAvgExp .
 It is recommended to use at least 16-bit resolution to store averaged fields.
-\~noexec
+\~remark
   PROD=pDopplerAvg2,5000 QUANTITY=VRAD INPUT=volume-widespread.h5 ./make-image-product.sh
   no onvert +append ppi-VRAD-rgb.png pDopplerAvg2-VRAD-panel.png pDopplerAvg2-panel.png 
   include pDopplerAvg2-.exm

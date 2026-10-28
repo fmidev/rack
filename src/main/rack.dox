@@ -31,7 +31,7 @@ It uses raw measurement data as input and generates \ref productspage  as well a
 Quality information is supported throughout the processing chain. 
  \b Rack also supports \ref imagespage , like applying colors and transparency. 
 
-\remark {Rack code, tests and documentation are currently being reorganized. Parts of this documentation are not up to date.}
+\note Rack code, tests and documentation are currently being reorganized. Parts of this documentation are not up to date.
 
 
 \b Rack is based on code developed at the Finnish Meteorological
@@ -149,30 +149,30 @@ debugging information of data flow and memory.
 
 \subsection products_brief  Meteorological products
 
-Generation of a single-radar product is explained in section \ref productspage.
+Generation of single-radar products – for example, a CAPPI – is explained in section \ref productspage.
 The products are generated in polar coordinates, that is, in radar's native coordinate system.  
-A product may contain additional data arrays, typically quality indices or height information.
+The resulting product may contain additional data arrays, like quality indices or height information.
 As processing and using Doppler data involves special aspects, it is handled in it own section, \ref doppler.
 
-A product can be further converted to Cartesian coordinate system, explained next.
+Like a polar volume or a sweep, a product can be further converted to
+Cartesian coordinate system, explained next.
 
 
 \subsection cartesian_brief  Converting to Cartesian images 
  
-Data in polar coordinates can be mapped to a Cartesian product with \c --cCreate (abbreviated \c -c). 
-One of the simplest possible command lines is
+Data in polar coordinates can be mapped to a Cartesian product with \c --cCreate (abbreviated \c -c): 
 \~conf{.sh}
 workdir=tests/env-basic
 prepend_args='-o vol1.txt'
 append_args='-o cart1.png'
 \~
 \code{.sh}
-rack volume.h5 --cCreate \
-  -o cartesian.h5
+rack volume.h5 --cCreate -o cartesian.h5
 \endcode
 which converts the first dataset (sweep) in volume.h5 to a Cartesian product.
-The default projection is azimuthal equidistant, centered at the radar. The projection can be changed
-with \c --cProj which uses \b Proj.4 syntax (http://trac.osgeo.org/proj/). 
+The default projection is azimuthal equidistant (AEQD), centered at the radar.
+The projection can be changed with \c --cProj which uses \b ProjLib syntax (http://trac.osgeo.org/proj/)
+or alternatively, a plain numeric EPSG code.
 The default size (bins x bins) can be changed with \c --cSize .
 
 \code{.sh}

@@ -20,11 +20,11 @@ An example of a command that generates a composite:
 }
 \~
 
-\include composite-nordic_rack.sh
+\linkfile{composite-fi_rack.sh}
 
 Experimental: the above command line can also be generated using Python utility \c rack.composite :
 
-\include composite-nordic_py.sh
+\include composite-fi_py.sh
 
 \~conf{.py}
 {
@@ -48,14 +48,15 @@ composer = rack.cmdline.Composer(rack.composite)
 
 # Set parameters
 composer.set(PROJ=3067)
-composer.set(BBOX=[-196593,6255329,1044176,8084432])
-composer.set(SIZE=[682,1006])
+composer.set(BBOX=[-208000,6390000,1072000,7926000])
+composer.set(SIZE=[640,768])
 
 composer.set(INDIR='data/') 
 composer.set(INFILE='202609261800_radar.polar.fi???.h5') 
 composer.set(select='quantity=DBZH') 
 composer.set(OUTFILE='composite-fi.h5')
 composer.set(FORMATS='svg')
+composer.set(map='map-fi.png')
 
 # Extract command sequence
 prog = composer.get_prog()
@@ -345,7 +346,7 @@ For example, a tile can be created as follows:
   SCHEME=TILE OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
 \~
 
-\~hide
+\~remark
 \include composite-fi-cappi-TILE.cmd
 \~
 
