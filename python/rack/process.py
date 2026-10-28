@@ -73,6 +73,7 @@ def handle_result(result: subprocess.CompletedProcess,
             logger.warning(f"stderr:\n{result.stderr.rstrip()}")
         logger.warning(f"Failed: \n{description}")
         logger.error(f"Command exited with code {result.returncode}")
-        logger.warning("Failed ARGS: "+ " ".join(result.args))
+        args = result.args if isinstance(result.args, str) else " ".join(result.args)
+        logger.warning("Failed ARGS: " + args)
         raise subprocess.CalledProcessError(result.returncode, result.args, output=result.stdout, stderr=result.stderr) 
         #exit(result.returncode)

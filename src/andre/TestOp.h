@@ -28,20 +28,21 @@ Part of Rack development has been done in the BALTRAD projects part-financed
 by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 */
-#ifndef ANDRE_TEST_OP_H_
-#define ANDRE_TEST_OP_H_
 
-// #include "RemoverOp.h"
+#ifndef ANDRE_TEST_OP
+#define ANDRE_TEST_OP
+
 #include "DetectorOp.h"
 
-using namespace drain::image;
+// using namespace drain::image;
 
 namespace rack {
 
+/// A helper class for new developments.
 /**
  *
+ *  \see MarkSectorOp
  */
-/// DOC: Add class description.
 class TestOp: public DetectorOp {
 
 public:

@@ -1,4 +1,3 @@
-/// <em></em>
 /** 
 \page andrepage Anomaly Detection and Removal (AnDRe)
 \brief .
@@ -442,20 +441,9 @@ However, this operator should be computed after removal operators (if applied). 
 can be used in further production, 
 like quality based compositing in which input bins of lower quality will be overridden by other, overlapping bins of higher quality. 
 
-\subsection aTime  Timing based quality
+\subsection andre_external Using external information
 
-Likewise, we can associate timing based quality field that describes the extent in which each measurement bin is representative of
-the nomimal time of the volume or some other desired time, like the nominal time of a composite. 
- 
-\~exec
-SITE=fikor ./make-andre-example.sh anom-sea time=20130504023010,1,5 #exec
-\~
-
-\include aTime.exm
-  
-\image html  result-time.png "'Detection' results of \c --aTime ."
-\image latex result-time.png "'Detection' results of \c --aTime ." width=0.5\textwidth
-
+See \subpage andremarkerpage .
 
 
 

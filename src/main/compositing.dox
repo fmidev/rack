@@ -20,6 +20,21 @@ An example of a command that generates a composite:
 }
 \~
 
+\code{.sh}
+rack \
+    --cSize '640,768' \
+    --cProj '3067' \
+    --cBBox '-208000.0,6390000.0,1072000.0,7926000.0' \
+    --script '--select quantity=DBZH --cAdd' \
+    data/*.h5 \
+    --cExtract DATA \
+    -o composite-fi.tif
+\endcode
+
+\~stop
+\~
+
+
 \linkfile{composite-fi_rack.sh}
 
 Experimental: the above command line can also be generated using Python utility \c rack.composite :

@@ -368,8 +368,6 @@ void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 
 	drain::Logger mout(getImgLog(), __FILE__, __FUNCTION__);
 
-	// Note: value is of type string
-
 	typedef double data_t;
 	std::vector<data_t> v;
 	StringTools::split(value, v, ':');
@@ -390,6 +388,7 @@ void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 
 	CoordinateHandler2D coordHandler(dst.get(0));
 
+	// Traverse channels
 	Point2D<int> point;
 	for (size_t k=0; k<n; ++k){
 
@@ -398,11 +397,16 @@ void ImageBox::traverseChannels(ImageTray<Channel> & dst) const {
 		const drain::ValueScaling & scaling = channel.getScaling();
 		const drain::typeLimiter<data_t>::value_t & limit = channel.getConf().getLimiter<data_t>();
 
+		const data_t bitValue = physicalScale ? limit(scaling.inv(v[k])) : v[k];
+
 		for (int j = jRange.min; j <= jRange.max; ++j) {
 			for (int i = iRange.min; i <= iRange.max; ++i) {
 				point.set(i,j);
-				coordHandler.handle(point);
-				channel.put(i, j, limit(scaling.inv(v[k])));
+				// coordHandler.handle(point);
+				if (coordHandler.validate(point)){
+					channel.put(i, j, bitValue);
+				}
+				//channel.put(i, j, limit(scaling.inv(v[k])));
 			}
 		}
 	}
