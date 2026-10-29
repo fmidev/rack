@@ -35,7 +35,7 @@ server_conf = {
             "endpoint": "http://map.fmi.fi/geoserver/wms",
             "version": "1.3.0",
             "layers": ["world-map-combo-en"], # (standard map)
-            "epsg": [3067, 4326] # (EPSG:3067 is default, but also support 4326)
+            "epsg": [4326, 3035, 3067, 5120] # (EPSG:3067 is default, but also support 4326)
         },
         "internal-terrestris": {
             "endpoint": "https://ows.terrestris.de/osm/service",

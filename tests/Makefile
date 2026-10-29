@@ -122,7 +122,7 @@ mapcache:
 # Maps
 get-maps-all: #mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kiira.png
 	for i in `find env/*/ -type l -iname 'map-*.png'`; do \
-	echo $${i}; python3 -m rack.maps `readlink $${i}`; \
+	echo $${i}; python3.12 -m rack.maps `readlink $${i}`; \
 	echo; \
 	done
 #python3 -m rack.maps `find env/*/ -type l -iname 'map-*.png' -printf '%l\n'`

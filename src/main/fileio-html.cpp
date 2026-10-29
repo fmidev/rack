@@ -29,30 +29,22 @@ by the European Union (European Regional Development Fund and European
 Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  */
 
-#include <drain/util/Output.h>
-#include <drain/util/StringMapper.h>
-#include <drain/util/TreeElemUtilsHTML.h>
-#include <drain/util/TreeHTML.h>
-//#include <drain/util/TreeXML.h>
 
 #include <drain/image/FilePng.h>
-// #include <drain/image/TreeUtilsSVG.h>
-
+#include <drain/util/TreeElemUtilsHTML.h>
 #include "data/SourceODIM.h" // for NOD
-#include "fileio-html.h"  // ImageSection
+#include "fileio-html.h"
 
 namespace rack {
 
 
-
-
-
+/*
 drain::TreeHTML & ExtractorH5toHTML::addTogglerScript(drain::TreeHTML & head, const std::string key){
 
 	/// Original code from: https://www.w3schools.com/howto/howto_js_treeview.asp
 
 	static const drain::StringBuilder<'\n'> builder = {"",
-			"/* Original example: https://www.w3schools.com/howto/howto_js_treeview.asp */",
+			"// Original example: https://www.w3schools.com/howto/howto_js_treeview.asp ",
 			"function addTogglers(){"
 			"  var toggler = document.getElementsByClassName('caret');",
 			"  for (var i = 0; i < toggler.length; i++) {",
@@ -84,18 +76,21 @@ drain::TreeHTML & ExtractorH5toHTML::addTogglerStyle(drain::TreeHTML & head, con
 
 	style[".nested"]->set("display: none;");
 	style[".active"]->set("display: block;");
-	/*
-	style[".nested"] = {
-			{"display", "none"}
-	};
-	style[".active"] = {
-			{"display", "block"}
-	};
-	*/
 
 	return style;
 }
+*
+*/
+/*
+style[".nested"] = {
+		{"display", "none"}
+};
+style[".active"] = {
+		{"display", "block"}
+};
+*/
 
+/*
 drain::TreeHTML & ExtractorH5toHTML::getHtml(){
 
 	drain::Logger submout(__FILE__, __FUNCTION__);
@@ -110,12 +105,6 @@ drain::TreeHTML & ExtractorH5toHTML::getHtml(){
 
 		// submout.ok("adding TITLE");
 		head[drain::Html::TITLE](drain::Html::TITLE) = "HDF5 file";
-
-		/*
-		drain::TreeHTML & styleLink = head["styleLink"](drain::Html::LINK);
-		styleLink->set("rel",  "stylesheet");
-		styleLink->set("href", "toggle.css");
-		*/
 
 		drain::TreeHTML & style = head[drain::Html::STYLE](drain::Html::STYLE);
 		style[drain::Html::COMMENT](drain::Html::COMMENT)->setText("Rack default style");
@@ -148,7 +137,7 @@ drain::TreeHTML & ExtractorH5toHTML::getHtml(){
 	return html;
 
 };
-
+*/
 
 int ExtractorH5toHTML::visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
 

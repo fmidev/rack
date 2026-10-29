@@ -32,11 +32,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #ifndef RACK_FILE_IO_HTML
 #define RACK_FILE_IO_HTML
 
-#include <string>
+// #include <string>
 
-
-#include <drain/util/TreeHTML.h>
-
+#include <drain/util/TreeExtractorHTML.h>
 
 #include "hi5/Hi5.h"
 
@@ -44,18 +42,9 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 namespace rack {
 
 
-class ExtractorH5toHTML {
+class ExtractorH5toHTML : public drain::TreeExtractorHTML {
 
 public:
-
-	void setBaseDir(const drain::FilePath::path_t & dir){
-		basedir = dir;
-	};
-
-	drain::FilePath::path_t basedir;
-
-	// Returns the root of the HTML document, that is the <HTML> element. Prepares style etc. if not set already
-	drain::TreeHTML & getHtml();
 
 	int visitPrefix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath);
 
@@ -63,16 +52,6 @@ public:
 	int visitPostfix(const Hi5Tree & tree, const Hi5Tree::path_t & odimPath){
 		return 0;
 	};
-
-	static
-	drain::TreeHTML & addTogglerScript(drain::TreeHTML & head, const std::string key = "toggler-script");
-
-	static
-	drain::TreeHTML & addTogglerStyle(drain::TreeHTML & head, const std::string key = "toggler-style");
-
-protected:
-
-	drain::TreeHTML html;
 
 
 };
