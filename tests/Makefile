@@ -128,10 +128,16 @@ get-maps-all: #mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kii
 #python3 -m rack.maps `find env/*/ -type l -iname 'map-*.png' -printf '%l\n'`
 	@ echo "Ok"
 
+# Specific maps (deviating from defaults)
 
+# Colourful OPERA
+
+
+# Gulf of Finland
 mapcache/map-gulf-gray.png: mapcache
 	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer OPENFMI --mapLayers 'Basemaps:naturalearthgray' --SIZE 640,384 --PROJ 3067 --mapLink $@
 
+# Gulf of Finland
 mapcache/map-gulf.png: mapcache
 	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer default --SIZE 640,384 --PROJ 3067 --mapLink $@
 

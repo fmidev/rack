@@ -1,12 +1,11 @@
 import argparse
+import fnmatch
 import pathlib
 import os
 import re
 import sys
 import urllib.request
-#import xml.etree.ElementTree as ET # getCapabilities
 from urllib.parse import urlencode # getCapabilities
-#import urllib.request
 import urllib.error
 import xml.etree.ElementTree as ET
 # from pyproj import CRS
@@ -146,8 +145,15 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         "--mapServer",
         type=str,
         default=None,
-        metavar=list(server_conf.keys()),
-        help="Name of a preconfigured WMS server to use")
+        metavar="<name>[,<name>…]",
+        help=(
+            "WMS server(s) to search. Accepts a single built-in name "
+            f"(one of {list(server_conf.keys())}), "
+            "a comma-separated list ('internal-mundialis,internal-fmi'), "
+            "or a fnmatch-style glob ('internal-*'). "
+            "Omit (or use '*') to search all configured servers automatically."
+        )
+    )
 
     # TODO LINK GEOCONF
     parser.add_argument(
@@ -234,14 +240,16 @@ def bbox_needs_swap(version:str, crs:str|int) -> bool:
 
     return epsg in LATLON_AXIS_EPSG
 
+"""
+from pyproj import CRS
 def bbox_needs_swap_CRS_based(version:str, crs:str|int) -> bool:
-    """
+    "
     Return True if WMS 1.3.0 expects BBOX coordinates in Y,X order
     for the given CRS.
 
     Assumes the application's internal BBOX order is always:
         xmin, ymin, xmax, ymax
-    """
+    "
     if version < "1.3.0":
         return False
 
@@ -260,6 +268,7 @@ def bbox_needs_swap_CRS_based(version:str, crs:str|int) -> bool:
         axis1.direction.lower() in ("north", "south")
         and axis2.direction.lower() in ("east", "west")
     )
+"""
 
 def construct_http_get(defaults: dict,
                     layers, 
@@ -441,8 +450,121 @@ def get_server_conf(server:str="", layers:str="", epsg:int=None) -> dict:
         else:
             logger.info(f"Server '{k}' does not have layer '{layers}' in its configuration: {supported_layers}.")
 
-    raise ValueError(f"No layer '{layers}' configurations.")    
-    
+    raise ValueError(f"No layer '{layers}' configurations.")
+
+
+def find_servers(
+    layers: list | None = None,
+    epsg: int | None = None,
+    server_pattern: str | None = None,
+) -> list:
+    """Return all configured servers supporting the requested layers and CRS.
+
+    Args:
+        layers:         Required WMS layer names; all must be available.
+                        ``None`` or empty list → no layer filter.
+        epsg:           Required EPSG code, or ``None`` for no CRS filter.
+        server_pattern: Comma-separated server names or fnmatch globs
+                        (e.g. ``"internal-*"`` or ``"internal-mundialis,internal-fmi"``).
+                        ``None`` or ``"*"`` searches all built-in servers.
+
+    Returns:
+        List of ``(server_name, conf_dict)`` pairs.  Full layer-set matches
+        precede partial matches; within each group the original conf order is
+        preserved.  Each ``conf_dict["layers"]`` contains only the matched
+        subset (in the requested order); the original full list is in
+        ``conf_dict["_full_layers"]``.
+    """
+    all_confs = dict(server_conf)   # start from built-ins
+
+    # Resolve which servers to consider, filtering by pattern if given.
+    if server_pattern and server_pattern.strip() not in ('', '*'):
+        patterns = [p.strip() for p in server_pattern.split(',') if p.strip()]
+        matched_names = [
+            name for name in all_confs
+            if any(fnmatch.fnmatch(name, pat) for pat in patterns)
+        ]
+        # Exact names that didn't match built-ins: try file-based conf.
+        for pat in patterns:
+            if any(c in pat for c in ('*', '?', '[')):
+                continue
+            if pat not in all_confs:
+                filename = pathlib.Path(SERVER_CONF_PATH_SYNTAX.format(key=pat))
+                v = rack.config.read(filename, formats=['.json', '.cnf'], lenient=True)
+                if v:
+                    all_confs[pat] = v
+                    matched_names.append(pat)
+                else:
+                    logger.warning(f"Server '{pat}' not found (built-in or file).")
+        candidates = {n: all_confs[n] for n in matched_names}
+    else:
+        candidates = all_confs
+
+    layer_set = set(layers) if layers else set()
+    full_matches:    list = []
+    partial_matches: list = []
+
+    for name, conf in candidates.items():
+        supported_layers = set(conf.get('layers', []))
+        supported_epsg   = conf.get('epsg', [])
+
+        # CRS filter: skip if server declares EPSG support and the requested code is absent.
+        if epsg is not None and supported_epsg and epsg not in supported_epsg:
+            logger.debug(f"Server '{name}': EPSG:{epsg} not in {supported_epsg}")
+            continue
+
+        # Layer filter.
+        common = supported_layers & layer_set
+        if layer_set and not common:
+            logger.debug(f"Server '{name}': no layers in common with {layer_set}")
+            continue
+
+        entry = dict(conf)
+        entry['_full_layers'] = sorted(supported_layers)
+        # Preserve requested order; include only layers this server actually supports.
+        entry['layers'] = (
+            [l for l in layers if l in supported_layers]
+            if layer_set else sorted(supported_layers)
+        )
+
+        if not layer_set or layer_set.issubset(supported_layers):
+            full_matches.append((name, entry))
+        else:
+            partial_matches.append((name, entry))
+
+    return full_matches + partial_matches
+
+
+def _query_servers(layers: list, epsg: int | None, server_pattern: str | None):
+    """Print servers that support the given layers / CRS to stdout."""
+    matches = find_servers(layers=layers, epsg=epsg, server_pattern=server_pattern)
+
+    parts = []
+    if layers:
+        parts.append(f"layers={layers}")
+    if epsg is not None:
+        parts.append(f"EPSG:{epsg}")
+    print(f"Servers supporting {', '.join(parts) or '(any)'}:")
+
+    if not matches:
+        print("  (none found)")
+        return
+
+    for name, conf in matches:
+        full_layers    = conf.get('_full_layers', conf['layers'])
+        matched_layers = conf['layers']
+        supported_epsg = conf.get('epsg', [])
+        is_full = not layers or set(layers).issubset(set(full_layers))
+        tag      = '[full]' if is_full else '[partial]'
+        epsg_str = ', '.join(f'EPSG:{e}' for e in supported_epsg) if supported_epsg else '(any EPSG)'
+        print(f"\n  {tag} {name}")
+        print(f"    endpoint : {conf.get('endpoint', '?')}")
+        print(f"    layers   : {full_layers}")
+        if not is_full:
+            print(f"    matched  : {matched_layers}")
+        print(f"    CRS      : {epsg_str}")
+
+
 def get_wms_capabilities(endpoint):
     params = {
         "SERVICE": "WMS",
@@ -824,6 +946,15 @@ def main():
             logger.error(f"No endpoint found for server '{args.mapServer}'")
         return
 
+    # Implicit query mode: PROJ or mapLayers given but no map output requested
+    # (no OUTFILE, no BBOX, no SIZE).  List matching servers and exit.
+    if not args.OUTFILE and not args.BBOX and not args.SIZE:
+        layers_q = [l.strip() for l in args.mapLayers.split(',') if l.strip()] if args.mapLayers else []
+        epsg_q   = int(args.PROJ) if args.PROJ is not None else None
+        if layers_q or epsg_q is not None:
+            _query_servers(layers_q, epsg_q, args.mapServer)
+            return
+
     if args.OUTFILE:
         if len(args.OUTFILE) > 1 and args.mapLink:
             logger.warning(
@@ -860,8 +991,19 @@ def main():
                 logger.error(f"Cannot parse EPSG code from CRS='{CRS}' (in '{outfile}').")
                 sys.exit(1)
 
-            layers = path_vars.get('layers', '')
-            server_conf_data = get_server_conf(args.mapServer, layers=layers, epsg=EPSG)
+            layers_str = path_vars.get('layers', '')
+            layers_list = [l.strip() for l in layers_str.split(',') if l.strip()]
+            server_matches = find_servers(layers=layers_list, epsg=EPSG, server_pattern=args.mapServer)
+            if not server_matches:
+                logger.error(
+                    f"No server found supporting layers={layers_list}, EPSG:{EPSG}. "
+                    "Use --mapServer to specify a server, or run without OUTFILE/BBOX/SIZE to query."
+                )
+                sys.exit(1)
+            server_name, server_conf_data = server_matches[0]
+            logger.info(f"Using server '{server_name}' for '{outfile}'.")
+            if len(server_matches) > 1:
+                logger.info(f"  Other supporting servers: {[n for n, _ in server_matches[1:]]}")
 
             # SIZE is stored as separate WIDTH / HEIGHT fields in the path syntax.
             SIZE = f"{path_vars.get('WIDTH', '800')},{path_vars.get('HEIGHT', '600')}"
@@ -870,7 +1012,7 @@ def main():
             get(
                 serverConf=server_conf_data,
                 EPSG=EPSG,
-                mapLayers=layers,
+                mapLayers=layers_str,
                 mapForce=args.mapForce,
                 mapLink=mapLink,
                 BBOX=path_vars.get('BBOX', ''),
@@ -879,13 +1021,20 @@ def main():
             )
         return
 
-    server_conf = get_server_conf(args.mapServer)
-    logger.info(f"Server: {server_conf}")
-    #get(serverConf=server_conf, **vars(args))
+    layers_list = [l.strip() for l in args.mapLayers.split(',') if l.strip()] if args.mapLayers else []
+    epsg_val    = int(args.PROJ) if args.PROJ is not None else None
+    server_matches = find_servers(layers=layers_list, epsg=epsg_val, server_pattern=args.mapServer)
+    if not server_matches:
+        logger.error(f"No server found for layers={layers_list}, EPSG:{epsg_val}.")
+        sys.exit(1)
+    server_name, server_conf_result = server_matches[0]
+    logger.info(f"Using server '{server_name}'.")
+    if len(server_matches) > 1:
+        logger.info(f"Other supporting servers: {[n for n, _ in server_matches[1:]]}")
     args_dict = vars(args)
     if 'PROJ' in args_dict:
         args_dict['EPSG'] = args_dict['PROJ']
-    get(serverConf=server_conf, **vars(args))
+    get(serverConf=server_conf_result, **vars(args))
 
 
     #
