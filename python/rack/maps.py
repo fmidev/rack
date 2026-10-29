@@ -500,7 +500,8 @@ def show_wms_layers(root):
         print()
         print(f'  "Layer": "{name}",')
         print(f'  "Title": "{title}",')
-        print(f'  "CRS":    [{','.join(crs)}]')
+        crs_str = ", ".join(crs) if crs else "(no CRS advertised)"
+        print(f'  "CRS":    [{crs_str}]')
 
         if styles:
             print('  "Styles": {')
