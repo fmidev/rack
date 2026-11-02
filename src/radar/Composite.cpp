@@ -708,21 +708,19 @@ void Composite::updateInputSelector(const std::string & select){
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	if (!select.empty()){
-		// mout.warn("Setting selector=" , resources.select );
 		// const std::string quantityOrig(dataSelector.quantity);
-		mout.experimental<LOG_DEBUG>("Changed code: quantityOrig => odim.quantity=", odim.quantity);
+		mout.revised<LOG_DEBUG>("quantityOrig => odim.quantity=", odim.quantity);
+
 		const std::string quantityOrig(odim.quantity);
 
-		//composite.dataSelector.setParameters(resources.baseCtx().select);
 		dataSelector.setParameters(select);  // consume (clear)?
 
-		mout.debug("Composite selector: ", select, " -> ", dataSelector);
-		//resources.select = "quantity=" + composite.dataSelector.quantity;
-		//resources.select.clear(); // PROBLEMS HERE?
+		// mout.debug("Composite selector: ", select, " -> ", dataSelector);
+		mout.note("Updated composite input selector: '" , select, "' => ", dataSelector);
 
 		// TODO: selecor.quantity is allowed to be regExp?
 		// TODO: what if one wants to add TH or DBZHC in a DBZH composite?
-		//if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
+		// if (!quantityOrig.empty() && (quantityOrig != dataSelector.quantity)){
 		if (!quantityOrig.empty() && !dataSelector.getQuantitySelector().test(quantityOrig)){
 			mout.warn("quantityOrig=", quantityOrig, " !~ ", dataSelector.getQuantity());
 			mout.warn("quantity selector changed, resetting accumulation array" );

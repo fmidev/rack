@@ -15,6 +15,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+from matplotlib import lines
+
 import rack.config
 import rack.process
 #import rack.style
@@ -246,15 +248,24 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
             buf = []
             i += 1
             line_buf=''
+            # NEW 2026/10
+            #lines[i] = lines[i].strip() # remove whitespace
+            #while i < doc_lines and not END_RE.match(lines[i].strip()):
             while i < doc_lines and not END_RE.match(lines[i].strip()):
                 if lines[i].startswith('\\'):
                     logger.error(lines[i])
                     raise ValueError(f"Line inside a block starts with backslash '\\' near line {start_line}")
                 if lines[i].endswith('\\'):
-                    line_buf += lines[i].rstrip('\\')+' '
+                    # TODO: lines[i] is used raw here - indented continuation lines (common
+                    # for multi-line \code{.sh} commands) keep their leading whitespace, and
+                    # rstrip('\\') only removes the backslash, not the space before it, so the
+                    # trailing ' ' appended below doubles up. Should be
+                    line_buf += lines[i].strip().rstrip('\\').rstrip() + ' '
+                    # (or equivalent) to collapse this to a single space per joined line.
+                    #line_buf += lines[i].rstrip('\\')+' '
                 elif line_buf:
                     # Last line concatenated with '\' 
-                    buf.append(line_buf+lines[i])
+                    buf.append(line_buf+lines[i].strip())
                     line_buf=''
                 else:                    
                     buf.append(lines[i])
@@ -413,6 +424,7 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
     for line in lines:
         code = line.split("#", 1)
         code = code[0].strip()
+        print(f"script line: '{code}'")
         if code:
             if pending_code is not None:
                 code = f"{pending_code} {code}"
@@ -430,12 +442,12 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
         tokens = shlex.split(script[0])
         if cliconf.prepend_args:
             tokens = [tokens[0], cliconf.prepend_args, *tokens[1:]]
+            cliconf.prepend_args = ""
         code = " ".join(tokens)
         if cliconf.append_args:
             code += " " + cliconf.append_args
+            cliconf.append_args = ""
         script[0] = code
-        cliconf.prepend_args = ""
-        cliconf.append_args = ""
 
     logger.info(f"{Emoji.RUN.value} Executing shell script: {script}")
 

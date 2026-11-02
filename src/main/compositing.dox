@@ -12,6 +12,87 @@ On the other hand, a Cartesian product displaying single-radar data is identifie
 This section lists related commands and examples. A list of all the related command is \ref commands_cart.
 Motion vectors are a separate topic, discussed in \ref motion-composites .
 
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/composite-fi"
+}
+\~
+
+A single-radar Cartesian image is created simply as follows:
+\code{.sh}
+rack volume-fikor.h5 --cCreate -o cart-fikor.h5
+\endcode
+where  \c --cCreate is actually a shorthand of \c --cAdd \c --cExtract \c 'DATA,WEIGHT' :
+\~conf{.sh}
+{
+  "append_args": "--encoding C -o out/cart-single-radar.png"
+}
+\~
+\code{.sh}
+rack volume-fikor.h5 --cAdd --cExtract DATA,WEIGHT -o cart-fikor.h5
+\endcode
+
+\image html  cart-single-radar.png  "A radar image composite over the Baltic area." 
+\image latex cart-single-radar.png  "A radar image composite over the Baltic area."
+
+
+In fact, the command creates a "single-radar composite".
+It has several default settings, corresponding to the following command line options:
+- \c --cProj \c AEQD: Azimuthal Equidistant projection centered at the radar
+- \c --cBBox (xLL,yLL,xUR,yUR): the bounding box automatically matched with the radar range
+- \c --cSize (width,height): by default \c width=500 (pixels) and \c height=width.
+- \c --cMethod \c MAXIMUM : compositing method
+- \c --select path=dataset1/data1 : if not explicitly issued, the first data in the input volume is used (which happens to be total reflectivity (\c TH ) in this case)
+
+We can add as many inputs as we want.
+For example, this command creates a dBZ composite of three radars:
+\code{.sh}
+rack \
+    volume-fikor.h5 --select quantity=DBZH --cAdd \
+    volume-fikan.h5 --select quantity=DBZH --cAdd \
+    volume-fivih.h5 --select quantity=DBZH --cAdd \
+    --cExtract DATA,WEIGHT -o cartesian.h5
+\endcode
+
+The first \c --cAdd command initialises the composite with current geographical settings. As they are not given – hence left defaults – in this example,
+the composite is centered around the first input (\c fikor , Korpo radar).
+
+\note For clarity, the applied \c --select command appears repeated in the above example. It would be sufficient to put it before \e the \e first \c --cAdd command
+– the selector is internally "understood" and stored as a \e composite \e input \e selector for all the remaining inputs.
+
+Instead of repeating arguments on the command line, it is handy to use \c --script to define a routine repeated for each input.
+The previous command can be hence reformulated as follows:
+\~conf{.sh}
+{"shell": true}
+\~
+\code{.sh}
+rack \
+     --script '--select quantity=DBZH --cAdd' \
+    volume-fi*.h5 \
+    --cExtract DATA,WEIGHT -o cartesian.h5
+\endcode
+
+Internally, the composite is a separate memory array that supports \e continuous \e accumulation of data.
+This means, for example, that a user does not have to how in advance many radars will be included in the composite.
+
+
+\~stop
+\~
+
+
+\code{.sh}
+rack \
+    --cSize '640,768' \
+    --cProj '3067' \
+    --cBBox '-208000.0,6390000.0,1072000.0,7926000.0' \
+    --script '--select quantity=DBZH --cAdd' \
+    data/*.h5 \
+    --cExtract DATA \
+    -o composite-fi.tif
+\endcode
+
+
 An example of a command that generates a composite:
 
 \~conf{.sh}

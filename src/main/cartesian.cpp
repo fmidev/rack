@@ -128,10 +128,17 @@ public:
 		mout.debug("Setting projection to local composite");
 
 		if (!value.empty()){
-			ctx.composite.setProjection(value);
-			//int EPSG = ctx.composite.getEPSG();
-			//if (EPSG){
-			ctx.getStatusMap()["where:EPSG"] = ctx.composite.getEPSG();
+
+			if (value == "AEQD"){
+				// Silently skip
+			}
+			else {
+				ctx.composite.setProjection(value);
+				//int EPSG = ctx.composite.getEPSG();
+				//if (EPSG){
+				ctx.getStatusMap()["where:EPSG"] = ctx.composite.getEPSG();
+			}
+
 			//}
 		}
 		// ctx.composite.odim.projdef = value; // plain EPSG code OK??
