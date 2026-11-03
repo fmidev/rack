@@ -64,40 +64,56 @@ A directory typically contains following entries:
 * One or several input files with simple names, for example `volume.h5` or `volume-ground-clutter.h5` .
 * A directory for background maps, typically named `./maps` and/or map image files, typically named `map-*.py`
 * Output directory `./out`
+* A directory, name `./check` containg files against which output validation is done.
 
 Actually, the above directories and files are often soft links, which helps in keeping the code examples simple.
-Especially, output directory `./out` typically is a link to a shared directory used by Doxygen.
-Input data and map links often point to systematically named paths describing the original source – information that
-can be actually used to retrieve the files (see `rack.maps` ).
+Output directory `./out` is typically a link to a shared directory used by Doxygen for input.
+Input data and map links often point to systematically named paths and/or filenames describing the original source – information that
+can be actually used for *retrieving* those files (For example, see Python module `rack.maps` ).
+
+**Output file testing**
+
+Output testing can be applied to both program code (Python only) and command line code of `rack` executable or a python module (`rack.*`) .
+The code can be examples written in the manual as well as excplict test code embedded as `\~exec` blocks which do not appear in the compiled
+manual.
+
+A basic test simply checks that an output file is generated. Further, file size and contents can be checked.
+What and how the file is validated depends on the file type.
 
 
-
-
-
-
-| File type              | Checked/appended CLI option  | Utility                     |
+| File type              | CLI option                   | Utility                     |
 | -----------------------| -----------------------------| ----------------------------| 
 | Hdf5                   | -o file.txt                  | diff                        |
 | PNG                    | -o file.png                  | rack.check_image            |
-| GeoTIFF                | -o file.tiff                 | gdalinfo, diff              | 
+| GeoTIFF                | -o file.tif                  | gdalinfo, diff              |
+| XML (HTML, SVG)        | -o file.html / -o file.svg   | xmllint (or Python native?) |
+| SVG                    | -o file.svg                  | as converted to PNG         |
 
+The basic test (checking that the file exists) is simply "launched" [TODO] by a validation file: for example,
+`valid/$FILENAME` checks that respective `out/$FILENAME` is generated.
+Also, some basic tests are automatically run, following the table above. As to content of image files, graylevel or RGB data similarity
+is required to be currently at least 95%. More complex tests must be configured, explained below.
 
 *Configuration*
 
-Output testing can be applied to both program code (Python only) and command line code of `rack` executable or a python module (`rack.*`) .
-The code can be examples as well as test code in `\~exec` blocks.  
+The tests can be optionally specified or adjusted in configuration sections ( `\conf{.py}` or `\conf{.py}` ) preceeding the example code.
 
-The tests are optional and defined in a configuration section ( `\conf{.py}` or `\conf{.py}` ) preceeding the example code.
+In JSON, the entry has a key which equals the name of a checked file, $FILENAME (plain filename, without directory part).
+Then, the entry may have the following elements:
+| Key            | Type                | Requirement                         | 
+| ---------------| --------------------|-------------------------------------|  
+| `"exists"`     | `boolean`           | File must exist (or must not exist) | 
+| `"filename"`   | `string`            | Validation file, if not "valid/$FILENAME" |
+| `"size"`       | `integer`           | File size, exact                    | 
+| `"size"`       | `[integer,integer]` | File size, accepted range           | 
+| `"similarity"` | `float` (max. 1.0)  | Image array similarity              | 
 
-- string: filename (reference, if not the default "valid/$BASENAME")
-- boolean: The file must exist (or must not exist)
-- integer: The file size is at least x
-- float, up to 1.0. The image array has similarity
+Example:
 
 ```
 tests : {
-  "out/file.png": true,
-  "out/file.h5":  true,
+  "file-xyz.png": true,
+  "file.h5":  true,
 }
 ```
 or simply
