@@ -1,7 +1,6 @@
 /** \page compositespage Cartesian conversions and composites
 
 
-
 \tableofcontents
 
 \section compositing  Compositing
@@ -45,14 +44,14 @@ It has several default settings, corresponding to the following command line opt
 - \c --cMethod \c MAXIMUM : compositing method
 - \c --select path=dataset1/data1 : if not explicitly issued, the first data in the input volume is used (which happens to be total reflectivity (\c TH ) in this case)
 
-We can add as many inputs as we want.
-For example, this command creates a dBZ composite of three radars:
+We can add as many inputs as we want. For example, this command creates a dBZ composite of three radars:
 \code{.sh}
 rack \
     volume-fikor.h5 --select quantity=DBZH --cAdd \
     volume-fikan.h5 --select quantity=DBZH --cAdd \
     volume-fivih.h5 --select quantity=DBZH --cAdd \
-    --cExtract DATA,WEIGHT -o cartesian.h5
+    --cExtract DATA,WEIGHT \
+    -o out/composite-fi.h5 
 \endcode
 
 The first \c --cAdd command initialises the composite with current geographical settings. As they are not given – hence left defaults – in this example,
@@ -62,15 +61,29 @@ the composite is centered around the first input (\c fikor , Korpo radar).
 – the selector is internally "understood" and stored as a \e composite \e input \e selector for all the remaining inputs.
 
 Instead of repeating arguments on the command line, it is handy to use \c --script to define a routine repeated for each input.
-The previous command can be hence reformulated as follows:
+The previous command can be hence reformulated as follows. We also add outputs with various formats.
 \~conf{.sh}
-{"shell": true}
+{
+    "shell": true,
+    "tests": {
+        "out/composite-fi.h5":  true,
+        "out/composite-fi.tif": {"similarity": 0.95},
+        "out/composite-fi.png": {"similarity": 0.95},
+        "out/composite-fi.txt": true
+    }
+}
 \~
 \code{.sh}
 rack \
+    --cProj 3067 \
      --script '--select quantity=DBZH --cAdd' \
     volume-fi*.h5 \
-    --cExtract DATA,WEIGHT -o cartesian.h5
+    --cExtract DATA,WEIGHT \
+    --outputPrefix out/ \
+    -o composite-fi.h5 \
+    -o composite-fi.tif \
+    --palette default -o composite-fi.png \
+    -o composite-fi.txt
 \endcode
 
 Internally, the composite is a separate memory array that supports \e continuous \e accumulation of data.

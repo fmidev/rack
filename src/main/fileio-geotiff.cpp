@@ -244,6 +244,11 @@ void CmdGeoTiff::write(RackContext & ctx, const drain::image::Image & src, const
 			imageUnits << " [" << quantityInfo.getStandardName() << "]";
 		}
 		file.setGdal("UNITS", imageUnits.str()); // quantityInfo.getUnit()!
+		if (ODIM::versionFlagger.isSet(ODIM::RACK_EXTENSIONS)){
+			file.setGdal("NODATA",   odim.nodata);
+			file.setGdal("UNDETECT", odim.undetect);
+			file.setGdal("PROJDEF", odim.projdef);
+		}
 
 		// file.setUpTIFFDirectory_rack(src); // <-- check if could be added finally
 

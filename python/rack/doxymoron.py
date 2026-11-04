@@ -85,6 +85,9 @@ class CliConf(BaseConf):
     shell: bool = False
     # Filename (under LINK_FILE_DIR) to dump the assembled script to, for \linkfile{...}
     linkFile: Optional[str] = None
+    # Output file validation, keyed by output path (relative to workdir). See TESTS.md
+    # ("Output file testing") and validate_tests() below.
+    tests: Optional[Dict[str, Any]] = None
 
     def apply_replacements(self, s: str) -> str:
         for r in self.replacements:
@@ -98,6 +101,7 @@ class CliConf(BaseConf):
         self.stderrToFile = None
         self.shell = False
         self.linkFile = None
+        self.tests = None
 
 @dataclass
 class PyConf(BaseConf):
@@ -469,6 +473,92 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
         rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir,
                           stdout_file=cliconf.stdoutToFile, stderr_file=cliconf.stderrToFile)
 
+    validate_tests(cliconf.tests, cliconf.workdir)
+
+
+def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> None:
+    """
+    Validates output files declared in a "tests" conf entry (see TESTS.md, "Output file
+    testing"). Each key is an output path, relative to workdir; its value declares what
+    to check:
+      - True                : the file must exist
+      - int                 : exact file size, in bytes
+      - [min, max]          : file size, in bytes, must fall within this (inclusive) range
+      - float (0.0 .. 1.0)  : image similarity to valid/<basename> (PNG/TIFF only)
+      - dict                : any of {"exists": bool, "filename": str, "size": int|[min,max],
+                               "similarity": float}, combined
+
+    The reference/validator file defaults to "valid/<basename>" (relative to workdir),
+    overridable per-entry via spec["filename"].
+
+    Content comparison is currently implemented for plain text (.txt) via `diff` and for
+    PNG/TIFF via rack.imagecheck. Other formats (HDF5, GeoTIFF, SVG/XML - see TESTS.md)
+    are only checked for existence/size for now.
+    """
+    if not tests:
+        return
+
+    base = Path(workdir) if workdir else Path(".")
+
+    for rel_path, spec in tests.items():
+
+        if isinstance(spec, bool):
+            spec = {"exists": spec}
+        elif isinstance(spec, (int, list, tuple)):
+            spec = {"size": spec}
+        elif isinstance(spec, float):
+            spec = {"similarity": spec}
+        elif not isinstance(spec, dict):
+            raise ValueError(f"Unsupported test spec for '{rel_path}': {spec!r}")
+
+        produced = base / rel_path
+        logger.info(f"{Emoji.CHECKBOX.value}  Testing {produced}")
+
+        should_exist = spec.get("exists", True)
+        exists = produced.exists()
+        if should_exist and not exists:
+            raise AssertionError(f"Test failed: expected output file not found: {produced}")
+        if not should_exist:
+            if exists:
+                raise AssertionError(f"Test failed: file should not exist: {produced}")
+            continue
+
+        if "size" in spec:
+            actual_size = produced.stat().st_size
+            size_spec = spec["size"]
+            if isinstance(size_spec, (list, tuple)):
+                lo, hi = size_spec
+                if not (lo <= actual_size <= hi):
+                    raise AssertionError(
+                        f"Test failed: {produced} size {actual_size} not in range [{lo}, {hi}]")
+            elif actual_size != size_spec:
+                raise AssertionError(
+                    f"Test failed: {produced} size {actual_size} != expected {size_spec}")
+
+        validator = base / spec.get("filename", f"valid/{produced.name}")
+        suffix = produced.suffix.lower()
+
+        if suffix in (".png", ".tif", ".tiff"):
+            if not validator.exists():
+                logger.warning(f"No reference file {validator} for {produced}; skipping content check")
+            else:
+                import rack.imagecheck
+                similarity = spec.get("similarity", 0.95)
+                rack.imagecheck.run_checks(
+                    [str(produced), str(validator)],
+                    {"size": True, "pixels_equal_min": similarity, "on_fail": "error"})
+        elif suffix == ".txt":
+            if not validator.exists():
+                logger.warning(f"No reference file {validator} for {produced}; skipping content check")
+            else:
+                diff = subprocess.run(["diff", str(validator), str(produced)],
+                                       capture_output=True, text=True)
+                if diff.returncode != 0:
+                    raise AssertionError(f"Test failed: {produced} differs from {validator}:\n{diff.stdout}")
+        else:
+            logger.debug(f"No content validator for suffix '{suffix}'; only existence/size checked for {produced}")
+
+        logger.info(f"{Emoji.SUCCESS.value}  Test passed: {produced}")
 
 
 def run_py_block(block: Block, pyconf: PyConf) -> None:

@@ -44,12 +44,12 @@ keeps track of the following types:
 
 | Function               | Syntax                     | Comment                     |
 | -----------------------| -------------------------- | ----------------------------| 
-| Code example, inline   | \code{.ext} ... \endcode   |                             |
-| Code example, included | \include file.ext          |                             | 
-| Include an image       | \image file.ext            |                             |
+| Code example, inline   | \code{.ext} ... \endcode   | Doxyfile native             |
+| Code example, included | \include file.ext          | Doxyfile native             | 
+| Include an image       | \image file.ext            | Doxyfile native             |
 | Configure test         | \~conf{.ext} ... \~        | Doxymoron extension         |
 | Run code, hidden       | \~exec{.ext} ... \~        | Doxymoron extension         |
-| Link code example      | \~linkfile file.txt ... \~ | Doxymoron extension         |
+| Link code example      | \linkfile{file.txt}        | Doxymoron extension         |
 
 *Default testing scheme*
 
@@ -81,22 +81,26 @@ A basic test simply checks that an output file is generated. Further, file size 
 What and how the file is validated depends on the file type.
 
 
-| File type              | CLI option                   | Utility                     |
-| -----------------------| -----------------------------| ----------------------------| 
-| Hdf5                   | -o file.txt                  | diff                        |
-| PNG                    | -o file.png                  | rack.check_image            |
-| GeoTIFF                | -o file.tif                  | gdalinfo, diff              |
-| XML (HTML, SVG)        | -o file.html / -o file.svg   | xmllint (or Python native?) |
-| SVG                    | -o file.svg                  | as converted to PNG         |
+| File type              | Validator filename | Utility user for validation              |
+| -----------------------| --------------------------------------------------------| 
+| Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt |
+| PNG                    | original           | `rack.imagecheck`             |
+| TIFF                   | original           | `rack.imagecheck`             |
+| GeoTIFF                | $BASENAME.gdal     | `diff`, text extracted with `gdalinfo` |
+| XML (HTML, SVG)        | original           | `xmllint` (or Python native?) |
+| SVG                    | original           | Compared like PNG, conversion via `convert` or `inkscape` |
 
-The basic test (checking that the file exists) is simply "launched" [TODO] by a validation file: for example,
-`valid/$FILENAME` checks that respective `out/$FILENAME` is generated.
-Also, some basic tests are automatically run, following the table above. As to content of image files, graylevel or RGB data similarity
-is required to be currently at least 95%. More complex tests must be configured, explained below.
+The basic test (checking that the file exists) is simply "launched" [TODO] by a validation file: for example, if 
+`valid/$FILENAME` exists it means that respective `out/$FILENAME` should be generated.
+Also, some basic tests are automatically run, following the table above. As to content of image files,
+validated by rack.imagecheck, 
+graylevel or RGB data similarity is required to be currently at least 95%.
+I more complex tests are needed, they must be configured as explained below.
 
 *Configuration*
 
-The tests can be optionally specified or adjusted in configuration sections ( `\conf{.py}` or `\conf{.py}` ) preceeding the example code.
+The tests can be optionally specified or adjusted in configuration sections
+( `\conf{.py}` or `\conf{.py}` ) preceeding the example code.
 
 In JSON, the entry has a key which equals the name of a checked file, $FILENAME (plain filename, without directory part).
 Then, the entry may have the following elements:
@@ -112,26 +116,27 @@ Example:
 
 ```
 tests : {
-  "file-xyz.png": true,
-  "file.h5":  true,
+  "composite-fi.png": {"size": [64158, 244750]},
+  "composite-fi.tif": {"size": [200000, 300000]},
+  "composite-fi.h5":  {"size": [200000, 300000]}
 }
 ```
-or simply
+or simply, expecting only existence (creation) of files:
 ```
 tests : ["out/file.png", "out/file.h5"]
 }
 ```
-Note: if output files exists prior to testing, they are deleted.
+Note: if output files *declared for testing* (declared in configuration and/or exist in `./valid` directory)
+they are deleted [TODO] before executing the code excerpt. 
 
 A more profound testing checks file properties.
 
 ```
 tests : {
-  "out/file.h5": {
-    "check": "valid/file-test.h5",
-    "size": 120000,
-    "similarity": 0.9,
-    "size": 120000
+  "out/myfile.h5": {
+    "check": "valid/file-test.png",
+    "size": [120000,130000],
+    "similarity": 0.9
   }
 }
 ```
@@ -150,8 +155,10 @@ Notice that zero (0) is not a supported value in any of these (to avoid ambiguit
 
 
 
-Python
-======
+Python tests
+============
+
+(Documentation under construction.)
 
 
 Located in:

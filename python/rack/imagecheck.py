@@ -14,16 +14,29 @@ Image pair
 
 Image format support
 --------------------
-PNG and TIFF (including GeoTIFF) via Pillow.  GeoTIFF geographic metadata
-(GDAL tags 42112 GDAL_METADATA, 42113 GDAL_NODATA, 34736/34737 GeoKey
-parameters) is *reported* but geographic accuracy is intentionally left to
-GDAL CLI tools such as ``gdalinfo``.  That keeps the dependency list small.
+PNG and TIFF (including GeoTIFF) via Pillow.  GeoTIFF *geographic* metadata
+(34736/34737 GeoKey parameters) is *reported* but geographic accuracy is
+intentionally left to GDAL CLI tools such as ``gdalinfo`` - that keeps the
+dependency list small, and avoids false precision from comparing reprojected
+rasters pixel-by-pixel.
+
+GDAL_METADATA (tag 42112) and GDAL_NODATA (42113) are used, though: Rack's
+GeoTIFF writer (src/main/fileio-geotiff.cpp) embeds SCALE/OFFSET (gain/offset)
+always, and NODATA/UNDETECT as well when RACK_EXTENSIONS is set - "undetect"
+has no standard TIFF/GDAL slot, so this is the only place it is recorded.
+check_pair() uses this, for single-band images, to convert both sides to
+physical units before comparing, and to treat nodata/undetect as symbolic
+markers rather than arbitrary byte codes - see its docstring for the
+`raw`/`markers`/`marker_mismatch_cost` spec keys.
 
 Parking lot — planned future checks
 ------------------------------------
 SVG / XML   structural check via xmllint; pixel check by rendering to PNG
             and comparing with this module.
 HDF5        text-dump-based comparison (separate plan already sketched).
+GeoTIFF geo-metadata (listgeo/gdalinfo dumps) compared with numeric tolerance
+            - kept outside this module (no GDAL dependency here) and outside
+            doxymoron's plain-text .txt diff (which is exact-match only).
 
 Standalone usage
 ----------------
@@ -45,6 +58,7 @@ import argparse
 import json
 import logging
 import math
+import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -66,6 +80,12 @@ _GEO_ASCII      = 34737  # GeoAsciiParamsTag
 
 _GEOTIFF_TAGS = {_GDAL_METADATA, _GDAL_NODATA, _GEO_KEY_DIR, _GEO_ASCII}
 
+# <Item name="KEY" ...>value</Item> entries inside the GDAL_METADATA (42112) XML blob.
+# Rack's GeoTIFF writer (src/main/fileio-geotiff.cpp) emits SCALE/OFFSET always, and
+# NODATA/UNDETECT when RACK_EXTENSIONS is set - the only place "undetect" is recorded,
+# since TIFF/GDAL have no native concept of it.
+_GDAL_ITEM_RE = re.compile(r'<Item\s+name="([^"]+)"[^>]*>([^<]*)</Item>')
+
 
 # ---------------------------------------------------------------------------
 # ImageInfo — lightweight metadata container
@@ -82,6 +102,13 @@ class ImageInfo:
     is_geotiff: bool = False
     gdal_nodata: Optional[str] = None
     gdal_metadata_xml: Optional[str] = None
+    gdal_items: Dict[str, str] = field(default_factory=dict)
+
+    # Parsed from gdal_items, in raw (unscaled) pixel-code units.
+    gain: Optional[float] = None
+    offset: Optional[float] = None
+    nodata_code: Optional[float] = None
+    undetect_code: Optional[float] = None
 
     @classmethod
     def load(cls, path: Union[str, Path]) -> "ImageInfo":
@@ -106,6 +133,12 @@ class ImageInfo:
             raw = tiff_tags[_GDAL_METADATA]
             meta_xml = raw[0] if isinstance(raw, (list, tuple)) else str(raw)
 
+        items = dict(_GDAL_ITEM_RE.findall(meta_xml)) if meta_xml else {}
+
+        def _num(key: str, fallback: Optional[str] = None) -> Optional[float]:
+            raw_val = items.get(key, fallback)
+            return float(raw_val) if raw_val is not None else None
+
         return cls(
             path=path,
             size=img.size,
@@ -114,6 +147,13 @@ class ImageInfo:
             is_geotiff=is_geotiff,
             gdal_nodata=nodata,
             gdal_metadata_xml=meta_xml,
+            gdal_items=items,
+            gain=_num("SCALE"),
+            offset=_num("OFFSET"),
+            # GDAL_NODATA (tag 42113) is the standard fallback; Rack's own NODATA
+            # Item (when present) is the authoritative source.
+            nodata_code=_num("NODATA", nodata),
+            undetect_code=_num("UNDETECT"),
         )
 
     def describe(self) -> str:
@@ -202,6 +242,88 @@ def _diff_stats(a1: np.ndarray, a2: np.ndarray) -> Dict[str, float]:
     }
 
 
+# Pixel categories for marker-aware comparison (single-band images only).
+_CAT_DATA = 0
+_CAT_NODATA = 1
+_CAT_UNDETECT = 2
+
+
+def _categorize(arr: np.ndarray, nodata: Optional[float], undetect: Optional[float]) -> np.ndarray:
+    """Classify each raw pixel value as real data, nodata, or undetect."""
+    cat = np.full(arr.shape, _CAT_DATA, dtype=np.int8)
+    if undetect is not None:
+        cat[arr == undetect] = _CAT_UNDETECT
+    if nodata is not None:
+        cat[arr == nodata] = _CAT_NODATA  # nodata wins if codes coincide
+    return cat
+
+
+def _resolve_markers(spec: Dict[str, Any], info: ImageInfo, which: str) -> Tuple[Optional[float], Optional[float]]:
+    """Resolve (nodata, undetect) raw codes for one image ('produced' or 'reference').
+
+    An explicit spec["markers"] overrides the image's own embedded metadata - either
+    shared between both images ({"nodata": ..., "undetect": ...}) or per-image
+    ({"produced": {...}, "reference": {...}}), for files without Rack's GDAL_METADATA
+    Items (e.g. plain GeoTIFFs, or a different encoding than the file's own).
+    """
+    markers = spec.get("markers")
+    entry = None
+    if isinstance(markers, dict):
+        if isinstance(markers.get(which), dict):
+            entry = markers[which]
+        elif "nodata" in markers or "undetect" in markers:
+            entry = markers
+    nodata = entry.get("nodata") if entry else info.nodata_code
+    undetect = entry.get("undetect") if entry else info.undetect_code
+    return nodata, undetect
+
+
+def _diff_stats_marked(
+    val1: np.ndarray, val2: np.ndarray,
+    cat1: np.ndarray, cat2: np.ndarray,
+    marker_mismatch_cost: Optional[float],
+) -> Tuple[Dict[str, float], np.ndarray]:
+    """Marker-aware difference statistics for single-band arrays (*val1*/*val2* already
+    converted to physical units where possible; *cat1*/*cat2* from _categorize()).
+
+    A pixel that is the *same* marker category in both images (e.g. both "nodata") is a
+    perfect match regardless of its raw byte value - needed since the same marker can be
+    an arbitrary, encoding-specific code. A pixel that is a marker in one image but not
+    matched by the same category in the other (marker vs. data, or nodata vs. undetect)
+    is always a mismatch; its contribution to rms/diff_std is *marker_mismatch_cost* if
+    given, otherwise it is excluded from those continuous stats entirely (the raw byte
+    gap, e.g. nodata=65535 vs a real value, is not a meaningful physical distance).
+    Either way it always counts against pixels_equal/elements_equal.
+    """
+    data_mask = (cat1 == _CAT_DATA) & (cat2 == _CAT_DATA)
+    marker_match = (cat1 == cat2) & (cat1 != _CAT_DATA)
+    mismatch = ~data_mask & ~marker_match
+
+    diff = np.zeros_like(val1)
+    diff[data_mask] = val1[data_mask] - val2[data_mask]
+    included = np.ones_like(diff, dtype=bool)
+    if marker_mismatch_cost is not None:
+        diff[mismatch] = marker_mismatch_cost
+    else:
+        included = ~mismatch
+
+    diff_included = diff[included]
+    rms = math.sqrt(float(np.mean(diff_included ** 2))) if diff_included.size else 0.0
+    std = float(np.std(diff_included)) if diff_included.size else 0.0
+
+    equal_mask = marker_match.copy()
+    equal_mask[data_mask] = (val1[data_mask] == val2[data_mask])
+
+    stats = {
+        "rms": rms,
+        "diff_std": std,
+        "pixels_equal": float(np.mean(equal_mask)),
+        "elements_equal": float(np.mean(equal_mask)),
+        "marker_mismatches": int(np.count_nonzero(mismatch)),
+    }
+    return stats, equal_mask
+
+
 # ---------------------------------------------------------------------------
 # Single-image check
 # ---------------------------------------------------------------------------
@@ -276,6 +398,27 @@ def check_pair(
     rms_max           : float — maximum allowed RMS of pixel difference
     diff_std_max      : float — maximum allowed std of pixel difference
     on_fail           : "error" | "warn" | "ignore"   (default "error")
+
+    Single-band images only (e.g. GeoTIFF; multi-channel images such as RGB PNG use
+    plain array comparison, unaffected by the keys below):
+
+    raw                 : bool  — force raw pixel-code comparison even when both images
+                                   carry gain/offset metadata (default False: convert to
+                                   physical units automatically when both have it)
+    markers             : dict  — override the nodata/undetect codes read from each
+                                   image's own GDAL_METADATA (see ImageInfo), either
+                                   shared ({"nodata": 65535, "undetect": 0}) or per-image
+                                   ({"produced": {...}, "reference": {...}})
+    marker_mismatch_cost: float — fixed distance (in the same units as the pixel values
+                                   compared - physical, unless raw=True) charged to
+                                   rms/diff_std for a pixel that is a marker in one image
+                                   without a matching marker category in the other
+                                   (marker vs. data, or nodata vs. undetect). Omit to
+                                   exclude such pixels from rms/diff_std entirely; they
+                                   always count against pixels_equal/elements_equal.
+                                   A pixel that is the *same* marker category in both
+                                   images is always a perfect match, regardless of its
+                                   raw byte value.
     """
     result = CheckResult()
     on_fail = on_fail or spec.get("on_fail", "error")
@@ -331,13 +474,44 @@ def check_pair(
         else:
             arr1 = _load_array(produced)
             arr2 = _load_array(reference)
-            if arr1.dtype != arr2.dtype:
-                # upcast both to float for a meaningful comparison
-                arr1 = arr1.astype(np.float64)
-                arr2 = arr2.astype(np.float64)
-            stats = _diff_stats(arr1, arr2)
+
+            if arr1.ndim == 2 and arr2.ndim == 2:
+                # Single-band (e.g. GeoTIFF): honour markers (nodata/undetect) and,
+                # where available, convert to physical units via each image's own
+                # gain/offset before comparing - see _diff_stats_marked().
+                raw_mode = bool(spec.get("raw", False))
+                physical = (
+                    not raw_mode
+                    and inf1.gain is not None and inf1.offset is not None
+                    and inf2.gain is not None and inf2.offset is not None
+                )
+                if physical:
+                    val1 = arr1.astype(np.float64) * inf1.gain + inf1.offset
+                    val2 = arr2.astype(np.float64) * inf2.gain + inf2.offset
+                else:
+                    val1 = arr1.astype(np.float64)
+                    val2 = arr2.astype(np.float64)
+
+                nodata1, undetect1 = _resolve_markers(spec, inf1, "produced")
+                nodata2, undetect2 = _resolve_markers(spec, inf2, "reference")
+                cat1 = _categorize(arr1, nodata1, undetect1)
+                cat2 = _categorize(arr2, nodata2, undetect2)
+
+                stats, _ = _diff_stats_marked(val1, val2, cat1, cat2, spec.get("marker_mismatch_cost"))
+                result.note("physical", physical)
+                if nodata1 is not None or nodata2 is not None:
+                    result.note("nodata", (nodata1, nodata2))
+                if undetect1 is not None or undetect2 is not None:
+                    result.note("undetect", (undetect1, undetect2))
+            else:
+                if arr1.dtype != arr2.dtype:
+                    # upcast both to float for a meaningful comparison
+                    arr1 = arr1.astype(np.float64)
+                    arr2 = arr2.astype(np.float64)
+                stats = _diff_stats(arr1, arr2)
+
             for k, v in stats.items():
-                result.note(k, round(v, 6))
+                result.note(k, round(v, 6) if isinstance(v, float) else v)
             logger.info(
                 "  rms=%.4f  diff_std=%.4f  pixels_equal=%.4f  elements_equal=%.4f",
                 stats["rms"], stats["diff_std"],
