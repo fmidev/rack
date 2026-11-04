@@ -64,7 +64,7 @@ A directory typically contains following entries:
 * One or several input files with simple names, for example `volume.h5` or `volume-ground-clutter.h5` .
 * A directory for background maps, typically named `./maps` and/or map image files, typically named `map-*.py`
 * Output directory `./out`
-* A directory, name `./check` containg files against which output validation is done.
+* A directory, name `./reference`, containing files against which output is validated.
 
 Actually, the above directories and files are often soft links, which helps in keeping the code examples simple.
 Output directory `./out` is typically a link to a shared directory used by Doxygen for input.
@@ -85,32 +85,66 @@ What and how the file is validated depends on the file type.
 | -----------------------| --------------------------------------------------------| 
 | Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt |
 | PNG                    | original           | `rack.imagecheck`             |
-| TIFF                   | original           | `rack.imagecheck`             |
-| GeoTIFF                | $BASENAME.gdal     | `diff`, text extracted with `gdalinfo` |
+| TIFF / GeoTIFF         | original           | `rack.imagecheck` - pixel content, gain/offset and nodata/undetect markers (see below) |
+| GeoTIFF (geo metadata) | $BASENAME.gdal     | `diff`, text extracted with `gdalinfo`/`listgeo` - geographic metadata only (projection, extent); kept separate from `rack.imagecheck` to avoid a GDAL dependency there, and not yet implemented (plain text diff is too strict for `gdalinfo`'s numeric rounding - needs a tolerance-aware comparison, parked for later) |
 | XML (HTML, SVG)        | original           | `xmllint` (or Python native?) |
 | SVG                    | original           | Compared like PNG, conversion via `convert` or `inkscape` |
 
 The basic test (checking that the file exists) is simply "launched" [TODO] by a validation file: for example, if 
-`valid/$FILENAME` exists it means that respective `out/$FILENAME` should be generated.
+`reference/$FILENAME` exists it means that respective `out/$FILENAME` should be generated.
 Also, some basic tests are automatically run, following the table above. As to content of image files,
 validated by rack.imagecheck, 
 graylevel or RGB data similarity is required to be currently at least 95%.
 I more complex tests are needed, they must be configured as explained below.
 
+*GeoTIFF: markers and physical units*
+
+Rack's GeoTIFF writer (`src/main/fileio-geotiff.cpp`) embeds `SCALE`/`OFFSET` (gain/offset)
+always, and `NODATA`/`UNDETECT` as well (when `RACK_EXTENSIONS` is set) as `<Item>` entries
+in the standard `GDAL_METADATA` TIFF tag - "undetect" has no native TIFF/GDAL concept, so
+this is the only place it is recorded. `rack.imagecheck` reads this automatically: for
+single-band images (not RGB/PNG), it converts both the produced and reference image to
+physical units via each file's own gain/offset before comparing, and treats pixels marked
+`nodata`/`undetect` in both images as a match regardless of their raw byte codes (which may
+differ between encodings) - a marker matched against a *different* marker category, or
+against a real data value, is a genuine error, but its cost is not computed from the (often
+arbitrary) raw byte difference; see `marker_mismatch_cost` below. This means GeoTIFFs stored
+with different types (e.g. 8-bit vs. 16-bit) can be compared meaningfully. This machinery is
+intentionally *not* applied to geographic metadata (projection, extent) - see the table above.
+
 *Configuration*
 
 The tests can be optionally specified or adjusted in configuration sections
-( `\conf{.py}` or `\conf{.py}` ) preceeding the example code.
+( `\conf{.sh}` or `\conf{.py}` ) preceeding the example code.
 
 In JSON, the entry has a key which equals the name of a checked file, $FILENAME (plain filename, without directory part).
-Then, the entry may have the following elements:
-| Key            | Type                | Requirement                         | 
-| ---------------| --------------------|-------------------------------------|  
-| `"exists"`     | `boolean`           | File must exist (or must not exist) | 
-| `"filename"`   | `string`            | Validation file, if not "valid/$FILENAME" |
-| `"size"`       | `integer`           | File size, exact                    | 
-| `"size"`       | `[integer,integer]` | File size, accepted range           | 
-| `"similarity"` | `float` (max. 1.0)  | Image array similarity              | 
+Its value is a single spec (below), or a **list of specs** to check the same file several ways (e.g. against two
+different reference images) - a JSON object cannot repeat a key, so a list is how one output file gets more than
+one check:
+```
+tests : {
+  "out/composite-fi.tif": [
+    {"similarity": 0.95},
+    {"filename": "reference/composite-fi-AEQD.tif", "similarity": 0.95, "on_fail": "warn"}
+  ]
+}
+```
+(The second entry above is a *meta test*: it deliberately checks against a reference rendered with a different,
+incompatible map projection, to confirm the similarity check actually detects a real mismatch. `on_fail: "warn"`
+keeps it from failing the whole test run - see below.)
+
+Each spec may have the following elements:
+| Key                     | Type                     | Requirement                         |
+| ------------------------| --------------------------|-------------------------------------|
+| `"exists"`              | `boolean`                 | File must exist (or must not exist) |
+| `"filename"`            | `string`                  | Reference file, if not "reference/$FILENAME" |
+| `"size"`                | `integer`                 | File size, exact                    |
+| `"size"`                | `[integer,integer]`       | File size, accepted range           |
+| `"similarity"`          | `float` (max. 1.0)        | Image array similarity (PNG/TIFF)   |
+| `"on_fail"`             | `"error"` \| `"warn"` \| `"ignore"` | What a failed check does: abort the run (default), log a warning, or just log |
+| `"markers"`             | `dict`                    | TIFF only: override the nodata/undetect codes read from GDAL_METADATA - shared (`{"nodata":65535,"undetect":0}`) or per-image (`{"produced":{...},"reference":{...}}`) |
+| `"marker_mismatch_cost"`| `float`                   | TIFF only: fixed distance (physical units) charged for a marker mismatched against a different category or real data, instead of excluding it from rms/diff_std |
+| `"raw"`                 | `boolean`                 | TIFF only: compare raw pixel codes even when both images have gain/offset metadata (default: convert to physical units automatically) |
 
 Example:
 
@@ -126,7 +160,7 @@ or simply, expecting only existence (creation) of files:
 tests : ["out/file.png", "out/file.h5"]
 }
 ```
-Note: if output files *declared for testing* (declared in configuration and/or exist in `./valid` directory)
+Note: if output files *declared for testing* (declared in configuration and/or exist in `./reference` directory)
 they are deleted [TODO] before executing the code excerpt. 
 
 A more profound testing checks file properties.
@@ -134,7 +168,7 @@ A more profound testing checks file properties.
 ```
 tests : {
   "out/myfile.h5": {
-    "check": "valid/file-test.png",
+    "check": "reference/file-test.png",
     "size": [120000,130000],
     "similarity": 0.9
   }

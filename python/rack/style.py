@@ -176,6 +176,7 @@ class Emoji(str, Enum):
 
     # Misc
     TRIANGLE = "📐"
+    MAGNIFIER = "🔍"
 
     def __str__(self):
         return self.value

@@ -67,7 +67,10 @@ The previous command can be hence reformulated as follows. We also add outputs w
     "shell": true,
     "tests": {
         "out/composite-fi.h5":  true,
-        "out/composite-fi.tif": {"similarity": 0.95},
+        "out/composite-fi.tif": [
+            {"similarity": 0.95},
+            {"filename": "reference/composite-fi-AEQD.tif", "similarity": 0.95, "on_fail": "warn"}
+        ],
         "out/composite-fi.png": {"similarity": 0.95},
         "out/composite-fi.txt": true
     }

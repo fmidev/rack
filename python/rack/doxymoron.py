@@ -479,85 +479,124 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
 def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> None:
     """
     Validates output files declared in a "tests" conf entry (see TESTS.md, "Output file
-    testing"). Each key is an output path, relative to workdir; its value declares what
-    to check:
+    testing"). Each key is an output path, relative to workdir; its value is either a
+    single spec, or a list of specs to check the same file against several things (e.g.
+    two different reference images) - a JSON object cannot repeat a key, so a list is how
+    one output file gets more than one check. Each spec is one of:
       - True                : the file must exist
       - int                 : exact file size, in bytes
       - [min, max]          : file size, in bytes, must fall within this (inclusive) range
-      - float (0.0 .. 1.0)  : image similarity to valid/<basename> (PNG/TIFF only)
+      - float (0.0 .. 1.0)  : image similarity to reference/<basename> (PNG/TIFF only)
       - dict                : any of {"exists": bool, "filename": str, "size": int|[min,max],
-                               "similarity": float}, combined
+                               "similarity": float, "on_fail": "error"|"warn"|"ignore",
+                               "markers": ..., "marker_mismatch_cost": float, "raw": bool},
+                               combined. The last three are passed through to
+                               rack.imagecheck for PNG/TIFF content checks (see its
+                               check_pair() docstring).
 
-    The reference/validator file defaults to "valid/<basename>" (relative to workdir),
-    overridable per-entry via spec["filename"].
+    The reference file defaults to "reference/<basename>" (relative to workdir),
+    overridable per-entry via spec["filename"]. "on_fail" (default "error") controls what
+    a failed spec does: raise (aborting the run), log a warning, or log at info level -
+    e.g. for a "meta test" that is expected to fail (checking a near-miss reference on
+    purpose) without aborting the rest of the run.
 
     Content comparison is currently implemented for plain text (.txt) via `diff` and for
-    PNG/TIFF via rack.imagecheck. Other formats (HDF5, GeoTIFF, SVG/XML - see TESTS.md)
-    are only checked for existence/size for now.
+    PNG/TIFF (including GeoTIFF pixel content - see rack.imagecheck for its gain/offset
+    and nodata/undetect marker handling) via rack.imagecheck. Other formats (HDF5,
+    GeoTIFF *geographic* metadata, SVG/XML - see TESTS.md) are only checked for
+    existence/size for now.
     """
     if not tests:
         return
 
     base = Path(workdir) if workdir else Path(".")
 
-    for rel_path, spec in tests.items():
+    for rel_path, raw_spec in tests.items():
+        specs = raw_spec if (isinstance(raw_spec, list) and raw_spec
+                              and all(isinstance(s, dict) for s in raw_spec)) else [raw_spec]
+        for spec in specs:
+            _validate_one(base, rel_path, spec)
 
-        if isinstance(spec, bool):
-            spec = {"exists": spec}
-        elif isinstance(spec, (int, list, tuple)):
-            spec = {"size": spec}
-        elif isinstance(spec, float):
-            spec = {"similarity": spec}
-        elif not isinstance(spec, dict):
-            raise ValueError(f"Unsupported test spec for '{rel_path}': {spec!r}")
 
-        produced = base / rel_path
-        logger.info(f"{Emoji.CHECKBOX.value}  Testing {produced}")
+def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
+    """Runs a single test spec for one file - see validate_tests()."""
 
-        should_exist = spec.get("exists", True)
-        exists = produced.exists()
-        if should_exist and not exists:
-            raise AssertionError(f"Test failed: expected output file not found: {produced}")
-        if not should_exist:
-            if exists:
-                raise AssertionError(f"Test failed: file should not exist: {produced}")
-            continue
+    if isinstance(spec, bool):
+        spec = {"exists": spec}
+    elif isinstance(spec, (int, list, tuple)):
+        spec = {"size": spec}
+    elif isinstance(spec, float):
+        spec = {"similarity": spec}
+    elif not isinstance(spec, dict):
+        raise ValueError(f"Unsupported test spec for '{rel_path}': {spec!r}")
 
-        if "size" in spec:
-            actual_size = produced.stat().st_size
-            size_spec = spec["size"]
-            if isinstance(size_spec, (list, tuple)):
-                lo, hi = size_spec
-                if not (lo <= actual_size <= hi):
-                    raise AssertionError(
-                        f"Test failed: {produced} size {actual_size} not in range [{lo}, {hi}]")
-            elif actual_size != size_spec:
-                raise AssertionError(
-                    f"Test failed: {produced} size {actual_size} != expected {size_spec}")
+    on_fail = spec.get("on_fail", "error")
+    failed = False
 
-        validator = base / spec.get("filename", f"valid/{produced.name}")
-        suffix = produced.suffix.lower()
-
-        if suffix in (".png", ".tif", ".tiff"):
-            if not validator.exists():
-                logger.warning(f"No reference file {validator} for {produced}; skipping content check")
-            else:
-                import rack.imagecheck
-                similarity = spec.get("similarity", 0.95)
-                rack.imagecheck.run_checks(
-                    [str(produced), str(validator)],
-                    {"size": True, "pixels_equal_min": similarity, "on_fail": "error"})
-        elif suffix == ".txt":
-            if not validator.exists():
-                logger.warning(f"No reference file {validator} for {produced}; skipping content check")
-            else:
-                diff = subprocess.run(["diff", str(validator), str(produced)],
-                                       capture_output=True, text=True)
-                if diff.returncode != 0:
-                    raise AssertionError(f"Test failed: {produced} differs from {validator}:\n{diff.stdout}")
+    def report(message: str) -> None:
+        nonlocal failed
+        failed = True
+        if on_fail == "error":
+            raise AssertionError(message)
+        elif on_fail == "warn":
+            logger.warning(f"Test failed (on_fail=warn): {message}")
         else:
-            logger.debug(f"No content validator for suffix '{suffix}'; only existence/size checked for {produced}")
+            logger.info(f"Test failed (on_fail=ignore): {message}")
 
+    produced = base / rel_path
+    logger.info(f"{Emoji.MAGNIFIER.value}  Testing {produced}"
+                + (f" vs {spec['filename']}" if "filename" in spec else ""))
+
+    should_exist = spec.get("exists", True)
+    exists = produced.exists()
+    if should_exist and not exists:
+        report(f"Test failed: expected output file not found: {produced}")
+        return
+    if not should_exist:
+        if exists:
+            report(f"Test failed: file should not exist: {produced}")
+        return
+
+    if "size" in spec:
+        actual_size = produced.stat().st_size
+        size_spec = spec["size"]
+        if isinstance(size_spec, (list, tuple)):
+            lo, hi = size_spec
+            if not (lo <= actual_size <= hi):
+                report(f"Test failed: {produced} size {actual_size} not in range [{lo}, {hi}]")
+        elif actual_size != size_spec:
+            report(f"Test failed: {produced} size {actual_size} != expected {size_spec}")
+
+    reference = base / spec.get("filename", f"reference/{produced.name}")
+    suffix = produced.suffix.lower()
+
+    if suffix in (".png", ".tif", ".tiff"):
+        if not reference.exists():
+            logger.warning(f"No reference file {reference} for {produced}; skipping content check")
+        else:
+            import rack.imagecheck
+            check_spec = {
+                "size": True,
+                "pixels_equal_min": spec.get("similarity", 0.95),
+                "on_fail": on_fail,
+            }
+            for key in ("markers", "marker_mismatch_cost", "raw"):
+                if key in spec:
+                    check_spec[key] = spec[key]
+            result = rack.imagecheck.run_checks([str(produced), str(reference)], check_spec)
+            failed = failed or not result.passed
+    elif suffix == ".txt":
+        if not reference.exists():
+            logger.warning(f"No reference file {reference} for {produced}; skipping content check")
+        else:
+            diff = subprocess.run(["diff", str(reference), str(produced)],
+                                   capture_output=True, text=True)
+            if diff.returncode != 0:
+                report(f"Test failed: {produced} differs from {reference}:\n{diff.stdout}")
+    else:
+        logger.debug(f"No content comparator for suffix '{suffix}'; only existence/size checked for {produced}")
+
+    if not failed:
         logger.info(f"{Emoji.SUCCESS.value}  Test passed: {produced}")
 
 
