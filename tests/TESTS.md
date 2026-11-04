@@ -1,5 +1,5 @@
 
-============
+
 Testing Rack
 ============
 
@@ -36,8 +36,8 @@ How these goals are accomplished is explained next.
 The new approach: Doxymoron
 ---------------------------
 
-As a part of **Rack** distribution Python module `rack.doxymoron` has been designed exclusively
-to support testing the usage of the product.
+As a part of **Rack** distribution Python module `rack.doxymoron` has been designed 
+for testing the usage of the command line executable, `rack`.
 
 In the documentation of **Rack**, formatted using Doxygen conventions and keywords, `Doxymoron` detects and
 keeps track of the following types:
@@ -47,24 +47,25 @@ keeps track of the following types:
 | Code example, inline   | \code{.ext} ... \endcode   | Doxyfile native             |
 | Code example, included | \include file.ext          | Doxyfile native             | 
 | Include an image       | \image file.ext            | Doxyfile native             |
-| Configure test         | \~conf{.ext} ... \~        | Doxymoron extension         |
-| Run code, hidden       | \~exec{.ext} ... \~        | Doxymoron extension         |
+| Configure test         | \\~conf{.ext} ... \\~      | Doxymoron extension         |
+| Run code, hidden       | \\~exec{.ext} ... \\~      | Doxymoron extension         |
 | Link code example      | \linkfile{file.txt}        | Doxymoron extension         |
 
 *Default testing scheme*
 
-Each test is run in a dedicated working directory, which is a subdirectory under `rack/tests/`, prefixed with `env-`.
+Each test is run in a dedicated working directory, which is a subdirectory under `rack/tests/env/`.
 These subdirectories can be thought as "virtual environments" for tests. A working directory can be shared
-among several tests. Some tests can use their own directories. The default directory is `/env-default` it this can be overridden
+among several tests. Some tests can use their own directories.
+The default directory is `env/default` it this can be overridden
 in configuration section (`\conf`)  with `workdir` variable. 
 
 A directory typically contains following entries:
 
 * Input directory, typically named './data' .
 * One or several input files with simple names, for example `volume.h5` or `volume-ground-clutter.h5` .
-* A directory for background maps, typically named `./maps` and/or map image files, typically named `map-*.py`
+* A directory for background maps, typically named `./maps` and/or map image files, typically named `map-*.png`
 * Output directory `./out`
-* A directory, name `./reference`, containing files against which output is validated.
+* A directory, named `./reference`, containing files against which output is validated.
 
 Actually, the above directories and files are often soft links, which helps in keeping the code examples simple.
 Output directory `./out` is typically a link to a shared directory used by Doxygen for input.
@@ -81,14 +82,18 @@ A basic test simply checks that an output file is generated. Further, file size 
 What and how the file is validated depends on the file type.
 
 
-| File type              | Validator filename | Utility user for validation              |
-| -----------------------| --------------------------------------------------------| 
-| Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt |
-| PNG                    | original           | `rack.imagecheck`             |
+| File type              | Validator filename | Utility user for validation                  |
+| -----------------------| ------------------------------------------------------------------| 
+| Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt  |
+| PNG                    | original           | `rack.imagecheck`                            |
 | TIFF / GeoTIFF         | original           | `rack.imagecheck` - pixel content, gain/offset and nodata/undetect markers (see below) |
-| GeoTIFF (geo metadata) | $BASENAME.gdal     | `diff`, text extracted with `gdalinfo`/`listgeo` - geographic metadata only (projection, extent); kept separate from `rack.imagecheck` to avoid a GDAL dependency there, and not yet implemented (plain text diff is too strict for `gdalinfo`'s numeric rounding - needs a tolerance-aware comparison, parked for later) |
-| XML (HTML, SVG)        | original           | `xmllint` (or Python native?) |
-| SVG                    | original           | Compared like PNG, conversion via `convert` or `inkscape` |
+| GeoTIFF (geo metadata) | $BASENAME.gdal     | `diff`, through text output                  |
+| XML (HTML, SVG)        | original           | `xmllint` (or Python native?)                |
+| SVG                    | original           | like PNG, after conversion                   |
+
+A remark on GeoTIFF: geographic metadata only (projection, extent); kept separate from `rack.imagecheck`
+to avoid a GDAL dependency there, and not yet implemented (plain text diff is too strict for `gdalinfo`'s
+numeric rounding - needs a tolerance-aware comparison, parked for later
 
 The basic test (checking that the file exists) is simply "launched" [TODO] by a validation file: for example, if 
 `reference/$FILENAME` exists it means that respective `out/$FILENAME` should be generated.
