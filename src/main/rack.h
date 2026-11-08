@@ -46,7 +46,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  Release 22.0.1
  *  - Separated drain::TreeExtractorHTML
  *  Release 22.0.2
- *  - GeoTIFF, GDAL_METADATA: added Item name="UNDETECT"
+ *  - GeoTIFF, GDAL_METADATA: added Items: UNDETECT, NODATA (equals GDAL_NODATA)
  *
  *  Version 21.0
  *  - HDF5 output: write chunk size; set Conventions only if unset

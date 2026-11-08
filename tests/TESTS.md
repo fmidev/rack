@@ -43,15 +43,15 @@ In the documentation of **Rack**, formatted using Doxygen conventions and keywor
 keeps track of the following types:
 
 | Function               | Syntax                     | Comment                     |
-| -----------------------| -------------------------- | ----------------------------| 
+| ---------------------- | -------------------------- | --------------------------- | 
 | Code example, inline   | \code{.ext} ... \endcode   | Doxyfile native             |
 | Code example, included | \include file.ext          | Doxyfile native             | 
 | Include an image       | \image file.ext            | Doxyfile native             |
-| Configure test         | \\~conf{.ext} ... \\~      | Doxymoron extension         |
-| Run code, hidden       | \\~exec{.ext} ... \\~      | Doxymoron extension         |
+| Configure test         | \~conf{.ext} ... \~        | Doxymoron extension         |
+| Run code, hidden       | \~exec{.ext} ... \~        | Doxymoron extension         |
 | Link code example      | \linkfile{file.txt}        | Doxymoron extension         |
 
-*Default testing scheme*
+**Default testing scheme**
 
 Each test is run in a dedicated working directory, which is a subdirectory under `rack/tests/env/`.
 These subdirectories can be thought as "virtual environments" for tests. A working directory can be shared
@@ -86,7 +86,7 @@ What and how the file is validated depends on the file type.
 | -----------------------| ------------------------------------------------------------------| 
 | Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt  |
 | PNG                    | original           | `rack.imagecheck`                            |
-| TIFF / GeoTIFF         | original           | `rack.imagecheck` - pixel content, gain/offset and nodata/undetect markers (see below) |
+| TIFF / GeoTIFF         | original           | `rack.imagecheck` - pixel content (see below) |
 | GeoTIFF (geo metadata) | $BASENAME.gdal     | `diff`, through text output                  |
 | XML (HTML, SVG)        | original           | `xmllint` (or Python native?)                |
 | SVG                    | original           | like PNG, after conversion                   |
@@ -95,10 +95,10 @@ A remark on GeoTIFF: geographic metadata only (projection, extent); kept separat
 to avoid a GDAL dependency there, and not yet implemented (plain text diff is too strict for `gdalinfo`'s
 numeric rounding - needs a tolerance-aware comparison, parked for later
 
-The basic test (checking that the file exists) is simply "launched" [TODO] by a validation file: for example, if 
-`reference/$FILENAME` exists it means that respective `out/$FILENAME` should be generated.
-Also, some basic tests are automatically run, following the table above. As to content of image files,
-validated by rack.imagecheck, 
+The basic test - checking that a file is produced - is simply "launched" by a reference file:
+if `reference/$FILENAME` exists, it requires that `out/$FILENAME` be generated.
+Also, some basic tests are automatically run, following the table above.
+As to content of image files, validated by `rack.imagecheck`, 
 graylevel or RGB data similarity is required to be currently at least 95%.
 I more complex tests are needed, they must be configured as explained below.
 
@@ -151,6 +151,40 @@ Each spec may have the following elements:
 | `"marker_mismatch_cost"`| `float`                   | TIFF only: fixed distance (physical units) charged for a marker mismatched against a different category or real data, instead of excluding it from rms/diff_std |
 | `"raw"`                 | `boolean`                 | TIFF only: compare raw pixel codes even when both images have gain/offset metadata (default: convert to physical units automatically) |
 
+*Interactive mismatch handling*
+
+For a spec whose `"on_fail"` is `"error"` (the default), a failed image similarity or
+`.txt` diff check does not raise straight away. Instead, `rack.doxymoron`'s `--on-mismatch`
+option decides what happens:
+
+| `--on-mismatch` | Behaviour |
+| ----------------| --------- |
+| `ask` (default) | Pause, print the failure (similarity stats, or the diff), and prompt: `[q]uit testing`, `[c]ontinue` (skip this error), `[v]iew` the two images side by side via ImageMagick's `montage`/`display` (PNG/TIFF only - not offered for `.txt`), `[u]pdate` the reference file with the produced one |
+| `quit`          | Abort the whole run immediately, as if the user had answered `q` |
+| `continue`      | Skip the failed check and carry on, as if the user had answered `c` |
+| `update`        | Overwrite the reference file with the produced one and carry on, as if the user had answered `u` - handy to (re)populate `./reference` from scratch after a checkout, but dangerous as a standing default since it silently accepts whatever the current code produces |
+
+A spec with an explicit `"on_fail"` of `"warn"` or `"ignore"` (e.g. the AEQD meta-test
+above) is never affected by `--on-mismatch` - it always just logs and moves on, so a
+test that is deliberately expected to fail doesn't pause for input.
+
+*Running just one test from a long .dox file*
+
+`--scan-start LINE` and `--scan-end LINE` restrict which `\code`/`\~exec` blocks (and
+`\include`'d `exec.sh` scripts or `make` targets) actually get executed, by their
+starting line number in the .dox file - anything outside the range is skipped.
+`\~conf` blocks are always parsed regardless of range, so `cliconf`/`pyconf` state is
+still correct for whatever block you do run. Handy for iterating on one test in the
+middle of a long file without re-running everything before it - but the line numbers
+shift on every edit above that point, so treat them as a throwaway, one-off value
+rather than something to save in a script.
+
+Example:
+
+```
+python3 -m rack.doxymoron ../src/main/compositing.dox --scan-start 91 --scan-end 104
+```
+
 Example:
 
 ```
@@ -163,7 +197,6 @@ tests : {
 or simply, expecting only existence (creation) of files:
 ```
 tests : ["out/file.png", "out/file.h5"]
-}
 ```
 Note: if output files *declared for testing* (declared in configuration and/or exist in `./reference` directory)
 they are deleted [TODO] before executing the code excerpt. 

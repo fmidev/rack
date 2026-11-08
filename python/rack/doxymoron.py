@@ -7,6 +7,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -43,6 +44,14 @@ logger.addHandler(handler)
 
 # Extensions of \include targets that should be built via `make` (demo/Makefile)
 MAKE_EXTENSIONS = {"hlp"}
+
+# Set from --on-mismatch in main(). Governs what happens when a content check (image
+# similarity or text diff) whose test-spec "on_fail" is "error" (the default) fails:
+# "ask" pauses and prompts the user (see _resolve_mismatch_action()); "quit"/"continue"/
+# "update" apply that action straight away, without asking. Checks with an explicit
+# on_fail of "warn"/"ignore" (e.g. a deliberate meta-test) are never affected by this -
+# they always just log, regardless of --on-mismatch.
+DEFAULT_MISMATCH_ACTION: str = "ask"
 
 # Where linkFile-captured scripts are written, so Doxygen's EXAMPLE_PATH/HTML_EXTRA_FILES
 # (see Doxyfile) can serve them as plain \linkfile{...} download links.
@@ -187,12 +196,14 @@ TODO: run also \\ example, if conf["run_example"] = True;
 """
 
 
-def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
+def scan_dox(path: Path) -> Iterable[Tuple[str, object, int]]:
     """
-    Low level scanning of a .dox file. Yields commands and blocks as they are encountered. 
+    Low level scanning of a .dox file. Yields commands and blocks as they are encountered.
     Does not interpret the content of blocks, except for simple commands like \\example.
-    
-    Yields:
+
+    Yields (key, obj, line_no) - line_no is the 1-based line where the command/block starts
+    (same value as obj.start_line for a Block, also given separately for commands that are
+    just plain strings):
       ("cliconf", List[str])  - raw lines inside config
       ("pyconf",  List[str])
       ("block",   Block)
@@ -216,7 +227,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
             arg = m.group("arg")
             # Future option: \example and \include files can be tested (implies support of Confs)
             if cmd in ("example", "include", "section") and arg:
-                yield (cmd, arg.strip())
+                yield (cmd, arg.strip(), i + 1)
                 logger.debug(f"line {i}: handling  {cmd}({arg})")
             else:
                 logger.debug(f"line {i}: bypassing {cmd}({arg})")
@@ -227,7 +238,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
         m = LINKFILE_CMD_RE.match(line.strip())
         if m:
             arg = m.group("arg")
-            yield ("linkfile", arg.strip())
+            yield ("linkfile", arg.strip(), i + 1)
             logger.debug(f"line {i}: handling  linkfile({arg})")
             i += 1
             continue
@@ -276,7 +287,7 @@ def scan_dox(path: Path) -> Iterable[Tuple[str, object]]:
                 i += 1
             if i >= doc_lines: # len(lines):
                 raise ValueError(f"Unterminated '{key}' block starting near line {start_line}")
-            yield (key, Block(kind=key, arg=arg, content=buf, start_line=start_line))
+            yield (key, Block(kind=key, arg=arg, content=buf, start_line=start_line), start_line)
             i += 1
             continue
 
@@ -505,6 +516,16 @@ def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> 
     and nodata/undetect marker handling) via rack.imagecheck. Other formats (HDF5,
     GeoTIFF *geographic* metadata, SVG/XML - see TESTS.md) are only checked for
     existence/size for now.
+
+    For a spec whose "on_fail" is "error" (the default), a failed PNG/TIFF or .txt content
+    check does not immediately raise: instead --on-mismatch (see the DEFAULT_MISMATCH_ACTION
+    module flag, set from main()'s --on-mismatch) decides what happens. Its default, "ask",
+    pauses and asks the user to quit, continue (skip this error), view the two images side
+    by side (PNG/TIFF only, via ImageMagick's montage/display), or update the reference file
+    with the produced one; "quit"/"continue"/"update" apply that action automatically,
+    without asking - see _resolve_mismatch_action() and _apply_mismatch_action(). A spec
+    with an explicit on_fail of "warn"/"ignore" (e.g. a deliberate meta-test) is unaffected
+    by --on-mismatch and always just logs, as before.
     """
     if not tests:
         return
@@ -516,6 +537,85 @@ def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> 
                               and all(isinstance(s, dict) for s in raw_spec)) else [raw_spec]
         for spec in specs:
             _validate_one(base, rel_path, spec)
+
+
+def _display_images(produced: Path, reference: Path) -> None:
+    """Show *produced* and *reference* side by side, labeled, via ImageMagick's
+    `montage`/`display` (see _resolve_mismatch_action()). Blocks until the viewer is
+    closed (press 'q' in the `display` window).
+
+    The montage is also written to a file under the system temp dir and its path is
+    logged, since `display` is an X11 app: if no window reaches the screen (no X
+    forwarding, Wayland-only session, etc.), it fails silently and this is the only
+    way to actually see the comparison.
+    """
+    label_produced = f"produced: {produced}"
+    label_reference = f"reference: {reference}"
+    panel_path = Path(tempfile.gettempdir()) / f"doxymoron-compare-{os.getpid()}.png"
+    montage_cmd = (
+        "montage -tile 2x1 -geometry +4+4 -frame 5 -pointsize 16 "
+        f"-label {shlex.quote(label_produced)} {shlex.quote(str(produced))} "
+        f"-label {shlex.quote(label_reference)} {shlex.quote(str(reference))} "
+        "-title 'press q to exit viewing' "
+        f"{shlex.quote(str(panel_path))}"
+    )
+    try:
+        subprocess.run(montage_cmd, shell=True, check=False)
+    except FileNotFoundError:
+        logger.error("ImageMagick ('montage') not found; cannot view images")
+        return
+    logger.info(f"{Emoji.MAGNIFIER.value}  Comparison panel saved to {panel_path} "
+                f"(open it manually if no viewer window appears)")
+    try:
+        subprocess.run(["display", str(panel_path)], check=False)
+    except FileNotFoundError:
+        logger.error("ImageMagick ('display') not found; open the panel above manually")
+
+
+def _resolve_mismatch_action(produced: Path, reference: Path, summary_lines: List[str], allow_view: bool) -> str:
+    """Decides what to do about a failed content check (image similarity or text diff):
+    "quit", "continue" (skip it), or "update" (overwrite reference with produced).
+
+    Honours --on-mismatch (DEFAULT_MISMATCH_ACTION): if it is "ask" (the default),
+    prompts the user interactively - printing *summary_lines* first, then offering to
+    view the two files side by side (images only, via _display_images()) in addition to
+    quit/continue/update. Any other --on-mismatch value is returned directly, without
+    prompting.
+    """
+    if DEFAULT_MISMATCH_ACTION != "ask":
+        logger.info(f"{Emoji.INFO.value}  Mismatch for {produced}: --on-mismatch={DEFAULT_MISMATCH_ACTION}")
+        return DEFAULT_MISMATCH_ACTION
+
+    view_opt = ", [v]iew" if allow_view else ""
+    prompt = f"[q]uit testing, [c]ontinue{view_opt}, [u]pdate reference > "
+    while True:
+        print(f"\n{Emoji.WARNING.value} Content check failed: {produced} vs {reference}")
+        for line in summary_lines:
+            print(f"  {line}")
+        try:
+            choice = input(prompt).strip().lower()
+        except EOFError:
+            print()
+            logger.warning(f"{Emoji.STOP.value}  No more input (EOF); treating as quit")
+            return "quit"
+        if allow_view and choice == "v":
+            _display_images(produced, reference)
+            continue
+        if choice in ("q", "c", "u"):
+            return {"q": "quit", "c": "continue", "u": "update"}[choice]
+        print(f"Please answer one of: q, c{', v' if allow_view else ''}, u")
+
+
+def _apply_mismatch_action(action: str, produced: Path, reference: Path) -> None:
+    """Carries out the "quit"/"continue"/"update" verdict from _resolve_mismatch_action()."""
+    if action == "quit":
+        logger.warning(f"{Emoji.STOP.value}  Testing aborted at {produced}")
+        sys.exit(1)
+    elif action == "update":
+        shutil.copyfile(produced, reference)
+        logger.info(f"{Emoji.SUCCESS.value}  Reference updated: {reference} <- {produced}")
+    else:  # "continue"
+        logger.info(f"{Emoji.WARNING.value}  Skipping failed check for {produced} (continue)")
 
 
 def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
@@ -583,8 +683,18 @@ def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
             for key in ("markers", "marker_mismatch_cost", "raw"):
                 if key in spec:
                     check_spec[key] = spec[key]
-            result = rack.imagecheck.run_checks([str(produced), str(reference)], check_spec)
-            failed = failed or not result.passed
+            if on_fail == "error":
+                # Don't let a failure raise/abort yet - decide what to do first.
+                result = rack.imagecheck.run_checks([str(produced), str(reference)], check_spec, on_fail="ignore")
+                if not result.passed:
+                    stats_str = "  ".join(f"{k}={v}" for k, v in result.stats.items())
+                    summary_lines = list(result.failures) + ([stats_str] if stats_str else [])
+                    action = _resolve_mismatch_action(produced, reference, summary_lines, allow_view=True)
+                    _apply_mismatch_action(action, produced, reference)
+            else:
+                # Explicit on_fail=warn/ignore (e.g. a deliberate meta-test): just log, never ask.
+                result = rack.imagecheck.run_checks([str(produced), str(reference)], check_spec)
+                failed = failed or not result.passed
     elif suffix == ".txt":
         if not reference.exists():
             logger.warning(f"No reference file {reference} for {produced}; skipping content check")
@@ -592,7 +702,13 @@ def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
             diff = subprocess.run(["diff", str(reference), str(produced)],
                                    capture_output=True, text=True)
             if diff.returncode != 0:
-                report(f"Test failed: {produced} differs from {reference}:\n{diff.stdout}")
+                if on_fail == "error":
+                    logger.warning(f"{produced} differs from {reference}:\n{diff.stdout}")
+                    action = _resolve_mismatch_action(produced, reference, [], allow_view=False)
+                    _apply_mismatch_action(action, produced, reference)
+                else:
+                    # Explicit on_fail=warn/ignore (e.g. a deliberate meta-test): just log, never ask.
+                    report(f"Test failed: {produced} differs from {reference}:\n{diff.stdout}")
     else:
         logger.debug(f"No content comparator for suffix '{suffix}'; only existence/size checked for {produced}")
 
@@ -714,12 +830,46 @@ def main() -> int:
     ap.add_argument("docfile", type=Path)
     ap.add_argument("-v", "--verbose", action="store_true")
     ap.add_argument("--debug", action="store_true")
+    ap.add_argument("--on-mismatch", choices=["ask", "quit", "continue", "update"], default="ask",
+                     help="What to do when a content check (image similarity, text diff) "
+                          "whose test-spec on_fail is \"error\" (the default) fails: "
+                          "\"ask\" (default) pauses and prompts interactively - quit/"
+                          "continue/update, plus viewing the images side by side for "
+                          "PNG/TIFF; \"quit\"/\"continue\"/\"update\" apply that action "
+                          "straight away, without asking (\"update\" overwrites the "
+                          "reference file with the produced one - handy to (re)populate "
+                          "references from scratch, but use with care). Checks with an "
+                          "explicit on_fail of \"warn\"/\"ignore\" (e.g. a deliberate "
+                          "meta-test) are never affected by this - they always just log.")
+    ap.add_argument("--scan-start", type=int, default=None, metavar="LINE",
+                     help="Only execute \\code/\\~exec blocks (and \\include'd exec.sh scripts "
+                          "or make targets) that start at or after this line number of the "
+                          ".dox file; ones before it are skipped. \\~conf blocks are always "
+                          "parsed regardless of range, so cliconf/pyconf state stays correct "
+                          "for whatever block you do run. Handy for re-running one test in the "
+                          "middle of a long .dox file without re-running everything before it. "
+                          "Line numbers shift whenever the file is edited above this point, so "
+                          "treat the value as a throwaway, one-off number, not a stored setting.")
+    ap.add_argument("--scan-end", type=int, default=None, metavar="LINE",
+                     help="Only execute \\code/\\~exec blocks (and \\include'd exec.sh scripts "
+                          "or make targets) that start at or before this line number. See "
+                          "--scan-start.")
     args = ap.parse_args()
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
     elif args.verbose:
         logger.setLevel(logging.INFO)
+
+    global DEFAULT_MISMATCH_ACTION
+    DEFAULT_MISMATCH_ACTION = args.on_mismatch
+
+    def in_scan_range(line_no: int) -> bool:
+        if args.scan_start is not None and line_no < args.scan_start:
+            return False
+        if args.scan_end is not None and line_no > args.scan_end:
+            return False
+        return True
 
     cliconf = CliConf()
     pyconf  = PyConf()
@@ -728,7 +878,7 @@ def main() -> int:
     mainConf = {}
 
     total_blocks = 0
-    for key, obj in scan_dox(args.docfile):
+    for key, obj, line_no in scan_dox(args.docfile):
 
         if key in {"section", "subsection"}:
             # Simply echo the titles, to help visualize the structure of the document. 
@@ -773,24 +923,36 @@ def main() -> int:
                 pyconf.include_rack_sh = generated_name
             elif p.endswith('exec.sh'):
                 # No path search. Script path should include directory (relative ok)
-                logger.info(f"{Emoji.RUN.value}  running {p}")
-                lines = Path(p).read_text(encoding="utf-8").splitlines()
-                run_shell_lines(lines, cliconf)
-                cliconf.reset()
+                if in_scan_range(line_no):
+                    logger.info(f"{Emoji.RUN.value}  running {p}")
+                    lines = Path(p).read_text(encoding="utf-8").splitlines()
+                    run_shell_lines(lines, cliconf)
+                    cliconf.reset()
+                else:
+                    logger.debug(f"Skipping include {p} at line {line_no} (outside --scan-start/--scan-end)")
             elif Path(p).suffix.lstrip(".") in MAKE_EXTENSIONS:
                 # Delegate to demo/Makefile, e.g. "cExtract.hlp" -> `make cExtract.hlp`
-                logger.info(f"{Emoji.RUN.value}  make {p}")
-                rack.process.run(["make", p], description=f"make {p}", logger=logger)
+                if in_scan_range(line_no):
+                    logger.info(f"{Emoji.RUN.value}  make {p}")
+                    rack.process.run(["make", p], description=f"make {p}", logger=logger)
+                else:
+                    logger.debug(f"Skipping make {p} at line {line_no} (outside --scan-start/--scan-end)")
             
         elif key == 'code' or key == "~exec":
-            block: Block = obj 
+            block: Block = obj
             if block.arg == '.py':
-                logger.info(f"{Emoji.RUN.value}  Handling Python code from line {block.start_line}:")
-                run_py_block(block, pyconf) # Todo: flag to also run the generated command line.
-                pyconf.reset()   
+                if in_scan_range(block.start_line):
+                    logger.info(f"{Emoji.SCRIPT.value}  Handling Python code from line {block.start_line}:")
+                    run_py_block(block, pyconf) # Todo: flag to also run the generated command line.
+                else:
+                    logger.debug(f"Skipping Python code at line {block.start_line} (outside --scan-start/--scan-end)")
+                pyconf.reset()
             elif block.arg == '.sh':
-                logger.info(f"{Emoji.RUN.value}  Handling shell code from line {block.start_line}")
-                run_shell_lines(block.content, cliconf)
+                if in_scan_range(block.start_line):
+                    logger.info(f"{Emoji.SCRIPT.value}  Handling shell code from line {block.start_line}")
+                    run_shell_lines(block.content, cliconf)
+                else:
+                    logger.debug(f"Skipping shell code at line {block.start_line} (outside --scan-start/--scan-end)")
                 cliconf.reset()
             elif block.arg == None:
                 logger.warning(f"Skipping code{{}} at line {block.start_line}")
