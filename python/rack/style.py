@@ -164,6 +164,8 @@ class Emoji(str, Enum):
     # Network / System
     DISC  = "💿"
     DISC2 = "💿"
+    SUBDIRECTORY = "📁"
+    OPEN_DIRECTORY = "📂"
     NETWORK = "🛜"
     WORLD = "🌍"
     LOCK = "🔒"
@@ -173,6 +175,7 @@ class Emoji(str, Enum):
     BOMB = "💣"
     EXPLOSION = "💥"
     THINKING = "🤔"
+    PARSING = "🧩"
 
     # Misc
     TRIANGLE = "📐"

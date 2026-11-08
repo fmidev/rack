@@ -131,6 +131,27 @@ rack \
     data/*.h5 \
     --cExtract DATA \
     -o composite-fi.tif
+
+EPSG:3035 — LAEA Europe. Equal-area, official EEA/Eurostat standard
+for European analysis. Reasonable distortion across all of
+Finland. Best choice for areal statistics and environmental data.
+
+EPSG:3034 — LCC Europe. Lambert Conformal Conic
+(shape-preserving). Used for pan-European aeronautical
+charting. Better than LAEA if angular fidelity matters more than area.
+
+EPSG:4258 — ETRS89 geographic. Not a projected CRS (it's lat/lon), but
+it is the European datum that all Finnish official projections are
+built on. Good for data exchange.
+
+Critical gap in the list: the actual Finnish national projection
+EPSG:3067 (ETRS89 / TM35FIN, central meridian 27°E) is absent. That is
+what Finnish authorities (NLS, FMI, SYKE) use and what rack presumably
+targets. EPSG:25833 (UTM zone 33, central meridian 15°E) is 12° west
+of Finland's center — it works but accumulates distortion. EPSG:3067
+should probably be added explicitly to whatever server config or PROJ
+list rack.maps maintains.
+
 \~ 
 
 
@@ -161,8 +182,10 @@ Experimental: the above command line can also be generated using Python utility 
 composer = rack.cmdline.Composer(rack.composite)
 
 # Set parameters
-composer.set(PROJ=3067)
-composer.set(BBOX=[-208000,6390000,1072000,7926000])
+# composer.set(PROJ=3067)
+# composer.set(BBOX=[-208000,6390000,1072000,7926000])
+composer.set(PROJ=3035)
+composer.set(BBOX=[20,60,30,70])
 composer.set(SIZE=[640,768])
 
 composer.set(INDIR='data/') 

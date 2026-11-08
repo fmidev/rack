@@ -177,7 +177,7 @@ def parse(lines: list, dst: object=None, handleMissing = PARSE_SKIP) -> dict:
             elif (handleMissing==PARSE_ERROR):
                 logger.error(f"dst = {dst}")
                 raise KeyError(f"Key '{k}' not found")
-        logger.warning(dst)
+        #logger.warning(dst)
     return conf
     #logger.info(f"JSON conf({block.arg}): {conf}")
 

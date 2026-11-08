@@ -589,40 +589,56 @@ def get_endpoint(server:str) -> str:
 
 
 
+def _collect_wms_layers(node, ns, inherited_crs=None):
+    """Recursively yield (layer_element, effective_crs_set) for named layers.
+
+    WMS 1.3.0 §7.2.4.8: a child layer inherits all CRS codes from its
+    ancestors and may add its own.  Walking the tree here (rather than a flat
+    findall) preserves that parent→child relationship.
+    """
+    if inherited_crs is None:
+        inherited_crs = set()
+
+    own_crs = {elem.text for elem in node.findall("wms:CRS", ns) if elem.text}
+    effective_crs = inherited_crs | own_crs
+
+    name = node.findtext("wms:Name", namespaces=ns)
+    if name:
+        yield node, effective_crs
+
+    for child in node.findall("wms:Layer", ns):
+        yield from _collect_wms_layers(child, ns, effective_crs)
+
+
 def show_wms_layers(root):
-    """ Show all layers
+    """Show all named layers from the WMS GetCapabilities response.
+
+    CRS codes shown per layer are the *effective* set: the layer's own codes
+    plus any inherited from ancestor (container) layers, as required by the
+    WMS 1.3.0 spec.
     """
 
-    # WMS 1.3.0 normally uses this namespace.
     ns = {"wms": "http://www.opengis.net/wms"}
 
-    for layer in root.findall(".//wms:Layer", ns):
+    service_layer = root.find(".//wms:Layer", ns)
+    if service_layer is None:
+        print("(no Layer element found in capabilities)")
+        return
+
+    for layer, effective_crs in _collect_wms_layers(service_layer, ns):
         name = layer.findtext("wms:Name", namespaces=ns)
-
-        # Some Layer elements are just containers and have no Name.
-        if not name:
-            continue
-
         title = layer.findtext("wms:Title", default="", namespaces=ns)
-
-        crs = [
-            elem.text
-            for elem in layer.findall("wms:CRS", ns)
-            if elem.text
-        ]
 
         styles = []
         for style in layer.findall("wms:Style", ns):
             style_name = style.findtext("wms:Name", default="", namespaces=ns)
-            style_title = style.findtext(
-                "wms:Title", default="", namespaces=ns
-            )
+            style_title = style.findtext("wms:Title", default="", namespaces=ns)
             styles.append((style_name, style_title))
 
         print()
         print(f'  "Layer": "{name}",')
         print(f'  "Title": "{title}",')
-        crs_str = ", ".join(crs) if crs else "(no CRS advertised)"
+        crs_str = ", ".join(sorted(effective_crs)) if effective_crs else "(no CRS advertised)"
         print(f'  "CRS":    [{crs_str}]')
 
         if styles:
@@ -642,19 +658,23 @@ def show_wms_layer(root, requested_name):
 
     ns = {"wms": "http://www.opengis.net/wms"}
 
-    for layer in root.findall(".//wms:Layer", ns):
+    service_layer = root.find(".//wms:Layer", ns)
+    if service_layer is None:
+        print("(no Layer element found in capabilities)")
+        return
+
+    for layer, effective_crs in _collect_wms_layers(service_layer, ns):
         name = layer.findtext("wms:Name", namespaces=ns)
 
         if name != requested_name:
             continue
 
         print(f'Layer: "{name}",')
-        print("Title:",
-              layer.findtext("wms:Title", default="", namespaces=ns))
+        print("Title:", layer.findtext("wms:Title", default="", namespaces=ns))
 
-        print("CRS:")
-        for elem in layer.findall("wms:CRS", ns):
-            print(" ", elem.text)
+        print("CRS (effective, including inherited):")
+        for code in sorted(effective_crs):
+            print(" ", code)
 
         print("Styles:")
         styles = layer.findall("wms:Style", ns)
@@ -806,13 +826,17 @@ def get(serverConf, EPSG:int, mapCache:str = MAP_CACHE_PATH_SYNTAX, mapLayers=No
     if mapLayers:
         get_params["layers"] = mapLayers
     logger.debug(f"get_params: {get_params}")
-        
+
+    # Preserve the canonical (unswapped) BBOX before construct_http_get may
+    # swap it for WMS 1.3.0+. Cache paths must be WMS-version-independent.
+    canonical_bbox = get_params.get("BBOX", "")
+
     get_params = construct_http_get(defaults=server_params, **get_params)
     logger.debug(f"get_param_str: {get_params}")
 
     cache_path = pathlib.Path(get_cache_path(cache_syntax=MAP_CACHE_PATH_SYNTAX,
                                               mapServer="any",
-                                              **get_params))
+                                              **{**get_params, "BBOX": canonical_bbox}))
     logger.info(f"Cache path: {cache_path}")
     
     if not cache_path.exists() or mapForce:

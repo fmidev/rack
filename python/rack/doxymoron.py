@@ -439,7 +439,7 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
     for line in lines:
         code = line.split("#", 1)
         code = code[0].strip()
-        print(f"script line: '{code}'")
+        #print(f"script line: '{code}'")
         if code:
             if pending_code is not None:
                 code = f"{pending_code} {code}"
@@ -480,7 +480,7 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
         Path(cliconf.stderrToFile).write_text("", encoding="utf-8")
 
     for line in script:
-        logger.info(f"{Emoji.RUN.value} Executing line: {line}")
+        logger.debug(f"{Emoji.RUN.value} Executing line: {line}")
         rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir,
                           stdout_file=cliconf.stdoutToFile, stderr_file=cliconf.stderrToFile)
 
@@ -884,8 +884,7 @@ def main() -> int:
             # Simply echo the titles, to help visualize the structure of the document. 
             # No further processing is done for these commands.
             # logger.info(f"{key.upper()}: {obj}")
-            styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
-            logger.info(Emoji.SCRIPT.value + styleWrapper.str(f" {key.upper()}: {obj}"))
+            styleWrapper = Style(Effect.DIM, Effect.ITALIC)
 
         elif key == '~conf':
             block: Block = obj 
@@ -900,10 +899,10 @@ def main() -> int:
             else:
                 raise ValueError(f"Unknown conf type: {block.arg} at line {block.start_line}")
             #logger.info(obj)
-            logger.info(f"Parsing conf[{block.arg}] on line {block.start_line}")
+            logger.info(f"{Emoji.PARSING.value} Parsing conf[{block.arg}] on line {block.start_line}")
             conf = rack.config.parse(block.content, dst, rack.config.PARSE_ERROR)
-            logger.debug(json.JSONEncoder(indent=2).encode(conf))
-            logger.info(f"{Emoji.SUCCESS.value} parsed")
+            # logger.debug(json.JSONEncoder(indent=2).encode(conf))
+            logger.debug(f"{Emoji.SUCCESS.value} parsed")
             # print(json.str(), file=sys.stderr)
 
         elif key in {"example", "include", "linkfile"}:
