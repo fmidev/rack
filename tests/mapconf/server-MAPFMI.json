@@ -1,0 +1,32 @@
+{
+    "endpoint": "http://map.fmi.fi/geoserver/wms",
+    "version": "1.3.0",
+    "layers": [
+	"KAP:Europe_Basic_NoNames",
+	"KAP:Europe_basic_EurefFIN",
+	"KAP:europe_country_eureffin_borders",
+	"KAP:europe_cities_eureffin",
+	"KAP:europe_country_borders_eureffin",
+	"KAP:europe_country_eureffin",
+	"KAP:europe_country_fmi_10",
+	"KAP:europe_country_wgs84",
+	"KAP:europe_country_wgs84_line",
+	"KAP:europe_etop2_100_eureffin",
+	"KAP:europe_lights",
+	"KAP:europe_lights_eureffin",
+	"KAP:europe_mjroads",
+	"KAP:europe_mjroads_eureffin",
+	"KAP:europe_mjwater_eureffin",
+	"KAP:europe_places_eureffin",
+	"KAP:europe_roads_eureffin",
+	"KAP:europe_sea_background_box_eureffin",
+	"KAP:europe_water_eureffin",
+	"KAP:europe_water_zoomed_near_eureffin",
+        "world-map-combo-en"
+    ],
+    "epsg": [
+	3035,
+        3067,
+        4326
+    ]
+}

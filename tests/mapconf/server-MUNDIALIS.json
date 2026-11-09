@@ -1,0 +1,10 @@
+{
+    "endpoint": "https://ows.mundialis.de/osm/service",
+    "version": "1.3.0",
+    "layers": [
+	"OSM-WMS", 
+	"TOPO-WMS", 
+	"TOPO-OSM-WMS" 
+    ],
+    "epsg": [3035, 4326]
+}

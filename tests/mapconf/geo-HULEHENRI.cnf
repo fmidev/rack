@@ -1,0 +1,13 @@
+# Configuration for FMI HULEHENRI radar composite
+#
+# Markus.Peura@fmi.fi
+
+PROJ=3067
+
+# Metrinen resoluutio
+# leveys 640 km, korkeus 334 km
+BBOX=-15000,6508000,625000,6892000
+
+# Pikseliresoluutio 500 m x 500 m
+SIZE=1280,768
+
