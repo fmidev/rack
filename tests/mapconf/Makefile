@@ -3,7 +3,7 @@
 
 .PRECIOUS: *.png 
 
-
+PYTHON=python3.12
 EPSG=3035
 BBOX=2379694,1227288,6179967,5627586
 SIZE=640,768
@@ -15,5 +15,5 @@ all: map-TOPO-WMS.png map-world-map-combo-en.png
 	@echo "Retrieved $@ $*"
 
 map-%.png:
-	-python3 -m rack.maps --mapLink $@ ./mapcache/EPSG:${EPSG}/BBOX=${BBOX}_LAYERS=$*_SIZE=${SIZE}_STYLES=.png && ln -svi $@ map.png
+	-${PYTHON} -m rack.maps --mapLink $@ ./mapcache/EPSG:${EPSG}/BBOX=${BBOX}_LAYERS=$*_SIZE=${SIZE}_STYLES=.png && ln -svi $@ map.png
 
