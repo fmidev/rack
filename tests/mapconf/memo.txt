@@ -1,4 +1,0 @@
-
-
-# Tämä ainakin toimii:
-https://ows.mundialis.de/osm/service?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&layers=TOPO-WMS&styles=&CRS=EPSG:3035&BBOX=1227287,2379694,5627586,6179966&WIDTH=950&HEIGHT=1100&FORMAT=image/png
