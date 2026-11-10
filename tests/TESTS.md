@@ -83,7 +83,7 @@ What and how the file is validated depends on the file type.
 
 
 | File type              | Validator filename | Utility user for validation                   |
-| ---------------------- | ------------------------------------------------------------------ | 
+| ---------------------- | -------------------| --------------------------------------------- | 
 | Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt   |
 | PNG                    | original           | `rack.imagecheck`                             |
 | TIFF / GeoTIFF         | original           | `rack.imagecheck` - pixel content (see below) |
@@ -102,7 +102,7 @@ As to content of image files, validated by `rack.imagecheck`,
 graylevel or RGB data similarity is required to be currently at least 95%.
 I more complex tests are needed, they must be configured as explained below.
 
-*GeoTIFF: markers and physical units*
+**GeoTIFF: markers and physical units**
 
 Rack's GeoTIFF writer (`src/main/fileio-geotiff.cpp`) embeds `SCALE`/`OFFSET` (gain/offset)
 always, and `NODATA`/`UNDETECT` as well (when `RACK_EXTENSIONS` is set) as `<Item>` entries
