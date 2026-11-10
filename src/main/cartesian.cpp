@@ -60,7 +60,11 @@ public:
 	inline
 	void exec() const {
 		RackContext & ctx = getContext<RackContext>();
-		ctx.composite.dataSelector.consumeParameters(ctx.select);
+		// ctx.composite.dataSelector.consumeParameters(ctx.select);
+		if (!ctx.select.empty()){
+			ctx.composite.updateInputSelector(ctx.select);
+			ctx.select.clear();
+		}
 		ctx.composite.allocate();
 		ctx.composite.consumeTargetEncoding(ctx.targetEncoding);
 	}

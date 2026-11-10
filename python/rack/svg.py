@@ -96,7 +96,8 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
 
     logStyle = Style(Emoji.DISC, Color.MAGENTA)
 
-    logger.info(logStyle.add(Emoji.SUCCESS).str(f"Handling {args.svgOutputs}"))
+    #logger.info(logStyle.add(Emoji.SUCCESS).str(f"Handling {args.svgOutputs}"))
+    logger.debug(logStyle.add(Emoji.SUCCESS).str(f"Handling {args.svgOutputs}"))
         
     if not args.OUTFILE:
         args.OUTFILE = 'out.svg'
@@ -139,7 +140,8 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
         elif i == "WEIGHT":
             cmdBuilder.select(quantity="QIND")
         filename = f"{basename}_{i}.png"
-        logger.info(logStyle.emojis(Emoji.DISC).str(f"Saving {filename}"))
+        #logger.info(logStyle.emojis(Emoji.DISC).str(f"Added output: {filename}"))
+        logger.info(f"Added output: {filename}")
         cmdBuilder.outputFile(filename)
     
     if outfile.suffix != ".svg":
@@ -149,11 +151,5 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
         if 'svg' not in formats:
             formats.append('svg')
             args_dict['FORMATS'] = ",".join(formats)
-        #filename = f"{basename}.svg"
             logger.info(f"Added SVG format to --FORMATS: {args_dict['FORMATS']}")
-        # logger.info(logStyle.emojis(Emoji.DISC).str(f"Saving {filename} with {outfile} "))
-        #cmdBuilder.outputFile(filename)
-
-
-
- 
+        

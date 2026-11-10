@@ -319,8 +319,8 @@ class Register:
             cmd.set_separators()        
         cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
         
-        logger.info(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
-        logger.info(f"Initial cmd state: {cmd.to_string()}")
+        # logger.info(f"Initial (private) args {cmd_func.__name__}: {pos_args} {kw_args} ")
+        # logger.info(f"Initial cmd state: {cmd.to_string()}")
 
         # explicit args. Notice that they are given as --cmd_func arg=value, 
         # so they are in var_args with key cmd_func and value "arg=value,..."
@@ -350,11 +350,11 @@ class Register:
         
         cmd.set_args(*pos_args, **kw_args)
         #logger.debug(f"Status of {cmd_func.__name__}: {cmd.to_string()}")
-        logger.info(f"Revised cmd state: {cmd.to_string()}")
+        logger.debug(f"Revised cmd state: {cmd.to_string()}")
 
         # cmd.fmt.parse_args(var_args.get(cmd_func.__name__, ""), pos_args, kw_args)
-        # print
-        logger.warning(f"Final explicit args: {pos_args}, {kw_args}")
+        
+        logger.debug(f"Final explicit args: {pos_args}, {kw_args}")
         if write_back:
             # Write back to args, for example, for use in other commands or for logging
             for k,v in kw_args.items():

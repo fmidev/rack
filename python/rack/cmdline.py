@@ -76,9 +76,8 @@ class Composer():
     def get_module_cmd_line(self, separator=" ") -> str:
         """ Return module-specific command line
         """
-        test = rack.args.args_to_list(self.parser, self.args)
-        #test = rack.args.args_to_cli(self.parser, self.args, separator=" XX ")
-        logger.warning(f"Command line: {test}")
+        # test = rack.args.args_to_list(self.parser, self.args)
+        # logger.warning(f"Command line: {test}")
         
         line = rack.args.args_to_cli(self.parser, self.args, separator=separator)
         logger.debug(f"Command line: {line}")

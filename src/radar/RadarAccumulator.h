@@ -76,10 +76,12 @@ public:
 			const ODIM &srcODIM, const DataCoder & dataCoder,
 			ODIM &dstODIM, drain::image::Image & dstImage, const drain::Rectangle<int> & cropArea);
 
-	/// Input data selector.
+	/// Input data selector. Could be protected, but accumulation.cpp accesses directly
+	/**
+	 *  \see Composite::updateInputSelector
+	 */
 	DataSelector dataSelector;
-	// DataSelector dataSelector(ODIMPathElem::DATA);
-	// dataSelector.pathMatcher.setElems(ODIMPathElem::DATA);
+
 
 	typedef std::map<int,std::string> legend_t;
 	legend_t legend;

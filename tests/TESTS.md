@@ -82,14 +82,14 @@ A basic test simply checks that an output file is generated. Further, file size 
 What and how the file is validated depends on the file type.
 
 
-| File type              | Validator filename | Utility user for validation                  |
-| -----------------------| ------------------------------------------------------------------| 
-| Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt  |
-| PNG                    | original           | `rack.imagecheck`                            |
+| File type              | Validator filename | Utility user for validation                   |
+| ---------------------- | ------------------------------------------------------------------ | 
+| Hdf5                   | $BASENAME.txt      | `diff` - compared as text, -o $BASENAME.txt   |
+| PNG                    | original           | `rack.imagecheck`                             |
 | TIFF / GeoTIFF         | original           | `rack.imagecheck` - pixel content (see below) |
-| GeoTIFF (geo metadata) | $BASENAME.gdal     | `diff`, through text output                  |
-| XML (HTML, SVG)        | original           | `xmllint` (or Python native?)                |
-| SVG                    | original           | like PNG, after conversion                   |
+| GeoTIFF (geo metadata) | $BASENAME.gdal     | `diff`, through text output                   |
+| XML (HTML, SVG)        | original           | `xmllint` (or Python native?)                 |
+| SVG                    | original           | like PNG, after conversion                    |
 
 A remark on GeoTIFF: geographic metadata only (projection, extent); kept separate from `rack.imagecheck`
 to avoid a GDAL dependency there, and not yet implemented (plain text diff is too strict for `gdalinfo`'s

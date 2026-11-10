@@ -2009,6 +2009,16 @@ protected:
 
 };
 
+/*
+class CmdTarget : public CmdEncoding {
+public:
+	inline
+	CmdTarget() : CmdEncoding(){};
+
+	inline
+	CmdTarget(const CmdTarget & cmd) : CmdEncoding(cmd){};
+};
+*/
 
 /// Facility for validating and storing desired technical (non-meteorological) user parameters.
 /*
@@ -2835,7 +2845,8 @@ MainModule::MainModule(){ //
 	linkRelatedCommands(Set, Status);
 
 	install<CmdEncoding>('e');
-	install<CmdEncoding>("target");  // alias
+	// installDeprecating<CmdTarget,CmdEncoding>(); failed..
+	install<CmdEncoding>("target").section = HIDDEN;  // alias
 	install<CmdEcho>();
 
 	/*

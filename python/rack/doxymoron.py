@@ -331,13 +331,13 @@ def ensure_map(composer:rack.cmdline.Composer):
 def save_example_py(composer: rack.cmdline.Composer, filename: str):
     filepath=f"out/{filename}"
     module_name = composer.get_module_name()
-    logger.info(f"")
+    #logger.info(f"")
     logger.info(f"{Emoji.DISC}  writing {filepath}")
     python = Path(sys.executable).name
     option_separator=" \\\n  "
     cmd = f'{python} -m {module_name} {option_separator}'
     cmd += composer.get_module_cmd_line(separator=option_separator) + " --print ' \\\\n  ' # or --exec"
-    logger.info(f"Example (python): " + Style(Color.CYAN).str(cmd))
+    # logger.info(f"Example (python): " + Style(Color.CYAN).str(cmd))
     cmd += '\n' # Ensure newline
     with open(filepath, mode='w') as file:
         file.write(cmd)
@@ -349,16 +349,14 @@ def save_example_rack(composer:rack.cmdline.Composer, filename: str, dirname="ou
         params_format="'{params}'", 
         cmd_separator=" \\\n\t"
         ) 
-    cmd = prog.to_string(fmt)
-    
+    cmd = prog.to_string(fmt) + '\n' # Ensure newline
+    # cmd += '\n' # Ensure newline
+        
     filepath = Path(dirname, filename)  #  f"out/{filename}"
     logger.info(f"{Emoji.DISC}  writing {filepath}")
-    # styleExample = Style(Color.CYAN)
-    logger.info(f"Example (rack cmd line): " + Style(Color.CYAN).str(cmd))
-    cmd += '\n' # Ensure newline
+    #logger.info(f"Example (rack cmd line): " + Style(Color.CYAN).str(cmd))
     with open(filepath, mode='w') as file:
         file.write(cmd)
-        #file.write('\n')
 
 # TODO: use rack.process.handle...
 @staticmethod
@@ -368,9 +366,13 @@ def dump_subprocess_output(
         styleStdOut = Style(Color.LIGHT_GRAY, Effect.ITALIC)
         ):
     print(f"--- stdout ---")
-    styleStdOut.sprint(result.stdout)
+    #styleStdOut.sprint(result.stdout)
+    print(result.stdout)
+    print(f"--- ------ ---")
     print(f"--- stderr ---")
-    styleStdErr.sprint(result.stderr)
+    #styleStdErr.sprint(result.stderr)
+    print(result.stderr)
+    print(f"--- ------ ---")
 
 """
 def run_shell_system(script:str) -> None:
@@ -789,8 +791,10 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
             "text": True,
         }
 
-        # todo use rack.process.run
-        result = subprocess.run(['python3', str(script)], **default_args)
+        # todo use rack.process.run ?
+        python = Path(sys.executable).name
+        #result = subprocess.run(['python3', str(script)], **default_args)
+        result = subprocess.run([python, str(script)], **default_args)
 
         # todo use rack.process.run
         if result.returncode == 0:
@@ -806,10 +810,10 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
     if pyconf.tests:
         # logger.warning("TEST! " + pyconf.include_rack_sh)
         for (k,v) in pyconf.tests.items():
-            logger.warning(f"{k} = {v}")
+            # logger.warning(f"{k} = {v}")
             if k == "rack.sh":
                 if pyconf.include_rack_sh:
-                    logger.warning("Executing {pyconf.include_rack_sh}")
+                    logger.info(f"Test requested: {k}, executing {pyconf.include_rack_sh}")
                     filepath = Path("out", pyconf.include_rack_sh)
                     os.chmod(filepath, 0o755) # Ensure it's executable
                     #result = subprocess.run(['ls',str(filepath)], **default_args)

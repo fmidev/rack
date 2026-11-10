@@ -589,7 +589,7 @@ def handle_infile(args, progBuilder: rack.core.Rack):
 def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     
     if args.OUTDIR:
-        logger.warning(f"Adding OUTDIR: {args.OUTDIR}")
+        logger.info(f"Adding OUTDIR: {args.OUTDIR}")
         if not args.OUTDIR.endswith('/'):
             args.OUTDIR += '/'
         cmdBuilder.outputPrefix(args.OUTDIR)
@@ -655,7 +655,7 @@ def handle_outfiles(args, cmdBuilder: rack.core.Rack):
     if (formats):
         raise Exception('Unhandled formats:', formats)
         
-def create_script(args) -> rack.prog.CommandSequence:
+def create_script(args, selector: bool) -> rack.prog.CommandSequence:
     """ 
         Creates and initializes a script to be extended.  
     """
@@ -667,9 +667,10 @@ def create_script(args) -> rack.prog.CommandSequence:
     # This part is common for both TILE and default SCHEME.
     scriptBuilder = rack.core.Rack(script)
     handle_dataset(args)
-    scriptBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args)
-    #cmd = handle_select(args, scriptBuilder)
-    #logger.warning(f"scriptBuilder-select: {cmd}")
+    if selector:
+        scriptBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args)
+    # cmd = handle_select(args, scriptBuilder)
+    # logger.warning(f"scriptBuilder-select: {cmd}")
     handle_prod(args, scriptBuilder)
     
     return scriptBuilder
@@ -718,7 +719,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         # Todo: if args.GLOB -> expand
         args.INFILE = [args.INFILE]
 
-    logger.info("compose_command # args %s", args)
+    logger.debug("compose_command args: %s", args)
     # Init
     handle_geoconf(args, progBuilder)
 
@@ -735,7 +736,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         if len(args.INFILE) > 1:
             logger.warning("Several inputs, check that outputs have syntax")
 
-        scriptBuilder = create_script(args)
+        scriptBuilder = create_script(args, selector=True)
 
         if args.raw_script:
             scriptBuilder.cmdSequence.add(rack.command.Literal(args.raw_script))
@@ -770,6 +771,8 @@ def compose_command(args) -> rack.prog.CommandSequence:
     else: #if (args.SCHEME == ''):
 
         if args.BBOX and args.PROJ and args.SIZE:
+            #progBuilder.select() #xxx
+            progBuilder.add_cmd_with_expanded_args(rack.core.Rack.select, args)
             progBuilder.cInit()
 
         if args.METHOD:
@@ -779,7 +782,7 @@ def compose_command(args) -> rack.prog.CommandSequence:
         if len(args.INFILE) > -99: # > 1 !
             logger.info("Several inputs, hence defining a script")
             
-            scriptBuilder = create_script(args)
+            scriptBuilder = create_script(args, selector=False)
             #script = rack.prog.CommandSequence(quote=prog.get_secondary_quote())
             #scriptBuilder = rack.core.Rack(script)
             #scriptFmt = rack.cmdline.RackFormatter(params_format='"{params}"')
