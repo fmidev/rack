@@ -12,7 +12,7 @@ Motion vectors are a separate topic, discussed in \ref motion-composites .
 \~conf{.sh}
 {
   "shell": true,
-  "workdir": "env/composite-fi"
+  "workdir": "env/default"
 }
 \~
 
@@ -50,6 +50,14 @@ Conversion to Cartesian coordinates has several default settings, collected belo
 In \b Rack , any single-radar Cartesian image is technically a "single-radar composite".
 Internally, the composite is a separate memory array that supports \e continuous \e accumulation of data. 
 That means that arbitrarily many input volumes can be added. For example, this command creates a dBZ composite of three radars:
+
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/composite-fi"
+}
+\~
+
 \code{.sh}
 rack \
     volume-fikor.h5 --select quantity=DBZH --cAdd \
