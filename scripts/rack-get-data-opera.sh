@@ -45,7 +45,8 @@ HOUR=${HOUR:-12}
 # --- Argument parsing ---
 # If first arg contains '/' it is already a CC/SITE, so use the default date.
 if [[ $# -eq 0 || "${1:-}" == */* ]]; then
-    DATE_SPEC='1 day ago'
+    # DATE_SPEC='1 day ago'
+    DATE_SPEC='2 days ago'
 else
     DATE_SPEC="$1"
     shift
