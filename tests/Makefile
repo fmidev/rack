@@ -89,7 +89,7 @@ get-data-synth: get-data-synth-geom get-data-synth-precip
 # Create rasters containing geometric patterns (checkerboard etc.)
 get-data-synth-geom: get-data-synth-geom-basic
 #get-data-synth-geom-doppler
-	echo 'Ok'
+	@ echo 'Ok'
 
 # Create rasters containing geometric patterns (checkerboard etc.)
 get-data-synth-geom-basic: cache
