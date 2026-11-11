@@ -120,7 +120,7 @@ get-data-synth-precip-polar: $(SYNTH_PRECIP_POL)
 # Ensure directory for downloaded maps
 mapcache:
 	mkdir --parents cache/mapcache
-	ln -sf cache/mapcache/ .
+	ln -sf cache/mapcache .
 
 # Clear directory for downloaded maps
 mapcache-clear:
