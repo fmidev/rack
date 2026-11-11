@@ -22,7 +22,7 @@ test-svg:
 
 
 # ====== Misc ======
-out/
+out/:
 	@mkdir -v --parents $@
 
 # Save help lines of a command
