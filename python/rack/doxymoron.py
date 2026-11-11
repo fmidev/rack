@@ -2,8 +2,6 @@
 from __future__ import annotations
 
 import argparse
-#import dataclasses
-import json
 import os
 import re
 import shlex
@@ -16,11 +14,10 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from matplotlib import lines
+#from matplotlib import lines
 
 import rack.config
 import rack.process
-#import rack.style
 from rack.style import *
 
 import logging
