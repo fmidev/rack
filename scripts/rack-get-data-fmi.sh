@@ -76,6 +76,7 @@ download_volume() {
     #local DST="${DIR}/${TIMESTAMP}_radar.polar.${SITE}.h5"rack-get-data-opera.sh
     local DST="${DIR}/${VOLUME}"
     if [ -f $DST ]; then
+	echo "# Exists: $VOLUME"
 	return 0
     fi
     
