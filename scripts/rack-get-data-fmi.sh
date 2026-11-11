@@ -73,9 +73,12 @@ download_volume() {
     mkdir -v --parents "${DIR}"
 
     # FMI local naming convention: TIMESTAMP_radar.polar.SITE.h5
-    #local DST="${DIR}/${TIMESTAMP}_radar.polar.${SITE}.h5"
+    #local DST="${DIR}/${TIMESTAMP}_radar.polar.${SITE}.h5"rack-get-data-opera.sh
     local DST="${DIR}/${VOLUME}"
-
+    if [ -f $DST ]; then
+	return 0
+    fi
+    
     # S3 object key: YYYY/MM/DD/site/filename
     # local S3_KEY="${YEAR}/${MONTH}/${DAY}/${SITE}/${VOLUME}"
     local S3_KEY="${YEAR}/${MONTH}/${DAY}/${SITE}/${TIMESTAMP}_${SITE}_PVOL.h5"

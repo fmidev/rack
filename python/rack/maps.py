@@ -210,7 +210,7 @@ def add_arguments(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
 # order, regardless of CRS. This is a property of each specific EPSG definition, not
 # just "geographic vs projected": e.g. 3035 is projected but still north/east.
 # Extend this set if other such CRSs are used, e.g. 4269 (NAD83).
-LATLON_AXIS_EPSG = {4326, 4258, 3035}
+LATLON_AXIS_EPSG = {4326, 4258, 3035, 5120}
 
 
 def bbox_needs_swap(version:str, crs:str|int) -> bool:

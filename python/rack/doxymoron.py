@@ -57,6 +57,38 @@ DEFAULT_MISMATCH_ACTION: str = "ask"
 # (see Doxyfile) can serve them as plain \linkfile{...} download links.
 LINK_FILE_DIR = Path("..", "tests", "out")
 
+# Default configuration for external commands used by doxymoron.
+# Override individual keys by passing --config file.json (JSON format).
+# Example override file:
+#   {
+#     "auto_svg_to_png": true,
+#     "svg_converters": [
+#       {"cmd": "inkscape", "call_syntax": "{cmd} -o {outfile} {infile}", "enabled": true},
+#       {"cmd": "convert",  "call_syntax": "{cmd} {infile} {outfile}",   "enabled": true}
+#     ]
+#   }
+# call_syntax may reference {cmd}, {infile}, {outfile}.
+# When cmd is a compound like "python3.12 -m some.module", only its first word is used for
+# the PATH availability check; the full string is substituted into {cmd}.
+DOXYMORON_CONF: Dict[str, Any] = {
+    # Set to False to disable automatic SVG-to-PNG conversion after shell blocks.
+    "auto_svg_to_png": True,
+    # Converters are tried in order; the first one whose binary is on PATH and
+    # whose call succeeds is used.
+    "svg_converters": [
+        {
+            "cmd": "inkscape",
+            "call_syntax": "{cmd} -o {outfile} {infile}",
+            "enabled": True,
+        },
+        {
+            "cmd": "convert",
+            "call_syntax": "{cmd} {infile} {outfile}",
+            "enabled": True,
+        },
+    ],
+}
+
 @dataclass
 class ReplaceRule:
     src: str
@@ -329,9 +361,9 @@ def ensure_map(composer:rack.cmdline.Composer):
     """
     
 def save_example_py(composer: rack.cmdline.Composer, filename: str):
-    filepath=f"out/{filename}"
+    filepath = f"out/{filename}"
     module_name = composer.get_module_name()
-    #logger.info(f"")
+    # logger.info(f"")
     logger.info(f"{Emoji.DISC}  writing {filepath}")
     python = Path(sys.executable).name
     option_separator=" \\\n  "
@@ -427,6 +459,64 @@ def run_shell_subprocess(script:str, shell:bool=False) -> None:
 
 
 
+def _find_svg_outputs(script_lines: List[str]) -> List[str]:
+    """Return .svg filenames found in shell script lines (any token ending with '.svg').
+
+    Rack only writes SVG files, never reads them, so every .svg token in a command
+    line is an output candidate worth converting.
+    """
+    seen: set = set()
+    result: List[str] = []
+    for line in script_lines:
+        try:
+            tokens = shlex.split(line, comments=True)
+        except ValueError:
+            tokens = line.split()
+        for tok in tokens:
+            if tok.lower().endswith(".svg") and tok not in seen:
+                seen.add(tok)
+                result.append(tok)
+    return result
+
+
+def _convert_svg_to_png(svg_path: Path, workdir: Optional[Path] = None) -> bool:
+    """Convert *svg_path* to a same-stem .png using DOXYMORON_CONF['svg_converters'].
+
+    Tries each enabled converter in order, checking PATH availability via shutil.which
+    before attempting the call. call_syntax supports {cmd}, {infile}, {outfile}.
+    Returns True on the first successful conversion, False if all converters fail.
+    """
+    converters = DOXYMORON_CONF.get("svg_converters", [])
+    png_path = svg_path.with_suffix(".png")
+    for entry in converters:
+        if not entry.get("enabled", True):
+            continue
+        cmd_bin: str = entry.get("cmd", "")
+        call_syntax: str = entry.get("call_syntax", "")
+        if not call_syntax:
+            logger.debug(f"SVG converter entry has no call_syntax; skipping: {entry}")
+            continue
+        binary = cmd_bin.split()[0] if cmd_bin else ""
+        if binary and not shutil.which(binary):
+            logger.debug(f"SVG converter not on PATH: {binary}")
+            continue
+        cmd_str = call_syntax.format(
+            cmd=cmd_bin,
+            infile=shlex.quote(str(svg_path)),
+            outfile=shlex.quote(str(png_path)),
+        )
+        logger.info(f"{Emoji.RUN.value} SVG->PNG: {cmd_str}")
+        result = subprocess.run(cmd_str, shell=True, capture_output=True, text=True,
+                                cwd=workdir)
+        if result.returncode == 0:
+            logger.info(f"{Emoji.SUCCESS.value} Converted: {svg_path.name} -> {png_path.name}")
+            return True
+        logger.warning(f"Converter '{binary}' failed (rc={result.returncode}): "
+                       f"{result.stderr.strip()}")
+    logger.warning(f"No SVG converter succeeded for {svg_path}")
+    return False
+
+
 def run_shell_lines(lines: list, cliconf: CliConf) -> None:
     """
     Shared shell-execution engine, used for \\code{.sh}/\\~exec{.sh} blocks and
@@ -487,6 +577,15 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
                           stdout_file=cliconf.stdoutToFile, stderr_file=cliconf.stderrToFile)
 
     validate_tests(cliconf.tests, cliconf.workdir)
+
+    if DOXYMORON_CONF.get("auto_svg_to_png", True):
+        base = Path(cliconf.workdir) if cliconf.workdir else Path()
+        for svg_name in _find_svg_outputs(script):
+            svg_path = base / svg_name
+            if svg_path.exists():
+                _convert_svg_to_png(svg_path, cliconf.workdir)
+            else:
+                logger.debug(f"SVG not found after block (skipping conversion): {svg_path}")
 
 
 def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> None:
@@ -830,11 +929,15 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
 
 def main() -> int:
 
-    ap = argparse.ArgumentParser(description="Run and validate \\code blocks inside a Doxygen .dox file.")
-    ap.add_argument("docfile", type=Path)
-    ap.add_argument("-v", "--verbose", action="store_true")
-    ap.add_argument("--debug", action="store_true")
-    ap.add_argument("--on-mismatch", choices=["ask", "quit", "continue", "update"], default="ask",
+    parser = argparse.ArgumentParser(description="Run and validate \\code blocks inside a Doxygen .dox file.")
+    parser.add_argument("docfile", type=Path)
+    parser.add_argument("-v", "--verbose", action="store_true")
+    parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--config", type=Path, default=None,
+                    help="JSON config file to override DOXYMORON_CONF defaults "
+                         "(auto_svg_to_png, svg_converters, …). "
+                         "Top-level keys are merged (shallow update) into the defaults.")
+    parser.add_argument("--on-mismatch", choices=["ask", "quit", "continue", "update"], default="ask",
                      help="What to do when a content check (image similarity, text diff) "
                           "whose test-spec on_fail is \"error\" (the default) fails: "
                           "\"ask\" (default) pauses and prompts interactively - quit/"
@@ -845,7 +948,7 @@ def main() -> int:
                           "references from scratch, but use with care). Checks with an "
                           "explicit on_fail of \"warn\"/\"ignore\" (e.g. a deliberate "
                           "meta-test) are never affected by this - they always just log.")
-    ap.add_argument("--scan-start", type=int, default=None, metavar="LINE",
+    parser.add_argument("--scan-start", type=int, default=None, metavar="LINE",
                      help="Only execute \\code/\\~exec blocks (and \\include'd exec.sh scripts "
                           "or make targets) that start at or after this line number of the "
                           ".dox file; ones before it are skipped. \\~conf blocks are always "
@@ -854,11 +957,16 @@ def main() -> int:
                           "middle of a long .dox file without re-running everything before it. "
                           "Line numbers shift whenever the file is edited above this point, so "
                           "treat the value as a throwaway, one-off number, not a stored setting.")
-    ap.add_argument("--scan-end", type=int, default=None, metavar="LINE",
+    parser.add_argument("--scan-end", type=int, default=None, metavar="LINE",
                      help="Only execute \\code/\\~exec blocks (and \\include'd exec.sh scripts "
                           "or make targets) that start at or before this line number. See "
                           "--scan-start.")
-    args = ap.parse_args()
+    args = parser.parse_args()
+
+    if args.config:
+        overrides = rack.config.read(args.config)
+        DOXYMORON_CONF.update(overrides)
+        logger.info(f"Loaded config overrides from {args.config}: {list(overrides.keys())}")
 
     if args.debug:
         logger.setLevel(logging.DEBUG)
@@ -962,14 +1070,6 @@ def main() -> int:
             else:
                 logger.warning(f"unknown code arg='{block.arg}' at line {block.start_line}")
             
-        #elif key == "~exec":
-        #    block: Block = obj 
-        #    if block.arg == '.sh':
-        #        run_shell(block, cliconf)
-        #        cliconf.reset()
-        #    else:
-        #        logger.warning(f"Skipping {key}[{block.arg}] at line {block.start_line}")
-        #    continue
         else:
             raise RuntimeError(f"Unknown key: {key}")
 

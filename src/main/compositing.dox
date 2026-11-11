@@ -113,16 +113,6 @@ stop
 \~
 
 
-
-
-An example of a command that generates a composite:
-
-\~conf{.sh}
-{
-  "shell": true
-}
-\~
-
 \~remark 
 rack \
     --cSize '640,768' \
@@ -154,6 +144,16 @@ should probably be added explicitly to whatever server config or PROJ
 list rack.maps maintains.
 
 \~ 
+
+
+
+An example of a command that generates a composite:
+
+\~conf{.sh}
+{
+  "shell": true
+}
+\~
 
 
 \linkfile{composite-fi_rack.sh}
@@ -196,7 +196,7 @@ composer.set(OUTDIR='out')
 composer.set(OUTFILE='composite-fi.h5')
 composer.set(FORMATS='svg')
 composer.set(svgRelativePaths=True)
-composer.set(map='map-composite-fi.png')
+composer.set(map='out/map-composite-fi.png')
 
 # Extract command sequence
 prog = composer.get_prog()
