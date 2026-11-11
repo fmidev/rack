@@ -75,10 +75,14 @@ download_volume() {
     # FMI local naming convention: TIMESTAMP_radar.polar.SITE.h5
     #local DST="${DIR}/${TIMESTAMP}_radar.polar.${SITE}.h5"rack-get-data-opera.sh
     local DST="${DIR}/${VOLUME}"
-    if [ -l $DST ] && [ -e $DST ]; then
-	DST2=`readlink  $DST`
-	echo "# Exists: $VOLUME"
-	return 0
+    # -h : True if file exists and is a symbolic link.
+    if [ -h $DST ]; then
+	DST=`readlink  $DST`
+    fi
+    
+    if [ -e $DST ]; then
+	    echo "# Exists: $VOLUME"
+	    return 0
     fi
     
     # S3 object key: YYYY/MM/DD/site/filename
