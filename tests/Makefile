@@ -115,18 +115,27 @@ $(SYNTH_PRECIP_POL): $(SYNTH_PRECIP_CART)
 get-data-synth-precip-polar: $(SYNTH_PRECIP_POL)
 
 
+# Ensure directory for downloaded maps
 mapcache:
 	mkdir --parents cache/mapcache
 	ln -sf cache/mapcache/ .
 
-# Maps
-get-maps-all: #mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kiira.png
+# Clear directory for downloaded maps
+mapcache-clear:
+	@ rm -vrf cache/mapcache/* 
+
+# Retrieve maps for env-directories (soft file links 'map-*.png')
+maps-get-all: mapcache
 	for i in `find env/*/ -type l -iname 'map-*.png'`; do \
 	echo $${i}; python3.12 -m rack.maps `readlink $${i}`; \
 	echo; \
 	done
-#python3 -m rack.maps `find env/*/ -type l -iname 'map-*.png' -printf '%l\n'`
 	@ echo "Ok"
+
+# Prepare the map for each environment
+maps-get-new: mapcache
+	DIR=$${PWD}; for i in env/composite-*/; do cd $${i}; make maps-clean maps-all; cd $${DIR}/; done
+
 
 # Specific maps (deviating from defaults)
 
@@ -134,14 +143,14 @@ get-maps-all: #mapcache/map-gulf.png mapcache/map-gulf-gray.png mapcache/map-kii
 
 
 # Gulf of Finland
-mapcache/map-gulf-gray.png: mapcache
-	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer OPENFMI --mapLayers 'Basemaps:naturalearthgray' --SIZE 640,384 --PROJ 3067 --mapLink $@
+#mapcache/map-gulf-gray.png: mapcache
+#	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer OPENFMI --mapLayers 'Basemaps:naturalearthgray' --SIZE 640,384 --PROJ 3067 --mapLink $@
 
 # Gulf of Finland
-mapcache/map-gulf.png: mapcache
-	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer default --SIZE 640,384 --PROJ 3067 --mapLink $@
+#mapcache/map-gulf.png: mapcache
+#	python3 -m rack.maps --BBOX='-15000,6508000,625000,6892000' --mapServer default --SIZE 640,384 --PROJ 3067 --mapLink $@
 
-mapcache/map-kiira.png: mapcache
-	python3 -m rack.maps --BBOX='-47793,6427699,631909,7104304' --mapServer default  --SIZE 1000,1000 --PROJ 3067 --mapLink $@
+#mapcache/map-kiira.png: mapcache
+#	python3 -m rack.maps --BBOX='-47793,6427699,631909,7104304' --mapServer default  --SIZE 1000,1000 --PROJ 3067 --mapLink $@
 
 

@@ -16,12 +16,12 @@ help-maps:
 
 default-map: out/map-${BASENAME}.png
 
-out/map-${BASENAME}.png: all-maps
+out/map-${BASENAME}.png: maps-all
 	@ cp -vi map-${BASENAME}.png out/ 
 
 # map-${BASENAME}.png: all-maps
 
-all-maps: map-TOPO-WMS.png map-world-map-combo-en.png 
+maps-all: map-TOPO-WMS.png map-world-map-combo-en.png 
 	@ echo "Retrieved $@ $*"
 
 include geo.cnf
@@ -29,7 +29,8 @@ include geo.cnf
 
 
 map-%.png:
-	-${PYTHON} -m rack.maps --mapLink $@ ./mapcache/EPSG:${EPSG}/BBOX=${BBOX}_LAYERS=$*_SIZE=${SIZE}_STYLES=.png && ln -sv $@ map-${BASENAME}.png 
+	-${PYTHON} -m rack.maps --mapLink $@ ./mapcache/EPSG:${EPSG}/BBOX=${BBOX}_LAYERS=$*_SIZE=${SIZE}_STYLES=.png && ln -vf  $@ out/map-${BASENAME}.png
+# && ln -sv $@ map-${BASENAME}.png 
 
-clean:
-	@ rm -vi map-*.png
+maps-clean:
+	@ rm -vf map-*.png
