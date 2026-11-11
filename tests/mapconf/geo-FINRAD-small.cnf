@@ -1,0 +1,24 @@
+# Configuration for Finnish radar composite
+#
+# Markus.Peura@fmi.fi
+#
+# For Makefile, keep comments on separate lines
+
+# https://epsg.io/3067
+PROJ=3067
+EPSG=3067
+
+
+# Metric bounding box
+BBOX=-208000,6390000,1072000,7926000
+
+# To consider: is SIZE part of geo conf?
+# Or Pref SIZE 
+# SIZE=1280,1536 # pix (1000 m/pix) 
+# SIZE=2560,3072 # pix (500 m/pix)
+
+# pix (250 m/pix)
+# SIZE=5120,6144
+
+# pix (2000 m/pix) 
+SIZE=640,768
