@@ -104,7 +104,7 @@ SYNTH_PRECIP_POL  = $(SYNTH_PRECIP_DIR)/synth-precip-polar.h5
 # Create fractal clouds (Cartesian image) — real file target; make skips if up to date
 $(SYNTH_PRECIP_CART): cache
 	mkdir --parents $(SYNTH_PRECIP_DIR)
-	DIMENSION=2.2 POWER=1 OUTDIR=$(SYNTH_PRECIP_DIR) OUTFILE=$(notdir $@) scripts/rack-create-synth-clouds.sh
+	DIMENSION=2.2 POWER=1 OUTDIR=$(SYNTH_PRECIP_DIR) OUTFILE=$(notdir $@) scripts/rack-create-synth-clouds.sh || echo "Warning: " $(SYNTH_PRECIP_DIR) "failed"
 
 # Phony shortcut
 get-data-synth-precip: $(SYNTH_PRECIP_CART)
