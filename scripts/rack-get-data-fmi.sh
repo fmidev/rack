@@ -78,10 +78,11 @@ download_volume() {
     # -h : True if file exists and is a symbolic link.
     if [ -h $DST ]; then
 	DST=`readlink  $DST`
+	#echo "# True path: $DST"
     fi
     
     if [ -e $DST ]; then
-	    echo "# Exists: $VOLUME"
+	    echo "# Exists: $VOLUME , $DST"
 	    return 0
     fi
     
