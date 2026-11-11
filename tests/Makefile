@@ -22,9 +22,11 @@ test-svg:
 
 
 # ====== Misc ======
+out/
+	@mkdir -v --parents $@
 
 # Save help lines of a command
-%.hlp:
+%.hlp: out/
 	ls out/$@ || rack --help $* > out/$@
 
 # get-data:
@@ -133,7 +135,7 @@ maps-get-all: mapcache
 	@ echo "Ok"
 
 # Prepare the map for each environment
-maps-get-new: mapcache
+maps-get-new: mapcache out/
 	DIR=$${PWD}; for i in env/composite-*/; do cd $${i}; make maps-clean maps-all; cd $${DIR}/; done
 
 
