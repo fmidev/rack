@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -70,6 +71,9 @@ LINK_FILE_DIR = Path("..", "tests", "out")
 DOXYMORON_CONF: Dict[str, Any] = {
     # Set to False to disable automatic SVG-to-PNG conversion after shell blocks.
     "auto_svg_to_png": True,
+    # Directories to scan for newly created .svg files after each shell block,
+    # relative to the working directory (cliconf/pyconf workdir, or cwd if unset).
+    "svg_scan_dirs": [".", "out"],
     # Converters are tried in order; the first one whose binary is on PATH and
     # whose call succeeds is used.
     "svg_converters": [
@@ -187,28 +191,12 @@ SINGLE_LINE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include|section|subsect
 # naming the same kind of generated/example file but not embedding it inline.
 LINKFILE_CMD_RE = re.compile(r"^\\linkfile\{(?P<arg>[^}]*)\}\s*$")
 
-# KEY_VALUE_RE = re.compile(r"^\s*(?:(?P<key>([a-zA-Z][a-zA-Z0-9_]*)))\s*=\s*(?:(?P<value>.+))$")
-# Accept either a plain command line, or a line prefixed with "$ "
-# CLI_LINE_RE = re.compile(r"^\s*(?:\$\s+)?(?P<cmd>.+?)\s*$")
-
-# Recognizes code block: \code ... \endcode
-# CODE_START_RE = re.compile(r"^\\code(?:\{(?P<arg>[^}]*)\})?\s*$")
-# CODE_END_RE = re.compile(r"^\\endcode\s*$")
-# SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[^}]*))?\s*$")
-# SIMPLE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>[a-zA-Z0-9_]+))\s*(?:(?P<arg>.+))?$")
-# EXEC_START_RE = re.compile(r"^\\~exec\s*$")
-# BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))\s*$")
+# Recognizes code block: \code ... \endcode and extensions like \~conf{...} ... \~. The kind is captured in "kind" (code, ~conf, ~exec, ~stop).
 # BLOCK_START_RE = re.compile(r"^\\~(?:(?P<kind>[a-z]+))(?:\{(?P<arg>[^}]*)\})?\s*$")
 # BLOCK_START_RE = re.compile(r"^\\(?:(?:~(?P<user>conf|exec|stop))|(?P<code>code))(?:\{(?P<arg>[^}]*)\})?\s*$")
 BLOCK_START_RE = re.compile(r"^\\(?P<key>code|~conf|~exec|~stop)(?:\{(?P<arg>[^}]*)\})?\s*$")
-# BLOCK_START_RE = re.compile(r"^\\(?:~(?P<kind>[a-z]+))|(?P<kind2>code)(?:\{(?P<arg>[^}]*)\})?\s*$")
 BLOCK_END_RE = re.compile(r"^\\~\s*$")
 CODE_END_RE = re.compile(r"^\\endcode\s*$")
-
-# Recognizes conf block: \~cliconf or \~pyconf ... \endcode
-# Deprecating
-# CONF_START_RE = re.compile(r"^\\~(?P<kind>cliconf|pyconf)\s*$")
-# CONF_END_RE = re.compile(r"^\\~\s*$")
 
 
 @dataclass
@@ -484,7 +472,9 @@ def _convert_svg_to_png(svg_path: Path, workdir: Optional[Path] = None) -> bool:
     Returns True on the first successful conversion, False if all converters fail.
     """
     converters = DOXYMORON_CONF.get("svg_converters", [])
-    png_path = svg_path.with_suffix(".png")
+    # Naming convention: append .png to the full SVG filename.
+    # file.svg → file.svg.png  (keeps the .svg stem intact)
+    png_path = svg_path.with_name(svg_path.name + ".png")
     for entry in converters:
         if not entry.get("enabled", True):
             continue
@@ -502,16 +492,37 @@ def _convert_svg_to_png(svg_path: Path, workdir: Optional[Path] = None) -> bool:
             infile=shlex.quote(str(svg_path)),
             outfile=shlex.quote(str(png_path)),
         )
-        logger.info(f"{Emoji.RUN.value} SVG->PNG: {cmd_str}")
+        logger.debug(f"{Emoji.ROBOT.value} SVG->PNG: {cmd_str}")
         result = subprocess.run(cmd_str, shell=True, capture_output=True, text=True,
                                 cwd=workdir)
         if result.returncode == 0:
-            logger.info(f"{Emoji.SUCCESS.value} Converted: {svg_path.name} -> {png_path.name}")
+            logger.info(f"{Emoji.ROBOT.value} Converted: {svg_path.name} -> {png_path.name}")
             return True
         logger.warning(f"Converter '{binary}' failed (rc={result.returncode}): "
                        f"{result.stderr.strip()}")
     logger.warning(f"No SVG converter succeeded for {svg_path}")
     return False
+
+
+def _convert_new_svgs(base: Path, since: float, workdir: Optional[Path] = None) -> None:
+    """Convert every .svg file created/modified at or after *since* (epoch seconds).
+
+    Scans directories listed in DOXYMORON_CONF['svg_scan_dirs'] relative to *base*.
+    This is more reliable than token-scanning the script because it catches SVG paths
+    that result from flag combinations (e.g. rack's --outputPrefix + --outputFile).
+    """
+    scan_dirs = DOXYMORON_CONF.get("svg_scan_dirs", [".", "out"])
+    for rel in scan_dirs:
+        d = base / rel
+        if not d.is_dir():
+            continue
+        for svg_path in sorted(d.glob("*.svg")):
+            try:
+                mtime = svg_path.stat().st_mtime
+            except OSError:
+                continue
+            if mtime >= since:
+                _convert_svg_to_png(svg_path, workdir)
 
 
 def run_shell_lines(lines: list, cliconf: CliConf) -> None:
@@ -554,6 +565,7 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
         script[0] = code
 
     logger.info(f"{Emoji.RUN.value} Executing shell script: {script}")
+    t_before = time.time()
 
     if cliconf.linkFile:
         # \linkfile{...} serves the .txt-suffixed copy directly (see ALIASES in Doxyfile) -
@@ -577,12 +589,7 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
 
     if DOXYMORON_CONF.get("auto_svg_to_png", True):
         base = Path(cliconf.workdir) if cliconf.workdir else Path()
-        for svg_name in _find_svg_outputs(script):
-            svg_path = base / svg_name
-            if svg_path.exists():
-                _convert_svg_to_png(svg_path, cliconf.workdir)
-            else:
-                logger.debug(f"SVG not found after block (skipping conversion): {svg_path}")
+        _convert_new_svgs(base, since=t_before, workdir=cliconf.workdir)
 
 
 def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> None:
@@ -914,12 +921,16 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
                     os.chmod(filepath, 0o755) # Ensure it's executable
                     #result = subprocess.run(['ls',str(filepath)], **default_args)
                     #result = subprocess.run([str(filepath)], **default_args)
+                    t_before = time.time()
                     result = subprocess.run(['bash', str(filepath)], **default_args)
                     if 'returncode' in v and result.returncode != v['returncode']:
                         logger.error(f"Executing '{filepath}' returned {result.returncode}")
                         dump_subprocess_output(result, styleStdErr=Style(Color.RED, Effect.BOLD))
                         raise AssertionError(f"Executed '{filepath}', return code={result.returncode}")
                     dump_subprocess_output(result, styleStdErr=Style(Color.RED, Effect.BOLD))
+                    if DOXYMORON_CONF.get("auto_svg_to_png", True):
+                        base = Path(pyconf.workdir) if pyconf.workdir else Path()
+                        _convert_new_svgs(base, since=t_before, workdir=pyconf.workdir)
                 else:
                     logger.warning("shell test '{k}' requested but no script (pyconf.include_rack_sh)")
 

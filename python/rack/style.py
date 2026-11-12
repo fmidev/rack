@@ -180,6 +180,7 @@ class Emoji(str, Enum):
     # Misc
     TRIANGLE = "📐"
     MAGNIFIER = "🔍"
+    ROBOT = "🤖"
 
     def __str__(self):
         return self.value
