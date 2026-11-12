@@ -1,0 +1,158 @@
+/** \page compositing_parameters_page Compositing parameters
+
+
+\tableofcontents
+
+Under construction...
+
+Conversion to Cartesian coordinates has several default settings, collected below as command line options.
+
+| Option                 | Argument                   | Default, based on input     |
+| ---------------------- | -------------------------- | --------------------------- | 
+| \c --cProj             | EPSG code, proj string, or "AEQD" | \c "AEQD" (Azimuthal Equidistant centered at the radar) |
+| \c --cBBox             | xLL,yLL,xUR,yUR            | Matched to the radar range  | 
+| \c --cSize             | width,height               | \c "500,500"                | 
+| \c --cMethod           | compositing method         | \c "MAXIMUM"                |
+| \c --select            | path,quantity,...          | \c "path=dataset1/data1"    |
+
+
+
+
+\~remark 
+rack \
+    --cSize '640,768' \
+    --cProj '3067' \
+    --cBBox '-208000.0,6390000.0,1072000.0,7926000.0' \
+    --script '--select quantity=DBZH --cAdd' \
+    data/*.h5 \
+    --cExtract DATA \
+    -o composite-fi.tif
+
+EPSG:3035 — LAEA Europe. Equal-area, official EEA/Eurostat standard
+for European analysis. Reasonable distortion across all of
+Finland. Best choice for areal statistics and environmental data.
+
+EPSG:3034 — LCC Europe. Lambert Conformal Conic
+(shape-preserving). Used for pan-European aeronautical
+charting. Better than LAEA if angular fidelity matters more than area.
+
+EPSG:4258 — ETRS89 geographic. Not a projected CRS (it's lat/lon), but
+it is the European datum that all Finnish official projections are
+built on. Good for data exchange.
+
+Critical gap in the list: the actual Finnish national projection
+EPSG:3067 (ETRS89 / TM35FIN, central meridian 27°E) is absent. That is
+what Finnish authorities (NLS, FMI, SYKE) use and what rack presumably
+targets. EPSG:25833 (UTM zone 33, central meridian 15°E) is 12° west
+of Finland's center — it works but accumulates distortion. EPSG:3067
+should probably be added explicitly to whatever server config or PROJ
+list rack.maps maintains.
+
+\~ 
+
+
+
+
+\section cmethods  Compositing methods
+
+Compositing can be apply several \e compositing \e methods (or rules):
+- \b AVERAGE - average value
+- \b MAXIMUM - maximum value
+- \b MAXW - maximum-quality (using a quality field provided with the data)
+- \b WAVG,\em p,\em r,\em offset - weighted average with data and quality enhancement coefficients \em p  and  \em r ; also \em offset is needed for ensuring positive data values. 
+See also \ref specialcodes .
+
+The commands related to compositing and Cartesian products start with 'c'. 
+In computation \b Rack supports two schemes:
+
+- \b Direct \b scheme: data from all the radars are added to a composite sequentially, applying a single command line 
+- \b Tiled (distributed) \b scheme: data from each radar are pre-processed and stored in parallel, asynchronously; the tiles are later composited by a separate, fast process  
+
+In both direct and tiled schemes, data of each radar can undergo anomaly detection and removal. In addition, a polar product
+(like pseudo CAPPI or echo height) can be computed.
+
+
+\section cinitialisation Defining a composite
+
+Essential properties of a composite are:
+- Size of the array (image)
+- Geographical projection
+- Geographical extent
+
+\subsection csize Size
+
+The size of the composite, in pixels, is set with \c –cSize. 
+\include cSize.hlp
+
+
+\subsection cprojections  Projection
+
+Projection definition command --cProj uses \b Proj.4 syntax and additionally supports direct EPSG codes,  \c --cProj\ 3067 .
+\include cProj.hlp
+
+If the projection is not given, \b Rack uses the Azimuthal Equidistant (AEQD) projection centered at radar site of the first input.
+
+When writing GeoTIFF files, using EPSG codes is recommended because not all \b Proj.4 project definition strings are supported by the
+GeoTIFF library. The following list produced as a part of release tests.
+
+\include rack-geotiff-supported.inc
+
+\subsection cbbox Bounding box
+
+The geographical area – the bounding box – of the composite is set with \c --cBBox taking lower left and upper right points as arguments.
+The points can be always given in degrees. If the applied projection is metric, the coordinates can be given as meters.
+If the bounding box is not explictly given with \c --cBBox command, the corner points of the first radar input are used.
+ 
+\include cBBox.hlp
+
+Hint: look at additional attributes of prefix `where:BBOX` written in output files. These attributes display the coordinates of 
+metric projections in native (i.e. metric) units and also report extent and overlap of input data. The bounding boxes can be used in optimising 
+composite products.
+(Write of additional non-standard attributes is controlled with the \c --odim command. )
+
+\subsection cinit Initialisation
+
+Command \c --cInit creates an empty compositing array of desired size in the memory and stores the essential attributes listed above.
+The command is optional  – initialisation is implicitly invoked when the first input is introduced with
+\c --cAdd or \c --cAddWeighted . However, explicit command is recommended, if the user wants to get an empty image 
+(instead of an error) in case no inputs are available.
+
+\include cInit.hlp
+
+
+\subsection specialcodes  Handling special codes
+
+Radar data complying the ODIM standard applies special marker codes \c undetect and \c nodata . 
+These codes have to be handled carefully in product generation and compositing.
+In \b Rack , pixel values with \c nodata are simply skipped; they are not accumulated in the composite array, for example.
+
+Handling of  \c undetect can be tuned by the user with \c --quantityConf and \c --undetectWeight . 
+The physical value or "virtual zero" replacing \c undetect codes is set using \c --quantityConf ,  
+for example,  \c --quantityConf \c DBZH,zero=-32.0 (corresponding the limit of signal detection sensitivity).
+See also \ref quantityConf.
+The corresponding relative weight is set with \c --undetectWeight \c \<value\> . 
+The value 0.0...1.0 describes the significance of the value relative to a "true" detected measurement value.
+The value is zero by default, which in compositing means that the location is marked as processed 
+(a counter is incremented) but the value is not accumulated.
+
+
+
+The extraction command \c --cExtract extracts one or more data layers out of the compositing (accumulation array): 
+- \c DATA - the actual composited data, like reflectivity (\c DBZH )
+- \c WEIGHT - quality (confidence) of the data value
+- \c COUNT - number of radars contributed
+- \c DEVIATION - difference or discrepancy of data (if more than one radar contributed)
+
+The desired combination is given as a comma-separated list of above keywords. 
+Notice that the command \c –cCreate for creating  single radar "composite" is equivalent to \c --cAdd \c cExtract \c DATA,WEIGHT .
+For example:
+\~exec
+rack volume.h5 -Q DBZH --cAdd --cExtract DATA --cExtract WEIGHT -o composite-single.h5
+\~ 
+
+*/
+
+
+
+
+
