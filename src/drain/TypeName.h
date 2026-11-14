@@ -89,11 +89,14 @@ std::ostream & operator<<(std::ostream & ostr, const TypeName<T> &t){
 
 // Main macro
 #define DRAIN_TYPENAME(tname)   template <>  inline const std::string & drain::TypeName<tname>::str(){static const std::string n(#tname); return n;}
-// Variant for stripping off the trailing '_t'
+
+// Variant for stripping off the trailing '_t' in unit8_t etc, see below
 #define DRAIN_TYPENAME_t(tname) template <>  inline const std::string & drain::TypeName<tname##_t>::str(){static const std::string n(#tname); return n;}
 
 // Variant for
 #define DRAIN_TYPENAME_T(cname,T) template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=std::string(#cname)+'<'+drain::TypeName<T>::str()+'>'; return n;}}
+#define DRAIN_TYPENAME_T2(cname,T1,T2) template <class T1,class T2> struct TypeName<cname<T1,T2> > {static const std::string & str(){static const std::string n=std::string(#cname)+'<'+drain::TypeName<T1>::str()+','+drain::TypeName<T2>::str()+'>'; return n;}}
+
 // #define DRAIN_TYPENAME_T_0(cname,T)  template <class T> struct TypeName<cname<T> > {static const std::string & str(){static const std::string n=drain::StringBuilder<>(#cname, '<', drain::TypeName<T>::str(),'>'); return n;}}
 
 
@@ -117,10 +120,25 @@ DRAIN_TYPENAME(char *);
 DRAIN_TYPENAME(const char *);  // why const separately...?
 DRAIN_TYPENAME(std::string);
 
-
+#ifdef _INITIALIZER_LIST
 DRAIN_TYPENAME_T(std::initializer_list, T);
-DRAIN_TYPENAME_T(std::vector, T);
+#endif
 
+#ifdef _STL_VECTOR_H
+DRAIN_TYPENAME_T(std::vector, T);
+#endif
+
+#ifdef _STL_LIST_H
+DRAIN_TYPENAME_T(std::list, T);
+#endif
+
+#ifdef _STL_SET_H
+DRAIN_TYPENAME_T(std::set, T);
+#endif
+
+#ifdef _STL_MAP_H
+DRAIN_TYPENAME_T2(std::map, T1, T2);
+#endif
 
 
 
