@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(22,1)
+#define RACK_VERSION drain::Version<>(22,1,2)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -49,6 +49,10 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  - GeoTIFF, GDAL_METADATA: added Items: UNDETECT, NODATA (equals GDAL_NODATA)
  *  Version 22.1
  *  - Input --select , if set, affects already upon cInit
+ *  Release 22.1.1
+ *  --helpTable
+ *  Release 22.1.2
+ *  --Stringlet stores formatting
  *
  *  Version 21.0
  *  - HDF5 output: write chunk size; set Conventions only if unset
