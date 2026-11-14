@@ -1751,7 +1751,6 @@ public:
 };
 */
 
-
 class CmdHelpExample : public drain::SimpleCommand<std::string> {
 
 public:
@@ -1768,14 +1767,11 @@ public:
 
 		std::ostream & ostr = std::cout;
 
-		// const drain::CommandRegistry::map_t & map = drain::getRegistry().getMap();
 		const drain::CommandBank & cmdBank = drain::getCommandBank();
 		const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
-		// drain::getCommandBank().re
 
 		// Light strip (could use
 		const std::string key = cmdBank.resolveFull(value);
-		//const std::string key = value.substr(value.find_first_not_of('-'));
 
 		if (key != value)
 			mout.debug("resolved: " , value , " -> ", key );
@@ -1784,8 +1780,8 @@ public:
 
 		if (it != cmdMap.end()){
 
-			const drain::Command & d = it->second->getSource();
-			const drain::ReferenceMap & params = d.getParameters();
+			const drain::Command & cmd = it->second->getSource();
+			const drain::ReferenceMap & params = cmd.getParameters();
 
 			ostr << "--" << key << ' ';
 			if (!params.getKeyList().empty()){
@@ -1794,10 +1790,6 @@ public:
 				ostr << "'";
 			}
 			ostr << '\n';
-			//ostr << '\n';
-			// ostr << "Default values: ";
-			// params.getValues(ostr);
-			//ostr << '\n';
 
 			//ostr << "  # Parameters:\n";
 			const std::list<std::string> keys = params.getKeyList();
@@ -1818,6 +1810,297 @@ public:
 		else {
 			mout.fail("command " , value , " not found" );
 		}
+
+		exit(0);
+	};
+
+
+
+
+};
+
+
+
+/**
+ *  Stores the following "official" attributes:
+ *  - \name :
+ *  - \desc :
+ *  - \desc :
+ *
+ */
+void jsonSerialize(const drain::Command & cmd, drain::JSONtree & dst){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	dst["name"] = cmd.getName();
+	dst["desc"] = cmd.getDescription();
+
+	const drain::ReferenceMap & params = cmd.getParameters();
+	const drain::ReferenceMap::unitmap_t & unitMap = params.getUnitMap();
+
+	drain::JSONtree & dstParams = dst["params"];
+
+	for (const auto & key: params.getKeyList()){
+		const drain::Reference & param = params[key];
+		drain::JSONtree & dstParam = dstParams[key];
+		dstParam["key"]   = key; // repeated, for easier row-by-row exports
+		dstParam["value"] = param;
+		dstParam["type"]  = param.getTypeName();
+		// param.inputSeparator
+		drain::ReferenceMap::unitmap_t::const_iterator uit = unitMap.find(key);
+		if (uit != unitMap.end()){
+			dstParam["unit"] = uit->second;
+		}
+	}
+
+
+}
+
+/**
+ *  \param cmds - comma-separated list of commands
+ */
+
+void jsonSerialize(const std::string & cmds, drain::JSONtree & dst){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	const drain::CommandBank & cmdBank = drain::getCommandBank(); // this
+	const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
+
+	std::list<std::string> values;
+	drain::StringTools::split(cmds, values, ',');
+
+	if (values.empty()){
+		mout.error("Empty argument");
+		return;
+	}
+
+	// const bool MULTI_CMD_HELP = (values.size() > 1);
+
+	// Light strip (could use
+
+	for (const std::string & v: values){
+
+		if (v.empty()){
+			mout.debug("(empty key, ok)");
+			continue;
+		}
+
+		// Light strip (could use
+		const std::string key = cmdBank.resolveFull(v);
+
+		if (key != v){
+			mout.note("resolved: " , v, " -> ", key );
+		}
+
+		drain::CommandBank::map_t::const_iterator it = cmdMap.find(key);
+
+		if (it != cmdMap.end()){
+			const drain::Command & cmd = it->second->getSource();
+			jsonSerialize(cmd, dst[key]);
+		}
+		else {
+			mout.error("command not found: ", v, "/", key);
+		}
+
+
+	}
+}
+
+class CmdHelpTable : public drain::SimpleCommand<std::string> {
+
+public:
+
+	CmdHelpTable() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump example of use and exit.", "keyword", "") {
+	};
+
+	static
+	const std::map<std::string,std::string> & getVariables() {
+
+		static const std::map<std::string,std::string> m = {
+				{"cmd",    "Command"},
+				{"name",   "Name"}, // should not be needed
+				{"desc",   "Description"},
+				{"params", "Parameters"},
+				{"defs",   "Defaults"},
+				{"param",  "Parameter"},
+				{"unit",   "Unit"},
+				{"def",    "Default"},
+		};
+
+		return m;
+	};
+
+	void flushHeader(const drain::StringMapper & statusFormatter, const std::map<std::string,std::string> & env, std::ostream & ostr = std::cout) const {
+
+		// Print header
+		std::string header = statusFormatter.toStr(env, '?');
+		ostr << header << '\n';
+
+		// Print separator line
+		for (const char & c: header){
+			if (c == '|'){
+				ostr << c;
+			}
+			else {
+				ostr << '-';
+			}
+		}
+		ostr << '\n';
+		// statusFormatter.push_back('\n');
+
+	}
+
+	void flushRow(const drain::StringMapper & statusFormatter, const std::map<std::string,std::string> & env, std::ostream & ostr = std::cout) const {
+
+	}
+
+	/*
+	 * name": "CappiOp",
+  	  "desc": "Constant-altitude planar position indicator",
+     "params": {
+    "altitude": {
+      "key": "altitude",
+      "value": 1000,
+      "type": "double",
+      "unit": "metres"
+    },
+	 *
+	 */
+
+	void exec() const {
+
+		RackContext & ctx = getContext<RackContext>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		const drain::CommandBank & cmdBank = drain::getCommandBank();
+		// const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
+
+		drain::StringMapper rowFormatter(RackContext::variableMapper);
+		std::map<std::string,std::string> env;
+		std::ostream & ostr = std::cout;
+
+		drain::JSONtree tree;
+		jsonSerialize(value, tree);
+
+		drain::Sprinter::toStream(ostr, tree, drain::Sprinter::jsonLayout);
+
+
+		const bool MULTI_CMD_HELP = (tree.getChildren().size() > 1);
+
+		std::string rowFormat;
+		if (!ctx.formatStr.empty()){
+			rowFormat = ctx.formatStr;
+		}
+		else {
+			rowFormat = MULTI_CMD_HELP ? "|${name}|${desc}|${params}|" : "|${key}|${value}|${unit}|";
+		}
+		rowFormatter.parse(rowFormat, true);
+
+		// drain::StringMapper headerFormatter(RackContext::variableMapper);
+		// std::list<std::string> rowElements;
+		const std::map<std::string,std::string> & variables = getVariables();
+
+		for (const drain::Stringlet & stringlet: rowFormatter){
+
+			if (stringlet.isVariable()){
+				std::string name; //  = stringlet.getStr();
+				drain::SmartMapTools::get(variables, stringlet.getStr(), name);
+				ostr << '"' << name << '"';
+			}
+			else {
+				for (const char &c: stringlet){
+					if (c=='|'){ // or space or?
+						ostr << c;
+					}
+				}
+			}
+		}
+		ostr << '\n';
+
+		if (MULTI_CMD_HELP){
+			mout.debug("Multiple-command help");
+			rowFormatter.parse(ctx.formatStr.empty() ? "|${name}|${desc}|${params}|" : ctx.formatStr, true);
+			env = {
+					{"name",   "Name"}, // should not be needed
+					{"desc",   "Description"},
+					{"params", "Parameters"},
+					/*
+					{"defs",   "Defaults"},
+					{"param",  "Parameter"},
+					{"unit",   "Unit"},
+					{"cmd",    "Command"},
+					{"def",    "Default"},
+					*/
+			};
+
+		}
+		else {
+			mout.debug("Single-command help");
+			rowFormatter.parse(ctx.formatStr.empty() ? "|${key}|${value}|${unit}|" : ctx.formatStr, true);
+			env = {
+					{"key",    "Parameter"},
+					{"value",  "Value"},
+					{"unit",   "Unit"},
+					{"type",   "Type"},
+					/*
+					{"name",   "Name"}, // should not be needed
+					{"desc",   "Description"},
+					{"params", "Parameters"},
+					{"defs",   "Defaults"},
+					{"param",  "Parameter"},
+					*/
+			};
+		}
+
+		flushHeader(rowFormatter, env, ostr);
+		rowFormatter.push_back('\n');
+
+
+		for (const auto & cmdInfo: tree){
+
+			if (MULTI_CMD_HELP){
+				mout.debug("Multiple commands: collect a simple list");
+				env.clear();
+				env["name"] = cmdInfo.first;
+				env["desc"] = cmdInfo.second["desc"].data.toStr();
+				std::stringstream sstr;
+				char sep = 0;
+				for (const auto & child: cmdInfo.second["params"]){
+					//sstr << child.first << '=' << child.second["value"].data; // have to pick (only "value")
+					if (sep){
+						sstr << sep;
+					}
+					else {
+						sep = ',';
+					}
+					sstr << child.first; // have to pick (only "value")
+				}
+				//env["params"] = drain::sprinter(cmdInfo.second["params"].getChildren(), drain::Sprinter::emptyLayout).str();
+				env["params"] = sstr.str();
+				rowFormatter.toStream(ostr, env, drain::StringMapper::REMOVE_MISSING_VARIABLE);
+			}
+			else {
+				mout.debug("Single command: iterate parameters");
+				for (const auto & param: cmdInfo.second["params"]){
+					env.clear();
+					env["name"] = param.first;
+					env["unit"] = param.second["type"].data.toStr();
+					for (const auto & entry: param.second){
+						if (entry.first != "type"){
+							env[entry.first] = entry.second.data.toStr();
+						}
+					}
+					// drain::Sprinter::toStream(ostr, env, drain::Sprinter::pythonLayout);
+					rowFormatter.toStream(ostr, env, drain::StringMapper::REMOVE_MISSING_VARIABLE); // , '?'
+				}
+
+			}
+			// std::cout << '\n';
+
+		}
+
 
 		exit(0);
 	};
@@ -1889,8 +2172,10 @@ public:
 	};
 
 	virtual
-	//void run(const std::string & params = "") {
 	void exec() const {
+
+		// TODO: multiple-command dump, json output?
+		//
 
 		//RackResources & resources = getResources();
 		RackContext & ctx = getContext<RackContext>();
@@ -1917,6 +2202,10 @@ public:
 				return;
 			}
 
+			drain::JSONtree jsonRoot;
+
+
+
 			const drain::Command & command = cmdBank.get(value);
 			const drain::ReferenceMap & m = command.getParameters();
 
@@ -1924,7 +2213,7 @@ public:
 
 
 
-			drain::JSONtree jsonRoot;
+
 
 			drain::JSONtree & json = jsonRoot[value];
 			json["title"] = command.getDescription();
@@ -2806,7 +3095,11 @@ MainModule::MainModule(){ //
 	// Bank-referencing commands first
 	drain::CmdHelp help(cmdBank);
 	install(help, 'h');
-	install<CmdHelpExample>();
+	// install<CmdHelpExample>();
+	// DRAIN_CMD_INSTALL(drain::Cmd, Help)('h');
+	DRAIN_CMD_INSTALL(Cmd, HelpExample)();
+	DRAIN_CMD_INSTALL(Cmd, HelpTable)();
+	linkRelatedCommands(help, HelpExample, HelpTable);
 
 	drain::CmdLog log(cmdBank);
 	install(log); //  cmdLogFile; // consider abbr. -L ?
@@ -2848,13 +3141,6 @@ MainModule::MainModule(){ //
 	// installDeprecating<CmdTarget,CmdEncoding>(); failed..
 	install<CmdEncoding>("target").section = HIDDEN;  // alias
 	install<CmdEcho>();
-
-	/*
-	 MOVED to fileio.cpp !
-	install<CmdFormat>();
-	install<CmdFormatOut>();
-	install<drain::CmdFormatFile<RackContext> >();
-	*/
 
 	install<drain::CmdDebug>();
 	install<VerboseCmd>('v');
