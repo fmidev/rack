@@ -42,6 +42,18 @@ DRAIN_ENUM_DICT(StringMapper::handleMissing) = {
 };
 
 
+void StringMapper::updateRegExp(){
+	std::stringstream sstr;
+	sstr << "^(.*)\\$\\{(" << validChars; //  << ")\\}(.*)$";
+	if (formatting){
+		//sstr << "(\\|[^}]*)?";
+		sstr << "(\\|([^}]*))?";
+	}
+	sstr << ")\\}(.*)$";
+	// std::cout << sstr.str() << '\n';
+	regExp.setExpression(sstr.str());
+}
+
 StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
@@ -88,12 +100,15 @@ StringMapper & StringMapper::parse(const std::string &s, RegExp &r) {
 			push_front(Stringlet (s, false));
 	}
 	else if (result.size() >= 4){  // 2021/01 allow () in allowedChars
-		const std::string left     = result[1]; // leading part
-		const std::string variable = result[2];
-		const std::string right    = result.back(); // result[3]; // trailing part
+		const std::string & left     = result[1]; // leading part
+		const std::string & variable = result[2];
+		const std::string & format   = result[4];
+		const std::string & right    = result.back(); // result[3]; // trailing part
 		//std::cerr << __FUNCTION__ << " added Stringlet " << variable << std::endl;
 		parse(right, r);
-		push_front(Stringlet (variable, true));
+		std::cerr << __FUNCTION__ << result.size() << " added Stringlet " << variable << " FORMAT=" << result[4] << std::endl;
+		//push_front(Stringlet (variable, true));
+		push_front(Stringlet (variable, format));
 		parse(left, r);
 	}
 	else {

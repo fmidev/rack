@@ -46,31 +46,110 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 
 namespace drain {
 
-/// A helper class for StringMapper.
-/**  Stringlet is a std::string that is used literally or as a variable, ie. a key pointing to a map.
+/// A helper class that works as a literal or a variable in StringMapper.
+/**  Stringlet is a std::string that is used either literally or as a variable name referring to an
+ *   entry in a map (values of which can be of any type).
+ *
  *   When a StringMapper parses a given std::string, it splits the std::string to segments containing
- *   literals and variables, in turn.
- *   The result is stored in a list.
+ *   literals and variables, in turn. The result is stored in a list.
+ *
+ *   \see StringMapper
+ *
  */
 class Stringlet: public std::string {
 public:
 
+	/// Default functor
+	/**
+	 *  \param s - string that should be treated either as a literal or variable (with optional formatting)
+	 */
 	inline
-	Stringlet(const std::string & s = "", bool isVariable = false) : std::string(s), isVar(isVariable) {
+	Stringlet(const std::string & s = "", bool isVariable = false) : isVar(isVariable) { // std::string(s),
+
+		// Split to format with '|'
+		if (isVariable){
+			// Supports also empty format string, for example ${name|}
+			// Since perhaps an empty variable value, like ${name|$FORMAT}
+			// StringTools::split2(s, *this, format, '|');
+			setVariable(s);
+		}
+		else {
+			assign(s);
+		}
+
+	};
+
+	inline
+	Stringlet(const std::string & s, const std::string & format) : std::string(s), isVar(true), format(format) {
 	};
 
 	/// Copy constructor.
-	Stringlet(const Stringlet & s) : std::string(s), isVar(s.isVar) {
+	Stringlet(const Stringlet & s) : std::string(s), isVar(s.isVar), format(s.format) {
 	}
+
+	// How to flag isVariable?
+	inline
+	Stringlet(char c) : std::string(1, c), isVar(false) {
+	};
 
 	inline
 	bool isVariable() const { return isVar; };
 
+	/// Set type to variable or literal
+	/** Contradictory! Consider x = "| Title | Description |"
 	inline
-	void setVariable(bool isVariable=true) { isVar = isVariable; };
+	void setVariable(bool isVariable=true) {
+		if (!isVar){
+			StringTools::split2(*this, *this, format, '|');
+			isVar = isVariable;
+		}
+	};
+	inline
+	void setFormat(const std::string &s) {
+		setVariable(...)
+		format.assign(s);
+		isVar = true;
+	};
+	*/
+
+	/// Assing a value as a literal.
+	inline
+	void setLiteral(const std::string &s) {
+		assign(s);
+		format.clear();
+		isVar = false;
+	};
 
 	inline
-	void setLiteral(const std::string &s) { assign(s); isVar = false; };
+	void setVariable(const std::string & s) {
+		StringTools::split2(s, *this, format, '|');
+		isVar = true;
+	}
+
+	inline
+	void setVariable(const std::string & key, const std::string & fmt) {
+		assign(key);
+		format.assign(fmt);
+		isVar = true;
+	};
+
+
+	/// Return the internal string as is.
+	/**
+	 */
+	inline
+	const std::string & getStr() const {
+		return *this;
+	};
+
+	/// Return the internal formatting string.
+	/**
+	 */
+	inline
+	const std::string & getFormat() const {
+		return format;
+	};
+
 
 	// Consider!
 	// But has to share variable syntax ${...} with string mapper(s), which recognizes it...
@@ -79,6 +158,10 @@ public:
 protected:
 
 	bool isVar;
+
+	std::string format;
+
+public:
 
 };
 
@@ -110,6 +193,7 @@ std::ostream & operator<<(std::ostream & ostr, const Stringlet & s) {
  *
  *  \example StringMapper-example.cpp
  *
+ *  \see Stringlet
  */
 class StringMapper : public std::list<Stringlet> {
 
@@ -229,7 +313,8 @@ public:
 
 			if (stringlet.isVariable()){
 
-				if (formatter.handle(stringlet, variables, ostr)){
+				if (formatter.handle(stringlet.getStr(), stringlet.getFormat(), variables, ostr)){
+				//if (formatter.handle(stringlet, variables, ostr)){
 					// std::cerr << __FILE__ << " ok stringlet variable: " << stringlet << std::endl;
 					// Variable found and assigned.
 				}
@@ -309,17 +394,7 @@ public:
 
 protected:
 
-	inline
-	void updateRegExp(){
-		std::stringstream sstr;
-		sstr << "^(.*)\\$\\{(" << validChars; //  << ")\\}(.*)$";
-		if (formatting){
-			 sstr << "(\\|[^}]*)?";
-		}
-		sstr << ")\\}(.*)$";
-		// std::cout << sstr.str() << '\n';
-		regExp.setExpression(sstr.str());
-	}
+	void updateRegExp();
 
 	StringMapper & parse(const std::string &s, RegExp &r);
 
