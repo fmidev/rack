@@ -81,19 +81,35 @@ public:
 
 	/// Searches given key in a map, and if found, processes (formats) the value to ostream.  Return false, if variable not found.
 	/**
-	 *   Return false, if variable not found.
+	 *   \param key - variable name, optionally followed by '|' and format expression
+	 *
+	 *   \return false, if variable not found.
+	 *
 	 *   Then, further processors may handle the variable tag (remove, change, leave it).
 	 */
 	virtual
-	bool handle(const std::string & key, const map_t & variables, std::ostream & ostr) const {
+	bool handle(const std::string & key, const map_t & variables, std::ostream & ostr) const final {
 
 		drain::Logger mout(__FILE__, __FUNCTION__);
 
 		std::string k,format;
 		drain::StringTools::split2(key, k, format, '|');
 		// mout.attention("split '", key, "' to ", k, " + ", format);
+		return handle(k, format, variables, ostr);
+	}
 
-		const typename std::map<std::string,T>::const_iterator it = variables.find(k);
+	/// Searches given key in a map, and if found, processes (formats) the value to ostream.  Return false, if variable not found.
+	/**
+	 *   \param key - variable name, optionally followed by '|' and format expression
+	 *   \param format - format expression, like %f2.5 for floating point numbers.
+	 *
+	 *   \return false, if variable not found.
+	 *   Then, further processors may handle the variable tag (remove, change, leave it).
+	 */
+	virtual
+	bool handle(const std::string & key, const std::string & format, const map_t & variables, std::ostream & ostr) const {
+
+		const typename std::map<std::string,T>::const_iterator it = variables.find(key);
 		if (it == variables.end()) {
 			// Don't format.
 			return false;
@@ -111,7 +127,7 @@ public:
 		else {
     		// mout.attention("delegating '", k, "' to formatVariable: ", format);
 			// return formatVariable(k, variables, format, ostr);
-			return formatVariable(k, value, format, ostr);
+			return formatVariable(key, value, format, ostr);
 		}
 
 	}
