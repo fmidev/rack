@@ -537,6 +537,7 @@ void CmdOutputFile::exec() const {
 		style[drain::ClassXML(RackSVG::MAIN_TITLE)] ->set("font-size", ctx.svgPanelConf.fontSizes[0]);
 		style[drain::ClassXML(RackSVG::GROUP_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[1]);
 		style[drain::ClassXML(RackSVG::IMAGE_TITLE)]->set("font-size", ctx.svgPanelConf.fontSizes[2]);
+		// style[drain::ClassXML(RackSVG::MAIN_TITLE)] = "paint-over:true";
 
 		TreeSVG & svgGroup = ctx.getMainGroup();
 
@@ -557,10 +558,12 @@ void CmdOutputFile::exec() const {
 			// mout.attention("svg: ABSOLUTE paths");
 		}
 
-		MetaDataCollectorSVG metadataPruner;
-		drain::TreeUtils::traverse(metadataPruner, svgDoc);
+		MetaDataCollectorSVG metadataCollector;
+		drain::TreeUtils::traverse(metadataCollector, svgDoc);
 
+		mout.attention(DRAIN_LOG(ctx.svgPanelConf.mainTitle));
 		ctx.svgPanelConf.mainTitle = ctx.getFormattedStatus(ctx.svgPanelConf.mainTitle);
+		mout.attention(DRAIN_LOG(ctx.svgPanelConf.mainTitle));
 
 		TitleCreatorSVG titleCreator(ctx.svgPanelConf);
 		drain::TreeUtils::traverse(titleCreator, svgDoc); // or mainTrack enough?

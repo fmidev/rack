@@ -72,23 +72,6 @@ public:
 
 	inline
 	TitleCreatorSVG(const ConfSVG & svgConf) : svgConf(svgConf) {
-		//titles.set(0xff);
-		/*
-		if (!svgConf.mainTitle.empty()){
-			titles.set(PanelConfSVG::ElemClass::MAIN_TITLE);
-		}
-
-		if (!svgConf.groupTitleSyntax.empty()){
-			titles.set(PanelConfSVG::ElemClass::GROUP_TITLE);
-		}
-
-		titles.set(PanelConfSVG::ElemClass::IMAGE_TITLE);
-		*/
-		/*
-		if (!svgConf.groupNameSyntax.empty()){
-			titles.set(RackSVG::ElemClass::GROUP_TITLE);
-		}
-		*/
 	};
 
 	/**

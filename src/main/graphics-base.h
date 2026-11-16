@@ -111,7 +111,8 @@ public:
 
 	static inline
 	drain::image::TreeSVG & appendTitleElements(const ConfSVG &conf, drain::image::TreeSVG &group, const drain::ClassXML & anchor, RackSVG::ElemClass elemClass){
-		return appendTitleElements(conf, group, (const std::string &)anchor, elemClass);
+		//return appendTitleElements(conf, group, (const std::string &)anchor, elemClass);
+		return appendTitleElements(conf, group, anchor.strPrefixed(), elemClass); // Important, when referred to as anchor
 	}
 
 
