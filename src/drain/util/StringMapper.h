@@ -53,6 +53,11 @@ namespace drain {
  *   When a StringMapper parses a given std::string, it splits the std::string to segments containing
  *   literals and variables, in turn. The result is stored in a list.
  *
+ *   Examples:
+ *
+ *   Supports also empty format string, for example ${name|}, since perhaps an empty variable value, like ${name|$FORMAT}
+ *
+ *
  *   \see StringMapper
  *
  */
@@ -64,7 +69,7 @@ public:
 	 *  \param s - string that should be treated either as a literal or variable (with optional formatting)
 	 */
 	inline
-	Stringlet(const std::string & s = "", bool isVariable = false) : isVar(isVariable) { // std::string(s),
+	Stringlet(const std::string & s = "", bool isVariable = false){ //  : isVar(isVariable) { // std::string(s),
 
 		// Split to format with '|'
 		if (isVariable){
@@ -74,7 +79,8 @@ public:
 			setVariable(s);
 		}
 		else {
-			assign(s);
+			setLiteral(s);
+			// assign(s);
 		}
 
 	};
@@ -122,8 +128,10 @@ public:
 
 	inline
 	void setVariable(const std::string & s) {
+		// std::cerr << "TEST" << std::endl;
 		StringTools::split2(s, *this, format, '|');
 		isVar = true;
+		// std::cerr << "TEST-DONE" << std::endl;
 	}
 
 	inline
