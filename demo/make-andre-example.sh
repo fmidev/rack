@@ -115,6 +115,7 @@ while [ ${#*} != 0 ]; do
 	echo "$cmd"
 	eval "$cmd"
 
+	continue
 	
 	#echo "# Longer test" # -o $VOLUME_IMG
 	select="-Q '.*${QUANTITY}.*'" # +"OP"
