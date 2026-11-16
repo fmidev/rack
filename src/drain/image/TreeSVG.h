@@ -552,7 +552,8 @@ inline
 const image::TreeSVG::key_t & image::TreeSVG::getKey(const ClassXML & cls){
 	//return image::TreeSVG::getKey(cls.strPrefixed()); // const !
 	//return image::TreeSVG::getKey((const std::string &)cls); // const !
-	return (const std::string &)cls;
+	//return (const std::string &)cls;
+	return cls.strPrefixed();
 }
 
 template <> // for T (Tree class)
