@@ -244,13 +244,18 @@ protected:
 
 	static inline
 	void adjustAnchor(AnchorElem & anchor, const ClassXML & cls){
-		anchor.assign(cls);
+		// std::cout << __FUNCTION__ << ':' << anchor << ':' << cls.strPrefixed() << " (prefixed) " << '\n';
+		anchor.assign(cls.strPrefixed());
 	}
 
 	template <class T>
 	static inline
 	void adjustAnchor(AnchorElem & anchor, const T & value){
 		anchor.assign(Enum<T>::getKey(value));
+		// std::cout << __FUNCTION__ << ':' << anchor << ':' << value << " (TEMPLATEd) "  << '\n';
+
+		// BETTER:
+		// anchor.assign(drain::Tree<TREETYPE>::getKey);  // but unknown...
 	}
 
 	/// Redefined in NodeSVG
