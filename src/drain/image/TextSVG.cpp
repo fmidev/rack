@@ -247,7 +247,8 @@ void TextBox::addLines(const std::string & lines, char separator, char edge) con
 
 TreeSVG & TextBox::getBackground() const {
 
-	std::string BACKGROUND = "BACKGROUND";
+
+	std::string BACKGROUND = ".BACKGROUND";
 
 	if (adapterGroup.hasChild(BACKGROUND)){
 		return adapterGroup[BACKGROUND](svg::RECT);
