@@ -197,6 +197,21 @@ protected:
 
 DRAIN_TYPENAME(image::ImagePanel);
 
+/*
+enum ImSVGtest {
+	FIRST=0, SECOND=1
+};
+
+template <>
+void AlignAnchorSVG::adjustAnchor(image::AnchorElem & anchor, const ImSVGtest & value){
+	//anchor.assign(Enum<T>::getKey(value));
+	anchor.assign("foo");
+	// std::cout << __FUNCTION__ << ':' << anchor << ':' << value << " (TEMPLATEd) "  << '\n';
+	// BETTER:
+	// anchor.assign(drain::Tree<TREETYPE>::getKey);  // but unknown...
+}
+*/
+
 }  // drain::
 
 

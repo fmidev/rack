@@ -244,9 +244,13 @@ description->set(metadata->getAttributes());
 
 TreeSVG & ImagePanel::getUniqueElem(TreeSVG & parent, const drain::ClassXML & cls, svg::tag_t type) const {
 
-	if (!parent.hasChild(cls)){
+	// const std::string & clsPrefixed = cls.strPrefixed();
+
+	/*
+	if (!parent.hasChild(clsPrefixed)){
 		// parent.addChild()->setComment("NEW ", __FUNCTION__, ':', cls, '(', type, ')');
 	}
+	*/
 
 	TreeSVG & elem = parent[cls];
 
