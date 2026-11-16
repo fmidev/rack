@@ -95,12 +95,34 @@ A remark on GeoTIFF: geographic metadata only (projection, extent); kept separat
 to avoid a GDAL dependency there, and not yet implemented (plain text diff is too strict for `gdalinfo`'s
 numeric rounding - needs a tolerance-aware comparison, parked for later
 
+
+
 The basic test - checking that a file is produced - is simply "launched" by a reference file:
 if `reference/$FILENAME` exists, it requires that `out/$FILENAME` be generated.
 Also, some basic tests are automatically run, following the table above.
+
+**Metadata testing**
+
+Example of a test run detecting a difference:
+```
+INFO: 🔍  Testing env/composite-fi/out/composite-test.txt
+WARNING: env/composite-fi/out/composite-test.txt differs from env/composite-fi/reference/composite-test.txt:
+66c66
+< how:sw_version="22.0.2"
+---
+> how:sw_version="22.1"
+
+
+⚠️ Content check failed: env/composite-fi/out/composite-test.txt vs env/composite-fi/reference/composite-test.txt
+[q]uit testing, [c]ontinue, [u]pdate reference >
+```
+
+
 As to content of image files, validated by `rack.imagecheck`, 
 graylevel or RGB data similarity is required to be currently at least 95%.
 I more complex tests are needed, they must be configured as explained below.
+
+
 
 **GeoTIFF: markers and physical units**
 

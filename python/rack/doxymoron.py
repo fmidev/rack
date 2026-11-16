@@ -158,11 +158,15 @@ class PyConf(BaseConf):
     # Last \include argument, if <filename>.py
     include_py_sh:   str = ""
     include_rack_sh: str = ""
+    # True when the above came from \linkfile{...} rather than \include — triggers
+    # creation of a "name.txt -> name" symlink after the file is written.
+    py_sh_needs_txt_link:   bool = False
+    rack_sh_needs_txt_link: bool = False
     workdir: Optional[Path] = None
     # Lines that should be injected before the snippet (optional)
     prepend_code: List[str] = field(default_factory=list)
     append_code:  List[str] = field(default_factory=list)
-    
+
     replacements: List[ReplaceRule] = field(default_factory=list)
 
     #def __init__(self):
@@ -172,10 +176,12 @@ class PyConf(BaseConf):
         for r in self.replacements:
             s = r.apply(s)
         return s
-    
+
     def reset(self):
         self.include_py_sh = None
         self.include_rack_sh = None
+        self.py_sh_needs_txt_link = False
+        self.rack_sh_needs_txt_link = False
         self.prepend_code: None
         self.append_code: None
 
@@ -464,6 +470,22 @@ def _find_svg_outputs(script_lines: List[str]) -> List[str]:
     return result
 
 
+def _ensure_txt_symlink(symlink_path: Path, target_name: str) -> None:
+    """Create (or replace) a relative symlink at *symlink_path* pointing to *target_name*.
+
+    *target_name* must be a bare filename (no directory component); the symlink sits in
+    the same directory, so the link is relative and survives directory moves.
+    Doxygen's \\linkfile{file.sh} alias serves 'file.sh.txt' for browser download;
+    this symlink makes that '.txt' path resolve to the real '.sh' file without
+    keeping two copies.
+    """
+    symlink_path.parent.mkdir(parents=True, exist_ok=True)
+    if symlink_path.is_symlink() or symlink_path.exists():
+        symlink_path.unlink()
+    symlink_path.symlink_to(target_name)
+    logger.info(f"{Emoji.ROBOT.value}  Symlinking: {symlink_path.name} -> {target_name}")
+
+
 def _convert_svg_to_png(svg_path: Path, workdir: Optional[Path] = None) -> bool:
     """Convert *svg_path* to a same-stem .png using DOXYMORON_CONF['svg_converters'].
 
@@ -474,7 +496,12 @@ def _convert_svg_to_png(svg_path: Path, workdir: Optional[Path] = None) -> bool:
     converters = DOXYMORON_CONF.get("svg_converters", [])
     # Naming convention: append .png to the full SVG filename.
     # file.svg → file.svg.png  (keeps the .svg stem intact)
-    png_path = svg_path.with_name(svg_path.name + ".png")
+    # Use absolute paths so the converter works regardless of its cwd.
+    abs_svg = svg_path.resolve()
+    abs_png = abs_svg.with_name(abs_svg.name + ".png")
+    # Run with cwd = svg's own directory so relative image references inside the SVG
+    # (e.g. <image href="./map.png"/>) resolve correctly.
+    svg_dir = str(abs_svg.parent)
     for entry in converters:
         if not entry.get("enabled", True):
             continue
@@ -489,18 +516,21 @@ def _convert_svg_to_png(svg_path: Path, workdir: Optional[Path] = None) -> bool:
             continue
         cmd_str = call_syntax.format(
             cmd=cmd_bin,
-            infile=shlex.quote(str(svg_path)),
-            outfile=shlex.quote(str(png_path)),
+            infile=shlex.quote(str(abs_svg)),
+            outfile=shlex.quote(str(abs_png)),
         )
         logger.debug(f"{Emoji.ROBOT.value} SVG->PNG: {cmd_str}")
         result = subprocess.run(cmd_str, shell=True, capture_output=True, text=True,
-                                cwd=workdir)
-        if result.returncode == 0:
-            logger.info(f"{Emoji.ROBOT.value} Converted: {svg_path.name} -> {png_path.name}")
+                                cwd=svg_dir)
+        if result.returncode == 0 and abs_png.exists():
+            logger.info(f"{Emoji.ROBOT.value} Converted: {abs_svg.name} -> {abs_png.name}")
             return True
-        logger.warning(f"Converter '{binary}' failed (rc={result.returncode}): "
-                       f"{result.stderr.strip()}")
-    logger.warning(f"No SVG converter succeeded for {svg_path}")
+        if result.returncode == 0:
+            logger.warning(f"Converter '{binary}' returned rc=0 but output not found: {abs_png}")
+        else:
+            logger.warning(f"Converter '{binary}' failed (rc={result.returncode}): "
+                           f"{result.stderr.strip()}")
+    logger.warning(f"No SVG converter succeeded for {abs_svg}")
     return False
 
 
@@ -568,11 +598,12 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
     t_before = time.time()
 
     if cliconf.linkFile:
-        # \linkfile{...} serves the .txt-suffixed copy directly (see ALIASES in Doxyfile) -
-        # it is the only file written here, not a twin alongside an extension-true original.
-        linkpath = Path(LINK_FILE_DIR, cliconf.linkFile + ".txt")
+        # Write the script with its natural name, then add a .txt symlink so that
+        # Doxygen's \linkfile{...} alias can serve "file.sh.txt" for browser download.
+        linkpath = Path(LINK_FILE_DIR, cliconf.linkFile)
         logger.info(f"{Emoji.DISC.value}  writing {linkpath} (for \\linkfile)")
         linkpath.write_text("\n".join(script) + "\n", encoding="utf-8")
+        _ensure_txt_symlink(linkpath.with_name(cliconf.linkFile + ".txt"), cliconf.linkFile)
 
     # A fresh capture per block: truncate once, then each subprocess call appends.
     if cliconf.stdoutToFile:
@@ -909,6 +940,12 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
                 f"Python snippet failed (line {block.start_line})\n"
             )
 
+    out_base = Path(pyconf.workdir or ".") / "out"
+    if pyconf.include_rack_sh and pyconf.rack_sh_needs_txt_link:
+        _ensure_txt_symlink(out_base / (pyconf.include_rack_sh + ".txt"), pyconf.include_rack_sh)
+    if pyconf.include_py_sh and pyconf.py_sh_needs_txt_link:
+        _ensure_txt_symlink(out_base / (pyconf.include_py_sh + ".txt"), pyconf.include_py_sh)
+
     #    if pyconf.include_rack_sh and pyconf.tests and ('rack.sh' in pyconf.tests):
     if pyconf.tests:
         # logger.warning("TEST! " + pyconf.include_rack_sh)
@@ -1031,15 +1068,16 @@ def main() -> int:
             logger.debug(f"[{key}] {obj}")
 
             p = str(obj)
-            # \linkfile{...} serves its target as a browser-renderable .txt copy (see ALIASES
-            # in Doxyfile), so the file that gets generated must carry that suffix too.
-            generated_name = p + ".txt" if key == "linkfile" else p
             if p.endswith('py.sh'):
                 # Do not run the script, but remember it for later use in a Python snippet.
-                pyconf.include_py_sh = generated_name
+                pyconf.include_py_sh = p
+                if key == "linkfile":
+                    pyconf.py_sh_needs_txt_link = True
             elif p.endswith('rack.sh'):
                 # Do not run the script, but remember it for later use in a Python snippet.
-                pyconf.include_rack_sh = generated_name
+                pyconf.include_rack_sh = p
+                if key == "linkfile":
+                    pyconf.rack_sh_needs_txt_link = True
             elif p.endswith('exec.sh'):
                 # No path search. Script path should include directory (relative ok)
                 if in_scan_range(line_no):
