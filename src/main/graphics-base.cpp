@@ -52,19 +52,6 @@ DRAIN_ENUM_DICT(rack::RackSVG::ElemClass) = {
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, GENERAL),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BORDER),
 		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SIDE_PANEL),
-		// ---
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MOUSE_TRACKER),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, MONITOR),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SELECTOR),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, DATA_ARRAY),
-		// DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, SHARED_METADATA),
-		/*
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_PANEL),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, IMAGE_BORDER),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, BACKGROUND),
-		DRAIN_ENUM_ENTRY(rack::RackSVG::ElemClass, OVERLAY),
-		*/
 };
 
 namespace rack {
@@ -225,17 +212,15 @@ void RackSVG::addStyle(drain::image::TreeSVG & style){
 
 	// }
 
-	mout.revised("Not adjusting font sizes");
+	// mout.revised("Not adjusting font sizes with ", DRAIN_LOG(svgPanelConf.fontSizes));
+
 	/*
-	 *
+	Note: these can be accessed via:
+	style[ClassXML(RackSVG::IMAGE_TITLE)]->get("font-size", 10);
 	mout.debug("Setting font sizes: ", svgPanelConf.fontSizes);
-	style[ClassXML(RackSVG::MAIN_TITLE)] ->set("font-size", svgPanelConf.fontSizes[0]);
-	style[ClassXML(RackSVG::GROUP_TITLE)]->set("font-size", svgPanelConf.fontSizes[1]);
 	style[ClassXML(RackSVG::IMAGE_TITLE)]->set("font-size", svgPanelConf.fontSizes[2]);
 	*/
 
-	// Note: these can be accessed via:
-	//    style[ClassXML(RackSVG::IMAGE_TITLE)]->get("font-size", 10);
 
 	// return style;
 

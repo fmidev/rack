@@ -88,9 +88,16 @@ const std::string & RackSVG::guessFormat(const std::string & key){
 
 drain::image::TreeSVG & RackSVG::addTitleBox(const ConfSVG & conf, drain::image::TreeSVG & object, RackSVG::ElemClass elemClass){
 
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
 	drain::image::TreeSVG & comment = object.addChild()(svg::COMMENT);
 
 	drain::image::TreeSVG & backgroundRect = object[ImagePanel::BACKGROUND](svg::RECT);
+
+	// mout.attention("added elem for cls=", ImagePanel::BACKGROUND);
+	// mout.attention("object now ", sprinter(object).str());
+	// drain::TreeUtils::dump(object, std::cout);
+
 	backgroundRect->addClass(elemClass);
 	//backgroundRect->setAlignAnchorHorz("*"); // only if HORZ-INCR?
 	backgroundRect->setMyAlignAnchor(AnchorElem::Anchor::CURRENT_COMPOUND); // ("*");
@@ -141,6 +148,17 @@ drain::image::TreeSVG & RackSVG::appendTitleElements(const ConfSVG &conf, drain:
 	TreeSVG &mainHeader = group[RackSVG::ElemClass::GENERAL](svg::TEXT);
 	mainHeader->setAlign(AlignSVG::NEUTRAL);
 	mainHeader->addClass(elemClass); // also GENERAL?
+	/*
+	if (anchor == "BACKGROUND"){
+		mout.attention("Background for: ", group->getTag(), '/', group->getId());
+		mout.warn(DRAIN_LOG(anchor));
+	}
+	else if (anchor == ".BACKGROUND"){
+		mout.attention("Background for: ", group->getTag(), '/', group->getId());
+		mout.accept<LOG_WARNING>(DRAIN_LOG(anchor));
+	}
+	*/
+
 	mainHeader->setMyAlignAnchor(anchor);
 
 	// Ensure order
@@ -242,6 +260,7 @@ void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attrib
 
 		std::string key, format;
 		drain::StringTools::split2(attr.first, key, format, '|');
+		// mout.attention(attr.first, '=', attr.second, ' ', key, '/', format );
 
 		RackSVG::ElemClass elemClass = RackSVG::ElemClass::GENERAL;
 
@@ -272,10 +291,11 @@ void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attrib
 		if (elemClass == RackSVG::ElemClass::TIME){
 			if (format.empty()){
 				format = RackSVG::guessFormat(key);
-				text->set("data-format", format);
+				text->setUserAttribute("format", format);
+
 			}
 			else {
-				text->set("data-format", format); // DEBUG
+				text->setUserAttribute("format", format); // DEBUG
 			}
 			// mout.accept<LOG_DEBUG>("TIME text format", format);
 		}
@@ -300,6 +320,7 @@ void TitleCreatorSVG::formatTitle(TreeSVG & group, const NodeSVG::map_t & attrib
 			// tspan->setText(sstr.str(), " ");
 			// tspan->setText(sstr.str(), drain::XML::entity_t::NONBREAKABLE_SPACE); // "&#160;",  non-breakable space
 			tspan->setTextSafe(sstr.str(), ' '); // "&#160;",  non-breakable space
+			text->setUserAttribute("format2", format); // DEBUG
 		}
 
 	}
@@ -622,7 +643,6 @@ void CmdFontSizes::exec() const {
 	drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 	drain::UniTuple<double,3> t;
 	drain::StringTools::split(value, t, ',');
-	// adjust(ctx.svgPanelConf.boxHeights, 0.8);
 	adjust(ctx.svgPanelConf.fontSizes, 0.8);
 
 	mout.accept<LOG_WARNING>("adjusted: ", DRAIN_LOG(ctx.svgPanelConf.fontSizes));
