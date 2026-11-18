@@ -38,9 +38,11 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #include <iostream>
 #include <fstream>
 
+#include "drain/image/Image.h"
+#include "drain/util/JSON.h"
+
 #include "CommandBank.h"
 #include "CommandSections.h"
-#include "drain/image/Image.h"
 
 
 namespace drain {
@@ -108,6 +110,71 @@ public:
 	void exec() const override;
 
 };
+
+
+/// Explain..
+/**
+
+	Text
+
+	\b Synopsis
+	\include JSON.hlp
+
+	\see #::Command
+ */
+class CmdJSON : public drain::SimpleCommand<std::string> { // drain::BasicCommand {
+public:
+
+	CmdJSON() : drain::SimpleCommand<std::string>(__FUNCTION__, "Export a command to JSON.", "property", "", ""){
+	};
+
+	static
+	void commandsToJSON(const drain::CommandBank & cmdBank, const std::string & cmds, drain::JSONtree & dst, char separator=',');
+
+	static
+	void commandToJSON(const drain::Command & cmd, drain::JSONtree & dst);
+
+	static
+	void commandToJSON_old(const drain::Command & cmd, drain::JSONtree & dst);
+
+	static
+	const std::map<std::string,std::string> & getVariables();
+
+
+	virtual
+	void exec() const {
+
+		//RackContext & ctx = getContext<RackContext>();
+		drain::Context & ctx = getContext<>();
+
+		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
+
+		//drain::CommandRegistry & reg = drain::getRegistry();
+		drain::CommandBank & cmdBank = drain::getCommandBank();
+
+		std::ostream & ostr = std::cout;
+
+		if (value.empty()){
+			mout.unimplemented("drain::JSONwriter");
+		}
+		else {
+
+			if (!cmdBank.has(value)){
+				mout.error("no such key: " , value );
+				return;
+			}
+
+			drain::JSONtree jsonRoot;
+			drain::JSONtree & json = jsonRoot[value];
+			commandToJSON_old(cmdBank.get(value), json);
+			drain::Sprinter::toStream(ostr, jsonRoot, drain::Sprinter::jsonLayout);
+		}
+
+		//std::cout << std::setw(10) << "Voila!" << std::endl;
+	};
+
+};
+
 
 /*
 class CmdForEach : public drain::SimpleCommand<std::string> {
