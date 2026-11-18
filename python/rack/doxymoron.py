@@ -41,7 +41,7 @@ logger.addHandler(handler)
 """
 
 # Extensions of \include targets that should be built via `make` (demo/Makefile)
-MAKE_EXTENSIONS = {"hlp"}
+MAKE_EXTENSIONS = {"hlp", "hlp.md"}
 
 # Set from --on-mismatch in main(). Governs what happens when a content check (image
 # similarity or text diff) whose test-spec "on_fail" is "error" (the default) fails:
@@ -190,8 +190,8 @@ class PyConf(BaseConf):
 # Parsing helpers
 # ----------------------------
 
-# Recognizes \example and \include commands
-SINGLE_LINE_CMD_RE = re.compile(r"^\\(?:(?P<cmd>(example|include|section|subsection)))\s*(?:(?P<arg>.+))?$")
+# Recognizes \example and \include etc. commands
+SINGLE_LINE_CMD_RE = re.compile(r"^\\(?P<cmd>example|include|section|subsection)(?:\{[^}]*\})?\s*(?P<arg>.+)?$")
 
 # Recognizes \linkfile{...} (see ALIASES in Doxyfile): a link-only sibling of \include,
 # naming the same kind of generated/example file but not embedding it inline.
@@ -1087,8 +1087,8 @@ def main() -> int:
                     cliconf.reset()
                 else:
                     logger.debug(f"Skipping include {p} at line {line_no} (outside --scan-start/--scan-end)")
-            elif Path(p).suffix.lstrip(".") in MAKE_EXTENSIONS:
-                # Delegate to demo/Makefile, e.g. "cExtract.hlp" -> `make cExtract.hlp`
+            elif "".join(Path(p).suffixes).lstrip(".") in MAKE_EXTENSIONS:
+                # Delegate to demo/Makefile, e.g. "cExtract.hlp" or "cBBox.hlp.md" -> `make <file>`
                 if in_scan_range(line_no):
                     logger.info(f"{Emoji.RUN.value}  make {p}")
                     rack.process.run(["make", p], description=f"make {p}", logger=logger)

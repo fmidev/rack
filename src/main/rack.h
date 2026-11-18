@@ -53,6 +53,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  --helpTable
  *  Release 22.1.2
  *  --Stringlet stores formatting
+ *  Release 22.1.3
+ *  - JSONtree output with empty string data fixed
  *
  *  Version 21.0
  *  - HDF5 output: write chunk size; set Conventions only if unset

@@ -1796,7 +1796,7 @@ public:
 		std::ostream & ostr = std::cout;
 
 		drain::JSONtree tree;
-		drain::CmdJSON::commandsToJSON(cmdBank, value, tree,'-');
+		drain::CmdJSON::commandsToJSON(cmdBank, value, tree, "-,");
 		if (mout.isDebug()){
 			drain::Sprinter::toStream(ostr, tree, drain::Sprinter::jsonLayout); // keep to debug (the keys)
 			// drain::JSON::treeToStream(ostr, tree, drain::Sprinter::jsonLayout);
@@ -1894,8 +1894,8 @@ protected:
 			if (stringlet.isVariable()){
 				std::string name; //  = stringlet.getStr();
 				drain::SmartMapTools::get(variables, stringlet.getStr(), name);
-				//ostr << '"' << name << '"';
-				sstr << name;
+				sstr << ' ' << name << ' ';
+				//sstr << name;
 			}
 			else {
 				for (const char &c: stringlet){

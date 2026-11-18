@@ -196,7 +196,7 @@ Rack produces GeoTIFF images under the following limitations:
 - applicable to Cartesian products only; polar coordinate system is not supported.
   GDAL conventions are used in intensity scaling (\c scale and \c offset ). 
 - support of geodetic data is minimal; use utilities like \c gdalinfo to check output
-- some projections (e.g. \c epsg:3844, \c epsg:3035, and \c epsg:3995) raise errors – see \ref compositespage for details.
+- some projections (e.g. \c epsg:3844, \c epsg:3035, and \c epsg:3995) raise errors – see \ref compositingpage for details.
 - tiling is supported
 - some image viewing programs (ex. ImageMagick's \c display ) produce rendering errors of \em 16-bit images having width not multiple of tile width
 

@@ -268,15 +268,28 @@ public:
 		r.setSeparator(arraySeparator); // applicable, if array type element
 		// Link
 		r.link(x);
-		unitMap[key] = unit;
-		/*
+		//unitMap[key] = unit;
+
+
 		if (!unit.empty()){
 			unitMap[key] = unit;
 		}
 		else {
-			unitMap[key] = drain::Type::call<drain::simpleName>(typeid(F));
+			unitMap[key] = drain::TypeName<F>::str();
+		}
+		/*  TODO: upon new Parameter (with value space etc), use this to distinguish description and type
+		if (typeid(F) == typeid(bool)){
+			if (!unit.empty()){
+				std::cerr << "overriding issued type '" << unit << "' with 'bool'";
+			}
+			unitMap[key] = "bool";
+		}
+		else {
+			unitMap[key] = unit;
 		}
 		*/
+
+
 		return r;
 	}
 

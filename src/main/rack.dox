@@ -26,7 +26,7 @@ rack --format 'Version ${version}\n' -o rack-version.inc
 \section intro Introduction
 
 \b Rack is a command-line program for processing weather radar data.
-It uses raw measurement data as input and generates \ref productspage  as well as \ref compositespage . 
+It uses raw measurement data as input and generates \ref productspage  as well as \ref compositingpage . 
 \b Rack also provides methods for \ref andrepage . 
 Quality information is supported throughout the processing chain. 
  \b Rack also supports \ref imagespage , like applying colors and transparency. 
@@ -80,11 +80,11 @@ In addition, metadata, resampled grid data and vertical profiles can be output a
 
 	  polarfile [ label="Meteorological product", URL="\ref productspage", shape=record];
 
-	  cartesian [ label="Cartesian products\n and compositing", URL="\ref compositespage", color="blue" ];
+	  cartesian [ label="Cartesian products\n and compositing", URL="\ref compositingpage", color="blue" ];
 
-      cartfile [ label="Cartesian product", URL="\ref compositespage", shape=record];
+      cartfile [ label="Cartesian product", URL="\ref compositingpage", shape=record];
 
-  	  cumulator [ label="Composite\n(Internal accumulation array)", URL="\ref compositespage", shape=record, style="dotted"];
+  	  cumulator [ label="Composite\n(Internal accumulation array)", URL="\ref compositingpage", shape=record, style="dotted"];
 
 	}
 
@@ -204,7 +204,7 @@ The above image contains some anomalies that can be detected and removed. See \r
 Inside \b Rack , a single-radar Cartesian product is technically similar to a radar composite -- it is a single-radar 
 "composite". 
 The related commands are prefixed with \c 'c'. Composite generation, projections, methods, and other options are explained 
-in further detail in section \ref compositespage . 
+in further detail in section \ref compositingpage . 
 
 
 

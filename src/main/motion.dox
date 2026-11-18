@@ -338,7 +338,7 @@ The linear and exponential approaches have same the computional complexity.
 \subsection motion-composites  Composites of motion fields
 
 It is possible to generate composites of single-radar motion fields presented above. The procedure is essenstially the same
-as with intensity data, explained in \ref compositespage . 
+as with intensity data, explained in \ref compositingpage . 
 However, compositing has to be done separately for each parameter, 
 in this case horizontal wind components \c AMVU and \c AMVV . 
 
@@ -357,8 +357,8 @@ in this case horizontal wind components \c AMVU and \c AMVV .
   RADAR2  [ label="{Radar 2 | {<u>AMVU|<v>AMVV}}", color="forestgreen"];
   RADAR3  [ label="{Radar 3 | {<u>AMVU|<v>AMVV}}", color="forestgreen"];
   
-  AMVU  [ label="Composite | <i> AMVU", color="forestgreen", URL="\ref compositespage" ];
-  AMVV  [ label="Composite | <i> AMVV", color="forestgreen", URL="\ref compositespage" ];
+  AMVU  [ label="Composite | <i> AMVU", color="forestgreen", URL="\ref compositingpage" ];
+  AMVV  [ label="Composite | <i> AMVV", color="forestgreen", URL="\ref compositingpage" ];
   
   RADAR1:u -> AMVU:i;
   RADAR1:v -> AMVV:i;

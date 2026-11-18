@@ -29,6 +29,10 @@ out/:
 %.hlp: out/
 	ls out/$@ || rack --help $* > out/$@
 
+%.hlp.md: out/
+#rack --helpTable $* | awk 'NR==1{print; h=$$0; gsub(/[^|]/,"-",h); print h} NR>1{print}' > out/$@
+	rack --helpTable $*  > out/$@
+
 # get-data:
 #	@ echo "Arguments:"
 #	@ cd data/ && make help | grep '^get-data'
@@ -137,6 +141,7 @@ maps-get-all: mapcache
 # Prepare the map for each environment
 maps-get-new: mapcache out/
 	DIR=$${PWD}; for i in env/composite-*/; do cd $${i}; make maps-clean maps-all; cd $${DIR}/; done
+
 
 
 # Specific maps (deviating from defaults)
