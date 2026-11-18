@@ -128,7 +128,91 @@ void JSON::readArray(const std::string & s, Castable & v){
 
 }
 
+template <>
+std::ostream & JSON::treeToStream(std::ostream & ostr, const JSONtree & tree, const drain::SprinterLayout & layout, short indent){
 
+
+	const bool DATA     = !tree.data.empty();
+	// const bool CHILDREN = !tree.empty(); // Check: is this potentially overridden to (children.empty() && data.empty())
+	const bool CHILDREN = tree.hasChildren(); // Check: is this potentially overridden to (children.empty() && data.empty())
+
+	if (tree.data.isString() && tree.data.empty()){
+		ostr << layout.stringChars.prefix  << layout.stringChars.suffix;
+		if (CHILDREN){
+			drain::Logger mout(__FILE__, __FUNCTION__);
+			mout.error("JSON structure error: string data (yet empty) combined with substructure");
+		}
+		return ostr;
+	}
+
+	if (!(DATA||CHILDREN)){
+		// Also empty element should return something, here {}, but could be "" or null ?
+		ostr << layout.mapChars.prefix  << layout.mapChars.suffix; // '\n'; // remove debug-space
+		/*
+		if (!DATA){
+			ostr << layout.mapChars.prefix  << "   " << layout.mapChars.suffix;
+		}
+		else {
+			ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix;
+		}
+		*/
+		ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix;
+		return ostr;
+	}
+
+	/*
+	if (!CHILDREN){
+		// Also empty element should return something, here {}, but could be "" or null ?
+		// ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix; // '\n'; // remove debug-space
+		ostr << layout.mapChars.prefix  << '' << layout.mapChars.suffix;
+		return ostr;
+	}
+	*/
+
+	const std::string pad(2*indent, ' ');
+
+	if (DATA){
+		drain::Sprinter::toStream(ostr, tree.data, layout);
+		//ostr << layout.pairChars.suffix;
+		return ostr; // = pratically exclusive
+		/*
+		if (CHILDREN)
+			ostr << layout.mapChars.separator;
+		ostr << '\n';
+		*/
+	}
+
+	ostr << layout.mapChars.prefix; // << '\n';
+	//ostr << layout.pairChars.prefix;
+	ostr << '\n';
+
+	if (CHILDREN){
+		char sep = 0;
+		for (const auto & entry: tree){
+			if (sep){
+				ostr << sep;
+				ostr << '\n';
+			}
+			else {
+				sep = layout.mapChars.separator;
+			}
+			//ostr << pad << "  " << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
+			ostr << pad << "  ";  // if empty?
+			// if (layout.pairChars.prefix)
+			ostr << layout.pairChars.prefix;
+			ostr << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
+			treeToStream(ostr, entry.second, layout, indent+1); // recursion
+			// if (layout.pairChars.suffix)
+			ostr << layout.pairChars.suffix;
+		}
+		ostr << '\n';
+	}
+
+	// if (layout.mapChars.suffix)
+	ostr << pad << layout.mapChars.suffix; // << '\n';
+
+	return ostr;
+}
 
 } // drain::
 

@@ -122,13 +122,29 @@ template <class T>
 std::ostream & JSON::treeToStream(std::ostream & ostr, const T & tree, const drain::SprinterLayout & layout, short indent){
 
 	const bool DATA     = !tree.data.empty();
-	const bool CHILDREN = !tree.empty();
+	// const bool CHILDREN = !tree.empty(); // Check: is this potentially overridden to (children.empty() && data.empty())
+	const bool CHILDREN = tree.hasChildren(); // Check: is this potentially overridden to (children.empty() && data.empty())
 
+	/*
 	if (! (DATA||CHILDREN)){
 		// Also empty element should return something, here {}, but could be "" or null ?
 		ostr << layout.mapChars.prefix << layout.mapChars.suffix; // '\n';
 		return ostr;
 	}
+	*/
+
+	if (! (DATA||CHILDREN)){
+		// Also empty element should return something, here {}, but could be "" or null ?
+		// ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix; // '\n'; // remove debug-space
+		if (!DATA){
+			ostr << layout.mapChars.prefix  << "   " << layout.mapChars.suffix;
+		}
+		else {
+			ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix;
+		}
+		return ostr;
+	}
+
 
 	const std::string pad(2*indent, ' ');
 
@@ -283,6 +299,8 @@ void drain::JSON::handleValue(std::istream & istr, JSONtree & dst, const std::st
 }
 
 
+template <>
+std::ostream & JSON::treeToStream(std::ostream & ostr, const JSONtree & tree, const drain::SprinterLayout & layout, short indent);
 
 template <>
 inline
