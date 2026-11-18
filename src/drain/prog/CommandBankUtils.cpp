@@ -74,21 +74,10 @@ void CmdStatus::exec() const {
 
 	Context & ctx = getContext<Context>();
 
-	// std::ostream & ostr = std::cout; // for now...
-
 	const drain::VariableMap & statusMap = ctx.getUpdatedStatusMap();
 
-	/*
-	static
-	const SprinterLayout layout(",", "\n", "{:}", "");
-	Sprinter::mapToStream(std::cout, statusMap, layout, statusMap.getKeyList());
-	std::cout << '\n';
-	*/
-	//ostr << drain::sprinter(statusMap, layout) << '\n';
-
-
 	for (const auto & entry: statusMap){
-		//ostr << it->first << '=' << it->second << ' ';
+
 		std::cout << entry.first << '=' << entry.second << ' ';
 		entry.second.typeInfo(std::cout);
 		std::cout << '[';
@@ -145,6 +134,165 @@ void CmdForEach::exec() const  {
 
 }
 
+
+
+void CmdJSON::commandToJSON_old(const drain::Command & cmd, drain::JSONtree & json){
+
+	const drain::ReferenceMap & m = cmd.getParameters();
+
+	const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
+
+	// drain::JSONtree jsonRoot;
+	//drain::JSONtree & json = jsonRoot[value];
+	json["title"] = cmd.getDescription();
+	drain::JSONtree & variables = json["variables"];
+
+	const drain::ReferenceMap::keylist_t & keys = m.getKeyList();
+	//std::ostream & ostr = std::cout;
+
+	for (const drain::ReferenceMap::key_t & key: keys){
+
+		// const drain::Referencer & entry = m[key];
+
+		drain::JSONtree & variable = variables[key];
+
+		variable["value"] = m[key]; //entry;
+
+		drain::ReferenceMap::unitmap_t::const_iterator uit = u.find(key);
+		if (uit != u.end()){
+			variable["unit"] = uit->second;
+		}
+
+	}
+
+	//drain::Sprinter::toStream(ostr, jsonRoot, drain::Sprinter::jsonLayout);
+	// drain::TreeUtils::dump(jsonRoot, ostr, nullptr);
+
+};
+
+/**
+ *  Stores the following "official" attributes:
+ *  - \name :
+ *  - \desc :
+ *  - \desc :
+ *
+ */
+void CmdJSON::commandToJSON(const drain::Command & cmd, drain::JSONtree & dst){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	dst["cls"]  = cmd.getName();
+	dst["desc"] = cmd.getDescription();
+
+	const drain::ReferenceMap & params = cmd.getParameters();
+	const drain::ReferenceMap::unitmap_t & unitMap = params.getUnitMap();
+
+	drain::JSONtree & dstParams = dst["params"];
+
+	for (const auto & key: params.getKeyList()){
+		const drain::Reference & param = params[key];
+		drain::JSONtree & dstParam = dstParams[key];
+		// dstParam["param"] = key; // repeated, for easier row-by-row exports
+		/*
+		if (param.isString() && param.empty()){
+			dstParam["value"] = "";
+		}
+		else {
+		}
+		*/
+		dstParam["value"].data = param;
+		dstParam["type"]  = param.getTypeName();
+		// param.inputSeparator
+		drain::ReferenceMap::unitmap_t::const_iterator uit = unitMap.find(key);
+		if (uit != unitMap.end()){
+			if (!uit->second.empty()){
+				dstParam["unit"] = uit->second;
+			}
+		}
+	}
+
+
+}
+
+/**
+ *  \param cmds - comma-separated list of commands
+ */
+
+void CmdJSON::commandsToJSON(const drain::CommandBank & cmdBank, const std::string & cmds, drain::JSONtree & dst, char separator){
+
+	drain::Logger mout(__FILE__, __FUNCTION__);
+
+	// const drain::CommandBank & cmdBank = drain::getCommandBank(); // this
+	const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
+
+	std::list<std::string> values;
+	drain::StringTools::split(cmds, values, separator);
+
+	if (values.empty()){
+		mout.error("Empty argument");
+		return;
+	}
+
+	// const bool MULTI_CMD_HELP = (values.size() > 1);
+
+	// Light strip (could use
+
+	for (const std::string & v: values){
+
+		if (v.empty()){
+			mout.debug("(empty key, ok)");
+			continue;
+		}
+
+		// Light strip (could use
+		const std::string key = cmdBank.resolveFull(v);
+
+		if (key.empty()){
+			mout.error("command not found: '", v, "'");
+		}
+		else if (key != v){
+			mout.info("resolved: " , v, " -> ", key );
+		}
+
+		drain::CommandBank::map_t::const_iterator it = cmdMap.find(key);
+
+		if (it != cmdMap.end()){
+			const drain::Command & cmd = it->second->getSource();
+			commandToJSON(cmd, dst[key]);
+		}
+		else {
+			// Should be impossible. Resolved key should
+			mout.error("command not found: '", key, "' (", v,")");
+		}
+
+
+	}
+}
+
+
+/**
+ *   Implicit names do not appear in the JSON structure but are recommendations for the keys therein.
+ */
+const std::map<std::string,std::string> & CmdJSON::getVariables() {
+
+	static
+	const std::map<std::string,std::string> m = {
+			// Command properties
+			{"cls",    "Class"},     // Implicit CmdCappi
+			{"key",    "Option"},     // As appears on command line, without leading hyphens, for example: "pCappi"
+			{"desc",   "Description"},
+			{"params", "Parameters"},
+			// Parameter properties
+			{"param",  "Parameter"}, // Implicit
+			{"value",  "Default"},
+			{"type",   "Type"},      // Automatic drain::TypeName<T>
+			{"unit",   "Unit"},      // User-defined
+	};
+
+	return m;
+};
+
+
 void CmdScriptFile::exec() const {
 
 	Context & ctx = getContext<Context>();
@@ -156,8 +304,7 @@ void CmdScriptFile::exec() const {
 	Program prog(getContext<Context>());
 	bank.readFile(value, prog); // under construction
 
-	mout.unimplemented(prog);
-
+	mout.unimplemented<LOG_ERR>(prog);
 
 }
 
