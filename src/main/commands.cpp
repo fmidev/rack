@@ -220,6 +220,7 @@ public:
 
 
 	// Note: unneeded, if lastParam works
+	/*
 	virtual
 	void parametersToStreamFOO(std::ostream & ostr, const std::string & indent= "  ") const { //override {
 
@@ -240,12 +241,15 @@ public:
 			ostr << '\n';
 		}
 	}
+	*/
 
 	// Note: unneeded, if lastParam works
+	/*
 	virtual inline
 	void parameterKeysToStreamFOO(std::ostream & ostr) const { // override {
 		Command::parameterKeysToStream(ostr, mySelector.getParameters().getKeyList(), ',');
 	};
+	*/
 
 
 
@@ -818,51 +822,6 @@ public:
 		ctx.currentHi5      = &dst;
 		// ctx.currentPolarHi5 = &dst;
 
-		// const PlainData<PolarSrc> src(getAlphaSrc(ctx));
-		// TODO: const Data<PolarSrc>, mixing data with quality
-		// const drain::image::Image & srcAlpha = ctx.getCurrentGrayImage();
-		// ODIM srcODIM(srcAlpha); // NOTE: perhaps no odim data in props?
-
-		/*
-		RadarFunctorBase radarFtor;
-		//radarFtor.LIMIT = true;
-		//fu zzyStep.odimSrc.updateFromMap(src.data.getProperties());
-		radarFtor.odimSrc.updateFromMap(srcAlpha.getProperties());
-
-		const double dstMax = drain::Type::call<drain::typeNaturalMax>(dstImg.getType()); // 255, 65535, or 1.0
-		drain::typeLimiter<double>::value_t limit = dstImg.getConf().getLimiter<double>();  // t is type_info, char or std::string.
-		//fuzzyStep.nodataValue   = limit(dstMax*nodata);
-		//fuzzyStep.undetectValue = limit(dstMax*undetect);
-		radarFtor.nodataValue   = limit(dstMax*nodata);
-		radarFtor.undetectValue = limit(dstMax*undetect);
-		*/
-
-		// First, try functor: "Functor" or "Functor_Args"
-		// std::string s1;
-		// std::string s2;
-		// drain::StringTools::split2(ftor, s1, s2, "_");
-
-
-			//mout.special(ftor, " -> ", DRAIN_LOG(functor));
-
-			// radarFtor.apply(srcAlpha.getChannel(0), dstImg.getAlphaChannel(), functor, true);
-
-
-		/*
-		if (& dst == ctx.currentPolarHi5){
-			//processStructure<PolarODIM>(dst, paths, slct);
-			processStructure(dst, paths, slct);
-		}
-		else if (& dst == &ctx.cartesianHi5){
-			//processStructure<CartesianODIM>(dst, paths, slct);
-			mout.warn("Cartesian data: not supported" );
-		}
-		else {
-			// drain::Logger mout(ctx.log, __FUNCTION__, getName());
-			mout.warn("no data, or data structure other than polar volume or Cartesian" );
-		}
-		*/
-
 		DataTools::updateInternalAttributes(dst);
 	};
 
@@ -872,16 +831,11 @@ public:
 
 		//typedef PolarODIM OD;
 		typedef PolarDst  DT;
-		//typedef DstType<PolarODIM> DT; // PolarDst or CartesianDst
-
 
 		RackContext & ctx = getContext<RackContext>();
 
 		drain::Logger mout(ctx.log, __FUNCTION__, getName());
 
-
-
-		//for (ODIMPathList::const_iterator it = paths.begin(); it != paths.end(); ++it){
 		for (const ODIMPath & path: paths){
 
 			if (path.empty()){
@@ -1821,91 +1775,6 @@ public:
 
 
 
-/**
- *  Stores the following "official" attributes:
- *  - \name :
- *  - \desc :
- *  - \desc :
- *
- */
-void jsonSerialize(const drain::Command & cmd, drain::JSONtree & dst){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	dst["name"] = cmd.getName();
-	dst["desc"] = cmd.getDescription();
-
-	const drain::ReferenceMap & params = cmd.getParameters();
-	const drain::ReferenceMap::unitmap_t & unitMap = params.getUnitMap();
-
-	drain::JSONtree & dstParams = dst["params"];
-
-	for (const auto & key: params.getKeyList()){
-		const drain::Reference & param = params[key];
-		drain::JSONtree & dstParam = dstParams[key];
-		dstParam["key"]   = key; // repeated, for easier row-by-row exports
-		dstParam["value"] = param;
-		dstParam["type"]  = param.getTypeName();
-		// param.inputSeparator
-		drain::ReferenceMap::unitmap_t::const_iterator uit = unitMap.find(key);
-		if (uit != unitMap.end()){
-			dstParam["unit"] = uit->second;
-		}
-	}
-
-
-}
-
-/**
- *  \param cmds - comma-separated list of commands
- */
-
-void jsonSerialize(const std::string & cmds, drain::JSONtree & dst){
-
-	drain::Logger mout(__FILE__, __FUNCTION__);
-
-	const drain::CommandBank & cmdBank = drain::getCommandBank(); // this
-	const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
-
-	std::list<std::string> values;
-	drain::StringTools::split(cmds, values, ',');
-
-	if (values.empty()){
-		mout.error("Empty argument");
-		return;
-	}
-
-	// const bool MULTI_CMD_HELP = (values.size() > 1);
-
-	// Light strip (could use
-
-	for (const std::string & v: values){
-
-		if (v.empty()){
-			mout.debug("(empty key, ok)");
-			continue;
-		}
-
-		// Light strip (could use
-		const std::string key = cmdBank.resolveFull(v);
-
-		if (key != v){
-			mout.note("resolved: " , v, " -> ", key );
-		}
-
-		drain::CommandBank::map_t::const_iterator it = cmdMap.find(key);
-
-		if (it != cmdMap.end()){
-			const drain::Command & cmd = it->second->getSource();
-			jsonSerialize(cmd, dst[key]);
-		}
-		else {
-			mout.error("command not found: ", v, "/", key);
-		}
-
-
-	}
-}
 
 class CmdHelpTable : public drain::SimpleCommand<std::string> {
 
@@ -1914,161 +1783,67 @@ public:
 	CmdHelpTable() : drain::SimpleCommand<std::string>(__FUNCTION__, "Dump example of use and exit.", "keyword", "") {
 	};
 
-	static
-	const std::map<std::string,std::string> & getVariables() {
-
-		static const std::map<std::string,std::string> m = {
-				{"cmd",    "Command"},
-				{"name",   "Name"}, // should not be needed
-				{"desc",   "Description"},
-				{"params", "Parameters"},
-				{"defs",   "Defaults"},
-				{"param",  "Parameter"},
-				{"unit",   "Unit"},
-				{"def",    "Default"},
-		};
-
-		return m;
-	};
-
-	void flushHeader(const drain::StringMapper & statusFormatter, const std::map<std::string,std::string> & env, std::ostream & ostr = std::cout) const {
-
-		// Print header
-		std::string header = statusFormatter.toStr(env, '?');
-		ostr << header << '\n';
-
-		// Print separator line
-		for (const char & c: header){
-			if (c == '|'){
-				ostr << c;
-			}
-			else {
-				ostr << '-';
-			}
-		}
-		ostr << '\n';
-		// statusFormatter.push_back('\n');
-
-	}
-
-	void flushRow(const drain::StringMapper & statusFormatter, const std::map<std::string,std::string> & env, std::ostream & ostr = std::cout) const {
-
-	}
-
-	/*
-	 * name": "CappiOp",
-  	  "desc": "Constant-altitude planar position indicator",
-     "params": {
-    "altitude": {
-      "key": "altitude",
-      "value": 1000,
-      "type": "double",
-      "unit": "metres"
-    },
-	 *
-	 */
-
 	void exec() const {
 
-		RackContext & ctx = getContext<RackContext>();
-
+		drain::SmartContext & ctx = getContext<drain::SmartContext>();
+		//drain::Context & ctx = getContext<>();
 		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
 
 		const drain::CommandBank & cmdBank = drain::getCommandBank();
-		// const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
 
-		drain::StringMapper rowFormatter(RackContext::variableMapper);
-		std::map<std::string,std::string> env;
+		drain::StringMapper rowFormatter;
+
 		std::ostream & ostr = std::cout;
 
 		drain::JSONtree tree;
-		jsonSerialize(value, tree);
-
-		drain::Sprinter::toStream(ostr, tree, drain::Sprinter::jsonLayout);
-
+		drain::CmdJSON::commandsToJSON(cmdBank, value, tree,'-');
+		if (mout.isDebug()){
+			drain::Sprinter::toStream(ostr, tree, drain::Sprinter::jsonLayout); // keep to debug (the keys)
+			// drain::JSON::treeToStream(ostr, tree, drain::Sprinter::jsonLayout);
+		}
 
 		const bool MULTI_CMD_HELP = (tree.getChildren().size() > 1);
+		if (MULTI_CMD_HELP) {
+			mout.debug("Multiple commands: collect a simple list");
+		}
+		else {
+			mout.debug("Single command: iterate parameters");
+		}
 
-		std::string rowFormat;
+
 		if (!ctx.formatStr.empty()){
-			rowFormat = ctx.formatStr;
+			rowFormatter.parse(ctx.formatStr, true);
+			mout.debug("Format: ", drain::sprinter(rowFormatter));
+		}
+		else if (MULTI_CMD_HELP) {
+			// \c removed from ${params} - it has effect up to first comma only :(
+			rowFormatter.parse("|\\c --${key}| ${params} |${desc} |", true);
+			mout.debug("format: ", drain::sprinter(rowFormatter));
 		}
 		else {
-			rowFormat = MULTI_CMD_HELP ? "|${name}|${desc}|${params}|" : "|${key}|${value}|${unit}|";
-		}
-		rowFormatter.parse(rowFormat, true);
-
-		// drain::StringMapper headerFormatter(RackContext::variableMapper);
-		// std::list<std::string> rowElements;
-		const std::map<std::string,std::string> & variables = getVariables();
-
-		for (const drain::Stringlet & stringlet: rowFormatter){
-
-			if (stringlet.isVariable()){
-				std::string name; //  = stringlet.getStr();
-				drain::SmartMapTools::get(variables, stringlet.getStr(), name);
-				ostr << '"' << name << '"';
-			}
-			else {
-				for (const char &c: stringlet){
-					if (c=='|'){ // or space or?
-						ostr << c;
-					}
-				}
-			}
-		}
-		ostr << '\n';
-
-		if (MULTI_CMD_HELP){
-			mout.debug("Multiple-command help");
-			rowFormatter.parse(ctx.formatStr.empty() ? "|${name}|${desc}|${params}|" : ctx.formatStr, true);
-			env = {
-					{"name",   "Name"}, // should not be needed
-					{"desc",   "Description"},
-					{"params", "Parameters"},
-					/*
-					{"defs",   "Defaults"},
-					{"param",  "Parameter"},
-					{"unit",   "Unit"},
-					{"cmd",    "Command"},
-					{"def",    "Default"},
-					*/
-			};
-
-		}
-		else {
-			mout.debug("Single-command help");
-			rowFormatter.parse(ctx.formatStr.empty() ? "|${key}|${value}|${unit}|" : ctx.formatStr, true);
-			env = {
-					{"key",    "Parameter"},
-					{"value",  "Value"},
-					{"unit",   "Unit"},
-					{"type",   "Type"},
-					/*
-					{"name",   "Name"}, // should not be needed
-					{"desc",   "Description"},
-					{"params", "Parameters"},
-					{"defs",   "Defaults"},
-					{"param",  "Parameter"},
-					*/
-			};
+			rowFormatter.parse("|\\c ${param} |\\c ${value} |\\c ${unit} |", true);
+			//mout.debug("format: ", drain::sprinter(rowFormatter));
+			mout.debug(DRAIN_LOG(rowFormatter));
 		}
 
-		flushHeader(rowFormatter, env, ostr);
+		// Converts "params" to "Parameters"
+		flushHeader(rowFormatter, drain::CmdJSON::getVariables(), ostr);
 		rowFormatter.push_back('\n');
 
+		/// Print the data
+		std::map<std::string,std::string> env;
 
-		for (const auto & cmdInfo: tree){
+		for (const auto & entry: tree){
 
 			if (MULTI_CMD_HELP){
-				mout.debug("Multiple commands: collect a simple list");
 				env.clear();
-				env["name"] = cmdInfo.first;
-				env["desc"] = cmdInfo.second["desc"].data.toStr();
+				// extractInfo(env, cmdInfo.second, cmdInfo.first);
+
+				env["key"] = entry.first;
+				env["desc"] = entry.second["desc"].data.toStr();
 				std::stringstream sstr;
 				char sep = 0;
-				for (const auto & child: cmdInfo.second["params"]){
-					//sstr << child.first << '=' << child.second["value"].data; // have to pick (only "value")
+				for (const auto & child: entry.second["params"]){
 					if (sep){
 						sstr << sep;
 					}
@@ -2077,36 +1852,76 @@ public:
 					}
 					sstr << child.first; // have to pick (only "value")
 				}
-				//env["params"] = drain::sprinter(cmdInfo.second["params"].getChildren(), drain::Sprinter::emptyLayout).str();
 				env["params"] = sstr.str();
+
 				rowFormatter.toStream(ostr, env, drain::StringMapper::REMOVE_MISSING_VARIABLE);
 			}
 			else {
-				mout.debug("Single command: iterate parameters");
-				for (const auto & param: cmdInfo.second["params"]){
+
+				for (const auto & param: entry.second["params"]){
 					env.clear();
-					env["name"] = param.first;
+					env["param"] = param.first;
 					env["unit"] = param.second["type"].data.toStr();
 					for (const auto & entry: param.second){
 						if (entry.first != "type"){
-							env[entry.first] = entry.second.data.toStr();
+							std::string s; //  = param.second.data.toStr();
+							drain::StringTools::replace(entry.second.data.toStr(), '|', '/', s);
+							env[entry.first] = s;
 						}
 					}
-					// drain::Sprinter::toStream(ostr, env, drain::Sprinter::pythonLayout);
+					// drain::Sprinter::toStream(ostr, env, drain::Sprinter::pythonLayout); // debug
 					rowFormatter.toStream(ostr, env, drain::StringMapper::REMOVE_MISSING_VARIABLE); // , '?'
 				}
-
 			}
-			// std::cout << '\n';
-
 		}
-
 
 		exit(0);
 	};
 
 
+protected:
 
+	/// Print out the first two text lines starting an MarkDown Table: the titles (with control chars pruned) and a separator line.
+	/**
+	 *
+	 */
+	void flushHeader(const drain::StringMapper & rowFormatter, const std::map<std::string,std::string> & env, std::ostream & ostr = std::cout) const {
+
+		// Construct header line, recognizing only title variables and pipe characters, '|'.
+		std::stringstream sstr;
+		const std::map<std::string,std::string> & variables = drain::CmdJSON::getVariables();
+		for (const drain::Stringlet & stringlet: rowFormatter){
+			if (stringlet.isVariable()){
+				std::string name; //  = stringlet.getStr();
+				drain::SmartMapTools::get(variables, stringlet.getStr(), name);
+				//ostr << '"' << name << '"';
+				sstr << name;
+			}
+			else {
+				for (const char &c: stringlet){
+					if (c=='|'){ // or separators.find(c) != string::npos
+						sstr << c;
+					}
+				}
+			}
+		}
+		//ostr << '\n';
+
+		// Print that header
+		ostr << sstr.str() << '\n';
+
+		// Print a separator line: revisit the above title line, changing titles to hyphens, '-'.
+		for (const char & c: sstr.str()){
+			if (c == '|'){
+				ostr << c;
+			}
+			else {
+				ostr << '-';
+			}
+		}
+		ostr << '\n';
+
+	}
 
 };
 
@@ -2155,97 +1970,6 @@ public:
 
 };
 
-/// Explain..
-/**
-
-	Text
-
-	\b Synopsis
-	\include JSON.hlp
-
-	\see #::Command
- */
-class CmdJSON : public drain::SimpleCommand<std::string> { // drain::BasicCommand {
-public:
-
-	CmdJSON() : drain::SimpleCommand<std::string>(__FUNCTION__, "Export a command to JSON.", "property", "", ""){
-	};
-
-	virtual
-	void exec() const {
-
-		// TODO: multiple-command dump, json output?
-		//
-
-		//RackResources & resources = getResources();
-		RackContext & ctx = getContext<RackContext>();
-
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__);
-
-		//drain::CommandRegistry & reg = drain::getRegistry();
-		drain::CommandBank & cmdBank = drain::getCommandBank();
-
-
-		std::ostream & ostr = std::cout;
-
-		if (value.empty()){
-			//drain::Sprinter::sequenceToStream(ostr, cmdBank.getMap(), "{,}", drain::Sprinter::jsonLayout);
-			// drain::Sprinter::mapToStream(ostr, cmdBank.getMap(), drain::Sprinter::jsonLayout, cmdBank.getKeys());
-			mout.unimplemented("drain::JSONwriter");
-			// JSON::treeToStream(ostr, cmdBank.getMap());
-			// drain::JSONwriter::mapToStream(cmdBank.getMap(), ostr, 2);
-			// reg.toJSON(ostr);
-		}
-		else {
-			if (!cmdBank.has(value)){
-				mout.error("no such key: " , value );
-				return;
-			}
-
-			drain::JSONtree jsonRoot;
-
-
-
-			const drain::Command & command = cmdBank.get(value);
-			const drain::ReferenceMap & m = command.getParameters();
-
-			const drain::ReferenceMap::unitmap_t & u = m.getUnitMap();
-
-
-
-
-
-			drain::JSONtree & json = jsonRoot[value];
-			json["title"] = command.getDescription();
-			drain::JSONtree & variables = json["variables"];
-
-			// O
-			const drain::ReferenceMap::keylist_t & keys = m.getKeyList();
-
-			for (const drain::ReferenceMap::key_t & key: keys){
-
-				// const drain::Referencer & entry = m[key];
-
-				drain::JSONtree & variable = variables[key];
-
-				variable["value"] = m[key]; //entry;
-
-				drain::ReferenceMap::unitmap_t::const_iterator uit = u.find(key);
-				if (uit != u.end()){
-					variable["unit"] = uit->second;
-				}
-
-			}
-
-			drain::Sprinter::toStream(ostr, jsonRoot, drain::Sprinter::jsonLayout);
-			// drain::TreeUtils::dump(jsonRoot, ostr, nullptr);
-
-		}
-
-		//std::cout << std::setw(10) << "Voila!" << std::endl;
-	};
-
-};
 
 
 class CmdEcho : public drain::SimpleCommand<std::string> {
@@ -2389,29 +2113,6 @@ void CmdEncoding::exec() const {
 
 
 
-/*
-class CmdAutoExec : public drain::BasicCommand {
-
-public:
-
-	CmdAutoExec() : drain::BasicCommand(__FUNCTION__, "Execute script automatically after each input. See --script") {
-		getParameters().link("exec", getResources().scriptParser.autoExec = -1, "0=false, 1=true, -1=set to true by --script");
-	}
-
-};
-*/
-
-
-/*
-class CmdDataOk : public drain::BasicCommand {
-
-public:
-
-	CmdDataOk() : drain::BasicCommand(__FUNCTION__, "Status of last select."){
-		getParameters().link("flag", getResources().dataOk = true);
-	};
-};
-*/
 
 class CmdErrorFlags : public drain::SimpleCommand<std::string> {
 
@@ -2437,45 +2138,6 @@ public:
 
 };
 
-/*
-#include <drain/prog/Loop.h>
-
-class CmdForEach : public drain::SimpleCommand<std::string> {
-
-public:
-
-	CmdForEach() : drain::SimpleCommand<std::string>(__FUNCTION__, "Define variable to repeat script for each value.", "key=value1,value2,...") {
-	};
-
-
-	void exec() const {
-
-		RackContext & ctx = getContext<RackContext>();
-		drain::Logger mout(ctx.log, __FILE__, __FUNCTION__); // = resources.mout;
-
-		std::string key;
-		std::string values;
-		drain::StringTools::split2(value, key, values, '=');
-
-		ctx.loops.push_back(drain::Loop());
-		drain::Loop & loop = ctx.loops.back();
-		loop.set(key, values);
-		//loop.set(key, values);
-
-		mout.experimental("Added loop:");
-		for (const auto & value: loop.getValueList()){
-			mout.warn(key, "=", value);
-		}
-
-		// drain::Loop::traverse(ctx.loops); // ctx
-
-
-	}
-
-
-
-};
-*/
 
 
 class CmdStopOnError : public drain::SimpleCommand<std::string> {
@@ -3161,7 +2823,7 @@ MainModule::MainModule(){ //
 	install<CmdDumpMap>();
 
 	// Export
-	install<CmdJSON>();
+	install<drain::CmdJSON>();
 	install<CmdPython>();
 
 	install<CmdKeep>();
