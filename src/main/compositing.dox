@@ -1,4 +1,4 @@
-/** \page compositespage Cartesian conversions and composites
+/** \page compositingpage Cartesian conversions and composites
 
 
 \tableofcontents
@@ -16,11 +16,15 @@ Motion vectors are a separate topic, discussed in \ref motion-composites .
 }
 \~
 
+
+
 A single-radar Cartesian image is created simply with \c --cCreate (abbr. \c -c ) as follows:
 \code{.sh}
 rack volume.h5 --cCreate -o cartesian.h5
 \endcode
-where  \c --cCreate is actually a shorthand of <tt>--cAdd --cExtract 'DATA,WEIGHT'</tt> :
+where  \c --cCreate is actually a shorthand of <tt>--cAdd --cExtract 'DATA,WEIGHT'</tt> .
+
+
 \~conf{.sh}
 {
   "append_args": "--encoding C -o out/cart-single-radar.png"
@@ -30,13 +34,20 @@ where  \c --cCreate is actually a shorthand of <tt>--cAdd --cExtract 'DATA,WEIGH
 rack volume.h5 --cAdd --cExtract DATA,WEIGHT -o cartesian.h5
 \endcode
 
-\image html  cart-single-radar.png  "A single-radar Cartesian image." 
-\image latex cart-single-radar.png  "A single-radar Cartesian image."
+Hence, the essential commands in creating a Cartesian image are the following ones:
+\include{doc} cAdd-cExtract.hlp.md
 
-If not explicitly issued, the first data in the input volume – \c /dataset1/data1 – is used. 
-Conversion to Cartesian coordinates has several default settings, collected below as command line options.
+\image html  cart-single-radar.png  "A single-radar Cartesian image produced directly with --cCreate." 
+\image latex cart-single-radar.png  "A single-radar Cartesian image produced directly with --cCreate." 
 
-| Option                 | Argument                   | Default, based on input     |
+By default, the first data in the input volume – \c /dataset1/data1 – is used.
+This can be changed with \c --select .
+Further, if a polar product has been computed, its (main) output quantity is automatically used
+but can be likewise overridden with \c --select .
+
+The default settings of Cartesian transformation are collected below as command line options.
+
+| Option                 | Parameters                 | Default                     |
 | ---------------------- | -------------------------- | --------------------------- | 
 | \c --cProj             | EPSG code, proj string, or "AEQD" | \c "AEQD" (Azimuthal Equidistant centered at the radar) |
 | \c --cBBox             | xLL,yLL,xUR,yUR            | Matched to the radar range  | 
@@ -46,6 +57,9 @@ Conversion to Cartesian coordinates has several default settings, collected belo
 
 
 \section compositing  Compositing
+
+
+
 
 In \b Rack , any single-radar Cartesian image is technically a "single-radar composite".
 Internally, the composite is a separate memory array that supports \e continuous \e accumulation of data. 
@@ -155,7 +169,10 @@ list rack.maps maintains.
 
 
 
-An example of a command that generates a composite image of Pseudo CAPPI product of 16 radars:  
+
+
+
+An example of a command that generates a composite image of Pseudo CAPPI product of 12 radars:  
 
 \~conf{.sh}
 {
@@ -210,19 +227,20 @@ composer.set(BBOX=[-208000,6390000,1072000,7926000])
 composer.set(SIZE=[640,768])
 composer.set(METHOD='WAVG,1,8')
 
-composer.set(INDIR='data/') 
-composer.set(INFILE='202609261800_radar.polar.fi???.h5') 
+# composer.set(INDIR='data/') 
+composer.set(INFILE='data/202609261800_radar.polar.fi???.h5') 
 
 composer.set(PPROD='pCappi,500')
-# Alternatively, the measured parameter can be composited simply by selecting it: 
+# Alternatively, a measured parameter selected as such: 
 # composer.set(select='quantity=DBZH')
 
-composer.set(OUTDIR='out')
-composer.set(OUTFILE='composite-fi.h5')
+# composer.set(OUTDIR='out')
+composer.set(OUTFILE='out/composite-fi.h5')
+
+# Optional SVG image output
 composer.set(FORMATS='svg')
 composer.set(svgRelativePaths=True)
 composer.set(map='out/map-composite-fi.png')
-
 composer.set(svgStyle='.IMAGE_BORDER=stroke:gray;width:1px')
 
 
@@ -236,6 +254,9 @@ print(prog.to_string(fmt))
 # ... or execute directly:
 # rack.process.run(prog, logger=logger)
 \endcode
+
+
+\include{doc} cBBox-cSize-cMethod-select.hlp.md
 
 
 \~stop
