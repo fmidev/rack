@@ -214,19 +214,22 @@ void CmdJSON::commandToJSON(const drain::Command & cmd, drain::JSONtree & dst){
 
 }
 
+
 /**
  *  \param cmds - comma-separated list of commands
  */
 
-void CmdJSON::commandsToJSON(const drain::CommandBank & cmdBank, const std::string & cmds, drain::JSONtree & dst, char separator){
+void CmdJSON::commandsToJSON(const drain::CommandBank & cmdBank, const std::list<std::string> & values, drain::JSONtree & dst){
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
 	// const drain::CommandBank & cmdBank = drain::getCommandBank(); // this
 	const drain::CommandBank::map_t & cmdMap = cmdBank.getMap();
 
+	/*
 	std::list<std::string> values;
 	drain::StringTools::split(cmds, values, separator);
+	*/
 
 	if (values.empty()){
 		mout.error("Empty argument");
