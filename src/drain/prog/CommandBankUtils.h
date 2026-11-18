@@ -128,8 +128,19 @@ public:
 	CmdJSON() : drain::SimpleCommand<std::string>(__FUNCTION__, "Export a command to JSON.", "property", "", ""){
 	};
 
+
+
+	template <class T>
 	static
-	void commandsToJSON(const drain::CommandBank & cmdBank, const std::string & cmds, drain::JSONtree & dst, char separator=',');
+	void commandsToJSON(const drain::CommandBank & cmdBank, const std::string & cmds, drain::JSONtree & dst, const T & separator){
+		std::list<std::string> cmdList;
+		drain::StringTools::split(cmds, cmdList, separator);
+		commandsToJSON(cmdBank, cmdList, dst);
+	}
+
+	static
+	void commandsToJSON(const drain::CommandBank & cmdBank, const std::list<std::string> & cmds, drain::JSONtree & dst);
+
 
 	static
 	void commandToJSON(const drain::Command & cmd, drain::JSONtree & dst);
