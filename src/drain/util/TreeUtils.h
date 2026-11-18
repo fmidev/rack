@@ -135,7 +135,10 @@ public:
 	template <class T>
 	static
 	bool dataDumper(const T & data, std::ostream &ostr){
-		ostr << data << ' ';
+		if (!data.empty()){
+			ostr << data;
+		}
+		ostr << ' ';
 		return true;
 	}
 
@@ -175,8 +178,9 @@ public:
 
 		for (typename TR::container_t::const_iterator it = tree.begin(); it != tree.end(); it++){
 
-			if (it->second.empty()){
-				continue;
+			if (it->second.empty()){ // FIX:
+				//ostr << '?';
+				//continue;
 			}
 
 			std::ostream & ostrChild = ostr; // for now...
