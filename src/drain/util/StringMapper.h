@@ -211,41 +211,33 @@ public:
 	/**
 	 * \param format - string containing variables like \c ${name}
 	 * \param validChars - allowed characters in variable names, ie inside braces.
-	 * \param formatting - support postprocessing of variable value (number rounding, string operations)
+	 * \param formatting - support post processing of variable value (number rounding, string operations)
 	 *
 	 */
-	StringMapper(
-			const std::string & format = "",
-			const std::string & validChars = "[a-zA-Z0-9_]+",
-			bool formatting=true
-			): formatting(formatting)
+	StringMapper(const std::string & format = "", const std::string & validChars = "[a-zA-Z0-9_]+", bool formatting=true): validChars(validChars), formatting(formatting)
 	{
-		setValidChars(validChars);
+		// setValidChars(validChars); updates regExp only upon parse()
 		regExp.setFlags(REG_EXTENDED);
-		if (!format.empty())
+		if (!format.empty()){
 			parse(format);
-		//regExp.setFlags(REG_EXTENDED); // ORDER? Should be before parse!?
+		}
 	};
 
-	/// Initialize with the given RegExp // REMOVE!
-	StringMapper(const RegExp & regexp, bool formatting=true) : formatting(formatting), regExp(regexp)  { // fieldWidth(0),
-		// fillChar('0'),
-		// ((std::list<Stringlet> &)*this) = mapper;
+	/// Copy constructor copies the parsed string and the regExp
+	inline
+	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), validChars(mapper.validChars), formatting(mapper.formatting), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
 	}
 
-	/// Copy constructor copies the parsed string and the regExp
-	StringMapper(const StringMapper & mapper) : std::list<Stringlet>(mapper), formatting(mapper.formatting), regExp(mapper.regExp) { //  Buggy: regExp(mapper.regExp) {
+	/// Initialize with the given RegExp // REMOVE!
+	inline
+	StringMapper(const RegExp & regexp, bool formatting=true) : validChars("??"), formatting(formatting), regExp(regexp)  {
 	}
+
 
 
 	inline
 	StringMapper & setValidChars(const std::string & chars){
 		this->validChars = chars;
-		/*
-		std::stringstream sstr;
-		sstr << "^(.*)\\$\\{(" << chars << ")\\}(.*)$";
-		regExp.setExpression(sstr.str());
-		*/
 		updateRegExp();
 		return *this;
 	}
@@ -300,18 +292,16 @@ public:
 
 	IosFormat iosFormat;
 
-	// static const int KEEP_MISSING_VARIABLE;
-	// static const int REMOVE_MISSING_VARIABLE;
 	enum handleMissing {
 		REMOVE_MISSING_VARIABLE, //=0,
-		KEEP_MISSING_VARIABLE // =1,
+		KEEP_MISSING_VARIABLE    //=1,
 	};
 
 	/// Expands the variables in the last
 	/**
 	 *  \param ostr - output stream
-	 *  \param variables - map containing variable values
-	 *  \param replace - if given, replace undefined variables with this char, or empty (if 0), else (-1) leave variable entry
+	 *  \param variables - map of variables: (key,value) pairs
+	 *  \param replace - [char] if given, replace undefined variable keys with this char, or empty (if 0), else (-1) leave variable entry
 	 */
 	template <class T>
 	std::ostream &  toStream(std::ostream & ostr, const std::map<std::string,T> & variables, int replace = REMOVE_MISSING_VARIABLE,
@@ -322,7 +312,6 @@ public:
 			if (stringlet.isVariable()){
 
 				if (formatter.handle(stringlet.getStr(), stringlet.getFormat(), variables, ostr)){
-				//if (formatter.handle(stringlet, variables, ostr)){
 					// std::cerr << __FILE__ << " ok stringlet variable: " << stringlet << std::endl;
 					// Variable found and assigned.
 				}
@@ -358,15 +347,15 @@ public:
 	 *  \par clear - if true, replace undefined variables with empty std::strings.
 	 */
 	template <class T>
-	void expand(const std::map<std::string,T> &m, const VariableFormatter<T> & formatter=VariableFormatter<T>(), bool clear=false) {
-		for (auto & entry: *this){
-			if (entry.isVariable()){
+	void expand(const std::map<std::string,T> &m, const VariableFormatter<T> & formatter=VariableFormatter<T>(), int replaceChar = KEEP_MISSING_VARIABLE) {  // bool clear=false
+		for (Stringlet & stringlet: *this){
+			if (stringlet.isVariable()){
 				std::stringstream s;
-				if (formatter.handle(entry, m, s)){
-					entry.setLiteral(s.str());
+				if (formatter.handle(stringlet.getStr(), stringlet.getFormat(), m, s)){
+					stringlet.setLiteral(s.str());
 				}
-				else if (clear) {
-					entry.setLiteral("");
+				else if (replaceChar == REMOVE_MISSING_VARIABLE) {
+					stringlet.setLiteral("");
 				}
 			}
 		};
@@ -419,14 +408,10 @@ std::ostream & operator<<(std::ostream & ostr, const StringMapper & strmap){
 	return strmap.toStream(ostr);
 }
 
-// DRAIN_ENUM_DICT(StringMapper::KEEP_MISSING_VARIABLE);
-// template <> const drain::Enum<enumtype,owner>::dict_t drain::Enum<enumtype,owner>::dict
-// template <>
-// const drain::Enum<int,StringMapper>::dict_t drain::Enum<int,StringMapper>::dict;
+DRAIN_TYPENAME(StringMapper);
 DRAIN_TYPENAME(StringMapper::handleMissing);
 
 DRAIN_ENUM_DICT(StringMapper::handleMissing);
-// DRAIN_ENUM_OSTREAM(StringMapper::handleMissing);
 
 
 } // NAMESPACE

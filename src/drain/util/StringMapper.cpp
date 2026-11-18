@@ -59,7 +59,7 @@ void StringMapper::updateRegExp(){
 		sstr << "(\\|([^}]*))?";
 	}
 	sstr << "\\}(.*)$";
-	std::cout << "REGEXP::" << sstr.str() << '\n';
+	// std::cout << "REGEXP::" << sstr.str() << '\n';
 	regExp.setExpression(sstr.str());
 }
 
@@ -67,25 +67,28 @@ StringMapper & StringMapper::parse(const std::string &s, bool convertEscaped) {
 
 	drain::Logger mout(__FILE__, __FUNCTION__);
 
-	mout.debug2(DRAIN_LOG(regExp));
 
 	clear();  // clear list
 
+	if (!regExp.isSet()){
+		updateRegExp();
+		mout.debug("updated regExp: ", DRAIN_LOG(regExp));
+	}
+
 	// Splits s to "<*><variable><*>"
-	//std::stringstream sstr;
+	// std::stringstream sstr;
 	// NOTE: Dollar $ and curlies have to be consistent with variablePrefix/Postfix
 	// WARNING: BRACES cause problems with newlines. And especially \\$ = \\ + $ was wrong...
-	//sstr << "^([^${]*)\\$?\\{(" << validChars << ")\\}(.*)$";
-	//sstr << "^([^${]*)\\$\\{(" << validChars << ")\\}(.*)$";
-	//sstr << "^(.*)\\$\\{(" << validChars << ")\\}(.*)$";
-	//RegExp r(sstr.str(), REG_EXTENDED); //  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
+	// sstr << "^([^${]*)\\$?\\{(" << validChars << ")\\}(.*)$";
+	// sstr << "^([^${]*)\\$\\{(" << validChars << ")\\}(.*)$";
+	// sstr << "^(.*)\\$\\{(" << validChars << ")\\}(.*)$";
+	// RegExp r(sstr.str(), REG_EXTENDED); //  | REG_NEWLINE |  RE_DOT_NEWLINE); // | RE_DOT_NEWLINE); //  | REG_NEWLINE |  RE_DOT_NEWLINE
 
 	if (convertEscaped){
 		std::string s2(s);
-		parse(StringTools::convertEscaped(s2), regExp);
+		return parse(StringTools::convertEscaped(s2), regExp);
 		// mout.warn("converted:  ", s2);
-		// return parse(StringMapper::convertEscaped(s2), regExp);
-		return *this;
+		// return *this;
 	}
 	else {
 		// mout.warn("direct: ", s);
