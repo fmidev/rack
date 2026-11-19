@@ -162,6 +162,15 @@ class PyConf(BaseConf):
     # creation of a "name.txt -> name" symlink after the file is written.
     py_sh_needs_txt_link:   bool = False
     rack_sh_needs_txt_link: bool = False
+    # Filename (under LINK_FILE_DIR) to dump the upcoming \~exec{.py}/\code{.py} block's own
+    # illustrative source to - set by \linkfile{name.py}/\include name.py (see main()). Unlike
+    # include_py_sh/include_rack_sh (the composer-generated command line), this is the source
+    # as written in the .dox file: imports + prepend_code + the block itself, but not
+    # append_code or the save_example_*() calls appended for include_py_sh/include_rack_sh,
+    # which are internal plumbing rather than documented example code. Always gets a
+    # "name.py.txt" symlink (see run_py_block()), since the whole point of \linkfile is a
+    # download link even when the block itself is hidden (\~exec, not \code).
+    linkFile: Optional[str] = None
     workdir: Optional[Path] = None
     # Lines that should be injected before the snippet (optional)
     prepend_code: List[str] = field(default_factory=list)
@@ -182,6 +191,7 @@ class PyConf(BaseConf):
         self.include_rack_sh = None
         self.py_sh_needs_txt_link = False
         self.rack_sh_needs_txt_link = False
+        self.linkFile = None
         self.prepend_code: None
         self.append_code: None
 
@@ -858,11 +868,11 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
     #code_lines = [pyconf.apply_replacements(l) for l in block.content]
     
     code_lines = []
-    
+
     if pyconf.imports:
 
         if isinstance(pyconf.imports, str):
-            pyconf.imports = pyconf.imports.split(",") 
+            pyconf.imports = pyconf.imports.split(",")
 
         # remove duplicates
         pyconf.imports = set(pyconf.imports)
@@ -875,10 +885,15 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
     #logger.info(f"{Emoji.RUN.value}  Executing Python code from line {block.start_line}:")
 
     #styleCode    = Style(Color.DEFAULT, Effect.BOLD)
-    #styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
+    #styleWrapper = Style(Effect.DIM, Effect.ITALIC)
     if pyconf.prepend_code:
        code_lines.extend(pyconf.prepend_code)
        #styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.prepend_code))
+
+    # Snapshot for \linkfile{*.py}: imports + prepend_code + the snippet itself, i.e. what
+    # was actually written in the .dox file - not append_code or the save_example_*()
+    # calls added below, which are internal plumbing rather than documented example code.
+    visible_lines = code_lines + list(block.content)
 
     code_lines.append("# -------------- start snippet ")
     code_lines.extend(block.content)
@@ -888,7 +903,7 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
     if pyconf.append_code:
         code_lines.extend(pyconf.append_code)
         #styleWrapper.sprint("\n".join(f"  {line}" for line in pyconf.append_code))
-        
+
     if pyconf.include_py_sh:
         code_lines.append(
             f"rack.doxymoron.save_example_py(composer, '{pyconf.include_py_sh}')")
@@ -900,7 +915,11 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         code_lines.append(
             f"rack.doxymoron.save_example_rack(composer, '{pyconf.include_rack_sh}', 'out')")
 
-            
+    if pyconf.linkFile:
+        linkpath = Path(LINK_FILE_DIR, pyconf.linkFile)
+        logger.info(f"{Emoji.DISC.value}  writing {linkpath} (for \\linkfile)")
+        linkpath.write_text("\n".join(visible_lines) + "\n", encoding="utf-8")
+        _ensure_txt_symlink(linkpath.with_name(pyconf.linkFile + ".txt"), pyconf.linkFile)
 
     # logger.info(f"Executing Python code from line {block.start_line}:\n" + "\n".join(f"  {line}" for line in block.content))
 
@@ -1078,6 +1097,11 @@ def main() -> int:
                 pyconf.include_rack_sh = p
                 if key == "linkfile":
                     pyconf.rack_sh_needs_txt_link = True
+            elif p.endswith('.py'):
+                # \linkfile{name.py} (or \include name.py): remember to dump the upcoming
+                # \~exec{.py}/\code{.py} block's own illustrative source to this file - see
+                # PyConf.linkFile and run_py_block().
+                pyconf.linkFile = p
             elif p.endswith('exec.sh'):
                 # No path search. Script path should include directory (relative ok)
                 if in_scan_range(line_no):

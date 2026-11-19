@@ -3,16 +3,6 @@
 
 \tableofcontents
 
-Under construction
-
-
-| Option                 | Argument                   | Default, based on input     |
-| ---------------------- | -------------------------- | --------------------------- | 
-| \c --cProj             | EPSG code, proj string, or "AEQD" | \c "AEQD" (Azimuthal Equidistant centered at the radar) |
-| \c --cBBox             | xLL,yLL,xUR,yUR            | Matched to the radar range  | 
-| \c --cSize             | width,height               | \c "500,500"                | 
-| \c --cMethod           | compositing method         | \c "MAXIMUM"                |
-| \c --select            | path,quantity,...          | \c "path=dataset1/data1"    |
 
 
 \section cschemes Compositing schemes
@@ -64,30 +54,71 @@ The process is illustrated in the graph below.
 }
 \enddot
 
+The following command creates a composite of 12 radars using the direct scheme:
+
+\include composite-fi_direct_rack.sh
 
 
-A 800 x 1000 maximum composite over Finland in a lat-lon projection is obtained with 
-\~exec
-OUTFILE=composite-fi.h5 SIZE=800,1000 BBOX=17,57.7,33,69.5 ./make-composite.sh data/pvol_fi*.h5  #exec
+\~conf{.py}
+{
+  "workdir": "env/composite-fi/",
+  "imports": ["logging", "rack.prog","rack.composite"],
+  "prepend_code": ["logger = logging.getLogger(__name__)"],
+  "append_code": [
+	"# rack_cmd = prog.to_string(fmt)"
+   ],
+  "tests" : {
+  	"rack.sh": {
+  	  "returncode": 0
+  	}
+  }
+}
+\~ 
+
+\note The above command line can be generated also with Python code
+\linkfile{composite-fi_direct_rack.py}
+or the respective command line
+\linkfile{composite-fi_direct_py.sh}
+
+\~exec{.py}
+ 
+# Initialize command line generator.
+composer = rack.cmdline.Composer(rack.composite)
+
+# Set parameters
+# To see thet supported command keywords, issue: python3 -m rack.composite
+
+composer.set(PROJ=3067)
+composer.set(BBOX=[-208000,6390000,1072000,7926000])
+composer.set(SIZE=[640,768])
+composer.set(METHOD='WAVG,1,8')
+
+composer.set(INFILE='data/202609261800_radar.polar.fi???.h5') 
+composer.set(PPROD='pCappi,500')
+composer.set(OUTFILE='out/composite-fi-direct.h5')
+
+# Optional SVG image output
+composer.set(FORMATS='svg')
+composer.set(svgRelativePaths=True)
+composer.set(map='out/map-composite-fi.png')
+composer.set(svgStyle='.IMAGE_BORDER=stroke:gray;width:1px')
+
+# Extract command sequence
+prog = composer.get_prog()
+
+# Show generated command line: 
+fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+print(prog.to_string(fmt))
+
+# ... or execute directly:
+# rack.process.run(prog, logger=logger)
 \~
 
-\include composite-fi.cmd
+\image html  composite-fi-direct.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."
+\image latex composite-fi-direct.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."   width=\textwidth
 
-
-
-A similar composite of CAPPI in 1000 m altitude, with quality-weighted compositing method is obtained with 
-\~exec
-DEMO=1 OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data-20140525/201405251200_radar.polar.fi*.h5  #exec
-       OUTFILE=composite-fi-cappi.h5 PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32  SIZE=500,750  BBOX=17,57.7,33,69.5  ./make-composite.sh  data/pvol_fi*.h5                   #exec
+\~stop
 \~
-
-\include composite-fi-cappi.cmd
-
-\b Rack installation package contains a utility script \c make-composite.sh which compiles a command line string - like the one above - and executes it. For example:
-\code
-PRODUCT=pCappi,1000 METHOD=WAVG,2,2,-32 SIZE=500,750 BBOX=17,57.7,33,69.5  ./make-composite.sh data/pvol_fi*.h5
-\endcode 
-
 
 
 The extraction command \c --cExtract extracts one or more data layers out of the compositing (accumulation array): 

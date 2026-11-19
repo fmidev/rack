@@ -1817,11 +1817,11 @@ public:
 		}
 		else if (MULTI_CMD_HELP) {
 			// \c removed from ${params} - it has effect up to first comma only :(
-			rowFormatter.parse("|\\c --${key}| ${params} |${desc} |", true);
+			rowFormatter.parse("|\\c --${key}| ${params} |${values} |${desc} |", true);
 			mout.debug("format: ", drain::sprinter(rowFormatter));
 		}
-		else {
-			rowFormatter.parse("|\\c ${param} |\\c ${value} |\\c ${unit} |", true);
+		else {  // ${default} |
+			rowFormatter.parse("|\\c ${param} |\\c ${value} | \\c ${unit} |", true);
 			//mout.debug("format: ", drain::sprinter(rowFormatter));
 			mout.debug(DRAIN_LOG(rowFormatter));
 		}
@@ -1841,18 +1841,22 @@ public:
 
 				env["key"] = entry.first;
 				env["desc"] = entry.second["desc"].data.toStr();
-				std::stringstream sstr;
+				std::stringstream keys;
+				//std::stringstream values;
 				char sep = 0;
 				for (const auto & child: entry.second["params"]){
 					if (sep){
-						sstr << sep;
+						keys   << sep;
+						// values << sep;
 					}
 					else {
 						sep = ',';
 					}
-					sstr << child.first; // have to pick (only "value")
+					keys << child.first; //
+					// values << child.second["value"].data; // ? have to pick (only "value")
 				}
-				env["params"] = sstr.str();
+				env["params"] = keys.str();
+				// env["values"] = values.str();
 
 				rowFormatter.toStream(ostr, env, drain::StringMapper::REMOVE_MISSING_VARIABLE);
 			}

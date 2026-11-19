@@ -82,6 +82,12 @@ get-data-fmi: cache
 # TODO:	scripts/rack-get-data-fmi.sh all
 	DATA_DIR=${DATA_DIR} scripts/rack-get-data-fmi.sh env/${ENV}/data/20*radar.polar.fi???.h5
 
+# Link data from another local dir
+get-data-nordic: cache data-nordic-orig
+#	DST_DIR=${DATA_DIR} scripts/rack-link-volumes.sh
+# DST_DIR=${DATA_DIR} scripts/rack-link-volumes.sh 
+	for i in ee dk fi no se; do echo $$i; DST_DIR=cache/data-nordic ../scripts/rack-link-volumes.sh data-nordic-orig/$$i*.h*; done
+
 # Retrieve open data of the EUMETNET OPERA community
 get-data-europe: cache
 	DATA_DIR=${DATA_DIR} scripts/rack-get-data-opera.sh 

@@ -40,7 +40,9 @@ for i in $*; do
     INFO_FILE=$INFO_DIR/${INFO_FILE##*/}
     if [ -f $INFO_FILE ]; then
 	source $INFO_FILE
-	DST_FILE=${DST_DIR}/${TIMESTAMP:0:12}_radar.polar.${SRC}.h5
+	DST_SUBDIR=${DST_DIR}/${TIMESTAMP:0:4}-${TIMESTAMP:4:2}-${TIMESTAMP:6:2}
+	mkdir -v --parents $DST_SUBDIR
+	DST_FILE=${DST_SUBDIR}/${TIMESTAMP:0:12}_radar.polar.${SRC}.h5
 	if [ ! -e $DST_FILE ]; then
 	    SRC_FILE=`realpath $i`
 	    ln -sv ${SRC_FILE} ${DST_FILE}

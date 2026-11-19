@@ -82,13 +82,13 @@ rack \
 \endcode
 
 The first \c --cAdd command initialises the composite with current geographical settings.
-As they are not given in this example, the composite applies AEQD projection centered around the first input (\c fikor , Korpo radar).
+As they are not given explicitly in this example, the composite applies AEQD projection centered around the first input (from \c fikor , Korpo radar).
 
-\note For clarity, the applied \c --select command appears repeated in the above example. It would be sufficient to put it before \e the \e first \c --cAdd command
-– the selector is internally "understood" and stored as a \e composite \e input \e selector for all the remaining inputs.
+\note For clarity, the applied \c --select command is repeated in the above example. It would be sufficient to put it before the first \c --cAdd command only
+– the selector is internally stored as a \e composite \e input \e selector for subsequent inputs.
 
-Instead of repeating arguments on the command line, it is handy to use \c --script to define a routine repeated for each input. (More details on \ref scriptspage .)
-Likewise, if file paths are lengthy, their shared parts can be set with \c --inputPrefix and \c --outputPrefix . 
+Instead of repeating arguments on the command line, it is handy to use \c --script to define a routine repeated for each input. (More details on \ref scriptspage page.)
+Likewise, if file paths are long, their shared parts can be set with \c --inputPrefix and \c --outputPrefix . 
 The previous command can be hence reformulated as follows, with an extended set of output files:
 \~conf{.sh}
 {
@@ -188,7 +188,7 @@ An example of a command that generates a composite image of Pseudo CAPPI product
 \image latex composite-fi.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."   width=\textwidth
 
 
-\b Experimental. The above command line can be generated (and executed)
+\b Experimental. The above command line can be generated – and optionally executed –
 using Python utility \c rack.composite .
 The equivalent command line is not remarkably shorter, but now the order of the options is insignificant:
 
