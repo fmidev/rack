@@ -1077,7 +1077,7 @@ public:
 
 	/// Default constructor.
 	//CmdFormat() : drain::BasicCommand(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
-	CmdFormat() : drain::SimpleCommand<>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "syntax") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
+	CmdFormat() : drain::SimpleCommand<>(__FUNCTION__,"Set format for data dumps (see --sample or --outputFile)", "syntax or 'metadata'") {  // SimpleCommand<std::string>(getResources().generalCommands, name, alias, "Sets a format std::string.") {
 	};
 
 	/// Copy constructor.
@@ -1088,7 +1088,7 @@ public:
 	*/
 
 	static
-	const std::map<std::string,std::string> presets;
+	const std::map<std::string,std::string> getPresets();
 
 	virtual
 	void exec() const override {
@@ -1102,10 +1102,10 @@ public:
 		mout.attention("params: '", this->getParameters());
 		mout.attention("syntax: '", this->getParameters()["syntax"]);
 		*/
-		for (const auto & entry: presets){
+		for (const auto & entry: getPresets()){
 			// mout.attention("now ", entry.first);
 			if (entry.first == ctx.formatStr){
-				mout.info("using preset: ", entry.first, "=>",  entry.second);
+				mout.info("using preset '", entry.first, "' = ",  entry.second);
 				ctx.formatStr = entry.second;
 				return;
 			}
@@ -1114,25 +1114,33 @@ public:
 
 };
 
-const std::map<std::string,std::string> CmdFormat::presets = {
-		{"OSM", "wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
-		{"FMI-OSM", "http://map.fmi.fi/geoserver/wms?wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
-		{"metadata", {
-				"SOURCE='${what:source}'\n"
-				"NOD='${NOD}'\n"
-				"WMO='${WMO}'\n"
-				"PLC='${PLC}'\n"
-				"LAT='${where:lat}'\n"
-				"LON='${where:lon}'\n"
-				"SITEHEIGHT='${where:height}'\n"
-				"PROJDEF='${where:projdef}'\n"
-				"EPSG='${where:EPSG}'\n"
-				"BBOX='${where:BBOX_native}'\n"
-				"WIDTH='${where:xsize}'\n"
-				"HEIGHT='${where:ysize}'\n"
-				//"BBOX='${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}'\n"
-		}
-		}
+const std::map<std::string,std::string> CmdFormat::getPresets() {
+
+	static
+	const std::map<std::string,std::string> presets = {
+			{"OSM", "wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
+			{"FMI-OSM", "http://map.fmi.fi/geoserver/wms?wms?service=WMS&version=1.1.0&request=GetMap&format=image/png&layers=osm:osm&srs=EPSG:${where:EPSG}&bbox=${where:BBOX_native}&width=${where:xsize}&height=${where:ysize}"},
+			{"metadata", {
+					"TIMESTAMP='${what:date}${what:time}'\n"
+					"SOURCE='${what:source}'\n"
+					"OBJECT='${what:object}:${what:product}'\n"
+					"SRC='${SRC}'\n"
+					"NOD='${NOD}'\n"
+					"WMO='${WMO}'\n"
+					"PLC='${PLC}'\n"
+					"LAT='${where:lat}'\n"
+					"LON='${where:lon}'\n"
+					"SITEHEIGHT='${where:height}'\n"
+					"PROJDEF='${where:projdef}'\n"
+					"EPSG='${where:EPSG}'\n"
+					"BBOX='${where:BBOX_native}'\n"
+					"WIDTH='${where:xsize}'\n"
+					"HEIGHT='${where:ysize}'\n"
+					//"BBOX='${where:LL_lon},${where:LL_lat},${where:UR_lon},${where:UR_lat}'\n"
+			}
+			}
+	};
+	return presets;
 };
 
 
