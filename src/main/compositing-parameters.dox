@@ -5,6 +5,92 @@
 
 Under construction...
 
+
+
+The following command generates Pseudo Cappi images on predefined altitudes :
+
+\~conf{.sh}
+{
+  "workdir": "env/overhanging2",
+  "prepend_args":[
+	"--cSize 300",
+	"--outputPrefix $PWD/out/"
+	]
+}
+\~
+
+\code{.sh}
+rack \
+    --gLayout VERT \
+    --gGroupTitle 'Altitude ${what:prodpar} ${i}' \
+    --forEach i=100,600,1000,2000 \
+        --script '--select prf=SINGLE,quantity=DBZH --pCappi ${i} -c -P -o out-${i}.png -Q QIND -o out-${i}-QIND.png' \
+    data/202611201200_radar.polar.fikor.h5 \
+    -o cappi-panel-hght.svg
+\endcode
+
+\image html  cappi-panel-hght.svg.png  "A panel of pseudo CAPPI at several altitudes."
+\image latex cappi-panel-hght.svg.png  "A panel of pseudo CAPPI at several altitudes."
+
+Also beamwidth can be altered:
+
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/overhanging2",
+  "prepend_args":[
+	"--cSize 300",
+	"--outputPrefix $PWD/out/"
+	]
+}
+\~
+
+\code{.sh}
+rack \
+    --gLayout VERT \
+    --gGroupTitle '${what:product} ${what:prodpar} ${i}' \
+    --forEach i=0.5,0.7,0.9,1.0,1.1,1.5 \
+        --script '--select prf=SINGLE,quantity=DBZH --pCappi 600,beamWidth=${i} -c -P -o out-${i}.png -Q QIND -o out-${i}-QIND.png' \
+    data/202611201200_radar.polar.fikor.h5 \
+    -o cappi-panel-beam.svg
+\endcode
+
+\image html  cappi-panel-beam.svg.png  "A panel of pseudo CAPPI using different virtual beamwidths."
+\image latex cappi-panel-beam.svg.png  "A panel of pseudo CAPPI using different virtual beamwidths."
+
+Varying weightMin one can drop the weakest signals, marked as \c nodata.
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/overhanging2",
+  "prepend_args":[
+	"--cSize 300",
+	"--outputPrefix $PWD/out/"
+	]
+}
+\~
+
+\code{.sh}
+rack \
+    --gLayout VERT \
+    --gGroupTitle '${what:product} ${what:prodpar} ${i}' \
+    --forEach i=-1,-0.2,-0.1,0,0.1,0.2,0.5 \
+        --script '--select prf=SINGLE,quantity=DBZH --pCappi 2000,weightMin=${i} -c -P -o out-${i}.png -Q QIND -o out-${i}-QIND.png' \
+    data/202611201200_radar.polar.fikor.h5 \
+    -o cappi-panel-weightmin.svg
+\endcode
+
+\image html  cappi-panel-weightmin.svg.png  "A panel of pseudo CAPPI using different ..."
+\image latex cappi-panel-weightmin.svg.png  "A panel of pseudo CAPPI using different ..."
+
+
+
+
+For more details on using \c --forEach and \c --script commands, see \ref scriptspage .
+
+\~stop
+\~
+
 Conversion to Cartesian coordinates has several default settings, collected below as command line options.
 
 | Option                 | Argument                   | Default, based on input     |

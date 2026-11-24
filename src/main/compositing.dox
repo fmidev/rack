@@ -9,39 +9,97 @@ Motion vectors are a separate topic, discussed in \ref motion-composites .
 
 \section cartesian  Mapping data from polar to Cartesian coordinates
 
+A single-radar Cartesian image is created simply with \c --cCreate (abbr. \c -c ) as follows:
+
 \~conf{.sh}
 {
-  "shell": true,
-  "workdir": "env/default"
+  "shell": false,
+  "workdir": "env/default",
+  "append_args": [
+      "--encoding C -o out/cartesian-default-C.png",
+      "--encoding S -o out/cartesian-default-S.png"
+  ],
+  "tests": {
+     "out/cartesian-default-C.png": true
+  }
 }
 \~
 
-
-
-A single-radar Cartesian image is created simply with \c --cCreate (abbr. \c -c ) as follows:
 \code{.sh}
 rack volume.h5 --cCreate -o cartesian.h5
 \endcode
-where  \c --cCreate is actually a shorthand of <tt>--cAdd --cExtract 'DATA,WEIGHT'</tt> .
-
 
 \~conf{.sh}
 {
-  "append_args": "--encoding C -o out/cart-single-radar.png"
 }
 \~
-\code{.sh}
-rack volume.h5 --cAdd --cExtract DATA,WEIGHT -o cartesian.h5
-\endcode
-
-Hence, the essential commands in creating a Cartesian image are the following ones:
-\include{doc} cAdd-cExtract.hlp.md
 
 \image html  cart-single-radar.png  "A single-radar Cartesian image produced directly with --cCreate." 
 \image latex cart-single-radar.png  "A single-radar Cartesian image produced directly with --cCreate." 
 
 By default, the first data in the input volume – \c /dataset1/data1 – is used.
-This can be changed with \c --select .
+This can be changed with \c --select , which has several options:
+\include{doc} select.hlp.md
+
+The following command loops through for quantities and displays them as an image panel:
+
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/composite-fi",
+  "prepend_args": "--cSize 300",
+  "tests": {
+     "out/quantities-panel.svg": true,
+     "out/quantities-panel.svg.png": true
+  }
+}
+\~
+
+\code{.sh}
+rack --outputPrefix $PWD/out/ \
+    --forEach i=DBZH,VRADH,ZDR,RHOHV \
+        --script '--select quantity=${i} -c -P -o cartesian-${i}.png' \
+    volume.h5 \
+    -o quantities-panel.svg
+\endcode
+
+\image html  quantities-panel.svg.png  "A panel of radar quantities."
+\image latex quantities-panel.svg.png  "A panel of radar quantities."
+
+
+The following command generates Pseudo Cappi images on predefined altitudes :
+
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/composite-fi",
+  "prepend_args": "--cSize 300",
+  "tests": {
+     "out/cappi-panel.svg": true,
+     "out/cappi-panel.svg.png": true
+  }
+}
+\~
+
+\code{.sh}
+rack --outputPrefix $PWD/out/ \
+    --forEach i=600,1000,1200,2000 \
+        --script '--select prf=SINGLE,quantity=DBZH --pCappi ${i} -c -P -o cartesian-cappi-${i}.png' \
+    volume.h5 \
+    -o cappi-panel.svg
+\endcode
+
+\image html  cappi-panel.svg.png  "A panel of pseudo CAPPI at several altitudes."
+\image latex cappi-panel.svg.png  "A panel of pseudo CAPPI at several altitudes."
+
+
+
+\~stop
+\~
+
+For more details on using \c --forEach and \c --script commands, see \ref scriptspage .
+
+
 Further, if a polar product has been computed, its (main) output quantity is automatically used
 but can be likewise overridden with \c --select .
 
@@ -55,30 +113,33 @@ The default settings of Cartesian transformation are collected below as command 
 | \c --cMethod           | compositing method         | \c "MAXIMUM"                |
 | \c --select            | path,quantity,...          | \c "path=dataset1/data1"    |
 
+In \b Rack , any single-radar Cartesian image is technically a "single-radar composite". 
+
 
 \section compositing  Compositing
 
-
-
-
-In \b Rack , any single-radar Cartesian image is technically a "single-radar composite".
-Internally, the composite is a separate memory array that supports \e continuous \e accumulation of data. 
-That means that arbitrarily many input volumes can be added. For example, this command creates a dBZ composite of three radars:
+Internally, a composite is implemented as a separate memory array that supports \e continuous \e accumulation of data. 
+That means that arbitrarily many input volumes can be added. 
 
 \~conf{.sh}
 {
-  "shell": true,
-  "workdir": "env/composite-fi"
+  "tests": false
 }
 \~
 
 \code{.sh}
 rack \
-    volume-fikor.h5 --select quantity=DBZH --cAdd \
-    volume-fikan.h5 --select quantity=DBZH --cAdd \
-    volume-fivih.h5 --select quantity=DBZH --cAdd \
-    --cExtract DATA,WEIGHT \
-    -o out/composite-test.h5 
+     --cProj '5120' \
+     --cSize '1024,1280' \
+     --cBBox '-1100000,350000,948000,2910000' \
+     data/volume-fikor.h5 --select quantity=DBZH --cAdd \
+     data/volume-fikan.h5 --select quantity=DBZH --cAdd \
+     data/volume-fivih.h5 --select quantity=DBZH --cAdd \
+     ...
+        ...
+	   ...
+     --cExtract DATA,WEIGHT \
+     -o out/composite-test.h5 
 \endcode
 
 The first \c --cAdd command initialises the composite with current geographical settings.
@@ -88,6 +149,53 @@ As they are not given explicitly in this example, the composite applies AEQD pro
 – the selector is internally stored as a \e composite \e input \e selector for subsequent inputs.
 
 Instead of repeating arguments on the command line, it is handy to use \c --script to define a routine repeated for each input. (More details on \ref scriptspage page.)
+
+\~conf{.sh}
+{
+  "shell": true,
+  "workdir": "env/composite-nordic",
+  "append_args": [
+     "-o 'out/composite-nordic.tif'",
+     "-o 'out/composite-nordic.txt'",
+     "--outputConf 'svg:paths=RELATIVE'",
+     "--gStyle '.IMAGE_BORDER=stroke:gray;width:1px'",
+     "--gLinkImage 'out/map-composite-nordic.png'",
+     "--gAlign 'HORZ_FILL:VERT_FILL'",
+     "--paletteDefault --imageTransp 'nodata=1,undetect=0' -o 'out/composite-nordic_DATA.png'",
+     "-o 'out/composite-nordic.svg'"
+     ],
+  "tests": {
+     "out/composite-nordic.h5":  true,
+     "out/composite-nordic.tif": [
+        {"similarity": 0.95},
+        {"filename": "reference/composite-nordic-AEQD.tif", "similarity": 0.95, "on_fail": "warn"}
+       ],
+     "out/composite-nordic.txt": true,
+     "out/composite-nordic_DATA.png": {"similarity": 0.95},
+     "out/composite-nordic.svg.png": {"similarity": 0.95}
+    }
+}
+\~
+
+\code{.sh}
+rack \
+     --cProj '5120' \
+     --cSize '1024,1280' \
+     --cBBox '-1100000,350000,948000,2910000' \
+     --script '--pCappi 600 --cAdd' \
+     data/*.h5 \
+     --cExtract DATA,WEIGHT \
+     -o out/composite-nordic.h5 
+\endcode
+
+
+\image html  composite-nordic.svg.png  "Appending several radars in a Cartesian image."
+\image latex composite-nordic.svg.png  "Appending several radars in a Cartesian image."
+
+\~stop
+\~
+
+
 Likewise, if file paths are long, their shared parts can be set with \c --inputPrefix and \c --outputPrefix . 
 The previous command can be hence reformulated as follows, with an extended set of output files:
 \~conf{.sh}
@@ -112,22 +220,21 @@ The previous command can be hence reformulated as follows, with an extended set 
 
 \code{.sh}
 rack \
-    --cProj 3067 \
     --script '--select quantity=DBZH --cAdd' \
     volume-fikor.h5 \
     volume-fikan.h5 \
     volume-fivih.h5 \
     --cExtract DATA,WEIGHT \
     --outputPrefix out/ \
-    -o composite-test.h5 \
-    -o composite-test.tif \
-    --palette default -o composite-test.png \
-    -o composite-test.txt
+    -o composite-simple.h5 \
+    -o composite-simple.tif \
+    --palette default -o composite-simple.png \
+    -o composite-simple.txt
 \endcode
 
-\image html  composite-test.png  "Appending several radars in a Cartesian image." 
-\image latex composite-test.png  "Appending several radars in a Cartesian image." 
 
+\note Subcommand \c --cCreate producing a single radar Cartesian image
+is actually a shorthand of <tt>--cAdd --cExtract 'DATA,WEIGHT'</tt> .
 
 
 \~remark
@@ -176,13 +283,33 @@ An example of a command that generates a composite image of Pseudo CAPPI product
 
 \~conf{.sh}
 {
-  "shell": true
+  "shell": true,
+  "append_args": "--gAlign 'HORZ_FILL:VERT_FILL' -o composite-fi_DATA.png -o composite-fi_DATA.svg"
 }
 \~
 
 
-\include composite-fi_rack.sh
-\linkfile{composite-fi_rack.sh}
+
+\~exec{.sh}
+rack \
+    --cSize '640,768' \
+    --cProj '3067' \
+    --cBBox '-208000.0,6390000.0,1072000.0,7926000.0' \
+    --cMethod 'WAVG,1,8' \
+    --script "--pCappi 500 --cAdd" \
+    data/*.h5 \
+    --cExtract channels=DATA,WEIGHT \
+    -o composite-fi.h5
+\~
+
+
+\~stop
+\~
+
+\~remark
+removed include composite-fi_rack.sh
+removed linkfile{composite-fi_rack.sh}
+\~
 
 \image html  composite-fi.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)." 
 \image latex composite-fi.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."   width=\textwidth
@@ -214,7 +341,7 @@ The equivalent command line is not remarkably shorter, but now the order of the 
 
 The above command lines can be generated also inside a Python program, as follows.
 
-\code{.py}
+\~remark code{.py}
  
 # Initialize command line generator.
 composer = rack.cmdline.Composer(rack.composite)
@@ -253,14 +380,11 @@ print(prog.to_string(fmt))
 
 # ... or execute directly:
 # rack.process.run(prog, logger=logger)
-\endcode
+\~ endcode
 
 
 \include{doc} cBBox-cSize-cMethod-select.hlp.md
 
-
-\~stop
-\~
 
 See also
 - \subpage compositing_parameters_page

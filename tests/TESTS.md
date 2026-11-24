@@ -144,6 +144,28 @@ intentionally *not* applied to geographic metadata (projection, extent) - see th
 The tests can be optionally specified or adjusted in configuration sections
 ( `\conf{.sh}` or `\conf{.py}` ) preceeding the example code.
 
+Besides a dict of per-file specs, `"tests"` accepts two special, non-dict values:
+
+| `"tests"` value | Meaning |
+| ----------------| ------- |
+| (omitted) or `null` | Run the block normally; no output file checks afterward. |
+| `{}`             | Same as above, spelled out explicitly. |
+| `false`          | **Do not run the block at all.** For `\code`/`\~exec` blocks (or `\include`'d `exec.sh` scripts) that are pure illustration - e.g. containing `...` placeholders or otherwise not valid, runnable syntax - and must never actually be executed. |
+
+```
+\~conf{.sh}
+{
+  "tests": false
+}
+\~
+\code{.sh}
+rack --cProj ... \
+     volume1.h5 --cAdd \
+     ...
+     -o out.h5
+\endcode
+```
+
 In JSON, the entry has a key which equals the name of a checked file, $FILENAME (plain filename, without directory part).
 Its value is a single spec (below), or a **list of specs** to check the same file several ways (e.g. against two
 different reference images) - a JSON object cannot repeat a key, so a list is how one output file gets more than

@@ -587,22 +587,24 @@ def handle_infile(args, progBuilder: rack.core.Rack):
 
 
 def handle_outfiles(args, cmdBuilder: rack.core.Rack):
-    
+
+    # Extract dir prefix from OUTFILE and merge into OUTDIR, mirroring INDIR/INFILE logic.
+    outfile = Path(args.OUTFILE) if args.OUTFILE else Path()
+    outdir = outfile.parent
+    if str(outdir) != '.':
+        if args.OUTDIR:
+            args.OUTDIR = str(Path(args.OUTDIR) / outdir)
+        else:
+            args.OUTDIR = str(outdir)
+        args.OUTFILE = outfile.name
+        outfile = Path(args.OUTFILE)
+
     if args.OUTDIR:
         logger.info(f"Adding OUTDIR: {args.OUTDIR}")
         if not args.OUTDIR.endswith('/'):
             args.OUTDIR += '/'
         cmdBuilder.outputPrefix(args.OUTDIR)
-    #else:
-    #    logger.warning(f"No OUTDIR: {args.OUTDIR}")
 
-    
-    # Assumes prefix has been handled
-    outfile = Path(args.OUTFILE)
-    
-    #output_basename = args.OUTFILE
-    #fmt = args.OUTFILE.split('.').pop()
-    #output_basename = output_basename.removesuffix(f".{fmt}")
     output_basename = outfile.stem
     #fmt = outfile.suffix
 
@@ -899,7 +901,12 @@ def main():
     if args.exec:
         desc = "Executing command sequence with subprocess.run()"
         logger.info(desc)
-        last_line = rack.process.run(prog, description=desc, logger=logger, shell=True) # shell?
+        fmt = rack.cmdline.RackFormatter(params_format="'{params}'") #, cmd_separator=sep)
+        logger.info("# Command line:")
+        print(prog.to_string(fmt))
+        # logger.info(prog)
+        # last_line = rack.process.run(prog, description=desc, logger=logger, shell=True) # shell?
+        last_line = rack.process.run(prog.to_string(fmt), description=desc, logger=logger, shell=True) # shell?
         logger.info(f"Process executed, last line:\n {last_line}")
 
 

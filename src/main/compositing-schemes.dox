@@ -79,6 +79,69 @@ The following command creates a composite of 12 radars using the direct scheme:
 \linkfile{composite-fi_direct_rack.py}
 or the respective command line
 \linkfile{composite-fi_direct_py.sh}
+Keywords are the same as the command line options, which can be listed with:
+\code{.sh}
+python3 -m rack.composite --help
+\endcode
+
+
+
+\~exec{.py}
+ 
+# Initialize command line generator.
+composer = rack.cmdline.Composer(rack.composite)
+
+# Adjust geographical properties
+composer.set(PROJ=3067)
+composer.set(BBOX=[-208000,6390000,1072000,7926000])
+composer.set(SIZE=[640,768])
+
+# Set compositing method
+composer.set(METHOD='WAVG,1,8')
+
+#composer.set(INFILE='data/202609261800_radar.polar.fi???.h5')
+composer.set(INFILE='data/202609261800_radar.polar.fik??.h5') 
+composer.set(PPROD='pCappi,500')
+composer.set(OUTFILE='out/composite-fi-direct.h5')
+
+# Define optional SVG image...
+composer.set(FORMATS='svg')
+composer.set(svgRelativePaths=True)
+composer.set(svgStyle='.IMAGE_BORDER=stroke:gray;width:1px')
+# ... including a background map
+composer.set(map='out/map-composite-fi.png')
+
+
+# Extract command sequence
+prog = composer.get_prog()
+
+# Show generated command line: 
+fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+print(prog.to_string(fmt))
+
+# ... or execute directly:
+# rack.process.run(prog, logger=logger)
+\~
+
+\image html  composite-fi-direct.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."
+\image latex composite-fi-direct.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."   width=\textwidth
+
+
+\include composite-fi_tiles_rack.sh
+
+\note The above command line can be generated also with Python code
+\linkfile{composite-fi_tiles_rack.py}
+or the respective command line
+\linkfile{composite-fi_tiles_py.sh}
+
+
+\note In output file naming, one should use syntax that is distinctive in recollecting them for a composite.
+For example, if t
+A generally distinguishive output file name could be:
+\code
+${what:date}${what:time}-GEOCONF=FINLAND_${NOD}-${what:product}-${what:prodpar}-${what:quantity}.h5
+\endcode
+but
 
 \~exec{.py}
  
@@ -86,16 +149,60 @@ or the respective command line
 composer = rack.cmdline.Composer(rack.composite)
 
 # Set parameters
-# To see thet supported command keywords, issue: python3 -m rack.composite
+# Keywords are the same as the command line options, see:
+# python3 -m rack.composite --help
 
-composer.set(PROJ=3067)
-composer.set(BBOX=[-208000,6390000,1072000,7926000])
-composer.set(SIZE=[640,768])
+composer.set(SCHEME='TILE')
+
+composer.set(OUTFILE='tiles/tile-${NOD}.h5')
+
+# Look for mapconf/geo-FINLAND.{json,cnf}
+composer.set(GEOCONF='FINLAND')
+
+
+#composer.set(INFILE='data/202609261800_radar.polar.fi???.h5')
+composer.set(INFILE='data/202609261800_radar.polar.fik??.h5') 
+composer.set(PPROD='pCappi,500')
+
+
+# Extract command sequence
+prog = composer.get_prog()
+
+# Show generated command line: 
+fmt = rack.cmdline.RackFormatter(params_format="'{params}'") 
+print(prog.to_string(fmt))
+
+# ... or execute directly:
+# rack.process.run(prog, logger=logger)
+\~
+
+The tiles are used as input to a composite just like in direct compositing:
+
+\include composite-fi_tiled_rack.sh
+
+Notice that the geographic configuration (\c cBBox, \c cProj, \c cSize) has to be given explicitly again.
+The metadata in the tile files does contain geo-locating but no information on the "intended" radar composite, as a tile
+is compatible with any composite using the same projection and spatial resolution.
+
+
+
+
+\note The above command line can be generated also with Python code
+\linkfile{composite-fi_tiled_rack.py}
+or the respective command line
+\linkfile{composite-fi_tiled_py.sh}
+
+
+\~exec{.py}
+ 
+# Initialize command line generator.
+composer = rack.cmdline.Composer(rack.composite)
+
+composer.set(GEOCONF='FINLAND')
 composer.set(METHOD='WAVG,1,8')
 
-composer.set(INFILE='data/202609261800_radar.polar.fi???.h5') 
-composer.set(PPROD='pCappi,500')
-composer.set(OUTFILE='out/composite-fi-direct.h5')
+composer.set(INFILE='tiles/tile-*.h5') 
+composer.set(OUTFILE='out/composite-fi-tiled.h5')
 
 # Optional SVG image output
 composer.set(FORMATS='svg')
@@ -114,12 +221,13 @@ print(prog.to_string(fmt))
 # rack.process.run(prog, logger=logger)
 \~
 
-\image html  composite-fi-direct.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."
-\image latex composite-fi-direct.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."   width=\textwidth
+\image html  composite-fi-tiled.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."
+\image latex composite-fi-tiled.svg.png  "A radar composite image – Finnish (FMI) radars, Pseudo CAPPI 600m, weighted-average compositing method: main product (left) and quality field (right)."   width=\textwidth
+
+
 
 \~stop
 \~
-
 
 The extraction command \c --cExtract extracts one or more data layers out of the compositing (accumulation array): 
 - \c DATA - the actual composited data, like reflectivity (\c DBZH )

@@ -111,30 +111,37 @@ class ValidationRule:
 class BaseConf:
     stdoutToFile: Optional[Path] = None
     stderrToFile: Optional[Path] = None
-    #tests = {}
 
-    #def __init__(self):
-    #    self.tests = {}
-
+    # unused / deprecating
+    replacements: List[ReplaceRule] = field(default_factory=list)
+    def apply_replacements(self, s: str) -> str:
+        for r in self.replacements:
+            s = r.apply(s)
+        return s
 
 @dataclass
 class CliConf(BaseConf):
     workdir: Optional[Path] = None
+    # Text inserted into the first command line of the next \code/\~exec{.sh} block, right
+    # after the program name (prepend_args) or at the very end (append_args) - exactly as
+    # if it had been written there in the .dox file. Either a plain string, or a list of
+    # strings (one option per array entry, for readability) that gets joined with a space -
+    # see _args_to_str().
     prepend_args: List[str] = field(default_factory=list)
     append_args: List[str] = field(default_factory=list)
-    replacements: List[ReplaceRule] = field(default_factory=list)
+    #replacements: List[ReplaceRule] = field(default_factory=list)
     validations: List[ValidationRule] = field(default_factory=list)
     shell: bool = False
     # Filename (under LINK_FILE_DIR) to dump the assembled script to, for \linkfile{...}
     linkFile: Optional[str] = None
     # Output file validation, keyed by output path (relative to workdir). See TESTS.md
-    # ("Output file testing") and validate_tests() below.
+    # ("Output file testing") and validate_tests() below. Two special, non-dict values:
+    # False skips the upcoming \code/\~exec block (or \include'd exec.sh) entirely - it is
+    # never run - for a block that is pure illustration, possibly not even valid syntax
+    # (e.g. "..." placeholders); {} (or omitting "tests") runs it normally with no output
+    # file checks afterward.
     tests: Optional[Dict[str, Any]] = None
 
-    def apply_replacements(self, s: str) -> str:
-        for r in self.replacements:
-            s = r.apply(s)
-        return s
 
     def reset(self):
         self.prepend_args = []
@@ -154,6 +161,9 @@ class PyConf(BaseConf):
     # module: str = "" 
 
     imports: List[str] = None
+    # False skips the upcoming \code/\~exec{.py} block entirely (see CliConf.tests for the
+    # same convention on the shell side); a dict with a "rack.sh" entry additionally runs
+    # the generated rack.sh afterward and checks its returncode (see run_py_block()).
     tests: Dict[str,Any] = None
     # Last \include argument, if <filename>.py
     include_py_sh:   str = ""
@@ -181,10 +191,10 @@ class PyConf(BaseConf):
     #def __init__(self):
     #    self.tests = {}
 
-    def apply_replacements(self, s: str) -> str:
-        for r in self.replacements:
-            s = r.apply(s)
-        return s
+    #def apply_replacements(self, s: str) -> str:
+    #    for r in self.replacements:
+    #        s = r.apply(s)
+    #    return s
 
     def reset(self):
         self.include_py_sh = None
@@ -217,14 +227,13 @@ CODE_END_RE = re.compile(r"^\\endcode\s*$")
 
 @dataclass
 class Block:
-    kind: str                 # "cli" or "py" (later: "cpp")
+    kind: str               # "cli" or "py" (later: "cpp")
     arg: Optional[str]      # content inside \code{...}
     content: List[str]
     start_line: int
 
 
 """
-
 TODO: run also \\ example, if conf["run_example"] = True;
 """
 
@@ -407,19 +416,11 @@ def dump_subprocess_output(
     print(result.stderr)
     print(f"--- ------ ---")
 
-"""
-def run_shell_system(script:str) -> None:
-    logger.info(f"{Emoji.SCRIPT.value} executing shell script: {script}")
-    result = os.system(script)
-    if result:
-        logger.error(f"execution of '{script}' failed with return code {result}")
-        exit(1) 
-    logger.info(Emoji.SUCCESS + " Success!")
-"""
+
 
 # Todo: In dox files, allow to specify whether to run in shell mode (shell=True) or as a direct command (shell=False).
 # Special handling of output redirection, e.g. "ls > out.txt" should work in shell mode, but not in direct command mode.
-def run_shell_subprocess(script:str, shell:bool=False) -> None:
+def run_shell_subprocess_FOO(script:str, shell:bool=False) -> None:
 
     #logger.info(f"{Emoji.SCRIPT.value} executing shell script: {script}")
     
@@ -565,6 +566,16 @@ def _convert_new_svgs(base: Path, since: float, workdir: Optional[Path] = None) 
                 _convert_svg_to_png(svg_path, workdir)
 
 
+def _args_to_str(value: Any) -> str:
+    """Normalizes a prepend_args/append_args conf value to a single string: a list/tuple
+    is joined with a space (handy in JSON to spell out several options one per array
+    entry, for readability, instead of one long string), a plain string is used as-is.
+    """
+    if isinstance(value, (list, tuple)):
+        return " ".join(str(v) for v in value)
+    return value
+
+
 def run_shell_lines(lines: list, cliconf: CliConf) -> None:
     """
     Shared shell-execution engine, used for \\code{.sh}/\\~exec{.sh} blocks and
@@ -593,18 +604,23 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
         script.append(pending_code)
 
     # prepend_args/append_args apply to the first command line only, consumed once.
+    # Inserted as raw text (not re-tokenized/re-quoted): each is itself a shell-syntax
+    # fragment, and splitting the line with shlex then rejoining with plain spaces would
+    # strip any quoting it finds along the way (e.g. turning --script "--pCappi 500 --cAdd"
+    # into --script --pCappi 500 --cAdd, leaking "500 --cAdd" as separate arguments). The
+    # goal is exactly as if the argument string had been written at that position inside
+    # the \~exec block itself.
     if script and (cliconf.prepend_args or cliconf.append_args):
-        tokens = shlex.split(script[0])
         if cliconf.prepend_args:
-            tokens = [tokens[0], cliconf.prepend_args, *tokens[1:]]
+            prog, _, rest = script[0].partition(" ")
+            script[0] = f"{prog} {_args_to_str(cliconf.prepend_args)} {rest}".rstrip()
             cliconf.prepend_args = ""
-        code = " ".join(tokens)
         if cliconf.append_args:
-            code += " " + cliconf.append_args
+            script[0] = f"{script[0]} {_args_to_str(cliconf.append_args)}"
             cliconf.append_args = ""
-        script[0] = code
 
-    logger.info(f"{Emoji.RUN.value} Executing shell script: {script}")
+    logger.info(f"{Emoji.OPEN_DIRECTORY.value} Working directory: {cliconf.workdir or Path.cwd()}")
+    logger.info(f"{Emoji.RUN.value}  Executing shell script: {script}")
     t_before = time.time()
 
     if cliconf.linkFile:
@@ -626,17 +642,21 @@ def run_shell_lines(lines: list, cliconf: CliConf) -> None:
         rack.process.run(line, logger=logger, shell=True, cwd=cliconf.workdir,
                           stdout_file=cliconf.stdoutToFile, stderr_file=cliconf.stderrToFile)
 
-    validate_tests(cliconf.tests, cliconf.workdir)
-
+    # Convert before validating: a "tests" entry for "*.svg.png" (the naming convention
+    # _convert_svg_to_png() produces) names a file that only exists after this runs.
     if DOXYMORON_CONF.get("auto_svg_to_png", True):
         base = Path(cliconf.workdir) if cliconf.workdir else Path()
         _convert_new_svgs(base, since=t_before, workdir=cliconf.workdir)
+
+    validate_tests(cliconf.tests, cliconf.workdir)
 
 
 def validate_tests(tests: Optional[Dict[str, Any]], workdir: Optional[Path]) -> None:
     """
     Validates output files declared in a "tests" conf entry (see TESTS.md, "Output file
-    testing"). Each key is an output path, relative to workdir; its value is either a
+    testing"). Only reached for a block that was actually run - "tests": false (don't run
+    this block at all) is handled earlier in main() (see skip_exec_reason()) and never
+    gets here. Each key is an output path, relative to workdir; its value is either a
     single spec, or a list of specs to check the same file against several things (e.g.
     two different reference images) - a JSON object cannot repeat a key, so a list is how
     one output file gets more than one check. Each spec is one of:
@@ -718,24 +738,46 @@ def _display_images(produced: Path, reference: Path) -> None:
         logger.error("ImageMagick ('display') not found; open the panel above manually")
 
 
-def _resolve_mismatch_action(produced: Path, reference: Path, summary_lines: List[str], allow_view: bool) -> str:
+def _display_single_image(path: Path) -> None:
+    """Show *path* alone via ImageMagick's `display` (see _resolve_mismatch_action()) -
+    used when there is no reference yet to compare against, so there is nothing to pair
+    it with. Blocks until the viewer is closed (press 'q' in the `display` window).
+    """
+    logger.info(f"{Emoji.MAGNIFIER.value}  Viewing {path} (open it manually if no viewer window appears)")
+    try:
+        subprocess.run(["display", "-title", f"produced: {path}  (press q to exit viewing)", str(path)],
+                        check=False)
+    except FileNotFoundError:
+        logger.error(f"ImageMagick ('display') not found; open {path} manually")
+
+
+def _resolve_mismatch_action(produced: Path, reference: Path, summary_lines: List[str], allow_view: bool,
+                              reference_exists: bool = True) -> str:
     """Decides what to do about a failed content check (image similarity or text diff):
-    "quit", "continue" (skip it), or "update" (overwrite reference with produced).
+    "quit", "continue" (skip it), or "update" (write produced over reference).
 
     Honours --on-mismatch (DEFAULT_MISMATCH_ACTION): if it is "ask" (the default),
     prompts the user interactively - printing *summary_lines* first, then offering to
-    view the two files side by side (images only, via _display_images()) in addition to
-    quit/continue/update. Any other --on-mismatch value is returned directly, without
-    prompting.
+    view the file(s) (images only) in addition to quit/continue/update. Any other
+    --on-mismatch value is returned directly, without prompting.
+
+    reference_exists=False is for the "reference file is simply missing yet" case (a new
+    output never checked before), not a content mismatch: the prompt and the view action
+    adapt accordingly - just *produced* is shown (via _display_single_image(), no pair to
+    view via _display_images()), and "update" means accepting *produced* as the new
+    reference rather than overwriting an existing one (see _apply_mismatch_action()).
     """
     if DEFAULT_MISMATCH_ACTION != "ask":
         logger.info(f"{Emoji.INFO.value}  Mismatch for {produced}: --on-mismatch={DEFAULT_MISMATCH_ACTION}")
         return DEFAULT_MISMATCH_ACTION
 
     view_opt = ", [v]iew" if allow_view else ""
-    prompt = f"[q]uit testing, [c]ontinue{view_opt}, [u]pdate reference > "
+    update_label = "[u]pdate reference" if reference_exists else "[u]se as new reference"
+    prompt = f"[q]uit testing, [c]ontinue{view_opt}, {update_label} > "
+    header = (f"Content check failed: {produced} vs {reference}" if reference_exists
+              else f"No reference file yet for {produced}")
     while True:
-        print(f"\n{Emoji.WARNING.value} Content check failed: {produced} vs {reference}")
+        print(f"\n{Emoji.WARNING.value} {header}")
         for line in summary_lines:
             print(f"  {line}")
         try:
@@ -745,7 +787,10 @@ def _resolve_mismatch_action(produced: Path, reference: Path, summary_lines: Lis
             logger.warning(f"{Emoji.STOP.value}  No more input (EOF); treating as quit")
             return "quit"
         if allow_view and choice == "v":
-            _display_images(produced, reference)
+            if reference_exists:
+                _display_images(produced, reference)
+            else:
+                _display_single_image(produced)
             continue
         if choice in ("q", "c", "u"):
             return {"q": "quit", "c": "continue", "u": "update"}[choice]
@@ -758,8 +803,11 @@ def _apply_mismatch_action(action: str, produced: Path, reference: Path) -> None
         logger.warning(f"{Emoji.STOP.value}  Testing aborted at {produced}")
         sys.exit(1)
     elif action == "update":
+        reference.parent.mkdir(parents=True, exist_ok=True)
+        existed = reference.exists()
         shutil.copyfile(produced, reference)
-        logger.info(f"{Emoji.SUCCESS.value}  Reference updated: {reference} <- {produced}")
+        verb = "updated" if existed else "created"
+        logger.info(f"{Emoji.SUCCESS.value}  Reference {verb}: {reference} <- {produced}")
     else:  # "continue"
         logger.info(f"{Emoji.WARNING.value}  Skipping failed check for {produced} (continue)")
 
@@ -790,7 +838,7 @@ def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
             logger.info(f"Test failed (on_fail=ignore): {message}")
 
     produced = base / rel_path
-    logger.info(f"{Emoji.MAGNIFIER.value}  Testing {produced}"
+    logger.info(f"{Emoji.MAGNIFIER.value} Testing {produced}"
                 + (f" vs {spec['filename']}" if "filename" in spec else ""))
 
     should_exist = spec.get("exists", True)
@@ -818,7 +866,13 @@ def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
 
     if suffix in (".png", ".tif", ".tiff"):
         if not reference.exists():
-            logger.warning(f"No reference file {reference} for {produced}; skipping content check")
+            if on_fail == "error":
+                action = _resolve_mismatch_action(produced, reference, [], allow_view=True,
+                                                   reference_exists=False)
+                _apply_mismatch_action(action, produced, reference)
+            else:
+                # Explicit on_fail=warn/ignore (e.g. a deliberate meta-test): just log, never ask.
+                logger.warning(f"No reference file {reference} for {produced}; skipping content check")
         else:
             import rack.imagecheck
             check_spec = {
@@ -843,7 +897,13 @@ def _validate_one(base: Path, rel_path: str, spec: Any) -> None:
                 failed = failed or not result.passed
     elif suffix == ".txt":
         if not reference.exists():
-            logger.warning(f"No reference file {reference} for {produced}; skipping content check")
+            if on_fail == "error":
+                action = _resolve_mismatch_action(produced, reference, [], allow_view=False,
+                                                   reference_exists=False)
+                _apply_mismatch_action(action, produced, reference)
+            else:
+                # Explicit on_fail=warn/ignore (e.g. a deliberate meta-test): just log, never ask.
+                logger.warning(f"No reference file {reference} for {produced}; skipping content check")
         else:
             diff = subprocess.run(["diff", str(reference), str(produced)],
                                    capture_output=True, text=True)
@@ -933,7 +993,8 @@ def run_py_block(block: Block, pyconf: PyConf) -> None:
         #script.writelines(code_lines)
         
         logger.debug(f"Running PYTHON script: {script}")
-        styleWrapper = Style(Effect.DIM, Effect.ITALIC)    
+        logger.info(f"{Emoji.OPEN_DIRECTORY.value}  Working directory: {pyconf.workdir or Path.cwd()}")
+        styleWrapper = Style(Effect.DIM, Effect.ITALIC)
         logger.info(f"{Emoji.SCRIPT.value} script:\n  " + styleWrapper.str("\n  ".join(code_lines)))
 
         #cp = subprocess.run(['python3', script_file], 
@@ -1047,6 +1108,17 @@ def main() -> int:
             return False
         return True
 
+    def skip_exec_reason(tests: Any, line_no: int) -> Optional[str]:
+        """None if a \\code/\\~exec block (or \\include'd exec.sh) should run, else why not:
+        "tests": false means it's pure illustration - possibly not even valid syntax (e.g.
+        "..." placeholders) - and must never be executed, regardless of --scan-start/--scan-end.
+        """
+        if tests is False:
+            return "tests: false - not executed"
+        if not in_scan_range(line_no):
+            return "outside --scan-start/--scan-end"
+        return None
+
     cliconf = CliConf()
     pyconf  = PyConf()
 
@@ -1104,13 +1176,14 @@ def main() -> int:
                 pyconf.linkFile = p
             elif p.endswith('exec.sh'):
                 # No path search. Script path should include directory (relative ok)
-                if in_scan_range(line_no):
+                reason = skip_exec_reason(cliconf.tests, line_no)
+                if reason is None:
                     logger.info(f"{Emoji.RUN.value}  running {p}")
                     lines = Path(p).read_text(encoding="utf-8").splitlines()
                     run_shell_lines(lines, cliconf)
-                    cliconf.reset()
                 else:
-                    logger.debug(f"Skipping include {p} at line {line_no} (outside --scan-start/--scan-end)")
+                    logger.debug(f"Skipping include {p} at line {line_no} ({reason})")
+                cliconf.reset()
             elif "".join(Path(p).suffixes).lstrip(".") in MAKE_EXTENSIONS:
                 # Delegate to demo/Makefile, e.g. "cExtract.hlp" or "cBBox.hlp.md" -> `make <file>`
                 if in_scan_range(line_no):
@@ -1122,18 +1195,20 @@ def main() -> int:
         elif key == 'code' or key == "~exec":
             block: Block = obj
             if block.arg == '.py':
-                if in_scan_range(block.start_line):
-                    logger.info(f"{Emoji.SCRIPT.value}  Handling Python code from line {block.start_line}:")
+                reason = skip_exec_reason(pyconf.tests, block.start_line)
+                if reason is None:
+                    logger.info(f"{Emoji.SCRIPT.value} Handling Python code from line {block.start_line}:")
                     run_py_block(block, pyconf) # Todo: flag to also run the generated command line.
                 else:
-                    logger.debug(f"Skipping Python code at line {block.start_line} (outside --scan-start/--scan-end)")
+                    logger.debug(f"Skipping Python code at line {block.start_line} ({reason})")
                 pyconf.reset()
             elif block.arg == '.sh':
-                if in_scan_range(block.start_line):
-                    logger.info(f"{Emoji.SCRIPT.value}  Handling shell code from line {block.start_line}")
+                reason = skip_exec_reason(cliconf.tests, block.start_line)
+                if reason is None:
+                    logger.info(f"{Emoji.SCRIPT.value} Handling shell code from line {block.start_line}")
                     run_shell_lines(block.content, cliconf)
                 else:
-                    logger.debug(f"Skipping shell code at line {block.start_line} (outside --scan-start/--scan-end)")
+                    logger.debug(f"Skipping shell code at line {block.start_line} ({reason})")
                 cliconf.reset()
             elif block.arg == None:
                 logger.warning(f"Skipping code{{}} at line {block.start_line}")

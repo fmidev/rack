@@ -1817,11 +1817,11 @@ public:
 		}
 		else if (MULTI_CMD_HELP) {
 			// \c removed from ${params} - it has effect up to first comma only :(
-			rowFormatter.parse("|\\c --${key}| ${params} |${values} |${desc} |", true);
+			rowFormatter.parse("| \\c --${key} | ${params} | ${values} |${desc} |", true);
 			mout.debug("format: ", drain::sprinter(rowFormatter));
 		}
-		else {  // ${default} |
-			rowFormatter.parse("|\\c ${param} |\\c ${value} | \\c ${unit} |", true);
+		else {  // ${default} | \c removed from ${unit}
+			rowFormatter.parse("|\\c ${param} | ${value} | ${unit} |", true);
 			//mout.debug("format: ", drain::sprinter(rowFormatter));
 			mout.debug(DRAIN_LOG(rowFormatter));
 		}
