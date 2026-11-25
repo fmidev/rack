@@ -347,8 +347,30 @@ void FilePnm::readFrame(ImageFrame & image, std::istream & infile, FileType file
 	}
 
 
-	if (infile.peek() != EOF)
-		mout.warn(" spurious bytes at end of file?" );
+	int peek; //  = infile.peek();
+	if (!infile.eof()){
+
+		int i = 0;
+		// int c = '?';
+		// while (!infile.eof()){
+		while ((peek=infile.get()) != EOF){
+		    // do {
+			// peek = infile.get();
+			static const std::string WHITESPACE = " \t\n";
+			if ((fileType == PGM_ASC) || (fileType == PPM_ASC)){
+				if (WHITESPACE.find(peek) != std::string::npos){
+					continue;
+				}
+			}
+			mout.warn("spurious byte #", i, " at end of file? Value=", peek, " char='", static_cast<char>(peek));
+			// c = infile.get();
+			// mout.warn(i , "\t", peek, "='", (char)peek , "'");
+			// peek = infile.get();
+			++i;
+		}
+		// while (!infile.eof());
+
+	}
 
 	if (!ARRAY_FULL){
 		mout.warn("premature end of file: " , image );
