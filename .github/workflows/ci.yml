@@ -29,7 +29,6 @@ jobs:
           src/rack --help > /dev/null
 
       - name: Python tests
-        continue-on-error: true
         run: |
           export PATH="$PWD/src:$PATH"
           make test-python
