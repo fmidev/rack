@@ -11,11 +11,14 @@ weather radar data (ODIM-HDF5 in; HDF5/PNG/GeoTIFF/TXT/SVG out). User documentat
    output, and the Python front end in [python/rack](python/rack). No major changes to CLI at this point.
 2. **Code structure and readability**: making the code easier to navigate and change without
    changing behavior.
-3. **Python bindings (exploratory)**: a better Python interface to Rack. See
+3. **Correctness and robustness**: preventing new bugs and finding existing ones. See
+   [Correctness and robustness](#correctness-and-robustness).
+4. **Python bindings (exploratory)**: a better Python interface to Rack. See
    [Python bindings](#python-bindings-open-design-question) before starting on this.
 
 Treat work outside these areas (radar algorithms, image operators, projections) as out of scope
-unless the task explicitly asks for it. When a readability change would also change CLI behavior,
+unless the task explicitly asks for it. Bugs found there are in scope to report, but fixes to
+them need agreement first (see below). When a readability change would also change CLI behavior,
 default values, or output, stop and say so. Rack runs in operational pipelines, so changes
 visible to users need a deliberate decision.
 
@@ -73,13 +76,55 @@ src/rack --version
 
 - Python: `make test-python` (runs `python3 -m unittest discover -s rack/tests -v` inside
   `python/`). Single module: `cd python && python3 -m unittest -v rack.tests.test_typical`.
-  Many tests call the `rack` executable, so it must be built and on `PATH`.
-- C++: there is no unit-test suite. [demo/](demo) scripts (for example
-  [demo/make-tests.sh](demo/make-tests.sh)) run end-to-end and need radar sample data, which is
-  not in the repo.
+  These tests cover the Python helpers only: none of them run the `rack` executable
+  (`test_doxymoron` mocks `rack.process.run`), so they pass without a built binary.
+- C++: there is no unit-test suite. End-to-end checks need radar data, which is not stored in
+  the repo but can mostly be fetched from public sources:
+  - Doc-example tests run the examples in the `*.dox` pages, in working directories under
+    [tests/env](tests/env), and compare outputs with `reference/` files (see
+    [tests/TESTS.md](tests/TESTS.md)):
+    `cd tests && PYTHONPATH=python python3 -m rack.doxymoron --on-mismatch quit ../src/main/<file>.dox`.
+    Without `--on-mismatch`, a mismatch stops and prompts. The input links under `tests/env`
+    point to a local cache. Fill it from FMI's public S3 bucket with
+    [scripts/rack-get-data-fmi.sh](scripts/rack-get-data-fmi.sh) (see
+    [tests/data/Data.md](tests/data/Data.md)).
+    [scripts/rack-get-data-opera.sh](scripts/rack-get-data-opera.sh) fetches OPERA data, but
+    that archive keeps only the last 24 hours. The 2014 data used by `composite-nordic` has no
+    fetch script.
+  - [demo/](demo) scripts (for example [demo/make-tests.sh](demo/make-tests.sh)) take any ODIM
+    volumes that you link or copy into the working directory.
+  - [tests/data/static/volume-small.h5](tests/data/static/volume-small.h5) is the only volume
+    committed to the repo.
 - When refactoring C++ without a test harness, show that behavior is unchanged by comparing
   `rack --help` output and the output of representative command lines before and after the change.
   Say explicitly when you could not verify something.
+
+## Correctness and robustness
+
+Rack runs unattended in operational pipelines. A crash is bad, but silently wrong output is
+worse. Aim for code that fails loudly and clearly on bad input instead of guessing.
+
+- **Error handling**: check results from file I/O, HDF5/PNG/TIFF/PROJ calls, string-to-number
+  conversions, and map/tree lookups. Report errors through `mout` with the command name and the
+  offending value. Don't swallow exceptions or fall back to defaults without a warning.
+- **Common bug classes here**: uninitialized members (especially in copy constructors that skip
+  `copyStruct(...)`), out-of-range image or array indexing, signed/unsigned and integer-overflow
+  mistakes in size arithmetic, float equality and NaN or `nodata`/`undetect` handling, dangling
+  references to temporaries, and data races in OpenMP regions or shared static state.
+- **Tools**: `make cppcheck`; stricter warnings with
+  `make WARNINGS="-Wall -Wextra -Wpedantic"`; sanitizers with
+  `make OPTS="-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined"` (`OPTS` is also passed
+  to the linker). Run the sanitized build on representative command lines and demo scripts.
+- **Bug hunting**: when you find a likely bug, describe it with the triggering input and the
+  observed or expected failure before fixing it. Point out bugs you notice outside the current task
+  instead of fixing them in passing.
+- **Fixes can change output**: a correct fix can still break a pipeline that depends on the old
+  behavior. Say when a fix changes CLI behavior, output values, or metadata, and keep each fix in
+  its own commit, separate from refactoring. Fixes in radar algorithms, image operators, and
+  projections need agreement first.
+- **Regression checks**: there is no C++ unit-test suite in this repository. Show that a fix
+  works with a reproducing command line before and after the change, and state what you could not
+  verify.
 
 ## How the CLI works
 
