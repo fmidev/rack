@@ -1,0 +1,20 @@
+P2
+# what:object="SCAN"
+# what:quantity="ZDR"
+# what:gain=0.1
+# what:offset=0
+# what:undetect=254
+# what:nodata=255
+# what:source="test"
+# what:date="20261115"
+# what:time="184500"
+# where:lon=25.0
+# where:lat=60.0
+# where:elangle=0.0
+# where:nbins=16
+# where:nrays=1
+# where:rscale=10000
+16 1
+255
+27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+

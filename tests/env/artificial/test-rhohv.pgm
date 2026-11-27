@@ -1,0 +1,19 @@
+P2
+# what:object="SCAN"
+# what:quantity="RHOHV"
+# what:gain=0.01
+# what:offset=0
+# what:undetect=254
+# what:nodata=255
+# what:source="test"
+# what:date="20261115"
+# what:time="184500"
+# where:lon=25.0
+# where:lat=60.0
+# where:elangle=0.0
+# where:nbins=16
+# where:nrays=1
+# where:rscale=10000
+20 1
+255
+81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100
