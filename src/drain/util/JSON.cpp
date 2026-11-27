@@ -156,7 +156,7 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const JSONtree & tree, co
 			ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix;
 		}
 		*/
-		ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix;
+		// ostr << layout.mapChars.prefix  << ' ' << layout.mapChars.suffix;
 		return ostr;
 	}
 
@@ -173,13 +173,7 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const JSONtree & tree, co
 
 	if (DATA){
 		drain::Sprinter::toStream(ostr, tree.data, layout);
-		//ostr << layout.pairChars.suffix;
-		return ostr; // = pratically exclusive
-		/*
-		if (CHILDREN)
-			ostr << layout.mapChars.separator;
-		ostr << '\n';
-		*/
+		return ostr; // = practically exclusive, so return
 	}
 
 	ostr << layout.mapChars.prefix; // << '\n';
@@ -198,12 +192,12 @@ std::ostream & JSON::treeToStream(std::ostream & ostr, const JSONtree & tree, co
 			}
 			//ostr << pad << "  " << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
 			ostr << pad << "  ";  // if empty?
-			// if (layout.pairChars.prefix)
-			ostr << layout.pairChars.prefix;
+			if (layout.pairChars.prefix)
+				ostr << layout.pairChars.prefix;
 			ostr << '"' << entry.first << '"' <<  layout.pairChars.separator << ' ';  // if empty?
 			treeToStream(ostr, entry.second, layout, indent+1); // recursion
-			// if (layout.pairChars.suffix)
-			ostr << layout.pairChars.suffix;
+			if (layout.pairChars.suffix)
+				ostr << layout.pairChars.suffix;
 		}
 		ostr << '\n';
 	}

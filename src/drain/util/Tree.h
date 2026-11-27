@@ -284,6 +284,7 @@ public:
 	// TODO: what to do with the separator?
 	inline
 	tree_t &operator=(const tree_t &t){
+		// std::cerr << "op=() 1\n";
 		if (&t != this){
 			data = t.data;
 			//if (EXCLUSIVE){ ...or consider deep copy?
@@ -315,6 +316,7 @@ public:
 	template <class T2>
 	inline
 	tree_t & operator=(const T2 &v){
+		// std::cerr << "op=() 2\n";
 		data = v;
 		if (EXCLUSIVE){
 			clearChildren();

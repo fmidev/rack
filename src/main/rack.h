@@ -33,7 +33,7 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
 #define __RACK_API__
 
 #include <drain/Version.h>
-#define RACK_VERSION drain::Version<>(22,1,3)
+#define RACK_VERSION drain::Version<>(22,1,4)
 #define RACK_STAMP "Rack_fmi.fi"
 
 
@@ -55,6 +55,8 @@ Neighbourhood Partnership Instrument, Baltic Sea Region Programme 2007-2013)
  *  --Stringlet stores formatting
  *  Release 22.1.3
  *  - JSONtree output with empty string data fixed
+ *  Release 22.1.4
+ *  - JSONtree output with single char and string fixed (writing zero char removed)
  *
  *  Version 21.0
  *  - HDF5 output: write chunk size; set Conventions only if unset

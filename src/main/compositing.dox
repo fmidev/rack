@@ -94,7 +94,7 @@ rack --outputPrefix $PWD/out/ \
 
 
 
-\~stop
+\~remark stop
 \~
 
 For more details on using \c --forEach and \c --script commands, see \ref scriptspage .

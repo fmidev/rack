@@ -421,6 +421,13 @@ std::ostream & Sprinter::toStream(std::ostream & ostr, const drain::Castable & v
 	else if (v.empty()) {
 		ostr << "null"; // TODO: layout.nullString
 	}
+	else if (v.getType() == typeid(char)) {
+		//ostr << '"' << v << '"';
+		Sprinter::prefixToStream(ostr, layout.stringChars);
+		//ostr << v.toStr();
+		ostr << v;
+		Sprinter::suffixToStream(ostr, layout.stringChars);
+	}
 	else if (v.getType() == typeid(bool)) {
 		ostr << ((bool)v ? "true" : "false"); // Pythonic: "True", "False"
 	}

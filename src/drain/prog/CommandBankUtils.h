@@ -176,8 +176,8 @@ public:
 			}
 
 			drain::JSONtree jsonRoot;
-			drain::JSONtree & json = jsonRoot[value];
-			commandToJSON_old(cmdBank.get(value), json);
+			//drain::JSONtree & json = jsonRoot[value];
+			commandToJSON_old(cmdBank.get(value), jsonRoot[value]);
 			drain::Sprinter::toStream(ostr, jsonRoot, drain::Sprinter::jsonLayout);
 		}
 
